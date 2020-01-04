@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_597380 = ref object of OpenApiRestCall
+  OpenApiRestCall_601380 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_597380](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601380](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_597380): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601380): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,8 +134,8 @@ const
   awsServiceName = "codeguru-reviewer"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AssociateRepository_597979 = ref object of OpenApiRestCall_597380
-proc url_AssociateRepository_597981(protocol: Scheme; host: string; base: string;
+  Call_AssociateRepository_601979 = ref object of OpenApiRestCall_601380
+proc url_AssociateRepository_601981(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -147,7 +147,7 @@ proc url_AssociateRepository_597981(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_AssociateRepository_597980(path: JsonNode; query: JsonNode;
+proc validate_AssociateRepository_601980(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Associates an AWS CodeCommit repository with Amazon CodeGuru Reviewer. When you associate an AWS CodeCommit repository with Amazon CodeGuru Reviewer, Amazon CodeGuru Reviewer will provide recommendations for each pull request. You can view recommendations in the AWS CodeCommit repository.</p> <p>You can associate a GitHub repository using the Amazon CodeGuru Reviewer console.</p>
@@ -167,41 +167,41 @@ proc validate_AssociateRepository_597980(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_597982 = header.getOrDefault("X-Amz-Signature")
-  valid_597982 = validateParameter(valid_597982, JString, required = false,
+  var valid_601982 = header.getOrDefault("X-Amz-Signature")
+  valid_601982 = validateParameter(valid_601982, JString, required = false,
                                  default = nil)
-  if valid_597982 != nil:
-    section.add "X-Amz-Signature", valid_597982
-  var valid_597983 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_597983 = validateParameter(valid_597983, JString, required = false,
+  if valid_601982 != nil:
+    section.add "X-Amz-Signature", valid_601982
+  var valid_601983 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601983 = validateParameter(valid_601983, JString, required = false,
                                  default = nil)
-  if valid_597983 != nil:
-    section.add "X-Amz-Content-Sha256", valid_597983
-  var valid_597984 = header.getOrDefault("X-Amz-Date")
-  valid_597984 = validateParameter(valid_597984, JString, required = false,
+  if valid_601983 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601983
+  var valid_601984 = header.getOrDefault("X-Amz-Date")
+  valid_601984 = validateParameter(valid_601984, JString, required = false,
                                  default = nil)
-  if valid_597984 != nil:
-    section.add "X-Amz-Date", valid_597984
-  var valid_597985 = header.getOrDefault("X-Amz-Credential")
-  valid_597985 = validateParameter(valid_597985, JString, required = false,
+  if valid_601984 != nil:
+    section.add "X-Amz-Date", valid_601984
+  var valid_601985 = header.getOrDefault("X-Amz-Credential")
+  valid_601985 = validateParameter(valid_601985, JString, required = false,
                                  default = nil)
-  if valid_597985 != nil:
-    section.add "X-Amz-Credential", valid_597985
-  var valid_597986 = header.getOrDefault("X-Amz-Security-Token")
-  valid_597986 = validateParameter(valid_597986, JString, required = false,
+  if valid_601985 != nil:
+    section.add "X-Amz-Credential", valid_601985
+  var valid_601986 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601986 = validateParameter(valid_601986, JString, required = false,
                                  default = nil)
-  if valid_597986 != nil:
-    section.add "X-Amz-Security-Token", valid_597986
-  var valid_597987 = header.getOrDefault("X-Amz-Algorithm")
-  valid_597987 = validateParameter(valid_597987, JString, required = false,
+  if valid_601986 != nil:
+    section.add "X-Amz-Security-Token", valid_601986
+  var valid_601987 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601987 = validateParameter(valid_601987, JString, required = false,
                                  default = nil)
-  if valid_597987 != nil:
-    section.add "X-Amz-Algorithm", valid_597987
-  var valid_597988 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_597988 = validateParameter(valid_597988, JString, required = false,
+  if valid_601987 != nil:
+    section.add "X-Amz-Algorithm", valid_601987
+  var valid_601988 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601988 = validateParameter(valid_601988, JString, required = false,
                                  default = nil)
-  if valid_597988 != nil:
-    section.add "X-Amz-SignedHeaders", valid_597988
+  if valid_601988 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601988
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -212,36 +212,36 @@ proc validate_AssociateRepository_597980(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_597990: Call_AssociateRepository_597979; path: JsonNode;
+proc call*(call_601990: Call_AssociateRepository_601979; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Associates an AWS CodeCommit repository with Amazon CodeGuru Reviewer. When you associate an AWS CodeCommit repository with Amazon CodeGuru Reviewer, Amazon CodeGuru Reviewer will provide recommendations for each pull request. You can view recommendations in the AWS CodeCommit repository.</p> <p>You can associate a GitHub repository using the Amazon CodeGuru Reviewer console.</p>
   ## 
-  let valid = call_597990.validator(path, query, header, formData, body)
-  let scheme = call_597990.pickScheme
+  let valid = call_601990.validator(path, query, header, formData, body)
+  let scheme = call_601990.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_597990.url(scheme.get, call_597990.host, call_597990.base,
-                         call_597990.route, valid.getOrDefault("path"),
+  let url = call_601990.url(scheme.get, call_601990.host, call_601990.base,
+                         call_601990.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_597990, url, valid)
+  result = atozHook(call_601990, url, valid)
 
-proc call*(call_597991: Call_AssociateRepository_597979; body: JsonNode): Recallable =
+proc call*(call_601991: Call_AssociateRepository_601979; body: JsonNode): Recallable =
   ## associateRepository
   ## <p>Associates an AWS CodeCommit repository with Amazon CodeGuru Reviewer. When you associate an AWS CodeCommit repository with Amazon CodeGuru Reviewer, Amazon CodeGuru Reviewer will provide recommendations for each pull request. You can view recommendations in the AWS CodeCommit repository.</p> <p>You can associate a GitHub repository using the Amazon CodeGuru Reviewer console.</p>
   ##   body: JObject (required)
-  var body_597992 = newJObject()
+  var body_601992 = newJObject()
   if body != nil:
-    body_597992 = body
-  result = call_597991.call(nil, nil, nil, nil, body_597992)
+    body_601992 = body
+  result = call_601991.call(nil, nil, nil, nil, body_601992)
 
-var associateRepository* = Call_AssociateRepository_597979(
+var associateRepository* = Call_AssociateRepository_601979(
     name: "associateRepository", meth: HttpMethod.HttpPost,
     host: "codeguru-reviewer.amazonaws.com", route: "/associations",
-    validator: validate_AssociateRepository_597980, base: "/",
-    url: url_AssociateRepository_597981, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AssociateRepository_601980, base: "/",
+    url: url_AssociateRepository_601981, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRepositoryAssociations_597718 = ref object of OpenApiRestCall_597380
-proc url_ListRepositoryAssociations_597720(protocol: Scheme; host: string;
+  Call_ListRepositoryAssociations_601718 = ref object of OpenApiRestCall_601380
+proc url_ListRepositoryAssociations_601720(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -253,7 +253,7 @@ proc url_ListRepositoryAssociations_597720(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListRepositoryAssociations_597719(path: JsonNode; query: JsonNode;
+proc validate_ListRepositoryAssociations_601719(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists repository associations. You can optionally filter on one or more of the following recommendation properties: provider types, states, names, and owners.
   ## 
@@ -275,35 +275,35 @@ proc validate_ListRepositoryAssociations_597719(path: JsonNode; query: JsonNode;
   ##   Name: JArray
   ##       : List of names to use as a filter.
   section = newJObject()
-  var valid_597832 = query.getOrDefault("MaxResults")
-  valid_597832 = validateParameter(valid_597832, JInt, required = false, default = nil)
-  if valid_597832 != nil:
-    section.add "MaxResults", valid_597832
-  var valid_597833 = query.getOrDefault("Owner")
-  valid_597833 = validateParameter(valid_597833, JArray, required = false,
+  var valid_601832 = query.getOrDefault("MaxResults")
+  valid_601832 = validateParameter(valid_601832, JInt, required = false, default = nil)
+  if valid_601832 != nil:
+    section.add "MaxResults", valid_601832
+  var valid_601833 = query.getOrDefault("Owner")
+  valid_601833 = validateParameter(valid_601833, JArray, required = false,
                                  default = nil)
-  if valid_597833 != nil:
-    section.add "Owner", valid_597833
-  var valid_597834 = query.getOrDefault("State")
-  valid_597834 = validateParameter(valid_597834, JArray, required = false,
+  if valid_601833 != nil:
+    section.add "Owner", valid_601833
+  var valid_601834 = query.getOrDefault("State")
+  valid_601834 = validateParameter(valid_601834, JArray, required = false,
                                  default = nil)
-  if valid_597834 != nil:
-    section.add "State", valid_597834
-  var valid_597835 = query.getOrDefault("NextToken")
-  valid_597835 = validateParameter(valid_597835, JString, required = false,
+  if valid_601834 != nil:
+    section.add "State", valid_601834
+  var valid_601835 = query.getOrDefault("NextToken")
+  valid_601835 = validateParameter(valid_601835, JString, required = false,
                                  default = nil)
-  if valid_597835 != nil:
-    section.add "NextToken", valid_597835
-  var valid_597836 = query.getOrDefault("ProviderType")
-  valid_597836 = validateParameter(valid_597836, JArray, required = false,
+  if valid_601835 != nil:
+    section.add "NextToken", valid_601835
+  var valid_601836 = query.getOrDefault("ProviderType")
+  valid_601836 = validateParameter(valid_601836, JArray, required = false,
                                  default = nil)
-  if valid_597836 != nil:
-    section.add "ProviderType", valid_597836
-  var valid_597837 = query.getOrDefault("Name")
-  valid_597837 = validateParameter(valid_597837, JArray, required = false,
+  if valid_601836 != nil:
+    section.add "ProviderType", valid_601836
+  var valid_601837 = query.getOrDefault("Name")
+  valid_601837 = validateParameter(valid_601837, JArray, required = false,
                                  default = nil)
-  if valid_597837 != nil:
-    section.add "Name", valid_597837
+  if valid_601837 != nil:
+    section.add "Name", valid_601837
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -314,61 +314,61 @@ proc validate_ListRepositoryAssociations_597719(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_597838 = header.getOrDefault("X-Amz-Signature")
-  valid_597838 = validateParameter(valid_597838, JString, required = false,
+  var valid_601838 = header.getOrDefault("X-Amz-Signature")
+  valid_601838 = validateParameter(valid_601838, JString, required = false,
                                  default = nil)
-  if valid_597838 != nil:
-    section.add "X-Amz-Signature", valid_597838
-  var valid_597839 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_597839 = validateParameter(valid_597839, JString, required = false,
+  if valid_601838 != nil:
+    section.add "X-Amz-Signature", valid_601838
+  var valid_601839 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601839 = validateParameter(valid_601839, JString, required = false,
                                  default = nil)
-  if valid_597839 != nil:
-    section.add "X-Amz-Content-Sha256", valid_597839
-  var valid_597840 = header.getOrDefault("X-Amz-Date")
-  valid_597840 = validateParameter(valid_597840, JString, required = false,
+  if valid_601839 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601839
+  var valid_601840 = header.getOrDefault("X-Amz-Date")
+  valid_601840 = validateParameter(valid_601840, JString, required = false,
                                  default = nil)
-  if valid_597840 != nil:
-    section.add "X-Amz-Date", valid_597840
-  var valid_597841 = header.getOrDefault("X-Amz-Credential")
-  valid_597841 = validateParameter(valid_597841, JString, required = false,
+  if valid_601840 != nil:
+    section.add "X-Amz-Date", valid_601840
+  var valid_601841 = header.getOrDefault("X-Amz-Credential")
+  valid_601841 = validateParameter(valid_601841, JString, required = false,
                                  default = nil)
-  if valid_597841 != nil:
-    section.add "X-Amz-Credential", valid_597841
-  var valid_597842 = header.getOrDefault("X-Amz-Security-Token")
-  valid_597842 = validateParameter(valid_597842, JString, required = false,
+  if valid_601841 != nil:
+    section.add "X-Amz-Credential", valid_601841
+  var valid_601842 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601842 = validateParameter(valid_601842, JString, required = false,
                                  default = nil)
-  if valid_597842 != nil:
-    section.add "X-Amz-Security-Token", valid_597842
-  var valid_597843 = header.getOrDefault("X-Amz-Algorithm")
-  valid_597843 = validateParameter(valid_597843, JString, required = false,
+  if valid_601842 != nil:
+    section.add "X-Amz-Security-Token", valid_601842
+  var valid_601843 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601843 = validateParameter(valid_601843, JString, required = false,
                                  default = nil)
-  if valid_597843 != nil:
-    section.add "X-Amz-Algorithm", valid_597843
-  var valid_597844 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_597844 = validateParameter(valid_597844, JString, required = false,
+  if valid_601843 != nil:
+    section.add "X-Amz-Algorithm", valid_601843
+  var valid_601844 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601844 = validateParameter(valid_601844, JString, required = false,
                                  default = nil)
-  if valid_597844 != nil:
-    section.add "X-Amz-SignedHeaders", valid_597844
+  if valid_601844 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601844
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_597867: Call_ListRepositoryAssociations_597718; path: JsonNode;
+proc call*(call_601867: Call_ListRepositoryAssociations_601718; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists repository associations. You can optionally filter on one or more of the following recommendation properties: provider types, states, names, and owners.
   ## 
-  let valid = call_597867.validator(path, query, header, formData, body)
-  let scheme = call_597867.pickScheme
+  let valid = call_601867.validator(path, query, header, formData, body)
+  let scheme = call_601867.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_597867.url(scheme.get, call_597867.host, call_597867.base,
-                         call_597867.route, valid.getOrDefault("path"),
+  let url = call_601867.url(scheme.get, call_601867.host, call_601867.base,
+                         call_601867.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_597867, url, valid)
+  result = atozHook(call_601867, url, valid)
 
-proc call*(call_597938: Call_ListRepositoryAssociations_597718;
+proc call*(call_601938: Call_ListRepositoryAssociations_601718;
           MaxResults: int = 0; Owner: JsonNode = nil; State: JsonNode = nil;
           NextToken: string = ""; ProviderType: JsonNode = nil; Name: JsonNode = nil): Recallable =
   ## listRepositoryAssociations
@@ -385,28 +385,28 @@ proc call*(call_597938: Call_ListRepositoryAssociations_597718;
   ##               : List of provider types to use as a filter.
   ##   Name: JArray
   ##       : List of names to use as a filter.
-  var query_597939 = newJObject()
-  add(query_597939, "MaxResults", newJInt(MaxResults))
+  var query_601939 = newJObject()
+  add(query_601939, "MaxResults", newJInt(MaxResults))
   if Owner != nil:
-    query_597939.add "Owner", Owner
+    query_601939.add "Owner", Owner
   if State != nil:
-    query_597939.add "State", State
-  add(query_597939, "NextToken", newJString(NextToken))
+    query_601939.add "State", State
+  add(query_601939, "NextToken", newJString(NextToken))
   if ProviderType != nil:
-    query_597939.add "ProviderType", ProviderType
+    query_601939.add "ProviderType", ProviderType
   if Name != nil:
-    query_597939.add "Name", Name
-  result = call_597938.call(nil, query_597939, nil, nil, nil)
+    query_601939.add "Name", Name
+  result = call_601938.call(nil, query_601939, nil, nil, nil)
 
-var listRepositoryAssociations* = Call_ListRepositoryAssociations_597718(
+var listRepositoryAssociations* = Call_ListRepositoryAssociations_601718(
     name: "listRepositoryAssociations", meth: HttpMethod.HttpGet,
     host: "codeguru-reviewer.amazonaws.com", route: "/associations",
-    validator: validate_ListRepositoryAssociations_597719, base: "/",
-    url: url_ListRepositoryAssociations_597720,
+    validator: validate_ListRepositoryAssociations_601719, base: "/",
+    url: url_ListRepositoryAssociations_601720,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeRepositoryAssociation_597993 = ref object of OpenApiRestCall_597380
-proc url_DescribeRepositoryAssociation_597995(protocol: Scheme; host: string;
+  Call_DescribeRepositoryAssociation_601993 = ref object of OpenApiRestCall_601380
+proc url_DescribeRepositoryAssociation_601995(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -426,7 +426,7 @@ proc url_DescribeRepositoryAssociation_597995(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeRepositoryAssociation_597994(path: JsonNode; query: JsonNode;
+proc validate_DescribeRepositoryAssociation_601994(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes a repository association.
   ## 
@@ -438,11 +438,11 @@ proc validate_DescribeRepositoryAssociation_597994(path: JsonNode; query: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AssociationArn` field"
-  var valid_598010 = path.getOrDefault("AssociationArn")
-  valid_598010 = validateParameter(valid_598010, JString, required = true,
+  var valid_602010 = path.getOrDefault("AssociationArn")
+  valid_602010 = validateParameter(valid_602010, JString, required = true,
                                  default = nil)
-  if valid_598010 != nil:
-    section.add "AssociationArn", valid_598010
+  if valid_602010 != nil:
+    section.add "AssociationArn", valid_602010
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -455,80 +455,80 @@ proc validate_DescribeRepositoryAssociation_597994(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598011 = header.getOrDefault("X-Amz-Signature")
-  valid_598011 = validateParameter(valid_598011, JString, required = false,
+  var valid_602011 = header.getOrDefault("X-Amz-Signature")
+  valid_602011 = validateParameter(valid_602011, JString, required = false,
                                  default = nil)
-  if valid_598011 != nil:
-    section.add "X-Amz-Signature", valid_598011
-  var valid_598012 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598012 = validateParameter(valid_598012, JString, required = false,
+  if valid_602011 != nil:
+    section.add "X-Amz-Signature", valid_602011
+  var valid_602012 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602012 = validateParameter(valid_602012, JString, required = false,
                                  default = nil)
-  if valid_598012 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598012
-  var valid_598013 = header.getOrDefault("X-Amz-Date")
-  valid_598013 = validateParameter(valid_598013, JString, required = false,
+  if valid_602012 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602012
+  var valid_602013 = header.getOrDefault("X-Amz-Date")
+  valid_602013 = validateParameter(valid_602013, JString, required = false,
                                  default = nil)
-  if valid_598013 != nil:
-    section.add "X-Amz-Date", valid_598013
-  var valid_598014 = header.getOrDefault("X-Amz-Credential")
-  valid_598014 = validateParameter(valid_598014, JString, required = false,
+  if valid_602013 != nil:
+    section.add "X-Amz-Date", valid_602013
+  var valid_602014 = header.getOrDefault("X-Amz-Credential")
+  valid_602014 = validateParameter(valid_602014, JString, required = false,
                                  default = nil)
-  if valid_598014 != nil:
-    section.add "X-Amz-Credential", valid_598014
-  var valid_598015 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598015 = validateParameter(valid_598015, JString, required = false,
+  if valid_602014 != nil:
+    section.add "X-Amz-Credential", valid_602014
+  var valid_602015 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602015 = validateParameter(valid_602015, JString, required = false,
                                  default = nil)
-  if valid_598015 != nil:
-    section.add "X-Amz-Security-Token", valid_598015
-  var valid_598016 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598016 = validateParameter(valid_598016, JString, required = false,
+  if valid_602015 != nil:
+    section.add "X-Amz-Security-Token", valid_602015
+  var valid_602016 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602016 = validateParameter(valid_602016, JString, required = false,
                                  default = nil)
-  if valid_598016 != nil:
-    section.add "X-Amz-Algorithm", valid_598016
-  var valid_598017 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598017 = validateParameter(valid_598017, JString, required = false,
+  if valid_602016 != nil:
+    section.add "X-Amz-Algorithm", valid_602016
+  var valid_602017 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602017 = validateParameter(valid_602017, JString, required = false,
                                  default = nil)
-  if valid_598017 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598017
+  if valid_602017 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602017
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598018: Call_DescribeRepositoryAssociation_597993; path: JsonNode;
+proc call*(call_602018: Call_DescribeRepositoryAssociation_601993; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes a repository association.
   ## 
-  let valid = call_598018.validator(path, query, header, formData, body)
-  let scheme = call_598018.pickScheme
+  let valid = call_602018.validator(path, query, header, formData, body)
+  let scheme = call_602018.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598018.url(scheme.get, call_598018.host, call_598018.base,
-                         call_598018.route, valid.getOrDefault("path"),
+  let url = call_602018.url(scheme.get, call_602018.host, call_602018.base,
+                         call_602018.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598018, url, valid)
+  result = atozHook(call_602018, url, valid)
 
-proc call*(call_598019: Call_DescribeRepositoryAssociation_597993;
+proc call*(call_602019: Call_DescribeRepositoryAssociation_601993;
           AssociationArn: string): Recallable =
   ## describeRepositoryAssociation
   ## Describes a repository association.
   ##   AssociationArn: string (required)
   ##                 : The Amazon Resource Name (ARN) identifying the association.
-  var path_598020 = newJObject()
-  add(path_598020, "AssociationArn", newJString(AssociationArn))
-  result = call_598019.call(path_598020, nil, nil, nil, nil)
+  var path_602020 = newJObject()
+  add(path_602020, "AssociationArn", newJString(AssociationArn))
+  result = call_602019.call(path_602020, nil, nil, nil, nil)
 
-var describeRepositoryAssociation* = Call_DescribeRepositoryAssociation_597993(
+var describeRepositoryAssociation* = Call_DescribeRepositoryAssociation_601993(
     name: "describeRepositoryAssociation", meth: HttpMethod.HttpGet,
     host: "codeguru-reviewer.amazonaws.com",
     route: "/associations/{AssociationArn}",
-    validator: validate_DescribeRepositoryAssociation_597994, base: "/",
-    url: url_DescribeRepositoryAssociation_597995,
+    validator: validate_DescribeRepositoryAssociation_601994, base: "/",
+    url: url_DescribeRepositoryAssociation_601995,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateRepository_598021 = ref object of OpenApiRestCall_597380
-proc url_DisassociateRepository_598023(protocol: Scheme; host: string; base: string;
+  Call_DisassociateRepository_602021 = ref object of OpenApiRestCall_601380
+proc url_DisassociateRepository_602023(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -548,7 +548,7 @@ proc url_DisassociateRepository_598023(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_DisassociateRepository_598022(path: JsonNode; query: JsonNode;
+proc validate_DisassociateRepository_602022(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes the association between Amazon CodeGuru Reviewer and a repository.
   ## 
@@ -560,11 +560,11 @@ proc validate_DisassociateRepository_598022(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AssociationArn` field"
-  var valid_598024 = path.getOrDefault("AssociationArn")
-  valid_598024 = validateParameter(valid_598024, JString, required = true,
+  var valid_602024 = path.getOrDefault("AssociationArn")
+  valid_602024 = validateParameter(valid_602024, JString, required = true,
                                  default = nil)
-  if valid_598024 != nil:
-    section.add "AssociationArn", valid_598024
+  if valid_602024 != nil:
+    section.add "AssociationArn", valid_602024
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -577,75 +577,75 @@ proc validate_DisassociateRepository_598022(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598025 = header.getOrDefault("X-Amz-Signature")
-  valid_598025 = validateParameter(valid_598025, JString, required = false,
+  var valid_602025 = header.getOrDefault("X-Amz-Signature")
+  valid_602025 = validateParameter(valid_602025, JString, required = false,
                                  default = nil)
-  if valid_598025 != nil:
-    section.add "X-Amz-Signature", valid_598025
-  var valid_598026 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598026 = validateParameter(valid_598026, JString, required = false,
+  if valid_602025 != nil:
+    section.add "X-Amz-Signature", valid_602025
+  var valid_602026 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602026 = validateParameter(valid_602026, JString, required = false,
                                  default = nil)
-  if valid_598026 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598026
-  var valid_598027 = header.getOrDefault("X-Amz-Date")
-  valid_598027 = validateParameter(valid_598027, JString, required = false,
+  if valid_602026 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602026
+  var valid_602027 = header.getOrDefault("X-Amz-Date")
+  valid_602027 = validateParameter(valid_602027, JString, required = false,
                                  default = nil)
-  if valid_598027 != nil:
-    section.add "X-Amz-Date", valid_598027
-  var valid_598028 = header.getOrDefault("X-Amz-Credential")
-  valid_598028 = validateParameter(valid_598028, JString, required = false,
+  if valid_602027 != nil:
+    section.add "X-Amz-Date", valid_602027
+  var valid_602028 = header.getOrDefault("X-Amz-Credential")
+  valid_602028 = validateParameter(valid_602028, JString, required = false,
                                  default = nil)
-  if valid_598028 != nil:
-    section.add "X-Amz-Credential", valid_598028
-  var valid_598029 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598029 = validateParameter(valid_598029, JString, required = false,
+  if valid_602028 != nil:
+    section.add "X-Amz-Credential", valid_602028
+  var valid_602029 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602029 = validateParameter(valid_602029, JString, required = false,
                                  default = nil)
-  if valid_598029 != nil:
-    section.add "X-Amz-Security-Token", valid_598029
-  var valid_598030 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598030 = validateParameter(valid_598030, JString, required = false,
+  if valid_602029 != nil:
+    section.add "X-Amz-Security-Token", valid_602029
+  var valid_602030 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602030 = validateParameter(valid_602030, JString, required = false,
                                  default = nil)
-  if valid_598030 != nil:
-    section.add "X-Amz-Algorithm", valid_598030
-  var valid_598031 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598031 = validateParameter(valid_598031, JString, required = false,
+  if valid_602030 != nil:
+    section.add "X-Amz-Algorithm", valid_602030
+  var valid_602031 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602031 = validateParameter(valid_602031, JString, required = false,
                                  default = nil)
-  if valid_598031 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598031
+  if valid_602031 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602031
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598032: Call_DisassociateRepository_598021; path: JsonNode;
+proc call*(call_602032: Call_DisassociateRepository_602021; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes the association between Amazon CodeGuru Reviewer and a repository.
   ## 
-  let valid = call_598032.validator(path, query, header, formData, body)
-  let scheme = call_598032.pickScheme
+  let valid = call_602032.validator(path, query, header, formData, body)
+  let scheme = call_602032.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598032.url(scheme.get, call_598032.host, call_598032.base,
-                         call_598032.route, valid.getOrDefault("path"),
+  let url = call_602032.url(scheme.get, call_602032.host, call_602032.base,
+                         call_602032.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598032, url, valid)
+  result = atozHook(call_602032, url, valid)
 
-proc call*(call_598033: Call_DisassociateRepository_598021; AssociationArn: string): Recallable =
+proc call*(call_602033: Call_DisassociateRepository_602021; AssociationArn: string): Recallable =
   ## disassociateRepository
   ## Removes the association between Amazon CodeGuru Reviewer and a repository.
   ##   AssociationArn: string (required)
   ##                 : The Amazon Resource Name (ARN) identifying the association.
-  var path_598034 = newJObject()
-  add(path_598034, "AssociationArn", newJString(AssociationArn))
-  result = call_598033.call(path_598034, nil, nil, nil, nil)
+  var path_602034 = newJObject()
+  add(path_602034, "AssociationArn", newJString(AssociationArn))
+  result = call_602033.call(path_602034, nil, nil, nil, nil)
 
-var disassociateRepository* = Call_DisassociateRepository_598021(
+var disassociateRepository* = Call_DisassociateRepository_602021(
     name: "disassociateRepository", meth: HttpMethod.HttpDelete,
     host: "codeguru-reviewer.amazonaws.com",
     route: "/associations/{AssociationArn}",
-    validator: validate_DisassociateRepository_598022, base: "/",
-    url: url_DisassociateRepository_598023, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisassociateRepository_602022, base: "/",
+    url: url_DisassociateRepository_602023, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

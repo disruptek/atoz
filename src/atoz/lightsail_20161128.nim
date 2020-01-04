@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599368 = ref object of OpenApiRestCall
+  OpenApiRestCall_601389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -144,19 +144,20 @@ const
   awsServiceName = "lightsail"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AllocateStaticIp_599705 = ref object of OpenApiRestCall_599368
-proc url_AllocateStaticIp_599707(protocol: Scheme; host: string; base: string;
+  Call_AllocateStaticIp_601727 = ref object of OpenApiRestCall_601389
+proc url_AllocateStaticIp_601729(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AllocateStaticIp_599706(path: JsonNode; query: JsonNode;
+proc validate_AllocateStaticIp_601728(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Allocates a static IP address.
@@ -168,57 +169,57 @@ proc validate_AllocateStaticIp_599706(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599819 = header.getOrDefault("X-Amz-Date")
-  valid_599819 = validateParameter(valid_599819, JString, required = false,
-                                 default = nil)
-  if valid_599819 != nil:
-    section.add "X-Amz-Date", valid_599819
-  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599820 = validateParameter(valid_599820, JString, required = false,
-                                 default = nil)
-  if valid_599820 != nil:
-    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599834 = header.getOrDefault("X-Amz-Target")
-  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
+  var valid_601854 = header.getOrDefault("X-Amz-Target")
+  valid_601854 = validateParameter(valid_601854, JString, required = true, default = newJString(
       "Lightsail_20161128.AllocateStaticIp"))
-  if valid_599834 != nil:
-    section.add "X-Amz-Target", valid_599834
-  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599835 = validateParameter(valid_599835, JString, required = false,
+  if valid_601854 != nil:
+    section.add "X-Amz-Target", valid_601854
+  var valid_601855 = header.getOrDefault("X-Amz-Signature")
+  valid_601855 = validateParameter(valid_601855, JString, required = false,
                                  default = nil)
-  if valid_599835 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599835
-  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599836 = validateParameter(valid_599836, JString, required = false,
+  if valid_601855 != nil:
+    section.add "X-Amz-Signature", valid_601855
+  var valid_601856 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601856 = validateParameter(valid_601856, JString, required = false,
                                  default = nil)
-  if valid_599836 != nil:
-    section.add "X-Amz-Algorithm", valid_599836
-  var valid_599837 = header.getOrDefault("X-Amz-Signature")
-  valid_599837 = validateParameter(valid_599837, JString, required = false,
+  if valid_601856 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601856
+  var valid_601857 = header.getOrDefault("X-Amz-Date")
+  valid_601857 = validateParameter(valid_601857, JString, required = false,
                                  default = nil)
-  if valid_599837 != nil:
-    section.add "X-Amz-Signature", valid_599837
-  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599838 = validateParameter(valid_599838, JString, required = false,
+  if valid_601857 != nil:
+    section.add "X-Amz-Date", valid_601857
+  var valid_601858 = header.getOrDefault("X-Amz-Credential")
+  valid_601858 = validateParameter(valid_601858, JString, required = false,
                                  default = nil)
-  if valid_599838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599838
-  var valid_599839 = header.getOrDefault("X-Amz-Credential")
-  valid_599839 = validateParameter(valid_599839, JString, required = false,
+  if valid_601858 != nil:
+    section.add "X-Amz-Credential", valid_601858
+  var valid_601859 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601859 = validateParameter(valid_601859, JString, required = false,
                                  default = nil)
-  if valid_599839 != nil:
-    section.add "X-Amz-Credential", valid_599839
+  if valid_601859 != nil:
+    section.add "X-Amz-Security-Token", valid_601859
+  var valid_601860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601860 = validateParameter(valid_601860, JString, required = false,
+                                 default = nil)
+  if valid_601860 != nil:
+    section.add "X-Amz-Algorithm", valid_601860
+  var valid_601861 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601861 = validateParameter(valid_601861, JString, required = false,
+                                 default = nil)
+  if valid_601861 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601861
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -229,47 +230,48 @@ proc validate_AllocateStaticIp_599706(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599863: Call_AllocateStaticIp_599705; path: JsonNode;
+proc call*(call_601885: Call_AllocateStaticIp_601727; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Allocates a static IP address.
   ## 
-  let valid = call_599863.validator(path, query, header, formData, body)
-  let scheme = call_599863.pickScheme
+  let valid = call_601885.validator(path, query, header, formData, body)
+  let scheme = call_601885.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
-                         call_599863.route, valid.getOrDefault("path"),
+  let url = call_601885.url(scheme.get, call_601885.host, call_601885.base,
+                         call_601885.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599863, url, valid)
+  result = atozHook(call_601885, url, valid)
 
-proc call*(call_599934: Call_AllocateStaticIp_599705; body: JsonNode): Recallable =
+proc call*(call_601956: Call_AllocateStaticIp_601727; body: JsonNode): Recallable =
   ## allocateStaticIp
   ## Allocates a static IP address.
   ##   body: JObject (required)
-  var body_599935 = newJObject()
+  var body_601957 = newJObject()
   if body != nil:
-    body_599935 = body
-  result = call_599934.call(nil, nil, nil, nil, body_599935)
+    body_601957 = body
+  result = call_601956.call(nil, nil, nil, nil, body_601957)
 
-var allocateStaticIp* = Call_AllocateStaticIp_599705(name: "allocateStaticIp",
+var allocateStaticIp* = Call_AllocateStaticIp_601727(name: "allocateStaticIp",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.AllocateStaticIp",
-    validator: validate_AllocateStaticIp_599706, base: "/",
-    url: url_AllocateStaticIp_599707, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AllocateStaticIp_601728, base: "/",
+    url: url_AllocateStaticIp_601729, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AttachDisk_599974 = ref object of OpenApiRestCall_599368
-proc url_AttachDisk_599976(protocol: Scheme; host: string; base: string; route: string;
+  Call_AttachDisk_601996 = ref object of OpenApiRestCall_601389
+proc url_AttachDisk_601998(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AttachDisk_599975(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_AttachDisk_601997(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Attaches a block storage disk to a running or stopped Lightsail instance and exposes it to the instance with the specified disk name.</p> <p>The <code>attach disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -280,57 +282,57 @@ proc validate_AttachDisk_599975(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599977 = header.getOrDefault("X-Amz-Date")
-  valid_599977 = validateParameter(valid_599977, JString, required = false,
-                                 default = nil)
-  if valid_599977 != nil:
-    section.add "X-Amz-Date", valid_599977
-  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599978 = validateParameter(valid_599978, JString, required = false,
-                                 default = nil)
-  if valid_599978 != nil:
-    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599979 = header.getOrDefault("X-Amz-Target")
-  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
+  var valid_601999 = header.getOrDefault("X-Amz-Target")
+  valid_601999 = validateParameter(valid_601999, JString, required = true, default = newJString(
       "Lightsail_20161128.AttachDisk"))
-  if valid_599979 != nil:
-    section.add "X-Amz-Target", valid_599979
-  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599980 = validateParameter(valid_599980, JString, required = false,
+  if valid_601999 != nil:
+    section.add "X-Amz-Target", valid_601999
+  var valid_602000 = header.getOrDefault("X-Amz-Signature")
+  valid_602000 = validateParameter(valid_602000, JString, required = false,
                                  default = nil)
-  if valid_599980 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599980
-  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599981 = validateParameter(valid_599981, JString, required = false,
+  if valid_602000 != nil:
+    section.add "X-Amz-Signature", valid_602000
+  var valid_602001 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602001 = validateParameter(valid_602001, JString, required = false,
                                  default = nil)
-  if valid_599981 != nil:
-    section.add "X-Amz-Algorithm", valid_599981
-  var valid_599982 = header.getOrDefault("X-Amz-Signature")
-  valid_599982 = validateParameter(valid_599982, JString, required = false,
+  if valid_602001 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602001
+  var valid_602002 = header.getOrDefault("X-Amz-Date")
+  valid_602002 = validateParameter(valid_602002, JString, required = false,
                                  default = nil)
-  if valid_599982 != nil:
-    section.add "X-Amz-Signature", valid_599982
-  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599983 = validateParameter(valid_599983, JString, required = false,
+  if valid_602002 != nil:
+    section.add "X-Amz-Date", valid_602002
+  var valid_602003 = header.getOrDefault("X-Amz-Credential")
+  valid_602003 = validateParameter(valid_602003, JString, required = false,
                                  default = nil)
-  if valid_599983 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599983
-  var valid_599984 = header.getOrDefault("X-Amz-Credential")
-  valid_599984 = validateParameter(valid_599984, JString, required = false,
+  if valid_602003 != nil:
+    section.add "X-Amz-Credential", valid_602003
+  var valid_602004 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602004 = validateParameter(valid_602004, JString, required = false,
                                  default = nil)
-  if valid_599984 != nil:
-    section.add "X-Amz-Credential", valid_599984
+  if valid_602004 != nil:
+    section.add "X-Amz-Security-Token", valid_602004
+  var valid_602005 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602005 = validateParameter(valid_602005, JString, required = false,
+                                 default = nil)
+  if valid_602005 != nil:
+    section.add "X-Amz-Algorithm", valid_602005
+  var valid_602006 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602006 = validateParameter(valid_602006, JString, required = false,
+                                 default = nil)
+  if valid_602006 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602006
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -341,48 +343,49 @@ proc validate_AttachDisk_599975(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_599986: Call_AttachDisk_599974; path: JsonNode; query: JsonNode;
+proc call*(call_602008: Call_AttachDisk_601996; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Attaches a block storage disk to a running or stopped Lightsail instance and exposes it to the instance with the specified disk name.</p> <p>The <code>attach disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_599986.validator(path, query, header, formData, body)
-  let scheme = call_599986.pickScheme
+  let valid = call_602008.validator(path, query, header, formData, body)
+  let scheme = call_602008.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
-                         call_599986.route, valid.getOrDefault("path"),
+  let url = call_602008.url(scheme.get, call_602008.host, call_602008.base,
+                         call_602008.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599986, url, valid)
+  result = atozHook(call_602008, url, valid)
 
-proc call*(call_599987: Call_AttachDisk_599974; body: JsonNode): Recallable =
+proc call*(call_602009: Call_AttachDisk_601996; body: JsonNode): Recallable =
   ## attachDisk
   ## <p>Attaches a block storage disk to a running or stopped Lightsail instance and exposes it to the instance with the specified disk name.</p> <p>The <code>attach disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_599988 = newJObject()
+  var body_602010 = newJObject()
   if body != nil:
-    body_599988 = body
-  result = call_599987.call(nil, nil, nil, nil, body_599988)
+    body_602010 = body
+  result = call_602009.call(nil, nil, nil, nil, body_602010)
 
-var attachDisk* = Call_AttachDisk_599974(name: "attachDisk",
+var attachDisk* = Call_AttachDisk_601996(name: "attachDisk",
                                       meth: HttpMethod.HttpPost,
                                       host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.AttachDisk",
-                                      validator: validate_AttachDisk_599975,
-                                      base: "/", url: url_AttachDisk_599976,
+                                      validator: validate_AttachDisk_601997,
+                                      base: "/", url: url_AttachDisk_601998,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AttachInstancesToLoadBalancer_599989 = ref object of OpenApiRestCall_599368
-proc url_AttachInstancesToLoadBalancer_599991(protocol: Scheme; host: string;
+  Call_AttachInstancesToLoadBalancer_602011 = ref object of OpenApiRestCall_601389
+proc url_AttachInstancesToLoadBalancer_602013(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AttachInstancesToLoadBalancer_599990(path: JsonNode; query: JsonNode;
+proc validate_AttachInstancesToLoadBalancer_602012(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Attaches one or more Lightsail instances to a load balancer.</p> <p>After some time, the instances are attached to the load balancer and the health check status is available.</p> <p>The <code>attach instances to load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -393,57 +396,57 @@ proc validate_AttachInstancesToLoadBalancer_599990(path: JsonNode; query: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599992 = header.getOrDefault("X-Amz-Date")
-  valid_599992 = validateParameter(valid_599992, JString, required = false,
-                                 default = nil)
-  if valid_599992 != nil:
-    section.add "X-Amz-Date", valid_599992
-  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599993 = validateParameter(valid_599993, JString, required = false,
-                                 default = nil)
-  if valid_599993 != nil:
-    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599994 = header.getOrDefault("X-Amz-Target")
-  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
+  var valid_602014 = header.getOrDefault("X-Amz-Target")
+  valid_602014 = validateParameter(valid_602014, JString, required = true, default = newJString(
       "Lightsail_20161128.AttachInstancesToLoadBalancer"))
-  if valid_599994 != nil:
-    section.add "X-Amz-Target", valid_599994
-  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599995 = validateParameter(valid_599995, JString, required = false,
+  if valid_602014 != nil:
+    section.add "X-Amz-Target", valid_602014
+  var valid_602015 = header.getOrDefault("X-Amz-Signature")
+  valid_602015 = validateParameter(valid_602015, JString, required = false,
                                  default = nil)
-  if valid_599995 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599995
-  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599996 = validateParameter(valid_599996, JString, required = false,
+  if valid_602015 != nil:
+    section.add "X-Amz-Signature", valid_602015
+  var valid_602016 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602016 = validateParameter(valid_602016, JString, required = false,
                                  default = nil)
-  if valid_599996 != nil:
-    section.add "X-Amz-Algorithm", valid_599996
-  var valid_599997 = header.getOrDefault("X-Amz-Signature")
-  valid_599997 = validateParameter(valid_599997, JString, required = false,
+  if valid_602016 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602016
+  var valid_602017 = header.getOrDefault("X-Amz-Date")
+  valid_602017 = validateParameter(valid_602017, JString, required = false,
                                  default = nil)
-  if valid_599997 != nil:
-    section.add "X-Amz-Signature", valid_599997
-  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599998 = validateParameter(valid_599998, JString, required = false,
+  if valid_602017 != nil:
+    section.add "X-Amz-Date", valid_602017
+  var valid_602018 = header.getOrDefault("X-Amz-Credential")
+  valid_602018 = validateParameter(valid_602018, JString, required = false,
                                  default = nil)
-  if valid_599998 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599998
-  var valid_599999 = header.getOrDefault("X-Amz-Credential")
-  valid_599999 = validateParameter(valid_599999, JString, required = false,
+  if valid_602018 != nil:
+    section.add "X-Amz-Credential", valid_602018
+  var valid_602019 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602019 = validateParameter(valid_602019, JString, required = false,
                                  default = nil)
-  if valid_599999 != nil:
-    section.add "X-Amz-Credential", valid_599999
+  if valid_602019 != nil:
+    section.add "X-Amz-Security-Token", valid_602019
+  var valid_602020 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602020 = validateParameter(valid_602020, JString, required = false,
+                                 default = nil)
+  if valid_602020 != nil:
+    section.add "X-Amz-Algorithm", valid_602020
+  var valid_602021 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602021 = validateParameter(valid_602021, JString, required = false,
+                                 default = nil)
+  if valid_602021 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602021
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -454,49 +457,50 @@ proc validate_AttachInstancesToLoadBalancer_599990(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600001: Call_AttachInstancesToLoadBalancer_599989; path: JsonNode;
+proc call*(call_602023: Call_AttachInstancesToLoadBalancer_602011; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Attaches one or more Lightsail instances to a load balancer.</p> <p>After some time, the instances are attached to the load balancer and the health check status is available.</p> <p>The <code>attach instances to load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600001.validator(path, query, header, formData, body)
-  let scheme = call_600001.pickScheme
+  let valid = call_602023.validator(path, query, header, formData, body)
+  let scheme = call_602023.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
-                         call_600001.route, valid.getOrDefault("path"),
+  let url = call_602023.url(scheme.get, call_602023.host, call_602023.base,
+                         call_602023.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600001, url, valid)
+  result = atozHook(call_602023, url, valid)
 
-proc call*(call_600002: Call_AttachInstancesToLoadBalancer_599989; body: JsonNode): Recallable =
+proc call*(call_602024: Call_AttachInstancesToLoadBalancer_602011; body: JsonNode): Recallable =
   ## attachInstancesToLoadBalancer
   ## <p>Attaches one or more Lightsail instances to a load balancer.</p> <p>After some time, the instances are attached to the load balancer and the health check status is available.</p> <p>The <code>attach instances to load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600003 = newJObject()
+  var body_602025 = newJObject()
   if body != nil:
-    body_600003 = body
-  result = call_600002.call(nil, nil, nil, nil, body_600003)
+    body_602025 = body
+  result = call_602024.call(nil, nil, nil, nil, body_602025)
 
-var attachInstancesToLoadBalancer* = Call_AttachInstancesToLoadBalancer_599989(
+var attachInstancesToLoadBalancer* = Call_AttachInstancesToLoadBalancer_602011(
     name: "attachInstancesToLoadBalancer", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.AttachInstancesToLoadBalancer",
-    validator: validate_AttachInstancesToLoadBalancer_599990, base: "/",
-    url: url_AttachInstancesToLoadBalancer_599991,
+    validator: validate_AttachInstancesToLoadBalancer_602012, base: "/",
+    url: url_AttachInstancesToLoadBalancer_602013,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AttachLoadBalancerTlsCertificate_600004 = ref object of OpenApiRestCall_599368
-proc url_AttachLoadBalancerTlsCertificate_600006(protocol: Scheme; host: string;
+  Call_AttachLoadBalancerTlsCertificate_602026 = ref object of OpenApiRestCall_601389
+proc url_AttachLoadBalancerTlsCertificate_602028(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AttachLoadBalancerTlsCertificate_600005(path: JsonNode;
+proc validate_AttachLoadBalancerTlsCertificate_602027(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Attaches a Transport Layer Security (TLS) certificate to your load balancer. TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>Once you create and validate your certificate, you can attach it to your load balancer. You can also use this API to rotate the certificates on your account. Use the <code>attach load balancer tls certificate</code> operation with the non-attached certificate, and it will replace the existing one and become the attached certificate.</p> <p>The <code>attach load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -507,57 +511,57 @@ proc validate_AttachLoadBalancerTlsCertificate_600005(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600007 = header.getOrDefault("X-Amz-Date")
-  valid_600007 = validateParameter(valid_600007, JString, required = false,
-                                 default = nil)
-  if valid_600007 != nil:
-    section.add "X-Amz-Date", valid_600007
-  var valid_600008 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600008 = validateParameter(valid_600008, JString, required = false,
-                                 default = nil)
-  if valid_600008 != nil:
-    section.add "X-Amz-Security-Token", valid_600008
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600009 = header.getOrDefault("X-Amz-Target")
-  valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
+  var valid_602029 = header.getOrDefault("X-Amz-Target")
+  valid_602029 = validateParameter(valid_602029, JString, required = true, default = newJString(
       "Lightsail_20161128.AttachLoadBalancerTlsCertificate"))
-  if valid_600009 != nil:
-    section.add "X-Amz-Target", valid_600009
-  var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600010 = validateParameter(valid_600010, JString, required = false,
+  if valid_602029 != nil:
+    section.add "X-Amz-Target", valid_602029
+  var valid_602030 = header.getOrDefault("X-Amz-Signature")
+  valid_602030 = validateParameter(valid_602030, JString, required = false,
                                  default = nil)
-  if valid_600010 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600010
-  var valid_600011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600011 = validateParameter(valid_600011, JString, required = false,
+  if valid_602030 != nil:
+    section.add "X-Amz-Signature", valid_602030
+  var valid_602031 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602031 = validateParameter(valid_602031, JString, required = false,
                                  default = nil)
-  if valid_600011 != nil:
-    section.add "X-Amz-Algorithm", valid_600011
-  var valid_600012 = header.getOrDefault("X-Amz-Signature")
-  valid_600012 = validateParameter(valid_600012, JString, required = false,
+  if valid_602031 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602031
+  var valid_602032 = header.getOrDefault("X-Amz-Date")
+  valid_602032 = validateParameter(valid_602032, JString, required = false,
                                  default = nil)
-  if valid_600012 != nil:
-    section.add "X-Amz-Signature", valid_600012
-  var valid_600013 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600013 = validateParameter(valid_600013, JString, required = false,
+  if valid_602032 != nil:
+    section.add "X-Amz-Date", valid_602032
+  var valid_602033 = header.getOrDefault("X-Amz-Credential")
+  valid_602033 = validateParameter(valid_602033, JString, required = false,
                                  default = nil)
-  if valid_600013 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600013
-  var valid_600014 = header.getOrDefault("X-Amz-Credential")
-  valid_600014 = validateParameter(valid_600014, JString, required = false,
+  if valid_602033 != nil:
+    section.add "X-Amz-Credential", valid_602033
+  var valid_602034 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602034 = validateParameter(valid_602034, JString, required = false,
                                  default = nil)
-  if valid_600014 != nil:
-    section.add "X-Amz-Credential", valid_600014
+  if valid_602034 != nil:
+    section.add "X-Amz-Security-Token", valid_602034
+  var valid_602035 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602035 = validateParameter(valid_602035, JString, required = false,
+                                 default = nil)
+  if valid_602035 != nil:
+    section.add "X-Amz-Algorithm", valid_602035
+  var valid_602036 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602036 = validateParameter(valid_602036, JString, required = false,
+                                 default = nil)
+  if valid_602036 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602036
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -568,50 +572,51 @@ proc validate_AttachLoadBalancerTlsCertificate_600005(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600016: Call_AttachLoadBalancerTlsCertificate_600004;
+proc call*(call_602038: Call_AttachLoadBalancerTlsCertificate_602026;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Attaches a Transport Layer Security (TLS) certificate to your load balancer. TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>Once you create and validate your certificate, you can attach it to your load balancer. You can also use this API to rotate the certificates on your account. Use the <code>attach load balancer tls certificate</code> operation with the non-attached certificate, and it will replace the existing one and become the attached certificate.</p> <p>The <code>attach load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600016.validator(path, query, header, formData, body)
-  let scheme = call_600016.pickScheme
+  let valid = call_602038.validator(path, query, header, formData, body)
+  let scheme = call_602038.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600016.url(scheme.get, call_600016.host, call_600016.base,
-                         call_600016.route, valid.getOrDefault("path"),
+  let url = call_602038.url(scheme.get, call_602038.host, call_602038.base,
+                         call_602038.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600016, url, valid)
+  result = atozHook(call_602038, url, valid)
 
-proc call*(call_600017: Call_AttachLoadBalancerTlsCertificate_600004;
+proc call*(call_602039: Call_AttachLoadBalancerTlsCertificate_602026;
           body: JsonNode): Recallable =
   ## attachLoadBalancerTlsCertificate
   ## <p>Attaches a Transport Layer Security (TLS) certificate to your load balancer. TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>Once you create and validate your certificate, you can attach it to your load balancer. You can also use this API to rotate the certificates on your account. Use the <code>attach load balancer tls certificate</code> operation with the non-attached certificate, and it will replace the existing one and become the attached certificate.</p> <p>The <code>attach load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600018 = newJObject()
+  var body_602040 = newJObject()
   if body != nil:
-    body_600018 = body
-  result = call_600017.call(nil, nil, nil, nil, body_600018)
+    body_602040 = body
+  result = call_602039.call(nil, nil, nil, nil, body_602040)
 
-var attachLoadBalancerTlsCertificate* = Call_AttachLoadBalancerTlsCertificate_600004(
+var attachLoadBalancerTlsCertificate* = Call_AttachLoadBalancerTlsCertificate_602026(
     name: "attachLoadBalancerTlsCertificate", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.AttachLoadBalancerTlsCertificate",
-    validator: validate_AttachLoadBalancerTlsCertificate_600005, base: "/",
-    url: url_AttachLoadBalancerTlsCertificate_600006,
+    validator: validate_AttachLoadBalancerTlsCertificate_602027, base: "/",
+    url: url_AttachLoadBalancerTlsCertificate_602028,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AttachStaticIp_600019 = ref object of OpenApiRestCall_599368
-proc url_AttachStaticIp_600021(protocol: Scheme; host: string; base: string;
+  Call_AttachStaticIp_602041 = ref object of OpenApiRestCall_601389
+proc url_AttachStaticIp_602043(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AttachStaticIp_600020(path: JsonNode; query: JsonNode;
+proc validate_AttachStaticIp_602042(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Attaches a static IP address to a specific Amazon Lightsail instance.
@@ -623,57 +628,57 @@ proc validate_AttachStaticIp_600020(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600022 = header.getOrDefault("X-Amz-Date")
-  valid_600022 = validateParameter(valid_600022, JString, required = false,
-                                 default = nil)
-  if valid_600022 != nil:
-    section.add "X-Amz-Date", valid_600022
-  var valid_600023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600023 = validateParameter(valid_600023, JString, required = false,
-                                 default = nil)
-  if valid_600023 != nil:
-    section.add "X-Amz-Security-Token", valid_600023
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600024 = header.getOrDefault("X-Amz-Target")
-  valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
+  var valid_602044 = header.getOrDefault("X-Amz-Target")
+  valid_602044 = validateParameter(valid_602044, JString, required = true, default = newJString(
       "Lightsail_20161128.AttachStaticIp"))
-  if valid_600024 != nil:
-    section.add "X-Amz-Target", valid_600024
-  var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600025 = validateParameter(valid_600025, JString, required = false,
+  if valid_602044 != nil:
+    section.add "X-Amz-Target", valid_602044
+  var valid_602045 = header.getOrDefault("X-Amz-Signature")
+  valid_602045 = validateParameter(valid_602045, JString, required = false,
                                  default = nil)
-  if valid_600025 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600025
-  var valid_600026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600026 = validateParameter(valid_600026, JString, required = false,
+  if valid_602045 != nil:
+    section.add "X-Amz-Signature", valid_602045
+  var valid_602046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602046 = validateParameter(valid_602046, JString, required = false,
                                  default = nil)
-  if valid_600026 != nil:
-    section.add "X-Amz-Algorithm", valid_600026
-  var valid_600027 = header.getOrDefault("X-Amz-Signature")
-  valid_600027 = validateParameter(valid_600027, JString, required = false,
+  if valid_602046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602046
+  var valid_602047 = header.getOrDefault("X-Amz-Date")
+  valid_602047 = validateParameter(valid_602047, JString, required = false,
                                  default = nil)
-  if valid_600027 != nil:
-    section.add "X-Amz-Signature", valid_600027
-  var valid_600028 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600028 = validateParameter(valid_600028, JString, required = false,
+  if valid_602047 != nil:
+    section.add "X-Amz-Date", valid_602047
+  var valid_602048 = header.getOrDefault("X-Amz-Credential")
+  valid_602048 = validateParameter(valid_602048, JString, required = false,
                                  default = nil)
-  if valid_600028 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600028
-  var valid_600029 = header.getOrDefault("X-Amz-Credential")
-  valid_600029 = validateParameter(valid_600029, JString, required = false,
+  if valid_602048 != nil:
+    section.add "X-Amz-Credential", valid_602048
+  var valid_602049 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602049 = validateParameter(valid_602049, JString, required = false,
                                  default = nil)
-  if valid_600029 != nil:
-    section.add "X-Amz-Credential", valid_600029
+  if valid_602049 != nil:
+    section.add "X-Amz-Security-Token", valid_602049
+  var valid_602050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602050 = validateParameter(valid_602050, JString, required = false,
+                                 default = nil)
+  if valid_602050 != nil:
+    section.add "X-Amz-Algorithm", valid_602050
+  var valid_602051 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602051 = validateParameter(valid_602051, JString, required = false,
+                                 default = nil)
+  if valid_602051 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602051
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -684,48 +689,49 @@ proc validate_AttachStaticIp_600020(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600031: Call_AttachStaticIp_600019; path: JsonNode; query: JsonNode;
+proc call*(call_602053: Call_AttachStaticIp_602041; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Attaches a static IP address to a specific Amazon Lightsail instance.
   ## 
-  let valid = call_600031.validator(path, query, header, formData, body)
-  let scheme = call_600031.pickScheme
+  let valid = call_602053.validator(path, query, header, formData, body)
+  let scheme = call_602053.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600031.url(scheme.get, call_600031.host, call_600031.base,
-                         call_600031.route, valid.getOrDefault("path"),
+  let url = call_602053.url(scheme.get, call_602053.host, call_602053.base,
+                         call_602053.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600031, url, valid)
+  result = atozHook(call_602053, url, valid)
 
-proc call*(call_600032: Call_AttachStaticIp_600019; body: JsonNode): Recallable =
+proc call*(call_602054: Call_AttachStaticIp_602041; body: JsonNode): Recallable =
   ## attachStaticIp
   ## Attaches a static IP address to a specific Amazon Lightsail instance.
   ##   body: JObject (required)
-  var body_600033 = newJObject()
+  var body_602055 = newJObject()
   if body != nil:
-    body_600033 = body
-  result = call_600032.call(nil, nil, nil, nil, body_600033)
+    body_602055 = body
+  result = call_602054.call(nil, nil, nil, nil, body_602055)
 
-var attachStaticIp* = Call_AttachStaticIp_600019(name: "attachStaticIp",
+var attachStaticIp* = Call_AttachStaticIp_602041(name: "attachStaticIp",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.AttachStaticIp",
-    validator: validate_AttachStaticIp_600020, base: "/", url: url_AttachStaticIp_600021,
+    validator: validate_AttachStaticIp_602042, base: "/", url: url_AttachStaticIp_602043,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CloseInstancePublicPorts_600034 = ref object of OpenApiRestCall_599368
-proc url_CloseInstancePublicPorts_600036(protocol: Scheme; host: string;
+  Call_CloseInstancePublicPorts_602056 = ref object of OpenApiRestCall_601389
+proc url_CloseInstancePublicPorts_602058(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CloseInstancePublicPorts_600035(path: JsonNode; query: JsonNode;
+proc validate_CloseInstancePublicPorts_602057(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Closes the public ports on a specific Amazon Lightsail instance.</p> <p>The <code>close instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -736,57 +742,57 @@ proc validate_CloseInstancePublicPorts_600035(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600037 = header.getOrDefault("X-Amz-Date")
-  valid_600037 = validateParameter(valid_600037, JString, required = false,
-                                 default = nil)
-  if valid_600037 != nil:
-    section.add "X-Amz-Date", valid_600037
-  var valid_600038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600038 = validateParameter(valid_600038, JString, required = false,
-                                 default = nil)
-  if valid_600038 != nil:
-    section.add "X-Amz-Security-Token", valid_600038
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600039 = header.getOrDefault("X-Amz-Target")
-  valid_600039 = validateParameter(valid_600039, JString, required = true, default = newJString(
+  var valid_602059 = header.getOrDefault("X-Amz-Target")
+  valid_602059 = validateParameter(valid_602059, JString, required = true, default = newJString(
       "Lightsail_20161128.CloseInstancePublicPorts"))
-  if valid_600039 != nil:
-    section.add "X-Amz-Target", valid_600039
-  var valid_600040 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600040 = validateParameter(valid_600040, JString, required = false,
+  if valid_602059 != nil:
+    section.add "X-Amz-Target", valid_602059
+  var valid_602060 = header.getOrDefault("X-Amz-Signature")
+  valid_602060 = validateParameter(valid_602060, JString, required = false,
                                  default = nil)
-  if valid_600040 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600040
-  var valid_600041 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600041 = validateParameter(valid_600041, JString, required = false,
+  if valid_602060 != nil:
+    section.add "X-Amz-Signature", valid_602060
+  var valid_602061 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602061 = validateParameter(valid_602061, JString, required = false,
                                  default = nil)
-  if valid_600041 != nil:
-    section.add "X-Amz-Algorithm", valid_600041
-  var valid_600042 = header.getOrDefault("X-Amz-Signature")
-  valid_600042 = validateParameter(valid_600042, JString, required = false,
+  if valid_602061 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602061
+  var valid_602062 = header.getOrDefault("X-Amz-Date")
+  valid_602062 = validateParameter(valid_602062, JString, required = false,
                                  default = nil)
-  if valid_600042 != nil:
-    section.add "X-Amz-Signature", valid_600042
-  var valid_600043 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600043 = validateParameter(valid_600043, JString, required = false,
+  if valid_602062 != nil:
+    section.add "X-Amz-Date", valid_602062
+  var valid_602063 = header.getOrDefault("X-Amz-Credential")
+  valid_602063 = validateParameter(valid_602063, JString, required = false,
                                  default = nil)
-  if valid_600043 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600043
-  var valid_600044 = header.getOrDefault("X-Amz-Credential")
-  valid_600044 = validateParameter(valid_600044, JString, required = false,
+  if valid_602063 != nil:
+    section.add "X-Amz-Credential", valid_602063
+  var valid_602064 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602064 = validateParameter(valid_602064, JString, required = false,
                                  default = nil)
-  if valid_600044 != nil:
-    section.add "X-Amz-Credential", valid_600044
+  if valid_602064 != nil:
+    section.add "X-Amz-Security-Token", valid_602064
+  var valid_602065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602065 = validateParameter(valid_602065, JString, required = false,
+                                 default = nil)
+  if valid_602065 != nil:
+    section.add "X-Amz-Algorithm", valid_602065
+  var valid_602066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602066 = validateParameter(valid_602066, JString, required = false,
+                                 default = nil)
+  if valid_602066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602066
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -797,50 +803,51 @@ proc validate_CloseInstancePublicPorts_600035(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600046: Call_CloseInstancePublicPorts_600034; path: JsonNode;
+proc call*(call_602068: Call_CloseInstancePublicPorts_602056; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Closes the public ports on a specific Amazon Lightsail instance.</p> <p>The <code>close instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600046.validator(path, query, header, formData, body)
-  let scheme = call_600046.pickScheme
+  let valid = call_602068.validator(path, query, header, formData, body)
+  let scheme = call_602068.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600046.url(scheme.get, call_600046.host, call_600046.base,
-                         call_600046.route, valid.getOrDefault("path"),
+  let url = call_602068.url(scheme.get, call_602068.host, call_602068.base,
+                         call_602068.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600046, url, valid)
+  result = atozHook(call_602068, url, valid)
 
-proc call*(call_600047: Call_CloseInstancePublicPorts_600034; body: JsonNode): Recallable =
+proc call*(call_602069: Call_CloseInstancePublicPorts_602056; body: JsonNode): Recallable =
   ## closeInstancePublicPorts
   ## <p>Closes the public ports on a specific Amazon Lightsail instance.</p> <p>The <code>close instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600048 = newJObject()
+  var body_602070 = newJObject()
   if body != nil:
-    body_600048 = body
-  result = call_600047.call(nil, nil, nil, nil, body_600048)
+    body_602070 = body
+  result = call_602069.call(nil, nil, nil, nil, body_602070)
 
-var closeInstancePublicPorts* = Call_CloseInstancePublicPorts_600034(
+var closeInstancePublicPorts* = Call_CloseInstancePublicPorts_602056(
     name: "closeInstancePublicPorts", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CloseInstancePublicPorts",
-    validator: validate_CloseInstancePublicPorts_600035, base: "/",
-    url: url_CloseInstancePublicPorts_600036, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CloseInstancePublicPorts_602057, base: "/",
+    url: url_CloseInstancePublicPorts_602058, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CopySnapshot_600049 = ref object of OpenApiRestCall_599368
-proc url_CopySnapshot_600051(protocol: Scheme; host: string; base: string;
+  Call_CopySnapshot_602071 = ref object of OpenApiRestCall_601389
+proc url_CopySnapshot_602073(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CopySnapshot_600050(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CopySnapshot_602072(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Copies a manual instance or disk snapshot as another manual snapshot, or copies an automatic instance or disk snapshot as a manual snapshot. This operation can also be used to copy a manual or automatic snapshot of an instance or a disk from one AWS Region to another in Amazon Lightsail.</p> <p>When copying a <i>manual snapshot</i>, be sure to define the <code>source region</code>, <code>source snapshot name</code>, and <code>target snapshot name</code> parameters.</p> <p>When copying an <i>automatic snapshot</i>, be sure to define the <code>source region</code>, <code>source resource name</code>, <code>target snapshot name</code>, and either the <code>restore date</code> or the <code>use latest restorable auto snapshot</code> parameters.</p> <note> <p>Database snapshots cannot be copied at this time.</p> </note>
+  ## <p>Copies a manual snapshot of an instance or disk as another manual snapshot, or copies an automatic snapshot of an instance or disk as a manual snapshot. This operation can also be used to copy a manual or automatic snapshot of an instance or a disk from one AWS Region to another in Amazon Lightsail.</p> <p>When copying a <i>manual snapshot</i>, be sure to define the <code>source region</code>, <code>source snapshot name</code>, and <code>target snapshot name</code> parameters.</p> <p>When copying an <i>automatic snapshot</i>, be sure to define the <code>source region</code>, <code>source resource name</code>, <code>target snapshot name</code>, and either the <code>restore date</code> or the <code>use latest restorable auto snapshot</code> parameters.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -849,57 +856,57 @@ proc validate_CopySnapshot_600050(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600052 = header.getOrDefault("X-Amz-Date")
-  valid_600052 = validateParameter(valid_600052, JString, required = false,
-                                 default = nil)
-  if valid_600052 != nil:
-    section.add "X-Amz-Date", valid_600052
-  var valid_600053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600053 = validateParameter(valid_600053, JString, required = false,
-                                 default = nil)
-  if valid_600053 != nil:
-    section.add "X-Amz-Security-Token", valid_600053
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600054 = header.getOrDefault("X-Amz-Target")
-  valid_600054 = validateParameter(valid_600054, JString, required = true, default = newJString(
+  var valid_602074 = header.getOrDefault("X-Amz-Target")
+  valid_602074 = validateParameter(valid_602074, JString, required = true, default = newJString(
       "Lightsail_20161128.CopySnapshot"))
-  if valid_600054 != nil:
-    section.add "X-Amz-Target", valid_600054
-  var valid_600055 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600055 = validateParameter(valid_600055, JString, required = false,
+  if valid_602074 != nil:
+    section.add "X-Amz-Target", valid_602074
+  var valid_602075 = header.getOrDefault("X-Amz-Signature")
+  valid_602075 = validateParameter(valid_602075, JString, required = false,
                                  default = nil)
-  if valid_600055 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600055
-  var valid_600056 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600056 = validateParameter(valid_600056, JString, required = false,
+  if valid_602075 != nil:
+    section.add "X-Amz-Signature", valid_602075
+  var valid_602076 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602076 = validateParameter(valid_602076, JString, required = false,
                                  default = nil)
-  if valid_600056 != nil:
-    section.add "X-Amz-Algorithm", valid_600056
-  var valid_600057 = header.getOrDefault("X-Amz-Signature")
-  valid_600057 = validateParameter(valid_600057, JString, required = false,
+  if valid_602076 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602076
+  var valid_602077 = header.getOrDefault("X-Amz-Date")
+  valid_602077 = validateParameter(valid_602077, JString, required = false,
                                  default = nil)
-  if valid_600057 != nil:
-    section.add "X-Amz-Signature", valid_600057
-  var valid_600058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600058 = validateParameter(valid_600058, JString, required = false,
+  if valid_602077 != nil:
+    section.add "X-Amz-Date", valid_602077
+  var valid_602078 = header.getOrDefault("X-Amz-Credential")
+  valid_602078 = validateParameter(valid_602078, JString, required = false,
                                  default = nil)
-  if valid_600058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600058
-  var valid_600059 = header.getOrDefault("X-Amz-Credential")
-  valid_600059 = validateParameter(valid_600059, JString, required = false,
+  if valid_602078 != nil:
+    section.add "X-Amz-Credential", valid_602078
+  var valid_602079 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602079 = validateParameter(valid_602079, JString, required = false,
                                  default = nil)
-  if valid_600059 != nil:
-    section.add "X-Amz-Credential", valid_600059
+  if valid_602079 != nil:
+    section.add "X-Amz-Security-Token", valid_602079
+  var valid_602080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602080 = validateParameter(valid_602080, JString, required = false,
+                                 default = nil)
+  if valid_602080 != nil:
+    section.add "X-Amz-Algorithm", valid_602080
+  var valid_602081 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602081 = validateParameter(valid_602081, JString, required = false,
+                                 default = nil)
+  if valid_602081 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602081
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -910,47 +917,48 @@ proc validate_CopySnapshot_600050(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600061: Call_CopySnapshot_600049; path: JsonNode; query: JsonNode;
+proc call*(call_602083: Call_CopySnapshot_602071; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Copies a manual instance or disk snapshot as another manual snapshot, or copies an automatic instance or disk snapshot as a manual snapshot. This operation can also be used to copy a manual or automatic snapshot of an instance or a disk from one AWS Region to another in Amazon Lightsail.</p> <p>When copying a <i>manual snapshot</i>, be sure to define the <code>source region</code>, <code>source snapshot name</code>, and <code>target snapshot name</code> parameters.</p> <p>When copying an <i>automatic snapshot</i>, be sure to define the <code>source region</code>, <code>source resource name</code>, <code>target snapshot name</code>, and either the <code>restore date</code> or the <code>use latest restorable auto snapshot</code> parameters.</p> <note> <p>Database snapshots cannot be copied at this time.</p> </note>
+  ## <p>Copies a manual snapshot of an instance or disk as another manual snapshot, or copies an automatic snapshot of an instance or disk as a manual snapshot. This operation can also be used to copy a manual or automatic snapshot of an instance or a disk from one AWS Region to another in Amazon Lightsail.</p> <p>When copying a <i>manual snapshot</i>, be sure to define the <code>source region</code>, <code>source snapshot name</code>, and <code>target snapshot name</code> parameters.</p> <p>When copying an <i>automatic snapshot</i>, be sure to define the <code>source region</code>, <code>source resource name</code>, <code>target snapshot name</code>, and either the <code>restore date</code> or the <code>use latest restorable auto snapshot</code> parameters.</p>
   ## 
-  let valid = call_600061.validator(path, query, header, formData, body)
-  let scheme = call_600061.pickScheme
+  let valid = call_602083.validator(path, query, header, formData, body)
+  let scheme = call_602083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600061.url(scheme.get, call_600061.host, call_600061.base,
-                         call_600061.route, valid.getOrDefault("path"),
+  let url = call_602083.url(scheme.get, call_602083.host, call_602083.base,
+                         call_602083.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600061, url, valid)
+  result = atozHook(call_602083, url, valid)
 
-proc call*(call_600062: Call_CopySnapshot_600049; body: JsonNode): Recallable =
+proc call*(call_602084: Call_CopySnapshot_602071; body: JsonNode): Recallable =
   ## copySnapshot
-  ## <p>Copies a manual instance or disk snapshot as another manual snapshot, or copies an automatic instance or disk snapshot as a manual snapshot. This operation can also be used to copy a manual or automatic snapshot of an instance or a disk from one AWS Region to another in Amazon Lightsail.</p> <p>When copying a <i>manual snapshot</i>, be sure to define the <code>source region</code>, <code>source snapshot name</code>, and <code>target snapshot name</code> parameters.</p> <p>When copying an <i>automatic snapshot</i>, be sure to define the <code>source region</code>, <code>source resource name</code>, <code>target snapshot name</code>, and either the <code>restore date</code> or the <code>use latest restorable auto snapshot</code> parameters.</p> <note> <p>Database snapshots cannot be copied at this time.</p> </note>
+  ## <p>Copies a manual snapshot of an instance or disk as another manual snapshot, or copies an automatic snapshot of an instance or disk as a manual snapshot. This operation can also be used to copy a manual or automatic snapshot of an instance or a disk from one AWS Region to another in Amazon Lightsail.</p> <p>When copying a <i>manual snapshot</i>, be sure to define the <code>source region</code>, <code>source snapshot name</code>, and <code>target snapshot name</code> parameters.</p> <p>When copying an <i>automatic snapshot</i>, be sure to define the <code>source region</code>, <code>source resource name</code>, <code>target snapshot name</code>, and either the <code>restore date</code> or the <code>use latest restorable auto snapshot</code> parameters.</p>
   ##   body: JObject (required)
-  var body_600063 = newJObject()
+  var body_602085 = newJObject()
   if body != nil:
-    body_600063 = body
-  result = call_600062.call(nil, nil, nil, nil, body_600063)
+    body_602085 = body
+  result = call_602084.call(nil, nil, nil, nil, body_602085)
 
-var copySnapshot* = Call_CopySnapshot_600049(name: "copySnapshot",
+var copySnapshot* = Call_CopySnapshot_602071(name: "copySnapshot",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CopySnapshot",
-    validator: validate_CopySnapshot_600050, base: "/", url: url_CopySnapshot_600051,
+    validator: validate_CopySnapshot_602072, base: "/", url: url_CopySnapshot_602073,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateCloudFormationStack_600064 = ref object of OpenApiRestCall_599368
-proc url_CreateCloudFormationStack_600066(protocol: Scheme; host: string;
+  Call_CreateCloudFormationStack_602086 = ref object of OpenApiRestCall_601389
+proc url_CreateCloudFormationStack_602088(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateCloudFormationStack_600065(path: JsonNode; query: JsonNode;
+proc validate_CreateCloudFormationStack_602087(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an AWS CloudFormation stack, which creates a new Amazon EC2 instance from an exported Amazon Lightsail snapshot. This operation results in a CloudFormation stack record that can be used to track the AWS CloudFormation stack created. Use the <code>get cloud formation stack records</code> operation to get a list of the CloudFormation stacks created.</p> <important> <p>Wait until after your new Amazon EC2 instance is created before running the <code>create cloud formation stack</code> operation again with the same export snapshot record.</p> </important>
   ## 
@@ -961,57 +969,57 @@ proc validate_CreateCloudFormationStack_600065(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600067 = header.getOrDefault("X-Amz-Date")
-  valid_600067 = validateParameter(valid_600067, JString, required = false,
-                                 default = nil)
-  if valid_600067 != nil:
-    section.add "X-Amz-Date", valid_600067
-  var valid_600068 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600068 = validateParameter(valid_600068, JString, required = false,
-                                 default = nil)
-  if valid_600068 != nil:
-    section.add "X-Amz-Security-Token", valid_600068
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600069 = header.getOrDefault("X-Amz-Target")
-  valid_600069 = validateParameter(valid_600069, JString, required = true, default = newJString(
+  var valid_602089 = header.getOrDefault("X-Amz-Target")
+  valid_602089 = validateParameter(valid_602089, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateCloudFormationStack"))
-  if valid_600069 != nil:
-    section.add "X-Amz-Target", valid_600069
-  var valid_600070 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600070 = validateParameter(valid_600070, JString, required = false,
+  if valid_602089 != nil:
+    section.add "X-Amz-Target", valid_602089
+  var valid_602090 = header.getOrDefault("X-Amz-Signature")
+  valid_602090 = validateParameter(valid_602090, JString, required = false,
                                  default = nil)
-  if valid_600070 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600070
-  var valid_600071 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600071 = validateParameter(valid_600071, JString, required = false,
+  if valid_602090 != nil:
+    section.add "X-Amz-Signature", valid_602090
+  var valid_602091 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602091 = validateParameter(valid_602091, JString, required = false,
                                  default = nil)
-  if valid_600071 != nil:
-    section.add "X-Amz-Algorithm", valid_600071
-  var valid_600072 = header.getOrDefault("X-Amz-Signature")
-  valid_600072 = validateParameter(valid_600072, JString, required = false,
+  if valid_602091 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602091
+  var valid_602092 = header.getOrDefault("X-Amz-Date")
+  valid_602092 = validateParameter(valid_602092, JString, required = false,
                                  default = nil)
-  if valid_600072 != nil:
-    section.add "X-Amz-Signature", valid_600072
-  var valid_600073 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600073 = validateParameter(valid_600073, JString, required = false,
+  if valid_602092 != nil:
+    section.add "X-Amz-Date", valid_602092
+  var valid_602093 = header.getOrDefault("X-Amz-Credential")
+  valid_602093 = validateParameter(valid_602093, JString, required = false,
                                  default = nil)
-  if valid_600073 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600073
-  var valid_600074 = header.getOrDefault("X-Amz-Credential")
-  valid_600074 = validateParameter(valid_600074, JString, required = false,
+  if valid_602093 != nil:
+    section.add "X-Amz-Credential", valid_602093
+  var valid_602094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602094 = validateParameter(valid_602094, JString, required = false,
                                  default = nil)
-  if valid_600074 != nil:
-    section.add "X-Amz-Credential", valid_600074
+  if valid_602094 != nil:
+    section.add "X-Amz-Security-Token", valid_602094
+  var valid_602095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602095 = validateParameter(valid_602095, JString, required = false,
+                                 default = nil)
+  if valid_602095 != nil:
+    section.add "X-Amz-Algorithm", valid_602095
+  var valid_602096 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602096 = validateParameter(valid_602096, JString, required = false,
+                                 default = nil)
+  if valid_602096 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602096
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1022,49 +1030,50 @@ proc validate_CreateCloudFormationStack_600065(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600076: Call_CreateCloudFormationStack_600064; path: JsonNode;
+proc call*(call_602098: Call_CreateCloudFormationStack_602086; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an AWS CloudFormation stack, which creates a new Amazon EC2 instance from an exported Amazon Lightsail snapshot. This operation results in a CloudFormation stack record that can be used to track the AWS CloudFormation stack created. Use the <code>get cloud formation stack records</code> operation to get a list of the CloudFormation stacks created.</p> <important> <p>Wait until after your new Amazon EC2 instance is created before running the <code>create cloud formation stack</code> operation again with the same export snapshot record.</p> </important>
   ## 
-  let valid = call_600076.validator(path, query, header, formData, body)
-  let scheme = call_600076.pickScheme
+  let valid = call_602098.validator(path, query, header, formData, body)
+  let scheme = call_602098.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600076.url(scheme.get, call_600076.host, call_600076.base,
-                         call_600076.route, valid.getOrDefault("path"),
+  let url = call_602098.url(scheme.get, call_602098.host, call_602098.base,
+                         call_602098.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600076, url, valid)
+  result = atozHook(call_602098, url, valid)
 
-proc call*(call_600077: Call_CreateCloudFormationStack_600064; body: JsonNode): Recallable =
+proc call*(call_602099: Call_CreateCloudFormationStack_602086; body: JsonNode): Recallable =
   ## createCloudFormationStack
   ## <p>Creates an AWS CloudFormation stack, which creates a new Amazon EC2 instance from an exported Amazon Lightsail snapshot. This operation results in a CloudFormation stack record that can be used to track the AWS CloudFormation stack created. Use the <code>get cloud formation stack records</code> operation to get a list of the CloudFormation stacks created.</p> <important> <p>Wait until after your new Amazon EC2 instance is created before running the <code>create cloud formation stack</code> operation again with the same export snapshot record.</p> </important>
   ##   body: JObject (required)
-  var body_600078 = newJObject()
+  var body_602100 = newJObject()
   if body != nil:
-    body_600078 = body
-  result = call_600077.call(nil, nil, nil, nil, body_600078)
+    body_602100 = body
+  result = call_602099.call(nil, nil, nil, nil, body_602100)
 
-var createCloudFormationStack* = Call_CreateCloudFormationStack_600064(
+var createCloudFormationStack* = Call_CreateCloudFormationStack_602086(
     name: "createCloudFormationStack", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateCloudFormationStack",
-    validator: validate_CreateCloudFormationStack_600065, base: "/",
-    url: url_CreateCloudFormationStack_600066,
+    validator: validate_CreateCloudFormationStack_602087, base: "/",
+    url: url_CreateCloudFormationStack_602088,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDisk_600079 = ref object of OpenApiRestCall_599368
-proc url_CreateDisk_600081(protocol: Scheme; host: string; base: string; route: string;
+  Call_CreateDisk_602101 = ref object of OpenApiRestCall_601389
+proc url_CreateDisk_602103(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateDisk_600080(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateDisk_602102(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a block storage disk that can be attached to an Amazon Lightsail instance in the same Availability Zone (e.g., <code>us-east-2a</code>).</p> <p>The <code>create disk</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -1075,57 +1084,57 @@ proc validate_CreateDisk_600080(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600082 = header.getOrDefault("X-Amz-Date")
-  valid_600082 = validateParameter(valid_600082, JString, required = false,
-                                 default = nil)
-  if valid_600082 != nil:
-    section.add "X-Amz-Date", valid_600082
-  var valid_600083 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600083 = validateParameter(valid_600083, JString, required = false,
-                                 default = nil)
-  if valid_600083 != nil:
-    section.add "X-Amz-Security-Token", valid_600083
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600084 = header.getOrDefault("X-Amz-Target")
-  valid_600084 = validateParameter(valid_600084, JString, required = true, default = newJString(
+  var valid_602104 = header.getOrDefault("X-Amz-Target")
+  valid_602104 = validateParameter(valid_602104, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDisk"))
-  if valid_600084 != nil:
-    section.add "X-Amz-Target", valid_600084
-  var valid_600085 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600085 = validateParameter(valid_600085, JString, required = false,
+  if valid_602104 != nil:
+    section.add "X-Amz-Target", valid_602104
+  var valid_602105 = header.getOrDefault("X-Amz-Signature")
+  valid_602105 = validateParameter(valid_602105, JString, required = false,
                                  default = nil)
-  if valid_600085 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600085
-  var valid_600086 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600086 = validateParameter(valid_600086, JString, required = false,
+  if valid_602105 != nil:
+    section.add "X-Amz-Signature", valid_602105
+  var valid_602106 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602106 = validateParameter(valid_602106, JString, required = false,
                                  default = nil)
-  if valid_600086 != nil:
-    section.add "X-Amz-Algorithm", valid_600086
-  var valid_600087 = header.getOrDefault("X-Amz-Signature")
-  valid_600087 = validateParameter(valid_600087, JString, required = false,
+  if valid_602106 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602106
+  var valid_602107 = header.getOrDefault("X-Amz-Date")
+  valid_602107 = validateParameter(valid_602107, JString, required = false,
                                  default = nil)
-  if valid_600087 != nil:
-    section.add "X-Amz-Signature", valid_600087
-  var valid_600088 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600088 = validateParameter(valid_600088, JString, required = false,
+  if valid_602107 != nil:
+    section.add "X-Amz-Date", valid_602107
+  var valid_602108 = header.getOrDefault("X-Amz-Credential")
+  valid_602108 = validateParameter(valid_602108, JString, required = false,
                                  default = nil)
-  if valid_600088 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600088
-  var valid_600089 = header.getOrDefault("X-Amz-Credential")
-  valid_600089 = validateParameter(valid_600089, JString, required = false,
+  if valid_602108 != nil:
+    section.add "X-Amz-Credential", valid_602108
+  var valid_602109 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602109 = validateParameter(valid_602109, JString, required = false,
                                  default = nil)
-  if valid_600089 != nil:
-    section.add "X-Amz-Credential", valid_600089
+  if valid_602109 != nil:
+    section.add "X-Amz-Security-Token", valid_602109
+  var valid_602110 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602110 = validateParameter(valid_602110, JString, required = false,
+                                 default = nil)
+  if valid_602110 != nil:
+    section.add "X-Amz-Algorithm", valid_602110
+  var valid_602111 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602111 = validateParameter(valid_602111, JString, required = false,
+                                 default = nil)
+  if valid_602111 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602111
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1136,48 +1145,49 @@ proc validate_CreateDisk_600080(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600091: Call_CreateDisk_600079; path: JsonNode; query: JsonNode;
+proc call*(call_602113: Call_CreateDisk_602101; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a block storage disk that can be attached to an Amazon Lightsail instance in the same Availability Zone (e.g., <code>us-east-2a</code>).</p> <p>The <code>create disk</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600091.validator(path, query, header, formData, body)
-  let scheme = call_600091.pickScheme
+  let valid = call_602113.validator(path, query, header, formData, body)
+  let scheme = call_602113.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600091.url(scheme.get, call_600091.host, call_600091.base,
-                         call_600091.route, valid.getOrDefault("path"),
+  let url = call_602113.url(scheme.get, call_602113.host, call_602113.base,
+                         call_602113.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600091, url, valid)
+  result = atozHook(call_602113, url, valid)
 
-proc call*(call_600092: Call_CreateDisk_600079; body: JsonNode): Recallable =
+proc call*(call_602114: Call_CreateDisk_602101; body: JsonNode): Recallable =
   ## createDisk
   ## <p>Creates a block storage disk that can be attached to an Amazon Lightsail instance in the same Availability Zone (e.g., <code>us-east-2a</code>).</p> <p>The <code>create disk</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600093 = newJObject()
+  var body_602115 = newJObject()
   if body != nil:
-    body_600093 = body
-  result = call_600092.call(nil, nil, nil, nil, body_600093)
+    body_602115 = body
+  result = call_602114.call(nil, nil, nil, nil, body_602115)
 
-var createDisk* = Call_CreateDisk_600079(name: "createDisk",
+var createDisk* = Call_CreateDisk_602101(name: "createDisk",
                                       meth: HttpMethod.HttpPost,
                                       host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.CreateDisk",
-                                      validator: validate_CreateDisk_600080,
-                                      base: "/", url: url_CreateDisk_600081,
+                                      validator: validate_CreateDisk_602102,
+                                      base: "/", url: url_CreateDisk_602103,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDiskFromSnapshot_600094 = ref object of OpenApiRestCall_599368
-proc url_CreateDiskFromSnapshot_600096(protocol: Scheme; host: string; base: string;
+  Call_CreateDiskFromSnapshot_602116 = ref object of OpenApiRestCall_601389
+proc url_CreateDiskFromSnapshot_602118(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateDiskFromSnapshot_600095(path: JsonNode; query: JsonNode;
+proc validate_CreateDiskFromSnapshot_602117(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a block storage disk from a manual or automatic snapshot of a disk. The resulting disk can be attached to an Amazon Lightsail instance in the same Availability Zone (e.g., <code>us-east-2a</code>).</p> <p>The <code>create disk from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>disk snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -1188,57 +1198,57 @@ proc validate_CreateDiskFromSnapshot_600095(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600097 = header.getOrDefault("X-Amz-Date")
-  valid_600097 = validateParameter(valid_600097, JString, required = false,
-                                 default = nil)
-  if valid_600097 != nil:
-    section.add "X-Amz-Date", valid_600097
-  var valid_600098 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600098 = validateParameter(valid_600098, JString, required = false,
-                                 default = nil)
-  if valid_600098 != nil:
-    section.add "X-Amz-Security-Token", valid_600098
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600099 = header.getOrDefault("X-Amz-Target")
-  valid_600099 = validateParameter(valid_600099, JString, required = true, default = newJString(
+  var valid_602119 = header.getOrDefault("X-Amz-Target")
+  valid_602119 = validateParameter(valid_602119, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDiskFromSnapshot"))
-  if valid_600099 != nil:
-    section.add "X-Amz-Target", valid_600099
-  var valid_600100 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600100 = validateParameter(valid_600100, JString, required = false,
+  if valid_602119 != nil:
+    section.add "X-Amz-Target", valid_602119
+  var valid_602120 = header.getOrDefault("X-Amz-Signature")
+  valid_602120 = validateParameter(valid_602120, JString, required = false,
                                  default = nil)
-  if valid_600100 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600100
-  var valid_600101 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600101 = validateParameter(valid_600101, JString, required = false,
+  if valid_602120 != nil:
+    section.add "X-Amz-Signature", valid_602120
+  var valid_602121 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602121 = validateParameter(valid_602121, JString, required = false,
                                  default = nil)
-  if valid_600101 != nil:
-    section.add "X-Amz-Algorithm", valid_600101
-  var valid_600102 = header.getOrDefault("X-Amz-Signature")
-  valid_600102 = validateParameter(valid_600102, JString, required = false,
+  if valid_602121 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602121
+  var valid_602122 = header.getOrDefault("X-Amz-Date")
+  valid_602122 = validateParameter(valid_602122, JString, required = false,
                                  default = nil)
-  if valid_600102 != nil:
-    section.add "X-Amz-Signature", valid_600102
-  var valid_600103 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600103 = validateParameter(valid_600103, JString, required = false,
+  if valid_602122 != nil:
+    section.add "X-Amz-Date", valid_602122
+  var valid_602123 = header.getOrDefault("X-Amz-Credential")
+  valid_602123 = validateParameter(valid_602123, JString, required = false,
                                  default = nil)
-  if valid_600103 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600103
-  var valid_600104 = header.getOrDefault("X-Amz-Credential")
-  valid_600104 = validateParameter(valid_600104, JString, required = false,
+  if valid_602123 != nil:
+    section.add "X-Amz-Credential", valid_602123
+  var valid_602124 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602124 = validateParameter(valid_602124, JString, required = false,
                                  default = nil)
-  if valid_600104 != nil:
-    section.add "X-Amz-Credential", valid_600104
+  if valid_602124 != nil:
+    section.add "X-Amz-Security-Token", valid_602124
+  var valid_602125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602125 = validateParameter(valid_602125, JString, required = false,
+                                 default = nil)
+  if valid_602125 != nil:
+    section.add "X-Amz-Algorithm", valid_602125
+  var valid_602126 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602126 = validateParameter(valid_602126, JString, required = false,
+                                 default = nil)
+  if valid_602126 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602126
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1249,48 +1259,49 @@ proc validate_CreateDiskFromSnapshot_600095(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600106: Call_CreateDiskFromSnapshot_600094; path: JsonNode;
+proc call*(call_602128: Call_CreateDiskFromSnapshot_602116; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a block storage disk from a manual or automatic snapshot of a disk. The resulting disk can be attached to an Amazon Lightsail instance in the same Availability Zone (e.g., <code>us-east-2a</code>).</p> <p>The <code>create disk from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>disk snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600106.validator(path, query, header, formData, body)
-  let scheme = call_600106.pickScheme
+  let valid = call_602128.validator(path, query, header, formData, body)
+  let scheme = call_602128.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600106.url(scheme.get, call_600106.host, call_600106.base,
-                         call_600106.route, valid.getOrDefault("path"),
+  let url = call_602128.url(scheme.get, call_602128.host, call_602128.base,
+                         call_602128.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600106, url, valid)
+  result = atozHook(call_602128, url, valid)
 
-proc call*(call_600107: Call_CreateDiskFromSnapshot_600094; body: JsonNode): Recallable =
+proc call*(call_602129: Call_CreateDiskFromSnapshot_602116; body: JsonNode): Recallable =
   ## createDiskFromSnapshot
   ## <p>Creates a block storage disk from a manual or automatic snapshot of a disk. The resulting disk can be attached to an Amazon Lightsail instance in the same Availability Zone (e.g., <code>us-east-2a</code>).</p> <p>The <code>create disk from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>disk snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600108 = newJObject()
+  var body_602130 = newJObject()
   if body != nil:
-    body_600108 = body
-  result = call_600107.call(nil, nil, nil, nil, body_600108)
+    body_602130 = body
+  result = call_602129.call(nil, nil, nil, nil, body_602130)
 
-var createDiskFromSnapshot* = Call_CreateDiskFromSnapshot_600094(
+var createDiskFromSnapshot* = Call_CreateDiskFromSnapshot_602116(
     name: "createDiskFromSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateDiskFromSnapshot",
-    validator: validate_CreateDiskFromSnapshot_600095, base: "/",
-    url: url_CreateDiskFromSnapshot_600096, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateDiskFromSnapshot_602117, base: "/",
+    url: url_CreateDiskFromSnapshot_602118, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDiskSnapshot_600109 = ref object of OpenApiRestCall_599368
-proc url_CreateDiskSnapshot_600111(protocol: Scheme; host: string; base: string;
+  Call_CreateDiskSnapshot_602131 = ref object of OpenApiRestCall_601389
+proc url_CreateDiskSnapshot_602133(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateDiskSnapshot_600110(path: JsonNode; query: JsonNode;
+proc validate_CreateDiskSnapshot_602132(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Creates a snapshot of a block storage disk. You can use snapshots for backups, to make copies of disks, and to save data before shutting down a Lightsail instance.</p> <p>You can take a snapshot of an attached disk that is in use; however, snapshots only capture data that has been written to your disk at the time the snapshot command is issued. This may exclude any data that has been cached by any applications or the operating system. If you can pause any file systems on the disk long enough to take a snapshot, your snapshot should be complete. Nevertheless, if you cannot pause all file writes to the disk, you should unmount the disk from within the Lightsail instance, issue the create disk snapshot command, and then remount the disk to ensure a consistent and complete snapshot. You may remount and use your disk while the snapshot status is pending.</p> <p>You can also use this operation to create a snapshot of an instance's system volume. You might want to do this, for example, to recover data from the system volume of a botched instance or to create a backup of the system volume like you would for a block storage disk. To create a snapshot of a system volume, just define the <code>instance name</code> parameter when issuing the snapshot command, and a snapshot of the defined instance's system volume will be created. After the snapshot is available, you can create a block storage disk from the snapshot and attach it to a running instance to access the data on the disk.</p> <p>The <code>create disk snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -1302,57 +1313,57 @@ proc validate_CreateDiskSnapshot_600110(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600112 = header.getOrDefault("X-Amz-Date")
-  valid_600112 = validateParameter(valid_600112, JString, required = false,
-                                 default = nil)
-  if valid_600112 != nil:
-    section.add "X-Amz-Date", valid_600112
-  var valid_600113 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600113 = validateParameter(valid_600113, JString, required = false,
-                                 default = nil)
-  if valid_600113 != nil:
-    section.add "X-Amz-Security-Token", valid_600113
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600114 = header.getOrDefault("X-Amz-Target")
-  valid_600114 = validateParameter(valid_600114, JString, required = true, default = newJString(
+  var valid_602134 = header.getOrDefault("X-Amz-Target")
+  valid_602134 = validateParameter(valid_602134, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDiskSnapshot"))
-  if valid_600114 != nil:
-    section.add "X-Amz-Target", valid_600114
-  var valid_600115 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600115 = validateParameter(valid_600115, JString, required = false,
+  if valid_602134 != nil:
+    section.add "X-Amz-Target", valid_602134
+  var valid_602135 = header.getOrDefault("X-Amz-Signature")
+  valid_602135 = validateParameter(valid_602135, JString, required = false,
                                  default = nil)
-  if valid_600115 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600115
-  var valid_600116 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600116 = validateParameter(valid_600116, JString, required = false,
+  if valid_602135 != nil:
+    section.add "X-Amz-Signature", valid_602135
+  var valid_602136 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602136 = validateParameter(valid_602136, JString, required = false,
                                  default = nil)
-  if valid_600116 != nil:
-    section.add "X-Amz-Algorithm", valid_600116
-  var valid_600117 = header.getOrDefault("X-Amz-Signature")
-  valid_600117 = validateParameter(valid_600117, JString, required = false,
+  if valid_602136 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602136
+  var valid_602137 = header.getOrDefault("X-Amz-Date")
+  valid_602137 = validateParameter(valid_602137, JString, required = false,
                                  default = nil)
-  if valid_600117 != nil:
-    section.add "X-Amz-Signature", valid_600117
-  var valid_600118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600118 = validateParameter(valid_600118, JString, required = false,
+  if valid_602137 != nil:
+    section.add "X-Amz-Date", valid_602137
+  var valid_602138 = header.getOrDefault("X-Amz-Credential")
+  valid_602138 = validateParameter(valid_602138, JString, required = false,
                                  default = nil)
-  if valid_600118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600118
-  var valid_600119 = header.getOrDefault("X-Amz-Credential")
-  valid_600119 = validateParameter(valid_600119, JString, required = false,
+  if valid_602138 != nil:
+    section.add "X-Amz-Credential", valid_602138
+  var valid_602139 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602139 = validateParameter(valid_602139, JString, required = false,
                                  default = nil)
-  if valid_600119 != nil:
-    section.add "X-Amz-Credential", valid_600119
+  if valid_602139 != nil:
+    section.add "X-Amz-Security-Token", valid_602139
+  var valid_602140 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602140 = validateParameter(valid_602140, JString, required = false,
+                                 default = nil)
+  if valid_602140 != nil:
+    section.add "X-Amz-Algorithm", valid_602140
+  var valid_602141 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602141 = validateParameter(valid_602141, JString, required = false,
+                                 default = nil)
+  if valid_602141 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602141
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1363,48 +1374,49 @@ proc validate_CreateDiskSnapshot_600110(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600121: Call_CreateDiskSnapshot_600109; path: JsonNode;
+proc call*(call_602143: Call_CreateDiskSnapshot_602131; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a snapshot of a block storage disk. You can use snapshots for backups, to make copies of disks, and to save data before shutting down a Lightsail instance.</p> <p>You can take a snapshot of an attached disk that is in use; however, snapshots only capture data that has been written to your disk at the time the snapshot command is issued. This may exclude any data that has been cached by any applications or the operating system. If you can pause any file systems on the disk long enough to take a snapshot, your snapshot should be complete. Nevertheless, if you cannot pause all file writes to the disk, you should unmount the disk from within the Lightsail instance, issue the create disk snapshot command, and then remount the disk to ensure a consistent and complete snapshot. You may remount and use your disk while the snapshot status is pending.</p> <p>You can also use this operation to create a snapshot of an instance's system volume. You might want to do this, for example, to recover data from the system volume of a botched instance or to create a backup of the system volume like you would for a block storage disk. To create a snapshot of a system volume, just define the <code>instance name</code> parameter when issuing the snapshot command, and a snapshot of the defined instance's system volume will be created. After the snapshot is available, you can create a block storage disk from the snapshot and attach it to a running instance to access the data on the disk.</p> <p>The <code>create disk snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600121.validator(path, query, header, formData, body)
-  let scheme = call_600121.pickScheme
+  let valid = call_602143.validator(path, query, header, formData, body)
+  let scheme = call_602143.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600121.url(scheme.get, call_600121.host, call_600121.base,
-                         call_600121.route, valid.getOrDefault("path"),
+  let url = call_602143.url(scheme.get, call_602143.host, call_602143.base,
+                         call_602143.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600121, url, valid)
+  result = atozHook(call_602143, url, valid)
 
-proc call*(call_600122: Call_CreateDiskSnapshot_600109; body: JsonNode): Recallable =
+proc call*(call_602144: Call_CreateDiskSnapshot_602131; body: JsonNode): Recallable =
   ## createDiskSnapshot
   ## <p>Creates a snapshot of a block storage disk. You can use snapshots for backups, to make copies of disks, and to save data before shutting down a Lightsail instance.</p> <p>You can take a snapshot of an attached disk that is in use; however, snapshots only capture data that has been written to your disk at the time the snapshot command is issued. This may exclude any data that has been cached by any applications or the operating system. If you can pause any file systems on the disk long enough to take a snapshot, your snapshot should be complete. Nevertheless, if you cannot pause all file writes to the disk, you should unmount the disk from within the Lightsail instance, issue the create disk snapshot command, and then remount the disk to ensure a consistent and complete snapshot. You may remount and use your disk while the snapshot status is pending.</p> <p>You can also use this operation to create a snapshot of an instance's system volume. You might want to do this, for example, to recover data from the system volume of a botched instance or to create a backup of the system volume like you would for a block storage disk. To create a snapshot of a system volume, just define the <code>instance name</code> parameter when issuing the snapshot command, and a snapshot of the defined instance's system volume will be created. After the snapshot is available, you can create a block storage disk from the snapshot and attach it to a running instance to access the data on the disk.</p> <p>The <code>create disk snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600123 = newJObject()
+  var body_602145 = newJObject()
   if body != nil:
-    body_600123 = body
-  result = call_600122.call(nil, nil, nil, nil, body_600123)
+    body_602145 = body
+  result = call_602144.call(nil, nil, nil, nil, body_602145)
 
-var createDiskSnapshot* = Call_CreateDiskSnapshot_600109(
+var createDiskSnapshot* = Call_CreateDiskSnapshot_602131(
     name: "createDiskSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateDiskSnapshot",
-    validator: validate_CreateDiskSnapshot_600110, base: "/",
-    url: url_CreateDiskSnapshot_600111, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateDiskSnapshot_602132, base: "/",
+    url: url_CreateDiskSnapshot_602133, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDomain_600124 = ref object of OpenApiRestCall_599368
-proc url_CreateDomain_600126(protocol: Scheme; host: string; base: string;
+  Call_CreateDomain_602146 = ref object of OpenApiRestCall_601389
+proc url_CreateDomain_602148(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateDomain_600125(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateDomain_602147(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a domain resource for the specified domain (e.g., example.com).</p> <p>The <code>create domain</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -1415,57 +1427,57 @@ proc validate_CreateDomain_600125(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600127 = header.getOrDefault("X-Amz-Date")
-  valid_600127 = validateParameter(valid_600127, JString, required = false,
-                                 default = nil)
-  if valid_600127 != nil:
-    section.add "X-Amz-Date", valid_600127
-  var valid_600128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600128 = validateParameter(valid_600128, JString, required = false,
-                                 default = nil)
-  if valid_600128 != nil:
-    section.add "X-Amz-Security-Token", valid_600128
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600129 = header.getOrDefault("X-Amz-Target")
-  valid_600129 = validateParameter(valid_600129, JString, required = true, default = newJString(
+  var valid_602149 = header.getOrDefault("X-Amz-Target")
+  valid_602149 = validateParameter(valid_602149, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDomain"))
-  if valid_600129 != nil:
-    section.add "X-Amz-Target", valid_600129
-  var valid_600130 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600130 = validateParameter(valid_600130, JString, required = false,
+  if valid_602149 != nil:
+    section.add "X-Amz-Target", valid_602149
+  var valid_602150 = header.getOrDefault("X-Amz-Signature")
+  valid_602150 = validateParameter(valid_602150, JString, required = false,
                                  default = nil)
-  if valid_600130 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600130
-  var valid_600131 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600131 = validateParameter(valid_600131, JString, required = false,
+  if valid_602150 != nil:
+    section.add "X-Amz-Signature", valid_602150
+  var valid_602151 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602151 = validateParameter(valid_602151, JString, required = false,
                                  default = nil)
-  if valid_600131 != nil:
-    section.add "X-Amz-Algorithm", valid_600131
-  var valid_600132 = header.getOrDefault("X-Amz-Signature")
-  valid_600132 = validateParameter(valid_600132, JString, required = false,
+  if valid_602151 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602151
+  var valid_602152 = header.getOrDefault("X-Amz-Date")
+  valid_602152 = validateParameter(valid_602152, JString, required = false,
                                  default = nil)
-  if valid_600132 != nil:
-    section.add "X-Amz-Signature", valid_600132
-  var valid_600133 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600133 = validateParameter(valid_600133, JString, required = false,
+  if valid_602152 != nil:
+    section.add "X-Amz-Date", valid_602152
+  var valid_602153 = header.getOrDefault("X-Amz-Credential")
+  valid_602153 = validateParameter(valid_602153, JString, required = false,
                                  default = nil)
-  if valid_600133 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600133
-  var valid_600134 = header.getOrDefault("X-Amz-Credential")
-  valid_600134 = validateParameter(valid_600134, JString, required = false,
+  if valid_602153 != nil:
+    section.add "X-Amz-Credential", valid_602153
+  var valid_602154 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602154 = validateParameter(valid_602154, JString, required = false,
                                  default = nil)
-  if valid_600134 != nil:
-    section.add "X-Amz-Credential", valid_600134
+  if valid_602154 != nil:
+    section.add "X-Amz-Security-Token", valid_602154
+  var valid_602155 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602155 = validateParameter(valid_602155, JString, required = false,
+                                 default = nil)
+  if valid_602155 != nil:
+    section.add "X-Amz-Algorithm", valid_602155
+  var valid_602156 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602156 = validateParameter(valid_602156, JString, required = false,
+                                 default = nil)
+  if valid_602156 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602156
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1476,47 +1488,48 @@ proc validate_CreateDomain_600125(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600136: Call_CreateDomain_600124; path: JsonNode; query: JsonNode;
+proc call*(call_602158: Call_CreateDomain_602146; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a domain resource for the specified domain (e.g., example.com).</p> <p>The <code>create domain</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600136.validator(path, query, header, formData, body)
-  let scheme = call_600136.pickScheme
+  let valid = call_602158.validator(path, query, header, formData, body)
+  let scheme = call_602158.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600136.url(scheme.get, call_600136.host, call_600136.base,
-                         call_600136.route, valid.getOrDefault("path"),
+  let url = call_602158.url(scheme.get, call_602158.host, call_602158.base,
+                         call_602158.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600136, url, valid)
+  result = atozHook(call_602158, url, valid)
 
-proc call*(call_600137: Call_CreateDomain_600124; body: JsonNode): Recallable =
+proc call*(call_602159: Call_CreateDomain_602146; body: JsonNode): Recallable =
   ## createDomain
   ## <p>Creates a domain resource for the specified domain (e.g., example.com).</p> <p>The <code>create domain</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600138 = newJObject()
+  var body_602160 = newJObject()
   if body != nil:
-    body_600138 = body
-  result = call_600137.call(nil, nil, nil, nil, body_600138)
+    body_602160 = body
+  result = call_602159.call(nil, nil, nil, nil, body_602160)
 
-var createDomain* = Call_CreateDomain_600124(name: "createDomain",
+var createDomain* = Call_CreateDomain_602146(name: "createDomain",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateDomain",
-    validator: validate_CreateDomain_600125, base: "/", url: url_CreateDomain_600126,
+    validator: validate_CreateDomain_602147, base: "/", url: url_CreateDomain_602148,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDomainEntry_600139 = ref object of OpenApiRestCall_599368
-proc url_CreateDomainEntry_600141(protocol: Scheme; host: string; base: string;
+  Call_CreateDomainEntry_602161 = ref object of OpenApiRestCall_601389
+proc url_CreateDomainEntry_602163(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateDomainEntry_600140(path: JsonNode; query: JsonNode;
+proc validate_CreateDomainEntry_602162(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Creates one of the following entry records associated with the domain: Address (A), canonical name (CNAME), mail exchanger (MX), name server (NS), start of authority (SOA), service locator (SRV), or text (TXT).</p> <p>The <code>create domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -1528,57 +1541,57 @@ proc validate_CreateDomainEntry_600140(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600142 = header.getOrDefault("X-Amz-Date")
-  valid_600142 = validateParameter(valid_600142, JString, required = false,
-                                 default = nil)
-  if valid_600142 != nil:
-    section.add "X-Amz-Date", valid_600142
-  var valid_600143 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600143 = validateParameter(valid_600143, JString, required = false,
-                                 default = nil)
-  if valid_600143 != nil:
-    section.add "X-Amz-Security-Token", valid_600143
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600144 = header.getOrDefault("X-Amz-Target")
-  valid_600144 = validateParameter(valid_600144, JString, required = true, default = newJString(
+  var valid_602164 = header.getOrDefault("X-Amz-Target")
+  valid_602164 = validateParameter(valid_602164, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDomainEntry"))
-  if valid_600144 != nil:
-    section.add "X-Amz-Target", valid_600144
-  var valid_600145 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600145 = validateParameter(valid_600145, JString, required = false,
+  if valid_602164 != nil:
+    section.add "X-Amz-Target", valid_602164
+  var valid_602165 = header.getOrDefault("X-Amz-Signature")
+  valid_602165 = validateParameter(valid_602165, JString, required = false,
                                  default = nil)
-  if valid_600145 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600145
-  var valid_600146 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600146 = validateParameter(valid_600146, JString, required = false,
+  if valid_602165 != nil:
+    section.add "X-Amz-Signature", valid_602165
+  var valid_602166 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602166 = validateParameter(valid_602166, JString, required = false,
                                  default = nil)
-  if valid_600146 != nil:
-    section.add "X-Amz-Algorithm", valid_600146
-  var valid_600147 = header.getOrDefault("X-Amz-Signature")
-  valid_600147 = validateParameter(valid_600147, JString, required = false,
+  if valid_602166 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602166
+  var valid_602167 = header.getOrDefault("X-Amz-Date")
+  valid_602167 = validateParameter(valid_602167, JString, required = false,
                                  default = nil)
-  if valid_600147 != nil:
-    section.add "X-Amz-Signature", valid_600147
-  var valid_600148 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600148 = validateParameter(valid_600148, JString, required = false,
+  if valid_602167 != nil:
+    section.add "X-Amz-Date", valid_602167
+  var valid_602168 = header.getOrDefault("X-Amz-Credential")
+  valid_602168 = validateParameter(valid_602168, JString, required = false,
                                  default = nil)
-  if valid_600148 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600148
-  var valid_600149 = header.getOrDefault("X-Amz-Credential")
-  valid_600149 = validateParameter(valid_600149, JString, required = false,
+  if valid_602168 != nil:
+    section.add "X-Amz-Credential", valid_602168
+  var valid_602169 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602169 = validateParameter(valid_602169, JString, required = false,
                                  default = nil)
-  if valid_600149 != nil:
-    section.add "X-Amz-Credential", valid_600149
+  if valid_602169 != nil:
+    section.add "X-Amz-Security-Token", valid_602169
+  var valid_602170 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602170 = validateParameter(valid_602170, JString, required = false,
+                                 default = nil)
+  if valid_602170 != nil:
+    section.add "X-Amz-Algorithm", valid_602170
+  var valid_602171 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602171 = validateParameter(valid_602171, JString, required = false,
+                                 default = nil)
+  if valid_602171 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602171
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1589,47 +1602,48 @@ proc validate_CreateDomainEntry_600140(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600151: Call_CreateDomainEntry_600139; path: JsonNode;
+proc call*(call_602173: Call_CreateDomainEntry_602161; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates one of the following entry records associated with the domain: Address (A), canonical name (CNAME), mail exchanger (MX), name server (NS), start of authority (SOA), service locator (SRV), or text (TXT).</p> <p>The <code>create domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600151.validator(path, query, header, formData, body)
-  let scheme = call_600151.pickScheme
+  let valid = call_602173.validator(path, query, header, formData, body)
+  let scheme = call_602173.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600151.url(scheme.get, call_600151.host, call_600151.base,
-                         call_600151.route, valid.getOrDefault("path"),
+  let url = call_602173.url(scheme.get, call_602173.host, call_602173.base,
+                         call_602173.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600151, url, valid)
+  result = atozHook(call_602173, url, valid)
 
-proc call*(call_600152: Call_CreateDomainEntry_600139; body: JsonNode): Recallable =
+proc call*(call_602174: Call_CreateDomainEntry_602161; body: JsonNode): Recallable =
   ## createDomainEntry
   ## <p>Creates one of the following entry records associated with the domain: Address (A), canonical name (CNAME), mail exchanger (MX), name server (NS), start of authority (SOA), service locator (SRV), or text (TXT).</p> <p>The <code>create domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600153 = newJObject()
+  var body_602175 = newJObject()
   if body != nil:
-    body_600153 = body
-  result = call_600152.call(nil, nil, nil, nil, body_600153)
+    body_602175 = body
+  result = call_602174.call(nil, nil, nil, nil, body_602175)
 
-var createDomainEntry* = Call_CreateDomainEntry_600139(name: "createDomainEntry",
+var createDomainEntry* = Call_CreateDomainEntry_602161(name: "createDomainEntry",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateDomainEntry",
-    validator: validate_CreateDomainEntry_600140, base: "/",
-    url: url_CreateDomainEntry_600141, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateDomainEntry_602162, base: "/",
+    url: url_CreateDomainEntry_602163, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateInstanceSnapshot_600154 = ref object of OpenApiRestCall_599368
-proc url_CreateInstanceSnapshot_600156(protocol: Scheme; host: string; base: string;
+  Call_CreateInstanceSnapshot_602176 = ref object of OpenApiRestCall_601389
+proc url_CreateInstanceSnapshot_602178(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateInstanceSnapshot_600155(path: JsonNode; query: JsonNode;
+proc validate_CreateInstanceSnapshot_602177(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a snapshot of a specific virtual private server, or <i>instance</i>. You can use a snapshot to create a new instance that is based on that snapshot.</p> <p>The <code>create instance snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -1640,57 +1654,57 @@ proc validate_CreateInstanceSnapshot_600155(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600157 = header.getOrDefault("X-Amz-Date")
-  valid_600157 = validateParameter(valid_600157, JString, required = false,
-                                 default = nil)
-  if valid_600157 != nil:
-    section.add "X-Amz-Date", valid_600157
-  var valid_600158 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600158 = validateParameter(valid_600158, JString, required = false,
-                                 default = nil)
-  if valid_600158 != nil:
-    section.add "X-Amz-Security-Token", valid_600158
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600159 = header.getOrDefault("X-Amz-Target")
-  valid_600159 = validateParameter(valid_600159, JString, required = true, default = newJString(
+  var valid_602179 = header.getOrDefault("X-Amz-Target")
+  valid_602179 = validateParameter(valid_602179, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateInstanceSnapshot"))
-  if valid_600159 != nil:
-    section.add "X-Amz-Target", valid_600159
-  var valid_600160 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600160 = validateParameter(valid_600160, JString, required = false,
+  if valid_602179 != nil:
+    section.add "X-Amz-Target", valid_602179
+  var valid_602180 = header.getOrDefault("X-Amz-Signature")
+  valid_602180 = validateParameter(valid_602180, JString, required = false,
                                  default = nil)
-  if valid_600160 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600160
-  var valid_600161 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600161 = validateParameter(valid_600161, JString, required = false,
+  if valid_602180 != nil:
+    section.add "X-Amz-Signature", valid_602180
+  var valid_602181 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602181 = validateParameter(valid_602181, JString, required = false,
                                  default = nil)
-  if valid_600161 != nil:
-    section.add "X-Amz-Algorithm", valid_600161
-  var valid_600162 = header.getOrDefault("X-Amz-Signature")
-  valid_600162 = validateParameter(valid_600162, JString, required = false,
+  if valid_602181 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602181
+  var valid_602182 = header.getOrDefault("X-Amz-Date")
+  valid_602182 = validateParameter(valid_602182, JString, required = false,
                                  default = nil)
-  if valid_600162 != nil:
-    section.add "X-Amz-Signature", valid_600162
-  var valid_600163 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600163 = validateParameter(valid_600163, JString, required = false,
+  if valid_602182 != nil:
+    section.add "X-Amz-Date", valid_602182
+  var valid_602183 = header.getOrDefault("X-Amz-Credential")
+  valid_602183 = validateParameter(valid_602183, JString, required = false,
                                  default = nil)
-  if valid_600163 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600163
-  var valid_600164 = header.getOrDefault("X-Amz-Credential")
-  valid_600164 = validateParameter(valid_600164, JString, required = false,
+  if valid_602183 != nil:
+    section.add "X-Amz-Credential", valid_602183
+  var valid_602184 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602184 = validateParameter(valid_602184, JString, required = false,
                                  default = nil)
-  if valid_600164 != nil:
-    section.add "X-Amz-Credential", valid_600164
+  if valid_602184 != nil:
+    section.add "X-Amz-Security-Token", valid_602184
+  var valid_602185 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602185 = validateParameter(valid_602185, JString, required = false,
+                                 default = nil)
+  if valid_602185 != nil:
+    section.add "X-Amz-Algorithm", valid_602185
+  var valid_602186 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602186 = validateParameter(valid_602186, JString, required = false,
+                                 default = nil)
+  if valid_602186 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602186
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1701,48 +1715,49 @@ proc validate_CreateInstanceSnapshot_600155(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600166: Call_CreateInstanceSnapshot_600154; path: JsonNode;
+proc call*(call_602188: Call_CreateInstanceSnapshot_602176; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a snapshot of a specific virtual private server, or <i>instance</i>. You can use a snapshot to create a new instance that is based on that snapshot.</p> <p>The <code>create instance snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600166.validator(path, query, header, formData, body)
-  let scheme = call_600166.pickScheme
+  let valid = call_602188.validator(path, query, header, formData, body)
+  let scheme = call_602188.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600166.url(scheme.get, call_600166.host, call_600166.base,
-                         call_600166.route, valid.getOrDefault("path"),
+  let url = call_602188.url(scheme.get, call_602188.host, call_602188.base,
+                         call_602188.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600166, url, valid)
+  result = atozHook(call_602188, url, valid)
 
-proc call*(call_600167: Call_CreateInstanceSnapshot_600154; body: JsonNode): Recallable =
+proc call*(call_602189: Call_CreateInstanceSnapshot_602176; body: JsonNode): Recallable =
   ## createInstanceSnapshot
   ## <p>Creates a snapshot of a specific virtual private server, or <i>instance</i>. You can use a snapshot to create a new instance that is based on that snapshot.</p> <p>The <code>create instance snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600168 = newJObject()
+  var body_602190 = newJObject()
   if body != nil:
-    body_600168 = body
-  result = call_600167.call(nil, nil, nil, nil, body_600168)
+    body_602190 = body
+  result = call_602189.call(nil, nil, nil, nil, body_602190)
 
-var createInstanceSnapshot* = Call_CreateInstanceSnapshot_600154(
+var createInstanceSnapshot* = Call_CreateInstanceSnapshot_602176(
     name: "createInstanceSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateInstanceSnapshot",
-    validator: validate_CreateInstanceSnapshot_600155, base: "/",
-    url: url_CreateInstanceSnapshot_600156, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateInstanceSnapshot_602177, base: "/",
+    url: url_CreateInstanceSnapshot_602178, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateInstances_600169 = ref object of OpenApiRestCall_599368
-proc url_CreateInstances_600171(protocol: Scheme; host: string; base: string;
+  Call_CreateInstances_602191 = ref object of OpenApiRestCall_601389
+proc url_CreateInstances_602193(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateInstances_600170(path: JsonNode; query: JsonNode;
+proc validate_CreateInstances_602192(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Creates one or more Amazon Lightsail instances.</p> <p>The <code>create instances</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -1754,57 +1769,57 @@ proc validate_CreateInstances_600170(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600172 = header.getOrDefault("X-Amz-Date")
-  valid_600172 = validateParameter(valid_600172, JString, required = false,
-                                 default = nil)
-  if valid_600172 != nil:
-    section.add "X-Amz-Date", valid_600172
-  var valid_600173 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600173 = validateParameter(valid_600173, JString, required = false,
-                                 default = nil)
-  if valid_600173 != nil:
-    section.add "X-Amz-Security-Token", valid_600173
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600174 = header.getOrDefault("X-Amz-Target")
-  valid_600174 = validateParameter(valid_600174, JString, required = true, default = newJString(
+  var valid_602194 = header.getOrDefault("X-Amz-Target")
+  valid_602194 = validateParameter(valid_602194, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateInstances"))
-  if valid_600174 != nil:
-    section.add "X-Amz-Target", valid_600174
-  var valid_600175 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600175 = validateParameter(valid_600175, JString, required = false,
+  if valid_602194 != nil:
+    section.add "X-Amz-Target", valid_602194
+  var valid_602195 = header.getOrDefault("X-Amz-Signature")
+  valid_602195 = validateParameter(valid_602195, JString, required = false,
                                  default = nil)
-  if valid_600175 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600175
-  var valid_600176 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600176 = validateParameter(valid_600176, JString, required = false,
+  if valid_602195 != nil:
+    section.add "X-Amz-Signature", valid_602195
+  var valid_602196 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602196 = validateParameter(valid_602196, JString, required = false,
                                  default = nil)
-  if valid_600176 != nil:
-    section.add "X-Amz-Algorithm", valid_600176
-  var valid_600177 = header.getOrDefault("X-Amz-Signature")
-  valid_600177 = validateParameter(valid_600177, JString, required = false,
+  if valid_602196 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602196
+  var valid_602197 = header.getOrDefault("X-Amz-Date")
+  valid_602197 = validateParameter(valid_602197, JString, required = false,
                                  default = nil)
-  if valid_600177 != nil:
-    section.add "X-Amz-Signature", valid_600177
-  var valid_600178 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600178 = validateParameter(valid_600178, JString, required = false,
+  if valid_602197 != nil:
+    section.add "X-Amz-Date", valid_602197
+  var valid_602198 = header.getOrDefault("X-Amz-Credential")
+  valid_602198 = validateParameter(valid_602198, JString, required = false,
                                  default = nil)
-  if valid_600178 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600178
-  var valid_600179 = header.getOrDefault("X-Amz-Credential")
-  valid_600179 = validateParameter(valid_600179, JString, required = false,
+  if valid_602198 != nil:
+    section.add "X-Amz-Credential", valid_602198
+  var valid_602199 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602199 = validateParameter(valid_602199, JString, required = false,
                                  default = nil)
-  if valid_600179 != nil:
-    section.add "X-Amz-Credential", valid_600179
+  if valid_602199 != nil:
+    section.add "X-Amz-Security-Token", valid_602199
+  var valid_602200 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602200 = validateParameter(valid_602200, JString, required = false,
+                                 default = nil)
+  if valid_602200 != nil:
+    section.add "X-Amz-Algorithm", valid_602200
+  var valid_602201 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602201 = validateParameter(valid_602201, JString, required = false,
+                                 default = nil)
+  if valid_602201 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602201
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1815,47 +1830,48 @@ proc validate_CreateInstances_600170(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600181: Call_CreateInstances_600169; path: JsonNode; query: JsonNode;
+proc call*(call_602203: Call_CreateInstances_602191; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates one or more Amazon Lightsail instances.</p> <p>The <code>create instances</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600181.validator(path, query, header, formData, body)
-  let scheme = call_600181.pickScheme
+  let valid = call_602203.validator(path, query, header, formData, body)
+  let scheme = call_602203.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600181.url(scheme.get, call_600181.host, call_600181.base,
-                         call_600181.route, valid.getOrDefault("path"),
+  let url = call_602203.url(scheme.get, call_602203.host, call_602203.base,
+                         call_602203.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600181, url, valid)
+  result = atozHook(call_602203, url, valid)
 
-proc call*(call_600182: Call_CreateInstances_600169; body: JsonNode): Recallable =
+proc call*(call_602204: Call_CreateInstances_602191; body: JsonNode): Recallable =
   ## createInstances
   ## <p>Creates one or more Amazon Lightsail instances.</p> <p>The <code>create instances</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600183 = newJObject()
+  var body_602205 = newJObject()
   if body != nil:
-    body_600183 = body
-  result = call_600182.call(nil, nil, nil, nil, body_600183)
+    body_602205 = body
+  result = call_602204.call(nil, nil, nil, nil, body_602205)
 
-var createInstances* = Call_CreateInstances_600169(name: "createInstances",
+var createInstances* = Call_CreateInstances_602191(name: "createInstances",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateInstances",
-    validator: validate_CreateInstances_600170, base: "/", url: url_CreateInstances_600171,
+    validator: validate_CreateInstances_602192, base: "/", url: url_CreateInstances_602193,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateInstancesFromSnapshot_600184 = ref object of OpenApiRestCall_599368
-proc url_CreateInstancesFromSnapshot_600186(protocol: Scheme; host: string;
+  Call_CreateInstancesFromSnapshot_602206 = ref object of OpenApiRestCall_601389
+proc url_CreateInstancesFromSnapshot_602208(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateInstancesFromSnapshot_600185(path: JsonNode; query: JsonNode;
+proc validate_CreateInstancesFromSnapshot_602207(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates one or more new instances from a manual or automatic snapshot of an instance.</p> <p>The <code>create instances from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>instance snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -1866,57 +1882,57 @@ proc validate_CreateInstancesFromSnapshot_600185(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600187 = header.getOrDefault("X-Amz-Date")
-  valid_600187 = validateParameter(valid_600187, JString, required = false,
-                                 default = nil)
-  if valid_600187 != nil:
-    section.add "X-Amz-Date", valid_600187
-  var valid_600188 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600188 = validateParameter(valid_600188, JString, required = false,
-                                 default = nil)
-  if valid_600188 != nil:
-    section.add "X-Amz-Security-Token", valid_600188
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600189 = header.getOrDefault("X-Amz-Target")
-  valid_600189 = validateParameter(valid_600189, JString, required = true, default = newJString(
+  var valid_602209 = header.getOrDefault("X-Amz-Target")
+  valid_602209 = validateParameter(valid_602209, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateInstancesFromSnapshot"))
-  if valid_600189 != nil:
-    section.add "X-Amz-Target", valid_600189
-  var valid_600190 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600190 = validateParameter(valid_600190, JString, required = false,
+  if valid_602209 != nil:
+    section.add "X-Amz-Target", valid_602209
+  var valid_602210 = header.getOrDefault("X-Amz-Signature")
+  valid_602210 = validateParameter(valid_602210, JString, required = false,
                                  default = nil)
-  if valid_600190 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600190
-  var valid_600191 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600191 = validateParameter(valid_600191, JString, required = false,
+  if valid_602210 != nil:
+    section.add "X-Amz-Signature", valid_602210
+  var valid_602211 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602211 = validateParameter(valid_602211, JString, required = false,
                                  default = nil)
-  if valid_600191 != nil:
-    section.add "X-Amz-Algorithm", valid_600191
-  var valid_600192 = header.getOrDefault("X-Amz-Signature")
-  valid_600192 = validateParameter(valid_600192, JString, required = false,
+  if valid_602211 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602211
+  var valid_602212 = header.getOrDefault("X-Amz-Date")
+  valid_602212 = validateParameter(valid_602212, JString, required = false,
                                  default = nil)
-  if valid_600192 != nil:
-    section.add "X-Amz-Signature", valid_600192
-  var valid_600193 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600193 = validateParameter(valid_600193, JString, required = false,
+  if valid_602212 != nil:
+    section.add "X-Amz-Date", valid_602212
+  var valid_602213 = header.getOrDefault("X-Amz-Credential")
+  valid_602213 = validateParameter(valid_602213, JString, required = false,
                                  default = nil)
-  if valid_600193 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600193
-  var valid_600194 = header.getOrDefault("X-Amz-Credential")
-  valid_600194 = validateParameter(valid_600194, JString, required = false,
+  if valid_602213 != nil:
+    section.add "X-Amz-Credential", valid_602213
+  var valid_602214 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602214 = validateParameter(valid_602214, JString, required = false,
                                  default = nil)
-  if valid_600194 != nil:
-    section.add "X-Amz-Credential", valid_600194
+  if valid_602214 != nil:
+    section.add "X-Amz-Security-Token", valid_602214
+  var valid_602215 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602215 = validateParameter(valid_602215, JString, required = false,
+                                 default = nil)
+  if valid_602215 != nil:
+    section.add "X-Amz-Algorithm", valid_602215
+  var valid_602216 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602216 = validateParameter(valid_602216, JString, required = false,
+                                 default = nil)
+  if valid_602216 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602216
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1927,49 +1943,50 @@ proc validate_CreateInstancesFromSnapshot_600185(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600196: Call_CreateInstancesFromSnapshot_600184; path: JsonNode;
+proc call*(call_602218: Call_CreateInstancesFromSnapshot_602206; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates one or more new instances from a manual or automatic snapshot of an instance.</p> <p>The <code>create instances from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>instance snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600196.validator(path, query, header, formData, body)
-  let scheme = call_600196.pickScheme
+  let valid = call_602218.validator(path, query, header, formData, body)
+  let scheme = call_602218.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600196.url(scheme.get, call_600196.host, call_600196.base,
-                         call_600196.route, valid.getOrDefault("path"),
+  let url = call_602218.url(scheme.get, call_602218.host, call_602218.base,
+                         call_602218.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600196, url, valid)
+  result = atozHook(call_602218, url, valid)
 
-proc call*(call_600197: Call_CreateInstancesFromSnapshot_600184; body: JsonNode): Recallable =
+proc call*(call_602219: Call_CreateInstancesFromSnapshot_602206; body: JsonNode): Recallable =
   ## createInstancesFromSnapshot
   ## <p>Creates one or more new instances from a manual or automatic snapshot of an instance.</p> <p>The <code>create instances from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>instance snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600198 = newJObject()
+  var body_602220 = newJObject()
   if body != nil:
-    body_600198 = body
-  result = call_600197.call(nil, nil, nil, nil, body_600198)
+    body_602220 = body
+  result = call_602219.call(nil, nil, nil, nil, body_602220)
 
-var createInstancesFromSnapshot* = Call_CreateInstancesFromSnapshot_600184(
+var createInstancesFromSnapshot* = Call_CreateInstancesFromSnapshot_602206(
     name: "createInstancesFromSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateInstancesFromSnapshot",
-    validator: validate_CreateInstancesFromSnapshot_600185, base: "/",
-    url: url_CreateInstancesFromSnapshot_600186,
+    validator: validate_CreateInstancesFromSnapshot_602207, base: "/",
+    url: url_CreateInstancesFromSnapshot_602208,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateKeyPair_600199 = ref object of OpenApiRestCall_599368
-proc url_CreateKeyPair_600201(protocol: Scheme; host: string; base: string;
+  Call_CreateKeyPair_602221 = ref object of OpenApiRestCall_601389
+proc url_CreateKeyPair_602223(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateKeyPair_600200(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateKeyPair_602222(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an SSH key pair.</p> <p>The <code>create key pair</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -1980,57 +1997,57 @@ proc validate_CreateKeyPair_600200(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600202 = header.getOrDefault("X-Amz-Date")
-  valid_600202 = validateParameter(valid_600202, JString, required = false,
-                                 default = nil)
-  if valid_600202 != nil:
-    section.add "X-Amz-Date", valid_600202
-  var valid_600203 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600203 = validateParameter(valid_600203, JString, required = false,
-                                 default = nil)
-  if valid_600203 != nil:
-    section.add "X-Amz-Security-Token", valid_600203
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600204 = header.getOrDefault("X-Amz-Target")
-  valid_600204 = validateParameter(valid_600204, JString, required = true, default = newJString(
+  var valid_602224 = header.getOrDefault("X-Amz-Target")
+  valid_602224 = validateParameter(valid_602224, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateKeyPair"))
-  if valid_600204 != nil:
-    section.add "X-Amz-Target", valid_600204
-  var valid_600205 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600205 = validateParameter(valid_600205, JString, required = false,
+  if valid_602224 != nil:
+    section.add "X-Amz-Target", valid_602224
+  var valid_602225 = header.getOrDefault("X-Amz-Signature")
+  valid_602225 = validateParameter(valid_602225, JString, required = false,
                                  default = nil)
-  if valid_600205 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600205
-  var valid_600206 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600206 = validateParameter(valid_600206, JString, required = false,
+  if valid_602225 != nil:
+    section.add "X-Amz-Signature", valid_602225
+  var valid_602226 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602226 = validateParameter(valid_602226, JString, required = false,
                                  default = nil)
-  if valid_600206 != nil:
-    section.add "X-Amz-Algorithm", valid_600206
-  var valid_600207 = header.getOrDefault("X-Amz-Signature")
-  valid_600207 = validateParameter(valid_600207, JString, required = false,
+  if valid_602226 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602226
+  var valid_602227 = header.getOrDefault("X-Amz-Date")
+  valid_602227 = validateParameter(valid_602227, JString, required = false,
                                  default = nil)
-  if valid_600207 != nil:
-    section.add "X-Amz-Signature", valid_600207
-  var valid_600208 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600208 = validateParameter(valid_600208, JString, required = false,
+  if valid_602227 != nil:
+    section.add "X-Amz-Date", valid_602227
+  var valid_602228 = header.getOrDefault("X-Amz-Credential")
+  valid_602228 = validateParameter(valid_602228, JString, required = false,
                                  default = nil)
-  if valid_600208 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600208
-  var valid_600209 = header.getOrDefault("X-Amz-Credential")
-  valid_600209 = validateParameter(valid_600209, JString, required = false,
+  if valid_602228 != nil:
+    section.add "X-Amz-Credential", valid_602228
+  var valid_602229 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602229 = validateParameter(valid_602229, JString, required = false,
                                  default = nil)
-  if valid_600209 != nil:
-    section.add "X-Amz-Credential", valid_600209
+  if valid_602229 != nil:
+    section.add "X-Amz-Security-Token", valid_602229
+  var valid_602230 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602230 = validateParameter(valid_602230, JString, required = false,
+                                 default = nil)
+  if valid_602230 != nil:
+    section.add "X-Amz-Algorithm", valid_602230
+  var valid_602231 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602231 = validateParameter(valid_602231, JString, required = false,
+                                 default = nil)
+  if valid_602231 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602231
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2041,47 +2058,48 @@ proc validate_CreateKeyPair_600200(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600211: Call_CreateKeyPair_600199; path: JsonNode; query: JsonNode;
+proc call*(call_602233: Call_CreateKeyPair_602221; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an SSH key pair.</p> <p>The <code>create key pair</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600211.validator(path, query, header, formData, body)
-  let scheme = call_600211.pickScheme
+  let valid = call_602233.validator(path, query, header, formData, body)
+  let scheme = call_602233.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600211.url(scheme.get, call_600211.host, call_600211.base,
-                         call_600211.route, valid.getOrDefault("path"),
+  let url = call_602233.url(scheme.get, call_602233.host, call_602233.base,
+                         call_602233.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600211, url, valid)
+  result = atozHook(call_602233, url, valid)
 
-proc call*(call_600212: Call_CreateKeyPair_600199; body: JsonNode): Recallable =
+proc call*(call_602234: Call_CreateKeyPair_602221; body: JsonNode): Recallable =
   ## createKeyPair
   ## <p>Creates an SSH key pair.</p> <p>The <code>create key pair</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600213 = newJObject()
+  var body_602235 = newJObject()
   if body != nil:
-    body_600213 = body
-  result = call_600212.call(nil, nil, nil, nil, body_600213)
+    body_602235 = body
+  result = call_602234.call(nil, nil, nil, nil, body_602235)
 
-var createKeyPair* = Call_CreateKeyPair_600199(name: "createKeyPair",
+var createKeyPair* = Call_CreateKeyPair_602221(name: "createKeyPair",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateKeyPair",
-    validator: validate_CreateKeyPair_600200, base: "/", url: url_CreateKeyPair_600201,
+    validator: validate_CreateKeyPair_602222, base: "/", url: url_CreateKeyPair_602223,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateLoadBalancer_600214 = ref object of OpenApiRestCall_599368
-proc url_CreateLoadBalancer_600216(protocol: Scheme; host: string; base: string;
+  Call_CreateLoadBalancer_602236 = ref object of OpenApiRestCall_601389
+proc url_CreateLoadBalancer_602238(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateLoadBalancer_600215(path: JsonNode; query: JsonNode;
+proc validate_CreateLoadBalancer_602237(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Creates a Lightsail load balancer. To learn more about deciding whether to load balance your application, see <a href="https://lightsail.aws.amazon.com/ls/docs/how-to/article/configure-lightsail-instances-for-load-balancing">Configure your Lightsail instances for load balancing</a>. You can create up to 5 load balancers per AWS Region in your account.</p> <p>When you create a load balancer, you can specify a unique name and port settings. To change additional load balancer settings, use the <code>UpdateLoadBalancerAttribute</code> operation.</p> <p>The <code>create load balancer</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -2093,57 +2111,57 @@ proc validate_CreateLoadBalancer_600215(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600217 = header.getOrDefault("X-Amz-Date")
-  valid_600217 = validateParameter(valid_600217, JString, required = false,
-                                 default = nil)
-  if valid_600217 != nil:
-    section.add "X-Amz-Date", valid_600217
-  var valid_600218 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600218 = validateParameter(valid_600218, JString, required = false,
-                                 default = nil)
-  if valid_600218 != nil:
-    section.add "X-Amz-Security-Token", valid_600218
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600219 = header.getOrDefault("X-Amz-Target")
-  valid_600219 = validateParameter(valid_600219, JString, required = true, default = newJString(
+  var valid_602239 = header.getOrDefault("X-Amz-Target")
+  valid_602239 = validateParameter(valid_602239, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateLoadBalancer"))
-  if valid_600219 != nil:
-    section.add "X-Amz-Target", valid_600219
-  var valid_600220 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600220 = validateParameter(valid_600220, JString, required = false,
+  if valid_602239 != nil:
+    section.add "X-Amz-Target", valid_602239
+  var valid_602240 = header.getOrDefault("X-Amz-Signature")
+  valid_602240 = validateParameter(valid_602240, JString, required = false,
                                  default = nil)
-  if valid_600220 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600220
-  var valid_600221 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600221 = validateParameter(valid_600221, JString, required = false,
+  if valid_602240 != nil:
+    section.add "X-Amz-Signature", valid_602240
+  var valid_602241 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602241 = validateParameter(valid_602241, JString, required = false,
                                  default = nil)
-  if valid_600221 != nil:
-    section.add "X-Amz-Algorithm", valid_600221
-  var valid_600222 = header.getOrDefault("X-Amz-Signature")
-  valid_600222 = validateParameter(valid_600222, JString, required = false,
+  if valid_602241 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602241
+  var valid_602242 = header.getOrDefault("X-Amz-Date")
+  valid_602242 = validateParameter(valid_602242, JString, required = false,
                                  default = nil)
-  if valid_600222 != nil:
-    section.add "X-Amz-Signature", valid_600222
-  var valid_600223 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600223 = validateParameter(valid_600223, JString, required = false,
+  if valid_602242 != nil:
+    section.add "X-Amz-Date", valid_602242
+  var valid_602243 = header.getOrDefault("X-Amz-Credential")
+  valid_602243 = validateParameter(valid_602243, JString, required = false,
                                  default = nil)
-  if valid_600223 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600223
-  var valid_600224 = header.getOrDefault("X-Amz-Credential")
-  valid_600224 = validateParameter(valid_600224, JString, required = false,
+  if valid_602243 != nil:
+    section.add "X-Amz-Credential", valid_602243
+  var valid_602244 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602244 = validateParameter(valid_602244, JString, required = false,
                                  default = nil)
-  if valid_600224 != nil:
-    section.add "X-Amz-Credential", valid_600224
+  if valid_602244 != nil:
+    section.add "X-Amz-Security-Token", valid_602244
+  var valid_602245 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602245 = validateParameter(valid_602245, JString, required = false,
+                                 default = nil)
+  if valid_602245 != nil:
+    section.add "X-Amz-Algorithm", valid_602245
+  var valid_602246 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602246 = validateParameter(valid_602246, JString, required = false,
+                                 default = nil)
+  if valid_602246 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602246
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2154,48 +2172,49 @@ proc validate_CreateLoadBalancer_600215(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600226: Call_CreateLoadBalancer_600214; path: JsonNode;
+proc call*(call_602248: Call_CreateLoadBalancer_602236; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a Lightsail load balancer. To learn more about deciding whether to load balance your application, see <a href="https://lightsail.aws.amazon.com/ls/docs/how-to/article/configure-lightsail-instances-for-load-balancing">Configure your Lightsail instances for load balancing</a>. You can create up to 5 load balancers per AWS Region in your account.</p> <p>When you create a load balancer, you can specify a unique name and port settings. To change additional load balancer settings, use the <code>UpdateLoadBalancerAttribute</code> operation.</p> <p>The <code>create load balancer</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600226.validator(path, query, header, formData, body)
-  let scheme = call_600226.pickScheme
+  let valid = call_602248.validator(path, query, header, formData, body)
+  let scheme = call_602248.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600226.url(scheme.get, call_600226.host, call_600226.base,
-                         call_600226.route, valid.getOrDefault("path"),
+  let url = call_602248.url(scheme.get, call_602248.host, call_602248.base,
+                         call_602248.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600226, url, valid)
+  result = atozHook(call_602248, url, valid)
 
-proc call*(call_600227: Call_CreateLoadBalancer_600214; body: JsonNode): Recallable =
+proc call*(call_602249: Call_CreateLoadBalancer_602236; body: JsonNode): Recallable =
   ## createLoadBalancer
   ## <p>Creates a Lightsail load balancer. To learn more about deciding whether to load balance your application, see <a href="https://lightsail.aws.amazon.com/ls/docs/how-to/article/configure-lightsail-instances-for-load-balancing">Configure your Lightsail instances for load balancing</a>. You can create up to 5 load balancers per AWS Region in your account.</p> <p>When you create a load balancer, you can specify a unique name and port settings. To change additional load balancer settings, use the <code>UpdateLoadBalancerAttribute</code> operation.</p> <p>The <code>create load balancer</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600228 = newJObject()
+  var body_602250 = newJObject()
   if body != nil:
-    body_600228 = body
-  result = call_600227.call(nil, nil, nil, nil, body_600228)
+    body_602250 = body
+  result = call_602249.call(nil, nil, nil, nil, body_602250)
 
-var createLoadBalancer* = Call_CreateLoadBalancer_600214(
+var createLoadBalancer* = Call_CreateLoadBalancer_602236(
     name: "createLoadBalancer", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateLoadBalancer",
-    validator: validate_CreateLoadBalancer_600215, base: "/",
-    url: url_CreateLoadBalancer_600216, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateLoadBalancer_602237, base: "/",
+    url: url_CreateLoadBalancer_602238, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateLoadBalancerTlsCertificate_600229 = ref object of OpenApiRestCall_599368
-proc url_CreateLoadBalancerTlsCertificate_600231(protocol: Scheme; host: string;
+  Call_CreateLoadBalancerTlsCertificate_602251 = ref object of OpenApiRestCall_601389
+proc url_CreateLoadBalancerTlsCertificate_602253(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateLoadBalancerTlsCertificate_600230(path: JsonNode;
+proc validate_CreateLoadBalancerTlsCertificate_602252(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a Lightsail load balancer TLS certificate.</p> <p>TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>The <code>create load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -2206,57 +2225,57 @@ proc validate_CreateLoadBalancerTlsCertificate_600230(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600232 = header.getOrDefault("X-Amz-Date")
-  valid_600232 = validateParameter(valid_600232, JString, required = false,
-                                 default = nil)
-  if valid_600232 != nil:
-    section.add "X-Amz-Date", valid_600232
-  var valid_600233 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600233 = validateParameter(valid_600233, JString, required = false,
-                                 default = nil)
-  if valid_600233 != nil:
-    section.add "X-Amz-Security-Token", valid_600233
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600234 = header.getOrDefault("X-Amz-Target")
-  valid_600234 = validateParameter(valid_600234, JString, required = true, default = newJString(
+  var valid_602254 = header.getOrDefault("X-Amz-Target")
+  valid_602254 = validateParameter(valid_602254, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateLoadBalancerTlsCertificate"))
-  if valid_600234 != nil:
-    section.add "X-Amz-Target", valid_600234
-  var valid_600235 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600235 = validateParameter(valid_600235, JString, required = false,
+  if valid_602254 != nil:
+    section.add "X-Amz-Target", valid_602254
+  var valid_602255 = header.getOrDefault("X-Amz-Signature")
+  valid_602255 = validateParameter(valid_602255, JString, required = false,
                                  default = nil)
-  if valid_600235 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600235
-  var valid_600236 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600236 = validateParameter(valid_600236, JString, required = false,
+  if valid_602255 != nil:
+    section.add "X-Amz-Signature", valid_602255
+  var valid_602256 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602256 = validateParameter(valid_602256, JString, required = false,
                                  default = nil)
-  if valid_600236 != nil:
-    section.add "X-Amz-Algorithm", valid_600236
-  var valid_600237 = header.getOrDefault("X-Amz-Signature")
-  valid_600237 = validateParameter(valid_600237, JString, required = false,
+  if valid_602256 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602256
+  var valid_602257 = header.getOrDefault("X-Amz-Date")
+  valid_602257 = validateParameter(valid_602257, JString, required = false,
                                  default = nil)
-  if valid_600237 != nil:
-    section.add "X-Amz-Signature", valid_600237
-  var valid_600238 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600238 = validateParameter(valid_600238, JString, required = false,
+  if valid_602257 != nil:
+    section.add "X-Amz-Date", valid_602257
+  var valid_602258 = header.getOrDefault("X-Amz-Credential")
+  valid_602258 = validateParameter(valid_602258, JString, required = false,
                                  default = nil)
-  if valid_600238 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600238
-  var valid_600239 = header.getOrDefault("X-Amz-Credential")
-  valid_600239 = validateParameter(valid_600239, JString, required = false,
+  if valid_602258 != nil:
+    section.add "X-Amz-Credential", valid_602258
+  var valid_602259 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602259 = validateParameter(valid_602259, JString, required = false,
                                  default = nil)
-  if valid_600239 != nil:
-    section.add "X-Amz-Credential", valid_600239
+  if valid_602259 != nil:
+    section.add "X-Amz-Security-Token", valid_602259
+  var valid_602260 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602260 = validateParameter(valid_602260, JString, required = false,
+                                 default = nil)
+  if valid_602260 != nil:
+    section.add "X-Amz-Algorithm", valid_602260
+  var valid_602261 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602261 = validateParameter(valid_602261, JString, required = false,
+                                 default = nil)
+  if valid_602261 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602261
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2267,51 +2286,52 @@ proc validate_CreateLoadBalancerTlsCertificate_600230(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600241: Call_CreateLoadBalancerTlsCertificate_600229;
+proc call*(call_602263: Call_CreateLoadBalancerTlsCertificate_602251;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Creates a Lightsail load balancer TLS certificate.</p> <p>TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>The <code>create load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600241.validator(path, query, header, formData, body)
-  let scheme = call_600241.pickScheme
+  let valid = call_602263.validator(path, query, header, formData, body)
+  let scheme = call_602263.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600241.url(scheme.get, call_600241.host, call_600241.base,
-                         call_600241.route, valid.getOrDefault("path"),
+  let url = call_602263.url(scheme.get, call_602263.host, call_602263.base,
+                         call_602263.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600241, url, valid)
+  result = atozHook(call_602263, url, valid)
 
-proc call*(call_600242: Call_CreateLoadBalancerTlsCertificate_600229;
+proc call*(call_602264: Call_CreateLoadBalancerTlsCertificate_602251;
           body: JsonNode): Recallable =
   ## createLoadBalancerTlsCertificate
   ## <p>Creates a Lightsail load balancer TLS certificate.</p> <p>TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>The <code>create load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600243 = newJObject()
+  var body_602265 = newJObject()
   if body != nil:
-    body_600243 = body
-  result = call_600242.call(nil, nil, nil, nil, body_600243)
+    body_602265 = body
+  result = call_602264.call(nil, nil, nil, nil, body_602265)
 
-var createLoadBalancerTlsCertificate* = Call_CreateLoadBalancerTlsCertificate_600229(
+var createLoadBalancerTlsCertificate* = Call_CreateLoadBalancerTlsCertificate_602251(
     name: "createLoadBalancerTlsCertificate", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.CreateLoadBalancerTlsCertificate",
-    validator: validate_CreateLoadBalancerTlsCertificate_600230, base: "/",
-    url: url_CreateLoadBalancerTlsCertificate_600231,
+    validator: validate_CreateLoadBalancerTlsCertificate_602252, base: "/",
+    url: url_CreateLoadBalancerTlsCertificate_602253,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRelationalDatabase_600244 = ref object of OpenApiRestCall_599368
-proc url_CreateRelationalDatabase_600246(protocol: Scheme; host: string;
+  Call_CreateRelationalDatabase_602266 = ref object of OpenApiRestCall_601389
+proc url_CreateRelationalDatabase_602268(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateRelationalDatabase_600245(path: JsonNode; query: JsonNode;
+proc validate_CreateRelationalDatabase_602267(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new database in Amazon Lightsail.</p> <p>The <code>create relational database</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -2322,57 +2342,57 @@ proc validate_CreateRelationalDatabase_600245(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600247 = header.getOrDefault("X-Amz-Date")
-  valid_600247 = validateParameter(valid_600247, JString, required = false,
-                                 default = nil)
-  if valid_600247 != nil:
-    section.add "X-Amz-Date", valid_600247
-  var valid_600248 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600248 = validateParameter(valid_600248, JString, required = false,
-                                 default = nil)
-  if valid_600248 != nil:
-    section.add "X-Amz-Security-Token", valid_600248
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600249 = header.getOrDefault("X-Amz-Target")
-  valid_600249 = validateParameter(valid_600249, JString, required = true, default = newJString(
+  var valid_602269 = header.getOrDefault("X-Amz-Target")
+  valid_602269 = validateParameter(valid_602269, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateRelationalDatabase"))
-  if valid_600249 != nil:
-    section.add "X-Amz-Target", valid_600249
-  var valid_600250 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600250 = validateParameter(valid_600250, JString, required = false,
+  if valid_602269 != nil:
+    section.add "X-Amz-Target", valid_602269
+  var valid_602270 = header.getOrDefault("X-Amz-Signature")
+  valid_602270 = validateParameter(valid_602270, JString, required = false,
                                  default = nil)
-  if valid_600250 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600250
-  var valid_600251 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600251 = validateParameter(valid_600251, JString, required = false,
+  if valid_602270 != nil:
+    section.add "X-Amz-Signature", valid_602270
+  var valid_602271 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602271 = validateParameter(valid_602271, JString, required = false,
                                  default = nil)
-  if valid_600251 != nil:
-    section.add "X-Amz-Algorithm", valid_600251
-  var valid_600252 = header.getOrDefault("X-Amz-Signature")
-  valid_600252 = validateParameter(valid_600252, JString, required = false,
+  if valid_602271 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602271
+  var valid_602272 = header.getOrDefault("X-Amz-Date")
+  valid_602272 = validateParameter(valid_602272, JString, required = false,
                                  default = nil)
-  if valid_600252 != nil:
-    section.add "X-Amz-Signature", valid_600252
-  var valid_600253 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600253 = validateParameter(valid_600253, JString, required = false,
+  if valid_602272 != nil:
+    section.add "X-Amz-Date", valid_602272
+  var valid_602273 = header.getOrDefault("X-Amz-Credential")
+  valid_602273 = validateParameter(valid_602273, JString, required = false,
                                  default = nil)
-  if valid_600253 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600253
-  var valid_600254 = header.getOrDefault("X-Amz-Credential")
-  valid_600254 = validateParameter(valid_600254, JString, required = false,
+  if valid_602273 != nil:
+    section.add "X-Amz-Credential", valid_602273
+  var valid_602274 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602274 = validateParameter(valid_602274, JString, required = false,
                                  default = nil)
-  if valid_600254 != nil:
-    section.add "X-Amz-Credential", valid_600254
+  if valid_602274 != nil:
+    section.add "X-Amz-Security-Token", valid_602274
+  var valid_602275 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602275 = validateParameter(valid_602275, JString, required = false,
+                                 default = nil)
+  if valid_602275 != nil:
+    section.add "X-Amz-Algorithm", valid_602275
+  var valid_602276 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602276 = validateParameter(valid_602276, JString, required = false,
+                                 default = nil)
+  if valid_602276 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602276
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2383,48 +2403,49 @@ proc validate_CreateRelationalDatabase_600245(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600256: Call_CreateRelationalDatabase_600244; path: JsonNode;
+proc call*(call_602278: Call_CreateRelationalDatabase_602266; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new database in Amazon Lightsail.</p> <p>The <code>create relational database</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600256.validator(path, query, header, formData, body)
-  let scheme = call_600256.pickScheme
+  let valid = call_602278.validator(path, query, header, formData, body)
+  let scheme = call_602278.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600256.url(scheme.get, call_600256.host, call_600256.base,
-                         call_600256.route, valid.getOrDefault("path"),
+  let url = call_602278.url(scheme.get, call_602278.host, call_602278.base,
+                         call_602278.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600256, url, valid)
+  result = atozHook(call_602278, url, valid)
 
-proc call*(call_600257: Call_CreateRelationalDatabase_600244; body: JsonNode): Recallable =
+proc call*(call_602279: Call_CreateRelationalDatabase_602266; body: JsonNode): Recallable =
   ## createRelationalDatabase
   ## <p>Creates a new database in Amazon Lightsail.</p> <p>The <code>create relational database</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600258 = newJObject()
+  var body_602280 = newJObject()
   if body != nil:
-    body_600258 = body
-  result = call_600257.call(nil, nil, nil, nil, body_600258)
+    body_602280 = body
+  result = call_602279.call(nil, nil, nil, nil, body_602280)
 
-var createRelationalDatabase* = Call_CreateRelationalDatabase_600244(
+var createRelationalDatabase* = Call_CreateRelationalDatabase_602266(
     name: "createRelationalDatabase", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.CreateRelationalDatabase",
-    validator: validate_CreateRelationalDatabase_600245, base: "/",
-    url: url_CreateRelationalDatabase_600246, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateRelationalDatabase_602267, base: "/",
+    url: url_CreateRelationalDatabase_602268, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRelationalDatabaseFromSnapshot_600259 = ref object of OpenApiRestCall_599368
-proc url_CreateRelationalDatabaseFromSnapshot_600261(protocol: Scheme;
+  Call_CreateRelationalDatabaseFromSnapshot_602281 = ref object of OpenApiRestCall_601389
+proc url_CreateRelationalDatabaseFromSnapshot_602283(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateRelationalDatabaseFromSnapshot_600260(path: JsonNode;
+proc validate_CreateRelationalDatabaseFromSnapshot_602282(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new database from an existing database snapshot in Amazon Lightsail.</p> <p>You can create a new database from a snapshot in if something goes wrong with your original database, or to change it to a different plan, such as a high availability or standard plan.</p> <p>The <code>create relational database from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by relationalDatabaseSnapshotName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -2435,57 +2456,57 @@ proc validate_CreateRelationalDatabaseFromSnapshot_600260(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600262 = header.getOrDefault("X-Amz-Date")
-  valid_600262 = validateParameter(valid_600262, JString, required = false,
-                                 default = nil)
-  if valid_600262 != nil:
-    section.add "X-Amz-Date", valid_600262
-  var valid_600263 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600263 = validateParameter(valid_600263, JString, required = false,
-                                 default = nil)
-  if valid_600263 != nil:
-    section.add "X-Amz-Security-Token", valid_600263
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600264 = header.getOrDefault("X-Amz-Target")
-  valid_600264 = validateParameter(valid_600264, JString, required = true, default = newJString(
+  var valid_602284 = header.getOrDefault("X-Amz-Target")
+  valid_602284 = validateParameter(valid_602284, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateRelationalDatabaseFromSnapshot"))
-  if valid_600264 != nil:
-    section.add "X-Amz-Target", valid_600264
-  var valid_600265 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600265 = validateParameter(valid_600265, JString, required = false,
+  if valid_602284 != nil:
+    section.add "X-Amz-Target", valid_602284
+  var valid_602285 = header.getOrDefault("X-Amz-Signature")
+  valid_602285 = validateParameter(valid_602285, JString, required = false,
                                  default = nil)
-  if valid_600265 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600265
-  var valid_600266 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600266 = validateParameter(valid_600266, JString, required = false,
+  if valid_602285 != nil:
+    section.add "X-Amz-Signature", valid_602285
+  var valid_602286 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602286 = validateParameter(valid_602286, JString, required = false,
                                  default = nil)
-  if valid_600266 != nil:
-    section.add "X-Amz-Algorithm", valid_600266
-  var valid_600267 = header.getOrDefault("X-Amz-Signature")
-  valid_600267 = validateParameter(valid_600267, JString, required = false,
+  if valid_602286 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602286
+  var valid_602287 = header.getOrDefault("X-Amz-Date")
+  valid_602287 = validateParameter(valid_602287, JString, required = false,
                                  default = nil)
-  if valid_600267 != nil:
-    section.add "X-Amz-Signature", valid_600267
-  var valid_600268 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600268 = validateParameter(valid_600268, JString, required = false,
+  if valid_602287 != nil:
+    section.add "X-Amz-Date", valid_602287
+  var valid_602288 = header.getOrDefault("X-Amz-Credential")
+  valid_602288 = validateParameter(valid_602288, JString, required = false,
                                  default = nil)
-  if valid_600268 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600268
-  var valid_600269 = header.getOrDefault("X-Amz-Credential")
-  valid_600269 = validateParameter(valid_600269, JString, required = false,
+  if valid_602288 != nil:
+    section.add "X-Amz-Credential", valid_602288
+  var valid_602289 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602289 = validateParameter(valid_602289, JString, required = false,
                                  default = nil)
-  if valid_600269 != nil:
-    section.add "X-Amz-Credential", valid_600269
+  if valid_602289 != nil:
+    section.add "X-Amz-Security-Token", valid_602289
+  var valid_602290 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602290 = validateParameter(valid_602290, JString, required = false,
+                                 default = nil)
+  if valid_602290 != nil:
+    section.add "X-Amz-Algorithm", valid_602290
+  var valid_602291 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602291 = validateParameter(valid_602291, JString, required = false,
+                                 default = nil)
+  if valid_602291 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602291
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2496,50 +2517,51 @@ proc validate_CreateRelationalDatabaseFromSnapshot_600260(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600271: Call_CreateRelationalDatabaseFromSnapshot_600259;
+proc call*(call_602293: Call_CreateRelationalDatabaseFromSnapshot_602281;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Creates a new database from an existing database snapshot in Amazon Lightsail.</p> <p>You can create a new database from a snapshot in if something goes wrong with your original database, or to change it to a different plan, such as a high availability or standard plan.</p> <p>The <code>create relational database from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by relationalDatabaseSnapshotName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600271.validator(path, query, header, formData, body)
-  let scheme = call_600271.pickScheme
+  let valid = call_602293.validator(path, query, header, formData, body)
+  let scheme = call_602293.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600271.url(scheme.get, call_600271.host, call_600271.base,
-                         call_600271.route, valid.getOrDefault("path"),
+  let url = call_602293.url(scheme.get, call_602293.host, call_602293.base,
+                         call_602293.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600271, url, valid)
+  result = atozHook(call_602293, url, valid)
 
-proc call*(call_600272: Call_CreateRelationalDatabaseFromSnapshot_600259;
+proc call*(call_602294: Call_CreateRelationalDatabaseFromSnapshot_602281;
           body: JsonNode): Recallable =
   ## createRelationalDatabaseFromSnapshot
   ## <p>Creates a new database from an existing database snapshot in Amazon Lightsail.</p> <p>You can create a new database from a snapshot in if something goes wrong with your original database, or to change it to a different plan, such as a high availability or standard plan.</p> <p>The <code>create relational database from snapshot</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by relationalDatabaseSnapshotName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600273 = newJObject()
+  var body_602295 = newJObject()
   if body != nil:
-    body_600273 = body
-  result = call_600272.call(nil, nil, nil, nil, body_600273)
+    body_602295 = body
+  result = call_602294.call(nil, nil, nil, nil, body_602295)
 
-var createRelationalDatabaseFromSnapshot* = Call_CreateRelationalDatabaseFromSnapshot_600259(
+var createRelationalDatabaseFromSnapshot* = Call_CreateRelationalDatabaseFromSnapshot_602281(
     name: "createRelationalDatabaseFromSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.CreateRelationalDatabaseFromSnapshot",
-    validator: validate_CreateRelationalDatabaseFromSnapshot_600260, base: "/",
-    url: url_CreateRelationalDatabaseFromSnapshot_600261,
+    validator: validate_CreateRelationalDatabaseFromSnapshot_602282, base: "/",
+    url: url_CreateRelationalDatabaseFromSnapshot_602283,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRelationalDatabaseSnapshot_600274 = ref object of OpenApiRestCall_599368
-proc url_CreateRelationalDatabaseSnapshot_600276(protocol: Scheme; host: string;
+  Call_CreateRelationalDatabaseSnapshot_602296 = ref object of OpenApiRestCall_601389
+proc url_CreateRelationalDatabaseSnapshot_602298(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateRelationalDatabaseSnapshot_600275(path: JsonNode;
+proc validate_CreateRelationalDatabaseSnapshot_602297(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a snapshot of your database in Amazon Lightsail. You can use snapshots for backups, to make copies of a database, and to save data before deleting a database.</p> <p>The <code>create relational database snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -2550,57 +2572,57 @@ proc validate_CreateRelationalDatabaseSnapshot_600275(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600277 = header.getOrDefault("X-Amz-Date")
-  valid_600277 = validateParameter(valid_600277, JString, required = false,
-                                 default = nil)
-  if valid_600277 != nil:
-    section.add "X-Amz-Date", valid_600277
-  var valid_600278 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600278 = validateParameter(valid_600278, JString, required = false,
-                                 default = nil)
-  if valid_600278 != nil:
-    section.add "X-Amz-Security-Token", valid_600278
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600279 = header.getOrDefault("X-Amz-Target")
-  valid_600279 = validateParameter(valid_600279, JString, required = true, default = newJString(
+  var valid_602299 = header.getOrDefault("X-Amz-Target")
+  valid_602299 = validateParameter(valid_602299, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateRelationalDatabaseSnapshot"))
-  if valid_600279 != nil:
-    section.add "X-Amz-Target", valid_600279
-  var valid_600280 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600280 = validateParameter(valid_600280, JString, required = false,
+  if valid_602299 != nil:
+    section.add "X-Amz-Target", valid_602299
+  var valid_602300 = header.getOrDefault("X-Amz-Signature")
+  valid_602300 = validateParameter(valid_602300, JString, required = false,
                                  default = nil)
-  if valid_600280 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600280
-  var valid_600281 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600281 = validateParameter(valid_600281, JString, required = false,
+  if valid_602300 != nil:
+    section.add "X-Amz-Signature", valid_602300
+  var valid_602301 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602301 = validateParameter(valid_602301, JString, required = false,
                                  default = nil)
-  if valid_600281 != nil:
-    section.add "X-Amz-Algorithm", valid_600281
-  var valid_600282 = header.getOrDefault("X-Amz-Signature")
-  valid_600282 = validateParameter(valid_600282, JString, required = false,
+  if valid_602301 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602301
+  var valid_602302 = header.getOrDefault("X-Amz-Date")
+  valid_602302 = validateParameter(valid_602302, JString, required = false,
                                  default = nil)
-  if valid_600282 != nil:
-    section.add "X-Amz-Signature", valid_600282
-  var valid_600283 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600283 = validateParameter(valid_600283, JString, required = false,
+  if valid_602302 != nil:
+    section.add "X-Amz-Date", valid_602302
+  var valid_602303 = header.getOrDefault("X-Amz-Credential")
+  valid_602303 = validateParameter(valid_602303, JString, required = false,
                                  default = nil)
-  if valid_600283 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600283
-  var valid_600284 = header.getOrDefault("X-Amz-Credential")
-  valid_600284 = validateParameter(valid_600284, JString, required = false,
+  if valid_602303 != nil:
+    section.add "X-Amz-Credential", valid_602303
+  var valid_602304 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602304 = validateParameter(valid_602304, JString, required = false,
                                  default = nil)
-  if valid_600284 != nil:
-    section.add "X-Amz-Credential", valid_600284
+  if valid_602304 != nil:
+    section.add "X-Amz-Security-Token", valid_602304
+  var valid_602305 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602305 = validateParameter(valid_602305, JString, required = false,
+                                 default = nil)
+  if valid_602305 != nil:
+    section.add "X-Amz-Algorithm", valid_602305
+  var valid_602306 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602306 = validateParameter(valid_602306, JString, required = false,
+                                 default = nil)
+  if valid_602306 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602306
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2611,53 +2633,54 @@ proc validate_CreateRelationalDatabaseSnapshot_600275(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600286: Call_CreateRelationalDatabaseSnapshot_600274;
+proc call*(call_602308: Call_CreateRelationalDatabaseSnapshot_602296;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Creates a snapshot of your database in Amazon Lightsail. You can use snapshots for backups, to make copies of a database, and to save data before deleting a database.</p> <p>The <code>create relational database snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600286.validator(path, query, header, formData, body)
-  let scheme = call_600286.pickScheme
+  let valid = call_602308.validator(path, query, header, formData, body)
+  let scheme = call_602308.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600286.url(scheme.get, call_600286.host, call_600286.base,
-                         call_600286.route, valid.getOrDefault("path"),
+  let url = call_602308.url(scheme.get, call_602308.host, call_602308.base,
+                         call_602308.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600286, url, valid)
+  result = atozHook(call_602308, url, valid)
 
-proc call*(call_600287: Call_CreateRelationalDatabaseSnapshot_600274;
+proc call*(call_602309: Call_CreateRelationalDatabaseSnapshot_602296;
           body: JsonNode): Recallable =
   ## createRelationalDatabaseSnapshot
   ## <p>Creates a snapshot of your database in Amazon Lightsail. You can use snapshots for backups, to make copies of a database, and to save data before deleting a database.</p> <p>The <code>create relational database snapshot</code> operation supports tag-based access control via request tags. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600288 = newJObject()
+  var body_602310 = newJObject()
   if body != nil:
-    body_600288 = body
-  result = call_600287.call(nil, nil, nil, nil, body_600288)
+    body_602310 = body
+  result = call_602309.call(nil, nil, nil, nil, body_602310)
 
-var createRelationalDatabaseSnapshot* = Call_CreateRelationalDatabaseSnapshot_600274(
+var createRelationalDatabaseSnapshot* = Call_CreateRelationalDatabaseSnapshot_602296(
     name: "createRelationalDatabaseSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.CreateRelationalDatabaseSnapshot",
-    validator: validate_CreateRelationalDatabaseSnapshot_600275, base: "/",
-    url: url_CreateRelationalDatabaseSnapshot_600276,
+    validator: validate_CreateRelationalDatabaseSnapshot_602297, base: "/",
+    url: url_CreateRelationalDatabaseSnapshot_602298,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteAutoSnapshot_600289 = ref object of OpenApiRestCall_599368
-proc url_DeleteAutoSnapshot_600291(protocol: Scheme; host: string; base: string;
+  Call_DeleteAutoSnapshot_602311 = ref object of OpenApiRestCall_601389
+proc url_DeleteAutoSnapshot_602313(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteAutoSnapshot_600290(path: JsonNode; query: JsonNode;
+proc validate_DeleteAutoSnapshot_602312(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
-  ## Deletes an automatic snapshot for an instance or disk.
+  ## Deletes an automatic snapshot of an instance or disk. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2666,57 +2689,57 @@ proc validate_DeleteAutoSnapshot_600290(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600292 = header.getOrDefault("X-Amz-Date")
-  valid_600292 = validateParameter(valid_600292, JString, required = false,
-                                 default = nil)
-  if valid_600292 != nil:
-    section.add "X-Amz-Date", valid_600292
-  var valid_600293 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600293 = validateParameter(valid_600293, JString, required = false,
-                                 default = nil)
-  if valid_600293 != nil:
-    section.add "X-Amz-Security-Token", valid_600293
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600294 = header.getOrDefault("X-Amz-Target")
-  valid_600294 = validateParameter(valid_600294, JString, required = true, default = newJString(
+  var valid_602314 = header.getOrDefault("X-Amz-Target")
+  valid_602314 = validateParameter(valid_602314, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteAutoSnapshot"))
-  if valid_600294 != nil:
-    section.add "X-Amz-Target", valid_600294
-  var valid_600295 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600295 = validateParameter(valid_600295, JString, required = false,
+  if valid_602314 != nil:
+    section.add "X-Amz-Target", valid_602314
+  var valid_602315 = header.getOrDefault("X-Amz-Signature")
+  valid_602315 = validateParameter(valid_602315, JString, required = false,
                                  default = nil)
-  if valid_600295 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600295
-  var valid_600296 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600296 = validateParameter(valid_600296, JString, required = false,
+  if valid_602315 != nil:
+    section.add "X-Amz-Signature", valid_602315
+  var valid_602316 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602316 = validateParameter(valid_602316, JString, required = false,
                                  default = nil)
-  if valid_600296 != nil:
-    section.add "X-Amz-Algorithm", valid_600296
-  var valid_600297 = header.getOrDefault("X-Amz-Signature")
-  valid_600297 = validateParameter(valid_600297, JString, required = false,
+  if valid_602316 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602316
+  var valid_602317 = header.getOrDefault("X-Amz-Date")
+  valid_602317 = validateParameter(valid_602317, JString, required = false,
                                  default = nil)
-  if valid_600297 != nil:
-    section.add "X-Amz-Signature", valid_600297
-  var valid_600298 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600298 = validateParameter(valid_600298, JString, required = false,
+  if valid_602317 != nil:
+    section.add "X-Amz-Date", valid_602317
+  var valid_602318 = header.getOrDefault("X-Amz-Credential")
+  valid_602318 = validateParameter(valid_602318, JString, required = false,
                                  default = nil)
-  if valid_600298 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600298
-  var valid_600299 = header.getOrDefault("X-Amz-Credential")
-  valid_600299 = validateParameter(valid_600299, JString, required = false,
+  if valid_602318 != nil:
+    section.add "X-Amz-Credential", valid_602318
+  var valid_602319 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602319 = validateParameter(valid_602319, JString, required = false,
                                  default = nil)
-  if valid_600299 != nil:
-    section.add "X-Amz-Credential", valid_600299
+  if valid_602319 != nil:
+    section.add "X-Amz-Security-Token", valid_602319
+  var valid_602320 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602320 = validateParameter(valid_602320, JString, required = false,
+                                 default = nil)
+  if valid_602320 != nil:
+    section.add "X-Amz-Algorithm", valid_602320
+  var valid_602321 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602321 = validateParameter(valid_602321, JString, required = false,
+                                 default = nil)
+  if valid_602321 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602321
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2727,48 +2750,49 @@ proc validate_DeleteAutoSnapshot_600290(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600301: Call_DeleteAutoSnapshot_600289; path: JsonNode;
+proc call*(call_602323: Call_DeleteAutoSnapshot_602311; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes an automatic snapshot for an instance or disk.
+  ## Deletes an automatic snapshot of an instance or disk. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ## 
-  let valid = call_600301.validator(path, query, header, formData, body)
-  let scheme = call_600301.pickScheme
+  let valid = call_602323.validator(path, query, header, formData, body)
+  let scheme = call_602323.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600301.url(scheme.get, call_600301.host, call_600301.base,
-                         call_600301.route, valid.getOrDefault("path"),
+  let url = call_602323.url(scheme.get, call_602323.host, call_602323.base,
+                         call_602323.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600301, url, valid)
+  result = atozHook(call_602323, url, valid)
 
-proc call*(call_600302: Call_DeleteAutoSnapshot_600289; body: JsonNode): Recallable =
+proc call*(call_602324: Call_DeleteAutoSnapshot_602311; body: JsonNode): Recallable =
   ## deleteAutoSnapshot
-  ## Deletes an automatic snapshot for an instance or disk.
+  ## Deletes an automatic snapshot of an instance or disk. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ##   body: JObject (required)
-  var body_600303 = newJObject()
+  var body_602325 = newJObject()
   if body != nil:
-    body_600303 = body
-  result = call_600302.call(nil, nil, nil, nil, body_600303)
+    body_602325 = body
+  result = call_602324.call(nil, nil, nil, nil, body_602325)
 
-var deleteAutoSnapshot* = Call_DeleteAutoSnapshot_600289(
+var deleteAutoSnapshot* = Call_DeleteAutoSnapshot_602311(
     name: "deleteAutoSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteAutoSnapshot",
-    validator: validate_DeleteAutoSnapshot_600290, base: "/",
-    url: url_DeleteAutoSnapshot_600291, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteAutoSnapshot_602312, base: "/",
+    url: url_DeleteAutoSnapshot_602313, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDisk_600304 = ref object of OpenApiRestCall_599368
-proc url_DeleteDisk_600306(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteDisk_602326 = ref object of OpenApiRestCall_601389
+proc url_DeleteDisk_602328(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteDisk_600305(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteDisk_602327(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified block storage disk. The disk must be in the <code>available</code> state (not attached to a Lightsail instance).</p> <note> <p>The disk may remain in the <code>deleting</code> state for several minutes.</p> </note> <p>The <code>delete disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -2779,57 +2803,57 @@ proc validate_DeleteDisk_600305(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600307 = header.getOrDefault("X-Amz-Date")
-  valid_600307 = validateParameter(valid_600307, JString, required = false,
-                                 default = nil)
-  if valid_600307 != nil:
-    section.add "X-Amz-Date", valid_600307
-  var valid_600308 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600308 = validateParameter(valid_600308, JString, required = false,
-                                 default = nil)
-  if valid_600308 != nil:
-    section.add "X-Amz-Security-Token", valid_600308
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600309 = header.getOrDefault("X-Amz-Target")
-  valid_600309 = validateParameter(valid_600309, JString, required = true, default = newJString(
+  var valid_602329 = header.getOrDefault("X-Amz-Target")
+  valid_602329 = validateParameter(valid_602329, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteDisk"))
-  if valid_600309 != nil:
-    section.add "X-Amz-Target", valid_600309
-  var valid_600310 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600310 = validateParameter(valid_600310, JString, required = false,
+  if valid_602329 != nil:
+    section.add "X-Amz-Target", valid_602329
+  var valid_602330 = header.getOrDefault("X-Amz-Signature")
+  valid_602330 = validateParameter(valid_602330, JString, required = false,
                                  default = nil)
-  if valid_600310 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600310
-  var valid_600311 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600311 = validateParameter(valid_600311, JString, required = false,
+  if valid_602330 != nil:
+    section.add "X-Amz-Signature", valid_602330
+  var valid_602331 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602331 = validateParameter(valid_602331, JString, required = false,
                                  default = nil)
-  if valid_600311 != nil:
-    section.add "X-Amz-Algorithm", valid_600311
-  var valid_600312 = header.getOrDefault("X-Amz-Signature")
-  valid_600312 = validateParameter(valid_600312, JString, required = false,
+  if valid_602331 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602331
+  var valid_602332 = header.getOrDefault("X-Amz-Date")
+  valid_602332 = validateParameter(valid_602332, JString, required = false,
                                  default = nil)
-  if valid_600312 != nil:
-    section.add "X-Amz-Signature", valid_600312
-  var valid_600313 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600313 = validateParameter(valid_600313, JString, required = false,
+  if valid_602332 != nil:
+    section.add "X-Amz-Date", valid_602332
+  var valid_602333 = header.getOrDefault("X-Amz-Credential")
+  valid_602333 = validateParameter(valid_602333, JString, required = false,
                                  default = nil)
-  if valid_600313 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600313
-  var valid_600314 = header.getOrDefault("X-Amz-Credential")
-  valid_600314 = validateParameter(valid_600314, JString, required = false,
+  if valid_602333 != nil:
+    section.add "X-Amz-Credential", valid_602333
+  var valid_602334 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602334 = validateParameter(valid_602334, JString, required = false,
                                  default = nil)
-  if valid_600314 != nil:
-    section.add "X-Amz-Credential", valid_600314
+  if valid_602334 != nil:
+    section.add "X-Amz-Security-Token", valid_602334
+  var valid_602335 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602335 = validateParameter(valid_602335, JString, required = false,
+                                 default = nil)
+  if valid_602335 != nil:
+    section.add "X-Amz-Algorithm", valid_602335
+  var valid_602336 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602336 = validateParameter(valid_602336, JString, required = false,
+                                 default = nil)
+  if valid_602336 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602336
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2840,48 +2864,49 @@ proc validate_DeleteDisk_600305(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600316: Call_DeleteDisk_600304; path: JsonNode; query: JsonNode;
+proc call*(call_602338: Call_DeleteDisk_602326; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified block storage disk. The disk must be in the <code>available</code> state (not attached to a Lightsail instance).</p> <note> <p>The disk may remain in the <code>deleting</code> state for several minutes.</p> </note> <p>The <code>delete disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600316.validator(path, query, header, formData, body)
-  let scheme = call_600316.pickScheme
+  let valid = call_602338.validator(path, query, header, formData, body)
+  let scheme = call_602338.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600316.url(scheme.get, call_600316.host, call_600316.base,
-                         call_600316.route, valid.getOrDefault("path"),
+  let url = call_602338.url(scheme.get, call_602338.host, call_602338.base,
+                         call_602338.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600316, url, valid)
+  result = atozHook(call_602338, url, valid)
 
-proc call*(call_600317: Call_DeleteDisk_600304; body: JsonNode): Recallable =
+proc call*(call_602339: Call_DeleteDisk_602326; body: JsonNode): Recallable =
   ## deleteDisk
   ## <p>Deletes the specified block storage disk. The disk must be in the <code>available</code> state (not attached to a Lightsail instance).</p> <note> <p>The disk may remain in the <code>deleting</code> state for several minutes.</p> </note> <p>The <code>delete disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600318 = newJObject()
+  var body_602340 = newJObject()
   if body != nil:
-    body_600318 = body
-  result = call_600317.call(nil, nil, nil, nil, body_600318)
+    body_602340 = body
+  result = call_602339.call(nil, nil, nil, nil, body_602340)
 
-var deleteDisk* = Call_DeleteDisk_600304(name: "deleteDisk",
+var deleteDisk* = Call_DeleteDisk_602326(name: "deleteDisk",
                                       meth: HttpMethod.HttpPost,
                                       host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.DeleteDisk",
-                                      validator: validate_DeleteDisk_600305,
-                                      base: "/", url: url_DeleteDisk_600306,
+                                      validator: validate_DeleteDisk_602327,
+                                      base: "/", url: url_DeleteDisk_602328,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDiskSnapshot_600319 = ref object of OpenApiRestCall_599368
-proc url_DeleteDiskSnapshot_600321(protocol: Scheme; host: string; base: string;
+  Call_DeleteDiskSnapshot_602341 = ref object of OpenApiRestCall_601389
+proc url_DeleteDiskSnapshot_602343(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteDiskSnapshot_600320(path: JsonNode; query: JsonNode;
+proc validate_DeleteDiskSnapshot_602342(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Deletes the specified disk snapshot.</p> <p>When you make periodic snapshots of a disk, the snapshots are incremental, and only the blocks on the device that have changed since your last snapshot are saved in the new snapshot. When you delete a snapshot, only the data not needed for any other snapshot is removed. So regardless of which prior snapshots have been deleted, all active snapshots will have access to all the information needed to restore the disk.</p> <p>The <code>delete disk snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -2893,57 +2918,57 @@ proc validate_DeleteDiskSnapshot_600320(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600322 = header.getOrDefault("X-Amz-Date")
-  valid_600322 = validateParameter(valid_600322, JString, required = false,
-                                 default = nil)
-  if valid_600322 != nil:
-    section.add "X-Amz-Date", valid_600322
-  var valid_600323 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600323 = validateParameter(valid_600323, JString, required = false,
-                                 default = nil)
-  if valid_600323 != nil:
-    section.add "X-Amz-Security-Token", valid_600323
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600324 = header.getOrDefault("X-Amz-Target")
-  valid_600324 = validateParameter(valid_600324, JString, required = true, default = newJString(
+  var valid_602344 = header.getOrDefault("X-Amz-Target")
+  valid_602344 = validateParameter(valid_602344, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteDiskSnapshot"))
-  if valid_600324 != nil:
-    section.add "X-Amz-Target", valid_600324
-  var valid_600325 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600325 = validateParameter(valid_600325, JString, required = false,
+  if valid_602344 != nil:
+    section.add "X-Amz-Target", valid_602344
+  var valid_602345 = header.getOrDefault("X-Amz-Signature")
+  valid_602345 = validateParameter(valid_602345, JString, required = false,
                                  default = nil)
-  if valid_600325 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600325
-  var valid_600326 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600326 = validateParameter(valid_600326, JString, required = false,
+  if valid_602345 != nil:
+    section.add "X-Amz-Signature", valid_602345
+  var valid_602346 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602346 = validateParameter(valid_602346, JString, required = false,
                                  default = nil)
-  if valid_600326 != nil:
-    section.add "X-Amz-Algorithm", valid_600326
-  var valid_600327 = header.getOrDefault("X-Amz-Signature")
-  valid_600327 = validateParameter(valid_600327, JString, required = false,
+  if valid_602346 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602346
+  var valid_602347 = header.getOrDefault("X-Amz-Date")
+  valid_602347 = validateParameter(valid_602347, JString, required = false,
                                  default = nil)
-  if valid_600327 != nil:
-    section.add "X-Amz-Signature", valid_600327
-  var valid_600328 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600328 = validateParameter(valid_600328, JString, required = false,
+  if valid_602347 != nil:
+    section.add "X-Amz-Date", valid_602347
+  var valid_602348 = header.getOrDefault("X-Amz-Credential")
+  valid_602348 = validateParameter(valid_602348, JString, required = false,
                                  default = nil)
-  if valid_600328 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600328
-  var valid_600329 = header.getOrDefault("X-Amz-Credential")
-  valid_600329 = validateParameter(valid_600329, JString, required = false,
+  if valid_602348 != nil:
+    section.add "X-Amz-Credential", valid_602348
+  var valid_602349 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602349 = validateParameter(valid_602349, JString, required = false,
                                  default = nil)
-  if valid_600329 != nil:
-    section.add "X-Amz-Credential", valid_600329
+  if valid_602349 != nil:
+    section.add "X-Amz-Security-Token", valid_602349
+  var valid_602350 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602350 = validateParameter(valid_602350, JString, required = false,
+                                 default = nil)
+  if valid_602350 != nil:
+    section.add "X-Amz-Algorithm", valid_602350
+  var valid_602351 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602351 = validateParameter(valid_602351, JString, required = false,
+                                 default = nil)
+  if valid_602351 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602351
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2954,48 +2979,49 @@ proc validate_DeleteDiskSnapshot_600320(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600331: Call_DeleteDiskSnapshot_600319; path: JsonNode;
+proc call*(call_602353: Call_DeleteDiskSnapshot_602341; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified disk snapshot.</p> <p>When you make periodic snapshots of a disk, the snapshots are incremental, and only the blocks on the device that have changed since your last snapshot are saved in the new snapshot. When you delete a snapshot, only the data not needed for any other snapshot is removed. So regardless of which prior snapshots have been deleted, all active snapshots will have access to all the information needed to restore the disk.</p> <p>The <code>delete disk snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600331.validator(path, query, header, formData, body)
-  let scheme = call_600331.pickScheme
+  let valid = call_602353.validator(path, query, header, formData, body)
+  let scheme = call_602353.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600331.url(scheme.get, call_600331.host, call_600331.base,
-                         call_600331.route, valid.getOrDefault("path"),
+  let url = call_602353.url(scheme.get, call_602353.host, call_602353.base,
+                         call_602353.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600331, url, valid)
+  result = atozHook(call_602353, url, valid)
 
-proc call*(call_600332: Call_DeleteDiskSnapshot_600319; body: JsonNode): Recallable =
+proc call*(call_602354: Call_DeleteDiskSnapshot_602341; body: JsonNode): Recallable =
   ## deleteDiskSnapshot
   ## <p>Deletes the specified disk snapshot.</p> <p>When you make periodic snapshots of a disk, the snapshots are incremental, and only the blocks on the device that have changed since your last snapshot are saved in the new snapshot. When you delete a snapshot, only the data not needed for any other snapshot is removed. So regardless of which prior snapshots have been deleted, all active snapshots will have access to all the information needed to restore the disk.</p> <p>The <code>delete disk snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600333 = newJObject()
+  var body_602355 = newJObject()
   if body != nil:
-    body_600333 = body
-  result = call_600332.call(nil, nil, nil, nil, body_600333)
+    body_602355 = body
+  result = call_602354.call(nil, nil, nil, nil, body_602355)
 
-var deleteDiskSnapshot* = Call_DeleteDiskSnapshot_600319(
+var deleteDiskSnapshot* = Call_DeleteDiskSnapshot_602341(
     name: "deleteDiskSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteDiskSnapshot",
-    validator: validate_DeleteDiskSnapshot_600320, base: "/",
-    url: url_DeleteDiskSnapshot_600321, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteDiskSnapshot_602342, base: "/",
+    url: url_DeleteDiskSnapshot_602343, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDomain_600334 = ref object of OpenApiRestCall_599368
-proc url_DeleteDomain_600336(protocol: Scheme; host: string; base: string;
+  Call_DeleteDomain_602356 = ref object of OpenApiRestCall_601389
+proc url_DeleteDomain_602358(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteDomain_600335(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteDomain_602357(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified domain recordset and all of its domain records.</p> <p>The <code>delete domain</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -3006,57 +3032,57 @@ proc validate_DeleteDomain_600335(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600337 = header.getOrDefault("X-Amz-Date")
-  valid_600337 = validateParameter(valid_600337, JString, required = false,
-                                 default = nil)
-  if valid_600337 != nil:
-    section.add "X-Amz-Date", valid_600337
-  var valid_600338 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600338 = validateParameter(valid_600338, JString, required = false,
-                                 default = nil)
-  if valid_600338 != nil:
-    section.add "X-Amz-Security-Token", valid_600338
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600339 = header.getOrDefault("X-Amz-Target")
-  valid_600339 = validateParameter(valid_600339, JString, required = true, default = newJString(
+  var valid_602359 = header.getOrDefault("X-Amz-Target")
+  valid_602359 = validateParameter(valid_602359, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteDomain"))
-  if valid_600339 != nil:
-    section.add "X-Amz-Target", valid_600339
-  var valid_600340 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600340 = validateParameter(valid_600340, JString, required = false,
+  if valid_602359 != nil:
+    section.add "X-Amz-Target", valid_602359
+  var valid_602360 = header.getOrDefault("X-Amz-Signature")
+  valid_602360 = validateParameter(valid_602360, JString, required = false,
                                  default = nil)
-  if valid_600340 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600340
-  var valid_600341 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600341 = validateParameter(valid_600341, JString, required = false,
+  if valid_602360 != nil:
+    section.add "X-Amz-Signature", valid_602360
+  var valid_602361 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602361 = validateParameter(valid_602361, JString, required = false,
                                  default = nil)
-  if valid_600341 != nil:
-    section.add "X-Amz-Algorithm", valid_600341
-  var valid_600342 = header.getOrDefault("X-Amz-Signature")
-  valid_600342 = validateParameter(valid_600342, JString, required = false,
+  if valid_602361 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602361
+  var valid_602362 = header.getOrDefault("X-Amz-Date")
+  valid_602362 = validateParameter(valid_602362, JString, required = false,
                                  default = nil)
-  if valid_600342 != nil:
-    section.add "X-Amz-Signature", valid_600342
-  var valid_600343 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600343 = validateParameter(valid_600343, JString, required = false,
+  if valid_602362 != nil:
+    section.add "X-Amz-Date", valid_602362
+  var valid_602363 = header.getOrDefault("X-Amz-Credential")
+  valid_602363 = validateParameter(valid_602363, JString, required = false,
                                  default = nil)
-  if valid_600343 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600343
-  var valid_600344 = header.getOrDefault("X-Amz-Credential")
-  valid_600344 = validateParameter(valid_600344, JString, required = false,
+  if valid_602363 != nil:
+    section.add "X-Amz-Credential", valid_602363
+  var valid_602364 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602364 = validateParameter(valid_602364, JString, required = false,
                                  default = nil)
-  if valid_600344 != nil:
-    section.add "X-Amz-Credential", valid_600344
+  if valid_602364 != nil:
+    section.add "X-Amz-Security-Token", valid_602364
+  var valid_602365 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602365 = validateParameter(valid_602365, JString, required = false,
+                                 default = nil)
+  if valid_602365 != nil:
+    section.add "X-Amz-Algorithm", valid_602365
+  var valid_602366 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602366 = validateParameter(valid_602366, JString, required = false,
+                                 default = nil)
+  if valid_602366 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602366
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3067,47 +3093,48 @@ proc validate_DeleteDomain_600335(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600346: Call_DeleteDomain_600334; path: JsonNode; query: JsonNode;
+proc call*(call_602368: Call_DeleteDomain_602356; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified domain recordset and all of its domain records.</p> <p>The <code>delete domain</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600346.validator(path, query, header, formData, body)
-  let scheme = call_600346.pickScheme
+  let valid = call_602368.validator(path, query, header, formData, body)
+  let scheme = call_602368.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600346.url(scheme.get, call_600346.host, call_600346.base,
-                         call_600346.route, valid.getOrDefault("path"),
+  let url = call_602368.url(scheme.get, call_602368.host, call_602368.base,
+                         call_602368.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600346, url, valid)
+  result = atozHook(call_602368, url, valid)
 
-proc call*(call_600347: Call_DeleteDomain_600334; body: JsonNode): Recallable =
+proc call*(call_602369: Call_DeleteDomain_602356; body: JsonNode): Recallable =
   ## deleteDomain
   ## <p>Deletes the specified domain recordset and all of its domain records.</p> <p>The <code>delete domain</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600348 = newJObject()
+  var body_602370 = newJObject()
   if body != nil:
-    body_600348 = body
-  result = call_600347.call(nil, nil, nil, nil, body_600348)
+    body_602370 = body
+  result = call_602369.call(nil, nil, nil, nil, body_602370)
 
-var deleteDomain* = Call_DeleteDomain_600334(name: "deleteDomain",
+var deleteDomain* = Call_DeleteDomain_602356(name: "deleteDomain",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteDomain",
-    validator: validate_DeleteDomain_600335, base: "/", url: url_DeleteDomain_600336,
+    validator: validate_DeleteDomain_602357, base: "/", url: url_DeleteDomain_602358,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteDomainEntry_600349 = ref object of OpenApiRestCall_599368
-proc url_DeleteDomainEntry_600351(protocol: Scheme; host: string; base: string;
+  Call_DeleteDomainEntry_602371 = ref object of OpenApiRestCall_601389
+proc url_DeleteDomainEntry_602373(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteDomainEntry_600350(path: JsonNode; query: JsonNode;
+proc validate_DeleteDomainEntry_602372(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes a specific domain entry.</p> <p>The <code>delete domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -3119,57 +3146,57 @@ proc validate_DeleteDomainEntry_600350(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600352 = header.getOrDefault("X-Amz-Date")
-  valid_600352 = validateParameter(valid_600352, JString, required = false,
-                                 default = nil)
-  if valid_600352 != nil:
-    section.add "X-Amz-Date", valid_600352
-  var valid_600353 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600353 = validateParameter(valid_600353, JString, required = false,
-                                 default = nil)
-  if valid_600353 != nil:
-    section.add "X-Amz-Security-Token", valid_600353
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600354 = header.getOrDefault("X-Amz-Target")
-  valid_600354 = validateParameter(valid_600354, JString, required = true, default = newJString(
+  var valid_602374 = header.getOrDefault("X-Amz-Target")
+  valid_602374 = validateParameter(valid_602374, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteDomainEntry"))
-  if valid_600354 != nil:
-    section.add "X-Amz-Target", valid_600354
-  var valid_600355 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600355 = validateParameter(valid_600355, JString, required = false,
+  if valid_602374 != nil:
+    section.add "X-Amz-Target", valid_602374
+  var valid_602375 = header.getOrDefault("X-Amz-Signature")
+  valid_602375 = validateParameter(valid_602375, JString, required = false,
                                  default = nil)
-  if valid_600355 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600355
-  var valid_600356 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600356 = validateParameter(valid_600356, JString, required = false,
+  if valid_602375 != nil:
+    section.add "X-Amz-Signature", valid_602375
+  var valid_602376 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602376 = validateParameter(valid_602376, JString, required = false,
                                  default = nil)
-  if valid_600356 != nil:
-    section.add "X-Amz-Algorithm", valid_600356
-  var valid_600357 = header.getOrDefault("X-Amz-Signature")
-  valid_600357 = validateParameter(valid_600357, JString, required = false,
+  if valid_602376 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602376
+  var valid_602377 = header.getOrDefault("X-Amz-Date")
+  valid_602377 = validateParameter(valid_602377, JString, required = false,
                                  default = nil)
-  if valid_600357 != nil:
-    section.add "X-Amz-Signature", valid_600357
-  var valid_600358 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600358 = validateParameter(valid_600358, JString, required = false,
+  if valid_602377 != nil:
+    section.add "X-Amz-Date", valid_602377
+  var valid_602378 = header.getOrDefault("X-Amz-Credential")
+  valid_602378 = validateParameter(valid_602378, JString, required = false,
                                  default = nil)
-  if valid_600358 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600358
-  var valid_600359 = header.getOrDefault("X-Amz-Credential")
-  valid_600359 = validateParameter(valid_600359, JString, required = false,
+  if valid_602378 != nil:
+    section.add "X-Amz-Credential", valid_602378
+  var valid_602379 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602379 = validateParameter(valid_602379, JString, required = false,
                                  default = nil)
-  if valid_600359 != nil:
-    section.add "X-Amz-Credential", valid_600359
+  if valid_602379 != nil:
+    section.add "X-Amz-Security-Token", valid_602379
+  var valid_602380 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602380 = validateParameter(valid_602380, JString, required = false,
+                                 default = nil)
+  if valid_602380 != nil:
+    section.add "X-Amz-Algorithm", valid_602380
+  var valid_602381 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602381 = validateParameter(valid_602381, JString, required = false,
+                                 default = nil)
+  if valid_602381 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602381
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3180,47 +3207,48 @@ proc validate_DeleteDomainEntry_600350(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600361: Call_DeleteDomainEntry_600349; path: JsonNode;
+proc call*(call_602383: Call_DeleteDomainEntry_602371; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specific domain entry.</p> <p>The <code>delete domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600361.validator(path, query, header, formData, body)
-  let scheme = call_600361.pickScheme
+  let valid = call_602383.validator(path, query, header, formData, body)
+  let scheme = call_602383.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600361.url(scheme.get, call_600361.host, call_600361.base,
-                         call_600361.route, valid.getOrDefault("path"),
+  let url = call_602383.url(scheme.get, call_602383.host, call_602383.base,
+                         call_602383.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600361, url, valid)
+  result = atozHook(call_602383, url, valid)
 
-proc call*(call_600362: Call_DeleteDomainEntry_600349; body: JsonNode): Recallable =
+proc call*(call_602384: Call_DeleteDomainEntry_602371; body: JsonNode): Recallable =
   ## deleteDomainEntry
   ## <p>Deletes a specific domain entry.</p> <p>The <code>delete domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600363 = newJObject()
+  var body_602385 = newJObject()
   if body != nil:
-    body_600363 = body
-  result = call_600362.call(nil, nil, nil, nil, body_600363)
+    body_602385 = body
+  result = call_602384.call(nil, nil, nil, nil, body_602385)
 
-var deleteDomainEntry* = Call_DeleteDomainEntry_600349(name: "deleteDomainEntry",
+var deleteDomainEntry* = Call_DeleteDomainEntry_602371(name: "deleteDomainEntry",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteDomainEntry",
-    validator: validate_DeleteDomainEntry_600350, base: "/",
-    url: url_DeleteDomainEntry_600351, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteDomainEntry_602372, base: "/",
+    url: url_DeleteDomainEntry_602373, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteInstance_600364 = ref object of OpenApiRestCall_599368
-proc url_DeleteInstance_600366(protocol: Scheme; host: string; base: string;
+  Call_DeleteInstance_602386 = ref object of OpenApiRestCall_601389
+proc url_DeleteInstance_602388(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteInstance_600365(path: JsonNode; query: JsonNode;
+proc validate_DeleteInstance_602387(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Deletes an Amazon Lightsail instance.</p> <p>The <code>delete instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -3232,57 +3260,57 @@ proc validate_DeleteInstance_600365(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600367 = header.getOrDefault("X-Amz-Date")
-  valid_600367 = validateParameter(valid_600367, JString, required = false,
-                                 default = nil)
-  if valid_600367 != nil:
-    section.add "X-Amz-Date", valid_600367
-  var valid_600368 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600368 = validateParameter(valid_600368, JString, required = false,
-                                 default = nil)
-  if valid_600368 != nil:
-    section.add "X-Amz-Security-Token", valid_600368
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600369 = header.getOrDefault("X-Amz-Target")
-  valid_600369 = validateParameter(valid_600369, JString, required = true, default = newJString(
+  var valid_602389 = header.getOrDefault("X-Amz-Target")
+  valid_602389 = validateParameter(valid_602389, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteInstance"))
-  if valid_600369 != nil:
-    section.add "X-Amz-Target", valid_600369
-  var valid_600370 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600370 = validateParameter(valid_600370, JString, required = false,
+  if valid_602389 != nil:
+    section.add "X-Amz-Target", valid_602389
+  var valid_602390 = header.getOrDefault("X-Amz-Signature")
+  valid_602390 = validateParameter(valid_602390, JString, required = false,
                                  default = nil)
-  if valid_600370 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600370
-  var valid_600371 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600371 = validateParameter(valid_600371, JString, required = false,
+  if valid_602390 != nil:
+    section.add "X-Amz-Signature", valid_602390
+  var valid_602391 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602391 = validateParameter(valid_602391, JString, required = false,
                                  default = nil)
-  if valid_600371 != nil:
-    section.add "X-Amz-Algorithm", valid_600371
-  var valid_600372 = header.getOrDefault("X-Amz-Signature")
-  valid_600372 = validateParameter(valid_600372, JString, required = false,
+  if valid_602391 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602391
+  var valid_602392 = header.getOrDefault("X-Amz-Date")
+  valid_602392 = validateParameter(valid_602392, JString, required = false,
                                  default = nil)
-  if valid_600372 != nil:
-    section.add "X-Amz-Signature", valid_600372
-  var valid_600373 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600373 = validateParameter(valid_600373, JString, required = false,
+  if valid_602392 != nil:
+    section.add "X-Amz-Date", valid_602392
+  var valid_602393 = header.getOrDefault("X-Amz-Credential")
+  valid_602393 = validateParameter(valid_602393, JString, required = false,
                                  default = nil)
-  if valid_600373 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600373
-  var valid_600374 = header.getOrDefault("X-Amz-Credential")
-  valid_600374 = validateParameter(valid_600374, JString, required = false,
+  if valid_602393 != nil:
+    section.add "X-Amz-Credential", valid_602393
+  var valid_602394 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602394 = validateParameter(valid_602394, JString, required = false,
                                  default = nil)
-  if valid_600374 != nil:
-    section.add "X-Amz-Credential", valid_600374
+  if valid_602394 != nil:
+    section.add "X-Amz-Security-Token", valid_602394
+  var valid_602395 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602395 = validateParameter(valid_602395, JString, required = false,
+                                 default = nil)
+  if valid_602395 != nil:
+    section.add "X-Amz-Algorithm", valid_602395
+  var valid_602396 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602396 = validateParameter(valid_602396, JString, required = false,
+                                 default = nil)
+  if valid_602396 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602396
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3293,47 +3321,48 @@ proc validate_DeleteInstance_600365(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600376: Call_DeleteInstance_600364; path: JsonNode; query: JsonNode;
+proc call*(call_602398: Call_DeleteInstance_602386; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes an Amazon Lightsail instance.</p> <p>The <code>delete instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600376.validator(path, query, header, formData, body)
-  let scheme = call_600376.pickScheme
+  let valid = call_602398.validator(path, query, header, formData, body)
+  let scheme = call_602398.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600376.url(scheme.get, call_600376.host, call_600376.base,
-                         call_600376.route, valid.getOrDefault("path"),
+  let url = call_602398.url(scheme.get, call_602398.host, call_602398.base,
+                         call_602398.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600376, url, valid)
+  result = atozHook(call_602398, url, valid)
 
-proc call*(call_600377: Call_DeleteInstance_600364; body: JsonNode): Recallable =
+proc call*(call_602399: Call_DeleteInstance_602386; body: JsonNode): Recallable =
   ## deleteInstance
   ## <p>Deletes an Amazon Lightsail instance.</p> <p>The <code>delete instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600378 = newJObject()
+  var body_602400 = newJObject()
   if body != nil:
-    body_600378 = body
-  result = call_600377.call(nil, nil, nil, nil, body_600378)
+    body_602400 = body
+  result = call_602399.call(nil, nil, nil, nil, body_602400)
 
-var deleteInstance* = Call_DeleteInstance_600364(name: "deleteInstance",
+var deleteInstance* = Call_DeleteInstance_602386(name: "deleteInstance",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteInstance",
-    validator: validate_DeleteInstance_600365, base: "/", url: url_DeleteInstance_600366,
+    validator: validate_DeleteInstance_602387, base: "/", url: url_DeleteInstance_602388,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteInstanceSnapshot_600379 = ref object of OpenApiRestCall_599368
-proc url_DeleteInstanceSnapshot_600381(protocol: Scheme; host: string; base: string;
+  Call_DeleteInstanceSnapshot_602401 = ref object of OpenApiRestCall_601389
+proc url_DeleteInstanceSnapshot_602403(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteInstanceSnapshot_600380(path: JsonNode; query: JsonNode;
+proc validate_DeleteInstanceSnapshot_602402(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a specific snapshot of a virtual private server (or <i>instance</i>).</p> <p>The <code>delete instance snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -3344,57 +3373,57 @@ proc validate_DeleteInstanceSnapshot_600380(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600382 = header.getOrDefault("X-Amz-Date")
-  valid_600382 = validateParameter(valid_600382, JString, required = false,
-                                 default = nil)
-  if valid_600382 != nil:
-    section.add "X-Amz-Date", valid_600382
-  var valid_600383 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600383 = validateParameter(valid_600383, JString, required = false,
-                                 default = nil)
-  if valid_600383 != nil:
-    section.add "X-Amz-Security-Token", valid_600383
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600384 = header.getOrDefault("X-Amz-Target")
-  valid_600384 = validateParameter(valid_600384, JString, required = true, default = newJString(
+  var valid_602404 = header.getOrDefault("X-Amz-Target")
+  valid_602404 = validateParameter(valid_602404, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteInstanceSnapshot"))
-  if valid_600384 != nil:
-    section.add "X-Amz-Target", valid_600384
-  var valid_600385 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600385 = validateParameter(valid_600385, JString, required = false,
+  if valid_602404 != nil:
+    section.add "X-Amz-Target", valid_602404
+  var valid_602405 = header.getOrDefault("X-Amz-Signature")
+  valid_602405 = validateParameter(valid_602405, JString, required = false,
                                  default = nil)
-  if valid_600385 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600385
-  var valid_600386 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600386 = validateParameter(valid_600386, JString, required = false,
+  if valid_602405 != nil:
+    section.add "X-Amz-Signature", valid_602405
+  var valid_602406 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602406 = validateParameter(valid_602406, JString, required = false,
                                  default = nil)
-  if valid_600386 != nil:
-    section.add "X-Amz-Algorithm", valid_600386
-  var valid_600387 = header.getOrDefault("X-Amz-Signature")
-  valid_600387 = validateParameter(valid_600387, JString, required = false,
+  if valid_602406 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602406
+  var valid_602407 = header.getOrDefault("X-Amz-Date")
+  valid_602407 = validateParameter(valid_602407, JString, required = false,
                                  default = nil)
-  if valid_600387 != nil:
-    section.add "X-Amz-Signature", valid_600387
-  var valid_600388 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600388 = validateParameter(valid_600388, JString, required = false,
+  if valid_602407 != nil:
+    section.add "X-Amz-Date", valid_602407
+  var valid_602408 = header.getOrDefault("X-Amz-Credential")
+  valid_602408 = validateParameter(valid_602408, JString, required = false,
                                  default = nil)
-  if valid_600388 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600388
-  var valid_600389 = header.getOrDefault("X-Amz-Credential")
-  valid_600389 = validateParameter(valid_600389, JString, required = false,
+  if valid_602408 != nil:
+    section.add "X-Amz-Credential", valid_602408
+  var valid_602409 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602409 = validateParameter(valid_602409, JString, required = false,
                                  default = nil)
-  if valid_600389 != nil:
-    section.add "X-Amz-Credential", valid_600389
+  if valid_602409 != nil:
+    section.add "X-Amz-Security-Token", valid_602409
+  var valid_602410 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602410 = validateParameter(valid_602410, JString, required = false,
+                                 default = nil)
+  if valid_602410 != nil:
+    section.add "X-Amz-Algorithm", valid_602410
+  var valid_602411 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602411 = validateParameter(valid_602411, JString, required = false,
+                                 default = nil)
+  if valid_602411 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602411
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3405,48 +3434,49 @@ proc validate_DeleteInstanceSnapshot_600380(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600391: Call_DeleteInstanceSnapshot_600379; path: JsonNode;
+proc call*(call_602413: Call_DeleteInstanceSnapshot_602401; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specific snapshot of a virtual private server (or <i>instance</i>).</p> <p>The <code>delete instance snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600391.validator(path, query, header, formData, body)
-  let scheme = call_600391.pickScheme
+  let valid = call_602413.validator(path, query, header, formData, body)
+  let scheme = call_602413.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600391.url(scheme.get, call_600391.host, call_600391.base,
-                         call_600391.route, valid.getOrDefault("path"),
+  let url = call_602413.url(scheme.get, call_602413.host, call_602413.base,
+                         call_602413.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600391, url, valid)
+  result = atozHook(call_602413, url, valid)
 
-proc call*(call_600392: Call_DeleteInstanceSnapshot_600379; body: JsonNode): Recallable =
+proc call*(call_602414: Call_DeleteInstanceSnapshot_602401; body: JsonNode): Recallable =
   ## deleteInstanceSnapshot
   ## <p>Deletes a specific snapshot of a virtual private server (or <i>instance</i>).</p> <p>The <code>delete instance snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600393 = newJObject()
+  var body_602415 = newJObject()
   if body != nil:
-    body_600393 = body
-  result = call_600392.call(nil, nil, nil, nil, body_600393)
+    body_602415 = body
+  result = call_602414.call(nil, nil, nil, nil, body_602415)
 
-var deleteInstanceSnapshot* = Call_DeleteInstanceSnapshot_600379(
+var deleteInstanceSnapshot* = Call_DeleteInstanceSnapshot_602401(
     name: "deleteInstanceSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteInstanceSnapshot",
-    validator: validate_DeleteInstanceSnapshot_600380, base: "/",
-    url: url_DeleteInstanceSnapshot_600381, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteInstanceSnapshot_602402, base: "/",
+    url: url_DeleteInstanceSnapshot_602403, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteKeyPair_600394 = ref object of OpenApiRestCall_599368
-proc url_DeleteKeyPair_600396(protocol: Scheme; host: string; base: string;
+  Call_DeleteKeyPair_602416 = ref object of OpenApiRestCall_601389
+proc url_DeleteKeyPair_602418(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteKeyPair_600395(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteKeyPair_602417(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a specific SSH key pair.</p> <p>The <code>delete key pair</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>key pair name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -3457,57 +3487,57 @@ proc validate_DeleteKeyPair_600395(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600397 = header.getOrDefault("X-Amz-Date")
-  valid_600397 = validateParameter(valid_600397, JString, required = false,
-                                 default = nil)
-  if valid_600397 != nil:
-    section.add "X-Amz-Date", valid_600397
-  var valid_600398 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600398 = validateParameter(valid_600398, JString, required = false,
-                                 default = nil)
-  if valid_600398 != nil:
-    section.add "X-Amz-Security-Token", valid_600398
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600399 = header.getOrDefault("X-Amz-Target")
-  valid_600399 = validateParameter(valid_600399, JString, required = true, default = newJString(
+  var valid_602419 = header.getOrDefault("X-Amz-Target")
+  valid_602419 = validateParameter(valid_602419, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteKeyPair"))
-  if valid_600399 != nil:
-    section.add "X-Amz-Target", valid_600399
-  var valid_600400 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600400 = validateParameter(valid_600400, JString, required = false,
+  if valid_602419 != nil:
+    section.add "X-Amz-Target", valid_602419
+  var valid_602420 = header.getOrDefault("X-Amz-Signature")
+  valid_602420 = validateParameter(valid_602420, JString, required = false,
                                  default = nil)
-  if valid_600400 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600400
-  var valid_600401 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600401 = validateParameter(valid_600401, JString, required = false,
+  if valid_602420 != nil:
+    section.add "X-Amz-Signature", valid_602420
+  var valid_602421 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602421 = validateParameter(valid_602421, JString, required = false,
                                  default = nil)
-  if valid_600401 != nil:
-    section.add "X-Amz-Algorithm", valid_600401
-  var valid_600402 = header.getOrDefault("X-Amz-Signature")
-  valid_600402 = validateParameter(valid_600402, JString, required = false,
+  if valid_602421 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602421
+  var valid_602422 = header.getOrDefault("X-Amz-Date")
+  valid_602422 = validateParameter(valid_602422, JString, required = false,
                                  default = nil)
-  if valid_600402 != nil:
-    section.add "X-Amz-Signature", valid_600402
-  var valid_600403 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600403 = validateParameter(valid_600403, JString, required = false,
+  if valid_602422 != nil:
+    section.add "X-Amz-Date", valid_602422
+  var valid_602423 = header.getOrDefault("X-Amz-Credential")
+  valid_602423 = validateParameter(valid_602423, JString, required = false,
                                  default = nil)
-  if valid_600403 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600403
-  var valid_600404 = header.getOrDefault("X-Amz-Credential")
-  valid_600404 = validateParameter(valid_600404, JString, required = false,
+  if valid_602423 != nil:
+    section.add "X-Amz-Credential", valid_602423
+  var valid_602424 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602424 = validateParameter(valid_602424, JString, required = false,
                                  default = nil)
-  if valid_600404 != nil:
-    section.add "X-Amz-Credential", valid_600404
+  if valid_602424 != nil:
+    section.add "X-Amz-Security-Token", valid_602424
+  var valid_602425 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602425 = validateParameter(valid_602425, JString, required = false,
+                                 default = nil)
+  if valid_602425 != nil:
+    section.add "X-Amz-Algorithm", valid_602425
+  var valid_602426 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602426 = validateParameter(valid_602426, JString, required = false,
+                                 default = nil)
+  if valid_602426 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602426
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3518,47 +3548,48 @@ proc validate_DeleteKeyPair_600395(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600406: Call_DeleteKeyPair_600394; path: JsonNode; query: JsonNode;
+proc call*(call_602428: Call_DeleteKeyPair_602416; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specific SSH key pair.</p> <p>The <code>delete key pair</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>key pair name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600406.validator(path, query, header, formData, body)
-  let scheme = call_600406.pickScheme
+  let valid = call_602428.validator(path, query, header, formData, body)
+  let scheme = call_602428.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600406.url(scheme.get, call_600406.host, call_600406.base,
-                         call_600406.route, valid.getOrDefault("path"),
+  let url = call_602428.url(scheme.get, call_602428.host, call_602428.base,
+                         call_602428.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600406, url, valid)
+  result = atozHook(call_602428, url, valid)
 
-proc call*(call_600407: Call_DeleteKeyPair_600394; body: JsonNode): Recallable =
+proc call*(call_602429: Call_DeleteKeyPair_602416; body: JsonNode): Recallable =
   ## deleteKeyPair
   ## <p>Deletes a specific SSH key pair.</p> <p>The <code>delete key pair</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>key pair name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600408 = newJObject()
+  var body_602430 = newJObject()
   if body != nil:
-    body_600408 = body
-  result = call_600407.call(nil, nil, nil, nil, body_600408)
+    body_602430 = body
+  result = call_602429.call(nil, nil, nil, nil, body_602430)
 
-var deleteKeyPair* = Call_DeleteKeyPair_600394(name: "deleteKeyPair",
+var deleteKeyPair* = Call_DeleteKeyPair_602416(name: "deleteKeyPair",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteKeyPair",
-    validator: validate_DeleteKeyPair_600395, base: "/", url: url_DeleteKeyPair_600396,
+    validator: validate_DeleteKeyPair_602417, base: "/", url: url_DeleteKeyPair_602418,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteKnownHostKeys_600409 = ref object of OpenApiRestCall_599368
-proc url_DeleteKnownHostKeys_600411(protocol: Scheme; host: string; base: string;
+  Call_DeleteKnownHostKeys_602431 = ref object of OpenApiRestCall_601389
+proc url_DeleteKnownHostKeys_602433(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteKnownHostKeys_600410(path: JsonNode; query: JsonNode;
+proc validate_DeleteKnownHostKeys_602432(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Deletes the known host key or certificate used by the Amazon Lightsail browser-based SSH or RDP clients to authenticate an instance. This operation enables the Lightsail browser-based SSH or RDP clients to connect to the instance after a host key mismatch.</p> <important> <p>Perform this operation only if you were expecting the host key or certificate mismatch or if you are familiar with the new host key or certificate on the instance. For more information, see <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-troubleshooting-browser-based-ssh-rdp-client-connection">Troubleshooting connection issues when using the Amazon Lightsail browser-based SSH or RDP client</a>.</p> </important>
@@ -3570,57 +3601,57 @@ proc validate_DeleteKnownHostKeys_600410(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600412 = header.getOrDefault("X-Amz-Date")
-  valid_600412 = validateParameter(valid_600412, JString, required = false,
-                                 default = nil)
-  if valid_600412 != nil:
-    section.add "X-Amz-Date", valid_600412
-  var valid_600413 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600413 = validateParameter(valid_600413, JString, required = false,
-                                 default = nil)
-  if valid_600413 != nil:
-    section.add "X-Amz-Security-Token", valid_600413
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600414 = header.getOrDefault("X-Amz-Target")
-  valid_600414 = validateParameter(valid_600414, JString, required = true, default = newJString(
+  var valid_602434 = header.getOrDefault("X-Amz-Target")
+  valid_602434 = validateParameter(valid_602434, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteKnownHostKeys"))
-  if valid_600414 != nil:
-    section.add "X-Amz-Target", valid_600414
-  var valid_600415 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600415 = validateParameter(valid_600415, JString, required = false,
+  if valid_602434 != nil:
+    section.add "X-Amz-Target", valid_602434
+  var valid_602435 = header.getOrDefault("X-Amz-Signature")
+  valid_602435 = validateParameter(valid_602435, JString, required = false,
                                  default = nil)
-  if valid_600415 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600415
-  var valid_600416 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600416 = validateParameter(valid_600416, JString, required = false,
+  if valid_602435 != nil:
+    section.add "X-Amz-Signature", valid_602435
+  var valid_602436 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602436 = validateParameter(valid_602436, JString, required = false,
                                  default = nil)
-  if valid_600416 != nil:
-    section.add "X-Amz-Algorithm", valid_600416
-  var valid_600417 = header.getOrDefault("X-Amz-Signature")
-  valid_600417 = validateParameter(valid_600417, JString, required = false,
+  if valid_602436 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602436
+  var valid_602437 = header.getOrDefault("X-Amz-Date")
+  valid_602437 = validateParameter(valid_602437, JString, required = false,
                                  default = nil)
-  if valid_600417 != nil:
-    section.add "X-Amz-Signature", valid_600417
-  var valid_600418 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600418 = validateParameter(valid_600418, JString, required = false,
+  if valid_602437 != nil:
+    section.add "X-Amz-Date", valid_602437
+  var valid_602438 = header.getOrDefault("X-Amz-Credential")
+  valid_602438 = validateParameter(valid_602438, JString, required = false,
                                  default = nil)
-  if valid_600418 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600418
-  var valid_600419 = header.getOrDefault("X-Amz-Credential")
-  valid_600419 = validateParameter(valid_600419, JString, required = false,
+  if valid_602438 != nil:
+    section.add "X-Amz-Credential", valid_602438
+  var valid_602439 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602439 = validateParameter(valid_602439, JString, required = false,
                                  default = nil)
-  if valid_600419 != nil:
-    section.add "X-Amz-Credential", valid_600419
+  if valid_602439 != nil:
+    section.add "X-Amz-Security-Token", valid_602439
+  var valid_602440 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602440 = validateParameter(valid_602440, JString, required = false,
+                                 default = nil)
+  if valid_602440 != nil:
+    section.add "X-Amz-Algorithm", valid_602440
+  var valid_602441 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602441 = validateParameter(valid_602441, JString, required = false,
+                                 default = nil)
+  if valid_602441 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602441
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3631,48 +3662,49 @@ proc validate_DeleteKnownHostKeys_600410(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600421: Call_DeleteKnownHostKeys_600409; path: JsonNode;
+proc call*(call_602443: Call_DeleteKnownHostKeys_602431; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the known host key or certificate used by the Amazon Lightsail browser-based SSH or RDP clients to authenticate an instance. This operation enables the Lightsail browser-based SSH or RDP clients to connect to the instance after a host key mismatch.</p> <important> <p>Perform this operation only if you were expecting the host key or certificate mismatch or if you are familiar with the new host key or certificate on the instance. For more information, see <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-troubleshooting-browser-based-ssh-rdp-client-connection">Troubleshooting connection issues when using the Amazon Lightsail browser-based SSH or RDP client</a>.</p> </important>
   ## 
-  let valid = call_600421.validator(path, query, header, formData, body)
-  let scheme = call_600421.pickScheme
+  let valid = call_602443.validator(path, query, header, formData, body)
+  let scheme = call_602443.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600421.url(scheme.get, call_600421.host, call_600421.base,
-                         call_600421.route, valid.getOrDefault("path"),
+  let url = call_602443.url(scheme.get, call_602443.host, call_602443.base,
+                         call_602443.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600421, url, valid)
+  result = atozHook(call_602443, url, valid)
 
-proc call*(call_600422: Call_DeleteKnownHostKeys_600409; body: JsonNode): Recallable =
+proc call*(call_602444: Call_DeleteKnownHostKeys_602431; body: JsonNode): Recallable =
   ## deleteKnownHostKeys
   ## <p>Deletes the known host key or certificate used by the Amazon Lightsail browser-based SSH or RDP clients to authenticate an instance. This operation enables the Lightsail browser-based SSH or RDP clients to connect to the instance after a host key mismatch.</p> <important> <p>Perform this operation only if you were expecting the host key or certificate mismatch or if you are familiar with the new host key or certificate on the instance. For more information, see <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-troubleshooting-browser-based-ssh-rdp-client-connection">Troubleshooting connection issues when using the Amazon Lightsail browser-based SSH or RDP client</a>.</p> </important>
   ##   body: JObject (required)
-  var body_600423 = newJObject()
+  var body_602445 = newJObject()
   if body != nil:
-    body_600423 = body
-  result = call_600422.call(nil, nil, nil, nil, body_600423)
+    body_602445 = body
+  result = call_602444.call(nil, nil, nil, nil, body_602445)
 
-var deleteKnownHostKeys* = Call_DeleteKnownHostKeys_600409(
+var deleteKnownHostKeys* = Call_DeleteKnownHostKeys_602431(
     name: "deleteKnownHostKeys", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteKnownHostKeys",
-    validator: validate_DeleteKnownHostKeys_600410, base: "/",
-    url: url_DeleteKnownHostKeys_600411, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteKnownHostKeys_602432, base: "/",
+    url: url_DeleteKnownHostKeys_602433, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteLoadBalancer_600424 = ref object of OpenApiRestCall_599368
-proc url_DeleteLoadBalancer_600426(protocol: Scheme; host: string; base: string;
+  Call_DeleteLoadBalancer_602446 = ref object of OpenApiRestCall_601389
+proc url_DeleteLoadBalancer_602448(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteLoadBalancer_600425(path: JsonNode; query: JsonNode;
+proc validate_DeleteLoadBalancer_602447(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Deletes a Lightsail load balancer and all its associated SSL/TLS certificates. Once the load balancer is deleted, you will need to create a new load balancer, create a new certificate, and verify domain ownership again.</p> <p>The <code>delete load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -3684,57 +3716,57 @@ proc validate_DeleteLoadBalancer_600425(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600427 = header.getOrDefault("X-Amz-Date")
-  valid_600427 = validateParameter(valid_600427, JString, required = false,
-                                 default = nil)
-  if valid_600427 != nil:
-    section.add "X-Amz-Date", valid_600427
-  var valid_600428 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600428 = validateParameter(valid_600428, JString, required = false,
-                                 default = nil)
-  if valid_600428 != nil:
-    section.add "X-Amz-Security-Token", valid_600428
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600429 = header.getOrDefault("X-Amz-Target")
-  valid_600429 = validateParameter(valid_600429, JString, required = true, default = newJString(
+  var valid_602449 = header.getOrDefault("X-Amz-Target")
+  valid_602449 = validateParameter(valid_602449, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteLoadBalancer"))
-  if valid_600429 != nil:
-    section.add "X-Amz-Target", valid_600429
-  var valid_600430 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600430 = validateParameter(valid_600430, JString, required = false,
+  if valid_602449 != nil:
+    section.add "X-Amz-Target", valid_602449
+  var valid_602450 = header.getOrDefault("X-Amz-Signature")
+  valid_602450 = validateParameter(valid_602450, JString, required = false,
                                  default = nil)
-  if valid_600430 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600430
-  var valid_600431 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600431 = validateParameter(valid_600431, JString, required = false,
+  if valid_602450 != nil:
+    section.add "X-Amz-Signature", valid_602450
+  var valid_602451 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602451 = validateParameter(valid_602451, JString, required = false,
                                  default = nil)
-  if valid_600431 != nil:
-    section.add "X-Amz-Algorithm", valid_600431
-  var valid_600432 = header.getOrDefault("X-Amz-Signature")
-  valid_600432 = validateParameter(valid_600432, JString, required = false,
+  if valid_602451 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602451
+  var valid_602452 = header.getOrDefault("X-Amz-Date")
+  valid_602452 = validateParameter(valid_602452, JString, required = false,
                                  default = nil)
-  if valid_600432 != nil:
-    section.add "X-Amz-Signature", valid_600432
-  var valid_600433 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600433 = validateParameter(valid_600433, JString, required = false,
+  if valid_602452 != nil:
+    section.add "X-Amz-Date", valid_602452
+  var valid_602453 = header.getOrDefault("X-Amz-Credential")
+  valid_602453 = validateParameter(valid_602453, JString, required = false,
                                  default = nil)
-  if valid_600433 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600433
-  var valid_600434 = header.getOrDefault("X-Amz-Credential")
-  valid_600434 = validateParameter(valid_600434, JString, required = false,
+  if valid_602453 != nil:
+    section.add "X-Amz-Credential", valid_602453
+  var valid_602454 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602454 = validateParameter(valid_602454, JString, required = false,
                                  default = nil)
-  if valid_600434 != nil:
-    section.add "X-Amz-Credential", valid_600434
+  if valid_602454 != nil:
+    section.add "X-Amz-Security-Token", valid_602454
+  var valid_602455 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602455 = validateParameter(valid_602455, JString, required = false,
+                                 default = nil)
+  if valid_602455 != nil:
+    section.add "X-Amz-Algorithm", valid_602455
+  var valid_602456 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602456 = validateParameter(valid_602456, JString, required = false,
+                                 default = nil)
+  if valid_602456 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602456
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3745,48 +3777,49 @@ proc validate_DeleteLoadBalancer_600425(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600436: Call_DeleteLoadBalancer_600424; path: JsonNode;
+proc call*(call_602458: Call_DeleteLoadBalancer_602446; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a Lightsail load balancer and all its associated SSL/TLS certificates. Once the load balancer is deleted, you will need to create a new load balancer, create a new certificate, and verify domain ownership again.</p> <p>The <code>delete load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600436.validator(path, query, header, formData, body)
-  let scheme = call_600436.pickScheme
+  let valid = call_602458.validator(path, query, header, formData, body)
+  let scheme = call_602458.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600436.url(scheme.get, call_600436.host, call_600436.base,
-                         call_600436.route, valid.getOrDefault("path"),
+  let url = call_602458.url(scheme.get, call_602458.host, call_602458.base,
+                         call_602458.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600436, url, valid)
+  result = atozHook(call_602458, url, valid)
 
-proc call*(call_600437: Call_DeleteLoadBalancer_600424; body: JsonNode): Recallable =
+proc call*(call_602459: Call_DeleteLoadBalancer_602446; body: JsonNode): Recallable =
   ## deleteLoadBalancer
   ## <p>Deletes a Lightsail load balancer and all its associated SSL/TLS certificates. Once the load balancer is deleted, you will need to create a new load balancer, create a new certificate, and verify domain ownership again.</p> <p>The <code>delete load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600438 = newJObject()
+  var body_602460 = newJObject()
   if body != nil:
-    body_600438 = body
-  result = call_600437.call(nil, nil, nil, nil, body_600438)
+    body_602460 = body
+  result = call_602459.call(nil, nil, nil, nil, body_602460)
 
-var deleteLoadBalancer* = Call_DeleteLoadBalancer_600424(
+var deleteLoadBalancer* = Call_DeleteLoadBalancer_602446(
     name: "deleteLoadBalancer", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteLoadBalancer",
-    validator: validate_DeleteLoadBalancer_600425, base: "/",
-    url: url_DeleteLoadBalancer_600426, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteLoadBalancer_602447, base: "/",
+    url: url_DeleteLoadBalancer_602448, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteLoadBalancerTlsCertificate_600439 = ref object of OpenApiRestCall_599368
-proc url_DeleteLoadBalancerTlsCertificate_600441(protocol: Scheme; host: string;
+  Call_DeleteLoadBalancerTlsCertificate_602461 = ref object of OpenApiRestCall_601389
+proc url_DeleteLoadBalancerTlsCertificate_602463(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteLoadBalancerTlsCertificate_600440(path: JsonNode;
+proc validate_DeleteLoadBalancerTlsCertificate_602462(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes an SSL/TLS certificate associated with a Lightsail load balancer.</p> <p>The <code>delete load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -3797,57 +3830,57 @@ proc validate_DeleteLoadBalancerTlsCertificate_600440(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600442 = header.getOrDefault("X-Amz-Date")
-  valid_600442 = validateParameter(valid_600442, JString, required = false,
-                                 default = nil)
-  if valid_600442 != nil:
-    section.add "X-Amz-Date", valid_600442
-  var valid_600443 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600443 = validateParameter(valid_600443, JString, required = false,
-                                 default = nil)
-  if valid_600443 != nil:
-    section.add "X-Amz-Security-Token", valid_600443
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600444 = header.getOrDefault("X-Amz-Target")
-  valid_600444 = validateParameter(valid_600444, JString, required = true, default = newJString(
+  var valid_602464 = header.getOrDefault("X-Amz-Target")
+  valid_602464 = validateParameter(valid_602464, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteLoadBalancerTlsCertificate"))
-  if valid_600444 != nil:
-    section.add "X-Amz-Target", valid_600444
-  var valid_600445 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600445 = validateParameter(valid_600445, JString, required = false,
+  if valid_602464 != nil:
+    section.add "X-Amz-Target", valid_602464
+  var valid_602465 = header.getOrDefault("X-Amz-Signature")
+  valid_602465 = validateParameter(valid_602465, JString, required = false,
                                  default = nil)
-  if valid_600445 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600445
-  var valid_600446 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600446 = validateParameter(valid_600446, JString, required = false,
+  if valid_602465 != nil:
+    section.add "X-Amz-Signature", valid_602465
+  var valid_602466 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602466 = validateParameter(valid_602466, JString, required = false,
                                  default = nil)
-  if valid_600446 != nil:
-    section.add "X-Amz-Algorithm", valid_600446
-  var valid_600447 = header.getOrDefault("X-Amz-Signature")
-  valid_600447 = validateParameter(valid_600447, JString, required = false,
+  if valid_602466 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602466
+  var valid_602467 = header.getOrDefault("X-Amz-Date")
+  valid_602467 = validateParameter(valid_602467, JString, required = false,
                                  default = nil)
-  if valid_600447 != nil:
-    section.add "X-Amz-Signature", valid_600447
-  var valid_600448 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600448 = validateParameter(valid_600448, JString, required = false,
+  if valid_602467 != nil:
+    section.add "X-Amz-Date", valid_602467
+  var valid_602468 = header.getOrDefault("X-Amz-Credential")
+  valid_602468 = validateParameter(valid_602468, JString, required = false,
                                  default = nil)
-  if valid_600448 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600448
-  var valid_600449 = header.getOrDefault("X-Amz-Credential")
-  valid_600449 = validateParameter(valid_600449, JString, required = false,
+  if valid_602468 != nil:
+    section.add "X-Amz-Credential", valid_602468
+  var valid_602469 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602469 = validateParameter(valid_602469, JString, required = false,
                                  default = nil)
-  if valid_600449 != nil:
-    section.add "X-Amz-Credential", valid_600449
+  if valid_602469 != nil:
+    section.add "X-Amz-Security-Token", valid_602469
+  var valid_602470 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602470 = validateParameter(valid_602470, JString, required = false,
+                                 default = nil)
+  if valid_602470 != nil:
+    section.add "X-Amz-Algorithm", valid_602470
+  var valid_602471 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602471 = validateParameter(valid_602471, JString, required = false,
+                                 default = nil)
+  if valid_602471 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602471
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3858,51 +3891,52 @@ proc validate_DeleteLoadBalancerTlsCertificate_600440(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600451: Call_DeleteLoadBalancerTlsCertificate_600439;
+proc call*(call_602473: Call_DeleteLoadBalancerTlsCertificate_602461;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Deletes an SSL/TLS certificate associated with a Lightsail load balancer.</p> <p>The <code>delete load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600451.validator(path, query, header, formData, body)
-  let scheme = call_600451.pickScheme
+  let valid = call_602473.validator(path, query, header, formData, body)
+  let scheme = call_602473.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600451.url(scheme.get, call_600451.host, call_600451.base,
-                         call_600451.route, valid.getOrDefault("path"),
+  let url = call_602473.url(scheme.get, call_602473.host, call_602473.base,
+                         call_602473.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600451, url, valid)
+  result = atozHook(call_602473, url, valid)
 
-proc call*(call_600452: Call_DeleteLoadBalancerTlsCertificate_600439;
+proc call*(call_602474: Call_DeleteLoadBalancerTlsCertificate_602461;
           body: JsonNode): Recallable =
   ## deleteLoadBalancerTlsCertificate
   ## <p>Deletes an SSL/TLS certificate associated with a Lightsail load balancer.</p> <p>The <code>delete load balancer tls certificate</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600453 = newJObject()
+  var body_602475 = newJObject()
   if body != nil:
-    body_600453 = body
-  result = call_600452.call(nil, nil, nil, nil, body_600453)
+    body_602475 = body
+  result = call_602474.call(nil, nil, nil, nil, body_602475)
 
-var deleteLoadBalancerTlsCertificate* = Call_DeleteLoadBalancerTlsCertificate_600439(
+var deleteLoadBalancerTlsCertificate* = Call_DeleteLoadBalancerTlsCertificate_602461(
     name: "deleteLoadBalancerTlsCertificate", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.DeleteLoadBalancerTlsCertificate",
-    validator: validate_DeleteLoadBalancerTlsCertificate_600440, base: "/",
-    url: url_DeleteLoadBalancerTlsCertificate_600441,
+    validator: validate_DeleteLoadBalancerTlsCertificate_602462, base: "/",
+    url: url_DeleteLoadBalancerTlsCertificate_602463,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRelationalDatabase_600454 = ref object of OpenApiRestCall_599368
-proc url_DeleteRelationalDatabase_600456(protocol: Scheme; host: string;
+  Call_DeleteRelationalDatabase_602476 = ref object of OpenApiRestCall_601389
+proc url_DeleteRelationalDatabase_602478(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteRelationalDatabase_600455(path: JsonNode; query: JsonNode;
+proc validate_DeleteRelationalDatabase_602477(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a database in Amazon Lightsail.</p> <p>The <code>delete relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -3913,57 +3947,57 @@ proc validate_DeleteRelationalDatabase_600455(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600457 = header.getOrDefault("X-Amz-Date")
-  valid_600457 = validateParameter(valid_600457, JString, required = false,
-                                 default = nil)
-  if valid_600457 != nil:
-    section.add "X-Amz-Date", valid_600457
-  var valid_600458 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600458 = validateParameter(valid_600458, JString, required = false,
-                                 default = nil)
-  if valid_600458 != nil:
-    section.add "X-Amz-Security-Token", valid_600458
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600459 = header.getOrDefault("X-Amz-Target")
-  valid_600459 = validateParameter(valid_600459, JString, required = true, default = newJString(
+  var valid_602479 = header.getOrDefault("X-Amz-Target")
+  valid_602479 = validateParameter(valid_602479, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteRelationalDatabase"))
-  if valid_600459 != nil:
-    section.add "X-Amz-Target", valid_600459
-  var valid_600460 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600460 = validateParameter(valid_600460, JString, required = false,
+  if valid_602479 != nil:
+    section.add "X-Amz-Target", valid_602479
+  var valid_602480 = header.getOrDefault("X-Amz-Signature")
+  valid_602480 = validateParameter(valid_602480, JString, required = false,
                                  default = nil)
-  if valid_600460 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600460
-  var valid_600461 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600461 = validateParameter(valid_600461, JString, required = false,
+  if valid_602480 != nil:
+    section.add "X-Amz-Signature", valid_602480
+  var valid_602481 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602481 = validateParameter(valid_602481, JString, required = false,
                                  default = nil)
-  if valid_600461 != nil:
-    section.add "X-Amz-Algorithm", valid_600461
-  var valid_600462 = header.getOrDefault("X-Amz-Signature")
-  valid_600462 = validateParameter(valid_600462, JString, required = false,
+  if valid_602481 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602481
+  var valid_602482 = header.getOrDefault("X-Amz-Date")
+  valid_602482 = validateParameter(valid_602482, JString, required = false,
                                  default = nil)
-  if valid_600462 != nil:
-    section.add "X-Amz-Signature", valid_600462
-  var valid_600463 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600463 = validateParameter(valid_600463, JString, required = false,
+  if valid_602482 != nil:
+    section.add "X-Amz-Date", valid_602482
+  var valid_602483 = header.getOrDefault("X-Amz-Credential")
+  valid_602483 = validateParameter(valid_602483, JString, required = false,
                                  default = nil)
-  if valid_600463 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600463
-  var valid_600464 = header.getOrDefault("X-Amz-Credential")
-  valid_600464 = validateParameter(valid_600464, JString, required = false,
+  if valid_602483 != nil:
+    section.add "X-Amz-Credential", valid_602483
+  var valid_602484 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602484 = validateParameter(valid_602484, JString, required = false,
                                  default = nil)
-  if valid_600464 != nil:
-    section.add "X-Amz-Credential", valid_600464
+  if valid_602484 != nil:
+    section.add "X-Amz-Security-Token", valid_602484
+  var valid_602485 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602485 = validateParameter(valid_602485, JString, required = false,
+                                 default = nil)
+  if valid_602485 != nil:
+    section.add "X-Amz-Algorithm", valid_602485
+  var valid_602486 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602486 = validateParameter(valid_602486, JString, required = false,
+                                 default = nil)
+  if valid_602486 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602486
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3974,48 +4008,49 @@ proc validate_DeleteRelationalDatabase_600455(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600466: Call_DeleteRelationalDatabase_600454; path: JsonNode;
+proc call*(call_602488: Call_DeleteRelationalDatabase_602476; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a database in Amazon Lightsail.</p> <p>The <code>delete relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600466.validator(path, query, header, formData, body)
-  let scheme = call_600466.pickScheme
+  let valid = call_602488.validator(path, query, header, formData, body)
+  let scheme = call_602488.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600466.url(scheme.get, call_600466.host, call_600466.base,
-                         call_600466.route, valid.getOrDefault("path"),
+  let url = call_602488.url(scheme.get, call_602488.host, call_602488.base,
+                         call_602488.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600466, url, valid)
+  result = atozHook(call_602488, url, valid)
 
-proc call*(call_600467: Call_DeleteRelationalDatabase_600454; body: JsonNode): Recallable =
+proc call*(call_602489: Call_DeleteRelationalDatabase_602476; body: JsonNode): Recallable =
   ## deleteRelationalDatabase
   ## <p>Deletes a database in Amazon Lightsail.</p> <p>The <code>delete relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600468 = newJObject()
+  var body_602490 = newJObject()
   if body != nil:
-    body_600468 = body
-  result = call_600467.call(nil, nil, nil, nil, body_600468)
+    body_602490 = body
+  result = call_602489.call(nil, nil, nil, nil, body_602490)
 
-var deleteRelationalDatabase* = Call_DeleteRelationalDatabase_600454(
+var deleteRelationalDatabase* = Call_DeleteRelationalDatabase_602476(
     name: "deleteRelationalDatabase", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DeleteRelationalDatabase",
-    validator: validate_DeleteRelationalDatabase_600455, base: "/",
-    url: url_DeleteRelationalDatabase_600456, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteRelationalDatabase_602477, base: "/",
+    url: url_DeleteRelationalDatabase_602478, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRelationalDatabaseSnapshot_600469 = ref object of OpenApiRestCall_599368
-proc url_DeleteRelationalDatabaseSnapshot_600471(protocol: Scheme; host: string;
+  Call_DeleteRelationalDatabaseSnapshot_602491 = ref object of OpenApiRestCall_601389
+proc url_DeleteRelationalDatabaseSnapshot_602493(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteRelationalDatabaseSnapshot_600470(path: JsonNode;
+proc validate_DeleteRelationalDatabaseSnapshot_602492(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a database snapshot in Amazon Lightsail.</p> <p>The <code>delete relational database snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -4026,57 +4061,57 @@ proc validate_DeleteRelationalDatabaseSnapshot_600470(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600472 = header.getOrDefault("X-Amz-Date")
-  valid_600472 = validateParameter(valid_600472, JString, required = false,
-                                 default = nil)
-  if valid_600472 != nil:
-    section.add "X-Amz-Date", valid_600472
-  var valid_600473 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600473 = validateParameter(valid_600473, JString, required = false,
-                                 default = nil)
-  if valid_600473 != nil:
-    section.add "X-Amz-Security-Token", valid_600473
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600474 = header.getOrDefault("X-Amz-Target")
-  valid_600474 = validateParameter(valid_600474, JString, required = true, default = newJString(
+  var valid_602494 = header.getOrDefault("X-Amz-Target")
+  valid_602494 = validateParameter(valid_602494, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteRelationalDatabaseSnapshot"))
-  if valid_600474 != nil:
-    section.add "X-Amz-Target", valid_600474
-  var valid_600475 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600475 = validateParameter(valid_600475, JString, required = false,
+  if valid_602494 != nil:
+    section.add "X-Amz-Target", valid_602494
+  var valid_602495 = header.getOrDefault("X-Amz-Signature")
+  valid_602495 = validateParameter(valid_602495, JString, required = false,
                                  default = nil)
-  if valid_600475 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600475
-  var valid_600476 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600476 = validateParameter(valid_600476, JString, required = false,
+  if valid_602495 != nil:
+    section.add "X-Amz-Signature", valid_602495
+  var valid_602496 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602496 = validateParameter(valid_602496, JString, required = false,
                                  default = nil)
-  if valid_600476 != nil:
-    section.add "X-Amz-Algorithm", valid_600476
-  var valid_600477 = header.getOrDefault("X-Amz-Signature")
-  valid_600477 = validateParameter(valid_600477, JString, required = false,
+  if valid_602496 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602496
+  var valid_602497 = header.getOrDefault("X-Amz-Date")
+  valid_602497 = validateParameter(valid_602497, JString, required = false,
                                  default = nil)
-  if valid_600477 != nil:
-    section.add "X-Amz-Signature", valid_600477
-  var valid_600478 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600478 = validateParameter(valid_600478, JString, required = false,
+  if valid_602497 != nil:
+    section.add "X-Amz-Date", valid_602497
+  var valid_602498 = header.getOrDefault("X-Amz-Credential")
+  valid_602498 = validateParameter(valid_602498, JString, required = false,
                                  default = nil)
-  if valid_600478 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600478
-  var valid_600479 = header.getOrDefault("X-Amz-Credential")
-  valid_600479 = validateParameter(valid_600479, JString, required = false,
+  if valid_602498 != nil:
+    section.add "X-Amz-Credential", valid_602498
+  var valid_602499 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602499 = validateParameter(valid_602499, JString, required = false,
                                  default = nil)
-  if valid_600479 != nil:
-    section.add "X-Amz-Credential", valid_600479
+  if valid_602499 != nil:
+    section.add "X-Amz-Security-Token", valid_602499
+  var valid_602500 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602500 = validateParameter(valid_602500, JString, required = false,
+                                 default = nil)
+  if valid_602500 != nil:
+    section.add "X-Amz-Algorithm", valid_602500
+  var valid_602501 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602501 = validateParameter(valid_602501, JString, required = false,
+                                 default = nil)
+  if valid_602501 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602501
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4087,50 +4122,51 @@ proc validate_DeleteRelationalDatabaseSnapshot_600470(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600481: Call_DeleteRelationalDatabaseSnapshot_600469;
+proc call*(call_602503: Call_DeleteRelationalDatabaseSnapshot_602491;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Deletes a database snapshot in Amazon Lightsail.</p> <p>The <code>delete relational database snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600481.validator(path, query, header, formData, body)
-  let scheme = call_600481.pickScheme
+  let valid = call_602503.validator(path, query, header, formData, body)
+  let scheme = call_602503.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600481.url(scheme.get, call_600481.host, call_600481.base,
-                         call_600481.route, valid.getOrDefault("path"),
+  let url = call_602503.url(scheme.get, call_602503.host, call_602503.base,
+                         call_602503.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600481, url, valid)
+  result = atozHook(call_602503, url, valid)
 
-proc call*(call_600482: Call_DeleteRelationalDatabaseSnapshot_600469;
+proc call*(call_602504: Call_DeleteRelationalDatabaseSnapshot_602491;
           body: JsonNode): Recallable =
   ## deleteRelationalDatabaseSnapshot
   ## <p>Deletes a database snapshot in Amazon Lightsail.</p> <p>The <code>delete relational database snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600483 = newJObject()
+  var body_602505 = newJObject()
   if body != nil:
-    body_600483 = body
-  result = call_600482.call(nil, nil, nil, nil, body_600483)
+    body_602505 = body
+  result = call_602504.call(nil, nil, nil, nil, body_602505)
 
-var deleteRelationalDatabaseSnapshot* = Call_DeleteRelationalDatabaseSnapshot_600469(
+var deleteRelationalDatabaseSnapshot* = Call_DeleteRelationalDatabaseSnapshot_602491(
     name: "deleteRelationalDatabaseSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.DeleteRelationalDatabaseSnapshot",
-    validator: validate_DeleteRelationalDatabaseSnapshot_600470, base: "/",
-    url: url_DeleteRelationalDatabaseSnapshot_600471,
+    validator: validate_DeleteRelationalDatabaseSnapshot_602492, base: "/",
+    url: url_DeleteRelationalDatabaseSnapshot_602493,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetachDisk_600484 = ref object of OpenApiRestCall_599368
-proc url_DetachDisk_600486(protocol: Scheme; host: string; base: string; route: string;
+  Call_DetachDisk_602506 = ref object of OpenApiRestCall_601389
+proc url_DetachDisk_602508(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DetachDisk_600485(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DetachDisk_602507(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Detaches a stopped block storage disk from a Lightsail instance. Make sure to unmount any file systems on the device within your operating system before stopping the instance and detaching the disk.</p> <p>The <code>detach disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -4141,57 +4177,57 @@ proc validate_DetachDisk_600485(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600487 = header.getOrDefault("X-Amz-Date")
-  valid_600487 = validateParameter(valid_600487, JString, required = false,
-                                 default = nil)
-  if valid_600487 != nil:
-    section.add "X-Amz-Date", valid_600487
-  var valid_600488 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600488 = validateParameter(valid_600488, JString, required = false,
-                                 default = nil)
-  if valid_600488 != nil:
-    section.add "X-Amz-Security-Token", valid_600488
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600489 = header.getOrDefault("X-Amz-Target")
-  valid_600489 = validateParameter(valid_600489, JString, required = true, default = newJString(
+  var valid_602509 = header.getOrDefault("X-Amz-Target")
+  valid_602509 = validateParameter(valid_602509, JString, required = true, default = newJString(
       "Lightsail_20161128.DetachDisk"))
-  if valid_600489 != nil:
-    section.add "X-Amz-Target", valid_600489
-  var valid_600490 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600490 = validateParameter(valid_600490, JString, required = false,
+  if valid_602509 != nil:
+    section.add "X-Amz-Target", valid_602509
+  var valid_602510 = header.getOrDefault("X-Amz-Signature")
+  valid_602510 = validateParameter(valid_602510, JString, required = false,
                                  default = nil)
-  if valid_600490 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600490
-  var valid_600491 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600491 = validateParameter(valid_600491, JString, required = false,
+  if valid_602510 != nil:
+    section.add "X-Amz-Signature", valid_602510
+  var valid_602511 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602511 = validateParameter(valid_602511, JString, required = false,
                                  default = nil)
-  if valid_600491 != nil:
-    section.add "X-Amz-Algorithm", valid_600491
-  var valid_600492 = header.getOrDefault("X-Amz-Signature")
-  valid_600492 = validateParameter(valid_600492, JString, required = false,
+  if valid_602511 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602511
+  var valid_602512 = header.getOrDefault("X-Amz-Date")
+  valid_602512 = validateParameter(valid_602512, JString, required = false,
                                  default = nil)
-  if valid_600492 != nil:
-    section.add "X-Amz-Signature", valid_600492
-  var valid_600493 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600493 = validateParameter(valid_600493, JString, required = false,
+  if valid_602512 != nil:
+    section.add "X-Amz-Date", valid_602512
+  var valid_602513 = header.getOrDefault("X-Amz-Credential")
+  valid_602513 = validateParameter(valid_602513, JString, required = false,
                                  default = nil)
-  if valid_600493 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600493
-  var valid_600494 = header.getOrDefault("X-Amz-Credential")
-  valid_600494 = validateParameter(valid_600494, JString, required = false,
+  if valid_602513 != nil:
+    section.add "X-Amz-Credential", valid_602513
+  var valid_602514 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602514 = validateParameter(valid_602514, JString, required = false,
                                  default = nil)
-  if valid_600494 != nil:
-    section.add "X-Amz-Credential", valid_600494
+  if valid_602514 != nil:
+    section.add "X-Amz-Security-Token", valid_602514
+  var valid_602515 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602515 = validateParameter(valid_602515, JString, required = false,
+                                 default = nil)
+  if valid_602515 != nil:
+    section.add "X-Amz-Algorithm", valid_602515
+  var valid_602516 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602516 = validateParameter(valid_602516, JString, required = false,
+                                 default = nil)
+  if valid_602516 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602516
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4202,48 +4238,49 @@ proc validate_DetachDisk_600485(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600496: Call_DetachDisk_600484; path: JsonNode; query: JsonNode;
+proc call*(call_602518: Call_DetachDisk_602506; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Detaches a stopped block storage disk from a Lightsail instance. Make sure to unmount any file systems on the device within your operating system before stopping the instance and detaching the disk.</p> <p>The <code>detach disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600496.validator(path, query, header, formData, body)
-  let scheme = call_600496.pickScheme
+  let valid = call_602518.validator(path, query, header, formData, body)
+  let scheme = call_602518.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600496.url(scheme.get, call_600496.host, call_600496.base,
-                         call_600496.route, valid.getOrDefault("path"),
+  let url = call_602518.url(scheme.get, call_602518.host, call_602518.base,
+                         call_602518.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600496, url, valid)
+  result = atozHook(call_602518, url, valid)
 
-proc call*(call_600497: Call_DetachDisk_600484; body: JsonNode): Recallable =
+proc call*(call_602519: Call_DetachDisk_602506; body: JsonNode): Recallable =
   ## detachDisk
   ## <p>Detaches a stopped block storage disk from a Lightsail instance. Make sure to unmount any file systems on the device within your operating system before stopping the instance and detaching the disk.</p> <p>The <code>detach disk</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>disk name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600498 = newJObject()
+  var body_602520 = newJObject()
   if body != nil:
-    body_600498 = body
-  result = call_600497.call(nil, nil, nil, nil, body_600498)
+    body_602520 = body
+  result = call_602519.call(nil, nil, nil, nil, body_602520)
 
-var detachDisk* = Call_DetachDisk_600484(name: "detachDisk",
+var detachDisk* = Call_DetachDisk_602506(name: "detachDisk",
                                       meth: HttpMethod.HttpPost,
                                       host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.DetachDisk",
-                                      validator: validate_DetachDisk_600485,
-                                      base: "/", url: url_DetachDisk_600486,
+                                      validator: validate_DetachDisk_602507,
+                                      base: "/", url: url_DetachDisk_602508,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetachInstancesFromLoadBalancer_600499 = ref object of OpenApiRestCall_599368
-proc url_DetachInstancesFromLoadBalancer_600501(protocol: Scheme; host: string;
+  Call_DetachInstancesFromLoadBalancer_602521 = ref object of OpenApiRestCall_601389
+proc url_DetachInstancesFromLoadBalancer_602523(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DetachInstancesFromLoadBalancer_600500(path: JsonNode;
+proc validate_DetachInstancesFromLoadBalancer_602522(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Detaches the specified instances from a Lightsail load balancer.</p> <p>This operation waits until the instances are no longer needed before they are detached from the load balancer.</p> <p>The <code>detach instances from load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -4254,57 +4291,57 @@ proc validate_DetachInstancesFromLoadBalancer_600500(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600502 = header.getOrDefault("X-Amz-Date")
-  valid_600502 = validateParameter(valid_600502, JString, required = false,
-                                 default = nil)
-  if valid_600502 != nil:
-    section.add "X-Amz-Date", valid_600502
-  var valid_600503 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600503 = validateParameter(valid_600503, JString, required = false,
-                                 default = nil)
-  if valid_600503 != nil:
-    section.add "X-Amz-Security-Token", valid_600503
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600504 = header.getOrDefault("X-Amz-Target")
-  valid_600504 = validateParameter(valid_600504, JString, required = true, default = newJString(
+  var valid_602524 = header.getOrDefault("X-Amz-Target")
+  valid_602524 = validateParameter(valid_602524, JString, required = true, default = newJString(
       "Lightsail_20161128.DetachInstancesFromLoadBalancer"))
-  if valid_600504 != nil:
-    section.add "X-Amz-Target", valid_600504
-  var valid_600505 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600505 = validateParameter(valid_600505, JString, required = false,
+  if valid_602524 != nil:
+    section.add "X-Amz-Target", valid_602524
+  var valid_602525 = header.getOrDefault("X-Amz-Signature")
+  valid_602525 = validateParameter(valid_602525, JString, required = false,
                                  default = nil)
-  if valid_600505 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600505
-  var valid_600506 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600506 = validateParameter(valid_600506, JString, required = false,
+  if valid_602525 != nil:
+    section.add "X-Amz-Signature", valid_602525
+  var valid_602526 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602526 = validateParameter(valid_602526, JString, required = false,
                                  default = nil)
-  if valid_600506 != nil:
-    section.add "X-Amz-Algorithm", valid_600506
-  var valid_600507 = header.getOrDefault("X-Amz-Signature")
-  valid_600507 = validateParameter(valid_600507, JString, required = false,
+  if valid_602526 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602526
+  var valid_602527 = header.getOrDefault("X-Amz-Date")
+  valid_602527 = validateParameter(valid_602527, JString, required = false,
                                  default = nil)
-  if valid_600507 != nil:
-    section.add "X-Amz-Signature", valid_600507
-  var valid_600508 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600508 = validateParameter(valid_600508, JString, required = false,
+  if valid_602527 != nil:
+    section.add "X-Amz-Date", valid_602527
+  var valid_602528 = header.getOrDefault("X-Amz-Credential")
+  valid_602528 = validateParameter(valid_602528, JString, required = false,
                                  default = nil)
-  if valid_600508 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600508
-  var valid_600509 = header.getOrDefault("X-Amz-Credential")
-  valid_600509 = validateParameter(valid_600509, JString, required = false,
+  if valid_602528 != nil:
+    section.add "X-Amz-Credential", valid_602528
+  var valid_602529 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602529 = validateParameter(valid_602529, JString, required = false,
                                  default = nil)
-  if valid_600509 != nil:
-    section.add "X-Amz-Credential", valid_600509
+  if valid_602529 != nil:
+    section.add "X-Amz-Security-Token", valid_602529
+  var valid_602530 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602530 = validateParameter(valid_602530, JString, required = false,
+                                 default = nil)
+  if valid_602530 != nil:
+    section.add "X-Amz-Algorithm", valid_602530
+  var valid_602531 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602531 = validateParameter(valid_602531, JString, required = false,
+                                 default = nil)
+  if valid_602531 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602531
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4315,50 +4352,51 @@ proc validate_DetachInstancesFromLoadBalancer_600500(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600511: Call_DetachInstancesFromLoadBalancer_600499;
+proc call*(call_602533: Call_DetachInstancesFromLoadBalancer_602521;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Detaches the specified instances from a Lightsail load balancer.</p> <p>This operation waits until the instances are no longer needed before they are detached from the load balancer.</p> <p>The <code>detach instances from load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600511.validator(path, query, header, formData, body)
-  let scheme = call_600511.pickScheme
+  let valid = call_602533.validator(path, query, header, formData, body)
+  let scheme = call_602533.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600511.url(scheme.get, call_600511.host, call_600511.base,
-                         call_600511.route, valid.getOrDefault("path"),
+  let url = call_602533.url(scheme.get, call_602533.host, call_602533.base,
+                         call_602533.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600511, url, valid)
+  result = atozHook(call_602533, url, valid)
 
-proc call*(call_600512: Call_DetachInstancesFromLoadBalancer_600499; body: JsonNode): Recallable =
+proc call*(call_602534: Call_DetachInstancesFromLoadBalancer_602521; body: JsonNode): Recallable =
   ## detachInstancesFromLoadBalancer
   ## <p>Detaches the specified instances from a Lightsail load balancer.</p> <p>This operation waits until the instances are no longer needed before they are detached from the load balancer.</p> <p>The <code>detach instances from load balancer</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600513 = newJObject()
+  var body_602535 = newJObject()
   if body != nil:
-    body_600513 = body
-  result = call_600512.call(nil, nil, nil, nil, body_600513)
+    body_602535 = body
+  result = call_602534.call(nil, nil, nil, nil, body_602535)
 
-var detachInstancesFromLoadBalancer* = Call_DetachInstancesFromLoadBalancer_600499(
+var detachInstancesFromLoadBalancer* = Call_DetachInstancesFromLoadBalancer_602521(
     name: "detachInstancesFromLoadBalancer", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DetachInstancesFromLoadBalancer",
-    validator: validate_DetachInstancesFromLoadBalancer_600500, base: "/",
-    url: url_DetachInstancesFromLoadBalancer_600501,
+    validator: validate_DetachInstancesFromLoadBalancer_602522, base: "/",
+    url: url_DetachInstancesFromLoadBalancer_602523,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetachStaticIp_600514 = ref object of OpenApiRestCall_599368
-proc url_DetachStaticIp_600516(protocol: Scheme; host: string; base: string;
+  Call_DetachStaticIp_602536 = ref object of OpenApiRestCall_601389
+proc url_DetachStaticIp_602538(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DetachStaticIp_600515(path: JsonNode; query: JsonNode;
+proc validate_DetachStaticIp_602537(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Detaches a static IP from the Amazon Lightsail instance to which it is attached.
@@ -4370,57 +4408,57 @@ proc validate_DetachStaticIp_600515(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600517 = header.getOrDefault("X-Amz-Date")
-  valid_600517 = validateParameter(valid_600517, JString, required = false,
-                                 default = nil)
-  if valid_600517 != nil:
-    section.add "X-Amz-Date", valid_600517
-  var valid_600518 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600518 = validateParameter(valid_600518, JString, required = false,
-                                 default = nil)
-  if valid_600518 != nil:
-    section.add "X-Amz-Security-Token", valid_600518
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600519 = header.getOrDefault("X-Amz-Target")
-  valid_600519 = validateParameter(valid_600519, JString, required = true, default = newJString(
+  var valid_602539 = header.getOrDefault("X-Amz-Target")
+  valid_602539 = validateParameter(valid_602539, JString, required = true, default = newJString(
       "Lightsail_20161128.DetachStaticIp"))
-  if valid_600519 != nil:
-    section.add "X-Amz-Target", valid_600519
-  var valid_600520 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600520 = validateParameter(valid_600520, JString, required = false,
+  if valid_602539 != nil:
+    section.add "X-Amz-Target", valid_602539
+  var valid_602540 = header.getOrDefault("X-Amz-Signature")
+  valid_602540 = validateParameter(valid_602540, JString, required = false,
                                  default = nil)
-  if valid_600520 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600520
-  var valid_600521 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600521 = validateParameter(valid_600521, JString, required = false,
+  if valid_602540 != nil:
+    section.add "X-Amz-Signature", valid_602540
+  var valid_602541 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602541 = validateParameter(valid_602541, JString, required = false,
                                  default = nil)
-  if valid_600521 != nil:
-    section.add "X-Amz-Algorithm", valid_600521
-  var valid_600522 = header.getOrDefault("X-Amz-Signature")
-  valid_600522 = validateParameter(valid_600522, JString, required = false,
+  if valid_602541 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602541
+  var valid_602542 = header.getOrDefault("X-Amz-Date")
+  valid_602542 = validateParameter(valid_602542, JString, required = false,
                                  default = nil)
-  if valid_600522 != nil:
-    section.add "X-Amz-Signature", valid_600522
-  var valid_600523 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600523 = validateParameter(valid_600523, JString, required = false,
+  if valid_602542 != nil:
+    section.add "X-Amz-Date", valid_602542
+  var valid_602543 = header.getOrDefault("X-Amz-Credential")
+  valid_602543 = validateParameter(valid_602543, JString, required = false,
                                  default = nil)
-  if valid_600523 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600523
-  var valid_600524 = header.getOrDefault("X-Amz-Credential")
-  valid_600524 = validateParameter(valid_600524, JString, required = false,
+  if valid_602543 != nil:
+    section.add "X-Amz-Credential", valid_602543
+  var valid_602544 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602544 = validateParameter(valid_602544, JString, required = false,
                                  default = nil)
-  if valid_600524 != nil:
-    section.add "X-Amz-Credential", valid_600524
+  if valid_602544 != nil:
+    section.add "X-Amz-Security-Token", valid_602544
+  var valid_602545 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602545 = validateParameter(valid_602545, JString, required = false,
+                                 default = nil)
+  if valid_602545 != nil:
+    section.add "X-Amz-Algorithm", valid_602545
+  var valid_602546 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602546 = validateParameter(valid_602546, JString, required = false,
+                                 default = nil)
+  if valid_602546 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602546
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4431,47 +4469,48 @@ proc validate_DetachStaticIp_600515(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600526: Call_DetachStaticIp_600514; path: JsonNode; query: JsonNode;
+proc call*(call_602548: Call_DetachStaticIp_602536; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Detaches a static IP from the Amazon Lightsail instance to which it is attached.
   ## 
-  let valid = call_600526.validator(path, query, header, formData, body)
-  let scheme = call_600526.pickScheme
+  let valid = call_602548.validator(path, query, header, formData, body)
+  let scheme = call_602548.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600526.url(scheme.get, call_600526.host, call_600526.base,
-                         call_600526.route, valid.getOrDefault("path"),
+  let url = call_602548.url(scheme.get, call_602548.host, call_602548.base,
+                         call_602548.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600526, url, valid)
+  result = atozHook(call_602548, url, valid)
 
-proc call*(call_600527: Call_DetachStaticIp_600514; body: JsonNode): Recallable =
+proc call*(call_602549: Call_DetachStaticIp_602536; body: JsonNode): Recallable =
   ## detachStaticIp
   ## Detaches a static IP from the Amazon Lightsail instance to which it is attached.
   ##   body: JObject (required)
-  var body_600528 = newJObject()
+  var body_602550 = newJObject()
   if body != nil:
-    body_600528 = body
-  result = call_600527.call(nil, nil, nil, nil, body_600528)
+    body_602550 = body
+  result = call_602549.call(nil, nil, nil, nil, body_602550)
 
-var detachStaticIp* = Call_DetachStaticIp_600514(name: "detachStaticIp",
+var detachStaticIp* = Call_DetachStaticIp_602536(name: "detachStaticIp",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DetachStaticIp",
-    validator: validate_DetachStaticIp_600515, base: "/", url: url_DetachStaticIp_600516,
+    validator: validate_DetachStaticIp_602537, base: "/", url: url_DetachStaticIp_602538,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableAddOn_600529 = ref object of OpenApiRestCall_599368
-proc url_DisableAddOn_600531(protocol: Scheme; host: string; base: string;
+  Call_DisableAddOn_602551 = ref object of OpenApiRestCall_601389
+proc url_DisableAddOn_602553(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DisableAddOn_600530(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DisableAddOn_602552(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Disables an add-on for an Amazon Lightsail resource. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ## 
@@ -4482,57 +4521,57 @@ proc validate_DisableAddOn_600530(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600532 = header.getOrDefault("X-Amz-Date")
-  valid_600532 = validateParameter(valid_600532, JString, required = false,
-                                 default = nil)
-  if valid_600532 != nil:
-    section.add "X-Amz-Date", valid_600532
-  var valid_600533 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600533 = validateParameter(valid_600533, JString, required = false,
-                                 default = nil)
-  if valid_600533 != nil:
-    section.add "X-Amz-Security-Token", valid_600533
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600534 = header.getOrDefault("X-Amz-Target")
-  valid_600534 = validateParameter(valid_600534, JString, required = true, default = newJString(
+  var valid_602554 = header.getOrDefault("X-Amz-Target")
+  valid_602554 = validateParameter(valid_602554, JString, required = true, default = newJString(
       "Lightsail_20161128.DisableAddOn"))
-  if valid_600534 != nil:
-    section.add "X-Amz-Target", valid_600534
-  var valid_600535 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600535 = validateParameter(valid_600535, JString, required = false,
+  if valid_602554 != nil:
+    section.add "X-Amz-Target", valid_602554
+  var valid_602555 = header.getOrDefault("X-Amz-Signature")
+  valid_602555 = validateParameter(valid_602555, JString, required = false,
                                  default = nil)
-  if valid_600535 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600535
-  var valid_600536 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600536 = validateParameter(valid_600536, JString, required = false,
+  if valid_602555 != nil:
+    section.add "X-Amz-Signature", valid_602555
+  var valid_602556 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602556 = validateParameter(valid_602556, JString, required = false,
                                  default = nil)
-  if valid_600536 != nil:
-    section.add "X-Amz-Algorithm", valid_600536
-  var valid_600537 = header.getOrDefault("X-Amz-Signature")
-  valid_600537 = validateParameter(valid_600537, JString, required = false,
+  if valid_602556 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602556
+  var valid_602557 = header.getOrDefault("X-Amz-Date")
+  valid_602557 = validateParameter(valid_602557, JString, required = false,
                                  default = nil)
-  if valid_600537 != nil:
-    section.add "X-Amz-Signature", valid_600537
-  var valid_600538 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600538 = validateParameter(valid_600538, JString, required = false,
+  if valid_602557 != nil:
+    section.add "X-Amz-Date", valid_602557
+  var valid_602558 = header.getOrDefault("X-Amz-Credential")
+  valid_602558 = validateParameter(valid_602558, JString, required = false,
                                  default = nil)
-  if valid_600538 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600538
-  var valid_600539 = header.getOrDefault("X-Amz-Credential")
-  valid_600539 = validateParameter(valid_600539, JString, required = false,
+  if valid_602558 != nil:
+    section.add "X-Amz-Credential", valid_602558
+  var valid_602559 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602559 = validateParameter(valid_602559, JString, required = false,
                                  default = nil)
-  if valid_600539 != nil:
-    section.add "X-Amz-Credential", valid_600539
+  if valid_602559 != nil:
+    section.add "X-Amz-Security-Token", valid_602559
+  var valid_602560 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602560 = validateParameter(valid_602560, JString, required = false,
+                                 default = nil)
+  if valid_602560 != nil:
+    section.add "X-Amz-Algorithm", valid_602560
+  var valid_602561 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602561 = validateParameter(valid_602561, JString, required = false,
+                                 default = nil)
+  if valid_602561 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602561
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4543,47 +4582,48 @@ proc validate_DisableAddOn_600530(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600541: Call_DisableAddOn_600529; path: JsonNode; query: JsonNode;
+proc call*(call_602563: Call_DisableAddOn_602551; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Disables an add-on for an Amazon Lightsail resource. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ## 
-  let valid = call_600541.validator(path, query, header, formData, body)
-  let scheme = call_600541.pickScheme
+  let valid = call_602563.validator(path, query, header, formData, body)
+  let scheme = call_602563.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600541.url(scheme.get, call_600541.host, call_600541.base,
-                         call_600541.route, valid.getOrDefault("path"),
+  let url = call_602563.url(scheme.get, call_602563.host, call_602563.base,
+                         call_602563.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600541, url, valid)
+  result = atozHook(call_602563, url, valid)
 
-proc call*(call_600542: Call_DisableAddOn_600529; body: JsonNode): Recallable =
+proc call*(call_602564: Call_DisableAddOn_602551; body: JsonNode): Recallable =
   ## disableAddOn
   ## Disables an add-on for an Amazon Lightsail resource. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ##   body: JObject (required)
-  var body_600543 = newJObject()
+  var body_602565 = newJObject()
   if body != nil:
-    body_600543 = body
-  result = call_600542.call(nil, nil, nil, nil, body_600543)
+    body_602565 = body
+  result = call_602564.call(nil, nil, nil, nil, body_602565)
 
-var disableAddOn* = Call_DisableAddOn_600529(name: "disableAddOn",
+var disableAddOn* = Call_DisableAddOn_602551(name: "disableAddOn",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DisableAddOn",
-    validator: validate_DisableAddOn_600530, base: "/", url: url_DisableAddOn_600531,
+    validator: validate_DisableAddOn_602552, base: "/", url: url_DisableAddOn_602553,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DownloadDefaultKeyPair_600544 = ref object of OpenApiRestCall_599368
-proc url_DownloadDefaultKeyPair_600546(protocol: Scheme; host: string; base: string;
+  Call_DownloadDefaultKeyPair_602566 = ref object of OpenApiRestCall_601389
+proc url_DownloadDefaultKeyPair_602568(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DownloadDefaultKeyPair_600545(path: JsonNode; query: JsonNode;
+proc validate_DownloadDefaultKeyPair_602567(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Downloads the default SSH key pair from the user's account.
   ## 
@@ -4594,57 +4634,57 @@ proc validate_DownloadDefaultKeyPair_600545(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600547 = header.getOrDefault("X-Amz-Date")
-  valid_600547 = validateParameter(valid_600547, JString, required = false,
-                                 default = nil)
-  if valid_600547 != nil:
-    section.add "X-Amz-Date", valid_600547
-  var valid_600548 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600548 = validateParameter(valid_600548, JString, required = false,
-                                 default = nil)
-  if valid_600548 != nil:
-    section.add "X-Amz-Security-Token", valid_600548
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600549 = header.getOrDefault("X-Amz-Target")
-  valid_600549 = validateParameter(valid_600549, JString, required = true, default = newJString(
+  var valid_602569 = header.getOrDefault("X-Amz-Target")
+  valid_602569 = validateParameter(valid_602569, JString, required = true, default = newJString(
       "Lightsail_20161128.DownloadDefaultKeyPair"))
-  if valid_600549 != nil:
-    section.add "X-Amz-Target", valid_600549
-  var valid_600550 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600550 = validateParameter(valid_600550, JString, required = false,
+  if valid_602569 != nil:
+    section.add "X-Amz-Target", valid_602569
+  var valid_602570 = header.getOrDefault("X-Amz-Signature")
+  valid_602570 = validateParameter(valid_602570, JString, required = false,
                                  default = nil)
-  if valid_600550 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600550
-  var valid_600551 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600551 = validateParameter(valid_600551, JString, required = false,
+  if valid_602570 != nil:
+    section.add "X-Amz-Signature", valid_602570
+  var valid_602571 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602571 = validateParameter(valid_602571, JString, required = false,
                                  default = nil)
-  if valid_600551 != nil:
-    section.add "X-Amz-Algorithm", valid_600551
-  var valid_600552 = header.getOrDefault("X-Amz-Signature")
-  valid_600552 = validateParameter(valid_600552, JString, required = false,
+  if valid_602571 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602571
+  var valid_602572 = header.getOrDefault("X-Amz-Date")
+  valid_602572 = validateParameter(valid_602572, JString, required = false,
                                  default = nil)
-  if valid_600552 != nil:
-    section.add "X-Amz-Signature", valid_600552
-  var valid_600553 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600553 = validateParameter(valid_600553, JString, required = false,
+  if valid_602572 != nil:
+    section.add "X-Amz-Date", valid_602572
+  var valid_602573 = header.getOrDefault("X-Amz-Credential")
+  valid_602573 = validateParameter(valid_602573, JString, required = false,
                                  default = nil)
-  if valid_600553 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600553
-  var valid_600554 = header.getOrDefault("X-Amz-Credential")
-  valid_600554 = validateParameter(valid_600554, JString, required = false,
+  if valid_602573 != nil:
+    section.add "X-Amz-Credential", valid_602573
+  var valid_602574 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602574 = validateParameter(valid_602574, JString, required = false,
                                  default = nil)
-  if valid_600554 != nil:
-    section.add "X-Amz-Credential", valid_600554
+  if valid_602574 != nil:
+    section.add "X-Amz-Security-Token", valid_602574
+  var valid_602575 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602575 = validateParameter(valid_602575, JString, required = false,
+                                 default = nil)
+  if valid_602575 != nil:
+    section.add "X-Amz-Algorithm", valid_602575
+  var valid_602576 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602576 = validateParameter(valid_602576, JString, required = false,
+                                 default = nil)
+  if valid_602576 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602576
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4655,48 +4695,49 @@ proc validate_DownloadDefaultKeyPair_600545(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600556: Call_DownloadDefaultKeyPair_600544; path: JsonNode;
+proc call*(call_602578: Call_DownloadDefaultKeyPair_602566; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Downloads the default SSH key pair from the user's account.
   ## 
-  let valid = call_600556.validator(path, query, header, formData, body)
-  let scheme = call_600556.pickScheme
+  let valid = call_602578.validator(path, query, header, formData, body)
+  let scheme = call_602578.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600556.url(scheme.get, call_600556.host, call_600556.base,
-                         call_600556.route, valid.getOrDefault("path"),
+  let url = call_602578.url(scheme.get, call_602578.host, call_602578.base,
+                         call_602578.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600556, url, valid)
+  result = atozHook(call_602578, url, valid)
 
-proc call*(call_600557: Call_DownloadDefaultKeyPair_600544; body: JsonNode): Recallable =
+proc call*(call_602579: Call_DownloadDefaultKeyPair_602566; body: JsonNode): Recallable =
   ## downloadDefaultKeyPair
   ## Downloads the default SSH key pair from the user's account.
   ##   body: JObject (required)
-  var body_600558 = newJObject()
+  var body_602580 = newJObject()
   if body != nil:
-    body_600558 = body
-  result = call_600557.call(nil, nil, nil, nil, body_600558)
+    body_602580 = body
+  result = call_602579.call(nil, nil, nil, nil, body_602580)
 
-var downloadDefaultKeyPair* = Call_DownloadDefaultKeyPair_600544(
+var downloadDefaultKeyPair* = Call_DownloadDefaultKeyPair_602566(
     name: "downloadDefaultKeyPair", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.DownloadDefaultKeyPair",
-    validator: validate_DownloadDefaultKeyPair_600545, base: "/",
-    url: url_DownloadDefaultKeyPair_600546, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DownloadDefaultKeyPair_602567, base: "/",
+    url: url_DownloadDefaultKeyPair_602568, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableAddOn_600559 = ref object of OpenApiRestCall_599368
-proc url_EnableAddOn_600561(protocol: Scheme; host: string; base: string;
+  Call_EnableAddOn_602581 = ref object of OpenApiRestCall_601389
+proc url_EnableAddOn_602583(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_EnableAddOn_600560(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_EnableAddOn_602582(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Enables or modifies an add-on for an Amazon Lightsail resource. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ## 
@@ -4707,57 +4748,57 @@ proc validate_EnableAddOn_600560(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600562 = header.getOrDefault("X-Amz-Date")
-  valid_600562 = validateParameter(valid_600562, JString, required = false,
-                                 default = nil)
-  if valid_600562 != nil:
-    section.add "X-Amz-Date", valid_600562
-  var valid_600563 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600563 = validateParameter(valid_600563, JString, required = false,
-                                 default = nil)
-  if valid_600563 != nil:
-    section.add "X-Amz-Security-Token", valid_600563
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600564 = header.getOrDefault("X-Amz-Target")
-  valid_600564 = validateParameter(valid_600564, JString, required = true, default = newJString(
+  var valid_602584 = header.getOrDefault("X-Amz-Target")
+  valid_602584 = validateParameter(valid_602584, JString, required = true, default = newJString(
       "Lightsail_20161128.EnableAddOn"))
-  if valid_600564 != nil:
-    section.add "X-Amz-Target", valid_600564
-  var valid_600565 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600565 = validateParameter(valid_600565, JString, required = false,
+  if valid_602584 != nil:
+    section.add "X-Amz-Target", valid_602584
+  var valid_602585 = header.getOrDefault("X-Amz-Signature")
+  valid_602585 = validateParameter(valid_602585, JString, required = false,
                                  default = nil)
-  if valid_600565 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600565
-  var valid_600566 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600566 = validateParameter(valid_600566, JString, required = false,
+  if valid_602585 != nil:
+    section.add "X-Amz-Signature", valid_602585
+  var valid_602586 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602586 = validateParameter(valid_602586, JString, required = false,
                                  default = nil)
-  if valid_600566 != nil:
-    section.add "X-Amz-Algorithm", valid_600566
-  var valid_600567 = header.getOrDefault("X-Amz-Signature")
-  valid_600567 = validateParameter(valid_600567, JString, required = false,
+  if valid_602586 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602586
+  var valid_602587 = header.getOrDefault("X-Amz-Date")
+  valid_602587 = validateParameter(valid_602587, JString, required = false,
                                  default = nil)
-  if valid_600567 != nil:
-    section.add "X-Amz-Signature", valid_600567
-  var valid_600568 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600568 = validateParameter(valid_600568, JString, required = false,
+  if valid_602587 != nil:
+    section.add "X-Amz-Date", valid_602587
+  var valid_602588 = header.getOrDefault("X-Amz-Credential")
+  valid_602588 = validateParameter(valid_602588, JString, required = false,
                                  default = nil)
-  if valid_600568 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600568
-  var valid_600569 = header.getOrDefault("X-Amz-Credential")
-  valid_600569 = validateParameter(valid_600569, JString, required = false,
+  if valid_602588 != nil:
+    section.add "X-Amz-Credential", valid_602588
+  var valid_602589 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602589 = validateParameter(valid_602589, JString, required = false,
                                  default = nil)
-  if valid_600569 != nil:
-    section.add "X-Amz-Credential", valid_600569
+  if valid_602589 != nil:
+    section.add "X-Amz-Security-Token", valid_602589
+  var valid_602590 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602590 = validateParameter(valid_602590, JString, required = false,
+                                 default = nil)
+  if valid_602590 != nil:
+    section.add "X-Amz-Algorithm", valid_602590
+  var valid_602591 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602591 = validateParameter(valid_602591, JString, required = false,
+                                 default = nil)
+  if valid_602591 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602591
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4768,48 +4809,49 @@ proc validate_EnableAddOn_600560(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600571: Call_EnableAddOn_600559; path: JsonNode; query: JsonNode;
+proc call*(call_602593: Call_EnableAddOn_602581; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Enables or modifies an add-on for an Amazon Lightsail resource. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ## 
-  let valid = call_600571.validator(path, query, header, formData, body)
-  let scheme = call_600571.pickScheme
+  let valid = call_602593.validator(path, query, header, formData, body)
+  let scheme = call_602593.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600571.url(scheme.get, call_600571.host, call_600571.base,
-                         call_600571.route, valid.getOrDefault("path"),
+  let url = call_602593.url(scheme.get, call_602593.host, call_602593.base,
+                         call_602593.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600571, url, valid)
+  result = atozHook(call_602593, url, valid)
 
-proc call*(call_600572: Call_EnableAddOn_600559; body: JsonNode): Recallable =
+proc call*(call_602594: Call_EnableAddOn_602581; body: JsonNode): Recallable =
   ## enableAddOn
   ## Enables or modifies an add-on for an Amazon Lightsail resource. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ##   body: JObject (required)
-  var body_600573 = newJObject()
+  var body_602595 = newJObject()
   if body != nil:
-    body_600573 = body
-  result = call_600572.call(nil, nil, nil, nil, body_600573)
+    body_602595 = body
+  result = call_602594.call(nil, nil, nil, nil, body_602595)
 
-var enableAddOn* = Call_EnableAddOn_600559(name: "enableAddOn",
+var enableAddOn* = Call_EnableAddOn_602581(name: "enableAddOn",
                                         meth: HttpMethod.HttpPost,
                                         host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.EnableAddOn",
-                                        validator: validate_EnableAddOn_600560,
-                                        base: "/", url: url_EnableAddOn_600561,
+                                        validator: validate_EnableAddOn_602582,
+                                        base: "/", url: url_EnableAddOn_602583,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ExportSnapshot_600574 = ref object of OpenApiRestCall_599368
-proc url_ExportSnapshot_600576(protocol: Scheme; host: string; base: string;
+  Call_ExportSnapshot_602596 = ref object of OpenApiRestCall_601389
+proc url_ExportSnapshot_602598(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ExportSnapshot_600575(path: JsonNode; query: JsonNode;
+proc validate_ExportSnapshot_602597(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Exports an Amazon Lightsail instance or block storage disk snapshot to Amazon Elastic Compute Cloud (Amazon EC2). This operation results in an export snapshot record that can be used with the <code>create cloud formation stack</code> operation to create new Amazon EC2 instances.</p> <p>Exported instance snapshots appear in Amazon EC2 as Amazon Machine Images (AMIs), and the instance system disk appears as an Amazon Elastic Block Store (Amazon EBS) volume. Exported disk snapshots appear in Amazon EC2 as Amazon EBS volumes. Snapshots are exported to the same Amazon Web Services Region in Amazon EC2 as the source Lightsail snapshot.</p> <p/> <p>The <code>export snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>source snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p> <note> <p>Use the <code>get instance snapshots</code> or <code>get disk snapshots</code> operations to get a list of snapshots that you can export to Amazon EC2.</p> </note>
@@ -4821,57 +4863,57 @@ proc validate_ExportSnapshot_600575(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600577 = header.getOrDefault("X-Amz-Date")
-  valid_600577 = validateParameter(valid_600577, JString, required = false,
-                                 default = nil)
-  if valid_600577 != nil:
-    section.add "X-Amz-Date", valid_600577
-  var valid_600578 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600578 = validateParameter(valid_600578, JString, required = false,
-                                 default = nil)
-  if valid_600578 != nil:
-    section.add "X-Amz-Security-Token", valid_600578
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600579 = header.getOrDefault("X-Amz-Target")
-  valid_600579 = validateParameter(valid_600579, JString, required = true, default = newJString(
+  var valid_602599 = header.getOrDefault("X-Amz-Target")
+  valid_602599 = validateParameter(valid_602599, JString, required = true, default = newJString(
       "Lightsail_20161128.ExportSnapshot"))
-  if valid_600579 != nil:
-    section.add "X-Amz-Target", valid_600579
-  var valid_600580 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600580 = validateParameter(valid_600580, JString, required = false,
+  if valid_602599 != nil:
+    section.add "X-Amz-Target", valid_602599
+  var valid_602600 = header.getOrDefault("X-Amz-Signature")
+  valid_602600 = validateParameter(valid_602600, JString, required = false,
                                  default = nil)
-  if valid_600580 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600580
-  var valid_600581 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600581 = validateParameter(valid_600581, JString, required = false,
+  if valid_602600 != nil:
+    section.add "X-Amz-Signature", valid_602600
+  var valid_602601 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602601 = validateParameter(valid_602601, JString, required = false,
                                  default = nil)
-  if valid_600581 != nil:
-    section.add "X-Amz-Algorithm", valid_600581
-  var valid_600582 = header.getOrDefault("X-Amz-Signature")
-  valid_600582 = validateParameter(valid_600582, JString, required = false,
+  if valid_602601 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602601
+  var valid_602602 = header.getOrDefault("X-Amz-Date")
+  valid_602602 = validateParameter(valid_602602, JString, required = false,
                                  default = nil)
-  if valid_600582 != nil:
-    section.add "X-Amz-Signature", valid_600582
-  var valid_600583 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600583 = validateParameter(valid_600583, JString, required = false,
+  if valid_602602 != nil:
+    section.add "X-Amz-Date", valid_602602
+  var valid_602603 = header.getOrDefault("X-Amz-Credential")
+  valid_602603 = validateParameter(valid_602603, JString, required = false,
                                  default = nil)
-  if valid_600583 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600583
-  var valid_600584 = header.getOrDefault("X-Amz-Credential")
-  valid_600584 = validateParameter(valid_600584, JString, required = false,
+  if valid_602603 != nil:
+    section.add "X-Amz-Credential", valid_602603
+  var valid_602604 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602604 = validateParameter(valid_602604, JString, required = false,
                                  default = nil)
-  if valid_600584 != nil:
-    section.add "X-Amz-Credential", valid_600584
+  if valid_602604 != nil:
+    section.add "X-Amz-Security-Token", valid_602604
+  var valid_602605 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602605 = validateParameter(valid_602605, JString, required = false,
+                                 default = nil)
+  if valid_602605 != nil:
+    section.add "X-Amz-Algorithm", valid_602605
+  var valid_602606 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602606 = validateParameter(valid_602606, JString, required = false,
+                                 default = nil)
+  if valid_602606 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602606
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4882,47 +4924,48 @@ proc validate_ExportSnapshot_600575(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600586: Call_ExportSnapshot_600574; path: JsonNode; query: JsonNode;
+proc call*(call_602608: Call_ExportSnapshot_602596; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Exports an Amazon Lightsail instance or block storage disk snapshot to Amazon Elastic Compute Cloud (Amazon EC2). This operation results in an export snapshot record that can be used with the <code>create cloud formation stack</code> operation to create new Amazon EC2 instances.</p> <p>Exported instance snapshots appear in Amazon EC2 as Amazon Machine Images (AMIs), and the instance system disk appears as an Amazon Elastic Block Store (Amazon EBS) volume. Exported disk snapshots appear in Amazon EC2 as Amazon EBS volumes. Snapshots are exported to the same Amazon Web Services Region in Amazon EC2 as the source Lightsail snapshot.</p> <p/> <p>The <code>export snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>source snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p> <note> <p>Use the <code>get instance snapshots</code> or <code>get disk snapshots</code> operations to get a list of snapshots that you can export to Amazon EC2.</p> </note>
   ## 
-  let valid = call_600586.validator(path, query, header, formData, body)
-  let scheme = call_600586.pickScheme
+  let valid = call_602608.validator(path, query, header, formData, body)
+  let scheme = call_602608.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600586.url(scheme.get, call_600586.host, call_600586.base,
-                         call_600586.route, valid.getOrDefault("path"),
+  let url = call_602608.url(scheme.get, call_602608.host, call_602608.base,
+                         call_602608.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600586, url, valid)
+  result = atozHook(call_602608, url, valid)
 
-proc call*(call_600587: Call_ExportSnapshot_600574; body: JsonNode): Recallable =
+proc call*(call_602609: Call_ExportSnapshot_602596; body: JsonNode): Recallable =
   ## exportSnapshot
   ## <p>Exports an Amazon Lightsail instance or block storage disk snapshot to Amazon Elastic Compute Cloud (Amazon EC2). This operation results in an export snapshot record that can be used with the <code>create cloud formation stack</code> operation to create new Amazon EC2 instances.</p> <p>Exported instance snapshots appear in Amazon EC2 as Amazon Machine Images (AMIs), and the instance system disk appears as an Amazon Elastic Block Store (Amazon EBS) volume. Exported disk snapshots appear in Amazon EC2 as Amazon EBS volumes. Snapshots are exported to the same Amazon Web Services Region in Amazon EC2 as the source Lightsail snapshot.</p> <p/> <p>The <code>export snapshot</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>source snapshot name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p> <note> <p>Use the <code>get instance snapshots</code> or <code>get disk snapshots</code> operations to get a list of snapshots that you can export to Amazon EC2.</p> </note>
   ##   body: JObject (required)
-  var body_600588 = newJObject()
+  var body_602610 = newJObject()
   if body != nil:
-    body_600588 = body
-  result = call_600587.call(nil, nil, nil, nil, body_600588)
+    body_602610 = body
+  result = call_602609.call(nil, nil, nil, nil, body_602610)
 
-var exportSnapshot* = Call_ExportSnapshot_600574(name: "exportSnapshot",
+var exportSnapshot* = Call_ExportSnapshot_602596(name: "exportSnapshot",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.ExportSnapshot",
-    validator: validate_ExportSnapshot_600575, base: "/", url: url_ExportSnapshot_600576,
+    validator: validate_ExportSnapshot_602597, base: "/", url: url_ExportSnapshot_602598,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetActiveNames_600589 = ref object of OpenApiRestCall_599368
-proc url_GetActiveNames_600591(protocol: Scheme; host: string; base: string;
+  Call_GetActiveNames_602611 = ref object of OpenApiRestCall_601389
+proc url_GetActiveNames_602613(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetActiveNames_600590(path: JsonNode; query: JsonNode;
+proc validate_GetActiveNames_602612(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns the names of all active (not deleted) resources.
@@ -4934,57 +4977,57 @@ proc validate_GetActiveNames_600590(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600592 = header.getOrDefault("X-Amz-Date")
-  valid_600592 = validateParameter(valid_600592, JString, required = false,
-                                 default = nil)
-  if valid_600592 != nil:
-    section.add "X-Amz-Date", valid_600592
-  var valid_600593 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600593 = validateParameter(valid_600593, JString, required = false,
-                                 default = nil)
-  if valid_600593 != nil:
-    section.add "X-Amz-Security-Token", valid_600593
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600594 = header.getOrDefault("X-Amz-Target")
-  valid_600594 = validateParameter(valid_600594, JString, required = true, default = newJString(
+  var valid_602614 = header.getOrDefault("X-Amz-Target")
+  valid_602614 = validateParameter(valid_602614, JString, required = true, default = newJString(
       "Lightsail_20161128.GetActiveNames"))
-  if valid_600594 != nil:
-    section.add "X-Amz-Target", valid_600594
-  var valid_600595 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600595 = validateParameter(valid_600595, JString, required = false,
+  if valid_602614 != nil:
+    section.add "X-Amz-Target", valid_602614
+  var valid_602615 = header.getOrDefault("X-Amz-Signature")
+  valid_602615 = validateParameter(valid_602615, JString, required = false,
                                  default = nil)
-  if valid_600595 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600595
-  var valid_600596 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600596 = validateParameter(valid_600596, JString, required = false,
+  if valid_602615 != nil:
+    section.add "X-Amz-Signature", valid_602615
+  var valid_602616 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602616 = validateParameter(valid_602616, JString, required = false,
                                  default = nil)
-  if valid_600596 != nil:
-    section.add "X-Amz-Algorithm", valid_600596
-  var valid_600597 = header.getOrDefault("X-Amz-Signature")
-  valid_600597 = validateParameter(valid_600597, JString, required = false,
+  if valid_602616 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602616
+  var valid_602617 = header.getOrDefault("X-Amz-Date")
+  valid_602617 = validateParameter(valid_602617, JString, required = false,
                                  default = nil)
-  if valid_600597 != nil:
-    section.add "X-Amz-Signature", valid_600597
-  var valid_600598 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600598 = validateParameter(valid_600598, JString, required = false,
+  if valid_602617 != nil:
+    section.add "X-Amz-Date", valid_602617
+  var valid_602618 = header.getOrDefault("X-Amz-Credential")
+  valid_602618 = validateParameter(valid_602618, JString, required = false,
                                  default = nil)
-  if valid_600598 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600598
-  var valid_600599 = header.getOrDefault("X-Amz-Credential")
-  valid_600599 = validateParameter(valid_600599, JString, required = false,
+  if valid_602618 != nil:
+    section.add "X-Amz-Credential", valid_602618
+  var valid_602619 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602619 = validateParameter(valid_602619, JString, required = false,
                                  default = nil)
-  if valid_600599 != nil:
-    section.add "X-Amz-Credential", valid_600599
+  if valid_602619 != nil:
+    section.add "X-Amz-Security-Token", valid_602619
+  var valid_602620 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602620 = validateParameter(valid_602620, JString, required = false,
+                                 default = nil)
+  if valid_602620 != nil:
+    section.add "X-Amz-Algorithm", valid_602620
+  var valid_602621 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602621 = validateParameter(valid_602621, JString, required = false,
+                                 default = nil)
+  if valid_602621 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602621
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4995,50 +5038,51 @@ proc validate_GetActiveNames_600590(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600601: Call_GetActiveNames_600589; path: JsonNode; query: JsonNode;
+proc call*(call_602623: Call_GetActiveNames_602611; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the names of all active (not deleted) resources.
   ## 
-  let valid = call_600601.validator(path, query, header, formData, body)
-  let scheme = call_600601.pickScheme
+  let valid = call_602623.validator(path, query, header, formData, body)
+  let scheme = call_602623.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600601.url(scheme.get, call_600601.host, call_600601.base,
-                         call_600601.route, valid.getOrDefault("path"),
+  let url = call_602623.url(scheme.get, call_602623.host, call_602623.base,
+                         call_602623.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600601, url, valid)
+  result = atozHook(call_602623, url, valid)
 
-proc call*(call_600602: Call_GetActiveNames_600589; body: JsonNode): Recallable =
+proc call*(call_602624: Call_GetActiveNames_602611; body: JsonNode): Recallable =
   ## getActiveNames
   ## Returns the names of all active (not deleted) resources.
   ##   body: JObject (required)
-  var body_600603 = newJObject()
+  var body_602625 = newJObject()
   if body != nil:
-    body_600603 = body
-  result = call_600602.call(nil, nil, nil, nil, body_600603)
+    body_602625 = body
+  result = call_602624.call(nil, nil, nil, nil, body_602625)
 
-var getActiveNames* = Call_GetActiveNames_600589(name: "getActiveNames",
+var getActiveNames* = Call_GetActiveNames_602611(name: "getActiveNames",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetActiveNames",
-    validator: validate_GetActiveNames_600590, base: "/", url: url_GetActiveNames_600591,
+    validator: validate_GetActiveNames_602612, base: "/", url: url_GetActiveNames_602613,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAutoSnapshots_600604 = ref object of OpenApiRestCall_599368
-proc url_GetAutoSnapshots_600606(protocol: Scheme; host: string; base: string;
+  Call_GetAutoSnapshots_602626 = ref object of OpenApiRestCall_601389
+proc url_GetAutoSnapshots_602628(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetAutoSnapshots_600605(path: JsonNode; query: JsonNode;
+proc validate_GetAutoSnapshots_602627(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## Returns the available automatic snapshots for the specified resource name. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
+  ## Returns the available automatic snapshots for an instance or disk. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -5047,57 +5091,57 @@ proc validate_GetAutoSnapshots_600605(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600607 = header.getOrDefault("X-Amz-Date")
-  valid_600607 = validateParameter(valid_600607, JString, required = false,
-                                 default = nil)
-  if valid_600607 != nil:
-    section.add "X-Amz-Date", valid_600607
-  var valid_600608 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600608 = validateParameter(valid_600608, JString, required = false,
-                                 default = nil)
-  if valid_600608 != nil:
-    section.add "X-Amz-Security-Token", valid_600608
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600609 = header.getOrDefault("X-Amz-Target")
-  valid_600609 = validateParameter(valid_600609, JString, required = true, default = newJString(
+  var valid_602629 = header.getOrDefault("X-Amz-Target")
+  valid_602629 = validateParameter(valid_602629, JString, required = true, default = newJString(
       "Lightsail_20161128.GetAutoSnapshots"))
-  if valid_600609 != nil:
-    section.add "X-Amz-Target", valid_600609
-  var valid_600610 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600610 = validateParameter(valid_600610, JString, required = false,
+  if valid_602629 != nil:
+    section.add "X-Amz-Target", valid_602629
+  var valid_602630 = header.getOrDefault("X-Amz-Signature")
+  valid_602630 = validateParameter(valid_602630, JString, required = false,
                                  default = nil)
-  if valid_600610 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600610
-  var valid_600611 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600611 = validateParameter(valid_600611, JString, required = false,
+  if valid_602630 != nil:
+    section.add "X-Amz-Signature", valid_602630
+  var valid_602631 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602631 = validateParameter(valid_602631, JString, required = false,
                                  default = nil)
-  if valid_600611 != nil:
-    section.add "X-Amz-Algorithm", valid_600611
-  var valid_600612 = header.getOrDefault("X-Amz-Signature")
-  valid_600612 = validateParameter(valid_600612, JString, required = false,
+  if valid_602631 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602631
+  var valid_602632 = header.getOrDefault("X-Amz-Date")
+  valid_602632 = validateParameter(valid_602632, JString, required = false,
                                  default = nil)
-  if valid_600612 != nil:
-    section.add "X-Amz-Signature", valid_600612
-  var valid_600613 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600613 = validateParameter(valid_600613, JString, required = false,
+  if valid_602632 != nil:
+    section.add "X-Amz-Date", valid_602632
+  var valid_602633 = header.getOrDefault("X-Amz-Credential")
+  valid_602633 = validateParameter(valid_602633, JString, required = false,
                                  default = nil)
-  if valid_600613 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600613
-  var valid_600614 = header.getOrDefault("X-Amz-Credential")
-  valid_600614 = validateParameter(valid_600614, JString, required = false,
+  if valid_602633 != nil:
+    section.add "X-Amz-Credential", valid_602633
+  var valid_602634 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602634 = validateParameter(valid_602634, JString, required = false,
                                  default = nil)
-  if valid_600614 != nil:
-    section.add "X-Amz-Credential", valid_600614
+  if valid_602634 != nil:
+    section.add "X-Amz-Security-Token", valid_602634
+  var valid_602635 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602635 = validateParameter(valid_602635, JString, required = false,
+                                 default = nil)
+  if valid_602635 != nil:
+    section.add "X-Amz-Algorithm", valid_602635
+  var valid_602636 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602636 = validateParameter(valid_602636, JString, required = false,
+                                 default = nil)
+  if valid_602636 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602636
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5108,47 +5152,48 @@ proc validate_GetAutoSnapshots_600605(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600616: Call_GetAutoSnapshots_600604; path: JsonNode;
+proc call*(call_602638: Call_GetAutoSnapshots_602626; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns the available automatic snapshots for the specified resource name. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
+  ## Returns the available automatic snapshots for an instance or disk. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ## 
-  let valid = call_600616.validator(path, query, header, formData, body)
-  let scheme = call_600616.pickScheme
+  let valid = call_602638.validator(path, query, header, formData, body)
+  let scheme = call_602638.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600616.url(scheme.get, call_600616.host, call_600616.base,
-                         call_600616.route, valid.getOrDefault("path"),
+  let url = call_602638.url(scheme.get, call_602638.host, call_602638.base,
+                         call_602638.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600616, url, valid)
+  result = atozHook(call_602638, url, valid)
 
-proc call*(call_600617: Call_GetAutoSnapshots_600604; body: JsonNode): Recallable =
+proc call*(call_602639: Call_GetAutoSnapshots_602626; body: JsonNode): Recallable =
   ## getAutoSnapshots
-  ## Returns the available automatic snapshots for the specified resource name. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
+  ## Returns the available automatic snapshots for an instance or disk. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en_us/articles/amazon-lightsail-configuring-automatic-snapshots">Lightsail Dev Guide</a>.
   ##   body: JObject (required)
-  var body_600618 = newJObject()
+  var body_602640 = newJObject()
   if body != nil:
-    body_600618 = body
-  result = call_600617.call(nil, nil, nil, nil, body_600618)
+    body_602640 = body
+  result = call_602639.call(nil, nil, nil, nil, body_602640)
 
-var getAutoSnapshots* = Call_GetAutoSnapshots_600604(name: "getAutoSnapshots",
+var getAutoSnapshots* = Call_GetAutoSnapshots_602626(name: "getAutoSnapshots",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetAutoSnapshots",
-    validator: validate_GetAutoSnapshots_600605, base: "/",
-    url: url_GetAutoSnapshots_600606, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetAutoSnapshots_602627, base: "/",
+    url: url_GetAutoSnapshots_602628, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBlueprints_600619 = ref object of OpenApiRestCall_599368
-proc url_GetBlueprints_600621(protocol: Scheme; host: string; base: string;
+  Call_GetBlueprints_602641 = ref object of OpenApiRestCall_601389
+proc url_GetBlueprints_602643(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetBlueprints_600620(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetBlueprints_602642(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the list of available instance images, or <i>blueprints</i>. You can use a blueprint to create a new instance already running a specific operating system, as well as a preinstalled app or development stack. The software each instance is running depends on the blueprint image you choose.</p> <note> <p>Use active blueprints when creating new instances. Inactive blueprints are listed to support customers with existing instances and are not necessarily available to create new instances. Blueprints are marked inactive when they become outdated due to operating system updates or new application releases.</p> </note>
   ## 
@@ -5159,57 +5204,57 @@ proc validate_GetBlueprints_600620(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600622 = header.getOrDefault("X-Amz-Date")
-  valid_600622 = validateParameter(valid_600622, JString, required = false,
-                                 default = nil)
-  if valid_600622 != nil:
-    section.add "X-Amz-Date", valid_600622
-  var valid_600623 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600623 = validateParameter(valid_600623, JString, required = false,
-                                 default = nil)
-  if valid_600623 != nil:
-    section.add "X-Amz-Security-Token", valid_600623
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600624 = header.getOrDefault("X-Amz-Target")
-  valid_600624 = validateParameter(valid_600624, JString, required = true, default = newJString(
+  var valid_602644 = header.getOrDefault("X-Amz-Target")
+  valid_602644 = validateParameter(valid_602644, JString, required = true, default = newJString(
       "Lightsail_20161128.GetBlueprints"))
-  if valid_600624 != nil:
-    section.add "X-Amz-Target", valid_600624
-  var valid_600625 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600625 = validateParameter(valid_600625, JString, required = false,
+  if valid_602644 != nil:
+    section.add "X-Amz-Target", valid_602644
+  var valid_602645 = header.getOrDefault("X-Amz-Signature")
+  valid_602645 = validateParameter(valid_602645, JString, required = false,
                                  default = nil)
-  if valid_600625 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600625
-  var valid_600626 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600626 = validateParameter(valid_600626, JString, required = false,
+  if valid_602645 != nil:
+    section.add "X-Amz-Signature", valid_602645
+  var valid_602646 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602646 = validateParameter(valid_602646, JString, required = false,
                                  default = nil)
-  if valid_600626 != nil:
-    section.add "X-Amz-Algorithm", valid_600626
-  var valid_600627 = header.getOrDefault("X-Amz-Signature")
-  valid_600627 = validateParameter(valid_600627, JString, required = false,
+  if valid_602646 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602646
+  var valid_602647 = header.getOrDefault("X-Amz-Date")
+  valid_602647 = validateParameter(valid_602647, JString, required = false,
                                  default = nil)
-  if valid_600627 != nil:
-    section.add "X-Amz-Signature", valid_600627
-  var valid_600628 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600628 = validateParameter(valid_600628, JString, required = false,
+  if valid_602647 != nil:
+    section.add "X-Amz-Date", valid_602647
+  var valid_602648 = header.getOrDefault("X-Amz-Credential")
+  valid_602648 = validateParameter(valid_602648, JString, required = false,
                                  default = nil)
-  if valid_600628 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600628
-  var valid_600629 = header.getOrDefault("X-Amz-Credential")
-  valid_600629 = validateParameter(valid_600629, JString, required = false,
+  if valid_602648 != nil:
+    section.add "X-Amz-Credential", valid_602648
+  var valid_602649 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602649 = validateParameter(valid_602649, JString, required = false,
                                  default = nil)
-  if valid_600629 != nil:
-    section.add "X-Amz-Credential", valid_600629
+  if valid_602649 != nil:
+    section.add "X-Amz-Security-Token", valid_602649
+  var valid_602650 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602650 = validateParameter(valid_602650, JString, required = false,
+                                 default = nil)
+  if valid_602650 != nil:
+    section.add "X-Amz-Algorithm", valid_602650
+  var valid_602651 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602651 = validateParameter(valid_602651, JString, required = false,
+                                 default = nil)
+  if valid_602651 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602651
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5220,47 +5265,48 @@ proc validate_GetBlueprints_600620(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600631: Call_GetBlueprints_600619; path: JsonNode; query: JsonNode;
+proc call*(call_602653: Call_GetBlueprints_602641; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the list of available instance images, or <i>blueprints</i>. You can use a blueprint to create a new instance already running a specific operating system, as well as a preinstalled app or development stack. The software each instance is running depends on the blueprint image you choose.</p> <note> <p>Use active blueprints when creating new instances. Inactive blueprints are listed to support customers with existing instances and are not necessarily available to create new instances. Blueprints are marked inactive when they become outdated due to operating system updates or new application releases.</p> </note>
   ## 
-  let valid = call_600631.validator(path, query, header, formData, body)
-  let scheme = call_600631.pickScheme
+  let valid = call_602653.validator(path, query, header, formData, body)
+  let scheme = call_602653.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600631.url(scheme.get, call_600631.host, call_600631.base,
-                         call_600631.route, valid.getOrDefault("path"),
+  let url = call_602653.url(scheme.get, call_602653.host, call_602653.base,
+                         call_602653.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600631, url, valid)
+  result = atozHook(call_602653, url, valid)
 
-proc call*(call_600632: Call_GetBlueprints_600619; body: JsonNode): Recallable =
+proc call*(call_602654: Call_GetBlueprints_602641; body: JsonNode): Recallable =
   ## getBlueprints
   ## <p>Returns the list of available instance images, or <i>blueprints</i>. You can use a blueprint to create a new instance already running a specific operating system, as well as a preinstalled app or development stack. The software each instance is running depends on the blueprint image you choose.</p> <note> <p>Use active blueprints when creating new instances. Inactive blueprints are listed to support customers with existing instances and are not necessarily available to create new instances. Blueprints are marked inactive when they become outdated due to operating system updates or new application releases.</p> </note>
   ##   body: JObject (required)
-  var body_600633 = newJObject()
+  var body_602655 = newJObject()
   if body != nil:
-    body_600633 = body
-  result = call_600632.call(nil, nil, nil, nil, body_600633)
+    body_602655 = body
+  result = call_602654.call(nil, nil, nil, nil, body_602655)
 
-var getBlueprints* = Call_GetBlueprints_600619(name: "getBlueprints",
+var getBlueprints* = Call_GetBlueprints_602641(name: "getBlueprints",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetBlueprints",
-    validator: validate_GetBlueprints_600620, base: "/", url: url_GetBlueprints_600621,
+    validator: validate_GetBlueprints_602642, base: "/", url: url_GetBlueprints_602643,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetBundles_600634 = ref object of OpenApiRestCall_599368
-proc url_GetBundles_600636(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetBundles_602656 = ref object of OpenApiRestCall_601389
+proc url_GetBundles_602658(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetBundles_600635(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetBundles_602657(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the list of bundles that are available for purchase. A bundle describes the specs for your virtual private server (or <i>instance</i>).
   ## 
@@ -5271,57 +5317,57 @@ proc validate_GetBundles_600635(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600637 = header.getOrDefault("X-Amz-Date")
-  valid_600637 = validateParameter(valid_600637, JString, required = false,
-                                 default = nil)
-  if valid_600637 != nil:
-    section.add "X-Amz-Date", valid_600637
-  var valid_600638 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600638 = validateParameter(valid_600638, JString, required = false,
-                                 default = nil)
-  if valid_600638 != nil:
-    section.add "X-Amz-Security-Token", valid_600638
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600639 = header.getOrDefault("X-Amz-Target")
-  valid_600639 = validateParameter(valid_600639, JString, required = true, default = newJString(
+  var valid_602659 = header.getOrDefault("X-Amz-Target")
+  valid_602659 = validateParameter(valid_602659, JString, required = true, default = newJString(
       "Lightsail_20161128.GetBundles"))
-  if valid_600639 != nil:
-    section.add "X-Amz-Target", valid_600639
-  var valid_600640 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600640 = validateParameter(valid_600640, JString, required = false,
+  if valid_602659 != nil:
+    section.add "X-Amz-Target", valid_602659
+  var valid_602660 = header.getOrDefault("X-Amz-Signature")
+  valid_602660 = validateParameter(valid_602660, JString, required = false,
                                  default = nil)
-  if valid_600640 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600640
-  var valid_600641 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600641 = validateParameter(valid_600641, JString, required = false,
+  if valid_602660 != nil:
+    section.add "X-Amz-Signature", valid_602660
+  var valid_602661 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602661 = validateParameter(valid_602661, JString, required = false,
                                  default = nil)
-  if valid_600641 != nil:
-    section.add "X-Amz-Algorithm", valid_600641
-  var valid_600642 = header.getOrDefault("X-Amz-Signature")
-  valid_600642 = validateParameter(valid_600642, JString, required = false,
+  if valid_602661 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602661
+  var valid_602662 = header.getOrDefault("X-Amz-Date")
+  valid_602662 = validateParameter(valid_602662, JString, required = false,
                                  default = nil)
-  if valid_600642 != nil:
-    section.add "X-Amz-Signature", valid_600642
-  var valid_600643 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600643 = validateParameter(valid_600643, JString, required = false,
+  if valid_602662 != nil:
+    section.add "X-Amz-Date", valid_602662
+  var valid_602663 = header.getOrDefault("X-Amz-Credential")
+  valid_602663 = validateParameter(valid_602663, JString, required = false,
                                  default = nil)
-  if valid_600643 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600643
-  var valid_600644 = header.getOrDefault("X-Amz-Credential")
-  valid_600644 = validateParameter(valid_600644, JString, required = false,
+  if valid_602663 != nil:
+    section.add "X-Amz-Credential", valid_602663
+  var valid_602664 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602664 = validateParameter(valid_602664, JString, required = false,
                                  default = nil)
-  if valid_600644 != nil:
-    section.add "X-Amz-Credential", valid_600644
+  if valid_602664 != nil:
+    section.add "X-Amz-Security-Token", valid_602664
+  var valid_602665 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602665 = validateParameter(valid_602665, JString, required = false,
+                                 default = nil)
+  if valid_602665 != nil:
+    section.add "X-Amz-Algorithm", valid_602665
+  var valid_602666 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602666 = validateParameter(valid_602666, JString, required = false,
+                                 default = nil)
+  if valid_602666 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602666
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5332,48 +5378,49 @@ proc validate_GetBundles_600635(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600646: Call_GetBundles_600634; path: JsonNode; query: JsonNode;
+proc call*(call_602668: Call_GetBundles_602656; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the list of bundles that are available for purchase. A bundle describes the specs for your virtual private server (or <i>instance</i>).
   ## 
-  let valid = call_600646.validator(path, query, header, formData, body)
-  let scheme = call_600646.pickScheme
+  let valid = call_602668.validator(path, query, header, formData, body)
+  let scheme = call_602668.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600646.url(scheme.get, call_600646.host, call_600646.base,
-                         call_600646.route, valid.getOrDefault("path"),
+  let url = call_602668.url(scheme.get, call_602668.host, call_602668.base,
+                         call_602668.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600646, url, valid)
+  result = atozHook(call_602668, url, valid)
 
-proc call*(call_600647: Call_GetBundles_600634; body: JsonNode): Recallable =
+proc call*(call_602669: Call_GetBundles_602656; body: JsonNode): Recallable =
   ## getBundles
   ## Returns the list of bundles that are available for purchase. A bundle describes the specs for your virtual private server (or <i>instance</i>).
   ##   body: JObject (required)
-  var body_600648 = newJObject()
+  var body_602670 = newJObject()
   if body != nil:
-    body_600648 = body
-  result = call_600647.call(nil, nil, nil, nil, body_600648)
+    body_602670 = body
+  result = call_602669.call(nil, nil, nil, nil, body_602670)
 
-var getBundles* = Call_GetBundles_600634(name: "getBundles",
+var getBundles* = Call_GetBundles_602656(name: "getBundles",
                                       meth: HttpMethod.HttpPost,
                                       host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetBundles",
-                                      validator: validate_GetBundles_600635,
-                                      base: "/", url: url_GetBundles_600636,
+                                      validator: validate_GetBundles_602657,
+                                      base: "/", url: url_GetBundles_602658,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCloudFormationStackRecords_600649 = ref object of OpenApiRestCall_599368
-proc url_GetCloudFormationStackRecords_600651(protocol: Scheme; host: string;
+  Call_GetCloudFormationStackRecords_602671 = ref object of OpenApiRestCall_601389
+proc url_GetCloudFormationStackRecords_602673(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCloudFormationStackRecords_600650(path: JsonNode; query: JsonNode;
+proc validate_GetCloudFormationStackRecords_602672(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the CloudFormation stack record created as a result of the <code>create cloud formation stack</code> operation.</p> <p>An AWS CloudFormation stack is used to create a new Amazon EC2 instance from an exported Lightsail snapshot.</p>
   ## 
@@ -5384,57 +5431,57 @@ proc validate_GetCloudFormationStackRecords_600650(path: JsonNode; query: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600652 = header.getOrDefault("X-Amz-Date")
-  valid_600652 = validateParameter(valid_600652, JString, required = false,
-                                 default = nil)
-  if valid_600652 != nil:
-    section.add "X-Amz-Date", valid_600652
-  var valid_600653 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600653 = validateParameter(valid_600653, JString, required = false,
-                                 default = nil)
-  if valid_600653 != nil:
-    section.add "X-Amz-Security-Token", valid_600653
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600654 = header.getOrDefault("X-Amz-Target")
-  valid_600654 = validateParameter(valid_600654, JString, required = true, default = newJString(
+  var valid_602674 = header.getOrDefault("X-Amz-Target")
+  valid_602674 = validateParameter(valid_602674, JString, required = true, default = newJString(
       "Lightsail_20161128.GetCloudFormationStackRecords"))
-  if valid_600654 != nil:
-    section.add "X-Amz-Target", valid_600654
-  var valid_600655 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600655 = validateParameter(valid_600655, JString, required = false,
+  if valid_602674 != nil:
+    section.add "X-Amz-Target", valid_602674
+  var valid_602675 = header.getOrDefault("X-Amz-Signature")
+  valid_602675 = validateParameter(valid_602675, JString, required = false,
                                  default = nil)
-  if valid_600655 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600655
-  var valid_600656 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600656 = validateParameter(valid_600656, JString, required = false,
+  if valid_602675 != nil:
+    section.add "X-Amz-Signature", valid_602675
+  var valid_602676 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602676 = validateParameter(valid_602676, JString, required = false,
                                  default = nil)
-  if valid_600656 != nil:
-    section.add "X-Amz-Algorithm", valid_600656
-  var valid_600657 = header.getOrDefault("X-Amz-Signature")
-  valid_600657 = validateParameter(valid_600657, JString, required = false,
+  if valid_602676 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602676
+  var valid_602677 = header.getOrDefault("X-Amz-Date")
+  valid_602677 = validateParameter(valid_602677, JString, required = false,
                                  default = nil)
-  if valid_600657 != nil:
-    section.add "X-Amz-Signature", valid_600657
-  var valid_600658 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600658 = validateParameter(valid_600658, JString, required = false,
+  if valid_602677 != nil:
+    section.add "X-Amz-Date", valid_602677
+  var valid_602678 = header.getOrDefault("X-Amz-Credential")
+  valid_602678 = validateParameter(valid_602678, JString, required = false,
                                  default = nil)
-  if valid_600658 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600658
-  var valid_600659 = header.getOrDefault("X-Amz-Credential")
-  valid_600659 = validateParameter(valid_600659, JString, required = false,
+  if valid_602678 != nil:
+    section.add "X-Amz-Credential", valid_602678
+  var valid_602679 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602679 = validateParameter(valid_602679, JString, required = false,
                                  default = nil)
-  if valid_600659 != nil:
-    section.add "X-Amz-Credential", valid_600659
+  if valid_602679 != nil:
+    section.add "X-Amz-Security-Token", valid_602679
+  var valid_602680 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602680 = validateParameter(valid_602680, JString, required = false,
+                                 default = nil)
+  if valid_602680 != nil:
+    section.add "X-Amz-Algorithm", valid_602680
+  var valid_602681 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602681 = validateParameter(valid_602681, JString, required = false,
+                                 default = nil)
+  if valid_602681 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602681
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5445,49 +5492,50 @@ proc validate_GetCloudFormationStackRecords_600650(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600661: Call_GetCloudFormationStackRecords_600649; path: JsonNode;
+proc call*(call_602683: Call_GetCloudFormationStackRecords_602671; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the CloudFormation stack record created as a result of the <code>create cloud formation stack</code> operation.</p> <p>An AWS CloudFormation stack is used to create a new Amazon EC2 instance from an exported Lightsail snapshot.</p>
   ## 
-  let valid = call_600661.validator(path, query, header, formData, body)
-  let scheme = call_600661.pickScheme
+  let valid = call_602683.validator(path, query, header, formData, body)
+  let scheme = call_602683.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600661.url(scheme.get, call_600661.host, call_600661.base,
-                         call_600661.route, valid.getOrDefault("path"),
+  let url = call_602683.url(scheme.get, call_602683.host, call_602683.base,
+                         call_602683.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600661, url, valid)
+  result = atozHook(call_602683, url, valid)
 
-proc call*(call_600662: Call_GetCloudFormationStackRecords_600649; body: JsonNode): Recallable =
+proc call*(call_602684: Call_GetCloudFormationStackRecords_602671; body: JsonNode): Recallable =
   ## getCloudFormationStackRecords
   ## <p>Returns the CloudFormation stack record created as a result of the <code>create cloud formation stack</code> operation.</p> <p>An AWS CloudFormation stack is used to create a new Amazon EC2 instance from an exported Lightsail snapshot.</p>
   ##   body: JObject (required)
-  var body_600663 = newJObject()
+  var body_602685 = newJObject()
   if body != nil:
-    body_600663 = body
-  result = call_600662.call(nil, nil, nil, nil, body_600663)
+    body_602685 = body
+  result = call_602684.call(nil, nil, nil, nil, body_602685)
 
-var getCloudFormationStackRecords* = Call_GetCloudFormationStackRecords_600649(
+var getCloudFormationStackRecords* = Call_GetCloudFormationStackRecords_602671(
     name: "getCloudFormationStackRecords", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetCloudFormationStackRecords",
-    validator: validate_GetCloudFormationStackRecords_600650, base: "/",
-    url: url_GetCloudFormationStackRecords_600651,
+    validator: validate_GetCloudFormationStackRecords_602672, base: "/",
+    url: url_GetCloudFormationStackRecords_602673,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDisk_600664 = ref object of OpenApiRestCall_599368
-proc url_GetDisk_600666(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetDisk_602686 = ref object of OpenApiRestCall_601389
+proc url_GetDisk_602688(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDisk_600665(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetDisk_602687(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a specific block storage disk.
   ## 
@@ -5498,57 +5546,57 @@ proc validate_GetDisk_600665(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600667 = header.getOrDefault("X-Amz-Date")
-  valid_600667 = validateParameter(valid_600667, JString, required = false,
-                                 default = nil)
-  if valid_600667 != nil:
-    section.add "X-Amz-Date", valid_600667
-  var valid_600668 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600668 = validateParameter(valid_600668, JString, required = false,
-                                 default = nil)
-  if valid_600668 != nil:
-    section.add "X-Amz-Security-Token", valid_600668
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600669 = header.getOrDefault("X-Amz-Target")
-  valid_600669 = validateParameter(valid_600669, JString, required = true, default = newJString(
+  var valid_602689 = header.getOrDefault("X-Amz-Target")
+  valid_602689 = validateParameter(valid_602689, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDisk"))
-  if valid_600669 != nil:
-    section.add "X-Amz-Target", valid_600669
-  var valid_600670 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600670 = validateParameter(valid_600670, JString, required = false,
+  if valid_602689 != nil:
+    section.add "X-Amz-Target", valid_602689
+  var valid_602690 = header.getOrDefault("X-Amz-Signature")
+  valid_602690 = validateParameter(valid_602690, JString, required = false,
                                  default = nil)
-  if valid_600670 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600670
-  var valid_600671 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600671 = validateParameter(valid_600671, JString, required = false,
+  if valid_602690 != nil:
+    section.add "X-Amz-Signature", valid_602690
+  var valid_602691 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602691 = validateParameter(valid_602691, JString, required = false,
                                  default = nil)
-  if valid_600671 != nil:
-    section.add "X-Amz-Algorithm", valid_600671
-  var valid_600672 = header.getOrDefault("X-Amz-Signature")
-  valid_600672 = validateParameter(valid_600672, JString, required = false,
+  if valid_602691 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602691
+  var valid_602692 = header.getOrDefault("X-Amz-Date")
+  valid_602692 = validateParameter(valid_602692, JString, required = false,
                                  default = nil)
-  if valid_600672 != nil:
-    section.add "X-Amz-Signature", valid_600672
-  var valid_600673 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600673 = validateParameter(valid_600673, JString, required = false,
+  if valid_602692 != nil:
+    section.add "X-Amz-Date", valid_602692
+  var valid_602693 = header.getOrDefault("X-Amz-Credential")
+  valid_602693 = validateParameter(valid_602693, JString, required = false,
                                  default = nil)
-  if valid_600673 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600673
-  var valid_600674 = header.getOrDefault("X-Amz-Credential")
-  valid_600674 = validateParameter(valid_600674, JString, required = false,
+  if valid_602693 != nil:
+    section.add "X-Amz-Credential", valid_602693
+  var valid_602694 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602694 = validateParameter(valid_602694, JString, required = false,
                                  default = nil)
-  if valid_600674 != nil:
-    section.add "X-Amz-Credential", valid_600674
+  if valid_602694 != nil:
+    section.add "X-Amz-Security-Token", valid_602694
+  var valid_602695 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602695 = validateParameter(valid_602695, JString, required = false,
+                                 default = nil)
+  if valid_602695 != nil:
+    section.add "X-Amz-Algorithm", valid_602695
+  var valid_602696 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602696 = validateParameter(valid_602696, JString, required = false,
+                                 default = nil)
+  if valid_602696 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602696
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5559,47 +5607,48 @@ proc validate_GetDisk_600665(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600676: Call_GetDisk_600664; path: JsonNode; query: JsonNode;
+proc call*(call_602698: Call_GetDisk_602686; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific block storage disk.
   ## 
-  let valid = call_600676.validator(path, query, header, formData, body)
-  let scheme = call_600676.pickScheme
+  let valid = call_602698.validator(path, query, header, formData, body)
+  let scheme = call_602698.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600676.url(scheme.get, call_600676.host, call_600676.base,
-                         call_600676.route, valid.getOrDefault("path"),
+  let url = call_602698.url(scheme.get, call_602698.host, call_602698.base,
+                         call_602698.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600676, url, valid)
+  result = atozHook(call_602698, url, valid)
 
-proc call*(call_600677: Call_GetDisk_600664; body: JsonNode): Recallable =
+proc call*(call_602699: Call_GetDisk_602686; body: JsonNode): Recallable =
   ## getDisk
   ## Returns information about a specific block storage disk.
   ##   body: JObject (required)
-  var body_600678 = newJObject()
+  var body_602700 = newJObject()
   if body != nil:
-    body_600678 = body
-  result = call_600677.call(nil, nil, nil, nil, body_600678)
+    body_602700 = body
+  result = call_602699.call(nil, nil, nil, nil, body_602700)
 
-var getDisk* = Call_GetDisk_600664(name: "getDisk", meth: HttpMethod.HttpPost,
+var getDisk* = Call_GetDisk_602686(name: "getDisk", meth: HttpMethod.HttpPost,
                                 host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetDisk",
-                                validator: validate_GetDisk_600665, base: "/",
-                                url: url_GetDisk_600666,
+                                validator: validate_GetDisk_602687, base: "/",
+                                url: url_GetDisk_602688,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDiskSnapshot_600679 = ref object of OpenApiRestCall_599368
-proc url_GetDiskSnapshot_600681(protocol: Scheme; host: string; base: string;
+  Call_GetDiskSnapshot_602701 = ref object of OpenApiRestCall_601389
+proc url_GetDiskSnapshot_602703(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDiskSnapshot_600680(path: JsonNode; query: JsonNode;
+proc validate_GetDiskSnapshot_602702(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Returns information about a specific block storage disk snapshot.
@@ -5611,57 +5660,57 @@ proc validate_GetDiskSnapshot_600680(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600682 = header.getOrDefault("X-Amz-Date")
-  valid_600682 = validateParameter(valid_600682, JString, required = false,
-                                 default = nil)
-  if valid_600682 != nil:
-    section.add "X-Amz-Date", valid_600682
-  var valid_600683 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600683 = validateParameter(valid_600683, JString, required = false,
-                                 default = nil)
-  if valid_600683 != nil:
-    section.add "X-Amz-Security-Token", valid_600683
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600684 = header.getOrDefault("X-Amz-Target")
-  valid_600684 = validateParameter(valid_600684, JString, required = true, default = newJString(
+  var valid_602704 = header.getOrDefault("X-Amz-Target")
+  valid_602704 = validateParameter(valid_602704, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDiskSnapshot"))
-  if valid_600684 != nil:
-    section.add "X-Amz-Target", valid_600684
-  var valid_600685 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600685 = validateParameter(valid_600685, JString, required = false,
+  if valid_602704 != nil:
+    section.add "X-Amz-Target", valid_602704
+  var valid_602705 = header.getOrDefault("X-Amz-Signature")
+  valid_602705 = validateParameter(valid_602705, JString, required = false,
                                  default = nil)
-  if valid_600685 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600685
-  var valid_600686 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600686 = validateParameter(valid_600686, JString, required = false,
+  if valid_602705 != nil:
+    section.add "X-Amz-Signature", valid_602705
+  var valid_602706 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602706 = validateParameter(valid_602706, JString, required = false,
                                  default = nil)
-  if valid_600686 != nil:
-    section.add "X-Amz-Algorithm", valid_600686
-  var valid_600687 = header.getOrDefault("X-Amz-Signature")
-  valid_600687 = validateParameter(valid_600687, JString, required = false,
+  if valid_602706 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602706
+  var valid_602707 = header.getOrDefault("X-Amz-Date")
+  valid_602707 = validateParameter(valid_602707, JString, required = false,
                                  default = nil)
-  if valid_600687 != nil:
-    section.add "X-Amz-Signature", valid_600687
-  var valid_600688 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600688 = validateParameter(valid_600688, JString, required = false,
+  if valid_602707 != nil:
+    section.add "X-Amz-Date", valid_602707
+  var valid_602708 = header.getOrDefault("X-Amz-Credential")
+  valid_602708 = validateParameter(valid_602708, JString, required = false,
                                  default = nil)
-  if valid_600688 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600688
-  var valid_600689 = header.getOrDefault("X-Amz-Credential")
-  valid_600689 = validateParameter(valid_600689, JString, required = false,
+  if valid_602708 != nil:
+    section.add "X-Amz-Credential", valid_602708
+  var valid_602709 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602709 = validateParameter(valid_602709, JString, required = false,
                                  default = nil)
-  if valid_600689 != nil:
-    section.add "X-Amz-Credential", valid_600689
+  if valid_602709 != nil:
+    section.add "X-Amz-Security-Token", valid_602709
+  var valid_602710 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602710 = validateParameter(valid_602710, JString, required = false,
+                                 default = nil)
+  if valid_602710 != nil:
+    section.add "X-Amz-Algorithm", valid_602710
+  var valid_602711 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602711 = validateParameter(valid_602711, JString, required = false,
+                                 default = nil)
+  if valid_602711 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602711
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5672,47 +5721,48 @@ proc validate_GetDiskSnapshot_600680(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600691: Call_GetDiskSnapshot_600679; path: JsonNode; query: JsonNode;
+proc call*(call_602713: Call_GetDiskSnapshot_602701; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific block storage disk snapshot.
   ## 
-  let valid = call_600691.validator(path, query, header, formData, body)
-  let scheme = call_600691.pickScheme
+  let valid = call_602713.validator(path, query, header, formData, body)
+  let scheme = call_602713.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600691.url(scheme.get, call_600691.host, call_600691.base,
-                         call_600691.route, valid.getOrDefault("path"),
+  let url = call_602713.url(scheme.get, call_602713.host, call_602713.base,
+                         call_602713.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600691, url, valid)
+  result = atozHook(call_602713, url, valid)
 
-proc call*(call_600692: Call_GetDiskSnapshot_600679; body: JsonNode): Recallable =
+proc call*(call_602714: Call_GetDiskSnapshot_602701; body: JsonNode): Recallable =
   ## getDiskSnapshot
   ## Returns information about a specific block storage disk snapshot.
   ##   body: JObject (required)
-  var body_600693 = newJObject()
+  var body_602715 = newJObject()
   if body != nil:
-    body_600693 = body
-  result = call_600692.call(nil, nil, nil, nil, body_600693)
+    body_602715 = body
+  result = call_602714.call(nil, nil, nil, nil, body_602715)
 
-var getDiskSnapshot* = Call_GetDiskSnapshot_600679(name: "getDiskSnapshot",
+var getDiskSnapshot* = Call_GetDiskSnapshot_602701(name: "getDiskSnapshot",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetDiskSnapshot",
-    validator: validate_GetDiskSnapshot_600680, base: "/", url: url_GetDiskSnapshot_600681,
+    validator: validate_GetDiskSnapshot_602702, base: "/", url: url_GetDiskSnapshot_602703,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDiskSnapshots_600694 = ref object of OpenApiRestCall_599368
-proc url_GetDiskSnapshots_600696(protocol: Scheme; host: string; base: string;
+  Call_GetDiskSnapshots_602716 = ref object of OpenApiRestCall_601389
+proc url_GetDiskSnapshots_602718(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDiskSnapshots_600695(path: JsonNode; query: JsonNode;
+proc validate_GetDiskSnapshots_602717(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Returns information about all block storage disk snapshots in your AWS account and region.</p> <p>If you are describing a long list of disk snapshots, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
@@ -5724,57 +5774,57 @@ proc validate_GetDiskSnapshots_600695(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600697 = header.getOrDefault("X-Amz-Date")
-  valid_600697 = validateParameter(valid_600697, JString, required = false,
-                                 default = nil)
-  if valid_600697 != nil:
-    section.add "X-Amz-Date", valid_600697
-  var valid_600698 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600698 = validateParameter(valid_600698, JString, required = false,
-                                 default = nil)
-  if valid_600698 != nil:
-    section.add "X-Amz-Security-Token", valid_600698
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600699 = header.getOrDefault("X-Amz-Target")
-  valid_600699 = validateParameter(valid_600699, JString, required = true, default = newJString(
+  var valid_602719 = header.getOrDefault("X-Amz-Target")
+  valid_602719 = validateParameter(valid_602719, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDiskSnapshots"))
-  if valid_600699 != nil:
-    section.add "X-Amz-Target", valid_600699
-  var valid_600700 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600700 = validateParameter(valid_600700, JString, required = false,
+  if valid_602719 != nil:
+    section.add "X-Amz-Target", valid_602719
+  var valid_602720 = header.getOrDefault("X-Amz-Signature")
+  valid_602720 = validateParameter(valid_602720, JString, required = false,
                                  default = nil)
-  if valid_600700 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600700
-  var valid_600701 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600701 = validateParameter(valid_600701, JString, required = false,
+  if valid_602720 != nil:
+    section.add "X-Amz-Signature", valid_602720
+  var valid_602721 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602721 = validateParameter(valid_602721, JString, required = false,
                                  default = nil)
-  if valid_600701 != nil:
-    section.add "X-Amz-Algorithm", valid_600701
-  var valid_600702 = header.getOrDefault("X-Amz-Signature")
-  valid_600702 = validateParameter(valid_600702, JString, required = false,
+  if valid_602721 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602721
+  var valid_602722 = header.getOrDefault("X-Amz-Date")
+  valid_602722 = validateParameter(valid_602722, JString, required = false,
                                  default = nil)
-  if valid_600702 != nil:
-    section.add "X-Amz-Signature", valid_600702
-  var valid_600703 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600703 = validateParameter(valid_600703, JString, required = false,
+  if valid_602722 != nil:
+    section.add "X-Amz-Date", valid_602722
+  var valid_602723 = header.getOrDefault("X-Amz-Credential")
+  valid_602723 = validateParameter(valid_602723, JString, required = false,
                                  default = nil)
-  if valid_600703 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600703
-  var valid_600704 = header.getOrDefault("X-Amz-Credential")
-  valid_600704 = validateParameter(valid_600704, JString, required = false,
+  if valid_602723 != nil:
+    section.add "X-Amz-Credential", valid_602723
+  var valid_602724 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602724 = validateParameter(valid_602724, JString, required = false,
                                  default = nil)
-  if valid_600704 != nil:
-    section.add "X-Amz-Credential", valid_600704
+  if valid_602724 != nil:
+    section.add "X-Amz-Security-Token", valid_602724
+  var valid_602725 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602725 = validateParameter(valid_602725, JString, required = false,
+                                 default = nil)
+  if valid_602725 != nil:
+    section.add "X-Amz-Algorithm", valid_602725
+  var valid_602726 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602726 = validateParameter(valid_602726, JString, required = false,
+                                 default = nil)
+  if valid_602726 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602726
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5785,47 +5835,48 @@ proc validate_GetDiskSnapshots_600695(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600706: Call_GetDiskSnapshots_600694; path: JsonNode;
+proc call*(call_602728: Call_GetDiskSnapshots_602716; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about all block storage disk snapshots in your AWS account and region.</p> <p>If you are describing a long list of disk snapshots, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
   ## 
-  let valid = call_600706.validator(path, query, header, formData, body)
-  let scheme = call_600706.pickScheme
+  let valid = call_602728.validator(path, query, header, formData, body)
+  let scheme = call_602728.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600706.url(scheme.get, call_600706.host, call_600706.base,
-                         call_600706.route, valid.getOrDefault("path"),
+  let url = call_602728.url(scheme.get, call_602728.host, call_602728.base,
+                         call_602728.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600706, url, valid)
+  result = atozHook(call_602728, url, valid)
 
-proc call*(call_600707: Call_GetDiskSnapshots_600694; body: JsonNode): Recallable =
+proc call*(call_602729: Call_GetDiskSnapshots_602716; body: JsonNode): Recallable =
   ## getDiskSnapshots
   ## <p>Returns information about all block storage disk snapshots in your AWS account and region.</p> <p>If you are describing a long list of disk snapshots, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
   ##   body: JObject (required)
-  var body_600708 = newJObject()
+  var body_602730 = newJObject()
   if body != nil:
-    body_600708 = body
-  result = call_600707.call(nil, nil, nil, nil, body_600708)
+    body_602730 = body
+  result = call_602729.call(nil, nil, nil, nil, body_602730)
 
-var getDiskSnapshots* = Call_GetDiskSnapshots_600694(name: "getDiskSnapshots",
+var getDiskSnapshots* = Call_GetDiskSnapshots_602716(name: "getDiskSnapshots",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetDiskSnapshots",
-    validator: validate_GetDiskSnapshots_600695, base: "/",
-    url: url_GetDiskSnapshots_600696, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDiskSnapshots_602717, base: "/",
+    url: url_GetDiskSnapshots_602718, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDisks_600709 = ref object of OpenApiRestCall_599368
-proc url_GetDisks_600711(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetDisks_602731 = ref object of OpenApiRestCall_601389
+proc url_GetDisks_602733(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDisks_600710(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetDisks_602732(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about all block storage disks in your AWS account and region.</p> <p>If you are describing a long list of disks, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
   ## 
@@ -5836,57 +5887,57 @@ proc validate_GetDisks_600710(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600712 = header.getOrDefault("X-Amz-Date")
-  valid_600712 = validateParameter(valid_600712, JString, required = false,
-                                 default = nil)
-  if valid_600712 != nil:
-    section.add "X-Amz-Date", valid_600712
-  var valid_600713 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600713 = validateParameter(valid_600713, JString, required = false,
-                                 default = nil)
-  if valid_600713 != nil:
-    section.add "X-Amz-Security-Token", valid_600713
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600714 = header.getOrDefault("X-Amz-Target")
-  valid_600714 = validateParameter(valid_600714, JString, required = true, default = newJString(
+  var valid_602734 = header.getOrDefault("X-Amz-Target")
+  valid_602734 = validateParameter(valid_602734, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDisks"))
-  if valid_600714 != nil:
-    section.add "X-Amz-Target", valid_600714
-  var valid_600715 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600715 = validateParameter(valid_600715, JString, required = false,
+  if valid_602734 != nil:
+    section.add "X-Amz-Target", valid_602734
+  var valid_602735 = header.getOrDefault("X-Amz-Signature")
+  valid_602735 = validateParameter(valid_602735, JString, required = false,
                                  default = nil)
-  if valid_600715 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600715
-  var valid_600716 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600716 = validateParameter(valid_600716, JString, required = false,
+  if valid_602735 != nil:
+    section.add "X-Amz-Signature", valid_602735
+  var valid_602736 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602736 = validateParameter(valid_602736, JString, required = false,
                                  default = nil)
-  if valid_600716 != nil:
-    section.add "X-Amz-Algorithm", valid_600716
-  var valid_600717 = header.getOrDefault("X-Amz-Signature")
-  valid_600717 = validateParameter(valid_600717, JString, required = false,
+  if valid_602736 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602736
+  var valid_602737 = header.getOrDefault("X-Amz-Date")
+  valid_602737 = validateParameter(valid_602737, JString, required = false,
                                  default = nil)
-  if valid_600717 != nil:
-    section.add "X-Amz-Signature", valid_600717
-  var valid_600718 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600718 = validateParameter(valid_600718, JString, required = false,
+  if valid_602737 != nil:
+    section.add "X-Amz-Date", valid_602737
+  var valid_602738 = header.getOrDefault("X-Amz-Credential")
+  valid_602738 = validateParameter(valid_602738, JString, required = false,
                                  default = nil)
-  if valid_600718 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600718
-  var valid_600719 = header.getOrDefault("X-Amz-Credential")
-  valid_600719 = validateParameter(valid_600719, JString, required = false,
+  if valid_602738 != nil:
+    section.add "X-Amz-Credential", valid_602738
+  var valid_602739 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602739 = validateParameter(valid_602739, JString, required = false,
                                  default = nil)
-  if valid_600719 != nil:
-    section.add "X-Amz-Credential", valid_600719
+  if valid_602739 != nil:
+    section.add "X-Amz-Security-Token", valid_602739
+  var valid_602740 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602740 = validateParameter(valid_602740, JString, required = false,
+                                 default = nil)
+  if valid_602740 != nil:
+    section.add "X-Amz-Algorithm", valid_602740
+  var valid_602741 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602741 = validateParameter(valid_602741, JString, required = false,
+                                 default = nil)
+  if valid_602741 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602741
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5897,47 +5948,48 @@ proc validate_GetDisks_600710(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600721: Call_GetDisks_600709; path: JsonNode; query: JsonNode;
+proc call*(call_602743: Call_GetDisks_602731; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about all block storage disks in your AWS account and region.</p> <p>If you are describing a long list of disks, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
   ## 
-  let valid = call_600721.validator(path, query, header, formData, body)
-  let scheme = call_600721.pickScheme
+  let valid = call_602743.validator(path, query, header, formData, body)
+  let scheme = call_602743.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600721.url(scheme.get, call_600721.host, call_600721.base,
-                         call_600721.route, valid.getOrDefault("path"),
+  let url = call_602743.url(scheme.get, call_602743.host, call_602743.base,
+                         call_602743.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600721, url, valid)
+  result = atozHook(call_602743, url, valid)
 
-proc call*(call_600722: Call_GetDisks_600709; body: JsonNode): Recallable =
+proc call*(call_602744: Call_GetDisks_602731; body: JsonNode): Recallable =
   ## getDisks
   ## <p>Returns information about all block storage disks in your AWS account and region.</p> <p>If you are describing a long list of disks, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
   ##   body: JObject (required)
-  var body_600723 = newJObject()
+  var body_602745 = newJObject()
   if body != nil:
-    body_600723 = body
-  result = call_600722.call(nil, nil, nil, nil, body_600723)
+    body_602745 = body
+  result = call_602744.call(nil, nil, nil, nil, body_602745)
 
-var getDisks* = Call_GetDisks_600709(name: "getDisks", meth: HttpMethod.HttpPost,
+var getDisks* = Call_GetDisks_602731(name: "getDisks", meth: HttpMethod.HttpPost,
                                   host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetDisks",
-                                  validator: validate_GetDisks_600710, base: "/",
-                                  url: url_GetDisks_600711,
+                                  validator: validate_GetDisks_602732, base: "/",
+                                  url: url_GetDisks_602733,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDomain_600724 = ref object of OpenApiRestCall_599368
-proc url_GetDomain_600726(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetDomain_602746 = ref object of OpenApiRestCall_601389
+proc url_GetDomain_602748(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDomain_600725(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetDomain_602747(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a specific domain recordset.
   ## 
@@ -5948,57 +6000,57 @@ proc validate_GetDomain_600725(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600727 = header.getOrDefault("X-Amz-Date")
-  valid_600727 = validateParameter(valid_600727, JString, required = false,
-                                 default = nil)
-  if valid_600727 != nil:
-    section.add "X-Amz-Date", valid_600727
-  var valid_600728 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600728 = validateParameter(valid_600728, JString, required = false,
-                                 default = nil)
-  if valid_600728 != nil:
-    section.add "X-Amz-Security-Token", valid_600728
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600729 = header.getOrDefault("X-Amz-Target")
-  valid_600729 = validateParameter(valid_600729, JString, required = true, default = newJString(
+  var valid_602749 = header.getOrDefault("X-Amz-Target")
+  valid_602749 = validateParameter(valid_602749, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDomain"))
-  if valid_600729 != nil:
-    section.add "X-Amz-Target", valid_600729
-  var valid_600730 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600730 = validateParameter(valid_600730, JString, required = false,
+  if valid_602749 != nil:
+    section.add "X-Amz-Target", valid_602749
+  var valid_602750 = header.getOrDefault("X-Amz-Signature")
+  valid_602750 = validateParameter(valid_602750, JString, required = false,
                                  default = nil)
-  if valid_600730 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600730
-  var valid_600731 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600731 = validateParameter(valid_600731, JString, required = false,
+  if valid_602750 != nil:
+    section.add "X-Amz-Signature", valid_602750
+  var valid_602751 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602751 = validateParameter(valid_602751, JString, required = false,
                                  default = nil)
-  if valid_600731 != nil:
-    section.add "X-Amz-Algorithm", valid_600731
-  var valid_600732 = header.getOrDefault("X-Amz-Signature")
-  valid_600732 = validateParameter(valid_600732, JString, required = false,
+  if valid_602751 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602751
+  var valid_602752 = header.getOrDefault("X-Amz-Date")
+  valid_602752 = validateParameter(valid_602752, JString, required = false,
                                  default = nil)
-  if valid_600732 != nil:
-    section.add "X-Amz-Signature", valid_600732
-  var valid_600733 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600733 = validateParameter(valid_600733, JString, required = false,
+  if valid_602752 != nil:
+    section.add "X-Amz-Date", valid_602752
+  var valid_602753 = header.getOrDefault("X-Amz-Credential")
+  valid_602753 = validateParameter(valid_602753, JString, required = false,
                                  default = nil)
-  if valid_600733 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600733
-  var valid_600734 = header.getOrDefault("X-Amz-Credential")
-  valid_600734 = validateParameter(valid_600734, JString, required = false,
+  if valid_602753 != nil:
+    section.add "X-Amz-Credential", valid_602753
+  var valid_602754 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602754 = validateParameter(valid_602754, JString, required = false,
                                  default = nil)
-  if valid_600734 != nil:
-    section.add "X-Amz-Credential", valid_600734
+  if valid_602754 != nil:
+    section.add "X-Amz-Security-Token", valid_602754
+  var valid_602755 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602755 = validateParameter(valid_602755, JString, required = false,
+                                 default = nil)
+  if valid_602755 != nil:
+    section.add "X-Amz-Algorithm", valid_602755
+  var valid_602756 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602756 = validateParameter(valid_602756, JString, required = false,
+                                 default = nil)
+  if valid_602756 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602756
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6009,47 +6061,48 @@ proc validate_GetDomain_600725(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600736: Call_GetDomain_600724; path: JsonNode; query: JsonNode;
+proc call*(call_602758: Call_GetDomain_602746; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific domain recordset.
   ## 
-  let valid = call_600736.validator(path, query, header, formData, body)
-  let scheme = call_600736.pickScheme
+  let valid = call_602758.validator(path, query, header, formData, body)
+  let scheme = call_602758.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600736.url(scheme.get, call_600736.host, call_600736.base,
-                         call_600736.route, valid.getOrDefault("path"),
+  let url = call_602758.url(scheme.get, call_602758.host, call_602758.base,
+                         call_602758.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600736, url, valid)
+  result = atozHook(call_602758, url, valid)
 
-proc call*(call_600737: Call_GetDomain_600724; body: JsonNode): Recallable =
+proc call*(call_602759: Call_GetDomain_602746; body: JsonNode): Recallable =
   ## getDomain
   ## Returns information about a specific domain recordset.
   ##   body: JObject (required)
-  var body_600738 = newJObject()
+  var body_602760 = newJObject()
   if body != nil:
-    body_600738 = body
-  result = call_600737.call(nil, nil, nil, nil, body_600738)
+    body_602760 = body
+  result = call_602759.call(nil, nil, nil, nil, body_602760)
 
-var getDomain* = Call_GetDomain_600724(name: "getDomain", meth: HttpMethod.HttpPost,
+var getDomain* = Call_GetDomain_602746(name: "getDomain", meth: HttpMethod.HttpPost,
                                     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetDomain",
-                                    validator: validate_GetDomain_600725,
-                                    base: "/", url: url_GetDomain_600726,
+                                    validator: validate_GetDomain_602747,
+                                    base: "/", url: url_GetDomain_602748,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDomains_600739 = ref object of OpenApiRestCall_599368
-proc url_GetDomains_600741(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetDomains_602761 = ref object of OpenApiRestCall_601389
+proc url_GetDomains_602763(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDomains_600740(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetDomains_602762(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of all domains in the user's account.
   ## 
@@ -6060,57 +6113,57 @@ proc validate_GetDomains_600740(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600742 = header.getOrDefault("X-Amz-Date")
-  valid_600742 = validateParameter(valid_600742, JString, required = false,
-                                 default = nil)
-  if valid_600742 != nil:
-    section.add "X-Amz-Date", valid_600742
-  var valid_600743 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600743 = validateParameter(valid_600743, JString, required = false,
-                                 default = nil)
-  if valid_600743 != nil:
-    section.add "X-Amz-Security-Token", valid_600743
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600744 = header.getOrDefault("X-Amz-Target")
-  valid_600744 = validateParameter(valid_600744, JString, required = true, default = newJString(
+  var valid_602764 = header.getOrDefault("X-Amz-Target")
+  valid_602764 = validateParameter(valid_602764, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDomains"))
-  if valid_600744 != nil:
-    section.add "X-Amz-Target", valid_600744
-  var valid_600745 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600745 = validateParameter(valid_600745, JString, required = false,
+  if valid_602764 != nil:
+    section.add "X-Amz-Target", valid_602764
+  var valid_602765 = header.getOrDefault("X-Amz-Signature")
+  valid_602765 = validateParameter(valid_602765, JString, required = false,
                                  default = nil)
-  if valid_600745 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600745
-  var valid_600746 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600746 = validateParameter(valid_600746, JString, required = false,
+  if valid_602765 != nil:
+    section.add "X-Amz-Signature", valid_602765
+  var valid_602766 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602766 = validateParameter(valid_602766, JString, required = false,
                                  default = nil)
-  if valid_600746 != nil:
-    section.add "X-Amz-Algorithm", valid_600746
-  var valid_600747 = header.getOrDefault("X-Amz-Signature")
-  valid_600747 = validateParameter(valid_600747, JString, required = false,
+  if valid_602766 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602766
+  var valid_602767 = header.getOrDefault("X-Amz-Date")
+  valid_602767 = validateParameter(valid_602767, JString, required = false,
                                  default = nil)
-  if valid_600747 != nil:
-    section.add "X-Amz-Signature", valid_600747
-  var valid_600748 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600748 = validateParameter(valid_600748, JString, required = false,
+  if valid_602767 != nil:
+    section.add "X-Amz-Date", valid_602767
+  var valid_602768 = header.getOrDefault("X-Amz-Credential")
+  valid_602768 = validateParameter(valid_602768, JString, required = false,
                                  default = nil)
-  if valid_600748 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600748
-  var valid_600749 = header.getOrDefault("X-Amz-Credential")
-  valid_600749 = validateParameter(valid_600749, JString, required = false,
+  if valid_602768 != nil:
+    section.add "X-Amz-Credential", valid_602768
+  var valid_602769 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602769 = validateParameter(valid_602769, JString, required = false,
                                  default = nil)
-  if valid_600749 != nil:
-    section.add "X-Amz-Credential", valid_600749
+  if valid_602769 != nil:
+    section.add "X-Amz-Security-Token", valid_602769
+  var valid_602770 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602770 = validateParameter(valid_602770, JString, required = false,
+                                 default = nil)
+  if valid_602770 != nil:
+    section.add "X-Amz-Algorithm", valid_602770
+  var valid_602771 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602771 = validateParameter(valid_602771, JString, required = false,
+                                 default = nil)
+  if valid_602771 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602771
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6121,49 +6174,50 @@ proc validate_GetDomains_600740(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600751: Call_GetDomains_600739; path: JsonNode; query: JsonNode;
+proc call*(call_602773: Call_GetDomains_602761; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of all domains in the user's account.
   ## 
-  let valid = call_600751.validator(path, query, header, formData, body)
-  let scheme = call_600751.pickScheme
+  let valid = call_602773.validator(path, query, header, formData, body)
+  let scheme = call_602773.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600751.url(scheme.get, call_600751.host, call_600751.base,
-                         call_600751.route, valid.getOrDefault("path"),
+  let url = call_602773.url(scheme.get, call_602773.host, call_602773.base,
+                         call_602773.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600751, url, valid)
+  result = atozHook(call_602773, url, valid)
 
-proc call*(call_600752: Call_GetDomains_600739; body: JsonNode): Recallable =
+proc call*(call_602774: Call_GetDomains_602761; body: JsonNode): Recallable =
   ## getDomains
   ## Returns a list of all domains in the user's account.
   ##   body: JObject (required)
-  var body_600753 = newJObject()
+  var body_602775 = newJObject()
   if body != nil:
-    body_600753 = body
-  result = call_600752.call(nil, nil, nil, nil, body_600753)
+    body_602775 = body
+  result = call_602774.call(nil, nil, nil, nil, body_602775)
 
-var getDomains* = Call_GetDomains_600739(name: "getDomains",
+var getDomains* = Call_GetDomains_602761(name: "getDomains",
                                       meth: HttpMethod.HttpPost,
                                       host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetDomains",
-                                      validator: validate_GetDomains_600740,
-                                      base: "/", url: url_GetDomains_600741,
+                                      validator: validate_GetDomains_602762,
+                                      base: "/", url: url_GetDomains_602763,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetExportSnapshotRecords_600754 = ref object of OpenApiRestCall_599368
-proc url_GetExportSnapshotRecords_600756(protocol: Scheme; host: string;
+  Call_GetExportSnapshotRecords_602776 = ref object of OpenApiRestCall_601389
+proc url_GetExportSnapshotRecords_602778(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetExportSnapshotRecords_600755(path: JsonNode; query: JsonNode;
+proc validate_GetExportSnapshotRecords_602777(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the export snapshot record created as a result of the <code>export snapshot</code> operation.</p> <p>An export snapshot record can be used to create a new Amazon EC2 instance and its related resources with the <code>create cloud formation stack</code> operation.</p>
   ## 
@@ -6174,57 +6228,57 @@ proc validate_GetExportSnapshotRecords_600755(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600757 = header.getOrDefault("X-Amz-Date")
-  valid_600757 = validateParameter(valid_600757, JString, required = false,
-                                 default = nil)
-  if valid_600757 != nil:
-    section.add "X-Amz-Date", valid_600757
-  var valid_600758 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600758 = validateParameter(valid_600758, JString, required = false,
-                                 default = nil)
-  if valid_600758 != nil:
-    section.add "X-Amz-Security-Token", valid_600758
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600759 = header.getOrDefault("X-Amz-Target")
-  valid_600759 = validateParameter(valid_600759, JString, required = true, default = newJString(
+  var valid_602779 = header.getOrDefault("X-Amz-Target")
+  valid_602779 = validateParameter(valid_602779, JString, required = true, default = newJString(
       "Lightsail_20161128.GetExportSnapshotRecords"))
-  if valid_600759 != nil:
-    section.add "X-Amz-Target", valid_600759
-  var valid_600760 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600760 = validateParameter(valid_600760, JString, required = false,
+  if valid_602779 != nil:
+    section.add "X-Amz-Target", valid_602779
+  var valid_602780 = header.getOrDefault("X-Amz-Signature")
+  valid_602780 = validateParameter(valid_602780, JString, required = false,
                                  default = nil)
-  if valid_600760 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600760
-  var valid_600761 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600761 = validateParameter(valid_600761, JString, required = false,
+  if valid_602780 != nil:
+    section.add "X-Amz-Signature", valid_602780
+  var valid_602781 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602781 = validateParameter(valid_602781, JString, required = false,
                                  default = nil)
-  if valid_600761 != nil:
-    section.add "X-Amz-Algorithm", valid_600761
-  var valid_600762 = header.getOrDefault("X-Amz-Signature")
-  valid_600762 = validateParameter(valid_600762, JString, required = false,
+  if valid_602781 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602781
+  var valid_602782 = header.getOrDefault("X-Amz-Date")
+  valid_602782 = validateParameter(valid_602782, JString, required = false,
                                  default = nil)
-  if valid_600762 != nil:
-    section.add "X-Amz-Signature", valid_600762
-  var valid_600763 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600763 = validateParameter(valid_600763, JString, required = false,
+  if valid_602782 != nil:
+    section.add "X-Amz-Date", valid_602782
+  var valid_602783 = header.getOrDefault("X-Amz-Credential")
+  valid_602783 = validateParameter(valid_602783, JString, required = false,
                                  default = nil)
-  if valid_600763 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600763
-  var valid_600764 = header.getOrDefault("X-Amz-Credential")
-  valid_600764 = validateParameter(valid_600764, JString, required = false,
+  if valid_602783 != nil:
+    section.add "X-Amz-Credential", valid_602783
+  var valid_602784 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602784 = validateParameter(valid_602784, JString, required = false,
                                  default = nil)
-  if valid_600764 != nil:
-    section.add "X-Amz-Credential", valid_600764
+  if valid_602784 != nil:
+    section.add "X-Amz-Security-Token", valid_602784
+  var valid_602785 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602785 = validateParameter(valid_602785, JString, required = false,
+                                 default = nil)
+  if valid_602785 != nil:
+    section.add "X-Amz-Algorithm", valid_602785
+  var valid_602786 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602786 = validateParameter(valid_602786, JString, required = false,
+                                 default = nil)
+  if valid_602786 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602786
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6235,48 +6289,49 @@ proc validate_GetExportSnapshotRecords_600755(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600766: Call_GetExportSnapshotRecords_600754; path: JsonNode;
+proc call*(call_602788: Call_GetExportSnapshotRecords_602776; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the export snapshot record created as a result of the <code>export snapshot</code> operation.</p> <p>An export snapshot record can be used to create a new Amazon EC2 instance and its related resources with the <code>create cloud formation stack</code> operation.</p>
   ## 
-  let valid = call_600766.validator(path, query, header, formData, body)
-  let scheme = call_600766.pickScheme
+  let valid = call_602788.validator(path, query, header, formData, body)
+  let scheme = call_602788.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600766.url(scheme.get, call_600766.host, call_600766.base,
-                         call_600766.route, valid.getOrDefault("path"),
+  let url = call_602788.url(scheme.get, call_602788.host, call_602788.base,
+                         call_602788.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600766, url, valid)
+  result = atozHook(call_602788, url, valid)
 
-proc call*(call_600767: Call_GetExportSnapshotRecords_600754; body: JsonNode): Recallable =
+proc call*(call_602789: Call_GetExportSnapshotRecords_602776; body: JsonNode): Recallable =
   ## getExportSnapshotRecords
   ## <p>Returns the export snapshot record created as a result of the <code>export snapshot</code> operation.</p> <p>An export snapshot record can be used to create a new Amazon EC2 instance and its related resources with the <code>create cloud formation stack</code> operation.</p>
   ##   body: JObject (required)
-  var body_600768 = newJObject()
+  var body_602790 = newJObject()
   if body != nil:
-    body_600768 = body
-  result = call_600767.call(nil, nil, nil, nil, body_600768)
+    body_602790 = body
+  result = call_602789.call(nil, nil, nil, nil, body_602790)
 
-var getExportSnapshotRecords* = Call_GetExportSnapshotRecords_600754(
+var getExportSnapshotRecords* = Call_GetExportSnapshotRecords_602776(
     name: "getExportSnapshotRecords", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetExportSnapshotRecords",
-    validator: validate_GetExportSnapshotRecords_600755, base: "/",
-    url: url_GetExportSnapshotRecords_600756, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetExportSnapshotRecords_602777, base: "/",
+    url: url_GetExportSnapshotRecords_602778, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInstance_600769 = ref object of OpenApiRestCall_599368
-proc url_GetInstance_600771(protocol: Scheme; host: string; base: string;
+  Call_GetInstance_602791 = ref object of OpenApiRestCall_601389
+proc url_GetInstance_602793(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetInstance_600770(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetInstance_602792(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a specific Amazon Lightsail instance, which is a virtual private server.
   ## 
@@ -6287,57 +6342,57 @@ proc validate_GetInstance_600770(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600772 = header.getOrDefault("X-Amz-Date")
-  valid_600772 = validateParameter(valid_600772, JString, required = false,
-                                 default = nil)
-  if valid_600772 != nil:
-    section.add "X-Amz-Date", valid_600772
-  var valid_600773 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600773 = validateParameter(valid_600773, JString, required = false,
-                                 default = nil)
-  if valid_600773 != nil:
-    section.add "X-Amz-Security-Token", valid_600773
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600774 = header.getOrDefault("X-Amz-Target")
-  valid_600774 = validateParameter(valid_600774, JString, required = true, default = newJString(
+  var valid_602794 = header.getOrDefault("X-Amz-Target")
+  valid_602794 = validateParameter(valid_602794, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstance"))
-  if valid_600774 != nil:
-    section.add "X-Amz-Target", valid_600774
-  var valid_600775 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600775 = validateParameter(valid_600775, JString, required = false,
+  if valid_602794 != nil:
+    section.add "X-Amz-Target", valid_602794
+  var valid_602795 = header.getOrDefault("X-Amz-Signature")
+  valid_602795 = validateParameter(valid_602795, JString, required = false,
                                  default = nil)
-  if valid_600775 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600775
-  var valid_600776 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600776 = validateParameter(valid_600776, JString, required = false,
+  if valid_602795 != nil:
+    section.add "X-Amz-Signature", valid_602795
+  var valid_602796 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602796 = validateParameter(valid_602796, JString, required = false,
                                  default = nil)
-  if valid_600776 != nil:
-    section.add "X-Amz-Algorithm", valid_600776
-  var valid_600777 = header.getOrDefault("X-Amz-Signature")
-  valid_600777 = validateParameter(valid_600777, JString, required = false,
+  if valid_602796 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602796
+  var valid_602797 = header.getOrDefault("X-Amz-Date")
+  valid_602797 = validateParameter(valid_602797, JString, required = false,
                                  default = nil)
-  if valid_600777 != nil:
-    section.add "X-Amz-Signature", valid_600777
-  var valid_600778 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600778 = validateParameter(valid_600778, JString, required = false,
+  if valid_602797 != nil:
+    section.add "X-Amz-Date", valid_602797
+  var valid_602798 = header.getOrDefault("X-Amz-Credential")
+  valid_602798 = validateParameter(valid_602798, JString, required = false,
                                  default = nil)
-  if valid_600778 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600778
-  var valid_600779 = header.getOrDefault("X-Amz-Credential")
-  valid_600779 = validateParameter(valid_600779, JString, required = false,
+  if valid_602798 != nil:
+    section.add "X-Amz-Credential", valid_602798
+  var valid_602799 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602799 = validateParameter(valid_602799, JString, required = false,
                                  default = nil)
-  if valid_600779 != nil:
-    section.add "X-Amz-Credential", valid_600779
+  if valid_602799 != nil:
+    section.add "X-Amz-Security-Token", valid_602799
+  var valid_602800 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602800 = validateParameter(valid_602800, JString, required = false,
+                                 default = nil)
+  if valid_602800 != nil:
+    section.add "X-Amz-Algorithm", valid_602800
+  var valid_602801 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602801 = validateParameter(valid_602801, JString, required = false,
+                                 default = nil)
+  if valid_602801 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602801
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6348,49 +6403,50 @@ proc validate_GetInstance_600770(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600781: Call_GetInstance_600769; path: JsonNode; query: JsonNode;
+proc call*(call_602803: Call_GetInstance_602791; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific Amazon Lightsail instance, which is a virtual private server.
   ## 
-  let valid = call_600781.validator(path, query, header, formData, body)
-  let scheme = call_600781.pickScheme
+  let valid = call_602803.validator(path, query, header, formData, body)
+  let scheme = call_602803.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600781.url(scheme.get, call_600781.host, call_600781.base,
-                         call_600781.route, valid.getOrDefault("path"),
+  let url = call_602803.url(scheme.get, call_602803.host, call_602803.base,
+                         call_602803.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600781, url, valid)
+  result = atozHook(call_602803, url, valid)
 
-proc call*(call_600782: Call_GetInstance_600769; body: JsonNode): Recallable =
+proc call*(call_602804: Call_GetInstance_602791; body: JsonNode): Recallable =
   ## getInstance
   ## Returns information about a specific Amazon Lightsail instance, which is a virtual private server.
   ##   body: JObject (required)
-  var body_600783 = newJObject()
+  var body_602805 = newJObject()
   if body != nil:
-    body_600783 = body
-  result = call_600782.call(nil, nil, nil, nil, body_600783)
+    body_602805 = body
+  result = call_602804.call(nil, nil, nil, nil, body_602805)
 
-var getInstance* = Call_GetInstance_600769(name: "getInstance",
+var getInstance* = Call_GetInstance_602791(name: "getInstance",
                                         meth: HttpMethod.HttpPost,
                                         host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetInstance",
-                                        validator: validate_GetInstance_600770,
-                                        base: "/", url: url_GetInstance_600771,
+                                        validator: validate_GetInstance_602792,
+                                        base: "/", url: url_GetInstance_602793,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInstanceAccessDetails_600784 = ref object of OpenApiRestCall_599368
-proc url_GetInstanceAccessDetails_600786(protocol: Scheme; host: string;
+  Call_GetInstanceAccessDetails_602806 = ref object of OpenApiRestCall_601389
+proc url_GetInstanceAccessDetails_602808(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetInstanceAccessDetails_600785(path: JsonNode; query: JsonNode;
+proc validate_GetInstanceAccessDetails_602807(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns temporary SSH keys you can use to connect to a specific virtual private server, or <i>instance</i>.</p> <p>The <code>get instance access details</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -6401,57 +6457,57 @@ proc validate_GetInstanceAccessDetails_600785(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600787 = header.getOrDefault("X-Amz-Date")
-  valid_600787 = validateParameter(valid_600787, JString, required = false,
-                                 default = nil)
-  if valid_600787 != nil:
-    section.add "X-Amz-Date", valid_600787
-  var valid_600788 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600788 = validateParameter(valid_600788, JString, required = false,
-                                 default = nil)
-  if valid_600788 != nil:
-    section.add "X-Amz-Security-Token", valid_600788
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600789 = header.getOrDefault("X-Amz-Target")
-  valid_600789 = validateParameter(valid_600789, JString, required = true, default = newJString(
+  var valid_602809 = header.getOrDefault("X-Amz-Target")
+  valid_602809 = validateParameter(valid_602809, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceAccessDetails"))
-  if valid_600789 != nil:
-    section.add "X-Amz-Target", valid_600789
-  var valid_600790 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600790 = validateParameter(valid_600790, JString, required = false,
+  if valid_602809 != nil:
+    section.add "X-Amz-Target", valid_602809
+  var valid_602810 = header.getOrDefault("X-Amz-Signature")
+  valid_602810 = validateParameter(valid_602810, JString, required = false,
                                  default = nil)
-  if valid_600790 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600790
-  var valid_600791 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600791 = validateParameter(valid_600791, JString, required = false,
+  if valid_602810 != nil:
+    section.add "X-Amz-Signature", valid_602810
+  var valid_602811 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602811 = validateParameter(valid_602811, JString, required = false,
                                  default = nil)
-  if valid_600791 != nil:
-    section.add "X-Amz-Algorithm", valid_600791
-  var valid_600792 = header.getOrDefault("X-Amz-Signature")
-  valid_600792 = validateParameter(valid_600792, JString, required = false,
+  if valid_602811 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602811
+  var valid_602812 = header.getOrDefault("X-Amz-Date")
+  valid_602812 = validateParameter(valid_602812, JString, required = false,
                                  default = nil)
-  if valid_600792 != nil:
-    section.add "X-Amz-Signature", valid_600792
-  var valid_600793 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600793 = validateParameter(valid_600793, JString, required = false,
+  if valid_602812 != nil:
+    section.add "X-Amz-Date", valid_602812
+  var valid_602813 = header.getOrDefault("X-Amz-Credential")
+  valid_602813 = validateParameter(valid_602813, JString, required = false,
                                  default = nil)
-  if valid_600793 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600793
-  var valid_600794 = header.getOrDefault("X-Amz-Credential")
-  valid_600794 = validateParameter(valid_600794, JString, required = false,
+  if valid_602813 != nil:
+    section.add "X-Amz-Credential", valid_602813
+  var valid_602814 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602814 = validateParameter(valid_602814, JString, required = false,
                                  default = nil)
-  if valid_600794 != nil:
-    section.add "X-Amz-Credential", valid_600794
+  if valid_602814 != nil:
+    section.add "X-Amz-Security-Token", valid_602814
+  var valid_602815 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602815 = validateParameter(valid_602815, JString, required = false,
+                                 default = nil)
+  if valid_602815 != nil:
+    section.add "X-Amz-Algorithm", valid_602815
+  var valid_602816 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602816 = validateParameter(valid_602816, JString, required = false,
+                                 default = nil)
+  if valid_602816 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602816
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6462,48 +6518,49 @@ proc validate_GetInstanceAccessDetails_600785(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600796: Call_GetInstanceAccessDetails_600784; path: JsonNode;
+proc call*(call_602818: Call_GetInstanceAccessDetails_602806; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns temporary SSH keys you can use to connect to a specific virtual private server, or <i>instance</i>.</p> <p>The <code>get instance access details</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_600796.validator(path, query, header, formData, body)
-  let scheme = call_600796.pickScheme
+  let valid = call_602818.validator(path, query, header, formData, body)
+  let scheme = call_602818.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600796.url(scheme.get, call_600796.host, call_600796.base,
-                         call_600796.route, valid.getOrDefault("path"),
+  let url = call_602818.url(scheme.get, call_602818.host, call_602818.base,
+                         call_602818.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600796, url, valid)
+  result = atozHook(call_602818, url, valid)
 
-proc call*(call_600797: Call_GetInstanceAccessDetails_600784; body: JsonNode): Recallable =
+proc call*(call_602819: Call_GetInstanceAccessDetails_602806; body: JsonNode): Recallable =
   ## getInstanceAccessDetails
   ## <p>Returns temporary SSH keys you can use to connect to a specific virtual private server, or <i>instance</i>.</p> <p>The <code>get instance access details</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_600798 = newJObject()
+  var body_602820 = newJObject()
   if body != nil:
-    body_600798 = body
-  result = call_600797.call(nil, nil, nil, nil, body_600798)
+    body_602820 = body
+  result = call_602819.call(nil, nil, nil, nil, body_602820)
 
-var getInstanceAccessDetails* = Call_GetInstanceAccessDetails_600784(
+var getInstanceAccessDetails* = Call_GetInstanceAccessDetails_602806(
     name: "getInstanceAccessDetails", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetInstanceAccessDetails",
-    validator: validate_GetInstanceAccessDetails_600785, base: "/",
-    url: url_GetInstanceAccessDetails_600786, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetInstanceAccessDetails_602807, base: "/",
+    url: url_GetInstanceAccessDetails_602808, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInstanceMetricData_600799 = ref object of OpenApiRestCall_599368
-proc url_GetInstanceMetricData_600801(protocol: Scheme; host: string; base: string;
+  Call_GetInstanceMetricData_602821 = ref object of OpenApiRestCall_601389
+proc url_GetInstanceMetricData_602823(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetInstanceMetricData_600800(path: JsonNode; query: JsonNode;
+proc validate_GetInstanceMetricData_602822(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the data points for the specified Amazon Lightsail instance metric, given an instance name.
   ## 
@@ -6514,57 +6571,57 @@ proc validate_GetInstanceMetricData_600800(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600802 = header.getOrDefault("X-Amz-Date")
-  valid_600802 = validateParameter(valid_600802, JString, required = false,
-                                 default = nil)
-  if valid_600802 != nil:
-    section.add "X-Amz-Date", valid_600802
-  var valid_600803 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600803 = validateParameter(valid_600803, JString, required = false,
-                                 default = nil)
-  if valid_600803 != nil:
-    section.add "X-Amz-Security-Token", valid_600803
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600804 = header.getOrDefault("X-Amz-Target")
-  valid_600804 = validateParameter(valid_600804, JString, required = true, default = newJString(
+  var valid_602824 = header.getOrDefault("X-Amz-Target")
+  valid_602824 = validateParameter(valid_602824, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceMetricData"))
-  if valid_600804 != nil:
-    section.add "X-Amz-Target", valid_600804
-  var valid_600805 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600805 = validateParameter(valid_600805, JString, required = false,
+  if valid_602824 != nil:
+    section.add "X-Amz-Target", valid_602824
+  var valid_602825 = header.getOrDefault("X-Amz-Signature")
+  valid_602825 = validateParameter(valid_602825, JString, required = false,
                                  default = nil)
-  if valid_600805 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600805
-  var valid_600806 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600806 = validateParameter(valid_600806, JString, required = false,
+  if valid_602825 != nil:
+    section.add "X-Amz-Signature", valid_602825
+  var valid_602826 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602826 = validateParameter(valid_602826, JString, required = false,
                                  default = nil)
-  if valid_600806 != nil:
-    section.add "X-Amz-Algorithm", valid_600806
-  var valid_600807 = header.getOrDefault("X-Amz-Signature")
-  valid_600807 = validateParameter(valid_600807, JString, required = false,
+  if valid_602826 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602826
+  var valid_602827 = header.getOrDefault("X-Amz-Date")
+  valid_602827 = validateParameter(valid_602827, JString, required = false,
                                  default = nil)
-  if valid_600807 != nil:
-    section.add "X-Amz-Signature", valid_600807
-  var valid_600808 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600808 = validateParameter(valid_600808, JString, required = false,
+  if valid_602827 != nil:
+    section.add "X-Amz-Date", valid_602827
+  var valid_602828 = header.getOrDefault("X-Amz-Credential")
+  valid_602828 = validateParameter(valid_602828, JString, required = false,
                                  default = nil)
-  if valid_600808 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600808
-  var valid_600809 = header.getOrDefault("X-Amz-Credential")
-  valid_600809 = validateParameter(valid_600809, JString, required = false,
+  if valid_602828 != nil:
+    section.add "X-Amz-Credential", valid_602828
+  var valid_602829 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602829 = validateParameter(valid_602829, JString, required = false,
                                  default = nil)
-  if valid_600809 != nil:
-    section.add "X-Amz-Credential", valid_600809
+  if valid_602829 != nil:
+    section.add "X-Amz-Security-Token", valid_602829
+  var valid_602830 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602830 = validateParameter(valid_602830, JString, required = false,
+                                 default = nil)
+  if valid_602830 != nil:
+    section.add "X-Amz-Algorithm", valid_602830
+  var valid_602831 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602831 = validateParameter(valid_602831, JString, required = false,
+                                 default = nil)
+  if valid_602831 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602831
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6575,48 +6632,49 @@ proc validate_GetInstanceMetricData_600800(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600811: Call_GetInstanceMetricData_600799; path: JsonNode;
+proc call*(call_602833: Call_GetInstanceMetricData_602821; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the data points for the specified Amazon Lightsail instance metric, given an instance name.
   ## 
-  let valid = call_600811.validator(path, query, header, formData, body)
-  let scheme = call_600811.pickScheme
+  let valid = call_602833.validator(path, query, header, formData, body)
+  let scheme = call_602833.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600811.url(scheme.get, call_600811.host, call_600811.base,
-                         call_600811.route, valid.getOrDefault("path"),
+  let url = call_602833.url(scheme.get, call_602833.host, call_602833.base,
+                         call_602833.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600811, url, valid)
+  result = atozHook(call_602833, url, valid)
 
-proc call*(call_600812: Call_GetInstanceMetricData_600799; body: JsonNode): Recallable =
+proc call*(call_602834: Call_GetInstanceMetricData_602821; body: JsonNode): Recallable =
   ## getInstanceMetricData
   ## Returns the data points for the specified Amazon Lightsail instance metric, given an instance name.
   ##   body: JObject (required)
-  var body_600813 = newJObject()
+  var body_602835 = newJObject()
   if body != nil:
-    body_600813 = body
-  result = call_600812.call(nil, nil, nil, nil, body_600813)
+    body_602835 = body
+  result = call_602834.call(nil, nil, nil, nil, body_602835)
 
-var getInstanceMetricData* = Call_GetInstanceMetricData_600799(
+var getInstanceMetricData* = Call_GetInstanceMetricData_602821(
     name: "getInstanceMetricData", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetInstanceMetricData",
-    validator: validate_GetInstanceMetricData_600800, base: "/",
-    url: url_GetInstanceMetricData_600801, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetInstanceMetricData_602822, base: "/",
+    url: url_GetInstanceMetricData_602823, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInstancePortStates_600814 = ref object of OpenApiRestCall_599368
-proc url_GetInstancePortStates_600816(protocol: Scheme; host: string; base: string;
+  Call_GetInstancePortStates_602836 = ref object of OpenApiRestCall_601389
+proc url_GetInstancePortStates_602838(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetInstancePortStates_600815(path: JsonNode; query: JsonNode;
+proc validate_GetInstancePortStates_602837(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the port states for a specific virtual private server, or <i>instance</i>.
   ## 
@@ -6627,57 +6685,57 @@ proc validate_GetInstancePortStates_600815(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600817 = header.getOrDefault("X-Amz-Date")
-  valid_600817 = validateParameter(valid_600817, JString, required = false,
-                                 default = nil)
-  if valid_600817 != nil:
-    section.add "X-Amz-Date", valid_600817
-  var valid_600818 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600818 = validateParameter(valid_600818, JString, required = false,
-                                 default = nil)
-  if valid_600818 != nil:
-    section.add "X-Amz-Security-Token", valid_600818
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600819 = header.getOrDefault("X-Amz-Target")
-  valid_600819 = validateParameter(valid_600819, JString, required = true, default = newJString(
+  var valid_602839 = header.getOrDefault("X-Amz-Target")
+  valid_602839 = validateParameter(valid_602839, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstancePortStates"))
-  if valid_600819 != nil:
-    section.add "X-Amz-Target", valid_600819
-  var valid_600820 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600820 = validateParameter(valid_600820, JString, required = false,
+  if valid_602839 != nil:
+    section.add "X-Amz-Target", valid_602839
+  var valid_602840 = header.getOrDefault("X-Amz-Signature")
+  valid_602840 = validateParameter(valid_602840, JString, required = false,
                                  default = nil)
-  if valid_600820 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600820
-  var valid_600821 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600821 = validateParameter(valid_600821, JString, required = false,
+  if valid_602840 != nil:
+    section.add "X-Amz-Signature", valid_602840
+  var valid_602841 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602841 = validateParameter(valid_602841, JString, required = false,
                                  default = nil)
-  if valid_600821 != nil:
-    section.add "X-Amz-Algorithm", valid_600821
-  var valid_600822 = header.getOrDefault("X-Amz-Signature")
-  valid_600822 = validateParameter(valid_600822, JString, required = false,
+  if valid_602841 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602841
+  var valid_602842 = header.getOrDefault("X-Amz-Date")
+  valid_602842 = validateParameter(valid_602842, JString, required = false,
                                  default = nil)
-  if valid_600822 != nil:
-    section.add "X-Amz-Signature", valid_600822
-  var valid_600823 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600823 = validateParameter(valid_600823, JString, required = false,
+  if valid_602842 != nil:
+    section.add "X-Amz-Date", valid_602842
+  var valid_602843 = header.getOrDefault("X-Amz-Credential")
+  valid_602843 = validateParameter(valid_602843, JString, required = false,
                                  default = nil)
-  if valid_600823 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600823
-  var valid_600824 = header.getOrDefault("X-Amz-Credential")
-  valid_600824 = validateParameter(valid_600824, JString, required = false,
+  if valid_602843 != nil:
+    section.add "X-Amz-Credential", valid_602843
+  var valid_602844 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602844 = validateParameter(valid_602844, JString, required = false,
                                  default = nil)
-  if valid_600824 != nil:
-    section.add "X-Amz-Credential", valid_600824
+  if valid_602844 != nil:
+    section.add "X-Amz-Security-Token", valid_602844
+  var valid_602845 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602845 = validateParameter(valid_602845, JString, required = false,
+                                 default = nil)
+  if valid_602845 != nil:
+    section.add "X-Amz-Algorithm", valid_602845
+  var valid_602846 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602846 = validateParameter(valid_602846, JString, required = false,
+                                 default = nil)
+  if valid_602846 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602846
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6688,48 +6746,49 @@ proc validate_GetInstancePortStates_600815(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600826: Call_GetInstancePortStates_600814; path: JsonNode;
+proc call*(call_602848: Call_GetInstancePortStates_602836; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the port states for a specific virtual private server, or <i>instance</i>.
   ## 
-  let valid = call_600826.validator(path, query, header, formData, body)
-  let scheme = call_600826.pickScheme
+  let valid = call_602848.validator(path, query, header, formData, body)
+  let scheme = call_602848.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600826.url(scheme.get, call_600826.host, call_600826.base,
-                         call_600826.route, valid.getOrDefault("path"),
+  let url = call_602848.url(scheme.get, call_602848.host, call_602848.base,
+                         call_602848.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600826, url, valid)
+  result = atozHook(call_602848, url, valid)
 
-proc call*(call_600827: Call_GetInstancePortStates_600814; body: JsonNode): Recallable =
+proc call*(call_602849: Call_GetInstancePortStates_602836; body: JsonNode): Recallable =
   ## getInstancePortStates
   ## Returns the port states for a specific virtual private server, or <i>instance</i>.
   ##   body: JObject (required)
-  var body_600828 = newJObject()
+  var body_602850 = newJObject()
   if body != nil:
-    body_600828 = body
-  result = call_600827.call(nil, nil, nil, nil, body_600828)
+    body_602850 = body
+  result = call_602849.call(nil, nil, nil, nil, body_602850)
 
-var getInstancePortStates* = Call_GetInstancePortStates_600814(
+var getInstancePortStates* = Call_GetInstancePortStates_602836(
     name: "getInstancePortStates", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetInstancePortStates",
-    validator: validate_GetInstancePortStates_600815, base: "/",
-    url: url_GetInstancePortStates_600816, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetInstancePortStates_602837, base: "/",
+    url: url_GetInstancePortStates_602838, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInstanceSnapshot_600829 = ref object of OpenApiRestCall_599368
-proc url_GetInstanceSnapshot_600831(protocol: Scheme; host: string; base: string;
+  Call_GetInstanceSnapshot_602851 = ref object of OpenApiRestCall_601389
+proc url_GetInstanceSnapshot_602853(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetInstanceSnapshot_600830(path: JsonNode; query: JsonNode;
+proc validate_GetInstanceSnapshot_602852(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns information about a specific instance snapshot.
@@ -6741,57 +6800,57 @@ proc validate_GetInstanceSnapshot_600830(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600832 = header.getOrDefault("X-Amz-Date")
-  valid_600832 = validateParameter(valid_600832, JString, required = false,
-                                 default = nil)
-  if valid_600832 != nil:
-    section.add "X-Amz-Date", valid_600832
-  var valid_600833 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600833 = validateParameter(valid_600833, JString, required = false,
-                                 default = nil)
-  if valid_600833 != nil:
-    section.add "X-Amz-Security-Token", valid_600833
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600834 = header.getOrDefault("X-Amz-Target")
-  valid_600834 = validateParameter(valid_600834, JString, required = true, default = newJString(
+  var valid_602854 = header.getOrDefault("X-Amz-Target")
+  valid_602854 = validateParameter(valid_602854, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceSnapshot"))
-  if valid_600834 != nil:
-    section.add "X-Amz-Target", valid_600834
-  var valid_600835 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600835 = validateParameter(valid_600835, JString, required = false,
+  if valid_602854 != nil:
+    section.add "X-Amz-Target", valid_602854
+  var valid_602855 = header.getOrDefault("X-Amz-Signature")
+  valid_602855 = validateParameter(valid_602855, JString, required = false,
                                  default = nil)
-  if valid_600835 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600835
-  var valid_600836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600836 = validateParameter(valid_600836, JString, required = false,
+  if valid_602855 != nil:
+    section.add "X-Amz-Signature", valid_602855
+  var valid_602856 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602856 = validateParameter(valid_602856, JString, required = false,
                                  default = nil)
-  if valid_600836 != nil:
-    section.add "X-Amz-Algorithm", valid_600836
-  var valid_600837 = header.getOrDefault("X-Amz-Signature")
-  valid_600837 = validateParameter(valid_600837, JString, required = false,
+  if valid_602856 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602856
+  var valid_602857 = header.getOrDefault("X-Amz-Date")
+  valid_602857 = validateParameter(valid_602857, JString, required = false,
                                  default = nil)
-  if valid_600837 != nil:
-    section.add "X-Amz-Signature", valid_600837
-  var valid_600838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600838 = validateParameter(valid_600838, JString, required = false,
+  if valid_602857 != nil:
+    section.add "X-Amz-Date", valid_602857
+  var valid_602858 = header.getOrDefault("X-Amz-Credential")
+  valid_602858 = validateParameter(valid_602858, JString, required = false,
                                  default = nil)
-  if valid_600838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600838
-  var valid_600839 = header.getOrDefault("X-Amz-Credential")
-  valid_600839 = validateParameter(valid_600839, JString, required = false,
+  if valid_602858 != nil:
+    section.add "X-Amz-Credential", valid_602858
+  var valid_602859 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602859 = validateParameter(valid_602859, JString, required = false,
                                  default = nil)
-  if valid_600839 != nil:
-    section.add "X-Amz-Credential", valid_600839
+  if valid_602859 != nil:
+    section.add "X-Amz-Security-Token", valid_602859
+  var valid_602860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602860 = validateParameter(valid_602860, JString, required = false,
+                                 default = nil)
+  if valid_602860 != nil:
+    section.add "X-Amz-Algorithm", valid_602860
+  var valid_602861 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602861 = validateParameter(valid_602861, JString, required = false,
+                                 default = nil)
+  if valid_602861 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602861
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6802,48 +6861,49 @@ proc validate_GetInstanceSnapshot_600830(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600841: Call_GetInstanceSnapshot_600829; path: JsonNode;
+proc call*(call_602863: Call_GetInstanceSnapshot_602851; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific instance snapshot.
   ## 
-  let valid = call_600841.validator(path, query, header, formData, body)
-  let scheme = call_600841.pickScheme
+  let valid = call_602863.validator(path, query, header, formData, body)
+  let scheme = call_602863.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600841.url(scheme.get, call_600841.host, call_600841.base,
-                         call_600841.route, valid.getOrDefault("path"),
+  let url = call_602863.url(scheme.get, call_602863.host, call_602863.base,
+                         call_602863.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600841, url, valid)
+  result = atozHook(call_602863, url, valid)
 
-proc call*(call_600842: Call_GetInstanceSnapshot_600829; body: JsonNode): Recallable =
+proc call*(call_602864: Call_GetInstanceSnapshot_602851; body: JsonNode): Recallable =
   ## getInstanceSnapshot
   ## Returns information about a specific instance snapshot.
   ##   body: JObject (required)
-  var body_600843 = newJObject()
+  var body_602865 = newJObject()
   if body != nil:
-    body_600843 = body
-  result = call_600842.call(nil, nil, nil, nil, body_600843)
+    body_602865 = body
+  result = call_602864.call(nil, nil, nil, nil, body_602865)
 
-var getInstanceSnapshot* = Call_GetInstanceSnapshot_600829(
+var getInstanceSnapshot* = Call_GetInstanceSnapshot_602851(
     name: "getInstanceSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetInstanceSnapshot",
-    validator: validate_GetInstanceSnapshot_600830, base: "/",
-    url: url_GetInstanceSnapshot_600831, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetInstanceSnapshot_602852, base: "/",
+    url: url_GetInstanceSnapshot_602853, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInstanceSnapshots_600844 = ref object of OpenApiRestCall_599368
-proc url_GetInstanceSnapshots_600846(protocol: Scheme; host: string; base: string;
+  Call_GetInstanceSnapshots_602866 = ref object of OpenApiRestCall_601389
+proc url_GetInstanceSnapshots_602868(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetInstanceSnapshots_600845(path: JsonNode; query: JsonNode;
+proc validate_GetInstanceSnapshots_602867(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns all instance snapshots for the user's account.
   ## 
@@ -6854,57 +6914,57 @@ proc validate_GetInstanceSnapshots_600845(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600847 = header.getOrDefault("X-Amz-Date")
-  valid_600847 = validateParameter(valid_600847, JString, required = false,
-                                 default = nil)
-  if valid_600847 != nil:
-    section.add "X-Amz-Date", valid_600847
-  var valid_600848 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600848 = validateParameter(valid_600848, JString, required = false,
-                                 default = nil)
-  if valid_600848 != nil:
-    section.add "X-Amz-Security-Token", valid_600848
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600849 = header.getOrDefault("X-Amz-Target")
-  valid_600849 = validateParameter(valid_600849, JString, required = true, default = newJString(
+  var valid_602869 = header.getOrDefault("X-Amz-Target")
+  valid_602869 = validateParameter(valid_602869, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceSnapshots"))
-  if valid_600849 != nil:
-    section.add "X-Amz-Target", valid_600849
-  var valid_600850 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600850 = validateParameter(valid_600850, JString, required = false,
+  if valid_602869 != nil:
+    section.add "X-Amz-Target", valid_602869
+  var valid_602870 = header.getOrDefault("X-Amz-Signature")
+  valid_602870 = validateParameter(valid_602870, JString, required = false,
                                  default = nil)
-  if valid_600850 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600850
-  var valid_600851 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600851 = validateParameter(valid_600851, JString, required = false,
+  if valid_602870 != nil:
+    section.add "X-Amz-Signature", valid_602870
+  var valid_602871 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602871 = validateParameter(valid_602871, JString, required = false,
                                  default = nil)
-  if valid_600851 != nil:
-    section.add "X-Amz-Algorithm", valid_600851
-  var valid_600852 = header.getOrDefault("X-Amz-Signature")
-  valid_600852 = validateParameter(valid_600852, JString, required = false,
+  if valid_602871 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602871
+  var valid_602872 = header.getOrDefault("X-Amz-Date")
+  valid_602872 = validateParameter(valid_602872, JString, required = false,
                                  default = nil)
-  if valid_600852 != nil:
-    section.add "X-Amz-Signature", valid_600852
-  var valid_600853 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600853 = validateParameter(valid_600853, JString, required = false,
+  if valid_602872 != nil:
+    section.add "X-Amz-Date", valid_602872
+  var valid_602873 = header.getOrDefault("X-Amz-Credential")
+  valid_602873 = validateParameter(valid_602873, JString, required = false,
                                  default = nil)
-  if valid_600853 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600853
-  var valid_600854 = header.getOrDefault("X-Amz-Credential")
-  valid_600854 = validateParameter(valid_600854, JString, required = false,
+  if valid_602873 != nil:
+    section.add "X-Amz-Credential", valid_602873
+  var valid_602874 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602874 = validateParameter(valid_602874, JString, required = false,
                                  default = nil)
-  if valid_600854 != nil:
-    section.add "X-Amz-Credential", valid_600854
+  if valid_602874 != nil:
+    section.add "X-Amz-Security-Token", valid_602874
+  var valid_602875 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602875 = validateParameter(valid_602875, JString, required = false,
+                                 default = nil)
+  if valid_602875 != nil:
+    section.add "X-Amz-Algorithm", valid_602875
+  var valid_602876 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602876 = validateParameter(valid_602876, JString, required = false,
+                                 default = nil)
+  if valid_602876 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602876
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6915,48 +6975,49 @@ proc validate_GetInstanceSnapshots_600845(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600856: Call_GetInstanceSnapshots_600844; path: JsonNode;
+proc call*(call_602878: Call_GetInstanceSnapshots_602866; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns all instance snapshots for the user's account.
   ## 
-  let valid = call_600856.validator(path, query, header, formData, body)
-  let scheme = call_600856.pickScheme
+  let valid = call_602878.validator(path, query, header, formData, body)
+  let scheme = call_602878.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600856.url(scheme.get, call_600856.host, call_600856.base,
-                         call_600856.route, valid.getOrDefault("path"),
+  let url = call_602878.url(scheme.get, call_602878.host, call_602878.base,
+                         call_602878.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600856, url, valid)
+  result = atozHook(call_602878, url, valid)
 
-proc call*(call_600857: Call_GetInstanceSnapshots_600844; body: JsonNode): Recallable =
+proc call*(call_602879: Call_GetInstanceSnapshots_602866; body: JsonNode): Recallable =
   ## getInstanceSnapshots
   ## Returns all instance snapshots for the user's account.
   ##   body: JObject (required)
-  var body_600858 = newJObject()
+  var body_602880 = newJObject()
   if body != nil:
-    body_600858 = body
-  result = call_600857.call(nil, nil, nil, nil, body_600858)
+    body_602880 = body
+  result = call_602879.call(nil, nil, nil, nil, body_602880)
 
-var getInstanceSnapshots* = Call_GetInstanceSnapshots_600844(
+var getInstanceSnapshots* = Call_GetInstanceSnapshots_602866(
     name: "getInstanceSnapshots", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetInstanceSnapshots",
-    validator: validate_GetInstanceSnapshots_600845, base: "/",
-    url: url_GetInstanceSnapshots_600846, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetInstanceSnapshots_602867, base: "/",
+    url: url_GetInstanceSnapshots_602868, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInstanceState_600859 = ref object of OpenApiRestCall_599368
-proc url_GetInstanceState_600861(protocol: Scheme; host: string; base: string;
+  Call_GetInstanceState_602881 = ref object of OpenApiRestCall_601389
+proc url_GetInstanceState_602883(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetInstanceState_600860(path: JsonNode; query: JsonNode;
+proc validate_GetInstanceState_602882(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the state of a specific instance. Works on one instance at a time.
@@ -6968,57 +7029,57 @@ proc validate_GetInstanceState_600860(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600862 = header.getOrDefault("X-Amz-Date")
-  valid_600862 = validateParameter(valid_600862, JString, required = false,
-                                 default = nil)
-  if valid_600862 != nil:
-    section.add "X-Amz-Date", valid_600862
-  var valid_600863 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600863 = validateParameter(valid_600863, JString, required = false,
-                                 default = nil)
-  if valid_600863 != nil:
-    section.add "X-Amz-Security-Token", valid_600863
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600864 = header.getOrDefault("X-Amz-Target")
-  valid_600864 = validateParameter(valid_600864, JString, required = true, default = newJString(
+  var valid_602884 = header.getOrDefault("X-Amz-Target")
+  valid_602884 = validateParameter(valid_602884, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceState"))
-  if valid_600864 != nil:
-    section.add "X-Amz-Target", valid_600864
-  var valid_600865 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600865 = validateParameter(valid_600865, JString, required = false,
+  if valid_602884 != nil:
+    section.add "X-Amz-Target", valid_602884
+  var valid_602885 = header.getOrDefault("X-Amz-Signature")
+  valid_602885 = validateParameter(valid_602885, JString, required = false,
                                  default = nil)
-  if valid_600865 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600865
-  var valid_600866 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600866 = validateParameter(valid_600866, JString, required = false,
+  if valid_602885 != nil:
+    section.add "X-Amz-Signature", valid_602885
+  var valid_602886 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602886 = validateParameter(valid_602886, JString, required = false,
                                  default = nil)
-  if valid_600866 != nil:
-    section.add "X-Amz-Algorithm", valid_600866
-  var valid_600867 = header.getOrDefault("X-Amz-Signature")
-  valid_600867 = validateParameter(valid_600867, JString, required = false,
+  if valid_602886 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602886
+  var valid_602887 = header.getOrDefault("X-Amz-Date")
+  valid_602887 = validateParameter(valid_602887, JString, required = false,
                                  default = nil)
-  if valid_600867 != nil:
-    section.add "X-Amz-Signature", valid_600867
-  var valid_600868 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600868 = validateParameter(valid_600868, JString, required = false,
+  if valid_602887 != nil:
+    section.add "X-Amz-Date", valid_602887
+  var valid_602888 = header.getOrDefault("X-Amz-Credential")
+  valid_602888 = validateParameter(valid_602888, JString, required = false,
                                  default = nil)
-  if valid_600868 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600868
-  var valid_600869 = header.getOrDefault("X-Amz-Credential")
-  valid_600869 = validateParameter(valid_600869, JString, required = false,
+  if valid_602888 != nil:
+    section.add "X-Amz-Credential", valid_602888
+  var valid_602889 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602889 = validateParameter(valid_602889, JString, required = false,
                                  default = nil)
-  if valid_600869 != nil:
-    section.add "X-Amz-Credential", valid_600869
+  if valid_602889 != nil:
+    section.add "X-Amz-Security-Token", valid_602889
+  var valid_602890 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602890 = validateParameter(valid_602890, JString, required = false,
+                                 default = nil)
+  if valid_602890 != nil:
+    section.add "X-Amz-Algorithm", valid_602890
+  var valid_602891 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602891 = validateParameter(valid_602891, JString, required = false,
+                                 default = nil)
+  if valid_602891 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602891
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7029,47 +7090,48 @@ proc validate_GetInstanceState_600860(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600871: Call_GetInstanceState_600859; path: JsonNode;
+proc call*(call_602893: Call_GetInstanceState_602881; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the state of a specific instance. Works on one instance at a time.
   ## 
-  let valid = call_600871.validator(path, query, header, formData, body)
-  let scheme = call_600871.pickScheme
+  let valid = call_602893.validator(path, query, header, formData, body)
+  let scheme = call_602893.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600871.url(scheme.get, call_600871.host, call_600871.base,
-                         call_600871.route, valid.getOrDefault("path"),
+  let url = call_602893.url(scheme.get, call_602893.host, call_602893.base,
+                         call_602893.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600871, url, valid)
+  result = atozHook(call_602893, url, valid)
 
-proc call*(call_600872: Call_GetInstanceState_600859; body: JsonNode): Recallable =
+proc call*(call_602894: Call_GetInstanceState_602881; body: JsonNode): Recallable =
   ## getInstanceState
   ## Returns the state of a specific instance. Works on one instance at a time.
   ##   body: JObject (required)
-  var body_600873 = newJObject()
+  var body_602895 = newJObject()
   if body != nil:
-    body_600873 = body
-  result = call_600872.call(nil, nil, nil, nil, body_600873)
+    body_602895 = body
+  result = call_602894.call(nil, nil, nil, nil, body_602895)
 
-var getInstanceState* = Call_GetInstanceState_600859(name: "getInstanceState",
+var getInstanceState* = Call_GetInstanceState_602881(name: "getInstanceState",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetInstanceState",
-    validator: validate_GetInstanceState_600860, base: "/",
-    url: url_GetInstanceState_600861, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetInstanceState_602882, base: "/",
+    url: url_GetInstanceState_602883, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInstances_600874 = ref object of OpenApiRestCall_599368
-proc url_GetInstances_600876(protocol: Scheme; host: string; base: string;
+  Call_GetInstances_602896 = ref object of OpenApiRestCall_601389
+proc url_GetInstances_602898(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetInstances_600875(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetInstances_602897(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about all Amazon Lightsail virtual private servers, or <i>instances</i>.
   ## 
@@ -7080,57 +7142,57 @@ proc validate_GetInstances_600875(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600877 = header.getOrDefault("X-Amz-Date")
-  valid_600877 = validateParameter(valid_600877, JString, required = false,
-                                 default = nil)
-  if valid_600877 != nil:
-    section.add "X-Amz-Date", valid_600877
-  var valid_600878 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600878 = validateParameter(valid_600878, JString, required = false,
-                                 default = nil)
-  if valid_600878 != nil:
-    section.add "X-Amz-Security-Token", valid_600878
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600879 = header.getOrDefault("X-Amz-Target")
-  valid_600879 = validateParameter(valid_600879, JString, required = true, default = newJString(
+  var valid_602899 = header.getOrDefault("X-Amz-Target")
+  valid_602899 = validateParameter(valid_602899, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstances"))
-  if valid_600879 != nil:
-    section.add "X-Amz-Target", valid_600879
-  var valid_600880 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600880 = validateParameter(valid_600880, JString, required = false,
+  if valid_602899 != nil:
+    section.add "X-Amz-Target", valid_602899
+  var valid_602900 = header.getOrDefault("X-Amz-Signature")
+  valid_602900 = validateParameter(valid_602900, JString, required = false,
                                  default = nil)
-  if valid_600880 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600880
-  var valid_600881 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600881 = validateParameter(valid_600881, JString, required = false,
+  if valid_602900 != nil:
+    section.add "X-Amz-Signature", valid_602900
+  var valid_602901 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602901 = validateParameter(valid_602901, JString, required = false,
                                  default = nil)
-  if valid_600881 != nil:
-    section.add "X-Amz-Algorithm", valid_600881
-  var valid_600882 = header.getOrDefault("X-Amz-Signature")
-  valid_600882 = validateParameter(valid_600882, JString, required = false,
+  if valid_602901 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602901
+  var valid_602902 = header.getOrDefault("X-Amz-Date")
+  valid_602902 = validateParameter(valid_602902, JString, required = false,
                                  default = nil)
-  if valid_600882 != nil:
-    section.add "X-Amz-Signature", valid_600882
-  var valid_600883 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600883 = validateParameter(valid_600883, JString, required = false,
+  if valid_602902 != nil:
+    section.add "X-Amz-Date", valid_602902
+  var valid_602903 = header.getOrDefault("X-Amz-Credential")
+  valid_602903 = validateParameter(valid_602903, JString, required = false,
                                  default = nil)
-  if valid_600883 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600883
-  var valid_600884 = header.getOrDefault("X-Amz-Credential")
-  valid_600884 = validateParameter(valid_600884, JString, required = false,
+  if valid_602903 != nil:
+    section.add "X-Amz-Credential", valid_602903
+  var valid_602904 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602904 = validateParameter(valid_602904, JString, required = false,
                                  default = nil)
-  if valid_600884 != nil:
-    section.add "X-Amz-Credential", valid_600884
+  if valid_602904 != nil:
+    section.add "X-Amz-Security-Token", valid_602904
+  var valid_602905 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602905 = validateParameter(valid_602905, JString, required = false,
+                                 default = nil)
+  if valid_602905 != nil:
+    section.add "X-Amz-Algorithm", valid_602905
+  var valid_602906 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602906 = validateParameter(valid_602906, JString, required = false,
+                                 default = nil)
+  if valid_602906 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602906
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7141,47 +7203,48 @@ proc validate_GetInstances_600875(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600886: Call_GetInstances_600874; path: JsonNode; query: JsonNode;
+proc call*(call_602908: Call_GetInstances_602896; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about all Amazon Lightsail virtual private servers, or <i>instances</i>.
   ## 
-  let valid = call_600886.validator(path, query, header, formData, body)
-  let scheme = call_600886.pickScheme
+  let valid = call_602908.validator(path, query, header, formData, body)
+  let scheme = call_602908.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600886.url(scheme.get, call_600886.host, call_600886.base,
-                         call_600886.route, valid.getOrDefault("path"),
+  let url = call_602908.url(scheme.get, call_602908.host, call_602908.base,
+                         call_602908.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600886, url, valid)
+  result = atozHook(call_602908, url, valid)
 
-proc call*(call_600887: Call_GetInstances_600874; body: JsonNode): Recallable =
+proc call*(call_602909: Call_GetInstances_602896; body: JsonNode): Recallable =
   ## getInstances
   ## Returns information about all Amazon Lightsail virtual private servers, or <i>instances</i>.
   ##   body: JObject (required)
-  var body_600888 = newJObject()
+  var body_602910 = newJObject()
   if body != nil:
-    body_600888 = body
-  result = call_600887.call(nil, nil, nil, nil, body_600888)
+    body_602910 = body
+  result = call_602909.call(nil, nil, nil, nil, body_602910)
 
-var getInstances* = Call_GetInstances_600874(name: "getInstances",
+var getInstances* = Call_GetInstances_602896(name: "getInstances",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetInstances",
-    validator: validate_GetInstances_600875, base: "/", url: url_GetInstances_600876,
+    validator: validate_GetInstances_602897, base: "/", url: url_GetInstances_602898,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetKeyPair_600889 = ref object of OpenApiRestCall_599368
-proc url_GetKeyPair_600891(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetKeyPair_602911 = ref object of OpenApiRestCall_601389
+proc url_GetKeyPair_602913(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetKeyPair_600890(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetKeyPair_602912(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a specific key pair.
   ## 
@@ -7192,57 +7255,57 @@ proc validate_GetKeyPair_600890(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600892 = header.getOrDefault("X-Amz-Date")
-  valid_600892 = validateParameter(valid_600892, JString, required = false,
-                                 default = nil)
-  if valid_600892 != nil:
-    section.add "X-Amz-Date", valid_600892
-  var valid_600893 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600893 = validateParameter(valid_600893, JString, required = false,
-                                 default = nil)
-  if valid_600893 != nil:
-    section.add "X-Amz-Security-Token", valid_600893
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600894 = header.getOrDefault("X-Amz-Target")
-  valid_600894 = validateParameter(valid_600894, JString, required = true, default = newJString(
+  var valid_602914 = header.getOrDefault("X-Amz-Target")
+  valid_602914 = validateParameter(valid_602914, JString, required = true, default = newJString(
       "Lightsail_20161128.GetKeyPair"))
-  if valid_600894 != nil:
-    section.add "X-Amz-Target", valid_600894
-  var valid_600895 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600895 = validateParameter(valid_600895, JString, required = false,
+  if valid_602914 != nil:
+    section.add "X-Amz-Target", valid_602914
+  var valid_602915 = header.getOrDefault("X-Amz-Signature")
+  valid_602915 = validateParameter(valid_602915, JString, required = false,
                                  default = nil)
-  if valid_600895 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600895
-  var valid_600896 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600896 = validateParameter(valid_600896, JString, required = false,
+  if valid_602915 != nil:
+    section.add "X-Amz-Signature", valid_602915
+  var valid_602916 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602916 = validateParameter(valid_602916, JString, required = false,
                                  default = nil)
-  if valid_600896 != nil:
-    section.add "X-Amz-Algorithm", valid_600896
-  var valid_600897 = header.getOrDefault("X-Amz-Signature")
-  valid_600897 = validateParameter(valid_600897, JString, required = false,
+  if valid_602916 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602916
+  var valid_602917 = header.getOrDefault("X-Amz-Date")
+  valid_602917 = validateParameter(valid_602917, JString, required = false,
                                  default = nil)
-  if valid_600897 != nil:
-    section.add "X-Amz-Signature", valid_600897
-  var valid_600898 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600898 = validateParameter(valid_600898, JString, required = false,
+  if valid_602917 != nil:
+    section.add "X-Amz-Date", valid_602917
+  var valid_602918 = header.getOrDefault("X-Amz-Credential")
+  valid_602918 = validateParameter(valid_602918, JString, required = false,
                                  default = nil)
-  if valid_600898 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600898
-  var valid_600899 = header.getOrDefault("X-Amz-Credential")
-  valid_600899 = validateParameter(valid_600899, JString, required = false,
+  if valid_602918 != nil:
+    section.add "X-Amz-Credential", valid_602918
+  var valid_602919 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602919 = validateParameter(valid_602919, JString, required = false,
                                  default = nil)
-  if valid_600899 != nil:
-    section.add "X-Amz-Credential", valid_600899
+  if valid_602919 != nil:
+    section.add "X-Amz-Security-Token", valid_602919
+  var valid_602920 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602920 = validateParameter(valid_602920, JString, required = false,
+                                 default = nil)
+  if valid_602920 != nil:
+    section.add "X-Amz-Algorithm", valid_602920
+  var valid_602921 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602921 = validateParameter(valid_602921, JString, required = false,
+                                 default = nil)
+  if valid_602921 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602921
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7253,48 +7316,49 @@ proc validate_GetKeyPair_600890(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600901: Call_GetKeyPair_600889; path: JsonNode; query: JsonNode;
+proc call*(call_602923: Call_GetKeyPair_602911; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific key pair.
   ## 
-  let valid = call_600901.validator(path, query, header, formData, body)
-  let scheme = call_600901.pickScheme
+  let valid = call_602923.validator(path, query, header, formData, body)
+  let scheme = call_602923.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600901.url(scheme.get, call_600901.host, call_600901.base,
-                         call_600901.route, valid.getOrDefault("path"),
+  let url = call_602923.url(scheme.get, call_602923.host, call_602923.base,
+                         call_602923.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600901, url, valid)
+  result = atozHook(call_602923, url, valid)
 
-proc call*(call_600902: Call_GetKeyPair_600889; body: JsonNode): Recallable =
+proc call*(call_602924: Call_GetKeyPair_602911; body: JsonNode): Recallable =
   ## getKeyPair
   ## Returns information about a specific key pair.
   ##   body: JObject (required)
-  var body_600903 = newJObject()
+  var body_602925 = newJObject()
   if body != nil:
-    body_600903 = body
-  result = call_600902.call(nil, nil, nil, nil, body_600903)
+    body_602925 = body
+  result = call_602924.call(nil, nil, nil, nil, body_602925)
 
-var getKeyPair* = Call_GetKeyPair_600889(name: "getKeyPair",
+var getKeyPair* = Call_GetKeyPair_602911(name: "getKeyPair",
                                       meth: HttpMethod.HttpPost,
                                       host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetKeyPair",
-                                      validator: validate_GetKeyPair_600890,
-                                      base: "/", url: url_GetKeyPair_600891,
+                                      validator: validate_GetKeyPair_602912,
+                                      base: "/", url: url_GetKeyPair_602913,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetKeyPairs_600904 = ref object of OpenApiRestCall_599368
-proc url_GetKeyPairs_600906(protocol: Scheme; host: string; base: string;
+  Call_GetKeyPairs_602926 = ref object of OpenApiRestCall_601389
+proc url_GetKeyPairs_602928(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetKeyPairs_600905(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetKeyPairs_602927(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about all key pairs in the user's account.
   ## 
@@ -7305,57 +7369,57 @@ proc validate_GetKeyPairs_600905(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600907 = header.getOrDefault("X-Amz-Date")
-  valid_600907 = validateParameter(valid_600907, JString, required = false,
-                                 default = nil)
-  if valid_600907 != nil:
-    section.add "X-Amz-Date", valid_600907
-  var valid_600908 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600908 = validateParameter(valid_600908, JString, required = false,
-                                 default = nil)
-  if valid_600908 != nil:
-    section.add "X-Amz-Security-Token", valid_600908
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600909 = header.getOrDefault("X-Amz-Target")
-  valid_600909 = validateParameter(valid_600909, JString, required = true, default = newJString(
+  var valid_602929 = header.getOrDefault("X-Amz-Target")
+  valid_602929 = validateParameter(valid_602929, JString, required = true, default = newJString(
       "Lightsail_20161128.GetKeyPairs"))
-  if valid_600909 != nil:
-    section.add "X-Amz-Target", valid_600909
-  var valid_600910 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600910 = validateParameter(valid_600910, JString, required = false,
+  if valid_602929 != nil:
+    section.add "X-Amz-Target", valid_602929
+  var valid_602930 = header.getOrDefault("X-Amz-Signature")
+  valid_602930 = validateParameter(valid_602930, JString, required = false,
                                  default = nil)
-  if valid_600910 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600910
-  var valid_600911 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600911 = validateParameter(valid_600911, JString, required = false,
+  if valid_602930 != nil:
+    section.add "X-Amz-Signature", valid_602930
+  var valid_602931 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602931 = validateParameter(valid_602931, JString, required = false,
                                  default = nil)
-  if valid_600911 != nil:
-    section.add "X-Amz-Algorithm", valid_600911
-  var valid_600912 = header.getOrDefault("X-Amz-Signature")
-  valid_600912 = validateParameter(valid_600912, JString, required = false,
+  if valid_602931 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602931
+  var valid_602932 = header.getOrDefault("X-Amz-Date")
+  valid_602932 = validateParameter(valid_602932, JString, required = false,
                                  default = nil)
-  if valid_600912 != nil:
-    section.add "X-Amz-Signature", valid_600912
-  var valid_600913 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600913 = validateParameter(valid_600913, JString, required = false,
+  if valid_602932 != nil:
+    section.add "X-Amz-Date", valid_602932
+  var valid_602933 = header.getOrDefault("X-Amz-Credential")
+  valid_602933 = validateParameter(valid_602933, JString, required = false,
                                  default = nil)
-  if valid_600913 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600913
-  var valid_600914 = header.getOrDefault("X-Amz-Credential")
-  valid_600914 = validateParameter(valid_600914, JString, required = false,
+  if valid_602933 != nil:
+    section.add "X-Amz-Credential", valid_602933
+  var valid_602934 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602934 = validateParameter(valid_602934, JString, required = false,
                                  default = nil)
-  if valid_600914 != nil:
-    section.add "X-Amz-Credential", valid_600914
+  if valid_602934 != nil:
+    section.add "X-Amz-Security-Token", valid_602934
+  var valid_602935 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602935 = validateParameter(valid_602935, JString, required = false,
+                                 default = nil)
+  if valid_602935 != nil:
+    section.add "X-Amz-Algorithm", valid_602935
+  var valid_602936 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602936 = validateParameter(valid_602936, JString, required = false,
+                                 default = nil)
+  if valid_602936 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602936
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7366,48 +7430,49 @@ proc validate_GetKeyPairs_600905(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600916: Call_GetKeyPairs_600904; path: JsonNode; query: JsonNode;
+proc call*(call_602938: Call_GetKeyPairs_602926; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about all key pairs in the user's account.
   ## 
-  let valid = call_600916.validator(path, query, header, formData, body)
-  let scheme = call_600916.pickScheme
+  let valid = call_602938.validator(path, query, header, formData, body)
+  let scheme = call_602938.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600916.url(scheme.get, call_600916.host, call_600916.base,
-                         call_600916.route, valid.getOrDefault("path"),
+  let url = call_602938.url(scheme.get, call_602938.host, call_602938.base,
+                         call_602938.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600916, url, valid)
+  result = atozHook(call_602938, url, valid)
 
-proc call*(call_600917: Call_GetKeyPairs_600904; body: JsonNode): Recallable =
+proc call*(call_602939: Call_GetKeyPairs_602926; body: JsonNode): Recallable =
   ## getKeyPairs
   ## Returns information about all key pairs in the user's account.
   ##   body: JObject (required)
-  var body_600918 = newJObject()
+  var body_602940 = newJObject()
   if body != nil:
-    body_600918 = body
-  result = call_600917.call(nil, nil, nil, nil, body_600918)
+    body_602940 = body
+  result = call_602939.call(nil, nil, nil, nil, body_602940)
 
-var getKeyPairs* = Call_GetKeyPairs_600904(name: "getKeyPairs",
+var getKeyPairs* = Call_GetKeyPairs_602926(name: "getKeyPairs",
                                         meth: HttpMethod.HttpPost,
                                         host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetKeyPairs",
-                                        validator: validate_GetKeyPairs_600905,
-                                        base: "/", url: url_GetKeyPairs_600906,
+                                        validator: validate_GetKeyPairs_602927,
+                                        base: "/", url: url_GetKeyPairs_602928,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLoadBalancer_600919 = ref object of OpenApiRestCall_599368
-proc url_GetLoadBalancer_600921(protocol: Scheme; host: string; base: string;
+  Call_GetLoadBalancer_602941 = ref object of OpenApiRestCall_601389
+proc url_GetLoadBalancer_602943(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetLoadBalancer_600920(path: JsonNode; query: JsonNode;
+proc validate_GetLoadBalancer_602942(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Returns information about the specified Lightsail load balancer.
@@ -7419,57 +7484,57 @@ proc validate_GetLoadBalancer_600920(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600922 = header.getOrDefault("X-Amz-Date")
-  valid_600922 = validateParameter(valid_600922, JString, required = false,
-                                 default = nil)
-  if valid_600922 != nil:
-    section.add "X-Amz-Date", valid_600922
-  var valid_600923 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600923 = validateParameter(valid_600923, JString, required = false,
-                                 default = nil)
-  if valid_600923 != nil:
-    section.add "X-Amz-Security-Token", valid_600923
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600924 = header.getOrDefault("X-Amz-Target")
-  valid_600924 = validateParameter(valid_600924, JString, required = true, default = newJString(
+  var valid_602944 = header.getOrDefault("X-Amz-Target")
+  valid_602944 = validateParameter(valid_602944, JString, required = true, default = newJString(
       "Lightsail_20161128.GetLoadBalancer"))
-  if valid_600924 != nil:
-    section.add "X-Amz-Target", valid_600924
-  var valid_600925 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600925 = validateParameter(valid_600925, JString, required = false,
+  if valid_602944 != nil:
+    section.add "X-Amz-Target", valid_602944
+  var valid_602945 = header.getOrDefault("X-Amz-Signature")
+  valid_602945 = validateParameter(valid_602945, JString, required = false,
                                  default = nil)
-  if valid_600925 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600925
-  var valid_600926 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600926 = validateParameter(valid_600926, JString, required = false,
+  if valid_602945 != nil:
+    section.add "X-Amz-Signature", valid_602945
+  var valid_602946 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602946 = validateParameter(valid_602946, JString, required = false,
                                  default = nil)
-  if valid_600926 != nil:
-    section.add "X-Amz-Algorithm", valid_600926
-  var valid_600927 = header.getOrDefault("X-Amz-Signature")
-  valid_600927 = validateParameter(valid_600927, JString, required = false,
+  if valid_602946 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602946
+  var valid_602947 = header.getOrDefault("X-Amz-Date")
+  valid_602947 = validateParameter(valid_602947, JString, required = false,
                                  default = nil)
-  if valid_600927 != nil:
-    section.add "X-Amz-Signature", valid_600927
-  var valid_600928 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600928 = validateParameter(valid_600928, JString, required = false,
+  if valid_602947 != nil:
+    section.add "X-Amz-Date", valid_602947
+  var valid_602948 = header.getOrDefault("X-Amz-Credential")
+  valid_602948 = validateParameter(valid_602948, JString, required = false,
                                  default = nil)
-  if valid_600928 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600928
-  var valid_600929 = header.getOrDefault("X-Amz-Credential")
-  valid_600929 = validateParameter(valid_600929, JString, required = false,
+  if valid_602948 != nil:
+    section.add "X-Amz-Credential", valid_602948
+  var valid_602949 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602949 = validateParameter(valid_602949, JString, required = false,
                                  default = nil)
-  if valid_600929 != nil:
-    section.add "X-Amz-Credential", valid_600929
+  if valid_602949 != nil:
+    section.add "X-Amz-Security-Token", valid_602949
+  var valid_602950 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602950 = validateParameter(valid_602950, JString, required = false,
+                                 default = nil)
+  if valid_602950 != nil:
+    section.add "X-Amz-Algorithm", valid_602950
+  var valid_602951 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602951 = validateParameter(valid_602951, JString, required = false,
+                                 default = nil)
+  if valid_602951 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602951
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7480,47 +7545,48 @@ proc validate_GetLoadBalancer_600920(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600931: Call_GetLoadBalancer_600919; path: JsonNode; query: JsonNode;
+proc call*(call_602953: Call_GetLoadBalancer_602941; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about the specified Lightsail load balancer.
   ## 
-  let valid = call_600931.validator(path, query, header, formData, body)
-  let scheme = call_600931.pickScheme
+  let valid = call_602953.validator(path, query, header, formData, body)
+  let scheme = call_602953.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600931.url(scheme.get, call_600931.host, call_600931.base,
-                         call_600931.route, valid.getOrDefault("path"),
+  let url = call_602953.url(scheme.get, call_602953.host, call_602953.base,
+                         call_602953.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600931, url, valid)
+  result = atozHook(call_602953, url, valid)
 
-proc call*(call_600932: Call_GetLoadBalancer_600919; body: JsonNode): Recallable =
+proc call*(call_602954: Call_GetLoadBalancer_602941; body: JsonNode): Recallable =
   ## getLoadBalancer
   ## Returns information about the specified Lightsail load balancer.
   ##   body: JObject (required)
-  var body_600933 = newJObject()
+  var body_602955 = newJObject()
   if body != nil:
-    body_600933 = body
-  result = call_600932.call(nil, nil, nil, nil, body_600933)
+    body_602955 = body
+  result = call_602954.call(nil, nil, nil, nil, body_602955)
 
-var getLoadBalancer* = Call_GetLoadBalancer_600919(name: "getLoadBalancer",
+var getLoadBalancer* = Call_GetLoadBalancer_602941(name: "getLoadBalancer",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetLoadBalancer",
-    validator: validate_GetLoadBalancer_600920, base: "/", url: url_GetLoadBalancer_600921,
+    validator: validate_GetLoadBalancer_602942, base: "/", url: url_GetLoadBalancer_602943,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLoadBalancerMetricData_600934 = ref object of OpenApiRestCall_599368
-proc url_GetLoadBalancerMetricData_600936(protocol: Scheme; host: string;
+  Call_GetLoadBalancerMetricData_602956 = ref object of OpenApiRestCall_601389
+proc url_GetLoadBalancerMetricData_602958(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetLoadBalancerMetricData_600935(path: JsonNode; query: JsonNode;
+proc validate_GetLoadBalancerMetricData_602957(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about health metrics for your Lightsail load balancer.
   ## 
@@ -7531,57 +7597,57 @@ proc validate_GetLoadBalancerMetricData_600935(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600937 = header.getOrDefault("X-Amz-Date")
-  valid_600937 = validateParameter(valid_600937, JString, required = false,
-                                 default = nil)
-  if valid_600937 != nil:
-    section.add "X-Amz-Date", valid_600937
-  var valid_600938 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600938 = validateParameter(valid_600938, JString, required = false,
-                                 default = nil)
-  if valid_600938 != nil:
-    section.add "X-Amz-Security-Token", valid_600938
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600939 = header.getOrDefault("X-Amz-Target")
-  valid_600939 = validateParameter(valid_600939, JString, required = true, default = newJString(
+  var valid_602959 = header.getOrDefault("X-Amz-Target")
+  valid_602959 = validateParameter(valid_602959, JString, required = true, default = newJString(
       "Lightsail_20161128.GetLoadBalancerMetricData"))
-  if valid_600939 != nil:
-    section.add "X-Amz-Target", valid_600939
-  var valid_600940 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600940 = validateParameter(valid_600940, JString, required = false,
+  if valid_602959 != nil:
+    section.add "X-Amz-Target", valid_602959
+  var valid_602960 = header.getOrDefault("X-Amz-Signature")
+  valid_602960 = validateParameter(valid_602960, JString, required = false,
                                  default = nil)
-  if valid_600940 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600940
-  var valid_600941 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600941 = validateParameter(valid_600941, JString, required = false,
+  if valid_602960 != nil:
+    section.add "X-Amz-Signature", valid_602960
+  var valid_602961 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602961 = validateParameter(valid_602961, JString, required = false,
                                  default = nil)
-  if valid_600941 != nil:
-    section.add "X-Amz-Algorithm", valid_600941
-  var valid_600942 = header.getOrDefault("X-Amz-Signature")
-  valid_600942 = validateParameter(valid_600942, JString, required = false,
+  if valid_602961 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602961
+  var valid_602962 = header.getOrDefault("X-Amz-Date")
+  valid_602962 = validateParameter(valid_602962, JString, required = false,
                                  default = nil)
-  if valid_600942 != nil:
-    section.add "X-Amz-Signature", valid_600942
-  var valid_600943 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600943 = validateParameter(valid_600943, JString, required = false,
+  if valid_602962 != nil:
+    section.add "X-Amz-Date", valid_602962
+  var valid_602963 = header.getOrDefault("X-Amz-Credential")
+  valid_602963 = validateParameter(valid_602963, JString, required = false,
                                  default = nil)
-  if valid_600943 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600943
-  var valid_600944 = header.getOrDefault("X-Amz-Credential")
-  valid_600944 = validateParameter(valid_600944, JString, required = false,
+  if valid_602963 != nil:
+    section.add "X-Amz-Credential", valid_602963
+  var valid_602964 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602964 = validateParameter(valid_602964, JString, required = false,
                                  default = nil)
-  if valid_600944 != nil:
-    section.add "X-Amz-Credential", valid_600944
+  if valid_602964 != nil:
+    section.add "X-Amz-Security-Token", valid_602964
+  var valid_602965 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602965 = validateParameter(valid_602965, JString, required = false,
+                                 default = nil)
+  if valid_602965 != nil:
+    section.add "X-Amz-Algorithm", valid_602965
+  var valid_602966 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602966 = validateParameter(valid_602966, JString, required = false,
+                                 default = nil)
+  if valid_602966 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602966
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7592,49 +7658,50 @@ proc validate_GetLoadBalancerMetricData_600935(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600946: Call_GetLoadBalancerMetricData_600934; path: JsonNode;
+proc call*(call_602968: Call_GetLoadBalancerMetricData_602956; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about health metrics for your Lightsail load balancer.
   ## 
-  let valid = call_600946.validator(path, query, header, formData, body)
-  let scheme = call_600946.pickScheme
+  let valid = call_602968.validator(path, query, header, formData, body)
+  let scheme = call_602968.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600946.url(scheme.get, call_600946.host, call_600946.base,
-                         call_600946.route, valid.getOrDefault("path"),
+  let url = call_602968.url(scheme.get, call_602968.host, call_602968.base,
+                         call_602968.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600946, url, valid)
+  result = atozHook(call_602968, url, valid)
 
-proc call*(call_600947: Call_GetLoadBalancerMetricData_600934; body: JsonNode): Recallable =
+proc call*(call_602969: Call_GetLoadBalancerMetricData_602956; body: JsonNode): Recallable =
   ## getLoadBalancerMetricData
   ## Returns information about health metrics for your Lightsail load balancer.
   ##   body: JObject (required)
-  var body_600948 = newJObject()
+  var body_602970 = newJObject()
   if body != nil:
-    body_600948 = body
-  result = call_600947.call(nil, nil, nil, nil, body_600948)
+    body_602970 = body
+  result = call_602969.call(nil, nil, nil, nil, body_602970)
 
-var getLoadBalancerMetricData* = Call_GetLoadBalancerMetricData_600934(
+var getLoadBalancerMetricData* = Call_GetLoadBalancerMetricData_602956(
     name: "getLoadBalancerMetricData", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetLoadBalancerMetricData",
-    validator: validate_GetLoadBalancerMetricData_600935, base: "/",
-    url: url_GetLoadBalancerMetricData_600936,
+    validator: validate_GetLoadBalancerMetricData_602957, base: "/",
+    url: url_GetLoadBalancerMetricData_602958,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLoadBalancerTlsCertificates_600949 = ref object of OpenApiRestCall_599368
-proc url_GetLoadBalancerTlsCertificates_600951(protocol: Scheme; host: string;
+  Call_GetLoadBalancerTlsCertificates_602971 = ref object of OpenApiRestCall_601389
+proc url_GetLoadBalancerTlsCertificates_602973(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetLoadBalancerTlsCertificates_600950(path: JsonNode;
+proc validate_GetLoadBalancerTlsCertificates_602972(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about the TLS certificates that are associated with the specified Lightsail load balancer.</p> <p>TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>You can have a maximum of 2 certificates associated with a Lightsail load balancer. One is active and the other is inactive.</p>
   ## 
@@ -7645,57 +7712,57 @@ proc validate_GetLoadBalancerTlsCertificates_600950(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600952 = header.getOrDefault("X-Amz-Date")
-  valid_600952 = validateParameter(valid_600952, JString, required = false,
-                                 default = nil)
-  if valid_600952 != nil:
-    section.add "X-Amz-Date", valid_600952
-  var valid_600953 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600953 = validateParameter(valid_600953, JString, required = false,
-                                 default = nil)
-  if valid_600953 != nil:
-    section.add "X-Amz-Security-Token", valid_600953
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600954 = header.getOrDefault("X-Amz-Target")
-  valid_600954 = validateParameter(valid_600954, JString, required = true, default = newJString(
+  var valid_602974 = header.getOrDefault("X-Amz-Target")
+  valid_602974 = validateParameter(valid_602974, JString, required = true, default = newJString(
       "Lightsail_20161128.GetLoadBalancerTlsCertificates"))
-  if valid_600954 != nil:
-    section.add "X-Amz-Target", valid_600954
-  var valid_600955 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600955 = validateParameter(valid_600955, JString, required = false,
+  if valid_602974 != nil:
+    section.add "X-Amz-Target", valid_602974
+  var valid_602975 = header.getOrDefault("X-Amz-Signature")
+  valid_602975 = validateParameter(valid_602975, JString, required = false,
                                  default = nil)
-  if valid_600955 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600955
-  var valid_600956 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600956 = validateParameter(valid_600956, JString, required = false,
+  if valid_602975 != nil:
+    section.add "X-Amz-Signature", valid_602975
+  var valid_602976 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602976 = validateParameter(valid_602976, JString, required = false,
                                  default = nil)
-  if valid_600956 != nil:
-    section.add "X-Amz-Algorithm", valid_600956
-  var valid_600957 = header.getOrDefault("X-Amz-Signature")
-  valid_600957 = validateParameter(valid_600957, JString, required = false,
+  if valid_602976 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602976
+  var valid_602977 = header.getOrDefault("X-Amz-Date")
+  valid_602977 = validateParameter(valid_602977, JString, required = false,
                                  default = nil)
-  if valid_600957 != nil:
-    section.add "X-Amz-Signature", valid_600957
-  var valid_600958 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600958 = validateParameter(valid_600958, JString, required = false,
+  if valid_602977 != nil:
+    section.add "X-Amz-Date", valid_602977
+  var valid_602978 = header.getOrDefault("X-Amz-Credential")
+  valid_602978 = validateParameter(valid_602978, JString, required = false,
                                  default = nil)
-  if valid_600958 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600958
-  var valid_600959 = header.getOrDefault("X-Amz-Credential")
-  valid_600959 = validateParameter(valid_600959, JString, required = false,
+  if valid_602978 != nil:
+    section.add "X-Amz-Credential", valid_602978
+  var valid_602979 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602979 = validateParameter(valid_602979, JString, required = false,
                                  default = nil)
-  if valid_600959 != nil:
-    section.add "X-Amz-Credential", valid_600959
+  if valid_602979 != nil:
+    section.add "X-Amz-Security-Token", valid_602979
+  var valid_602980 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602980 = validateParameter(valid_602980, JString, required = false,
+                                 default = nil)
+  if valid_602980 != nil:
+    section.add "X-Amz-Algorithm", valid_602980
+  var valid_602981 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602981 = validateParameter(valid_602981, JString, required = false,
+                                 default = nil)
+  if valid_602981 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602981
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7706,49 +7773,50 @@ proc validate_GetLoadBalancerTlsCertificates_600950(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600961: Call_GetLoadBalancerTlsCertificates_600949; path: JsonNode;
+proc call*(call_602983: Call_GetLoadBalancerTlsCertificates_602971; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the TLS certificates that are associated with the specified Lightsail load balancer.</p> <p>TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>You can have a maximum of 2 certificates associated with a Lightsail load balancer. One is active and the other is inactive.</p>
   ## 
-  let valid = call_600961.validator(path, query, header, formData, body)
-  let scheme = call_600961.pickScheme
+  let valid = call_602983.validator(path, query, header, formData, body)
+  let scheme = call_602983.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600961.url(scheme.get, call_600961.host, call_600961.base,
-                         call_600961.route, valid.getOrDefault("path"),
+  let url = call_602983.url(scheme.get, call_602983.host, call_602983.base,
+                         call_602983.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600961, url, valid)
+  result = atozHook(call_602983, url, valid)
 
-proc call*(call_600962: Call_GetLoadBalancerTlsCertificates_600949; body: JsonNode): Recallable =
+proc call*(call_602984: Call_GetLoadBalancerTlsCertificates_602971; body: JsonNode): Recallable =
   ## getLoadBalancerTlsCertificates
   ## <p>Returns information about the TLS certificates that are associated with the specified Lightsail load balancer.</p> <p>TLS is just an updated, more secure version of Secure Socket Layer (SSL).</p> <p>You can have a maximum of 2 certificates associated with a Lightsail load balancer. One is active and the other is inactive.</p>
   ##   body: JObject (required)
-  var body_600963 = newJObject()
+  var body_602985 = newJObject()
   if body != nil:
-    body_600963 = body
-  result = call_600962.call(nil, nil, nil, nil, body_600963)
+    body_602985 = body
+  result = call_602984.call(nil, nil, nil, nil, body_602985)
 
-var getLoadBalancerTlsCertificates* = Call_GetLoadBalancerTlsCertificates_600949(
+var getLoadBalancerTlsCertificates* = Call_GetLoadBalancerTlsCertificates_602971(
     name: "getLoadBalancerTlsCertificates", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetLoadBalancerTlsCertificates",
-    validator: validate_GetLoadBalancerTlsCertificates_600950, base: "/",
-    url: url_GetLoadBalancerTlsCertificates_600951,
+    validator: validate_GetLoadBalancerTlsCertificates_602972, base: "/",
+    url: url_GetLoadBalancerTlsCertificates_602973,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLoadBalancers_600964 = ref object of OpenApiRestCall_599368
-proc url_GetLoadBalancers_600966(protocol: Scheme; host: string; base: string;
+  Call_GetLoadBalancers_602986 = ref object of OpenApiRestCall_601389
+proc url_GetLoadBalancers_602988(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetLoadBalancers_600965(path: JsonNode; query: JsonNode;
+proc validate_GetLoadBalancers_602987(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Returns information about all load balancers in an account.</p> <p>If you are describing a long list of load balancers, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
@@ -7760,57 +7828,57 @@ proc validate_GetLoadBalancers_600965(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600967 = header.getOrDefault("X-Amz-Date")
-  valid_600967 = validateParameter(valid_600967, JString, required = false,
-                                 default = nil)
-  if valid_600967 != nil:
-    section.add "X-Amz-Date", valid_600967
-  var valid_600968 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600968 = validateParameter(valid_600968, JString, required = false,
-                                 default = nil)
-  if valid_600968 != nil:
-    section.add "X-Amz-Security-Token", valid_600968
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600969 = header.getOrDefault("X-Amz-Target")
-  valid_600969 = validateParameter(valid_600969, JString, required = true, default = newJString(
+  var valid_602989 = header.getOrDefault("X-Amz-Target")
+  valid_602989 = validateParameter(valid_602989, JString, required = true, default = newJString(
       "Lightsail_20161128.GetLoadBalancers"))
-  if valid_600969 != nil:
-    section.add "X-Amz-Target", valid_600969
-  var valid_600970 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600970 = validateParameter(valid_600970, JString, required = false,
+  if valid_602989 != nil:
+    section.add "X-Amz-Target", valid_602989
+  var valid_602990 = header.getOrDefault("X-Amz-Signature")
+  valid_602990 = validateParameter(valid_602990, JString, required = false,
                                  default = nil)
-  if valid_600970 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600970
-  var valid_600971 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600971 = validateParameter(valid_600971, JString, required = false,
+  if valid_602990 != nil:
+    section.add "X-Amz-Signature", valid_602990
+  var valid_602991 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602991 = validateParameter(valid_602991, JString, required = false,
                                  default = nil)
-  if valid_600971 != nil:
-    section.add "X-Amz-Algorithm", valid_600971
-  var valid_600972 = header.getOrDefault("X-Amz-Signature")
-  valid_600972 = validateParameter(valid_600972, JString, required = false,
+  if valid_602991 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602991
+  var valid_602992 = header.getOrDefault("X-Amz-Date")
+  valid_602992 = validateParameter(valid_602992, JString, required = false,
                                  default = nil)
-  if valid_600972 != nil:
-    section.add "X-Amz-Signature", valid_600972
-  var valid_600973 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600973 = validateParameter(valid_600973, JString, required = false,
+  if valid_602992 != nil:
+    section.add "X-Amz-Date", valid_602992
+  var valid_602993 = header.getOrDefault("X-Amz-Credential")
+  valid_602993 = validateParameter(valid_602993, JString, required = false,
                                  default = nil)
-  if valid_600973 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600973
-  var valid_600974 = header.getOrDefault("X-Amz-Credential")
-  valid_600974 = validateParameter(valid_600974, JString, required = false,
+  if valid_602993 != nil:
+    section.add "X-Amz-Credential", valid_602993
+  var valid_602994 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602994 = validateParameter(valid_602994, JString, required = false,
                                  default = nil)
-  if valid_600974 != nil:
-    section.add "X-Amz-Credential", valid_600974
+  if valid_602994 != nil:
+    section.add "X-Amz-Security-Token", valid_602994
+  var valid_602995 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602995 = validateParameter(valid_602995, JString, required = false,
+                                 default = nil)
+  if valid_602995 != nil:
+    section.add "X-Amz-Algorithm", valid_602995
+  var valid_602996 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602996 = validateParameter(valid_602996, JString, required = false,
+                                 default = nil)
+  if valid_602996 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602996
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7821,47 +7889,48 @@ proc validate_GetLoadBalancers_600965(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600976: Call_GetLoadBalancers_600964; path: JsonNode;
+proc call*(call_602998: Call_GetLoadBalancers_602986; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about all load balancers in an account.</p> <p>If you are describing a long list of load balancers, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
   ## 
-  let valid = call_600976.validator(path, query, header, formData, body)
-  let scheme = call_600976.pickScheme
+  let valid = call_602998.validator(path, query, header, formData, body)
+  let scheme = call_602998.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600976.url(scheme.get, call_600976.host, call_600976.base,
-                         call_600976.route, valid.getOrDefault("path"),
+  let url = call_602998.url(scheme.get, call_602998.host, call_602998.base,
+                         call_602998.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600976, url, valid)
+  result = atozHook(call_602998, url, valid)
 
-proc call*(call_600977: Call_GetLoadBalancers_600964; body: JsonNode): Recallable =
+proc call*(call_602999: Call_GetLoadBalancers_602986; body: JsonNode): Recallable =
   ## getLoadBalancers
   ## <p>Returns information about all load balancers in an account.</p> <p>If you are describing a long list of load balancers, you can paginate the output to make the list more manageable. You can use the pageToken and nextPageToken values to retrieve the next items in the list.</p>
   ##   body: JObject (required)
-  var body_600978 = newJObject()
+  var body_603000 = newJObject()
   if body != nil:
-    body_600978 = body
-  result = call_600977.call(nil, nil, nil, nil, body_600978)
+    body_603000 = body
+  result = call_602999.call(nil, nil, nil, nil, body_603000)
 
-var getLoadBalancers* = Call_GetLoadBalancers_600964(name: "getLoadBalancers",
+var getLoadBalancers* = Call_GetLoadBalancers_602986(name: "getLoadBalancers",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetLoadBalancers",
-    validator: validate_GetLoadBalancers_600965, base: "/",
-    url: url_GetLoadBalancers_600966, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetLoadBalancers_602987, base: "/",
+    url: url_GetLoadBalancers_602988, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetOperation_600979 = ref object of OpenApiRestCall_599368
-proc url_GetOperation_600981(protocol: Scheme; host: string; base: string;
+  Call_GetOperation_603001 = ref object of OpenApiRestCall_601389
+proc url_GetOperation_603003(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetOperation_600980(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetOperation_603002(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a specific operation. Operations include events such as when you create an instance, allocate a static IP, attach a static IP, and so on.
   ## 
@@ -7872,57 +7941,57 @@ proc validate_GetOperation_600980(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600982 = header.getOrDefault("X-Amz-Date")
-  valid_600982 = validateParameter(valid_600982, JString, required = false,
-                                 default = nil)
-  if valid_600982 != nil:
-    section.add "X-Amz-Date", valid_600982
-  var valid_600983 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600983 = validateParameter(valid_600983, JString, required = false,
-                                 default = nil)
-  if valid_600983 != nil:
-    section.add "X-Amz-Security-Token", valid_600983
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600984 = header.getOrDefault("X-Amz-Target")
-  valid_600984 = validateParameter(valid_600984, JString, required = true, default = newJString(
+  var valid_603004 = header.getOrDefault("X-Amz-Target")
+  valid_603004 = validateParameter(valid_603004, JString, required = true, default = newJString(
       "Lightsail_20161128.GetOperation"))
-  if valid_600984 != nil:
-    section.add "X-Amz-Target", valid_600984
-  var valid_600985 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600985 = validateParameter(valid_600985, JString, required = false,
+  if valid_603004 != nil:
+    section.add "X-Amz-Target", valid_603004
+  var valid_603005 = header.getOrDefault("X-Amz-Signature")
+  valid_603005 = validateParameter(valid_603005, JString, required = false,
                                  default = nil)
-  if valid_600985 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600985
-  var valid_600986 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600986 = validateParameter(valid_600986, JString, required = false,
+  if valid_603005 != nil:
+    section.add "X-Amz-Signature", valid_603005
+  var valid_603006 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603006 = validateParameter(valid_603006, JString, required = false,
                                  default = nil)
-  if valid_600986 != nil:
-    section.add "X-Amz-Algorithm", valid_600986
-  var valid_600987 = header.getOrDefault("X-Amz-Signature")
-  valid_600987 = validateParameter(valid_600987, JString, required = false,
+  if valid_603006 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603006
+  var valid_603007 = header.getOrDefault("X-Amz-Date")
+  valid_603007 = validateParameter(valid_603007, JString, required = false,
                                  default = nil)
-  if valid_600987 != nil:
-    section.add "X-Amz-Signature", valid_600987
-  var valid_600988 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600988 = validateParameter(valid_600988, JString, required = false,
+  if valid_603007 != nil:
+    section.add "X-Amz-Date", valid_603007
+  var valid_603008 = header.getOrDefault("X-Amz-Credential")
+  valid_603008 = validateParameter(valid_603008, JString, required = false,
                                  default = nil)
-  if valid_600988 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600988
-  var valid_600989 = header.getOrDefault("X-Amz-Credential")
-  valid_600989 = validateParameter(valid_600989, JString, required = false,
+  if valid_603008 != nil:
+    section.add "X-Amz-Credential", valid_603008
+  var valid_603009 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603009 = validateParameter(valid_603009, JString, required = false,
                                  default = nil)
-  if valid_600989 != nil:
-    section.add "X-Amz-Credential", valid_600989
+  if valid_603009 != nil:
+    section.add "X-Amz-Security-Token", valid_603009
+  var valid_603010 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603010 = validateParameter(valid_603010, JString, required = false,
+                                 default = nil)
+  if valid_603010 != nil:
+    section.add "X-Amz-Algorithm", valid_603010
+  var valid_603011 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603011 = validateParameter(valid_603011, JString, required = false,
+                                 default = nil)
+  if valid_603011 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603011
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7933,47 +8002,48 @@ proc validate_GetOperation_600980(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600991: Call_GetOperation_600979; path: JsonNode; query: JsonNode;
+proc call*(call_603013: Call_GetOperation_603001; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific operation. Operations include events such as when you create an instance, allocate a static IP, attach a static IP, and so on.
   ## 
-  let valid = call_600991.validator(path, query, header, formData, body)
-  let scheme = call_600991.pickScheme
+  let valid = call_603013.validator(path, query, header, formData, body)
+  let scheme = call_603013.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600991.url(scheme.get, call_600991.host, call_600991.base,
-                         call_600991.route, valid.getOrDefault("path"),
+  let url = call_603013.url(scheme.get, call_603013.host, call_603013.base,
+                         call_603013.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600991, url, valid)
+  result = atozHook(call_603013, url, valid)
 
-proc call*(call_600992: Call_GetOperation_600979; body: JsonNode): Recallable =
+proc call*(call_603014: Call_GetOperation_603001; body: JsonNode): Recallable =
   ## getOperation
   ## Returns information about a specific operation. Operations include events such as when you create an instance, allocate a static IP, attach a static IP, and so on.
   ##   body: JObject (required)
-  var body_600993 = newJObject()
+  var body_603015 = newJObject()
   if body != nil:
-    body_600993 = body
-  result = call_600992.call(nil, nil, nil, nil, body_600993)
+    body_603015 = body
+  result = call_603014.call(nil, nil, nil, nil, body_603015)
 
-var getOperation* = Call_GetOperation_600979(name: "getOperation",
+var getOperation* = Call_GetOperation_603001(name: "getOperation",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetOperation",
-    validator: validate_GetOperation_600980, base: "/", url: url_GetOperation_600981,
+    validator: validate_GetOperation_603002, base: "/", url: url_GetOperation_603003,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetOperations_600994 = ref object of OpenApiRestCall_599368
-proc url_GetOperations_600996(protocol: Scheme; host: string; base: string;
+  Call_GetOperations_603016 = ref object of OpenApiRestCall_601389
+proc url_GetOperations_603018(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetOperations_600995(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetOperations_603017(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about all operations.</p> <p>Results are returned from oldest to newest, up to a maximum of 200. Results can be paged by making each subsequent call to <code>GetOperations</code> use the maximum (last) <code>statusChangedAt</code> value from the previous request.</p>
   ## 
@@ -7984,57 +8054,57 @@ proc validate_GetOperations_600995(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600997 = header.getOrDefault("X-Amz-Date")
-  valid_600997 = validateParameter(valid_600997, JString, required = false,
-                                 default = nil)
-  if valid_600997 != nil:
-    section.add "X-Amz-Date", valid_600997
-  var valid_600998 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600998 = validateParameter(valid_600998, JString, required = false,
-                                 default = nil)
-  if valid_600998 != nil:
-    section.add "X-Amz-Security-Token", valid_600998
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600999 = header.getOrDefault("X-Amz-Target")
-  valid_600999 = validateParameter(valid_600999, JString, required = true, default = newJString(
+  var valid_603019 = header.getOrDefault("X-Amz-Target")
+  valid_603019 = validateParameter(valid_603019, JString, required = true, default = newJString(
       "Lightsail_20161128.GetOperations"))
-  if valid_600999 != nil:
-    section.add "X-Amz-Target", valid_600999
-  var valid_601000 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601000 = validateParameter(valid_601000, JString, required = false,
+  if valid_603019 != nil:
+    section.add "X-Amz-Target", valid_603019
+  var valid_603020 = header.getOrDefault("X-Amz-Signature")
+  valid_603020 = validateParameter(valid_603020, JString, required = false,
                                  default = nil)
-  if valid_601000 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601000
-  var valid_601001 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601001 = validateParameter(valid_601001, JString, required = false,
+  if valid_603020 != nil:
+    section.add "X-Amz-Signature", valid_603020
+  var valid_603021 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603021 = validateParameter(valid_603021, JString, required = false,
                                  default = nil)
-  if valid_601001 != nil:
-    section.add "X-Amz-Algorithm", valid_601001
-  var valid_601002 = header.getOrDefault("X-Amz-Signature")
-  valid_601002 = validateParameter(valid_601002, JString, required = false,
+  if valid_603021 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603021
+  var valid_603022 = header.getOrDefault("X-Amz-Date")
+  valid_603022 = validateParameter(valid_603022, JString, required = false,
                                  default = nil)
-  if valid_601002 != nil:
-    section.add "X-Amz-Signature", valid_601002
-  var valid_601003 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601003 = validateParameter(valid_601003, JString, required = false,
+  if valid_603022 != nil:
+    section.add "X-Amz-Date", valid_603022
+  var valid_603023 = header.getOrDefault("X-Amz-Credential")
+  valid_603023 = validateParameter(valid_603023, JString, required = false,
                                  default = nil)
-  if valid_601003 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601003
-  var valid_601004 = header.getOrDefault("X-Amz-Credential")
-  valid_601004 = validateParameter(valid_601004, JString, required = false,
+  if valid_603023 != nil:
+    section.add "X-Amz-Credential", valid_603023
+  var valid_603024 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603024 = validateParameter(valid_603024, JString, required = false,
                                  default = nil)
-  if valid_601004 != nil:
-    section.add "X-Amz-Credential", valid_601004
+  if valid_603024 != nil:
+    section.add "X-Amz-Security-Token", valid_603024
+  var valid_603025 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603025 = validateParameter(valid_603025, JString, required = false,
+                                 default = nil)
+  if valid_603025 != nil:
+    section.add "X-Amz-Algorithm", valid_603025
+  var valid_603026 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603026 = validateParameter(valid_603026, JString, required = false,
+                                 default = nil)
+  if valid_603026 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603026
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8045,48 +8115,49 @@ proc validate_GetOperations_600995(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601006: Call_GetOperations_600994; path: JsonNode; query: JsonNode;
+proc call*(call_603028: Call_GetOperations_603016; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about all operations.</p> <p>Results are returned from oldest to newest, up to a maximum of 200. Results can be paged by making each subsequent call to <code>GetOperations</code> use the maximum (last) <code>statusChangedAt</code> value from the previous request.</p>
   ## 
-  let valid = call_601006.validator(path, query, header, formData, body)
-  let scheme = call_601006.pickScheme
+  let valid = call_603028.validator(path, query, header, formData, body)
+  let scheme = call_603028.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601006.url(scheme.get, call_601006.host, call_601006.base,
-                         call_601006.route, valid.getOrDefault("path"),
+  let url = call_603028.url(scheme.get, call_603028.host, call_603028.base,
+                         call_603028.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601006, url, valid)
+  result = atozHook(call_603028, url, valid)
 
-proc call*(call_601007: Call_GetOperations_600994; body: JsonNode): Recallable =
+proc call*(call_603029: Call_GetOperations_603016; body: JsonNode): Recallable =
   ## getOperations
   ## <p>Returns information about all operations.</p> <p>Results are returned from oldest to newest, up to a maximum of 200. Results can be paged by making each subsequent call to <code>GetOperations</code> use the maximum (last) <code>statusChangedAt</code> value from the previous request.</p>
   ##   body: JObject (required)
-  var body_601008 = newJObject()
+  var body_603030 = newJObject()
   if body != nil:
-    body_601008 = body
-  result = call_601007.call(nil, nil, nil, nil, body_601008)
+    body_603030 = body
+  result = call_603029.call(nil, nil, nil, nil, body_603030)
 
-var getOperations* = Call_GetOperations_600994(name: "getOperations",
+var getOperations* = Call_GetOperations_603016(name: "getOperations",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetOperations",
-    validator: validate_GetOperations_600995, base: "/", url: url_GetOperations_600996,
+    validator: validate_GetOperations_603017, base: "/", url: url_GetOperations_603018,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetOperationsForResource_601009 = ref object of OpenApiRestCall_599368
-proc url_GetOperationsForResource_601011(protocol: Scheme; host: string;
+  Call_GetOperationsForResource_603031 = ref object of OpenApiRestCall_601389
+proc url_GetOperationsForResource_603033(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetOperationsForResource_601010(path: JsonNode; query: JsonNode;
+proc validate_GetOperationsForResource_603032(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets operations for a specific resource (e.g., an instance or a static IP).
   ## 
@@ -8097,57 +8168,57 @@ proc validate_GetOperationsForResource_601010(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601012 = header.getOrDefault("X-Amz-Date")
-  valid_601012 = validateParameter(valid_601012, JString, required = false,
-                                 default = nil)
-  if valid_601012 != nil:
-    section.add "X-Amz-Date", valid_601012
-  var valid_601013 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601013 = validateParameter(valid_601013, JString, required = false,
-                                 default = nil)
-  if valid_601013 != nil:
-    section.add "X-Amz-Security-Token", valid_601013
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601014 = header.getOrDefault("X-Amz-Target")
-  valid_601014 = validateParameter(valid_601014, JString, required = true, default = newJString(
+  var valid_603034 = header.getOrDefault("X-Amz-Target")
+  valid_603034 = validateParameter(valid_603034, JString, required = true, default = newJString(
       "Lightsail_20161128.GetOperationsForResource"))
-  if valid_601014 != nil:
-    section.add "X-Amz-Target", valid_601014
-  var valid_601015 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601015 = validateParameter(valid_601015, JString, required = false,
+  if valid_603034 != nil:
+    section.add "X-Amz-Target", valid_603034
+  var valid_603035 = header.getOrDefault("X-Amz-Signature")
+  valid_603035 = validateParameter(valid_603035, JString, required = false,
                                  default = nil)
-  if valid_601015 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601015
-  var valid_601016 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601016 = validateParameter(valid_601016, JString, required = false,
+  if valid_603035 != nil:
+    section.add "X-Amz-Signature", valid_603035
+  var valid_603036 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603036 = validateParameter(valid_603036, JString, required = false,
                                  default = nil)
-  if valid_601016 != nil:
-    section.add "X-Amz-Algorithm", valid_601016
-  var valid_601017 = header.getOrDefault("X-Amz-Signature")
-  valid_601017 = validateParameter(valid_601017, JString, required = false,
+  if valid_603036 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603036
+  var valid_603037 = header.getOrDefault("X-Amz-Date")
+  valid_603037 = validateParameter(valid_603037, JString, required = false,
                                  default = nil)
-  if valid_601017 != nil:
-    section.add "X-Amz-Signature", valid_601017
-  var valid_601018 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601018 = validateParameter(valid_601018, JString, required = false,
+  if valid_603037 != nil:
+    section.add "X-Amz-Date", valid_603037
+  var valid_603038 = header.getOrDefault("X-Amz-Credential")
+  valid_603038 = validateParameter(valid_603038, JString, required = false,
                                  default = nil)
-  if valid_601018 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601018
-  var valid_601019 = header.getOrDefault("X-Amz-Credential")
-  valid_601019 = validateParameter(valid_601019, JString, required = false,
+  if valid_603038 != nil:
+    section.add "X-Amz-Credential", valid_603038
+  var valid_603039 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603039 = validateParameter(valid_603039, JString, required = false,
                                  default = nil)
-  if valid_601019 != nil:
-    section.add "X-Amz-Credential", valid_601019
+  if valid_603039 != nil:
+    section.add "X-Amz-Security-Token", valid_603039
+  var valid_603040 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603040 = validateParameter(valid_603040, JString, required = false,
+                                 default = nil)
+  if valid_603040 != nil:
+    section.add "X-Amz-Algorithm", valid_603040
+  var valid_603041 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603041 = validateParameter(valid_603041, JString, required = false,
+                                 default = nil)
+  if valid_603041 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603041
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8158,48 +8229,49 @@ proc validate_GetOperationsForResource_601010(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601021: Call_GetOperationsForResource_601009; path: JsonNode;
+proc call*(call_603043: Call_GetOperationsForResource_603031; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets operations for a specific resource (e.g., an instance or a static IP).
   ## 
-  let valid = call_601021.validator(path, query, header, formData, body)
-  let scheme = call_601021.pickScheme
+  let valid = call_603043.validator(path, query, header, formData, body)
+  let scheme = call_603043.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601021.url(scheme.get, call_601021.host, call_601021.base,
-                         call_601021.route, valid.getOrDefault("path"),
+  let url = call_603043.url(scheme.get, call_603043.host, call_603043.base,
+                         call_603043.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601021, url, valid)
+  result = atozHook(call_603043, url, valid)
 
-proc call*(call_601022: Call_GetOperationsForResource_601009; body: JsonNode): Recallable =
+proc call*(call_603044: Call_GetOperationsForResource_603031; body: JsonNode): Recallable =
   ## getOperationsForResource
   ## Gets operations for a specific resource (e.g., an instance or a static IP).
   ##   body: JObject (required)
-  var body_601023 = newJObject()
+  var body_603045 = newJObject()
   if body != nil:
-    body_601023 = body
-  result = call_601022.call(nil, nil, nil, nil, body_601023)
+    body_603045 = body
+  result = call_603044.call(nil, nil, nil, nil, body_603045)
 
-var getOperationsForResource* = Call_GetOperationsForResource_601009(
+var getOperationsForResource* = Call_GetOperationsForResource_603031(
     name: "getOperationsForResource", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetOperationsForResource",
-    validator: validate_GetOperationsForResource_601010, base: "/",
-    url: url_GetOperationsForResource_601011, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetOperationsForResource_603032, base: "/",
+    url: url_GetOperationsForResource_603033, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRegions_601024 = ref object of OpenApiRestCall_599368
-proc url_GetRegions_601026(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetRegions_603046 = ref object of OpenApiRestCall_601389
+proc url_GetRegions_603048(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRegions_601025(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetRegions_603047(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of all valid regions for Amazon Lightsail. Use the <code>include availability zones</code> parameter to also return the Availability Zones in a region.
   ## 
@@ -8210,57 +8282,57 @@ proc validate_GetRegions_601025(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601027 = header.getOrDefault("X-Amz-Date")
-  valid_601027 = validateParameter(valid_601027, JString, required = false,
-                                 default = nil)
-  if valid_601027 != nil:
-    section.add "X-Amz-Date", valid_601027
-  var valid_601028 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601028 = validateParameter(valid_601028, JString, required = false,
-                                 default = nil)
-  if valid_601028 != nil:
-    section.add "X-Amz-Security-Token", valid_601028
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601029 = header.getOrDefault("X-Amz-Target")
-  valid_601029 = validateParameter(valid_601029, JString, required = true, default = newJString(
+  var valid_603049 = header.getOrDefault("X-Amz-Target")
+  valid_603049 = validateParameter(valid_603049, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRegions"))
-  if valid_601029 != nil:
-    section.add "X-Amz-Target", valid_601029
-  var valid_601030 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601030 = validateParameter(valid_601030, JString, required = false,
+  if valid_603049 != nil:
+    section.add "X-Amz-Target", valid_603049
+  var valid_603050 = header.getOrDefault("X-Amz-Signature")
+  valid_603050 = validateParameter(valid_603050, JString, required = false,
                                  default = nil)
-  if valid_601030 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601030
-  var valid_601031 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601031 = validateParameter(valid_601031, JString, required = false,
+  if valid_603050 != nil:
+    section.add "X-Amz-Signature", valid_603050
+  var valid_603051 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603051 = validateParameter(valid_603051, JString, required = false,
                                  default = nil)
-  if valid_601031 != nil:
-    section.add "X-Amz-Algorithm", valid_601031
-  var valid_601032 = header.getOrDefault("X-Amz-Signature")
-  valid_601032 = validateParameter(valid_601032, JString, required = false,
+  if valid_603051 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603051
+  var valid_603052 = header.getOrDefault("X-Amz-Date")
+  valid_603052 = validateParameter(valid_603052, JString, required = false,
                                  default = nil)
-  if valid_601032 != nil:
-    section.add "X-Amz-Signature", valid_601032
-  var valid_601033 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601033 = validateParameter(valid_601033, JString, required = false,
+  if valid_603052 != nil:
+    section.add "X-Amz-Date", valid_603052
+  var valid_603053 = header.getOrDefault("X-Amz-Credential")
+  valid_603053 = validateParameter(valid_603053, JString, required = false,
                                  default = nil)
-  if valid_601033 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601033
-  var valid_601034 = header.getOrDefault("X-Amz-Credential")
-  valid_601034 = validateParameter(valid_601034, JString, required = false,
+  if valid_603053 != nil:
+    section.add "X-Amz-Credential", valid_603053
+  var valid_603054 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603054 = validateParameter(valid_603054, JString, required = false,
                                  default = nil)
-  if valid_601034 != nil:
-    section.add "X-Amz-Credential", valid_601034
+  if valid_603054 != nil:
+    section.add "X-Amz-Security-Token", valid_603054
+  var valid_603055 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603055 = validateParameter(valid_603055, JString, required = false,
+                                 default = nil)
+  if valid_603055 != nil:
+    section.add "X-Amz-Algorithm", valid_603055
+  var valid_603056 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603056 = validateParameter(valid_603056, JString, required = false,
+                                 default = nil)
+  if valid_603056 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603056
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8271,48 +8343,49 @@ proc validate_GetRegions_601025(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_601036: Call_GetRegions_601024; path: JsonNode; query: JsonNode;
+proc call*(call_603058: Call_GetRegions_603046; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of all valid regions for Amazon Lightsail. Use the <code>include availability zones</code> parameter to also return the Availability Zones in a region.
   ## 
-  let valid = call_601036.validator(path, query, header, formData, body)
-  let scheme = call_601036.pickScheme
+  let valid = call_603058.validator(path, query, header, formData, body)
+  let scheme = call_603058.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601036.url(scheme.get, call_601036.host, call_601036.base,
-                         call_601036.route, valid.getOrDefault("path"),
+  let url = call_603058.url(scheme.get, call_603058.host, call_603058.base,
+                         call_603058.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601036, url, valid)
+  result = atozHook(call_603058, url, valid)
 
-proc call*(call_601037: Call_GetRegions_601024; body: JsonNode): Recallable =
+proc call*(call_603059: Call_GetRegions_603046; body: JsonNode): Recallable =
   ## getRegions
   ## Returns a list of all valid regions for Amazon Lightsail. Use the <code>include availability zones</code> parameter to also return the Availability Zones in a region.
   ##   body: JObject (required)
-  var body_601038 = newJObject()
+  var body_603060 = newJObject()
   if body != nil:
-    body_601038 = body
-  result = call_601037.call(nil, nil, nil, nil, body_601038)
+    body_603060 = body
+  result = call_603059.call(nil, nil, nil, nil, body_603060)
 
-var getRegions* = Call_GetRegions_601024(name: "getRegions",
+var getRegions* = Call_GetRegions_603046(name: "getRegions",
                                       meth: HttpMethod.HttpPost,
                                       host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetRegions",
-                                      validator: validate_GetRegions_601025,
-                                      base: "/", url: url_GetRegions_601026,
+                                      validator: validate_GetRegions_603047,
+                                      base: "/", url: url_GetRegions_603048,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabase_601039 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabase_601041(protocol: Scheme; host: string; base: string;
+  Call_GetRelationalDatabase_603061 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabase_603063(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabase_601040(path: JsonNode; query: JsonNode;
+proc validate_GetRelationalDatabase_603062(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a specific database in Amazon Lightsail.
   ## 
@@ -8323,57 +8396,57 @@ proc validate_GetRelationalDatabase_601040(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601042 = header.getOrDefault("X-Amz-Date")
-  valid_601042 = validateParameter(valid_601042, JString, required = false,
-                                 default = nil)
-  if valid_601042 != nil:
-    section.add "X-Amz-Date", valid_601042
-  var valid_601043 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601043 = validateParameter(valid_601043, JString, required = false,
-                                 default = nil)
-  if valid_601043 != nil:
-    section.add "X-Amz-Security-Token", valid_601043
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601044 = header.getOrDefault("X-Amz-Target")
-  valid_601044 = validateParameter(valid_601044, JString, required = true, default = newJString(
+  var valid_603064 = header.getOrDefault("X-Amz-Target")
+  valid_603064 = validateParameter(valid_603064, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabase"))
-  if valid_601044 != nil:
-    section.add "X-Amz-Target", valid_601044
-  var valid_601045 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601045 = validateParameter(valid_601045, JString, required = false,
+  if valid_603064 != nil:
+    section.add "X-Amz-Target", valid_603064
+  var valid_603065 = header.getOrDefault("X-Amz-Signature")
+  valid_603065 = validateParameter(valid_603065, JString, required = false,
                                  default = nil)
-  if valid_601045 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601045
-  var valid_601046 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601046 = validateParameter(valid_601046, JString, required = false,
+  if valid_603065 != nil:
+    section.add "X-Amz-Signature", valid_603065
+  var valid_603066 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603066 = validateParameter(valid_603066, JString, required = false,
                                  default = nil)
-  if valid_601046 != nil:
-    section.add "X-Amz-Algorithm", valid_601046
-  var valid_601047 = header.getOrDefault("X-Amz-Signature")
-  valid_601047 = validateParameter(valid_601047, JString, required = false,
+  if valid_603066 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603066
+  var valid_603067 = header.getOrDefault("X-Amz-Date")
+  valid_603067 = validateParameter(valid_603067, JString, required = false,
                                  default = nil)
-  if valid_601047 != nil:
-    section.add "X-Amz-Signature", valid_601047
-  var valid_601048 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601048 = validateParameter(valid_601048, JString, required = false,
+  if valid_603067 != nil:
+    section.add "X-Amz-Date", valid_603067
+  var valid_603068 = header.getOrDefault("X-Amz-Credential")
+  valid_603068 = validateParameter(valid_603068, JString, required = false,
                                  default = nil)
-  if valid_601048 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601048
-  var valid_601049 = header.getOrDefault("X-Amz-Credential")
-  valid_601049 = validateParameter(valid_601049, JString, required = false,
+  if valid_603068 != nil:
+    section.add "X-Amz-Credential", valid_603068
+  var valid_603069 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603069 = validateParameter(valid_603069, JString, required = false,
                                  default = nil)
-  if valid_601049 != nil:
-    section.add "X-Amz-Credential", valid_601049
+  if valid_603069 != nil:
+    section.add "X-Amz-Security-Token", valid_603069
+  var valid_603070 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603070 = validateParameter(valid_603070, JString, required = false,
+                                 default = nil)
+  if valid_603070 != nil:
+    section.add "X-Amz-Algorithm", valid_603070
+  var valid_603071 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603071 = validateParameter(valid_603071, JString, required = false,
+                                 default = nil)
+  if valid_603071 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603071
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8384,48 +8457,49 @@ proc validate_GetRelationalDatabase_601040(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601051: Call_GetRelationalDatabase_601039; path: JsonNode;
+proc call*(call_603073: Call_GetRelationalDatabase_603061; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific database in Amazon Lightsail.
   ## 
-  let valid = call_601051.validator(path, query, header, formData, body)
-  let scheme = call_601051.pickScheme
+  let valid = call_603073.validator(path, query, header, formData, body)
+  let scheme = call_603073.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601051.url(scheme.get, call_601051.host, call_601051.base,
-                         call_601051.route, valid.getOrDefault("path"),
+  let url = call_603073.url(scheme.get, call_603073.host, call_603073.base,
+                         call_603073.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601051, url, valid)
+  result = atozHook(call_603073, url, valid)
 
-proc call*(call_601052: Call_GetRelationalDatabase_601039; body: JsonNode): Recallable =
+proc call*(call_603074: Call_GetRelationalDatabase_603061; body: JsonNode): Recallable =
   ## getRelationalDatabase
   ## Returns information about a specific database in Amazon Lightsail.
   ##   body: JObject (required)
-  var body_601053 = newJObject()
+  var body_603075 = newJObject()
   if body != nil:
-    body_601053 = body
-  result = call_601052.call(nil, nil, nil, nil, body_601053)
+    body_603075 = body
+  result = call_603074.call(nil, nil, nil, nil, body_603075)
 
-var getRelationalDatabase* = Call_GetRelationalDatabase_601039(
+var getRelationalDatabase* = Call_GetRelationalDatabase_603061(
     name: "getRelationalDatabase", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabase",
-    validator: validate_GetRelationalDatabase_601040, base: "/",
-    url: url_GetRelationalDatabase_601041, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRelationalDatabase_603062, base: "/",
+    url: url_GetRelationalDatabase_603063, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseBlueprints_601054 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseBlueprints_601056(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseBlueprints_603076 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseBlueprints_603078(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseBlueprints_601055(path: JsonNode;
+proc validate_GetRelationalDatabaseBlueprints_603077(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of available database blueprints in Amazon Lightsail. A blueprint describes the major engine version of a database.</p> <p>You can use a blueprint ID to create a new database that runs a specific database engine.</p>
   ## 
@@ -8436,57 +8510,57 @@ proc validate_GetRelationalDatabaseBlueprints_601055(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601057 = header.getOrDefault("X-Amz-Date")
-  valid_601057 = validateParameter(valid_601057, JString, required = false,
-                                 default = nil)
-  if valid_601057 != nil:
-    section.add "X-Amz-Date", valid_601057
-  var valid_601058 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601058 = validateParameter(valid_601058, JString, required = false,
-                                 default = nil)
-  if valid_601058 != nil:
-    section.add "X-Amz-Security-Token", valid_601058
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601059 = header.getOrDefault("X-Amz-Target")
-  valid_601059 = validateParameter(valid_601059, JString, required = true, default = newJString(
+  var valid_603079 = header.getOrDefault("X-Amz-Target")
+  valid_603079 = validateParameter(valid_603079, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseBlueprints"))
-  if valid_601059 != nil:
-    section.add "X-Amz-Target", valid_601059
-  var valid_601060 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601060 = validateParameter(valid_601060, JString, required = false,
+  if valid_603079 != nil:
+    section.add "X-Amz-Target", valid_603079
+  var valid_603080 = header.getOrDefault("X-Amz-Signature")
+  valid_603080 = validateParameter(valid_603080, JString, required = false,
                                  default = nil)
-  if valid_601060 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601060
-  var valid_601061 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601061 = validateParameter(valid_601061, JString, required = false,
+  if valid_603080 != nil:
+    section.add "X-Amz-Signature", valid_603080
+  var valid_603081 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603081 = validateParameter(valid_603081, JString, required = false,
                                  default = nil)
-  if valid_601061 != nil:
-    section.add "X-Amz-Algorithm", valid_601061
-  var valid_601062 = header.getOrDefault("X-Amz-Signature")
-  valid_601062 = validateParameter(valid_601062, JString, required = false,
+  if valid_603081 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603081
+  var valid_603082 = header.getOrDefault("X-Amz-Date")
+  valid_603082 = validateParameter(valid_603082, JString, required = false,
                                  default = nil)
-  if valid_601062 != nil:
-    section.add "X-Amz-Signature", valid_601062
-  var valid_601063 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601063 = validateParameter(valid_601063, JString, required = false,
+  if valid_603082 != nil:
+    section.add "X-Amz-Date", valid_603082
+  var valid_603083 = header.getOrDefault("X-Amz-Credential")
+  valid_603083 = validateParameter(valid_603083, JString, required = false,
                                  default = nil)
-  if valid_601063 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601063
-  var valid_601064 = header.getOrDefault("X-Amz-Credential")
-  valid_601064 = validateParameter(valid_601064, JString, required = false,
+  if valid_603083 != nil:
+    section.add "X-Amz-Credential", valid_603083
+  var valid_603084 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603084 = validateParameter(valid_603084, JString, required = false,
                                  default = nil)
-  if valid_601064 != nil:
-    section.add "X-Amz-Credential", valid_601064
+  if valid_603084 != nil:
+    section.add "X-Amz-Security-Token", valid_603084
+  var valid_603085 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603085 = validateParameter(valid_603085, JString, required = false,
+                                 default = nil)
+  if valid_603085 != nil:
+    section.add "X-Amz-Algorithm", valid_603085
+  var valid_603086 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603086 = validateParameter(valid_603086, JString, required = false,
+                                 default = nil)
+  if valid_603086 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603086
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8497,50 +8571,51 @@ proc validate_GetRelationalDatabaseBlueprints_601055(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601066: Call_GetRelationalDatabaseBlueprints_601054;
+proc call*(call_603088: Call_GetRelationalDatabaseBlueprints_603076;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Returns a list of available database blueprints in Amazon Lightsail. A blueprint describes the major engine version of a database.</p> <p>You can use a blueprint ID to create a new database that runs a specific database engine.</p>
   ## 
-  let valid = call_601066.validator(path, query, header, formData, body)
-  let scheme = call_601066.pickScheme
+  let valid = call_603088.validator(path, query, header, formData, body)
+  let scheme = call_603088.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601066.url(scheme.get, call_601066.host, call_601066.base,
-                         call_601066.route, valid.getOrDefault("path"),
+  let url = call_603088.url(scheme.get, call_603088.host, call_603088.base,
+                         call_603088.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601066, url, valid)
+  result = atozHook(call_603088, url, valid)
 
-proc call*(call_601067: Call_GetRelationalDatabaseBlueprints_601054; body: JsonNode): Recallable =
+proc call*(call_603089: Call_GetRelationalDatabaseBlueprints_603076; body: JsonNode): Recallable =
   ## getRelationalDatabaseBlueprints
   ## <p>Returns a list of available database blueprints in Amazon Lightsail. A blueprint describes the major engine version of a database.</p> <p>You can use a blueprint ID to create a new database that runs a specific database engine.</p>
   ##   body: JObject (required)
-  var body_601068 = newJObject()
+  var body_603090 = newJObject()
   if body != nil:
-    body_601068 = body
-  result = call_601067.call(nil, nil, nil, nil, body_601068)
+    body_603090 = body
+  result = call_603089.call(nil, nil, nil, nil, body_603090)
 
-var getRelationalDatabaseBlueprints* = Call_GetRelationalDatabaseBlueprints_601054(
+var getRelationalDatabaseBlueprints* = Call_GetRelationalDatabaseBlueprints_603076(
     name: "getRelationalDatabaseBlueprints", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseBlueprints",
-    validator: validate_GetRelationalDatabaseBlueprints_601055, base: "/",
-    url: url_GetRelationalDatabaseBlueprints_601056,
+    validator: validate_GetRelationalDatabaseBlueprints_603077, base: "/",
+    url: url_GetRelationalDatabaseBlueprints_603078,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseBundles_601069 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseBundles_601071(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseBundles_603091 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseBundles_603093(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseBundles_601070(path: JsonNode; query: JsonNode;
+proc validate_GetRelationalDatabaseBundles_603092(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the list of bundles that are available in Amazon Lightsail. A bundle describes the performance specifications for a database.</p> <p>You can use a bundle ID to create a new database with explicit performance specifications.</p>
   ## 
@@ -8551,57 +8626,57 @@ proc validate_GetRelationalDatabaseBundles_601070(path: JsonNode; query: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601072 = header.getOrDefault("X-Amz-Date")
-  valid_601072 = validateParameter(valid_601072, JString, required = false,
-                                 default = nil)
-  if valid_601072 != nil:
-    section.add "X-Amz-Date", valid_601072
-  var valid_601073 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601073 = validateParameter(valid_601073, JString, required = false,
-                                 default = nil)
-  if valid_601073 != nil:
-    section.add "X-Amz-Security-Token", valid_601073
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601074 = header.getOrDefault("X-Amz-Target")
-  valid_601074 = validateParameter(valid_601074, JString, required = true, default = newJString(
+  var valid_603094 = header.getOrDefault("X-Amz-Target")
+  valid_603094 = validateParameter(valid_603094, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseBundles"))
-  if valid_601074 != nil:
-    section.add "X-Amz-Target", valid_601074
-  var valid_601075 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601075 = validateParameter(valid_601075, JString, required = false,
+  if valid_603094 != nil:
+    section.add "X-Amz-Target", valid_603094
+  var valid_603095 = header.getOrDefault("X-Amz-Signature")
+  valid_603095 = validateParameter(valid_603095, JString, required = false,
                                  default = nil)
-  if valid_601075 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601075
-  var valid_601076 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601076 = validateParameter(valid_601076, JString, required = false,
+  if valid_603095 != nil:
+    section.add "X-Amz-Signature", valid_603095
+  var valid_603096 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603096 = validateParameter(valid_603096, JString, required = false,
                                  default = nil)
-  if valid_601076 != nil:
-    section.add "X-Amz-Algorithm", valid_601076
-  var valid_601077 = header.getOrDefault("X-Amz-Signature")
-  valid_601077 = validateParameter(valid_601077, JString, required = false,
+  if valid_603096 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603096
+  var valid_603097 = header.getOrDefault("X-Amz-Date")
+  valid_603097 = validateParameter(valid_603097, JString, required = false,
                                  default = nil)
-  if valid_601077 != nil:
-    section.add "X-Amz-Signature", valid_601077
-  var valid_601078 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601078 = validateParameter(valid_601078, JString, required = false,
+  if valid_603097 != nil:
+    section.add "X-Amz-Date", valid_603097
+  var valid_603098 = header.getOrDefault("X-Amz-Credential")
+  valid_603098 = validateParameter(valid_603098, JString, required = false,
                                  default = nil)
-  if valid_601078 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601078
-  var valid_601079 = header.getOrDefault("X-Amz-Credential")
-  valid_601079 = validateParameter(valid_601079, JString, required = false,
+  if valid_603098 != nil:
+    section.add "X-Amz-Credential", valid_603098
+  var valid_603099 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603099 = validateParameter(valid_603099, JString, required = false,
                                  default = nil)
-  if valid_601079 != nil:
-    section.add "X-Amz-Credential", valid_601079
+  if valid_603099 != nil:
+    section.add "X-Amz-Security-Token", valid_603099
+  var valid_603100 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603100 = validateParameter(valid_603100, JString, required = false,
+                                 default = nil)
+  if valid_603100 != nil:
+    section.add "X-Amz-Algorithm", valid_603100
+  var valid_603101 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603101 = validateParameter(valid_603101, JString, required = false,
+                                 default = nil)
+  if valid_603101 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603101
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8612,49 +8687,50 @@ proc validate_GetRelationalDatabaseBundles_601070(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_601081: Call_GetRelationalDatabaseBundles_601069; path: JsonNode;
+proc call*(call_603103: Call_GetRelationalDatabaseBundles_603091; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the list of bundles that are available in Amazon Lightsail. A bundle describes the performance specifications for a database.</p> <p>You can use a bundle ID to create a new database with explicit performance specifications.</p>
   ## 
-  let valid = call_601081.validator(path, query, header, formData, body)
-  let scheme = call_601081.pickScheme
+  let valid = call_603103.validator(path, query, header, formData, body)
+  let scheme = call_603103.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601081.url(scheme.get, call_601081.host, call_601081.base,
-                         call_601081.route, valid.getOrDefault("path"),
+  let url = call_603103.url(scheme.get, call_603103.host, call_603103.base,
+                         call_603103.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601081, url, valid)
+  result = atozHook(call_603103, url, valid)
 
-proc call*(call_601082: Call_GetRelationalDatabaseBundles_601069; body: JsonNode): Recallable =
+proc call*(call_603104: Call_GetRelationalDatabaseBundles_603091; body: JsonNode): Recallable =
   ## getRelationalDatabaseBundles
   ## <p>Returns the list of bundles that are available in Amazon Lightsail. A bundle describes the performance specifications for a database.</p> <p>You can use a bundle ID to create a new database with explicit performance specifications.</p>
   ##   body: JObject (required)
-  var body_601083 = newJObject()
+  var body_603105 = newJObject()
   if body != nil:
-    body_601083 = body
-  result = call_601082.call(nil, nil, nil, nil, body_601083)
+    body_603105 = body
+  result = call_603104.call(nil, nil, nil, nil, body_603105)
 
-var getRelationalDatabaseBundles* = Call_GetRelationalDatabaseBundles_601069(
+var getRelationalDatabaseBundles* = Call_GetRelationalDatabaseBundles_603091(
     name: "getRelationalDatabaseBundles", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseBundles",
-    validator: validate_GetRelationalDatabaseBundles_601070, base: "/",
-    url: url_GetRelationalDatabaseBundles_601071,
+    validator: validate_GetRelationalDatabaseBundles_603092, base: "/",
+    url: url_GetRelationalDatabaseBundles_603093,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseEvents_601084 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseEvents_601086(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseEvents_603106 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseEvents_603108(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseEvents_601085(path: JsonNode; query: JsonNode;
+proc validate_GetRelationalDatabaseEvents_603107(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of events for a specific database in Amazon Lightsail.
   ## 
@@ -8665,57 +8741,57 @@ proc validate_GetRelationalDatabaseEvents_601085(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601087 = header.getOrDefault("X-Amz-Date")
-  valid_601087 = validateParameter(valid_601087, JString, required = false,
-                                 default = nil)
-  if valid_601087 != nil:
-    section.add "X-Amz-Date", valid_601087
-  var valid_601088 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601088 = validateParameter(valid_601088, JString, required = false,
-                                 default = nil)
-  if valid_601088 != nil:
-    section.add "X-Amz-Security-Token", valid_601088
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601089 = header.getOrDefault("X-Amz-Target")
-  valid_601089 = validateParameter(valid_601089, JString, required = true, default = newJString(
+  var valid_603109 = header.getOrDefault("X-Amz-Target")
+  valid_603109 = validateParameter(valid_603109, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseEvents"))
-  if valid_601089 != nil:
-    section.add "X-Amz-Target", valid_601089
-  var valid_601090 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601090 = validateParameter(valid_601090, JString, required = false,
+  if valid_603109 != nil:
+    section.add "X-Amz-Target", valid_603109
+  var valid_603110 = header.getOrDefault("X-Amz-Signature")
+  valid_603110 = validateParameter(valid_603110, JString, required = false,
                                  default = nil)
-  if valid_601090 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601090
-  var valid_601091 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601091 = validateParameter(valid_601091, JString, required = false,
+  if valid_603110 != nil:
+    section.add "X-Amz-Signature", valid_603110
+  var valid_603111 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603111 = validateParameter(valid_603111, JString, required = false,
                                  default = nil)
-  if valid_601091 != nil:
-    section.add "X-Amz-Algorithm", valid_601091
-  var valid_601092 = header.getOrDefault("X-Amz-Signature")
-  valid_601092 = validateParameter(valid_601092, JString, required = false,
+  if valid_603111 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603111
+  var valid_603112 = header.getOrDefault("X-Amz-Date")
+  valid_603112 = validateParameter(valid_603112, JString, required = false,
                                  default = nil)
-  if valid_601092 != nil:
-    section.add "X-Amz-Signature", valid_601092
-  var valid_601093 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601093 = validateParameter(valid_601093, JString, required = false,
+  if valid_603112 != nil:
+    section.add "X-Amz-Date", valid_603112
+  var valid_603113 = header.getOrDefault("X-Amz-Credential")
+  valid_603113 = validateParameter(valid_603113, JString, required = false,
                                  default = nil)
-  if valid_601093 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601093
-  var valid_601094 = header.getOrDefault("X-Amz-Credential")
-  valid_601094 = validateParameter(valid_601094, JString, required = false,
+  if valid_603113 != nil:
+    section.add "X-Amz-Credential", valid_603113
+  var valid_603114 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603114 = validateParameter(valid_603114, JString, required = false,
                                  default = nil)
-  if valid_601094 != nil:
-    section.add "X-Amz-Credential", valid_601094
+  if valid_603114 != nil:
+    section.add "X-Amz-Security-Token", valid_603114
+  var valid_603115 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603115 = validateParameter(valid_603115, JString, required = false,
+                                 default = nil)
+  if valid_603115 != nil:
+    section.add "X-Amz-Algorithm", valid_603115
+  var valid_603116 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603116 = validateParameter(valid_603116, JString, required = false,
+                                 default = nil)
+  if valid_603116 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603116
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8726,49 +8802,50 @@ proc validate_GetRelationalDatabaseEvents_601085(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_601096: Call_GetRelationalDatabaseEvents_601084; path: JsonNode;
+proc call*(call_603118: Call_GetRelationalDatabaseEvents_603106; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of events for a specific database in Amazon Lightsail.
   ## 
-  let valid = call_601096.validator(path, query, header, formData, body)
-  let scheme = call_601096.pickScheme
+  let valid = call_603118.validator(path, query, header, formData, body)
+  let scheme = call_603118.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601096.url(scheme.get, call_601096.host, call_601096.base,
-                         call_601096.route, valid.getOrDefault("path"),
+  let url = call_603118.url(scheme.get, call_603118.host, call_603118.base,
+                         call_603118.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601096, url, valid)
+  result = atozHook(call_603118, url, valid)
 
-proc call*(call_601097: Call_GetRelationalDatabaseEvents_601084; body: JsonNode): Recallable =
+proc call*(call_603119: Call_GetRelationalDatabaseEvents_603106; body: JsonNode): Recallable =
   ## getRelationalDatabaseEvents
   ## Returns a list of events for a specific database in Amazon Lightsail.
   ##   body: JObject (required)
-  var body_601098 = newJObject()
+  var body_603120 = newJObject()
   if body != nil:
-    body_601098 = body
-  result = call_601097.call(nil, nil, nil, nil, body_601098)
+    body_603120 = body
+  result = call_603119.call(nil, nil, nil, nil, body_603120)
 
-var getRelationalDatabaseEvents* = Call_GetRelationalDatabaseEvents_601084(
+var getRelationalDatabaseEvents* = Call_GetRelationalDatabaseEvents_603106(
     name: "getRelationalDatabaseEvents", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseEvents",
-    validator: validate_GetRelationalDatabaseEvents_601085, base: "/",
-    url: url_GetRelationalDatabaseEvents_601086,
+    validator: validate_GetRelationalDatabaseEvents_603107, base: "/",
+    url: url_GetRelationalDatabaseEvents_603108,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseLogEvents_601099 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseLogEvents_601101(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseLogEvents_603121 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseLogEvents_603123(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseLogEvents_601100(path: JsonNode;
+proc validate_GetRelationalDatabaseLogEvents_603122(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of log events for a database in Amazon Lightsail.
   ## 
@@ -8779,57 +8856,57 @@ proc validate_GetRelationalDatabaseLogEvents_601100(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601102 = header.getOrDefault("X-Amz-Date")
-  valid_601102 = validateParameter(valid_601102, JString, required = false,
-                                 default = nil)
-  if valid_601102 != nil:
-    section.add "X-Amz-Date", valid_601102
-  var valid_601103 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601103 = validateParameter(valid_601103, JString, required = false,
-                                 default = nil)
-  if valid_601103 != nil:
-    section.add "X-Amz-Security-Token", valid_601103
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601104 = header.getOrDefault("X-Amz-Target")
-  valid_601104 = validateParameter(valid_601104, JString, required = true, default = newJString(
+  var valid_603124 = header.getOrDefault("X-Amz-Target")
+  valid_603124 = validateParameter(valid_603124, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseLogEvents"))
-  if valid_601104 != nil:
-    section.add "X-Amz-Target", valid_601104
-  var valid_601105 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601105 = validateParameter(valid_601105, JString, required = false,
+  if valid_603124 != nil:
+    section.add "X-Amz-Target", valid_603124
+  var valid_603125 = header.getOrDefault("X-Amz-Signature")
+  valid_603125 = validateParameter(valid_603125, JString, required = false,
                                  default = nil)
-  if valid_601105 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601105
-  var valid_601106 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601106 = validateParameter(valid_601106, JString, required = false,
+  if valid_603125 != nil:
+    section.add "X-Amz-Signature", valid_603125
+  var valid_603126 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603126 = validateParameter(valid_603126, JString, required = false,
                                  default = nil)
-  if valid_601106 != nil:
-    section.add "X-Amz-Algorithm", valid_601106
-  var valid_601107 = header.getOrDefault("X-Amz-Signature")
-  valid_601107 = validateParameter(valid_601107, JString, required = false,
+  if valid_603126 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603126
+  var valid_603127 = header.getOrDefault("X-Amz-Date")
+  valid_603127 = validateParameter(valid_603127, JString, required = false,
                                  default = nil)
-  if valid_601107 != nil:
-    section.add "X-Amz-Signature", valid_601107
-  var valid_601108 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601108 = validateParameter(valid_601108, JString, required = false,
+  if valid_603127 != nil:
+    section.add "X-Amz-Date", valid_603127
+  var valid_603128 = header.getOrDefault("X-Amz-Credential")
+  valid_603128 = validateParameter(valid_603128, JString, required = false,
                                  default = nil)
-  if valid_601108 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601108
-  var valid_601109 = header.getOrDefault("X-Amz-Credential")
-  valid_601109 = validateParameter(valid_601109, JString, required = false,
+  if valid_603128 != nil:
+    section.add "X-Amz-Credential", valid_603128
+  var valid_603129 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603129 = validateParameter(valid_603129, JString, required = false,
                                  default = nil)
-  if valid_601109 != nil:
-    section.add "X-Amz-Credential", valid_601109
+  if valid_603129 != nil:
+    section.add "X-Amz-Security-Token", valid_603129
+  var valid_603130 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603130 = validateParameter(valid_603130, JString, required = false,
+                                 default = nil)
+  if valid_603130 != nil:
+    section.add "X-Amz-Algorithm", valid_603130
+  var valid_603131 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603131 = validateParameter(valid_603131, JString, required = false,
+                                 default = nil)
+  if valid_603131 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603131
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8840,49 +8917,50 @@ proc validate_GetRelationalDatabaseLogEvents_601100(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601111: Call_GetRelationalDatabaseLogEvents_601099; path: JsonNode;
+proc call*(call_603133: Call_GetRelationalDatabaseLogEvents_603121; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of log events for a database in Amazon Lightsail.
   ## 
-  let valid = call_601111.validator(path, query, header, formData, body)
-  let scheme = call_601111.pickScheme
+  let valid = call_603133.validator(path, query, header, formData, body)
+  let scheme = call_603133.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601111.url(scheme.get, call_601111.host, call_601111.base,
-                         call_601111.route, valid.getOrDefault("path"),
+  let url = call_603133.url(scheme.get, call_603133.host, call_603133.base,
+                         call_603133.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601111, url, valid)
+  result = atozHook(call_603133, url, valid)
 
-proc call*(call_601112: Call_GetRelationalDatabaseLogEvents_601099; body: JsonNode): Recallable =
+proc call*(call_603134: Call_GetRelationalDatabaseLogEvents_603121; body: JsonNode): Recallable =
   ## getRelationalDatabaseLogEvents
   ## Returns a list of log events for a database in Amazon Lightsail.
   ##   body: JObject (required)
-  var body_601113 = newJObject()
+  var body_603135 = newJObject()
   if body != nil:
-    body_601113 = body
-  result = call_601112.call(nil, nil, nil, nil, body_601113)
+    body_603135 = body
+  result = call_603134.call(nil, nil, nil, nil, body_603135)
 
-var getRelationalDatabaseLogEvents* = Call_GetRelationalDatabaseLogEvents_601099(
+var getRelationalDatabaseLogEvents* = Call_GetRelationalDatabaseLogEvents_603121(
     name: "getRelationalDatabaseLogEvents", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseLogEvents",
-    validator: validate_GetRelationalDatabaseLogEvents_601100, base: "/",
-    url: url_GetRelationalDatabaseLogEvents_601101,
+    validator: validate_GetRelationalDatabaseLogEvents_603122, base: "/",
+    url: url_GetRelationalDatabaseLogEvents_603123,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseLogStreams_601114 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseLogStreams_601116(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseLogStreams_603136 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseLogStreams_603138(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseLogStreams_601115(path: JsonNode;
+proc validate_GetRelationalDatabaseLogStreams_603137(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of available log streams for a specific database in Amazon Lightsail.
   ## 
@@ -8893,57 +8971,57 @@ proc validate_GetRelationalDatabaseLogStreams_601115(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601117 = header.getOrDefault("X-Amz-Date")
-  valid_601117 = validateParameter(valid_601117, JString, required = false,
-                                 default = nil)
-  if valid_601117 != nil:
-    section.add "X-Amz-Date", valid_601117
-  var valid_601118 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601118 = validateParameter(valid_601118, JString, required = false,
-                                 default = nil)
-  if valid_601118 != nil:
-    section.add "X-Amz-Security-Token", valid_601118
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601119 = header.getOrDefault("X-Amz-Target")
-  valid_601119 = validateParameter(valid_601119, JString, required = true, default = newJString(
+  var valid_603139 = header.getOrDefault("X-Amz-Target")
+  valid_603139 = validateParameter(valid_603139, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseLogStreams"))
-  if valid_601119 != nil:
-    section.add "X-Amz-Target", valid_601119
-  var valid_601120 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601120 = validateParameter(valid_601120, JString, required = false,
+  if valid_603139 != nil:
+    section.add "X-Amz-Target", valid_603139
+  var valid_603140 = header.getOrDefault("X-Amz-Signature")
+  valid_603140 = validateParameter(valid_603140, JString, required = false,
                                  default = nil)
-  if valid_601120 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601120
-  var valid_601121 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601121 = validateParameter(valid_601121, JString, required = false,
+  if valid_603140 != nil:
+    section.add "X-Amz-Signature", valid_603140
+  var valid_603141 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603141 = validateParameter(valid_603141, JString, required = false,
                                  default = nil)
-  if valid_601121 != nil:
-    section.add "X-Amz-Algorithm", valid_601121
-  var valid_601122 = header.getOrDefault("X-Amz-Signature")
-  valid_601122 = validateParameter(valid_601122, JString, required = false,
+  if valid_603141 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603141
+  var valid_603142 = header.getOrDefault("X-Amz-Date")
+  valid_603142 = validateParameter(valid_603142, JString, required = false,
                                  default = nil)
-  if valid_601122 != nil:
-    section.add "X-Amz-Signature", valid_601122
-  var valid_601123 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601123 = validateParameter(valid_601123, JString, required = false,
+  if valid_603142 != nil:
+    section.add "X-Amz-Date", valid_603142
+  var valid_603143 = header.getOrDefault("X-Amz-Credential")
+  valid_603143 = validateParameter(valid_603143, JString, required = false,
                                  default = nil)
-  if valid_601123 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601123
-  var valid_601124 = header.getOrDefault("X-Amz-Credential")
-  valid_601124 = validateParameter(valid_601124, JString, required = false,
+  if valid_603143 != nil:
+    section.add "X-Amz-Credential", valid_603143
+  var valid_603144 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603144 = validateParameter(valid_603144, JString, required = false,
                                  default = nil)
-  if valid_601124 != nil:
-    section.add "X-Amz-Credential", valid_601124
+  if valid_603144 != nil:
+    section.add "X-Amz-Security-Token", valid_603144
+  var valid_603145 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603145 = validateParameter(valid_603145, JString, required = false,
+                                 default = nil)
+  if valid_603145 != nil:
+    section.add "X-Amz-Algorithm", valid_603145
+  var valid_603146 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603146 = validateParameter(valid_603146, JString, required = false,
+                                 default = nil)
+  if valid_603146 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603146
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8954,50 +9032,51 @@ proc validate_GetRelationalDatabaseLogStreams_601115(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601126: Call_GetRelationalDatabaseLogStreams_601114;
+proc call*(call_603148: Call_GetRelationalDatabaseLogStreams_603136;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns a list of available log streams for a specific database in Amazon Lightsail.
   ## 
-  let valid = call_601126.validator(path, query, header, formData, body)
-  let scheme = call_601126.pickScheme
+  let valid = call_603148.validator(path, query, header, formData, body)
+  let scheme = call_603148.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601126.url(scheme.get, call_601126.host, call_601126.base,
-                         call_601126.route, valid.getOrDefault("path"),
+  let url = call_603148.url(scheme.get, call_603148.host, call_603148.base,
+                         call_603148.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601126, url, valid)
+  result = atozHook(call_603148, url, valid)
 
-proc call*(call_601127: Call_GetRelationalDatabaseLogStreams_601114; body: JsonNode): Recallable =
+proc call*(call_603149: Call_GetRelationalDatabaseLogStreams_603136; body: JsonNode): Recallable =
   ## getRelationalDatabaseLogStreams
   ## Returns a list of available log streams for a specific database in Amazon Lightsail.
   ##   body: JObject (required)
-  var body_601128 = newJObject()
+  var body_603150 = newJObject()
   if body != nil:
-    body_601128 = body
-  result = call_601127.call(nil, nil, nil, nil, body_601128)
+    body_603150 = body
+  result = call_603149.call(nil, nil, nil, nil, body_603150)
 
-var getRelationalDatabaseLogStreams* = Call_GetRelationalDatabaseLogStreams_601114(
+var getRelationalDatabaseLogStreams* = Call_GetRelationalDatabaseLogStreams_603136(
     name: "getRelationalDatabaseLogStreams", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseLogStreams",
-    validator: validate_GetRelationalDatabaseLogStreams_601115, base: "/",
-    url: url_GetRelationalDatabaseLogStreams_601116,
+    validator: validate_GetRelationalDatabaseLogStreams_603137, base: "/",
+    url: url_GetRelationalDatabaseLogStreams_603138,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseMasterUserPassword_601129 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseMasterUserPassword_601131(protocol: Scheme;
+  Call_GetRelationalDatabaseMasterUserPassword_603151 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseMasterUserPassword_603153(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseMasterUserPassword_601130(path: JsonNode;
+proc validate_GetRelationalDatabaseMasterUserPassword_603152(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the current, previous, or pending versions of the master user password for a Lightsail database.</p> <p>The <code>GetRelationalDatabaseMasterUserPassword</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName.</p>
   ## 
@@ -9008,57 +9087,57 @@ proc validate_GetRelationalDatabaseMasterUserPassword_601130(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601132 = header.getOrDefault("X-Amz-Date")
-  valid_601132 = validateParameter(valid_601132, JString, required = false,
-                                 default = nil)
-  if valid_601132 != nil:
-    section.add "X-Amz-Date", valid_601132
-  var valid_601133 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601133 = validateParameter(valid_601133, JString, required = false,
-                                 default = nil)
-  if valid_601133 != nil:
-    section.add "X-Amz-Security-Token", valid_601133
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601134 = header.getOrDefault("X-Amz-Target")
-  valid_601134 = validateParameter(valid_601134, JString, required = true, default = newJString(
+  var valid_603154 = header.getOrDefault("X-Amz-Target")
+  valid_603154 = validateParameter(valid_603154, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseMasterUserPassword"))
-  if valid_601134 != nil:
-    section.add "X-Amz-Target", valid_601134
-  var valid_601135 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601135 = validateParameter(valid_601135, JString, required = false,
+  if valid_603154 != nil:
+    section.add "X-Amz-Target", valid_603154
+  var valid_603155 = header.getOrDefault("X-Amz-Signature")
+  valid_603155 = validateParameter(valid_603155, JString, required = false,
                                  default = nil)
-  if valid_601135 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601135
-  var valid_601136 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601136 = validateParameter(valid_601136, JString, required = false,
+  if valid_603155 != nil:
+    section.add "X-Amz-Signature", valid_603155
+  var valid_603156 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603156 = validateParameter(valid_603156, JString, required = false,
                                  default = nil)
-  if valid_601136 != nil:
-    section.add "X-Amz-Algorithm", valid_601136
-  var valid_601137 = header.getOrDefault("X-Amz-Signature")
-  valid_601137 = validateParameter(valid_601137, JString, required = false,
+  if valid_603156 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603156
+  var valid_603157 = header.getOrDefault("X-Amz-Date")
+  valid_603157 = validateParameter(valid_603157, JString, required = false,
                                  default = nil)
-  if valid_601137 != nil:
-    section.add "X-Amz-Signature", valid_601137
-  var valid_601138 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601138 = validateParameter(valid_601138, JString, required = false,
+  if valid_603157 != nil:
+    section.add "X-Amz-Date", valid_603157
+  var valid_603158 = header.getOrDefault("X-Amz-Credential")
+  valid_603158 = validateParameter(valid_603158, JString, required = false,
                                  default = nil)
-  if valid_601138 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601138
-  var valid_601139 = header.getOrDefault("X-Amz-Credential")
-  valid_601139 = validateParameter(valid_601139, JString, required = false,
+  if valid_603158 != nil:
+    section.add "X-Amz-Credential", valid_603158
+  var valid_603159 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603159 = validateParameter(valid_603159, JString, required = false,
                                  default = nil)
-  if valid_601139 != nil:
-    section.add "X-Amz-Credential", valid_601139
+  if valid_603159 != nil:
+    section.add "X-Amz-Security-Token", valid_603159
+  var valid_603160 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603160 = validateParameter(valid_603160, JString, required = false,
+                                 default = nil)
+  if valid_603160 != nil:
+    section.add "X-Amz-Algorithm", valid_603160
+  var valid_603161 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603161 = validateParameter(valid_603161, JString, required = false,
+                                 default = nil)
+  if valid_603161 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603161
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9069,50 +9148,51 @@ proc validate_GetRelationalDatabaseMasterUserPassword_601130(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601141: Call_GetRelationalDatabaseMasterUserPassword_601129;
+proc call*(call_603163: Call_GetRelationalDatabaseMasterUserPassword_603151;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Returns the current, previous, or pending versions of the master user password for a Lightsail database.</p> <p>The <code>GetRelationalDatabaseMasterUserPassword</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName.</p>
   ## 
-  let valid = call_601141.validator(path, query, header, formData, body)
-  let scheme = call_601141.pickScheme
+  let valid = call_603163.validator(path, query, header, formData, body)
+  let scheme = call_603163.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601141.url(scheme.get, call_601141.host, call_601141.base,
-                         call_601141.route, valid.getOrDefault("path"),
+  let url = call_603163.url(scheme.get, call_603163.host, call_603163.base,
+                         call_603163.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601141, url, valid)
+  result = atozHook(call_603163, url, valid)
 
-proc call*(call_601142: Call_GetRelationalDatabaseMasterUserPassword_601129;
+proc call*(call_603164: Call_GetRelationalDatabaseMasterUserPassword_603151;
           body: JsonNode): Recallable =
   ## getRelationalDatabaseMasterUserPassword
   ## <p>Returns the current, previous, or pending versions of the master user password for a Lightsail database.</p> <p>The <code>GetRelationalDatabaseMasterUserPassword</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName.</p>
   ##   body: JObject (required)
-  var body_601143 = newJObject()
+  var body_603165 = newJObject()
   if body != nil:
-    body_601143 = body
-  result = call_601142.call(nil, nil, nil, nil, body_601143)
+    body_603165 = body
+  result = call_603164.call(nil, nil, nil, nil, body_603165)
 
-var getRelationalDatabaseMasterUserPassword* = Call_GetRelationalDatabaseMasterUserPassword_601129(
+var getRelationalDatabaseMasterUserPassword* = Call_GetRelationalDatabaseMasterUserPassword_603151(
     name: "getRelationalDatabaseMasterUserPassword", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseMasterUserPassword",
-    validator: validate_GetRelationalDatabaseMasterUserPassword_601130, base: "/",
-    url: url_GetRelationalDatabaseMasterUserPassword_601131,
+    validator: validate_GetRelationalDatabaseMasterUserPassword_603152, base: "/",
+    url: url_GetRelationalDatabaseMasterUserPassword_603153,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseMetricData_601144 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseMetricData_601146(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseMetricData_603166 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseMetricData_603168(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseMetricData_601145(path: JsonNode;
+proc validate_GetRelationalDatabaseMetricData_603167(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the data points of the specified metric for a database in Amazon Lightsail.
   ## 
@@ -9123,57 +9203,57 @@ proc validate_GetRelationalDatabaseMetricData_601145(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601147 = header.getOrDefault("X-Amz-Date")
-  valid_601147 = validateParameter(valid_601147, JString, required = false,
-                                 default = nil)
-  if valid_601147 != nil:
-    section.add "X-Amz-Date", valid_601147
-  var valid_601148 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601148 = validateParameter(valid_601148, JString, required = false,
-                                 default = nil)
-  if valid_601148 != nil:
-    section.add "X-Amz-Security-Token", valid_601148
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601149 = header.getOrDefault("X-Amz-Target")
-  valid_601149 = validateParameter(valid_601149, JString, required = true, default = newJString(
+  var valid_603169 = header.getOrDefault("X-Amz-Target")
+  valid_603169 = validateParameter(valid_603169, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseMetricData"))
-  if valid_601149 != nil:
-    section.add "X-Amz-Target", valid_601149
-  var valid_601150 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601150 = validateParameter(valid_601150, JString, required = false,
+  if valid_603169 != nil:
+    section.add "X-Amz-Target", valid_603169
+  var valid_603170 = header.getOrDefault("X-Amz-Signature")
+  valid_603170 = validateParameter(valid_603170, JString, required = false,
                                  default = nil)
-  if valid_601150 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601150
-  var valid_601151 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601151 = validateParameter(valid_601151, JString, required = false,
+  if valid_603170 != nil:
+    section.add "X-Amz-Signature", valid_603170
+  var valid_603171 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603171 = validateParameter(valid_603171, JString, required = false,
                                  default = nil)
-  if valid_601151 != nil:
-    section.add "X-Amz-Algorithm", valid_601151
-  var valid_601152 = header.getOrDefault("X-Amz-Signature")
-  valid_601152 = validateParameter(valid_601152, JString, required = false,
+  if valid_603171 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603171
+  var valid_603172 = header.getOrDefault("X-Amz-Date")
+  valid_603172 = validateParameter(valid_603172, JString, required = false,
                                  default = nil)
-  if valid_601152 != nil:
-    section.add "X-Amz-Signature", valid_601152
-  var valid_601153 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601153 = validateParameter(valid_601153, JString, required = false,
+  if valid_603172 != nil:
+    section.add "X-Amz-Date", valid_603172
+  var valid_603173 = header.getOrDefault("X-Amz-Credential")
+  valid_603173 = validateParameter(valid_603173, JString, required = false,
                                  default = nil)
-  if valid_601153 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601153
-  var valid_601154 = header.getOrDefault("X-Amz-Credential")
-  valid_601154 = validateParameter(valid_601154, JString, required = false,
+  if valid_603173 != nil:
+    section.add "X-Amz-Credential", valid_603173
+  var valid_603174 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603174 = validateParameter(valid_603174, JString, required = false,
                                  default = nil)
-  if valid_601154 != nil:
-    section.add "X-Amz-Credential", valid_601154
+  if valid_603174 != nil:
+    section.add "X-Amz-Security-Token", valid_603174
+  var valid_603175 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603175 = validateParameter(valid_603175, JString, required = false,
+                                 default = nil)
+  if valid_603175 != nil:
+    section.add "X-Amz-Algorithm", valid_603175
+  var valid_603176 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603176 = validateParameter(valid_603176, JString, required = false,
+                                 default = nil)
+  if valid_603176 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603176
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9184,50 +9264,51 @@ proc validate_GetRelationalDatabaseMetricData_601145(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601156: Call_GetRelationalDatabaseMetricData_601144;
+proc call*(call_603178: Call_GetRelationalDatabaseMetricData_603166;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns the data points of the specified metric for a database in Amazon Lightsail.
   ## 
-  let valid = call_601156.validator(path, query, header, formData, body)
-  let scheme = call_601156.pickScheme
+  let valid = call_603178.validator(path, query, header, formData, body)
+  let scheme = call_603178.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601156.url(scheme.get, call_601156.host, call_601156.base,
-                         call_601156.route, valid.getOrDefault("path"),
+  let url = call_603178.url(scheme.get, call_603178.host, call_603178.base,
+                         call_603178.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601156, url, valid)
+  result = atozHook(call_603178, url, valid)
 
-proc call*(call_601157: Call_GetRelationalDatabaseMetricData_601144; body: JsonNode): Recallable =
+proc call*(call_603179: Call_GetRelationalDatabaseMetricData_603166; body: JsonNode): Recallable =
   ## getRelationalDatabaseMetricData
   ## Returns the data points of the specified metric for a database in Amazon Lightsail.
   ##   body: JObject (required)
-  var body_601158 = newJObject()
+  var body_603180 = newJObject()
   if body != nil:
-    body_601158 = body
-  result = call_601157.call(nil, nil, nil, nil, body_601158)
+    body_603180 = body
+  result = call_603179.call(nil, nil, nil, nil, body_603180)
 
-var getRelationalDatabaseMetricData* = Call_GetRelationalDatabaseMetricData_601144(
+var getRelationalDatabaseMetricData* = Call_GetRelationalDatabaseMetricData_603166(
     name: "getRelationalDatabaseMetricData", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseMetricData",
-    validator: validate_GetRelationalDatabaseMetricData_601145, base: "/",
-    url: url_GetRelationalDatabaseMetricData_601146,
+    validator: validate_GetRelationalDatabaseMetricData_603167, base: "/",
+    url: url_GetRelationalDatabaseMetricData_603168,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseParameters_601159 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseParameters_601161(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseParameters_603181 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseParameters_603183(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseParameters_601160(path: JsonNode;
+proc validate_GetRelationalDatabaseParameters_603182(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns all of the runtime parameters offered by the underlying database software, or engine, for a specific database in Amazon Lightsail.</p> <p>In addition to the parameter names and values, this operation returns other information about each parameter. This information includes whether changes require a reboot, whether the parameter is modifiable, the allowed values, and the data types.</p>
   ## 
@@ -9238,57 +9319,57 @@ proc validate_GetRelationalDatabaseParameters_601160(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601162 = header.getOrDefault("X-Amz-Date")
-  valid_601162 = validateParameter(valid_601162, JString, required = false,
-                                 default = nil)
-  if valid_601162 != nil:
-    section.add "X-Amz-Date", valid_601162
-  var valid_601163 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601163 = validateParameter(valid_601163, JString, required = false,
-                                 default = nil)
-  if valid_601163 != nil:
-    section.add "X-Amz-Security-Token", valid_601163
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601164 = header.getOrDefault("X-Amz-Target")
-  valid_601164 = validateParameter(valid_601164, JString, required = true, default = newJString(
+  var valid_603184 = header.getOrDefault("X-Amz-Target")
+  valid_603184 = validateParameter(valid_603184, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseParameters"))
-  if valid_601164 != nil:
-    section.add "X-Amz-Target", valid_601164
-  var valid_601165 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601165 = validateParameter(valid_601165, JString, required = false,
+  if valid_603184 != nil:
+    section.add "X-Amz-Target", valid_603184
+  var valid_603185 = header.getOrDefault("X-Amz-Signature")
+  valid_603185 = validateParameter(valid_603185, JString, required = false,
                                  default = nil)
-  if valid_601165 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601165
-  var valid_601166 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601166 = validateParameter(valid_601166, JString, required = false,
+  if valid_603185 != nil:
+    section.add "X-Amz-Signature", valid_603185
+  var valid_603186 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603186 = validateParameter(valid_603186, JString, required = false,
                                  default = nil)
-  if valid_601166 != nil:
-    section.add "X-Amz-Algorithm", valid_601166
-  var valid_601167 = header.getOrDefault("X-Amz-Signature")
-  valid_601167 = validateParameter(valid_601167, JString, required = false,
+  if valid_603186 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603186
+  var valid_603187 = header.getOrDefault("X-Amz-Date")
+  valid_603187 = validateParameter(valid_603187, JString, required = false,
                                  default = nil)
-  if valid_601167 != nil:
-    section.add "X-Amz-Signature", valid_601167
-  var valid_601168 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601168 = validateParameter(valid_601168, JString, required = false,
+  if valid_603187 != nil:
+    section.add "X-Amz-Date", valid_603187
+  var valid_603188 = header.getOrDefault("X-Amz-Credential")
+  valid_603188 = validateParameter(valid_603188, JString, required = false,
                                  default = nil)
-  if valid_601168 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601168
-  var valid_601169 = header.getOrDefault("X-Amz-Credential")
-  valid_601169 = validateParameter(valid_601169, JString, required = false,
+  if valid_603188 != nil:
+    section.add "X-Amz-Credential", valid_603188
+  var valid_603189 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603189 = validateParameter(valid_603189, JString, required = false,
                                  default = nil)
-  if valid_601169 != nil:
-    section.add "X-Amz-Credential", valid_601169
+  if valid_603189 != nil:
+    section.add "X-Amz-Security-Token", valid_603189
+  var valid_603190 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603190 = validateParameter(valid_603190, JString, required = false,
+                                 default = nil)
+  if valid_603190 != nil:
+    section.add "X-Amz-Algorithm", valid_603190
+  var valid_603191 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603191 = validateParameter(valid_603191, JString, required = false,
+                                 default = nil)
+  if valid_603191 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603191
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9299,50 +9380,51 @@ proc validate_GetRelationalDatabaseParameters_601160(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601171: Call_GetRelationalDatabaseParameters_601159;
+proc call*(call_603193: Call_GetRelationalDatabaseParameters_603181;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Returns all of the runtime parameters offered by the underlying database software, or engine, for a specific database in Amazon Lightsail.</p> <p>In addition to the parameter names and values, this operation returns other information about each parameter. This information includes whether changes require a reboot, whether the parameter is modifiable, the allowed values, and the data types.</p>
   ## 
-  let valid = call_601171.validator(path, query, header, formData, body)
-  let scheme = call_601171.pickScheme
+  let valid = call_603193.validator(path, query, header, formData, body)
+  let scheme = call_603193.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601171.url(scheme.get, call_601171.host, call_601171.base,
-                         call_601171.route, valid.getOrDefault("path"),
+  let url = call_603193.url(scheme.get, call_603193.host, call_603193.base,
+                         call_603193.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601171, url, valid)
+  result = atozHook(call_603193, url, valid)
 
-proc call*(call_601172: Call_GetRelationalDatabaseParameters_601159; body: JsonNode): Recallable =
+proc call*(call_603194: Call_GetRelationalDatabaseParameters_603181; body: JsonNode): Recallable =
   ## getRelationalDatabaseParameters
   ## <p>Returns all of the runtime parameters offered by the underlying database software, or engine, for a specific database in Amazon Lightsail.</p> <p>In addition to the parameter names and values, this operation returns other information about each parameter. This information includes whether changes require a reboot, whether the parameter is modifiable, the allowed values, and the data types.</p>
   ##   body: JObject (required)
-  var body_601173 = newJObject()
+  var body_603195 = newJObject()
   if body != nil:
-    body_601173 = body
-  result = call_601172.call(nil, nil, nil, nil, body_601173)
+    body_603195 = body
+  result = call_603194.call(nil, nil, nil, nil, body_603195)
 
-var getRelationalDatabaseParameters* = Call_GetRelationalDatabaseParameters_601159(
+var getRelationalDatabaseParameters* = Call_GetRelationalDatabaseParameters_603181(
     name: "getRelationalDatabaseParameters", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseParameters",
-    validator: validate_GetRelationalDatabaseParameters_601160, base: "/",
-    url: url_GetRelationalDatabaseParameters_601161,
+    validator: validate_GetRelationalDatabaseParameters_603182, base: "/",
+    url: url_GetRelationalDatabaseParameters_603183,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseSnapshot_601174 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseSnapshot_601176(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseSnapshot_603196 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseSnapshot_603198(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseSnapshot_601175(path: JsonNode; query: JsonNode;
+proc validate_GetRelationalDatabaseSnapshot_603197(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a specific database snapshot in Amazon Lightsail.
   ## 
@@ -9353,57 +9435,57 @@ proc validate_GetRelationalDatabaseSnapshot_601175(path: JsonNode; query: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601177 = header.getOrDefault("X-Amz-Date")
-  valid_601177 = validateParameter(valid_601177, JString, required = false,
-                                 default = nil)
-  if valid_601177 != nil:
-    section.add "X-Amz-Date", valid_601177
-  var valid_601178 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601178 = validateParameter(valid_601178, JString, required = false,
-                                 default = nil)
-  if valid_601178 != nil:
-    section.add "X-Amz-Security-Token", valid_601178
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601179 = header.getOrDefault("X-Amz-Target")
-  valid_601179 = validateParameter(valid_601179, JString, required = true, default = newJString(
+  var valid_603199 = header.getOrDefault("X-Amz-Target")
+  valid_603199 = validateParameter(valid_603199, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseSnapshot"))
-  if valid_601179 != nil:
-    section.add "X-Amz-Target", valid_601179
-  var valid_601180 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601180 = validateParameter(valid_601180, JString, required = false,
+  if valid_603199 != nil:
+    section.add "X-Amz-Target", valid_603199
+  var valid_603200 = header.getOrDefault("X-Amz-Signature")
+  valid_603200 = validateParameter(valid_603200, JString, required = false,
                                  default = nil)
-  if valid_601180 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601180
-  var valid_601181 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601181 = validateParameter(valid_601181, JString, required = false,
+  if valid_603200 != nil:
+    section.add "X-Amz-Signature", valid_603200
+  var valid_603201 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603201 = validateParameter(valid_603201, JString, required = false,
                                  default = nil)
-  if valid_601181 != nil:
-    section.add "X-Amz-Algorithm", valid_601181
-  var valid_601182 = header.getOrDefault("X-Amz-Signature")
-  valid_601182 = validateParameter(valid_601182, JString, required = false,
+  if valid_603201 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603201
+  var valid_603202 = header.getOrDefault("X-Amz-Date")
+  valid_603202 = validateParameter(valid_603202, JString, required = false,
                                  default = nil)
-  if valid_601182 != nil:
-    section.add "X-Amz-Signature", valid_601182
-  var valid_601183 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601183 = validateParameter(valid_601183, JString, required = false,
+  if valid_603202 != nil:
+    section.add "X-Amz-Date", valid_603202
+  var valid_603203 = header.getOrDefault("X-Amz-Credential")
+  valid_603203 = validateParameter(valid_603203, JString, required = false,
                                  default = nil)
-  if valid_601183 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601183
-  var valid_601184 = header.getOrDefault("X-Amz-Credential")
-  valid_601184 = validateParameter(valid_601184, JString, required = false,
+  if valid_603203 != nil:
+    section.add "X-Amz-Credential", valid_603203
+  var valid_603204 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603204 = validateParameter(valid_603204, JString, required = false,
                                  default = nil)
-  if valid_601184 != nil:
-    section.add "X-Amz-Credential", valid_601184
+  if valid_603204 != nil:
+    section.add "X-Amz-Security-Token", valid_603204
+  var valid_603205 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603205 = validateParameter(valid_603205, JString, required = false,
+                                 default = nil)
+  if valid_603205 != nil:
+    section.add "X-Amz-Algorithm", valid_603205
+  var valid_603206 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603206 = validateParameter(valid_603206, JString, required = false,
+                                 default = nil)
+  if valid_603206 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603206
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9414,49 +9496,50 @@ proc validate_GetRelationalDatabaseSnapshot_601175(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601186: Call_GetRelationalDatabaseSnapshot_601174; path: JsonNode;
+proc call*(call_603208: Call_GetRelationalDatabaseSnapshot_603196; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific database snapshot in Amazon Lightsail.
   ## 
-  let valid = call_601186.validator(path, query, header, formData, body)
-  let scheme = call_601186.pickScheme
+  let valid = call_603208.validator(path, query, header, formData, body)
+  let scheme = call_603208.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601186.url(scheme.get, call_601186.host, call_601186.base,
-                         call_601186.route, valid.getOrDefault("path"),
+  let url = call_603208.url(scheme.get, call_603208.host, call_603208.base,
+                         call_603208.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601186, url, valid)
+  result = atozHook(call_603208, url, valid)
 
-proc call*(call_601187: Call_GetRelationalDatabaseSnapshot_601174; body: JsonNode): Recallable =
+proc call*(call_603209: Call_GetRelationalDatabaseSnapshot_603196; body: JsonNode): Recallable =
   ## getRelationalDatabaseSnapshot
   ## Returns information about a specific database snapshot in Amazon Lightsail.
   ##   body: JObject (required)
-  var body_601188 = newJObject()
+  var body_603210 = newJObject()
   if body != nil:
-    body_601188 = body
-  result = call_601187.call(nil, nil, nil, nil, body_601188)
+    body_603210 = body
+  result = call_603209.call(nil, nil, nil, nil, body_603210)
 
-var getRelationalDatabaseSnapshot* = Call_GetRelationalDatabaseSnapshot_601174(
+var getRelationalDatabaseSnapshot* = Call_GetRelationalDatabaseSnapshot_603196(
     name: "getRelationalDatabaseSnapshot", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseSnapshot",
-    validator: validate_GetRelationalDatabaseSnapshot_601175, base: "/",
-    url: url_GetRelationalDatabaseSnapshot_601176,
+    validator: validate_GetRelationalDatabaseSnapshot_603197, base: "/",
+    url: url_GetRelationalDatabaseSnapshot_603198,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabaseSnapshots_601189 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabaseSnapshots_601191(protocol: Scheme; host: string;
+  Call_GetRelationalDatabaseSnapshots_603211 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabaseSnapshots_603213(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabaseSnapshots_601190(path: JsonNode;
+proc validate_GetRelationalDatabaseSnapshots_603212(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about all of your database snapshots in Amazon Lightsail.
   ## 
@@ -9467,57 +9550,57 @@ proc validate_GetRelationalDatabaseSnapshots_601190(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601192 = header.getOrDefault("X-Amz-Date")
-  valid_601192 = validateParameter(valid_601192, JString, required = false,
-                                 default = nil)
-  if valid_601192 != nil:
-    section.add "X-Amz-Date", valid_601192
-  var valid_601193 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601193 = validateParameter(valid_601193, JString, required = false,
-                                 default = nil)
-  if valid_601193 != nil:
-    section.add "X-Amz-Security-Token", valid_601193
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601194 = header.getOrDefault("X-Amz-Target")
-  valid_601194 = validateParameter(valid_601194, JString, required = true, default = newJString(
+  var valid_603214 = header.getOrDefault("X-Amz-Target")
+  valid_603214 = validateParameter(valid_603214, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseSnapshots"))
-  if valid_601194 != nil:
-    section.add "X-Amz-Target", valid_601194
-  var valid_601195 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601195 = validateParameter(valid_601195, JString, required = false,
+  if valid_603214 != nil:
+    section.add "X-Amz-Target", valid_603214
+  var valid_603215 = header.getOrDefault("X-Amz-Signature")
+  valid_603215 = validateParameter(valid_603215, JString, required = false,
                                  default = nil)
-  if valid_601195 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601195
-  var valid_601196 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601196 = validateParameter(valid_601196, JString, required = false,
+  if valid_603215 != nil:
+    section.add "X-Amz-Signature", valid_603215
+  var valid_603216 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603216 = validateParameter(valid_603216, JString, required = false,
                                  default = nil)
-  if valid_601196 != nil:
-    section.add "X-Amz-Algorithm", valid_601196
-  var valid_601197 = header.getOrDefault("X-Amz-Signature")
-  valid_601197 = validateParameter(valid_601197, JString, required = false,
+  if valid_603216 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603216
+  var valid_603217 = header.getOrDefault("X-Amz-Date")
+  valid_603217 = validateParameter(valid_603217, JString, required = false,
                                  default = nil)
-  if valid_601197 != nil:
-    section.add "X-Amz-Signature", valid_601197
-  var valid_601198 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601198 = validateParameter(valid_601198, JString, required = false,
+  if valid_603217 != nil:
+    section.add "X-Amz-Date", valid_603217
+  var valid_603218 = header.getOrDefault("X-Amz-Credential")
+  valid_603218 = validateParameter(valid_603218, JString, required = false,
                                  default = nil)
-  if valid_601198 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601198
-  var valid_601199 = header.getOrDefault("X-Amz-Credential")
-  valid_601199 = validateParameter(valid_601199, JString, required = false,
+  if valid_603218 != nil:
+    section.add "X-Amz-Credential", valid_603218
+  var valid_603219 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603219 = validateParameter(valid_603219, JString, required = false,
                                  default = nil)
-  if valid_601199 != nil:
-    section.add "X-Amz-Credential", valid_601199
+  if valid_603219 != nil:
+    section.add "X-Amz-Security-Token", valid_603219
+  var valid_603220 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603220 = validateParameter(valid_603220, JString, required = false,
+                                 default = nil)
+  if valid_603220 != nil:
+    section.add "X-Amz-Algorithm", valid_603220
+  var valid_603221 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603221 = validateParameter(valid_603221, JString, required = false,
+                                 default = nil)
+  if valid_603221 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603221
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9528,49 +9611,50 @@ proc validate_GetRelationalDatabaseSnapshots_601190(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601201: Call_GetRelationalDatabaseSnapshots_601189; path: JsonNode;
+proc call*(call_603223: Call_GetRelationalDatabaseSnapshots_603211; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about all of your database snapshots in Amazon Lightsail.
   ## 
-  let valid = call_601201.validator(path, query, header, formData, body)
-  let scheme = call_601201.pickScheme
+  let valid = call_603223.validator(path, query, header, formData, body)
+  let scheme = call_603223.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601201.url(scheme.get, call_601201.host, call_601201.base,
-                         call_601201.route, valid.getOrDefault("path"),
+  let url = call_603223.url(scheme.get, call_603223.host, call_603223.base,
+                         call_603223.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601201, url, valid)
+  result = atozHook(call_603223, url, valid)
 
-proc call*(call_601202: Call_GetRelationalDatabaseSnapshots_601189; body: JsonNode): Recallable =
+proc call*(call_603224: Call_GetRelationalDatabaseSnapshots_603211; body: JsonNode): Recallable =
   ## getRelationalDatabaseSnapshots
   ## Returns information about all of your database snapshots in Amazon Lightsail.
   ##   body: JObject (required)
-  var body_601203 = newJObject()
+  var body_603225 = newJObject()
   if body != nil:
-    body_601203 = body
-  result = call_601202.call(nil, nil, nil, nil, body_601203)
+    body_603225 = body
+  result = call_603224.call(nil, nil, nil, nil, body_603225)
 
-var getRelationalDatabaseSnapshots* = Call_GetRelationalDatabaseSnapshots_601189(
+var getRelationalDatabaseSnapshots* = Call_GetRelationalDatabaseSnapshots_603211(
     name: "getRelationalDatabaseSnapshots", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabaseSnapshots",
-    validator: validate_GetRelationalDatabaseSnapshots_601190, base: "/",
-    url: url_GetRelationalDatabaseSnapshots_601191,
+    validator: validate_GetRelationalDatabaseSnapshots_603212, base: "/",
+    url: url_GetRelationalDatabaseSnapshots_603213,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRelationalDatabases_601204 = ref object of OpenApiRestCall_599368
-proc url_GetRelationalDatabases_601206(protocol: Scheme; host: string; base: string;
+  Call_GetRelationalDatabases_603226 = ref object of OpenApiRestCall_601389
+proc url_GetRelationalDatabases_603228(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRelationalDatabases_601205(path: JsonNode; query: JsonNode;
+proc validate_GetRelationalDatabases_603227(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about all of your databases in Amazon Lightsail.
   ## 
@@ -9581,57 +9665,57 @@ proc validate_GetRelationalDatabases_601205(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601207 = header.getOrDefault("X-Amz-Date")
-  valid_601207 = validateParameter(valid_601207, JString, required = false,
-                                 default = nil)
-  if valid_601207 != nil:
-    section.add "X-Amz-Date", valid_601207
-  var valid_601208 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601208 = validateParameter(valid_601208, JString, required = false,
-                                 default = nil)
-  if valid_601208 != nil:
-    section.add "X-Amz-Security-Token", valid_601208
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601209 = header.getOrDefault("X-Amz-Target")
-  valid_601209 = validateParameter(valid_601209, JString, required = true, default = newJString(
+  var valid_603229 = header.getOrDefault("X-Amz-Target")
+  valid_603229 = validateParameter(valid_603229, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabases"))
-  if valid_601209 != nil:
-    section.add "X-Amz-Target", valid_601209
-  var valid_601210 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601210 = validateParameter(valid_601210, JString, required = false,
+  if valid_603229 != nil:
+    section.add "X-Amz-Target", valid_603229
+  var valid_603230 = header.getOrDefault("X-Amz-Signature")
+  valid_603230 = validateParameter(valid_603230, JString, required = false,
                                  default = nil)
-  if valid_601210 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601210
-  var valid_601211 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601211 = validateParameter(valid_601211, JString, required = false,
+  if valid_603230 != nil:
+    section.add "X-Amz-Signature", valid_603230
+  var valid_603231 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603231 = validateParameter(valid_603231, JString, required = false,
                                  default = nil)
-  if valid_601211 != nil:
-    section.add "X-Amz-Algorithm", valid_601211
-  var valid_601212 = header.getOrDefault("X-Amz-Signature")
-  valid_601212 = validateParameter(valid_601212, JString, required = false,
+  if valid_603231 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603231
+  var valid_603232 = header.getOrDefault("X-Amz-Date")
+  valid_603232 = validateParameter(valid_603232, JString, required = false,
                                  default = nil)
-  if valid_601212 != nil:
-    section.add "X-Amz-Signature", valid_601212
-  var valid_601213 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601213 = validateParameter(valid_601213, JString, required = false,
+  if valid_603232 != nil:
+    section.add "X-Amz-Date", valid_603232
+  var valid_603233 = header.getOrDefault("X-Amz-Credential")
+  valid_603233 = validateParameter(valid_603233, JString, required = false,
                                  default = nil)
-  if valid_601213 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601213
-  var valid_601214 = header.getOrDefault("X-Amz-Credential")
-  valid_601214 = validateParameter(valid_601214, JString, required = false,
+  if valid_603233 != nil:
+    section.add "X-Amz-Credential", valid_603233
+  var valid_603234 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603234 = validateParameter(valid_603234, JString, required = false,
                                  default = nil)
-  if valid_601214 != nil:
-    section.add "X-Amz-Credential", valid_601214
+  if valid_603234 != nil:
+    section.add "X-Amz-Security-Token", valid_603234
+  var valid_603235 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603235 = validateParameter(valid_603235, JString, required = false,
+                                 default = nil)
+  if valid_603235 != nil:
+    section.add "X-Amz-Algorithm", valid_603235
+  var valid_603236 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603236 = validateParameter(valid_603236, JString, required = false,
+                                 default = nil)
+  if valid_603236 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603236
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9642,48 +9726,49 @@ proc validate_GetRelationalDatabases_601205(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601216: Call_GetRelationalDatabases_601204; path: JsonNode;
+proc call*(call_603238: Call_GetRelationalDatabases_603226; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about all of your databases in Amazon Lightsail.
   ## 
-  let valid = call_601216.validator(path, query, header, formData, body)
-  let scheme = call_601216.pickScheme
+  let valid = call_603238.validator(path, query, header, formData, body)
+  let scheme = call_603238.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601216.url(scheme.get, call_601216.host, call_601216.base,
-                         call_601216.route, valid.getOrDefault("path"),
+  let url = call_603238.url(scheme.get, call_603238.host, call_603238.base,
+                         call_603238.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601216, url, valid)
+  result = atozHook(call_603238, url, valid)
 
-proc call*(call_601217: Call_GetRelationalDatabases_601204; body: JsonNode): Recallable =
+proc call*(call_603239: Call_GetRelationalDatabases_603226; body: JsonNode): Recallable =
   ## getRelationalDatabases
   ## Returns information about all of your databases in Amazon Lightsail.
   ##   body: JObject (required)
-  var body_601218 = newJObject()
+  var body_603240 = newJObject()
   if body != nil:
-    body_601218 = body
-  result = call_601217.call(nil, nil, nil, nil, body_601218)
+    body_603240 = body
+  result = call_603239.call(nil, nil, nil, nil, body_603240)
 
-var getRelationalDatabases* = Call_GetRelationalDatabases_601204(
+var getRelationalDatabases* = Call_GetRelationalDatabases_603226(
     name: "getRelationalDatabases", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetRelationalDatabases",
-    validator: validate_GetRelationalDatabases_601205, base: "/",
-    url: url_GetRelationalDatabases_601206, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRelationalDatabases_603227, base: "/",
+    url: url_GetRelationalDatabases_603228, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetStaticIp_601219 = ref object of OpenApiRestCall_599368
-proc url_GetStaticIp_601221(protocol: Scheme; host: string; base: string;
+  Call_GetStaticIp_603241 = ref object of OpenApiRestCall_601389
+proc url_GetStaticIp_603243(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetStaticIp_601220(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetStaticIp_603242(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about a specific static IP.
   ## 
@@ -9694,57 +9779,57 @@ proc validate_GetStaticIp_601220(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601222 = header.getOrDefault("X-Amz-Date")
-  valid_601222 = validateParameter(valid_601222, JString, required = false,
-                                 default = nil)
-  if valid_601222 != nil:
-    section.add "X-Amz-Date", valid_601222
-  var valid_601223 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601223 = validateParameter(valid_601223, JString, required = false,
-                                 default = nil)
-  if valid_601223 != nil:
-    section.add "X-Amz-Security-Token", valid_601223
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601224 = header.getOrDefault("X-Amz-Target")
-  valid_601224 = validateParameter(valid_601224, JString, required = true, default = newJString(
+  var valid_603244 = header.getOrDefault("X-Amz-Target")
+  valid_603244 = validateParameter(valid_603244, JString, required = true, default = newJString(
       "Lightsail_20161128.GetStaticIp"))
-  if valid_601224 != nil:
-    section.add "X-Amz-Target", valid_601224
-  var valid_601225 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601225 = validateParameter(valid_601225, JString, required = false,
+  if valid_603244 != nil:
+    section.add "X-Amz-Target", valid_603244
+  var valid_603245 = header.getOrDefault("X-Amz-Signature")
+  valid_603245 = validateParameter(valid_603245, JString, required = false,
                                  default = nil)
-  if valid_601225 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601225
-  var valid_601226 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601226 = validateParameter(valid_601226, JString, required = false,
+  if valid_603245 != nil:
+    section.add "X-Amz-Signature", valid_603245
+  var valid_603246 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603246 = validateParameter(valid_603246, JString, required = false,
                                  default = nil)
-  if valid_601226 != nil:
-    section.add "X-Amz-Algorithm", valid_601226
-  var valid_601227 = header.getOrDefault("X-Amz-Signature")
-  valid_601227 = validateParameter(valid_601227, JString, required = false,
+  if valid_603246 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603246
+  var valid_603247 = header.getOrDefault("X-Amz-Date")
+  valid_603247 = validateParameter(valid_603247, JString, required = false,
                                  default = nil)
-  if valid_601227 != nil:
-    section.add "X-Amz-Signature", valid_601227
-  var valid_601228 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601228 = validateParameter(valid_601228, JString, required = false,
+  if valid_603247 != nil:
+    section.add "X-Amz-Date", valid_603247
+  var valid_603248 = header.getOrDefault("X-Amz-Credential")
+  valid_603248 = validateParameter(valid_603248, JString, required = false,
                                  default = nil)
-  if valid_601228 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601228
-  var valid_601229 = header.getOrDefault("X-Amz-Credential")
-  valid_601229 = validateParameter(valid_601229, JString, required = false,
+  if valid_603248 != nil:
+    section.add "X-Amz-Credential", valid_603248
+  var valid_603249 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603249 = validateParameter(valid_603249, JString, required = false,
                                  default = nil)
-  if valid_601229 != nil:
-    section.add "X-Amz-Credential", valid_601229
+  if valid_603249 != nil:
+    section.add "X-Amz-Security-Token", valid_603249
+  var valid_603250 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603250 = validateParameter(valid_603250, JString, required = false,
+                                 default = nil)
+  if valid_603250 != nil:
+    section.add "X-Amz-Algorithm", valid_603250
+  var valid_603251 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603251 = validateParameter(valid_603251, JString, required = false,
+                                 default = nil)
+  if valid_603251 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603251
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9755,48 +9840,49 @@ proc validate_GetStaticIp_601220(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601231: Call_GetStaticIp_601219; path: JsonNode; query: JsonNode;
+proc call*(call_603253: Call_GetStaticIp_603241; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific static IP.
   ## 
-  let valid = call_601231.validator(path, query, header, formData, body)
-  let scheme = call_601231.pickScheme
+  let valid = call_603253.validator(path, query, header, formData, body)
+  let scheme = call_603253.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601231.url(scheme.get, call_601231.host, call_601231.base,
-                         call_601231.route, valid.getOrDefault("path"),
+  let url = call_603253.url(scheme.get, call_603253.host, call_603253.base,
+                         call_603253.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601231, url, valid)
+  result = atozHook(call_603253, url, valid)
 
-proc call*(call_601232: Call_GetStaticIp_601219; body: JsonNode): Recallable =
+proc call*(call_603254: Call_GetStaticIp_603241; body: JsonNode): Recallable =
   ## getStaticIp
   ## Returns information about a specific static IP.
   ##   body: JObject (required)
-  var body_601233 = newJObject()
+  var body_603255 = newJObject()
   if body != nil:
-    body_601233 = body
-  result = call_601232.call(nil, nil, nil, nil, body_601233)
+    body_603255 = body
+  result = call_603254.call(nil, nil, nil, nil, body_603255)
 
-var getStaticIp* = Call_GetStaticIp_601219(name: "getStaticIp",
+var getStaticIp* = Call_GetStaticIp_603241(name: "getStaticIp",
                                         meth: HttpMethod.HttpPost,
                                         host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.GetStaticIp",
-                                        validator: validate_GetStaticIp_601220,
-                                        base: "/", url: url_GetStaticIp_601221,
+                                        validator: validate_GetStaticIp_603242,
+                                        base: "/", url: url_GetStaticIp_603243,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetStaticIps_601234 = ref object of OpenApiRestCall_599368
-proc url_GetStaticIps_601236(protocol: Scheme; host: string; base: string;
+  Call_GetStaticIps_603256 = ref object of OpenApiRestCall_601389
+proc url_GetStaticIps_603258(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetStaticIps_601235(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetStaticIps_603257(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about all static IPs in the user's account.
   ## 
@@ -9807,57 +9893,57 @@ proc validate_GetStaticIps_601235(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601237 = header.getOrDefault("X-Amz-Date")
-  valid_601237 = validateParameter(valid_601237, JString, required = false,
-                                 default = nil)
-  if valid_601237 != nil:
-    section.add "X-Amz-Date", valid_601237
-  var valid_601238 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601238 = validateParameter(valid_601238, JString, required = false,
-                                 default = nil)
-  if valid_601238 != nil:
-    section.add "X-Amz-Security-Token", valid_601238
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601239 = header.getOrDefault("X-Amz-Target")
-  valid_601239 = validateParameter(valid_601239, JString, required = true, default = newJString(
+  var valid_603259 = header.getOrDefault("X-Amz-Target")
+  valid_603259 = validateParameter(valid_603259, JString, required = true, default = newJString(
       "Lightsail_20161128.GetStaticIps"))
-  if valid_601239 != nil:
-    section.add "X-Amz-Target", valid_601239
-  var valid_601240 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601240 = validateParameter(valid_601240, JString, required = false,
+  if valid_603259 != nil:
+    section.add "X-Amz-Target", valid_603259
+  var valid_603260 = header.getOrDefault("X-Amz-Signature")
+  valid_603260 = validateParameter(valid_603260, JString, required = false,
                                  default = nil)
-  if valid_601240 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601240
-  var valid_601241 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601241 = validateParameter(valid_601241, JString, required = false,
+  if valid_603260 != nil:
+    section.add "X-Amz-Signature", valid_603260
+  var valid_603261 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603261 = validateParameter(valid_603261, JString, required = false,
                                  default = nil)
-  if valid_601241 != nil:
-    section.add "X-Amz-Algorithm", valid_601241
-  var valid_601242 = header.getOrDefault("X-Amz-Signature")
-  valid_601242 = validateParameter(valid_601242, JString, required = false,
+  if valid_603261 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603261
+  var valid_603262 = header.getOrDefault("X-Amz-Date")
+  valid_603262 = validateParameter(valid_603262, JString, required = false,
                                  default = nil)
-  if valid_601242 != nil:
-    section.add "X-Amz-Signature", valid_601242
-  var valid_601243 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601243 = validateParameter(valid_601243, JString, required = false,
+  if valid_603262 != nil:
+    section.add "X-Amz-Date", valid_603262
+  var valid_603263 = header.getOrDefault("X-Amz-Credential")
+  valid_603263 = validateParameter(valid_603263, JString, required = false,
                                  default = nil)
-  if valid_601243 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601243
-  var valid_601244 = header.getOrDefault("X-Amz-Credential")
-  valid_601244 = validateParameter(valid_601244, JString, required = false,
+  if valid_603263 != nil:
+    section.add "X-Amz-Credential", valid_603263
+  var valid_603264 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603264 = validateParameter(valid_603264, JString, required = false,
                                  default = nil)
-  if valid_601244 != nil:
-    section.add "X-Amz-Credential", valid_601244
+  if valid_603264 != nil:
+    section.add "X-Amz-Security-Token", valid_603264
+  var valid_603265 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603265 = validateParameter(valid_603265, JString, required = false,
+                                 default = nil)
+  if valid_603265 != nil:
+    section.add "X-Amz-Algorithm", valid_603265
+  var valid_603266 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603266 = validateParameter(valid_603266, JString, required = false,
+                                 default = nil)
+  if valid_603266 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603266
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9868,47 +9954,48 @@ proc validate_GetStaticIps_601235(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601246: Call_GetStaticIps_601234; path: JsonNode; query: JsonNode;
+proc call*(call_603268: Call_GetStaticIps_603256; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about all static IPs in the user's account.
   ## 
-  let valid = call_601246.validator(path, query, header, formData, body)
-  let scheme = call_601246.pickScheme
+  let valid = call_603268.validator(path, query, header, formData, body)
+  let scheme = call_603268.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601246.url(scheme.get, call_601246.host, call_601246.base,
-                         call_601246.route, valid.getOrDefault("path"),
+  let url = call_603268.url(scheme.get, call_603268.host, call_603268.base,
+                         call_603268.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601246, url, valid)
+  result = atozHook(call_603268, url, valid)
 
-proc call*(call_601247: Call_GetStaticIps_601234; body: JsonNode): Recallable =
+proc call*(call_603269: Call_GetStaticIps_603256; body: JsonNode): Recallable =
   ## getStaticIps
   ## Returns information about all static IPs in the user's account.
   ##   body: JObject (required)
-  var body_601248 = newJObject()
+  var body_603270 = newJObject()
   if body != nil:
-    body_601248 = body
-  result = call_601247.call(nil, nil, nil, nil, body_601248)
+    body_603270 = body
+  result = call_603269.call(nil, nil, nil, nil, body_603270)
 
-var getStaticIps* = Call_GetStaticIps_601234(name: "getStaticIps",
+var getStaticIps* = Call_GetStaticIps_603256(name: "getStaticIps",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.GetStaticIps",
-    validator: validate_GetStaticIps_601235, base: "/", url: url_GetStaticIps_601236,
+    validator: validate_GetStaticIps_603257, base: "/", url: url_GetStaticIps_603258,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ImportKeyPair_601249 = ref object of OpenApiRestCall_599368
-proc url_ImportKeyPair_601251(protocol: Scheme; host: string; base: string;
+  Call_ImportKeyPair_603271 = ref object of OpenApiRestCall_601389
+proc url_ImportKeyPair_603273(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ImportKeyPair_601250(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ImportKeyPair_603272(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Imports a public SSH key from a specific key pair.
   ## 
@@ -9919,57 +10006,57 @@ proc validate_ImportKeyPair_601250(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601252 = header.getOrDefault("X-Amz-Date")
-  valid_601252 = validateParameter(valid_601252, JString, required = false,
-                                 default = nil)
-  if valid_601252 != nil:
-    section.add "X-Amz-Date", valid_601252
-  var valid_601253 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601253 = validateParameter(valid_601253, JString, required = false,
-                                 default = nil)
-  if valid_601253 != nil:
-    section.add "X-Amz-Security-Token", valid_601253
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601254 = header.getOrDefault("X-Amz-Target")
-  valid_601254 = validateParameter(valid_601254, JString, required = true, default = newJString(
+  var valid_603274 = header.getOrDefault("X-Amz-Target")
+  valid_603274 = validateParameter(valid_603274, JString, required = true, default = newJString(
       "Lightsail_20161128.ImportKeyPair"))
-  if valid_601254 != nil:
-    section.add "X-Amz-Target", valid_601254
-  var valid_601255 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601255 = validateParameter(valid_601255, JString, required = false,
+  if valid_603274 != nil:
+    section.add "X-Amz-Target", valid_603274
+  var valid_603275 = header.getOrDefault("X-Amz-Signature")
+  valid_603275 = validateParameter(valid_603275, JString, required = false,
                                  default = nil)
-  if valid_601255 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601255
-  var valid_601256 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601256 = validateParameter(valid_601256, JString, required = false,
+  if valid_603275 != nil:
+    section.add "X-Amz-Signature", valid_603275
+  var valid_603276 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603276 = validateParameter(valid_603276, JString, required = false,
                                  default = nil)
-  if valid_601256 != nil:
-    section.add "X-Amz-Algorithm", valid_601256
-  var valid_601257 = header.getOrDefault("X-Amz-Signature")
-  valid_601257 = validateParameter(valid_601257, JString, required = false,
+  if valid_603276 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603276
+  var valid_603277 = header.getOrDefault("X-Amz-Date")
+  valid_603277 = validateParameter(valid_603277, JString, required = false,
                                  default = nil)
-  if valid_601257 != nil:
-    section.add "X-Amz-Signature", valid_601257
-  var valid_601258 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601258 = validateParameter(valid_601258, JString, required = false,
+  if valid_603277 != nil:
+    section.add "X-Amz-Date", valid_603277
+  var valid_603278 = header.getOrDefault("X-Amz-Credential")
+  valid_603278 = validateParameter(valid_603278, JString, required = false,
                                  default = nil)
-  if valid_601258 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601258
-  var valid_601259 = header.getOrDefault("X-Amz-Credential")
-  valid_601259 = validateParameter(valid_601259, JString, required = false,
+  if valid_603278 != nil:
+    section.add "X-Amz-Credential", valid_603278
+  var valid_603279 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603279 = validateParameter(valid_603279, JString, required = false,
                                  default = nil)
-  if valid_601259 != nil:
-    section.add "X-Amz-Credential", valid_601259
+  if valid_603279 != nil:
+    section.add "X-Amz-Security-Token", valid_603279
+  var valid_603280 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603280 = validateParameter(valid_603280, JString, required = false,
+                                 default = nil)
+  if valid_603280 != nil:
+    section.add "X-Amz-Algorithm", valid_603280
+  var valid_603281 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603281 = validateParameter(valid_603281, JString, required = false,
+                                 default = nil)
+  if valid_603281 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603281
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9980,47 +10067,48 @@ proc validate_ImportKeyPair_601250(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601261: Call_ImportKeyPair_601249; path: JsonNode; query: JsonNode;
+proc call*(call_603283: Call_ImportKeyPair_603271; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Imports a public SSH key from a specific key pair.
   ## 
-  let valid = call_601261.validator(path, query, header, formData, body)
-  let scheme = call_601261.pickScheme
+  let valid = call_603283.validator(path, query, header, formData, body)
+  let scheme = call_603283.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601261.url(scheme.get, call_601261.host, call_601261.base,
-                         call_601261.route, valid.getOrDefault("path"),
+  let url = call_603283.url(scheme.get, call_603283.host, call_603283.base,
+                         call_603283.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601261, url, valid)
+  result = atozHook(call_603283, url, valid)
 
-proc call*(call_601262: Call_ImportKeyPair_601249; body: JsonNode): Recallable =
+proc call*(call_603284: Call_ImportKeyPair_603271; body: JsonNode): Recallable =
   ## importKeyPair
   ## Imports a public SSH key from a specific key pair.
   ##   body: JObject (required)
-  var body_601263 = newJObject()
+  var body_603285 = newJObject()
   if body != nil:
-    body_601263 = body
-  result = call_601262.call(nil, nil, nil, nil, body_601263)
+    body_603285 = body
+  result = call_603284.call(nil, nil, nil, nil, body_603285)
 
-var importKeyPair* = Call_ImportKeyPair_601249(name: "importKeyPair",
+var importKeyPair* = Call_ImportKeyPair_603271(name: "importKeyPair",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.ImportKeyPair",
-    validator: validate_ImportKeyPair_601250, base: "/", url: url_ImportKeyPair_601251,
+    validator: validate_ImportKeyPair_603272, base: "/", url: url_ImportKeyPair_603273,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_IsVpcPeered_601264 = ref object of OpenApiRestCall_599368
-proc url_IsVpcPeered_601266(protocol: Scheme; host: string; base: string;
+  Call_IsVpcPeered_603286 = ref object of OpenApiRestCall_601389
+proc url_IsVpcPeered_603288(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_IsVpcPeered_601265(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_IsVpcPeered_603287(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a Boolean value indicating whether your Lightsail VPC is peered.
   ## 
@@ -10031,57 +10119,57 @@ proc validate_IsVpcPeered_601265(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601267 = header.getOrDefault("X-Amz-Date")
-  valid_601267 = validateParameter(valid_601267, JString, required = false,
-                                 default = nil)
-  if valid_601267 != nil:
-    section.add "X-Amz-Date", valid_601267
-  var valid_601268 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601268 = validateParameter(valid_601268, JString, required = false,
-                                 default = nil)
-  if valid_601268 != nil:
-    section.add "X-Amz-Security-Token", valid_601268
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601269 = header.getOrDefault("X-Amz-Target")
-  valid_601269 = validateParameter(valid_601269, JString, required = true, default = newJString(
+  var valid_603289 = header.getOrDefault("X-Amz-Target")
+  valid_603289 = validateParameter(valid_603289, JString, required = true, default = newJString(
       "Lightsail_20161128.IsVpcPeered"))
-  if valid_601269 != nil:
-    section.add "X-Amz-Target", valid_601269
-  var valid_601270 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601270 = validateParameter(valid_601270, JString, required = false,
+  if valid_603289 != nil:
+    section.add "X-Amz-Target", valid_603289
+  var valid_603290 = header.getOrDefault("X-Amz-Signature")
+  valid_603290 = validateParameter(valid_603290, JString, required = false,
                                  default = nil)
-  if valid_601270 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601270
-  var valid_601271 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601271 = validateParameter(valid_601271, JString, required = false,
+  if valid_603290 != nil:
+    section.add "X-Amz-Signature", valid_603290
+  var valid_603291 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603291 = validateParameter(valid_603291, JString, required = false,
                                  default = nil)
-  if valid_601271 != nil:
-    section.add "X-Amz-Algorithm", valid_601271
-  var valid_601272 = header.getOrDefault("X-Amz-Signature")
-  valid_601272 = validateParameter(valid_601272, JString, required = false,
+  if valid_603291 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603291
+  var valid_603292 = header.getOrDefault("X-Amz-Date")
+  valid_603292 = validateParameter(valid_603292, JString, required = false,
                                  default = nil)
-  if valid_601272 != nil:
-    section.add "X-Amz-Signature", valid_601272
-  var valid_601273 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601273 = validateParameter(valid_601273, JString, required = false,
+  if valid_603292 != nil:
+    section.add "X-Amz-Date", valid_603292
+  var valid_603293 = header.getOrDefault("X-Amz-Credential")
+  valid_603293 = validateParameter(valid_603293, JString, required = false,
                                  default = nil)
-  if valid_601273 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601273
-  var valid_601274 = header.getOrDefault("X-Amz-Credential")
-  valid_601274 = validateParameter(valid_601274, JString, required = false,
+  if valid_603293 != nil:
+    section.add "X-Amz-Credential", valid_603293
+  var valid_603294 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603294 = validateParameter(valid_603294, JString, required = false,
                                  default = nil)
-  if valid_601274 != nil:
-    section.add "X-Amz-Credential", valid_601274
+  if valid_603294 != nil:
+    section.add "X-Amz-Security-Token", valid_603294
+  var valid_603295 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603295 = validateParameter(valid_603295, JString, required = false,
+                                 default = nil)
+  if valid_603295 != nil:
+    section.add "X-Amz-Algorithm", valid_603295
+  var valid_603296 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603296 = validateParameter(valid_603296, JString, required = false,
+                                 default = nil)
+  if valid_603296 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603296
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10092,49 +10180,50 @@ proc validate_IsVpcPeered_601265(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601276: Call_IsVpcPeered_601264; path: JsonNode; query: JsonNode;
+proc call*(call_603298: Call_IsVpcPeered_603286; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a Boolean value indicating whether your Lightsail VPC is peered.
   ## 
-  let valid = call_601276.validator(path, query, header, formData, body)
-  let scheme = call_601276.pickScheme
+  let valid = call_603298.validator(path, query, header, formData, body)
+  let scheme = call_603298.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601276.url(scheme.get, call_601276.host, call_601276.base,
-                         call_601276.route, valid.getOrDefault("path"),
+  let url = call_603298.url(scheme.get, call_603298.host, call_603298.base,
+                         call_603298.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601276, url, valid)
+  result = atozHook(call_603298, url, valid)
 
-proc call*(call_601277: Call_IsVpcPeered_601264; body: JsonNode): Recallable =
+proc call*(call_603299: Call_IsVpcPeered_603286; body: JsonNode): Recallable =
   ## isVpcPeered
   ## Returns a Boolean value indicating whether your Lightsail VPC is peered.
   ##   body: JObject (required)
-  var body_601278 = newJObject()
+  var body_603300 = newJObject()
   if body != nil:
-    body_601278 = body
-  result = call_601277.call(nil, nil, nil, nil, body_601278)
+    body_603300 = body
+  result = call_603299.call(nil, nil, nil, nil, body_603300)
 
-var isVpcPeered* = Call_IsVpcPeered_601264(name: "isVpcPeered",
+var isVpcPeered* = Call_IsVpcPeered_603286(name: "isVpcPeered",
                                         meth: HttpMethod.HttpPost,
                                         host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.IsVpcPeered",
-                                        validator: validate_IsVpcPeered_601265,
-                                        base: "/", url: url_IsVpcPeered_601266,
+                                        validator: validate_IsVpcPeered_603287,
+                                        base: "/", url: url_IsVpcPeered_603288,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_OpenInstancePublicPorts_601279 = ref object of OpenApiRestCall_599368
-proc url_OpenInstancePublicPorts_601281(protocol: Scheme; host: string; base: string;
+  Call_OpenInstancePublicPorts_603301 = ref object of OpenApiRestCall_601389
+proc url_OpenInstancePublicPorts_603303(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_OpenInstancePublicPorts_601280(path: JsonNode; query: JsonNode;
+proc validate_OpenInstancePublicPorts_603302(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds public ports to an Amazon Lightsail instance.</p> <p>The <code>open instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -10145,57 +10234,57 @@ proc validate_OpenInstancePublicPorts_601280(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601282 = header.getOrDefault("X-Amz-Date")
-  valid_601282 = validateParameter(valid_601282, JString, required = false,
-                                 default = nil)
-  if valid_601282 != nil:
-    section.add "X-Amz-Date", valid_601282
-  var valid_601283 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601283 = validateParameter(valid_601283, JString, required = false,
-                                 default = nil)
-  if valid_601283 != nil:
-    section.add "X-Amz-Security-Token", valid_601283
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601284 = header.getOrDefault("X-Amz-Target")
-  valid_601284 = validateParameter(valid_601284, JString, required = true, default = newJString(
+  var valid_603304 = header.getOrDefault("X-Amz-Target")
+  valid_603304 = validateParameter(valid_603304, JString, required = true, default = newJString(
       "Lightsail_20161128.OpenInstancePublicPorts"))
-  if valid_601284 != nil:
-    section.add "X-Amz-Target", valid_601284
-  var valid_601285 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601285 = validateParameter(valid_601285, JString, required = false,
+  if valid_603304 != nil:
+    section.add "X-Amz-Target", valid_603304
+  var valid_603305 = header.getOrDefault("X-Amz-Signature")
+  valid_603305 = validateParameter(valid_603305, JString, required = false,
                                  default = nil)
-  if valid_601285 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601285
-  var valid_601286 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601286 = validateParameter(valid_601286, JString, required = false,
+  if valid_603305 != nil:
+    section.add "X-Amz-Signature", valid_603305
+  var valid_603306 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603306 = validateParameter(valid_603306, JString, required = false,
                                  default = nil)
-  if valid_601286 != nil:
-    section.add "X-Amz-Algorithm", valid_601286
-  var valid_601287 = header.getOrDefault("X-Amz-Signature")
-  valid_601287 = validateParameter(valid_601287, JString, required = false,
+  if valid_603306 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603306
+  var valid_603307 = header.getOrDefault("X-Amz-Date")
+  valid_603307 = validateParameter(valid_603307, JString, required = false,
                                  default = nil)
-  if valid_601287 != nil:
-    section.add "X-Amz-Signature", valid_601287
-  var valid_601288 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601288 = validateParameter(valid_601288, JString, required = false,
+  if valid_603307 != nil:
+    section.add "X-Amz-Date", valid_603307
+  var valid_603308 = header.getOrDefault("X-Amz-Credential")
+  valid_603308 = validateParameter(valid_603308, JString, required = false,
                                  default = nil)
-  if valid_601288 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601288
-  var valid_601289 = header.getOrDefault("X-Amz-Credential")
-  valid_601289 = validateParameter(valid_601289, JString, required = false,
+  if valid_603308 != nil:
+    section.add "X-Amz-Credential", valid_603308
+  var valid_603309 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603309 = validateParameter(valid_603309, JString, required = false,
                                  default = nil)
-  if valid_601289 != nil:
-    section.add "X-Amz-Credential", valid_601289
+  if valid_603309 != nil:
+    section.add "X-Amz-Security-Token", valid_603309
+  var valid_603310 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603310 = validateParameter(valid_603310, JString, required = false,
+                                 default = nil)
+  if valid_603310 != nil:
+    section.add "X-Amz-Algorithm", valid_603310
+  var valid_603311 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603311 = validateParameter(valid_603311, JString, required = false,
+                                 default = nil)
+  if valid_603311 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603311
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10206,48 +10295,49 @@ proc validate_OpenInstancePublicPorts_601280(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601291: Call_OpenInstancePublicPorts_601279; path: JsonNode;
+proc call*(call_603313: Call_OpenInstancePublicPorts_603301; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds public ports to an Amazon Lightsail instance.</p> <p>The <code>open instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601291.validator(path, query, header, formData, body)
-  let scheme = call_601291.pickScheme
+  let valid = call_603313.validator(path, query, header, formData, body)
+  let scheme = call_603313.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601291.url(scheme.get, call_601291.host, call_601291.base,
-                         call_601291.route, valid.getOrDefault("path"),
+  let url = call_603313.url(scheme.get, call_603313.host, call_603313.base,
+                         call_603313.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601291, url, valid)
+  result = atozHook(call_603313, url, valid)
 
-proc call*(call_601292: Call_OpenInstancePublicPorts_601279; body: JsonNode): Recallable =
+proc call*(call_603314: Call_OpenInstancePublicPorts_603301; body: JsonNode): Recallable =
   ## openInstancePublicPorts
   ## <p>Adds public ports to an Amazon Lightsail instance.</p> <p>The <code>open instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601293 = newJObject()
+  var body_603315 = newJObject()
   if body != nil:
-    body_601293 = body
-  result = call_601292.call(nil, nil, nil, nil, body_601293)
+    body_603315 = body
+  result = call_603314.call(nil, nil, nil, nil, body_603315)
 
-var openInstancePublicPorts* = Call_OpenInstancePublicPorts_601279(
+var openInstancePublicPorts* = Call_OpenInstancePublicPorts_603301(
     name: "openInstancePublicPorts", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.OpenInstancePublicPorts",
-    validator: validate_OpenInstancePublicPorts_601280, base: "/",
-    url: url_OpenInstancePublicPorts_601281, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_OpenInstancePublicPorts_603302, base: "/",
+    url: url_OpenInstancePublicPorts_603303, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PeerVpc_601294 = ref object of OpenApiRestCall_599368
-proc url_PeerVpc_601296(protocol: Scheme; host: string; base: string; route: string;
+  Call_PeerVpc_603316 = ref object of OpenApiRestCall_601389
+proc url_PeerVpc_603318(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PeerVpc_601295(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PeerVpc_603317(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## Tries to peer the Lightsail VPC with the user's default VPC.
   ## 
@@ -10258,57 +10348,57 @@ proc validate_PeerVpc_601295(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601297 = header.getOrDefault("X-Amz-Date")
-  valid_601297 = validateParameter(valid_601297, JString, required = false,
-                                 default = nil)
-  if valid_601297 != nil:
-    section.add "X-Amz-Date", valid_601297
-  var valid_601298 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601298 = validateParameter(valid_601298, JString, required = false,
-                                 default = nil)
-  if valid_601298 != nil:
-    section.add "X-Amz-Security-Token", valid_601298
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601299 = header.getOrDefault("X-Amz-Target")
-  valid_601299 = validateParameter(valid_601299, JString, required = true, default = newJString(
+  var valid_603319 = header.getOrDefault("X-Amz-Target")
+  valid_603319 = validateParameter(valid_603319, JString, required = true, default = newJString(
       "Lightsail_20161128.PeerVpc"))
-  if valid_601299 != nil:
-    section.add "X-Amz-Target", valid_601299
-  var valid_601300 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601300 = validateParameter(valid_601300, JString, required = false,
+  if valid_603319 != nil:
+    section.add "X-Amz-Target", valid_603319
+  var valid_603320 = header.getOrDefault("X-Amz-Signature")
+  valid_603320 = validateParameter(valid_603320, JString, required = false,
                                  default = nil)
-  if valid_601300 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601300
-  var valid_601301 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601301 = validateParameter(valid_601301, JString, required = false,
+  if valid_603320 != nil:
+    section.add "X-Amz-Signature", valid_603320
+  var valid_603321 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603321 = validateParameter(valid_603321, JString, required = false,
                                  default = nil)
-  if valid_601301 != nil:
-    section.add "X-Amz-Algorithm", valid_601301
-  var valid_601302 = header.getOrDefault("X-Amz-Signature")
-  valid_601302 = validateParameter(valid_601302, JString, required = false,
+  if valid_603321 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603321
+  var valid_603322 = header.getOrDefault("X-Amz-Date")
+  valid_603322 = validateParameter(valid_603322, JString, required = false,
                                  default = nil)
-  if valid_601302 != nil:
-    section.add "X-Amz-Signature", valid_601302
-  var valid_601303 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601303 = validateParameter(valid_601303, JString, required = false,
+  if valid_603322 != nil:
+    section.add "X-Amz-Date", valid_603322
+  var valid_603323 = header.getOrDefault("X-Amz-Credential")
+  valid_603323 = validateParameter(valid_603323, JString, required = false,
                                  default = nil)
-  if valid_601303 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601303
-  var valid_601304 = header.getOrDefault("X-Amz-Credential")
-  valid_601304 = validateParameter(valid_601304, JString, required = false,
+  if valid_603323 != nil:
+    section.add "X-Amz-Credential", valid_603323
+  var valid_603324 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603324 = validateParameter(valid_603324, JString, required = false,
                                  default = nil)
-  if valid_601304 != nil:
-    section.add "X-Amz-Credential", valid_601304
+  if valid_603324 != nil:
+    section.add "X-Amz-Security-Token", valid_603324
+  var valid_603325 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603325 = validateParameter(valid_603325, JString, required = false,
+                                 default = nil)
+  if valid_603325 != nil:
+    section.add "X-Amz-Algorithm", valid_603325
+  var valid_603326 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603326 = validateParameter(valid_603326, JString, required = false,
+                                 default = nil)
+  if valid_603326 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603326
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10319,47 +10409,48 @@ proc validate_PeerVpc_601295(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601306: Call_PeerVpc_601294; path: JsonNode; query: JsonNode;
+proc call*(call_603328: Call_PeerVpc_603316; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Tries to peer the Lightsail VPC with the user's default VPC.
   ## 
-  let valid = call_601306.validator(path, query, header, formData, body)
-  let scheme = call_601306.pickScheme
+  let valid = call_603328.validator(path, query, header, formData, body)
+  let scheme = call_603328.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601306.url(scheme.get, call_601306.host, call_601306.base,
-                         call_601306.route, valid.getOrDefault("path"),
+  let url = call_603328.url(scheme.get, call_603328.host, call_603328.base,
+                         call_603328.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601306, url, valid)
+  result = atozHook(call_603328, url, valid)
 
-proc call*(call_601307: Call_PeerVpc_601294; body: JsonNode): Recallable =
+proc call*(call_603329: Call_PeerVpc_603316; body: JsonNode): Recallable =
   ## peerVpc
   ## Tries to peer the Lightsail VPC with the user's default VPC.
   ##   body: JObject (required)
-  var body_601308 = newJObject()
+  var body_603330 = newJObject()
   if body != nil:
-    body_601308 = body
-  result = call_601307.call(nil, nil, nil, nil, body_601308)
+    body_603330 = body
+  result = call_603329.call(nil, nil, nil, nil, body_603330)
 
-var peerVpc* = Call_PeerVpc_601294(name: "peerVpc", meth: HttpMethod.HttpPost,
+var peerVpc* = Call_PeerVpc_603316(name: "peerVpc", meth: HttpMethod.HttpPost,
                                 host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.PeerVpc",
-                                validator: validate_PeerVpc_601295, base: "/",
-                                url: url_PeerVpc_601296,
+                                validator: validate_PeerVpc_603317, base: "/",
+                                url: url_PeerVpc_603318,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutInstancePublicPorts_601309 = ref object of OpenApiRestCall_599368
-proc url_PutInstancePublicPorts_601311(protocol: Scheme; host: string; base: string;
+  Call_PutInstancePublicPorts_603331 = ref object of OpenApiRestCall_601389
+proc url_PutInstancePublicPorts_603333(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PutInstancePublicPorts_601310(path: JsonNode; query: JsonNode;
+proc validate_PutInstancePublicPorts_603332(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the specified open ports for an Amazon Lightsail instance, and closes all ports for every protocol not included in the current request.</p> <p>The <code>put instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -10370,57 +10461,57 @@ proc validate_PutInstancePublicPorts_601310(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601312 = header.getOrDefault("X-Amz-Date")
-  valid_601312 = validateParameter(valid_601312, JString, required = false,
-                                 default = nil)
-  if valid_601312 != nil:
-    section.add "X-Amz-Date", valid_601312
-  var valid_601313 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601313 = validateParameter(valid_601313, JString, required = false,
-                                 default = nil)
-  if valid_601313 != nil:
-    section.add "X-Amz-Security-Token", valid_601313
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601314 = header.getOrDefault("X-Amz-Target")
-  valid_601314 = validateParameter(valid_601314, JString, required = true, default = newJString(
+  var valid_603334 = header.getOrDefault("X-Amz-Target")
+  valid_603334 = validateParameter(valid_603334, JString, required = true, default = newJString(
       "Lightsail_20161128.PutInstancePublicPorts"))
-  if valid_601314 != nil:
-    section.add "X-Amz-Target", valid_601314
-  var valid_601315 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601315 = validateParameter(valid_601315, JString, required = false,
+  if valid_603334 != nil:
+    section.add "X-Amz-Target", valid_603334
+  var valid_603335 = header.getOrDefault("X-Amz-Signature")
+  valid_603335 = validateParameter(valid_603335, JString, required = false,
                                  default = nil)
-  if valid_601315 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601315
-  var valid_601316 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601316 = validateParameter(valid_601316, JString, required = false,
+  if valid_603335 != nil:
+    section.add "X-Amz-Signature", valid_603335
+  var valid_603336 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603336 = validateParameter(valid_603336, JString, required = false,
                                  default = nil)
-  if valid_601316 != nil:
-    section.add "X-Amz-Algorithm", valid_601316
-  var valid_601317 = header.getOrDefault("X-Amz-Signature")
-  valid_601317 = validateParameter(valid_601317, JString, required = false,
+  if valid_603336 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603336
+  var valid_603337 = header.getOrDefault("X-Amz-Date")
+  valid_603337 = validateParameter(valid_603337, JString, required = false,
                                  default = nil)
-  if valid_601317 != nil:
-    section.add "X-Amz-Signature", valid_601317
-  var valid_601318 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601318 = validateParameter(valid_601318, JString, required = false,
+  if valid_603337 != nil:
+    section.add "X-Amz-Date", valid_603337
+  var valid_603338 = header.getOrDefault("X-Amz-Credential")
+  valid_603338 = validateParameter(valid_603338, JString, required = false,
                                  default = nil)
-  if valid_601318 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601318
-  var valid_601319 = header.getOrDefault("X-Amz-Credential")
-  valid_601319 = validateParameter(valid_601319, JString, required = false,
+  if valid_603338 != nil:
+    section.add "X-Amz-Credential", valid_603338
+  var valid_603339 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603339 = validateParameter(valid_603339, JString, required = false,
                                  default = nil)
-  if valid_601319 != nil:
-    section.add "X-Amz-Credential", valid_601319
+  if valid_603339 != nil:
+    section.add "X-Amz-Security-Token", valid_603339
+  var valid_603340 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603340 = validateParameter(valid_603340, JString, required = false,
+                                 default = nil)
+  if valid_603340 != nil:
+    section.add "X-Amz-Algorithm", valid_603340
+  var valid_603341 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603341 = validateParameter(valid_603341, JString, required = false,
+                                 default = nil)
+  if valid_603341 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603341
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10431,48 +10522,49 @@ proc validate_PutInstancePublicPorts_601310(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601321: Call_PutInstancePublicPorts_601309; path: JsonNode;
+proc call*(call_603343: Call_PutInstancePublicPorts_603331; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the specified open ports for an Amazon Lightsail instance, and closes all ports for every protocol not included in the current request.</p> <p>The <code>put instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601321.validator(path, query, header, formData, body)
-  let scheme = call_601321.pickScheme
+  let valid = call_603343.validator(path, query, header, formData, body)
+  let scheme = call_603343.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601321.url(scheme.get, call_601321.host, call_601321.base,
-                         call_601321.route, valid.getOrDefault("path"),
+  let url = call_603343.url(scheme.get, call_603343.host, call_603343.base,
+                         call_603343.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601321, url, valid)
+  result = atozHook(call_603343, url, valid)
 
-proc call*(call_601322: Call_PutInstancePublicPorts_601309; body: JsonNode): Recallable =
+proc call*(call_603344: Call_PutInstancePublicPorts_603331; body: JsonNode): Recallable =
   ## putInstancePublicPorts
   ## <p>Sets the specified open ports for an Amazon Lightsail instance, and closes all ports for every protocol not included in the current request.</p> <p>The <code>put instance public ports</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601323 = newJObject()
+  var body_603345 = newJObject()
   if body != nil:
-    body_601323 = body
-  result = call_601322.call(nil, nil, nil, nil, body_601323)
+    body_603345 = body
+  result = call_603344.call(nil, nil, nil, nil, body_603345)
 
-var putInstancePublicPorts* = Call_PutInstancePublicPorts_601309(
+var putInstancePublicPorts* = Call_PutInstancePublicPorts_603331(
     name: "putInstancePublicPorts", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.PutInstancePublicPorts",
-    validator: validate_PutInstancePublicPorts_601310, base: "/",
-    url: url_PutInstancePublicPorts_601311, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutInstancePublicPorts_603332, base: "/",
+    url: url_PutInstancePublicPorts_603333, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RebootInstance_601324 = ref object of OpenApiRestCall_599368
-proc url_RebootInstance_601326(protocol: Scheme; host: string; base: string;
+  Call_RebootInstance_603346 = ref object of OpenApiRestCall_601389
+proc url_RebootInstance_603348(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RebootInstance_601325(path: JsonNode; query: JsonNode;
+proc validate_RebootInstance_603347(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Restarts a specific instance.</p> <p>The <code>reboot instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -10484,57 +10576,57 @@ proc validate_RebootInstance_601325(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601327 = header.getOrDefault("X-Amz-Date")
-  valid_601327 = validateParameter(valid_601327, JString, required = false,
-                                 default = nil)
-  if valid_601327 != nil:
-    section.add "X-Amz-Date", valid_601327
-  var valid_601328 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601328 = validateParameter(valid_601328, JString, required = false,
-                                 default = nil)
-  if valid_601328 != nil:
-    section.add "X-Amz-Security-Token", valid_601328
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601329 = header.getOrDefault("X-Amz-Target")
-  valid_601329 = validateParameter(valid_601329, JString, required = true, default = newJString(
+  var valid_603349 = header.getOrDefault("X-Amz-Target")
+  valid_603349 = validateParameter(valid_603349, JString, required = true, default = newJString(
       "Lightsail_20161128.RebootInstance"))
-  if valid_601329 != nil:
-    section.add "X-Amz-Target", valid_601329
-  var valid_601330 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601330 = validateParameter(valid_601330, JString, required = false,
+  if valid_603349 != nil:
+    section.add "X-Amz-Target", valid_603349
+  var valid_603350 = header.getOrDefault("X-Amz-Signature")
+  valid_603350 = validateParameter(valid_603350, JString, required = false,
                                  default = nil)
-  if valid_601330 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601330
-  var valid_601331 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601331 = validateParameter(valid_601331, JString, required = false,
+  if valid_603350 != nil:
+    section.add "X-Amz-Signature", valid_603350
+  var valid_603351 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603351 = validateParameter(valid_603351, JString, required = false,
                                  default = nil)
-  if valid_601331 != nil:
-    section.add "X-Amz-Algorithm", valid_601331
-  var valid_601332 = header.getOrDefault("X-Amz-Signature")
-  valid_601332 = validateParameter(valid_601332, JString, required = false,
+  if valid_603351 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603351
+  var valid_603352 = header.getOrDefault("X-Amz-Date")
+  valid_603352 = validateParameter(valid_603352, JString, required = false,
                                  default = nil)
-  if valid_601332 != nil:
-    section.add "X-Amz-Signature", valid_601332
-  var valid_601333 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601333 = validateParameter(valid_601333, JString, required = false,
+  if valid_603352 != nil:
+    section.add "X-Amz-Date", valid_603352
+  var valid_603353 = header.getOrDefault("X-Amz-Credential")
+  valid_603353 = validateParameter(valid_603353, JString, required = false,
                                  default = nil)
-  if valid_601333 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601333
-  var valid_601334 = header.getOrDefault("X-Amz-Credential")
-  valid_601334 = validateParameter(valid_601334, JString, required = false,
+  if valid_603353 != nil:
+    section.add "X-Amz-Credential", valid_603353
+  var valid_603354 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603354 = validateParameter(valid_603354, JString, required = false,
                                  default = nil)
-  if valid_601334 != nil:
-    section.add "X-Amz-Credential", valid_601334
+  if valid_603354 != nil:
+    section.add "X-Amz-Security-Token", valid_603354
+  var valid_603355 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603355 = validateParameter(valid_603355, JString, required = false,
+                                 default = nil)
+  if valid_603355 != nil:
+    section.add "X-Amz-Algorithm", valid_603355
+  var valid_603356 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603356 = validateParameter(valid_603356, JString, required = false,
+                                 default = nil)
+  if valid_603356 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603356
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10545,48 +10637,49 @@ proc validate_RebootInstance_601325(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601336: Call_RebootInstance_601324; path: JsonNode; query: JsonNode;
+proc call*(call_603358: Call_RebootInstance_603346; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Restarts a specific instance.</p> <p>The <code>reboot instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601336.validator(path, query, header, formData, body)
-  let scheme = call_601336.pickScheme
+  let valid = call_603358.validator(path, query, header, formData, body)
+  let scheme = call_603358.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601336.url(scheme.get, call_601336.host, call_601336.base,
-                         call_601336.route, valid.getOrDefault("path"),
+  let url = call_603358.url(scheme.get, call_603358.host, call_603358.base,
+                         call_603358.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601336, url, valid)
+  result = atozHook(call_603358, url, valid)
 
-proc call*(call_601337: Call_RebootInstance_601324; body: JsonNode): Recallable =
+proc call*(call_603359: Call_RebootInstance_603346; body: JsonNode): Recallable =
   ## rebootInstance
   ## <p>Restarts a specific instance.</p> <p>The <code>reboot instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601338 = newJObject()
+  var body_603360 = newJObject()
   if body != nil:
-    body_601338 = body
-  result = call_601337.call(nil, nil, nil, nil, body_601338)
+    body_603360 = body
+  result = call_603359.call(nil, nil, nil, nil, body_603360)
 
-var rebootInstance* = Call_RebootInstance_601324(name: "rebootInstance",
+var rebootInstance* = Call_RebootInstance_603346(name: "rebootInstance",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.RebootInstance",
-    validator: validate_RebootInstance_601325, base: "/", url: url_RebootInstance_601326,
+    validator: validate_RebootInstance_603347, base: "/", url: url_RebootInstance_603348,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RebootRelationalDatabase_601339 = ref object of OpenApiRestCall_599368
-proc url_RebootRelationalDatabase_601341(protocol: Scheme; host: string;
+  Call_RebootRelationalDatabase_603361 = ref object of OpenApiRestCall_601389
+proc url_RebootRelationalDatabase_603363(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RebootRelationalDatabase_601340(path: JsonNode; query: JsonNode;
+proc validate_RebootRelationalDatabase_603362(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Restarts a specific database in Amazon Lightsail.</p> <p>The <code>reboot relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -10597,57 +10690,57 @@ proc validate_RebootRelationalDatabase_601340(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601342 = header.getOrDefault("X-Amz-Date")
-  valid_601342 = validateParameter(valid_601342, JString, required = false,
-                                 default = nil)
-  if valid_601342 != nil:
-    section.add "X-Amz-Date", valid_601342
-  var valid_601343 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601343 = validateParameter(valid_601343, JString, required = false,
-                                 default = nil)
-  if valid_601343 != nil:
-    section.add "X-Amz-Security-Token", valid_601343
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601344 = header.getOrDefault("X-Amz-Target")
-  valid_601344 = validateParameter(valid_601344, JString, required = true, default = newJString(
+  var valid_603364 = header.getOrDefault("X-Amz-Target")
+  valid_603364 = validateParameter(valid_603364, JString, required = true, default = newJString(
       "Lightsail_20161128.RebootRelationalDatabase"))
-  if valid_601344 != nil:
-    section.add "X-Amz-Target", valid_601344
-  var valid_601345 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601345 = validateParameter(valid_601345, JString, required = false,
+  if valid_603364 != nil:
+    section.add "X-Amz-Target", valid_603364
+  var valid_603365 = header.getOrDefault("X-Amz-Signature")
+  valid_603365 = validateParameter(valid_603365, JString, required = false,
                                  default = nil)
-  if valid_601345 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601345
-  var valid_601346 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601346 = validateParameter(valid_601346, JString, required = false,
+  if valid_603365 != nil:
+    section.add "X-Amz-Signature", valid_603365
+  var valid_603366 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603366 = validateParameter(valid_603366, JString, required = false,
                                  default = nil)
-  if valid_601346 != nil:
-    section.add "X-Amz-Algorithm", valid_601346
-  var valid_601347 = header.getOrDefault("X-Amz-Signature")
-  valid_601347 = validateParameter(valid_601347, JString, required = false,
+  if valid_603366 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603366
+  var valid_603367 = header.getOrDefault("X-Amz-Date")
+  valid_603367 = validateParameter(valid_603367, JString, required = false,
                                  default = nil)
-  if valid_601347 != nil:
-    section.add "X-Amz-Signature", valid_601347
-  var valid_601348 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601348 = validateParameter(valid_601348, JString, required = false,
+  if valid_603367 != nil:
+    section.add "X-Amz-Date", valid_603367
+  var valid_603368 = header.getOrDefault("X-Amz-Credential")
+  valid_603368 = validateParameter(valid_603368, JString, required = false,
                                  default = nil)
-  if valid_601348 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601348
-  var valid_601349 = header.getOrDefault("X-Amz-Credential")
-  valid_601349 = validateParameter(valid_601349, JString, required = false,
+  if valid_603368 != nil:
+    section.add "X-Amz-Credential", valid_603368
+  var valid_603369 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603369 = validateParameter(valid_603369, JString, required = false,
                                  default = nil)
-  if valid_601349 != nil:
-    section.add "X-Amz-Credential", valid_601349
+  if valid_603369 != nil:
+    section.add "X-Amz-Security-Token", valid_603369
+  var valid_603370 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603370 = validateParameter(valid_603370, JString, required = false,
+                                 default = nil)
+  if valid_603370 != nil:
+    section.add "X-Amz-Algorithm", valid_603370
+  var valid_603371 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603371 = validateParameter(valid_603371, JString, required = false,
+                                 default = nil)
+  if valid_603371 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603371
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10658,48 +10751,49 @@ proc validate_RebootRelationalDatabase_601340(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601351: Call_RebootRelationalDatabase_601339; path: JsonNode;
+proc call*(call_603373: Call_RebootRelationalDatabase_603361; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Restarts a specific database in Amazon Lightsail.</p> <p>The <code>reboot relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601351.validator(path, query, header, formData, body)
-  let scheme = call_601351.pickScheme
+  let valid = call_603373.validator(path, query, header, formData, body)
+  let scheme = call_603373.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601351.url(scheme.get, call_601351.host, call_601351.base,
-                         call_601351.route, valid.getOrDefault("path"),
+  let url = call_603373.url(scheme.get, call_603373.host, call_603373.base,
+                         call_603373.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601351, url, valid)
+  result = atozHook(call_603373, url, valid)
 
-proc call*(call_601352: Call_RebootRelationalDatabase_601339; body: JsonNode): Recallable =
+proc call*(call_603374: Call_RebootRelationalDatabase_603361; body: JsonNode): Recallable =
   ## rebootRelationalDatabase
   ## <p>Restarts a specific database in Amazon Lightsail.</p> <p>The <code>reboot relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601353 = newJObject()
+  var body_603375 = newJObject()
   if body != nil:
-    body_601353 = body
-  result = call_601352.call(nil, nil, nil, nil, body_601353)
+    body_603375 = body
+  result = call_603374.call(nil, nil, nil, nil, body_603375)
 
-var rebootRelationalDatabase* = Call_RebootRelationalDatabase_601339(
+var rebootRelationalDatabase* = Call_RebootRelationalDatabase_603361(
     name: "rebootRelationalDatabase", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.RebootRelationalDatabase",
-    validator: validate_RebootRelationalDatabase_601340, base: "/",
-    url: url_RebootRelationalDatabase_601341, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RebootRelationalDatabase_603362, base: "/",
+    url: url_RebootRelationalDatabase_603363, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ReleaseStaticIp_601354 = ref object of OpenApiRestCall_599368
-proc url_ReleaseStaticIp_601356(protocol: Scheme; host: string; base: string;
+  Call_ReleaseStaticIp_603376 = ref object of OpenApiRestCall_601389
+proc url_ReleaseStaticIp_603378(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ReleaseStaticIp_601355(path: JsonNode; query: JsonNode;
+proc validate_ReleaseStaticIp_603377(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Deletes a specific static IP from your account.
@@ -10711,57 +10805,57 @@ proc validate_ReleaseStaticIp_601355(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601357 = header.getOrDefault("X-Amz-Date")
-  valid_601357 = validateParameter(valid_601357, JString, required = false,
-                                 default = nil)
-  if valid_601357 != nil:
-    section.add "X-Amz-Date", valid_601357
-  var valid_601358 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601358 = validateParameter(valid_601358, JString, required = false,
-                                 default = nil)
-  if valid_601358 != nil:
-    section.add "X-Amz-Security-Token", valid_601358
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601359 = header.getOrDefault("X-Amz-Target")
-  valid_601359 = validateParameter(valid_601359, JString, required = true, default = newJString(
+  var valid_603379 = header.getOrDefault("X-Amz-Target")
+  valid_603379 = validateParameter(valid_603379, JString, required = true, default = newJString(
       "Lightsail_20161128.ReleaseStaticIp"))
-  if valid_601359 != nil:
-    section.add "X-Amz-Target", valid_601359
-  var valid_601360 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601360 = validateParameter(valid_601360, JString, required = false,
+  if valid_603379 != nil:
+    section.add "X-Amz-Target", valid_603379
+  var valid_603380 = header.getOrDefault("X-Amz-Signature")
+  valid_603380 = validateParameter(valid_603380, JString, required = false,
                                  default = nil)
-  if valid_601360 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601360
-  var valid_601361 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601361 = validateParameter(valid_601361, JString, required = false,
+  if valid_603380 != nil:
+    section.add "X-Amz-Signature", valid_603380
+  var valid_603381 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603381 = validateParameter(valid_603381, JString, required = false,
                                  default = nil)
-  if valid_601361 != nil:
-    section.add "X-Amz-Algorithm", valid_601361
-  var valid_601362 = header.getOrDefault("X-Amz-Signature")
-  valid_601362 = validateParameter(valid_601362, JString, required = false,
+  if valid_603381 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603381
+  var valid_603382 = header.getOrDefault("X-Amz-Date")
+  valid_603382 = validateParameter(valid_603382, JString, required = false,
                                  default = nil)
-  if valid_601362 != nil:
-    section.add "X-Amz-Signature", valid_601362
-  var valid_601363 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601363 = validateParameter(valid_601363, JString, required = false,
+  if valid_603382 != nil:
+    section.add "X-Amz-Date", valid_603382
+  var valid_603383 = header.getOrDefault("X-Amz-Credential")
+  valid_603383 = validateParameter(valid_603383, JString, required = false,
                                  default = nil)
-  if valid_601363 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601363
-  var valid_601364 = header.getOrDefault("X-Amz-Credential")
-  valid_601364 = validateParameter(valid_601364, JString, required = false,
+  if valid_603383 != nil:
+    section.add "X-Amz-Credential", valid_603383
+  var valid_603384 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603384 = validateParameter(valid_603384, JString, required = false,
                                  default = nil)
-  if valid_601364 != nil:
-    section.add "X-Amz-Credential", valid_601364
+  if valid_603384 != nil:
+    section.add "X-Amz-Security-Token", valid_603384
+  var valid_603385 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603385 = validateParameter(valid_603385, JString, required = false,
+                                 default = nil)
+  if valid_603385 != nil:
+    section.add "X-Amz-Algorithm", valid_603385
+  var valid_603386 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603386 = validateParameter(valid_603386, JString, required = false,
+                                 default = nil)
+  if valid_603386 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603386
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10772,47 +10866,48 @@ proc validate_ReleaseStaticIp_601355(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601366: Call_ReleaseStaticIp_601354; path: JsonNode; query: JsonNode;
+proc call*(call_603388: Call_ReleaseStaticIp_603376; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a specific static IP from your account.
   ## 
-  let valid = call_601366.validator(path, query, header, formData, body)
-  let scheme = call_601366.pickScheme
+  let valid = call_603388.validator(path, query, header, formData, body)
+  let scheme = call_603388.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601366.url(scheme.get, call_601366.host, call_601366.base,
-                         call_601366.route, valid.getOrDefault("path"),
+  let url = call_603388.url(scheme.get, call_603388.host, call_603388.base,
+                         call_603388.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601366, url, valid)
+  result = atozHook(call_603388, url, valid)
 
-proc call*(call_601367: Call_ReleaseStaticIp_601354; body: JsonNode): Recallable =
+proc call*(call_603389: Call_ReleaseStaticIp_603376; body: JsonNode): Recallable =
   ## releaseStaticIp
   ## Deletes a specific static IP from your account.
   ##   body: JObject (required)
-  var body_601368 = newJObject()
+  var body_603390 = newJObject()
   if body != nil:
-    body_601368 = body
-  result = call_601367.call(nil, nil, nil, nil, body_601368)
+    body_603390 = body
+  result = call_603389.call(nil, nil, nil, nil, body_603390)
 
-var releaseStaticIp* = Call_ReleaseStaticIp_601354(name: "releaseStaticIp",
+var releaseStaticIp* = Call_ReleaseStaticIp_603376(name: "releaseStaticIp",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.ReleaseStaticIp",
-    validator: validate_ReleaseStaticIp_601355, base: "/", url: url_ReleaseStaticIp_601356,
+    validator: validate_ReleaseStaticIp_603377, base: "/", url: url_ReleaseStaticIp_603378,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartInstance_601369 = ref object of OpenApiRestCall_599368
-proc url_StartInstance_601371(protocol: Scheme; host: string; base: string;
+  Call_StartInstance_603391 = ref object of OpenApiRestCall_601389
+proc url_StartInstance_603393(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StartInstance_601370(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StartInstance_603392(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts a specific Amazon Lightsail instance from a stopped state. To restart an instance, use the <code>reboot instance</code> operation.</p> <note> <p>When you start a stopped instance, Lightsail assigns a new public IP address to the instance. To use the same IP address after stopping and starting an instance, create a static IP address and attach it to the instance. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/lightsail-create-static-ip">Lightsail Dev Guide</a>.</p> </note> <p>The <code>start instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -10823,57 +10918,57 @@ proc validate_StartInstance_601370(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601372 = header.getOrDefault("X-Amz-Date")
-  valid_601372 = validateParameter(valid_601372, JString, required = false,
-                                 default = nil)
-  if valid_601372 != nil:
-    section.add "X-Amz-Date", valid_601372
-  var valid_601373 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601373 = validateParameter(valid_601373, JString, required = false,
-                                 default = nil)
-  if valid_601373 != nil:
-    section.add "X-Amz-Security-Token", valid_601373
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601374 = header.getOrDefault("X-Amz-Target")
-  valid_601374 = validateParameter(valid_601374, JString, required = true, default = newJString(
+  var valid_603394 = header.getOrDefault("X-Amz-Target")
+  valid_603394 = validateParameter(valid_603394, JString, required = true, default = newJString(
       "Lightsail_20161128.StartInstance"))
-  if valid_601374 != nil:
-    section.add "X-Amz-Target", valid_601374
-  var valid_601375 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601375 = validateParameter(valid_601375, JString, required = false,
+  if valid_603394 != nil:
+    section.add "X-Amz-Target", valid_603394
+  var valid_603395 = header.getOrDefault("X-Amz-Signature")
+  valid_603395 = validateParameter(valid_603395, JString, required = false,
                                  default = nil)
-  if valid_601375 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601375
-  var valid_601376 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601376 = validateParameter(valid_601376, JString, required = false,
+  if valid_603395 != nil:
+    section.add "X-Amz-Signature", valid_603395
+  var valid_603396 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603396 = validateParameter(valid_603396, JString, required = false,
                                  default = nil)
-  if valid_601376 != nil:
-    section.add "X-Amz-Algorithm", valid_601376
-  var valid_601377 = header.getOrDefault("X-Amz-Signature")
-  valid_601377 = validateParameter(valid_601377, JString, required = false,
+  if valid_603396 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603396
+  var valid_603397 = header.getOrDefault("X-Amz-Date")
+  valid_603397 = validateParameter(valid_603397, JString, required = false,
                                  default = nil)
-  if valid_601377 != nil:
-    section.add "X-Amz-Signature", valid_601377
-  var valid_601378 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601378 = validateParameter(valid_601378, JString, required = false,
+  if valid_603397 != nil:
+    section.add "X-Amz-Date", valid_603397
+  var valid_603398 = header.getOrDefault("X-Amz-Credential")
+  valid_603398 = validateParameter(valid_603398, JString, required = false,
                                  default = nil)
-  if valid_601378 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601378
-  var valid_601379 = header.getOrDefault("X-Amz-Credential")
-  valid_601379 = validateParameter(valid_601379, JString, required = false,
+  if valid_603398 != nil:
+    section.add "X-Amz-Credential", valid_603398
+  var valid_603399 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603399 = validateParameter(valid_603399, JString, required = false,
                                  default = nil)
-  if valid_601379 != nil:
-    section.add "X-Amz-Credential", valid_601379
+  if valid_603399 != nil:
+    section.add "X-Amz-Security-Token", valid_603399
+  var valid_603400 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603400 = validateParameter(valid_603400, JString, required = false,
+                                 default = nil)
+  if valid_603400 != nil:
+    section.add "X-Amz-Algorithm", valid_603400
+  var valid_603401 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603401 = validateParameter(valid_603401, JString, required = false,
+                                 default = nil)
+  if valid_603401 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603401
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10884,48 +10979,49 @@ proc validate_StartInstance_601370(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601381: Call_StartInstance_601369; path: JsonNode; query: JsonNode;
+proc call*(call_603403: Call_StartInstance_603391; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts a specific Amazon Lightsail instance from a stopped state. To restart an instance, use the <code>reboot instance</code> operation.</p> <note> <p>When you start a stopped instance, Lightsail assigns a new public IP address to the instance. To use the same IP address after stopping and starting an instance, create a static IP address and attach it to the instance. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/lightsail-create-static-ip">Lightsail Dev Guide</a>.</p> </note> <p>The <code>start instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601381.validator(path, query, header, formData, body)
-  let scheme = call_601381.pickScheme
+  let valid = call_603403.validator(path, query, header, formData, body)
+  let scheme = call_603403.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601381.url(scheme.get, call_601381.host, call_601381.base,
-                         call_601381.route, valid.getOrDefault("path"),
+  let url = call_603403.url(scheme.get, call_603403.host, call_603403.base,
+                         call_603403.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601381, url, valid)
+  result = atozHook(call_603403, url, valid)
 
-proc call*(call_601382: Call_StartInstance_601369; body: JsonNode): Recallable =
+proc call*(call_603404: Call_StartInstance_603391; body: JsonNode): Recallable =
   ## startInstance
   ## <p>Starts a specific Amazon Lightsail instance from a stopped state. To restart an instance, use the <code>reboot instance</code> operation.</p> <note> <p>When you start a stopped instance, Lightsail assigns a new public IP address to the instance. To use the same IP address after stopping and starting an instance, create a static IP address and attach it to the instance. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/lightsail-create-static-ip">Lightsail Dev Guide</a>.</p> </note> <p>The <code>start instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601383 = newJObject()
+  var body_603405 = newJObject()
   if body != nil:
-    body_601383 = body
-  result = call_601382.call(nil, nil, nil, nil, body_601383)
+    body_603405 = body
+  result = call_603404.call(nil, nil, nil, nil, body_603405)
 
-var startInstance* = Call_StartInstance_601369(name: "startInstance",
+var startInstance* = Call_StartInstance_603391(name: "startInstance",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.StartInstance",
-    validator: validate_StartInstance_601370, base: "/", url: url_StartInstance_601371,
+    validator: validate_StartInstance_603392, base: "/", url: url_StartInstance_603393,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartRelationalDatabase_601384 = ref object of OpenApiRestCall_599368
-proc url_StartRelationalDatabase_601386(protocol: Scheme; host: string; base: string;
+  Call_StartRelationalDatabase_603406 = ref object of OpenApiRestCall_601389
+proc url_StartRelationalDatabase_603408(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StartRelationalDatabase_601385(path: JsonNode; query: JsonNode;
+proc validate_StartRelationalDatabase_603407(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts a specific database from a stopped state in Amazon Lightsail. To restart a database, use the <code>reboot relational database</code> operation.</p> <p>The <code>start relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -10936,57 +11032,57 @@ proc validate_StartRelationalDatabase_601385(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601387 = header.getOrDefault("X-Amz-Date")
-  valid_601387 = validateParameter(valid_601387, JString, required = false,
-                                 default = nil)
-  if valid_601387 != nil:
-    section.add "X-Amz-Date", valid_601387
-  var valid_601388 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601388 = validateParameter(valid_601388, JString, required = false,
-                                 default = nil)
-  if valid_601388 != nil:
-    section.add "X-Amz-Security-Token", valid_601388
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601389 = header.getOrDefault("X-Amz-Target")
-  valid_601389 = validateParameter(valid_601389, JString, required = true, default = newJString(
+  var valid_603409 = header.getOrDefault("X-Amz-Target")
+  valid_603409 = validateParameter(valid_603409, JString, required = true, default = newJString(
       "Lightsail_20161128.StartRelationalDatabase"))
-  if valid_601389 != nil:
-    section.add "X-Amz-Target", valid_601389
-  var valid_601390 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601390 = validateParameter(valid_601390, JString, required = false,
+  if valid_603409 != nil:
+    section.add "X-Amz-Target", valid_603409
+  var valid_603410 = header.getOrDefault("X-Amz-Signature")
+  valid_603410 = validateParameter(valid_603410, JString, required = false,
                                  default = nil)
-  if valid_601390 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601390
-  var valid_601391 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601391 = validateParameter(valid_601391, JString, required = false,
+  if valid_603410 != nil:
+    section.add "X-Amz-Signature", valid_603410
+  var valid_603411 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603411 = validateParameter(valid_603411, JString, required = false,
                                  default = nil)
-  if valid_601391 != nil:
-    section.add "X-Amz-Algorithm", valid_601391
-  var valid_601392 = header.getOrDefault("X-Amz-Signature")
-  valid_601392 = validateParameter(valid_601392, JString, required = false,
+  if valid_603411 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603411
+  var valid_603412 = header.getOrDefault("X-Amz-Date")
+  valid_603412 = validateParameter(valid_603412, JString, required = false,
                                  default = nil)
-  if valid_601392 != nil:
-    section.add "X-Amz-Signature", valid_601392
-  var valid_601393 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601393 = validateParameter(valid_601393, JString, required = false,
+  if valid_603412 != nil:
+    section.add "X-Amz-Date", valid_603412
+  var valid_603413 = header.getOrDefault("X-Amz-Credential")
+  valid_603413 = validateParameter(valid_603413, JString, required = false,
                                  default = nil)
-  if valid_601393 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601393
-  var valid_601394 = header.getOrDefault("X-Amz-Credential")
-  valid_601394 = validateParameter(valid_601394, JString, required = false,
+  if valid_603413 != nil:
+    section.add "X-Amz-Credential", valid_603413
+  var valid_603414 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603414 = validateParameter(valid_603414, JString, required = false,
                                  default = nil)
-  if valid_601394 != nil:
-    section.add "X-Amz-Credential", valid_601394
+  if valid_603414 != nil:
+    section.add "X-Amz-Security-Token", valid_603414
+  var valid_603415 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603415 = validateParameter(valid_603415, JString, required = false,
+                                 default = nil)
+  if valid_603415 != nil:
+    section.add "X-Amz-Algorithm", valid_603415
+  var valid_603416 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603416 = validateParameter(valid_603416, JString, required = false,
+                                 default = nil)
+  if valid_603416 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603416
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10997,48 +11093,49 @@ proc validate_StartRelationalDatabase_601385(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601396: Call_StartRelationalDatabase_601384; path: JsonNode;
+proc call*(call_603418: Call_StartRelationalDatabase_603406; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts a specific database from a stopped state in Amazon Lightsail. To restart a database, use the <code>reboot relational database</code> operation.</p> <p>The <code>start relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601396.validator(path, query, header, formData, body)
-  let scheme = call_601396.pickScheme
+  let valid = call_603418.validator(path, query, header, formData, body)
+  let scheme = call_603418.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601396.url(scheme.get, call_601396.host, call_601396.base,
-                         call_601396.route, valid.getOrDefault("path"),
+  let url = call_603418.url(scheme.get, call_603418.host, call_603418.base,
+                         call_603418.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601396, url, valid)
+  result = atozHook(call_603418, url, valid)
 
-proc call*(call_601397: Call_StartRelationalDatabase_601384; body: JsonNode): Recallable =
+proc call*(call_603419: Call_StartRelationalDatabase_603406; body: JsonNode): Recallable =
   ## startRelationalDatabase
   ## <p>Starts a specific database from a stopped state in Amazon Lightsail. To restart a database, use the <code>reboot relational database</code> operation.</p> <p>The <code>start relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601398 = newJObject()
+  var body_603420 = newJObject()
   if body != nil:
-    body_601398 = body
-  result = call_601397.call(nil, nil, nil, nil, body_601398)
+    body_603420 = body
+  result = call_603419.call(nil, nil, nil, nil, body_603420)
 
-var startRelationalDatabase* = Call_StartRelationalDatabase_601384(
+var startRelationalDatabase* = Call_StartRelationalDatabase_603406(
     name: "startRelationalDatabase", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.StartRelationalDatabase",
-    validator: validate_StartRelationalDatabase_601385, base: "/",
-    url: url_StartRelationalDatabase_601386, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartRelationalDatabase_603407, base: "/",
+    url: url_StartRelationalDatabase_603408, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopInstance_601399 = ref object of OpenApiRestCall_599368
-proc url_StopInstance_601401(protocol: Scheme; host: string; base: string;
+  Call_StopInstance_603421 = ref object of OpenApiRestCall_601389
+proc url_StopInstance_603423(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StopInstance_601400(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StopInstance_603422(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Stops a specific Amazon Lightsail instance that is currently running.</p> <note> <p>When you start a stopped instance, Lightsail assigns a new public IP address to the instance. To use the same IP address after stopping and starting an instance, create a static IP address and attach it to the instance. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/lightsail-create-static-ip">Lightsail Dev Guide</a>.</p> </note> <p>The <code>stop instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -11049,57 +11146,57 @@ proc validate_StopInstance_601400(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601402 = header.getOrDefault("X-Amz-Date")
-  valid_601402 = validateParameter(valid_601402, JString, required = false,
-                                 default = nil)
-  if valid_601402 != nil:
-    section.add "X-Amz-Date", valid_601402
-  var valid_601403 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601403 = validateParameter(valid_601403, JString, required = false,
-                                 default = nil)
-  if valid_601403 != nil:
-    section.add "X-Amz-Security-Token", valid_601403
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601404 = header.getOrDefault("X-Amz-Target")
-  valid_601404 = validateParameter(valid_601404, JString, required = true, default = newJString(
+  var valid_603424 = header.getOrDefault("X-Amz-Target")
+  valid_603424 = validateParameter(valid_603424, JString, required = true, default = newJString(
       "Lightsail_20161128.StopInstance"))
-  if valid_601404 != nil:
-    section.add "X-Amz-Target", valid_601404
-  var valid_601405 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601405 = validateParameter(valid_601405, JString, required = false,
+  if valid_603424 != nil:
+    section.add "X-Amz-Target", valid_603424
+  var valid_603425 = header.getOrDefault("X-Amz-Signature")
+  valid_603425 = validateParameter(valid_603425, JString, required = false,
                                  default = nil)
-  if valid_601405 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601405
-  var valid_601406 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601406 = validateParameter(valid_601406, JString, required = false,
+  if valid_603425 != nil:
+    section.add "X-Amz-Signature", valid_603425
+  var valid_603426 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603426 = validateParameter(valid_603426, JString, required = false,
                                  default = nil)
-  if valid_601406 != nil:
-    section.add "X-Amz-Algorithm", valid_601406
-  var valid_601407 = header.getOrDefault("X-Amz-Signature")
-  valid_601407 = validateParameter(valid_601407, JString, required = false,
+  if valid_603426 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603426
+  var valid_603427 = header.getOrDefault("X-Amz-Date")
+  valid_603427 = validateParameter(valid_603427, JString, required = false,
                                  default = nil)
-  if valid_601407 != nil:
-    section.add "X-Amz-Signature", valid_601407
-  var valid_601408 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601408 = validateParameter(valid_601408, JString, required = false,
+  if valid_603427 != nil:
+    section.add "X-Amz-Date", valid_603427
+  var valid_603428 = header.getOrDefault("X-Amz-Credential")
+  valid_603428 = validateParameter(valid_603428, JString, required = false,
                                  default = nil)
-  if valid_601408 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601408
-  var valid_601409 = header.getOrDefault("X-Amz-Credential")
-  valid_601409 = validateParameter(valid_601409, JString, required = false,
+  if valid_603428 != nil:
+    section.add "X-Amz-Credential", valid_603428
+  var valid_603429 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603429 = validateParameter(valid_603429, JString, required = false,
                                  default = nil)
-  if valid_601409 != nil:
-    section.add "X-Amz-Credential", valid_601409
+  if valid_603429 != nil:
+    section.add "X-Amz-Security-Token", valid_603429
+  var valid_603430 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603430 = validateParameter(valid_603430, JString, required = false,
+                                 default = nil)
+  if valid_603430 != nil:
+    section.add "X-Amz-Algorithm", valid_603430
+  var valid_603431 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603431 = validateParameter(valid_603431, JString, required = false,
+                                 default = nil)
+  if valid_603431 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603431
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11110,47 +11207,48 @@ proc validate_StopInstance_601400(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601411: Call_StopInstance_601399; path: JsonNode; query: JsonNode;
+proc call*(call_603433: Call_StopInstance_603421; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stops a specific Amazon Lightsail instance that is currently running.</p> <note> <p>When you start a stopped instance, Lightsail assigns a new public IP address to the instance. To use the same IP address after stopping and starting an instance, create a static IP address and attach it to the instance. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/lightsail-create-static-ip">Lightsail Dev Guide</a>.</p> </note> <p>The <code>stop instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601411.validator(path, query, header, formData, body)
-  let scheme = call_601411.pickScheme
+  let valid = call_603433.validator(path, query, header, formData, body)
+  let scheme = call_603433.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601411.url(scheme.get, call_601411.host, call_601411.base,
-                         call_601411.route, valid.getOrDefault("path"),
+  let url = call_603433.url(scheme.get, call_603433.host, call_603433.base,
+                         call_603433.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601411, url, valid)
+  result = atozHook(call_603433, url, valid)
 
-proc call*(call_601412: Call_StopInstance_601399; body: JsonNode): Recallable =
+proc call*(call_603434: Call_StopInstance_603421; body: JsonNode): Recallable =
   ## stopInstance
   ## <p>Stops a specific Amazon Lightsail instance that is currently running.</p> <note> <p>When you start a stopped instance, Lightsail assigns a new public IP address to the instance. To use the same IP address after stopping and starting an instance, create a static IP address and attach it to the instance. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/lightsail-create-static-ip">Lightsail Dev Guide</a>.</p> </note> <p>The <code>stop instance</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>instance name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601413 = newJObject()
+  var body_603435 = newJObject()
   if body != nil:
-    body_601413 = body
-  result = call_601412.call(nil, nil, nil, nil, body_601413)
+    body_603435 = body
+  result = call_603434.call(nil, nil, nil, nil, body_603435)
 
-var stopInstance* = Call_StopInstance_601399(name: "stopInstance",
+var stopInstance* = Call_StopInstance_603421(name: "stopInstance",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.StopInstance",
-    validator: validate_StopInstance_601400, base: "/", url: url_StopInstance_601401,
+    validator: validate_StopInstance_603422, base: "/", url: url_StopInstance_603423,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopRelationalDatabase_601414 = ref object of OpenApiRestCall_599368
-proc url_StopRelationalDatabase_601416(protocol: Scheme; host: string; base: string;
+  Call_StopRelationalDatabase_603436 = ref object of OpenApiRestCall_601389
+proc url_StopRelationalDatabase_603438(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StopRelationalDatabase_601415(path: JsonNode; query: JsonNode;
+proc validate_StopRelationalDatabase_603437(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Stops a specific database that is currently running in Amazon Lightsail.</p> <p>The <code>stop relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -11161,57 +11259,57 @@ proc validate_StopRelationalDatabase_601415(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601417 = header.getOrDefault("X-Amz-Date")
-  valid_601417 = validateParameter(valid_601417, JString, required = false,
-                                 default = nil)
-  if valid_601417 != nil:
-    section.add "X-Amz-Date", valid_601417
-  var valid_601418 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601418 = validateParameter(valid_601418, JString, required = false,
-                                 default = nil)
-  if valid_601418 != nil:
-    section.add "X-Amz-Security-Token", valid_601418
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601419 = header.getOrDefault("X-Amz-Target")
-  valid_601419 = validateParameter(valid_601419, JString, required = true, default = newJString(
+  var valid_603439 = header.getOrDefault("X-Amz-Target")
+  valid_603439 = validateParameter(valid_603439, JString, required = true, default = newJString(
       "Lightsail_20161128.StopRelationalDatabase"))
-  if valid_601419 != nil:
-    section.add "X-Amz-Target", valid_601419
-  var valid_601420 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601420 = validateParameter(valid_601420, JString, required = false,
+  if valid_603439 != nil:
+    section.add "X-Amz-Target", valid_603439
+  var valid_603440 = header.getOrDefault("X-Amz-Signature")
+  valid_603440 = validateParameter(valid_603440, JString, required = false,
                                  default = nil)
-  if valid_601420 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601420
-  var valid_601421 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601421 = validateParameter(valid_601421, JString, required = false,
+  if valid_603440 != nil:
+    section.add "X-Amz-Signature", valid_603440
+  var valid_603441 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603441 = validateParameter(valid_603441, JString, required = false,
                                  default = nil)
-  if valid_601421 != nil:
-    section.add "X-Amz-Algorithm", valid_601421
-  var valid_601422 = header.getOrDefault("X-Amz-Signature")
-  valid_601422 = validateParameter(valid_601422, JString, required = false,
+  if valid_603441 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603441
+  var valid_603442 = header.getOrDefault("X-Amz-Date")
+  valid_603442 = validateParameter(valid_603442, JString, required = false,
                                  default = nil)
-  if valid_601422 != nil:
-    section.add "X-Amz-Signature", valid_601422
-  var valid_601423 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601423 = validateParameter(valid_601423, JString, required = false,
+  if valid_603442 != nil:
+    section.add "X-Amz-Date", valid_603442
+  var valid_603443 = header.getOrDefault("X-Amz-Credential")
+  valid_603443 = validateParameter(valid_603443, JString, required = false,
                                  default = nil)
-  if valid_601423 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601423
-  var valid_601424 = header.getOrDefault("X-Amz-Credential")
-  valid_601424 = validateParameter(valid_601424, JString, required = false,
+  if valid_603443 != nil:
+    section.add "X-Amz-Credential", valid_603443
+  var valid_603444 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603444 = validateParameter(valid_603444, JString, required = false,
                                  default = nil)
-  if valid_601424 != nil:
-    section.add "X-Amz-Credential", valid_601424
+  if valid_603444 != nil:
+    section.add "X-Amz-Security-Token", valid_603444
+  var valid_603445 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603445 = validateParameter(valid_603445, JString, required = false,
+                                 default = nil)
+  if valid_603445 != nil:
+    section.add "X-Amz-Algorithm", valid_603445
+  var valid_603446 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603446 = validateParameter(valid_603446, JString, required = false,
+                                 default = nil)
+  if valid_603446 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603446
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11222,48 +11320,49 @@ proc validate_StopRelationalDatabase_601415(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601426: Call_StopRelationalDatabase_601414; path: JsonNode;
+proc call*(call_603448: Call_StopRelationalDatabase_603436; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stops a specific database that is currently running in Amazon Lightsail.</p> <p>The <code>stop relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601426.validator(path, query, header, formData, body)
-  let scheme = call_601426.pickScheme
+  let valid = call_603448.validator(path, query, header, formData, body)
+  let scheme = call_603448.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601426.url(scheme.get, call_601426.host, call_601426.base,
-                         call_601426.route, valid.getOrDefault("path"),
+  let url = call_603448.url(scheme.get, call_603448.host, call_603448.base,
+                         call_603448.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601426, url, valid)
+  result = atozHook(call_603448, url, valid)
 
-proc call*(call_601427: Call_StopRelationalDatabase_601414; body: JsonNode): Recallable =
+proc call*(call_603449: Call_StopRelationalDatabase_603436; body: JsonNode): Recallable =
   ## stopRelationalDatabase
   ## <p>Stops a specific database that is currently running in Amazon Lightsail.</p> <p>The <code>stop relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601428 = newJObject()
+  var body_603450 = newJObject()
   if body != nil:
-    body_601428 = body
-  result = call_601427.call(nil, nil, nil, nil, body_601428)
+    body_603450 = body
+  result = call_603449.call(nil, nil, nil, nil, body_603450)
 
-var stopRelationalDatabase* = Call_StopRelationalDatabase_601414(
+var stopRelationalDatabase* = Call_StopRelationalDatabase_603436(
     name: "stopRelationalDatabase", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.StopRelationalDatabase",
-    validator: validate_StopRelationalDatabase_601415, base: "/",
-    url: url_StopRelationalDatabase_601416, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StopRelationalDatabase_603437, base: "/",
+    url: url_StopRelationalDatabase_603438, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_601429 = ref object of OpenApiRestCall_599368
-proc url_TagResource_601431(protocol: Scheme; host: string; base: string;
+  Call_TagResource_603451 = ref object of OpenApiRestCall_601389
+proc url_TagResource_603453(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_TagResource_601430(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_603452(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds one or more tags to the specified Amazon Lightsail resource. Each resource can have a maximum of 50 tags. Each tag consists of a key and an optional value. Tag keys must be unique per resource. For more information about tags, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-tags">Lightsail Dev Guide</a>.</p> <p>The <code>tag resource</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>resource name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -11274,57 +11373,57 @@ proc validate_TagResource_601430(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601432 = header.getOrDefault("X-Amz-Date")
-  valid_601432 = validateParameter(valid_601432, JString, required = false,
-                                 default = nil)
-  if valid_601432 != nil:
-    section.add "X-Amz-Date", valid_601432
-  var valid_601433 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601433 = validateParameter(valid_601433, JString, required = false,
-                                 default = nil)
-  if valid_601433 != nil:
-    section.add "X-Amz-Security-Token", valid_601433
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601434 = header.getOrDefault("X-Amz-Target")
-  valid_601434 = validateParameter(valid_601434, JString, required = true, default = newJString(
+  var valid_603454 = header.getOrDefault("X-Amz-Target")
+  valid_603454 = validateParameter(valid_603454, JString, required = true, default = newJString(
       "Lightsail_20161128.TagResource"))
-  if valid_601434 != nil:
-    section.add "X-Amz-Target", valid_601434
-  var valid_601435 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601435 = validateParameter(valid_601435, JString, required = false,
+  if valid_603454 != nil:
+    section.add "X-Amz-Target", valid_603454
+  var valid_603455 = header.getOrDefault("X-Amz-Signature")
+  valid_603455 = validateParameter(valid_603455, JString, required = false,
                                  default = nil)
-  if valid_601435 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601435
-  var valid_601436 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601436 = validateParameter(valid_601436, JString, required = false,
+  if valid_603455 != nil:
+    section.add "X-Amz-Signature", valid_603455
+  var valid_603456 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603456 = validateParameter(valid_603456, JString, required = false,
                                  default = nil)
-  if valid_601436 != nil:
-    section.add "X-Amz-Algorithm", valid_601436
-  var valid_601437 = header.getOrDefault("X-Amz-Signature")
-  valid_601437 = validateParameter(valid_601437, JString, required = false,
+  if valid_603456 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603456
+  var valid_603457 = header.getOrDefault("X-Amz-Date")
+  valid_603457 = validateParameter(valid_603457, JString, required = false,
                                  default = nil)
-  if valid_601437 != nil:
-    section.add "X-Amz-Signature", valid_601437
-  var valid_601438 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601438 = validateParameter(valid_601438, JString, required = false,
+  if valid_603457 != nil:
+    section.add "X-Amz-Date", valid_603457
+  var valid_603458 = header.getOrDefault("X-Amz-Credential")
+  valid_603458 = validateParameter(valid_603458, JString, required = false,
                                  default = nil)
-  if valid_601438 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601438
-  var valid_601439 = header.getOrDefault("X-Amz-Credential")
-  valid_601439 = validateParameter(valid_601439, JString, required = false,
+  if valid_603458 != nil:
+    section.add "X-Amz-Credential", valid_603458
+  var valid_603459 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603459 = validateParameter(valid_603459, JString, required = false,
                                  default = nil)
-  if valid_601439 != nil:
-    section.add "X-Amz-Credential", valid_601439
+  if valid_603459 != nil:
+    section.add "X-Amz-Security-Token", valid_603459
+  var valid_603460 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603460 = validateParameter(valid_603460, JString, required = false,
+                                 default = nil)
+  if valid_603460 != nil:
+    section.add "X-Amz-Algorithm", valid_603460
+  var valid_603461 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603461 = validateParameter(valid_603461, JString, required = false,
+                                 default = nil)
+  if valid_603461 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603461
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11335,48 +11434,49 @@ proc validate_TagResource_601430(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_601441: Call_TagResource_601429; path: JsonNode; query: JsonNode;
+proc call*(call_603463: Call_TagResource_603451; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds one or more tags to the specified Amazon Lightsail resource. Each resource can have a maximum of 50 tags. Each tag consists of a key and an optional value. Tag keys must be unique per resource. For more information about tags, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-tags">Lightsail Dev Guide</a>.</p> <p>The <code>tag resource</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>resource name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601441.validator(path, query, header, formData, body)
-  let scheme = call_601441.pickScheme
+  let valid = call_603463.validator(path, query, header, formData, body)
+  let scheme = call_603463.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601441.url(scheme.get, call_601441.host, call_601441.base,
-                         call_601441.route, valid.getOrDefault("path"),
+  let url = call_603463.url(scheme.get, call_603463.host, call_603463.base,
+                         call_603463.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601441, url, valid)
+  result = atozHook(call_603463, url, valid)
 
-proc call*(call_601442: Call_TagResource_601429; body: JsonNode): Recallable =
+proc call*(call_603464: Call_TagResource_603451; body: JsonNode): Recallable =
   ## tagResource
   ## <p>Adds one or more tags to the specified Amazon Lightsail resource. Each resource can have a maximum of 50 tags. Each tag consists of a key and an optional value. Tag keys must be unique per resource. For more information about tags, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-tags">Lightsail Dev Guide</a>.</p> <p>The <code>tag resource</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>resource name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601443 = newJObject()
+  var body_603465 = newJObject()
   if body != nil:
-    body_601443 = body
-  result = call_601442.call(nil, nil, nil, nil, body_601443)
+    body_603465 = body
+  result = call_603464.call(nil, nil, nil, nil, body_603465)
 
-var tagResource* = Call_TagResource_601429(name: "tagResource",
+var tagResource* = Call_TagResource_603451(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.TagResource",
-                                        validator: validate_TagResource_601430,
-                                        base: "/", url: url_TagResource_601431,
+                                        validator: validate_TagResource_603452,
+                                        base: "/", url: url_TagResource_603453,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UnpeerVpc_601444 = ref object of OpenApiRestCall_599368
-proc url_UnpeerVpc_601446(protocol: Scheme; host: string; base: string; route: string;
+  Call_UnpeerVpc_603466 = ref object of OpenApiRestCall_601389
+proc url_UnpeerVpc_603468(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UnpeerVpc_601445(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UnpeerVpc_603467(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Attempts to unpeer the Lightsail VPC from the user's default VPC.
   ## 
@@ -11387,57 +11487,57 @@ proc validate_UnpeerVpc_601445(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601447 = header.getOrDefault("X-Amz-Date")
-  valid_601447 = validateParameter(valid_601447, JString, required = false,
-                                 default = nil)
-  if valid_601447 != nil:
-    section.add "X-Amz-Date", valid_601447
-  var valid_601448 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601448 = validateParameter(valid_601448, JString, required = false,
-                                 default = nil)
-  if valid_601448 != nil:
-    section.add "X-Amz-Security-Token", valid_601448
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601449 = header.getOrDefault("X-Amz-Target")
-  valid_601449 = validateParameter(valid_601449, JString, required = true, default = newJString(
+  var valid_603469 = header.getOrDefault("X-Amz-Target")
+  valid_603469 = validateParameter(valid_603469, JString, required = true, default = newJString(
       "Lightsail_20161128.UnpeerVpc"))
-  if valid_601449 != nil:
-    section.add "X-Amz-Target", valid_601449
-  var valid_601450 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601450 = validateParameter(valid_601450, JString, required = false,
+  if valid_603469 != nil:
+    section.add "X-Amz-Target", valid_603469
+  var valid_603470 = header.getOrDefault("X-Amz-Signature")
+  valid_603470 = validateParameter(valid_603470, JString, required = false,
                                  default = nil)
-  if valid_601450 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601450
-  var valid_601451 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601451 = validateParameter(valid_601451, JString, required = false,
+  if valid_603470 != nil:
+    section.add "X-Amz-Signature", valid_603470
+  var valid_603471 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603471 = validateParameter(valid_603471, JString, required = false,
                                  default = nil)
-  if valid_601451 != nil:
-    section.add "X-Amz-Algorithm", valid_601451
-  var valid_601452 = header.getOrDefault("X-Amz-Signature")
-  valid_601452 = validateParameter(valid_601452, JString, required = false,
+  if valid_603471 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603471
+  var valid_603472 = header.getOrDefault("X-Amz-Date")
+  valid_603472 = validateParameter(valid_603472, JString, required = false,
                                  default = nil)
-  if valid_601452 != nil:
-    section.add "X-Amz-Signature", valid_601452
-  var valid_601453 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601453 = validateParameter(valid_601453, JString, required = false,
+  if valid_603472 != nil:
+    section.add "X-Amz-Date", valid_603472
+  var valid_603473 = header.getOrDefault("X-Amz-Credential")
+  valid_603473 = validateParameter(valid_603473, JString, required = false,
                                  default = nil)
-  if valid_601453 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601453
-  var valid_601454 = header.getOrDefault("X-Amz-Credential")
-  valid_601454 = validateParameter(valid_601454, JString, required = false,
+  if valid_603473 != nil:
+    section.add "X-Amz-Credential", valid_603473
+  var valid_603474 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603474 = validateParameter(valid_603474, JString, required = false,
                                  default = nil)
-  if valid_601454 != nil:
-    section.add "X-Amz-Credential", valid_601454
+  if valid_603474 != nil:
+    section.add "X-Amz-Security-Token", valid_603474
+  var valid_603475 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603475 = validateParameter(valid_603475, JString, required = false,
+                                 default = nil)
+  if valid_603475 != nil:
+    section.add "X-Amz-Algorithm", valid_603475
+  var valid_603476 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603476 = validateParameter(valid_603476, JString, required = false,
+                                 default = nil)
+  if valid_603476 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603476
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11448,47 +11548,48 @@ proc validate_UnpeerVpc_601445(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_601456: Call_UnpeerVpc_601444; path: JsonNode; query: JsonNode;
+proc call*(call_603478: Call_UnpeerVpc_603466; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Attempts to unpeer the Lightsail VPC from the user's default VPC.
   ## 
-  let valid = call_601456.validator(path, query, header, formData, body)
-  let scheme = call_601456.pickScheme
+  let valid = call_603478.validator(path, query, header, formData, body)
+  let scheme = call_603478.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601456.url(scheme.get, call_601456.host, call_601456.base,
-                         call_601456.route, valid.getOrDefault("path"),
+  let url = call_603478.url(scheme.get, call_603478.host, call_603478.base,
+                         call_603478.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601456, url, valid)
+  result = atozHook(call_603478, url, valid)
 
-proc call*(call_601457: Call_UnpeerVpc_601444; body: JsonNode): Recallable =
+proc call*(call_603479: Call_UnpeerVpc_603466; body: JsonNode): Recallable =
   ## unpeerVpc
   ## Attempts to unpeer the Lightsail VPC from the user's default VPC.
   ##   body: JObject (required)
-  var body_601458 = newJObject()
+  var body_603480 = newJObject()
   if body != nil:
-    body_601458 = body
-  result = call_601457.call(nil, nil, nil, nil, body_601458)
+    body_603480 = body
+  result = call_603479.call(nil, nil, nil, nil, body_603480)
 
-var unpeerVpc* = Call_UnpeerVpc_601444(name: "unpeerVpc", meth: HttpMethod.HttpPost,
+var unpeerVpc* = Call_UnpeerVpc_603466(name: "unpeerVpc", meth: HttpMethod.HttpPost,
                                     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.UnpeerVpc",
-                                    validator: validate_UnpeerVpc_601445,
-                                    base: "/", url: url_UnpeerVpc_601446,
+                                    validator: validate_UnpeerVpc_603467,
+                                    base: "/", url: url_UnpeerVpc_603468,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_601459 = ref object of OpenApiRestCall_599368
-proc url_UntagResource_601461(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_603481 = ref object of OpenApiRestCall_601389
+proc url_UntagResource_603483(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UntagResource_601460(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_603482(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified set of tag keys and their values from the specified Amazon Lightsail resource.</p> <p>The <code>untag resource</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>resource name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -11499,57 +11600,57 @@ proc validate_UntagResource_601460(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601462 = header.getOrDefault("X-Amz-Date")
-  valid_601462 = validateParameter(valid_601462, JString, required = false,
-                                 default = nil)
-  if valid_601462 != nil:
-    section.add "X-Amz-Date", valid_601462
-  var valid_601463 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601463 = validateParameter(valid_601463, JString, required = false,
-                                 default = nil)
-  if valid_601463 != nil:
-    section.add "X-Amz-Security-Token", valid_601463
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601464 = header.getOrDefault("X-Amz-Target")
-  valid_601464 = validateParameter(valid_601464, JString, required = true, default = newJString(
+  var valid_603484 = header.getOrDefault("X-Amz-Target")
+  valid_603484 = validateParameter(valid_603484, JString, required = true, default = newJString(
       "Lightsail_20161128.UntagResource"))
-  if valid_601464 != nil:
-    section.add "X-Amz-Target", valid_601464
-  var valid_601465 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601465 = validateParameter(valid_601465, JString, required = false,
+  if valid_603484 != nil:
+    section.add "X-Amz-Target", valid_603484
+  var valid_603485 = header.getOrDefault("X-Amz-Signature")
+  valid_603485 = validateParameter(valid_603485, JString, required = false,
                                  default = nil)
-  if valid_601465 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601465
-  var valid_601466 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601466 = validateParameter(valid_601466, JString, required = false,
+  if valid_603485 != nil:
+    section.add "X-Amz-Signature", valid_603485
+  var valid_603486 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603486 = validateParameter(valid_603486, JString, required = false,
                                  default = nil)
-  if valid_601466 != nil:
-    section.add "X-Amz-Algorithm", valid_601466
-  var valid_601467 = header.getOrDefault("X-Amz-Signature")
-  valid_601467 = validateParameter(valid_601467, JString, required = false,
+  if valid_603486 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603486
+  var valid_603487 = header.getOrDefault("X-Amz-Date")
+  valid_603487 = validateParameter(valid_603487, JString, required = false,
                                  default = nil)
-  if valid_601467 != nil:
-    section.add "X-Amz-Signature", valid_601467
-  var valid_601468 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601468 = validateParameter(valid_601468, JString, required = false,
+  if valid_603487 != nil:
+    section.add "X-Amz-Date", valid_603487
+  var valid_603488 = header.getOrDefault("X-Amz-Credential")
+  valid_603488 = validateParameter(valid_603488, JString, required = false,
                                  default = nil)
-  if valid_601468 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601468
-  var valid_601469 = header.getOrDefault("X-Amz-Credential")
-  valid_601469 = validateParameter(valid_601469, JString, required = false,
+  if valid_603488 != nil:
+    section.add "X-Amz-Credential", valid_603488
+  var valid_603489 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603489 = validateParameter(valid_603489, JString, required = false,
                                  default = nil)
-  if valid_601469 != nil:
-    section.add "X-Amz-Credential", valid_601469
+  if valid_603489 != nil:
+    section.add "X-Amz-Security-Token", valid_603489
+  var valid_603490 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603490 = validateParameter(valid_603490, JString, required = false,
+                                 default = nil)
+  if valid_603490 != nil:
+    section.add "X-Amz-Algorithm", valid_603490
+  var valid_603491 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603491 = validateParameter(valid_603491, JString, required = false,
+                                 default = nil)
+  if valid_603491 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603491
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11560,47 +11661,48 @@ proc validate_UntagResource_601460(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601471: Call_UntagResource_601459; path: JsonNode; query: JsonNode;
+proc call*(call_603493: Call_UntagResource_603481; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified set of tag keys and their values from the specified Amazon Lightsail resource.</p> <p>The <code>untag resource</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>resource name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601471.validator(path, query, header, formData, body)
-  let scheme = call_601471.pickScheme
+  let valid = call_603493.validator(path, query, header, formData, body)
+  let scheme = call_603493.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601471.url(scheme.get, call_601471.host, call_601471.base,
-                         call_601471.route, valid.getOrDefault("path"),
+  let url = call_603493.url(scheme.get, call_603493.host, call_603493.base,
+                         call_603493.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601471, url, valid)
+  result = atozHook(call_603493, url, valid)
 
-proc call*(call_601472: Call_UntagResource_601459; body: JsonNode): Recallable =
+proc call*(call_603494: Call_UntagResource_603481; body: JsonNode): Recallable =
   ## untagResource
   ## <p>Deletes the specified set of tag keys and their values from the specified Amazon Lightsail resource.</p> <p>The <code>untag resource</code> operation supports tag-based access control via request tags and resource tags applied to the resource identified by <code>resource name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601473 = newJObject()
+  var body_603495 = newJObject()
   if body != nil:
-    body_601473 = body
-  result = call_601472.call(nil, nil, nil, nil, body_601473)
+    body_603495 = body
+  result = call_603494.call(nil, nil, nil, nil, body_603495)
 
-var untagResource* = Call_UntagResource_601459(name: "untagResource",
+var untagResource* = Call_UntagResource_603481(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.UntagResource",
-    validator: validate_UntagResource_601460, base: "/", url: url_UntagResource_601461,
+    validator: validate_UntagResource_603482, base: "/", url: url_UntagResource_603483,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateDomainEntry_601474 = ref object of OpenApiRestCall_599368
-proc url_UpdateDomainEntry_601476(protocol: Scheme; host: string; base: string;
+  Call_UpdateDomainEntry_603496 = ref object of OpenApiRestCall_601389
+proc url_UpdateDomainEntry_603498(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateDomainEntry_601475(path: JsonNode; query: JsonNode;
+proc validate_UpdateDomainEntry_603497(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Updates a domain recordset after it is created.</p> <p>The <code>update domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
@@ -11612,57 +11714,57 @@ proc validate_UpdateDomainEntry_601475(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601477 = header.getOrDefault("X-Amz-Date")
-  valid_601477 = validateParameter(valid_601477, JString, required = false,
-                                 default = nil)
-  if valid_601477 != nil:
-    section.add "X-Amz-Date", valid_601477
-  var valid_601478 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601478 = validateParameter(valid_601478, JString, required = false,
-                                 default = nil)
-  if valid_601478 != nil:
-    section.add "X-Amz-Security-Token", valid_601478
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601479 = header.getOrDefault("X-Amz-Target")
-  valid_601479 = validateParameter(valid_601479, JString, required = true, default = newJString(
+  var valid_603499 = header.getOrDefault("X-Amz-Target")
+  valid_603499 = validateParameter(valid_603499, JString, required = true, default = newJString(
       "Lightsail_20161128.UpdateDomainEntry"))
-  if valid_601479 != nil:
-    section.add "X-Amz-Target", valid_601479
-  var valid_601480 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601480 = validateParameter(valid_601480, JString, required = false,
+  if valid_603499 != nil:
+    section.add "X-Amz-Target", valid_603499
+  var valid_603500 = header.getOrDefault("X-Amz-Signature")
+  valid_603500 = validateParameter(valid_603500, JString, required = false,
                                  default = nil)
-  if valid_601480 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601480
-  var valid_601481 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601481 = validateParameter(valid_601481, JString, required = false,
+  if valid_603500 != nil:
+    section.add "X-Amz-Signature", valid_603500
+  var valid_603501 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603501 = validateParameter(valid_603501, JString, required = false,
                                  default = nil)
-  if valid_601481 != nil:
-    section.add "X-Amz-Algorithm", valid_601481
-  var valid_601482 = header.getOrDefault("X-Amz-Signature")
-  valid_601482 = validateParameter(valid_601482, JString, required = false,
+  if valid_603501 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603501
+  var valid_603502 = header.getOrDefault("X-Amz-Date")
+  valid_603502 = validateParameter(valid_603502, JString, required = false,
                                  default = nil)
-  if valid_601482 != nil:
-    section.add "X-Amz-Signature", valid_601482
-  var valid_601483 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601483 = validateParameter(valid_601483, JString, required = false,
+  if valid_603502 != nil:
+    section.add "X-Amz-Date", valid_603502
+  var valid_603503 = header.getOrDefault("X-Amz-Credential")
+  valid_603503 = validateParameter(valid_603503, JString, required = false,
                                  default = nil)
-  if valid_601483 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601483
-  var valid_601484 = header.getOrDefault("X-Amz-Credential")
-  valid_601484 = validateParameter(valid_601484, JString, required = false,
+  if valid_603503 != nil:
+    section.add "X-Amz-Credential", valid_603503
+  var valid_603504 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603504 = validateParameter(valid_603504, JString, required = false,
                                  default = nil)
-  if valid_601484 != nil:
-    section.add "X-Amz-Credential", valid_601484
+  if valid_603504 != nil:
+    section.add "X-Amz-Security-Token", valid_603504
+  var valid_603505 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603505 = validateParameter(valid_603505, JString, required = false,
+                                 default = nil)
+  if valid_603505 != nil:
+    section.add "X-Amz-Algorithm", valid_603505
+  var valid_603506 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603506 = validateParameter(valid_603506, JString, required = false,
+                                 default = nil)
+  if valid_603506 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603506
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11673,47 +11775,48 @@ proc validate_UpdateDomainEntry_601475(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601486: Call_UpdateDomainEntry_601474; path: JsonNode;
+proc call*(call_603508: Call_UpdateDomainEntry_603496; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a domain recordset after it is created.</p> <p>The <code>update domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601486.validator(path, query, header, formData, body)
-  let scheme = call_601486.pickScheme
+  let valid = call_603508.validator(path, query, header, formData, body)
+  let scheme = call_603508.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601486.url(scheme.get, call_601486.host, call_601486.base,
-                         call_601486.route, valid.getOrDefault("path"),
+  let url = call_603508.url(scheme.get, call_603508.host, call_603508.base,
+                         call_603508.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601486, url, valid)
+  result = atozHook(call_603508, url, valid)
 
-proc call*(call_601487: Call_UpdateDomainEntry_601474; body: JsonNode): Recallable =
+proc call*(call_603509: Call_UpdateDomainEntry_603496; body: JsonNode): Recallable =
   ## updateDomainEntry
   ## <p>Updates a domain recordset after it is created.</p> <p>The <code>update domain entry</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>domain name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601488 = newJObject()
+  var body_603510 = newJObject()
   if body != nil:
-    body_601488 = body
-  result = call_601487.call(nil, nil, nil, nil, body_601488)
+    body_603510 = body
+  result = call_603509.call(nil, nil, nil, nil, body_603510)
 
-var updateDomainEntry* = Call_UpdateDomainEntry_601474(name: "updateDomainEntry",
+var updateDomainEntry* = Call_UpdateDomainEntry_603496(name: "updateDomainEntry",
     meth: HttpMethod.HttpPost, host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.UpdateDomainEntry",
-    validator: validate_UpdateDomainEntry_601475, base: "/",
-    url: url_UpdateDomainEntry_601476, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateDomainEntry_603497, base: "/",
+    url: url_UpdateDomainEntry_603498, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateLoadBalancerAttribute_601489 = ref object of OpenApiRestCall_599368
-proc url_UpdateLoadBalancerAttribute_601491(protocol: Scheme; host: string;
+  Call_UpdateLoadBalancerAttribute_603511 = ref object of OpenApiRestCall_601389
+proc url_UpdateLoadBalancerAttribute_603513(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateLoadBalancerAttribute_601490(path: JsonNode; query: JsonNode;
+proc validate_UpdateLoadBalancerAttribute_603512(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the specified attribute for a load balancer. You can only update one attribute at a time.</p> <p>The <code>update load balancer attribute</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -11724,57 +11827,57 @@ proc validate_UpdateLoadBalancerAttribute_601490(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601492 = header.getOrDefault("X-Amz-Date")
-  valid_601492 = validateParameter(valid_601492, JString, required = false,
-                                 default = nil)
-  if valid_601492 != nil:
-    section.add "X-Amz-Date", valid_601492
-  var valid_601493 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601493 = validateParameter(valid_601493, JString, required = false,
-                                 default = nil)
-  if valid_601493 != nil:
-    section.add "X-Amz-Security-Token", valid_601493
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601494 = header.getOrDefault("X-Amz-Target")
-  valid_601494 = validateParameter(valid_601494, JString, required = true, default = newJString(
+  var valid_603514 = header.getOrDefault("X-Amz-Target")
+  valid_603514 = validateParameter(valid_603514, JString, required = true, default = newJString(
       "Lightsail_20161128.UpdateLoadBalancerAttribute"))
-  if valid_601494 != nil:
-    section.add "X-Amz-Target", valid_601494
-  var valid_601495 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601495 = validateParameter(valid_601495, JString, required = false,
+  if valid_603514 != nil:
+    section.add "X-Amz-Target", valid_603514
+  var valid_603515 = header.getOrDefault("X-Amz-Signature")
+  valid_603515 = validateParameter(valid_603515, JString, required = false,
                                  default = nil)
-  if valid_601495 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601495
-  var valid_601496 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601496 = validateParameter(valid_601496, JString, required = false,
+  if valid_603515 != nil:
+    section.add "X-Amz-Signature", valid_603515
+  var valid_603516 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603516 = validateParameter(valid_603516, JString, required = false,
                                  default = nil)
-  if valid_601496 != nil:
-    section.add "X-Amz-Algorithm", valid_601496
-  var valid_601497 = header.getOrDefault("X-Amz-Signature")
-  valid_601497 = validateParameter(valid_601497, JString, required = false,
+  if valid_603516 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603516
+  var valid_603517 = header.getOrDefault("X-Amz-Date")
+  valid_603517 = validateParameter(valid_603517, JString, required = false,
                                  default = nil)
-  if valid_601497 != nil:
-    section.add "X-Amz-Signature", valid_601497
-  var valid_601498 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601498 = validateParameter(valid_601498, JString, required = false,
+  if valid_603517 != nil:
+    section.add "X-Amz-Date", valid_603517
+  var valid_603518 = header.getOrDefault("X-Amz-Credential")
+  valid_603518 = validateParameter(valid_603518, JString, required = false,
                                  default = nil)
-  if valid_601498 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601498
-  var valid_601499 = header.getOrDefault("X-Amz-Credential")
-  valid_601499 = validateParameter(valid_601499, JString, required = false,
+  if valid_603518 != nil:
+    section.add "X-Amz-Credential", valid_603518
+  var valid_603519 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603519 = validateParameter(valid_603519, JString, required = false,
                                  default = nil)
-  if valid_601499 != nil:
-    section.add "X-Amz-Credential", valid_601499
+  if valid_603519 != nil:
+    section.add "X-Amz-Security-Token", valid_603519
+  var valid_603520 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603520 = validateParameter(valid_603520, JString, required = false,
+                                 default = nil)
+  if valid_603520 != nil:
+    section.add "X-Amz-Algorithm", valid_603520
+  var valid_603521 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603521 = validateParameter(valid_603521, JString, required = false,
+                                 default = nil)
+  if valid_603521 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603521
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11785,50 +11888,51 @@ proc validate_UpdateLoadBalancerAttribute_601490(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_601501: Call_UpdateLoadBalancerAttribute_601489; path: JsonNode;
+proc call*(call_603523: Call_UpdateLoadBalancerAttribute_603511; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the specified attribute for a load balancer. You can only update one attribute at a time.</p> <p>The <code>update load balancer attribute</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601501.validator(path, query, header, formData, body)
-  let scheme = call_601501.pickScheme
+  let valid = call_603523.validator(path, query, header, formData, body)
+  let scheme = call_603523.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601501.url(scheme.get, call_601501.host, call_601501.base,
-                         call_601501.route, valid.getOrDefault("path"),
+  let url = call_603523.url(scheme.get, call_603523.host, call_603523.base,
+                         call_603523.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601501, url, valid)
+  result = atozHook(call_603523, url, valid)
 
-proc call*(call_601502: Call_UpdateLoadBalancerAttribute_601489; body: JsonNode): Recallable =
+proc call*(call_603524: Call_UpdateLoadBalancerAttribute_603511; body: JsonNode): Recallable =
   ## updateLoadBalancerAttribute
   ## <p>Updates the specified attribute for a load balancer. You can only update one attribute at a time.</p> <p>The <code>update load balancer attribute</code> operation supports tag-based access control via resource tags applied to the resource identified by <code>load balancer name</code>. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601503 = newJObject()
+  var body_603525 = newJObject()
   if body != nil:
-    body_601503 = body
-  result = call_601502.call(nil, nil, nil, nil, body_601503)
+    body_603525 = body
+  result = call_603524.call(nil, nil, nil, nil, body_603525)
 
-var updateLoadBalancerAttribute* = Call_UpdateLoadBalancerAttribute_601489(
+var updateLoadBalancerAttribute* = Call_UpdateLoadBalancerAttribute_603511(
     name: "updateLoadBalancerAttribute", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.UpdateLoadBalancerAttribute",
-    validator: validate_UpdateLoadBalancerAttribute_601490, base: "/",
-    url: url_UpdateLoadBalancerAttribute_601491,
+    validator: validate_UpdateLoadBalancerAttribute_603512, base: "/",
+    url: url_UpdateLoadBalancerAttribute_603513,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRelationalDatabase_601504 = ref object of OpenApiRestCall_599368
-proc url_UpdateRelationalDatabase_601506(protocol: Scheme; host: string;
+  Call_UpdateRelationalDatabase_603526 = ref object of OpenApiRestCall_601389
+proc url_UpdateRelationalDatabase_603528(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateRelationalDatabase_601505(path: JsonNode; query: JsonNode;
+proc validate_UpdateRelationalDatabase_603527(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Allows the update of one or more attributes of a database in Amazon Lightsail.</p> <p>Updates are applied immediately, or in cases where the updates could result in an outage, are applied during the database's predefined maintenance window.</p> <p>The <code>update relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
@@ -11839,57 +11943,57 @@ proc validate_UpdateRelationalDatabase_601505(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601507 = header.getOrDefault("X-Amz-Date")
-  valid_601507 = validateParameter(valid_601507, JString, required = false,
-                                 default = nil)
-  if valid_601507 != nil:
-    section.add "X-Amz-Date", valid_601507
-  var valid_601508 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601508 = validateParameter(valid_601508, JString, required = false,
-                                 default = nil)
-  if valid_601508 != nil:
-    section.add "X-Amz-Security-Token", valid_601508
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601509 = header.getOrDefault("X-Amz-Target")
-  valid_601509 = validateParameter(valid_601509, JString, required = true, default = newJString(
+  var valid_603529 = header.getOrDefault("X-Amz-Target")
+  valid_603529 = validateParameter(valid_603529, JString, required = true, default = newJString(
       "Lightsail_20161128.UpdateRelationalDatabase"))
-  if valid_601509 != nil:
-    section.add "X-Amz-Target", valid_601509
-  var valid_601510 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601510 = validateParameter(valid_601510, JString, required = false,
+  if valid_603529 != nil:
+    section.add "X-Amz-Target", valid_603529
+  var valid_603530 = header.getOrDefault("X-Amz-Signature")
+  valid_603530 = validateParameter(valid_603530, JString, required = false,
                                  default = nil)
-  if valid_601510 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601510
-  var valid_601511 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601511 = validateParameter(valid_601511, JString, required = false,
+  if valid_603530 != nil:
+    section.add "X-Amz-Signature", valid_603530
+  var valid_603531 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603531 = validateParameter(valid_603531, JString, required = false,
                                  default = nil)
-  if valid_601511 != nil:
-    section.add "X-Amz-Algorithm", valid_601511
-  var valid_601512 = header.getOrDefault("X-Amz-Signature")
-  valid_601512 = validateParameter(valid_601512, JString, required = false,
+  if valid_603531 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603531
+  var valid_603532 = header.getOrDefault("X-Amz-Date")
+  valid_603532 = validateParameter(valid_603532, JString, required = false,
                                  default = nil)
-  if valid_601512 != nil:
-    section.add "X-Amz-Signature", valid_601512
-  var valid_601513 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601513 = validateParameter(valid_601513, JString, required = false,
+  if valid_603532 != nil:
+    section.add "X-Amz-Date", valid_603532
+  var valid_603533 = header.getOrDefault("X-Amz-Credential")
+  valid_603533 = validateParameter(valid_603533, JString, required = false,
                                  default = nil)
-  if valid_601513 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601513
-  var valid_601514 = header.getOrDefault("X-Amz-Credential")
-  valid_601514 = validateParameter(valid_601514, JString, required = false,
+  if valid_603533 != nil:
+    section.add "X-Amz-Credential", valid_603533
+  var valid_603534 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603534 = validateParameter(valid_603534, JString, required = false,
                                  default = nil)
-  if valid_601514 != nil:
-    section.add "X-Amz-Credential", valid_601514
+  if valid_603534 != nil:
+    section.add "X-Amz-Security-Token", valid_603534
+  var valid_603535 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603535 = validateParameter(valid_603535, JString, required = false,
+                                 default = nil)
+  if valid_603535 != nil:
+    section.add "X-Amz-Algorithm", valid_603535
+  var valid_603536 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603536 = validateParameter(valid_603536, JString, required = false,
+                                 default = nil)
+  if valid_603536 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603536
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11900,50 +12004,51 @@ proc validate_UpdateRelationalDatabase_601505(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601516: Call_UpdateRelationalDatabase_601504; path: JsonNode;
+proc call*(call_603538: Call_UpdateRelationalDatabase_603526; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Allows the update of one or more attributes of a database in Amazon Lightsail.</p> <p>Updates are applied immediately, or in cases where the updates could result in an outage, are applied during the database's predefined maintenance window.</p> <p>The <code>update relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601516.validator(path, query, header, formData, body)
-  let scheme = call_601516.pickScheme
+  let valid = call_603538.validator(path, query, header, formData, body)
+  let scheme = call_603538.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601516.url(scheme.get, call_601516.host, call_601516.base,
-                         call_601516.route, valid.getOrDefault("path"),
+  let url = call_603538.url(scheme.get, call_603538.host, call_603538.base,
+                         call_603538.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601516, url, valid)
+  result = atozHook(call_603538, url, valid)
 
-proc call*(call_601517: Call_UpdateRelationalDatabase_601504; body: JsonNode): Recallable =
+proc call*(call_603539: Call_UpdateRelationalDatabase_603526; body: JsonNode): Recallable =
   ## updateRelationalDatabase
   ## <p>Allows the update of one or more attributes of a database in Amazon Lightsail.</p> <p>Updates are applied immediately, or in cases where the updates could result in an outage, are applied during the database's predefined maintenance window.</p> <p>The <code>update relational database</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601518 = newJObject()
+  var body_603540 = newJObject()
   if body != nil:
-    body_601518 = body
-  result = call_601517.call(nil, nil, nil, nil, body_601518)
+    body_603540 = body
+  result = call_603539.call(nil, nil, nil, nil, body_603540)
 
-var updateRelationalDatabase* = Call_UpdateRelationalDatabase_601504(
+var updateRelationalDatabase* = Call_UpdateRelationalDatabase_603526(
     name: "updateRelationalDatabase", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com",
     route: "/#X-Amz-Target=Lightsail_20161128.UpdateRelationalDatabase",
-    validator: validate_UpdateRelationalDatabase_601505, base: "/",
-    url: url_UpdateRelationalDatabase_601506, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateRelationalDatabase_603527, base: "/",
+    url: url_UpdateRelationalDatabase_603528, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRelationalDatabaseParameters_601519 = ref object of OpenApiRestCall_599368
-proc url_UpdateRelationalDatabaseParameters_601521(protocol: Scheme; host: string;
+  Call_UpdateRelationalDatabaseParameters_603541 = ref object of OpenApiRestCall_601389
+proc url_UpdateRelationalDatabaseParameters_603543(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateRelationalDatabaseParameters_601520(path: JsonNode;
+proc validate_UpdateRelationalDatabaseParameters_603542(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Allows the update of one or more parameters of a database in Amazon Lightsail.</p> <p>Parameter updates don't cause outages; therefore, their application is not subject to the preferred maintenance window. However, there are two ways in which paramater updates are applied: <code>dynamic</code> or <code>pending-reboot</code>. Parameters marked with a <code>dynamic</code> apply type are applied immediately. Parameters marked with a <code>pending-reboot</code> apply type are applied only after the database is rebooted using the <code>reboot relational database</code> operation.</p> <p>The <code>update relational database parameters</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
+  ## <p>Allows the update of one or more parameters of a database in Amazon Lightsail.</p> <p>Parameter updates don't cause outages; therefore, their application is not subject to the preferred maintenance window. However, there are two ways in which parameter updates are applied: <code>dynamic</code> or <code>pending-reboot</code>. Parameters marked with a <code>dynamic</code> apply type are applied immediately. Parameters marked with a <code>pending-reboot</code> apply type are applied only after the database is rebooted using the <code>reboot relational database</code> operation.</p> <p>The <code>update relational database parameters</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -11952,57 +12057,57 @@ proc validate_UpdateRelationalDatabaseParameters_601520(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601522 = header.getOrDefault("X-Amz-Date")
-  valid_601522 = validateParameter(valid_601522, JString, required = false,
-                                 default = nil)
-  if valid_601522 != nil:
-    section.add "X-Amz-Date", valid_601522
-  var valid_601523 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601523 = validateParameter(valid_601523, JString, required = false,
-                                 default = nil)
-  if valid_601523 != nil:
-    section.add "X-Amz-Security-Token", valid_601523
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601524 = header.getOrDefault("X-Amz-Target")
-  valid_601524 = validateParameter(valid_601524, JString, required = true, default = newJString(
+  var valid_603544 = header.getOrDefault("X-Amz-Target")
+  valid_603544 = validateParameter(valid_603544, JString, required = true, default = newJString(
       "Lightsail_20161128.UpdateRelationalDatabaseParameters"))
-  if valid_601524 != nil:
-    section.add "X-Amz-Target", valid_601524
-  var valid_601525 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601525 = validateParameter(valid_601525, JString, required = false,
+  if valid_603544 != nil:
+    section.add "X-Amz-Target", valid_603544
+  var valid_603545 = header.getOrDefault("X-Amz-Signature")
+  valid_603545 = validateParameter(valid_603545, JString, required = false,
                                  default = nil)
-  if valid_601525 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601525
-  var valid_601526 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601526 = validateParameter(valid_601526, JString, required = false,
+  if valid_603545 != nil:
+    section.add "X-Amz-Signature", valid_603545
+  var valid_603546 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603546 = validateParameter(valid_603546, JString, required = false,
                                  default = nil)
-  if valid_601526 != nil:
-    section.add "X-Amz-Algorithm", valid_601526
-  var valid_601527 = header.getOrDefault("X-Amz-Signature")
-  valid_601527 = validateParameter(valid_601527, JString, required = false,
+  if valid_603546 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603546
+  var valid_603547 = header.getOrDefault("X-Amz-Date")
+  valid_603547 = validateParameter(valid_603547, JString, required = false,
                                  default = nil)
-  if valid_601527 != nil:
-    section.add "X-Amz-Signature", valid_601527
-  var valid_601528 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601528 = validateParameter(valid_601528, JString, required = false,
+  if valid_603547 != nil:
+    section.add "X-Amz-Date", valid_603547
+  var valid_603548 = header.getOrDefault("X-Amz-Credential")
+  valid_603548 = validateParameter(valid_603548, JString, required = false,
                                  default = nil)
-  if valid_601528 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601528
-  var valid_601529 = header.getOrDefault("X-Amz-Credential")
-  valid_601529 = validateParameter(valid_601529, JString, required = false,
+  if valid_603548 != nil:
+    section.add "X-Amz-Credential", valid_603548
+  var valid_603549 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603549 = validateParameter(valid_603549, JString, required = false,
                                  default = nil)
-  if valid_601529 != nil:
-    section.add "X-Amz-Credential", valid_601529
+  if valid_603549 != nil:
+    section.add "X-Amz-Security-Token", valid_603549
+  var valid_603550 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603550 = validateParameter(valid_603550, JString, required = false,
+                                 default = nil)
+  if valid_603550 != nil:
+    section.add "X-Amz-Algorithm", valid_603550
+  var valid_603551 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603551 = validateParameter(valid_603551, JString, required = false,
+                                 default = nil)
+  if valid_603551 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603551
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -12013,35 +12118,35 @@ proc validate_UpdateRelationalDatabaseParameters_601520(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601531: Call_UpdateRelationalDatabaseParameters_601519;
+proc call*(call_603553: Call_UpdateRelationalDatabaseParameters_603541;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## <p>Allows the update of one or more parameters of a database in Amazon Lightsail.</p> <p>Parameter updates don't cause outages; therefore, their application is not subject to the preferred maintenance window. However, there are two ways in which paramater updates are applied: <code>dynamic</code> or <code>pending-reboot</code>. Parameters marked with a <code>dynamic</code> apply type are applied immediately. Parameters marked with a <code>pending-reboot</code> apply type are applied only after the database is rebooted using the <code>reboot relational database</code> operation.</p> <p>The <code>update relational database parameters</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
+  ## <p>Allows the update of one or more parameters of a database in Amazon Lightsail.</p> <p>Parameter updates don't cause outages; therefore, their application is not subject to the preferred maintenance window. However, there are two ways in which parameter updates are applied: <code>dynamic</code> or <code>pending-reboot</code>. Parameters marked with a <code>dynamic</code> apply type are applied immediately. Parameters marked with a <code>pending-reboot</code> apply type are applied only after the database is rebooted using the <code>reboot relational database</code> operation.</p> <p>The <code>update relational database parameters</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ## 
-  let valid = call_601531.validator(path, query, header, formData, body)
-  let scheme = call_601531.pickScheme
+  let valid = call_603553.validator(path, query, header, formData, body)
+  let scheme = call_603553.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601531.url(scheme.get, call_601531.host, call_601531.base,
-                         call_601531.route, valid.getOrDefault("path"),
+  let url = call_603553.url(scheme.get, call_603553.host, call_603553.base,
+                         call_603553.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601531, url, valid)
+  result = atozHook(call_603553, url, valid)
 
-proc call*(call_601532: Call_UpdateRelationalDatabaseParameters_601519;
+proc call*(call_603554: Call_UpdateRelationalDatabaseParameters_603541;
           body: JsonNode): Recallable =
   ## updateRelationalDatabaseParameters
-  ## <p>Allows the update of one or more parameters of a database in Amazon Lightsail.</p> <p>Parameter updates don't cause outages; therefore, their application is not subject to the preferred maintenance window. However, there are two ways in which paramater updates are applied: <code>dynamic</code> or <code>pending-reboot</code>. Parameters marked with a <code>dynamic</code> apply type are applied immediately. Parameters marked with a <code>pending-reboot</code> apply type are applied only after the database is rebooted using the <code>reboot relational database</code> operation.</p> <p>The <code>update relational database parameters</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
+  ## <p>Allows the update of one or more parameters of a database in Amazon Lightsail.</p> <p>Parameter updates don't cause outages; therefore, their application is not subject to the preferred maintenance window. However, there are two ways in which parameter updates are applied: <code>dynamic</code> or <code>pending-reboot</code>. Parameters marked with a <code>dynamic</code> apply type are applied immediately. Parameters marked with a <code>pending-reboot</code> apply type are applied only after the database is rebooted using the <code>reboot relational database</code> operation.</p> <p>The <code>update relational database parameters</code> operation supports tag-based access control via resource tags applied to the resource identified by relationalDatabaseName. For more information, see the <a href="https://lightsail.aws.amazon.com/ls/docs/en/articles/amazon-lightsail-controlling-access-using-tags">Lightsail Dev Guide</a>.</p>
   ##   body: JObject (required)
-  var body_601533 = newJObject()
+  var body_603555 = newJObject()
   if body != nil:
-    body_601533 = body
-  result = call_601532.call(nil, nil, nil, nil, body_601533)
+    body_603555 = body
+  result = call_603554.call(nil, nil, nil, nil, body_603555)
 
-var updateRelationalDatabaseParameters* = Call_UpdateRelationalDatabaseParameters_601519(
+var updateRelationalDatabaseParameters* = Call_UpdateRelationalDatabaseParameters_603541(
     name: "updateRelationalDatabaseParameters", meth: HttpMethod.HttpPost,
     host: "lightsail.amazonaws.com", route: "/#X-Amz-Target=Lightsail_20161128.UpdateRelationalDatabaseParameters",
-    validator: validate_UpdateRelationalDatabaseParameters_601520, base: "/",
-    url: url_UpdateRelationalDatabaseParameters_601521,
+    validator: validate_UpdateRelationalDatabaseParameters_603542, base: "/",
+    url: url_UpdateRelationalDatabaseParameters_603543,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

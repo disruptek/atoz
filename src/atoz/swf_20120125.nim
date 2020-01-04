@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599368 = ref object of OpenApiRestCall
+  OpenApiRestCall_601389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -149,19 +149,20 @@ const
   awsServiceName = "swf"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CountClosedWorkflowExecutions_599705 = ref object of OpenApiRestCall_599368
-proc url_CountClosedWorkflowExecutions_599707(protocol: Scheme; host: string;
+  Call_CountClosedWorkflowExecutions_601727 = ref object of OpenApiRestCall_601389
+proc url_CountClosedWorkflowExecutions_601729(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CountClosedWorkflowExecutions_599706(path: JsonNode; query: JsonNode;
+proc validate_CountClosedWorkflowExecutions_601728(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the number of closed workflow executions within the given domain that meet the specified filtering criteria.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -172,57 +173,57 @@ proc validate_CountClosedWorkflowExecutions_599706(path: JsonNode; query: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599819 = header.getOrDefault("X-Amz-Date")
-  valid_599819 = validateParameter(valid_599819, JString, required = false,
-                                 default = nil)
-  if valid_599819 != nil:
-    section.add "X-Amz-Date", valid_599819
-  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599820 = validateParameter(valid_599820, JString, required = false,
-                                 default = nil)
-  if valid_599820 != nil:
-    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599834 = header.getOrDefault("X-Amz-Target")
-  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
+  var valid_601854 = header.getOrDefault("X-Amz-Target")
+  valid_601854 = validateParameter(valid_601854, JString, required = true, default = newJString(
       "SimpleWorkflowService.CountClosedWorkflowExecutions"))
-  if valid_599834 != nil:
-    section.add "X-Amz-Target", valid_599834
-  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599835 = validateParameter(valid_599835, JString, required = false,
+  if valid_601854 != nil:
+    section.add "X-Amz-Target", valid_601854
+  var valid_601855 = header.getOrDefault("X-Amz-Signature")
+  valid_601855 = validateParameter(valid_601855, JString, required = false,
                                  default = nil)
-  if valid_599835 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599835
-  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599836 = validateParameter(valid_599836, JString, required = false,
+  if valid_601855 != nil:
+    section.add "X-Amz-Signature", valid_601855
+  var valid_601856 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601856 = validateParameter(valid_601856, JString, required = false,
                                  default = nil)
-  if valid_599836 != nil:
-    section.add "X-Amz-Algorithm", valid_599836
-  var valid_599837 = header.getOrDefault("X-Amz-Signature")
-  valid_599837 = validateParameter(valid_599837, JString, required = false,
+  if valid_601856 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601856
+  var valid_601857 = header.getOrDefault("X-Amz-Date")
+  valid_601857 = validateParameter(valid_601857, JString, required = false,
                                  default = nil)
-  if valid_599837 != nil:
-    section.add "X-Amz-Signature", valid_599837
-  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599838 = validateParameter(valid_599838, JString, required = false,
+  if valid_601857 != nil:
+    section.add "X-Amz-Date", valid_601857
+  var valid_601858 = header.getOrDefault("X-Amz-Credential")
+  valid_601858 = validateParameter(valid_601858, JString, required = false,
                                  default = nil)
-  if valid_599838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599838
-  var valid_599839 = header.getOrDefault("X-Amz-Credential")
-  valid_599839 = validateParameter(valid_599839, JString, required = false,
+  if valid_601858 != nil:
+    section.add "X-Amz-Credential", valid_601858
+  var valid_601859 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601859 = validateParameter(valid_601859, JString, required = false,
                                  default = nil)
-  if valid_599839 != nil:
-    section.add "X-Amz-Credential", valid_599839
+  if valid_601859 != nil:
+    section.add "X-Amz-Security-Token", valid_601859
+  var valid_601860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601860 = validateParameter(valid_601860, JString, required = false,
+                                 default = nil)
+  if valid_601860 != nil:
+    section.add "X-Amz-Algorithm", valid_601860
+  var valid_601861 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601861 = validateParameter(valid_601861, JString, required = false,
+                                 default = nil)
+  if valid_601861 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601861
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -233,48 +234,49 @@ proc validate_CountClosedWorkflowExecutions_599706(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_599863: Call_CountClosedWorkflowExecutions_599705; path: JsonNode;
+proc call*(call_601885: Call_CountClosedWorkflowExecutions_601727; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the number of closed workflow executions within the given domain that meet the specified filtering criteria.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_599863.validator(path, query, header, formData, body)
-  let scheme = call_599863.pickScheme
+  let valid = call_601885.validator(path, query, header, formData, body)
+  let scheme = call_601885.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
-                         call_599863.route, valid.getOrDefault("path"),
+  let url = call_601885.url(scheme.get, call_601885.host, call_601885.base,
+                         call_601885.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599863, url, valid)
+  result = atozHook(call_601885, url, valid)
 
-proc call*(call_599934: Call_CountClosedWorkflowExecutions_599705; body: JsonNode): Recallable =
+proc call*(call_601956: Call_CountClosedWorkflowExecutions_601727; body: JsonNode): Recallable =
   ## countClosedWorkflowExecutions
   ## <p>Returns the number of closed workflow executions within the given domain that meet the specified filtering criteria.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_599935 = newJObject()
+  var body_601957 = newJObject()
   if body != nil:
-    body_599935 = body
-  result = call_599934.call(nil, nil, nil, nil, body_599935)
+    body_601957 = body
+  result = call_601956.call(nil, nil, nil, nil, body_601957)
 
-var countClosedWorkflowExecutions* = Call_CountClosedWorkflowExecutions_599705(
+var countClosedWorkflowExecutions* = Call_CountClosedWorkflowExecutions_601727(
     name: "countClosedWorkflowExecutions", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com", route: "/#X-Amz-Target=SimpleWorkflowService.CountClosedWorkflowExecutions",
-    validator: validate_CountClosedWorkflowExecutions_599706, base: "/",
-    url: url_CountClosedWorkflowExecutions_599707,
+    validator: validate_CountClosedWorkflowExecutions_601728, base: "/",
+    url: url_CountClosedWorkflowExecutions_601729,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CountOpenWorkflowExecutions_599974 = ref object of OpenApiRestCall_599368
-proc url_CountOpenWorkflowExecutions_599976(protocol: Scheme; host: string;
+  Call_CountOpenWorkflowExecutions_601996 = ref object of OpenApiRestCall_601389
+proc url_CountOpenWorkflowExecutions_601998(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CountOpenWorkflowExecutions_599975(path: JsonNode; query: JsonNode;
+proc validate_CountOpenWorkflowExecutions_601997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the number of open workflow executions within the given domain that meet the specified filtering criteria.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -285,57 +287,57 @@ proc validate_CountOpenWorkflowExecutions_599975(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599977 = header.getOrDefault("X-Amz-Date")
-  valid_599977 = validateParameter(valid_599977, JString, required = false,
-                                 default = nil)
-  if valid_599977 != nil:
-    section.add "X-Amz-Date", valid_599977
-  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599978 = validateParameter(valid_599978, JString, required = false,
-                                 default = nil)
-  if valid_599978 != nil:
-    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599979 = header.getOrDefault("X-Amz-Target")
-  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
+  var valid_601999 = header.getOrDefault("X-Amz-Target")
+  valid_601999 = validateParameter(valid_601999, JString, required = true, default = newJString(
       "SimpleWorkflowService.CountOpenWorkflowExecutions"))
-  if valid_599979 != nil:
-    section.add "X-Amz-Target", valid_599979
-  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599980 = validateParameter(valid_599980, JString, required = false,
+  if valid_601999 != nil:
+    section.add "X-Amz-Target", valid_601999
+  var valid_602000 = header.getOrDefault("X-Amz-Signature")
+  valid_602000 = validateParameter(valid_602000, JString, required = false,
                                  default = nil)
-  if valid_599980 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599980
-  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599981 = validateParameter(valid_599981, JString, required = false,
+  if valid_602000 != nil:
+    section.add "X-Amz-Signature", valid_602000
+  var valid_602001 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602001 = validateParameter(valid_602001, JString, required = false,
                                  default = nil)
-  if valid_599981 != nil:
-    section.add "X-Amz-Algorithm", valid_599981
-  var valid_599982 = header.getOrDefault("X-Amz-Signature")
-  valid_599982 = validateParameter(valid_599982, JString, required = false,
+  if valid_602001 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602001
+  var valid_602002 = header.getOrDefault("X-Amz-Date")
+  valid_602002 = validateParameter(valid_602002, JString, required = false,
                                  default = nil)
-  if valid_599982 != nil:
-    section.add "X-Amz-Signature", valid_599982
-  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599983 = validateParameter(valid_599983, JString, required = false,
+  if valid_602002 != nil:
+    section.add "X-Amz-Date", valid_602002
+  var valid_602003 = header.getOrDefault("X-Amz-Credential")
+  valid_602003 = validateParameter(valid_602003, JString, required = false,
                                  default = nil)
-  if valid_599983 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599983
-  var valid_599984 = header.getOrDefault("X-Amz-Credential")
-  valid_599984 = validateParameter(valid_599984, JString, required = false,
+  if valid_602003 != nil:
+    section.add "X-Amz-Credential", valid_602003
+  var valid_602004 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602004 = validateParameter(valid_602004, JString, required = false,
                                  default = nil)
-  if valid_599984 != nil:
-    section.add "X-Amz-Credential", valid_599984
+  if valid_602004 != nil:
+    section.add "X-Amz-Security-Token", valid_602004
+  var valid_602005 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602005 = validateParameter(valid_602005, JString, required = false,
+                                 default = nil)
+  if valid_602005 != nil:
+    section.add "X-Amz-Algorithm", valid_602005
+  var valid_602006 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602006 = validateParameter(valid_602006, JString, required = false,
+                                 default = nil)
+  if valid_602006 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602006
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -346,49 +348,50 @@ proc validate_CountOpenWorkflowExecutions_599975(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_599986: Call_CountOpenWorkflowExecutions_599974; path: JsonNode;
+proc call*(call_602008: Call_CountOpenWorkflowExecutions_601996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the number of open workflow executions within the given domain that meet the specified filtering criteria.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_599986.validator(path, query, header, formData, body)
-  let scheme = call_599986.pickScheme
+  let valid = call_602008.validator(path, query, header, formData, body)
+  let scheme = call_602008.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
-                         call_599986.route, valid.getOrDefault("path"),
+  let url = call_602008.url(scheme.get, call_602008.host, call_602008.base,
+                         call_602008.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599986, url, valid)
+  result = atozHook(call_602008, url, valid)
 
-proc call*(call_599987: Call_CountOpenWorkflowExecutions_599974; body: JsonNode): Recallable =
+proc call*(call_602009: Call_CountOpenWorkflowExecutions_601996; body: JsonNode): Recallable =
   ## countOpenWorkflowExecutions
   ## <p>Returns the number of open workflow executions within the given domain that meet the specified filtering criteria.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_599988 = newJObject()
+  var body_602010 = newJObject()
   if body != nil:
-    body_599988 = body
-  result = call_599987.call(nil, nil, nil, nil, body_599988)
+    body_602010 = body
+  result = call_602009.call(nil, nil, nil, nil, body_602010)
 
-var countOpenWorkflowExecutions* = Call_CountOpenWorkflowExecutions_599974(
+var countOpenWorkflowExecutions* = Call_CountOpenWorkflowExecutions_601996(
     name: "countOpenWorkflowExecutions", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.CountOpenWorkflowExecutions",
-    validator: validate_CountOpenWorkflowExecutions_599975, base: "/",
-    url: url_CountOpenWorkflowExecutions_599976,
+    validator: validate_CountOpenWorkflowExecutions_601997, base: "/",
+    url: url_CountOpenWorkflowExecutions_601998,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CountPendingActivityTasks_599989 = ref object of OpenApiRestCall_599368
-proc url_CountPendingActivityTasks_599991(protocol: Scheme; host: string;
+  Call_CountPendingActivityTasks_602011 = ref object of OpenApiRestCall_601389
+proc url_CountPendingActivityTasks_602013(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CountPendingActivityTasks_599990(path: JsonNode; query: JsonNode;
+proc validate_CountPendingActivityTasks_602012(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the estimated number of activity tasks in the specified task list. The count returned is an approximation and isn't guaranteed to be exact. If you specify a task list that no activity task was ever scheduled in then <code>0</code> is returned.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -399,57 +402,57 @@ proc validate_CountPendingActivityTasks_599990(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599992 = header.getOrDefault("X-Amz-Date")
-  valid_599992 = validateParameter(valid_599992, JString, required = false,
-                                 default = nil)
-  if valid_599992 != nil:
-    section.add "X-Amz-Date", valid_599992
-  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599993 = validateParameter(valid_599993, JString, required = false,
-                                 default = nil)
-  if valid_599993 != nil:
-    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599994 = header.getOrDefault("X-Amz-Target")
-  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
+  var valid_602014 = header.getOrDefault("X-Amz-Target")
+  valid_602014 = validateParameter(valid_602014, JString, required = true, default = newJString(
       "SimpleWorkflowService.CountPendingActivityTasks"))
-  if valid_599994 != nil:
-    section.add "X-Amz-Target", valid_599994
-  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599995 = validateParameter(valid_599995, JString, required = false,
+  if valid_602014 != nil:
+    section.add "X-Amz-Target", valid_602014
+  var valid_602015 = header.getOrDefault("X-Amz-Signature")
+  valid_602015 = validateParameter(valid_602015, JString, required = false,
                                  default = nil)
-  if valid_599995 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599995
-  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599996 = validateParameter(valid_599996, JString, required = false,
+  if valid_602015 != nil:
+    section.add "X-Amz-Signature", valid_602015
+  var valid_602016 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602016 = validateParameter(valid_602016, JString, required = false,
                                  default = nil)
-  if valid_599996 != nil:
-    section.add "X-Amz-Algorithm", valid_599996
-  var valid_599997 = header.getOrDefault("X-Amz-Signature")
-  valid_599997 = validateParameter(valid_599997, JString, required = false,
+  if valid_602016 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602016
+  var valid_602017 = header.getOrDefault("X-Amz-Date")
+  valid_602017 = validateParameter(valid_602017, JString, required = false,
                                  default = nil)
-  if valid_599997 != nil:
-    section.add "X-Amz-Signature", valid_599997
-  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599998 = validateParameter(valid_599998, JString, required = false,
+  if valid_602017 != nil:
+    section.add "X-Amz-Date", valid_602017
+  var valid_602018 = header.getOrDefault("X-Amz-Credential")
+  valid_602018 = validateParameter(valid_602018, JString, required = false,
                                  default = nil)
-  if valid_599998 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599998
-  var valid_599999 = header.getOrDefault("X-Amz-Credential")
-  valid_599999 = validateParameter(valid_599999, JString, required = false,
+  if valid_602018 != nil:
+    section.add "X-Amz-Credential", valid_602018
+  var valid_602019 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602019 = validateParameter(valid_602019, JString, required = false,
                                  default = nil)
-  if valid_599999 != nil:
-    section.add "X-Amz-Credential", valid_599999
+  if valid_602019 != nil:
+    section.add "X-Amz-Security-Token", valid_602019
+  var valid_602020 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602020 = validateParameter(valid_602020, JString, required = false,
+                                 default = nil)
+  if valid_602020 != nil:
+    section.add "X-Amz-Algorithm", valid_602020
+  var valid_602021 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602021 = validateParameter(valid_602021, JString, required = false,
+                                 default = nil)
+  if valid_602021 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602021
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -460,49 +463,50 @@ proc validate_CountPendingActivityTasks_599990(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600001: Call_CountPendingActivityTasks_599989; path: JsonNode;
+proc call*(call_602023: Call_CountPendingActivityTasks_602011; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the estimated number of activity tasks in the specified task list. The count returned is an approximation and isn't guaranteed to be exact. If you specify a task list that no activity task was ever scheduled in then <code>0</code> is returned.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600001.validator(path, query, header, formData, body)
-  let scheme = call_600001.pickScheme
+  let valid = call_602023.validator(path, query, header, formData, body)
+  let scheme = call_602023.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
-                         call_600001.route, valid.getOrDefault("path"),
+  let url = call_602023.url(scheme.get, call_602023.host, call_602023.base,
+                         call_602023.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600001, url, valid)
+  result = atozHook(call_602023, url, valid)
 
-proc call*(call_600002: Call_CountPendingActivityTasks_599989; body: JsonNode): Recallable =
+proc call*(call_602024: Call_CountPendingActivityTasks_602011; body: JsonNode): Recallable =
   ## countPendingActivityTasks
   ## <p>Returns the estimated number of activity tasks in the specified task list. The count returned is an approximation and isn't guaranteed to be exact. If you specify a task list that no activity task was ever scheduled in then <code>0</code> is returned.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600003 = newJObject()
+  var body_602025 = newJObject()
   if body != nil:
-    body_600003 = body
-  result = call_600002.call(nil, nil, nil, nil, body_600003)
+    body_602025 = body
+  result = call_602024.call(nil, nil, nil, nil, body_602025)
 
-var countPendingActivityTasks* = Call_CountPendingActivityTasks_599989(
+var countPendingActivityTasks* = Call_CountPendingActivityTasks_602011(
     name: "countPendingActivityTasks", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.CountPendingActivityTasks",
-    validator: validate_CountPendingActivityTasks_599990, base: "/",
-    url: url_CountPendingActivityTasks_599991,
+    validator: validate_CountPendingActivityTasks_602012, base: "/",
+    url: url_CountPendingActivityTasks_602013,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CountPendingDecisionTasks_600004 = ref object of OpenApiRestCall_599368
-proc url_CountPendingDecisionTasks_600006(protocol: Scheme; host: string;
+  Call_CountPendingDecisionTasks_602026 = ref object of OpenApiRestCall_601389
+proc url_CountPendingDecisionTasks_602028(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CountPendingDecisionTasks_600005(path: JsonNode; query: JsonNode;
+proc validate_CountPendingDecisionTasks_602027(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the estimated number of decision tasks in the specified task list. The count returned is an approximation and isn't guaranteed to be exact. If you specify a task list that no decision task was ever scheduled in then <code>0</code> is returned.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -513,57 +517,57 @@ proc validate_CountPendingDecisionTasks_600005(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600007 = header.getOrDefault("X-Amz-Date")
-  valid_600007 = validateParameter(valid_600007, JString, required = false,
-                                 default = nil)
-  if valid_600007 != nil:
-    section.add "X-Amz-Date", valid_600007
-  var valid_600008 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600008 = validateParameter(valid_600008, JString, required = false,
-                                 default = nil)
-  if valid_600008 != nil:
-    section.add "X-Amz-Security-Token", valid_600008
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600009 = header.getOrDefault("X-Amz-Target")
-  valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
+  var valid_602029 = header.getOrDefault("X-Amz-Target")
+  valid_602029 = validateParameter(valid_602029, JString, required = true, default = newJString(
       "SimpleWorkflowService.CountPendingDecisionTasks"))
-  if valid_600009 != nil:
-    section.add "X-Amz-Target", valid_600009
-  var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600010 = validateParameter(valid_600010, JString, required = false,
+  if valid_602029 != nil:
+    section.add "X-Amz-Target", valid_602029
+  var valid_602030 = header.getOrDefault("X-Amz-Signature")
+  valid_602030 = validateParameter(valid_602030, JString, required = false,
                                  default = nil)
-  if valid_600010 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600010
-  var valid_600011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600011 = validateParameter(valid_600011, JString, required = false,
+  if valid_602030 != nil:
+    section.add "X-Amz-Signature", valid_602030
+  var valid_602031 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602031 = validateParameter(valid_602031, JString, required = false,
                                  default = nil)
-  if valid_600011 != nil:
-    section.add "X-Amz-Algorithm", valid_600011
-  var valid_600012 = header.getOrDefault("X-Amz-Signature")
-  valid_600012 = validateParameter(valid_600012, JString, required = false,
+  if valid_602031 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602031
+  var valid_602032 = header.getOrDefault("X-Amz-Date")
+  valid_602032 = validateParameter(valid_602032, JString, required = false,
                                  default = nil)
-  if valid_600012 != nil:
-    section.add "X-Amz-Signature", valid_600012
-  var valid_600013 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600013 = validateParameter(valid_600013, JString, required = false,
+  if valid_602032 != nil:
+    section.add "X-Amz-Date", valid_602032
+  var valid_602033 = header.getOrDefault("X-Amz-Credential")
+  valid_602033 = validateParameter(valid_602033, JString, required = false,
                                  default = nil)
-  if valid_600013 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600013
-  var valid_600014 = header.getOrDefault("X-Amz-Credential")
-  valid_600014 = validateParameter(valid_600014, JString, required = false,
+  if valid_602033 != nil:
+    section.add "X-Amz-Credential", valid_602033
+  var valid_602034 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602034 = validateParameter(valid_602034, JString, required = false,
                                  default = nil)
-  if valid_600014 != nil:
-    section.add "X-Amz-Credential", valid_600014
+  if valid_602034 != nil:
+    section.add "X-Amz-Security-Token", valid_602034
+  var valid_602035 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602035 = validateParameter(valid_602035, JString, required = false,
+                                 default = nil)
+  if valid_602035 != nil:
+    section.add "X-Amz-Algorithm", valid_602035
+  var valid_602036 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602036 = validateParameter(valid_602036, JString, required = false,
+                                 default = nil)
+  if valid_602036 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602036
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -574,49 +578,50 @@ proc validate_CountPendingDecisionTasks_600005(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600016: Call_CountPendingDecisionTasks_600004; path: JsonNode;
+proc call*(call_602038: Call_CountPendingDecisionTasks_602026; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the estimated number of decision tasks in the specified task list. The count returned is an approximation and isn't guaranteed to be exact. If you specify a task list that no decision task was ever scheduled in then <code>0</code> is returned.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600016.validator(path, query, header, formData, body)
-  let scheme = call_600016.pickScheme
+  let valid = call_602038.validator(path, query, header, formData, body)
+  let scheme = call_602038.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600016.url(scheme.get, call_600016.host, call_600016.base,
-                         call_600016.route, valid.getOrDefault("path"),
+  let url = call_602038.url(scheme.get, call_602038.host, call_602038.base,
+                         call_602038.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600016, url, valid)
+  result = atozHook(call_602038, url, valid)
 
-proc call*(call_600017: Call_CountPendingDecisionTasks_600004; body: JsonNode): Recallable =
+proc call*(call_602039: Call_CountPendingDecisionTasks_602026; body: JsonNode): Recallable =
   ## countPendingDecisionTasks
   ## <p>Returns the estimated number of decision tasks in the specified task list. The count returned is an approximation and isn't guaranteed to be exact. If you specify a task list that no decision task was ever scheduled in then <code>0</code> is returned.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600018 = newJObject()
+  var body_602040 = newJObject()
   if body != nil:
-    body_600018 = body
-  result = call_600017.call(nil, nil, nil, nil, body_600018)
+    body_602040 = body
+  result = call_602039.call(nil, nil, nil, nil, body_602040)
 
-var countPendingDecisionTasks* = Call_CountPendingDecisionTasks_600004(
+var countPendingDecisionTasks* = Call_CountPendingDecisionTasks_602026(
     name: "countPendingDecisionTasks", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.CountPendingDecisionTasks",
-    validator: validate_CountPendingDecisionTasks_600005, base: "/",
-    url: url_CountPendingDecisionTasks_600006,
+    validator: validate_CountPendingDecisionTasks_602027, base: "/",
+    url: url_CountPendingDecisionTasks_602028,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeprecateActivityType_600019 = ref object of OpenApiRestCall_599368
-proc url_DeprecateActivityType_600021(protocol: Scheme; host: string; base: string;
+  Call_DeprecateActivityType_602041 = ref object of OpenApiRestCall_601389
+proc url_DeprecateActivityType_602043(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeprecateActivityType_600020(path: JsonNode; query: JsonNode;
+proc validate_DeprecateActivityType_602042(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deprecates the specified <i>activity type</i>. After an activity type has been deprecated, you cannot create new tasks of that activity type. Tasks of this type that were scheduled before the type was deprecated continue to run.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -627,57 +632,57 @@ proc validate_DeprecateActivityType_600020(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600022 = header.getOrDefault("X-Amz-Date")
-  valid_600022 = validateParameter(valid_600022, JString, required = false,
-                                 default = nil)
-  if valid_600022 != nil:
-    section.add "X-Amz-Date", valid_600022
-  var valid_600023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600023 = validateParameter(valid_600023, JString, required = false,
-                                 default = nil)
-  if valid_600023 != nil:
-    section.add "X-Amz-Security-Token", valid_600023
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600024 = header.getOrDefault("X-Amz-Target")
-  valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
+  var valid_602044 = header.getOrDefault("X-Amz-Target")
+  valid_602044 = validateParameter(valid_602044, JString, required = true, default = newJString(
       "SimpleWorkflowService.DeprecateActivityType"))
-  if valid_600024 != nil:
-    section.add "X-Amz-Target", valid_600024
-  var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600025 = validateParameter(valid_600025, JString, required = false,
+  if valid_602044 != nil:
+    section.add "X-Amz-Target", valid_602044
+  var valid_602045 = header.getOrDefault("X-Amz-Signature")
+  valid_602045 = validateParameter(valid_602045, JString, required = false,
                                  default = nil)
-  if valid_600025 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600025
-  var valid_600026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600026 = validateParameter(valid_600026, JString, required = false,
+  if valid_602045 != nil:
+    section.add "X-Amz-Signature", valid_602045
+  var valid_602046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602046 = validateParameter(valid_602046, JString, required = false,
                                  default = nil)
-  if valid_600026 != nil:
-    section.add "X-Amz-Algorithm", valid_600026
-  var valid_600027 = header.getOrDefault("X-Amz-Signature")
-  valid_600027 = validateParameter(valid_600027, JString, required = false,
+  if valid_602046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602046
+  var valid_602047 = header.getOrDefault("X-Amz-Date")
+  valid_602047 = validateParameter(valid_602047, JString, required = false,
                                  default = nil)
-  if valid_600027 != nil:
-    section.add "X-Amz-Signature", valid_600027
-  var valid_600028 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600028 = validateParameter(valid_600028, JString, required = false,
+  if valid_602047 != nil:
+    section.add "X-Amz-Date", valid_602047
+  var valid_602048 = header.getOrDefault("X-Amz-Credential")
+  valid_602048 = validateParameter(valid_602048, JString, required = false,
                                  default = nil)
-  if valid_600028 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600028
-  var valid_600029 = header.getOrDefault("X-Amz-Credential")
-  valid_600029 = validateParameter(valid_600029, JString, required = false,
+  if valid_602048 != nil:
+    section.add "X-Amz-Credential", valid_602048
+  var valid_602049 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602049 = validateParameter(valid_602049, JString, required = false,
                                  default = nil)
-  if valid_600029 != nil:
-    section.add "X-Amz-Credential", valid_600029
+  if valid_602049 != nil:
+    section.add "X-Amz-Security-Token", valid_602049
+  var valid_602050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602050 = validateParameter(valid_602050, JString, required = false,
+                                 default = nil)
+  if valid_602050 != nil:
+    section.add "X-Amz-Algorithm", valid_602050
+  var valid_602051 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602051 = validateParameter(valid_602051, JString, required = false,
+                                 default = nil)
+  if valid_602051 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602051
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -688,48 +693,49 @@ proc validate_DeprecateActivityType_600020(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600031: Call_DeprecateActivityType_600019; path: JsonNode;
+proc call*(call_602053: Call_DeprecateActivityType_602041; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deprecates the specified <i>activity type</i>. After an activity type has been deprecated, you cannot create new tasks of that activity type. Tasks of this type that were scheduled before the type was deprecated continue to run.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600031.validator(path, query, header, formData, body)
-  let scheme = call_600031.pickScheme
+  let valid = call_602053.validator(path, query, header, formData, body)
+  let scheme = call_602053.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600031.url(scheme.get, call_600031.host, call_600031.base,
-                         call_600031.route, valid.getOrDefault("path"),
+  let url = call_602053.url(scheme.get, call_602053.host, call_602053.base,
+                         call_602053.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600031, url, valid)
+  result = atozHook(call_602053, url, valid)
 
-proc call*(call_600032: Call_DeprecateActivityType_600019; body: JsonNode): Recallable =
+proc call*(call_602054: Call_DeprecateActivityType_602041; body: JsonNode): Recallable =
   ## deprecateActivityType
   ## <p>Deprecates the specified <i>activity type</i>. After an activity type has been deprecated, you cannot create new tasks of that activity type. Tasks of this type that were scheduled before the type was deprecated continue to run.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600033 = newJObject()
+  var body_602055 = newJObject()
   if body != nil:
-    body_600033 = body
-  result = call_600032.call(nil, nil, nil, nil, body_600033)
+    body_602055 = body
+  result = call_602054.call(nil, nil, nil, nil, body_602055)
 
-var deprecateActivityType* = Call_DeprecateActivityType_600019(
+var deprecateActivityType* = Call_DeprecateActivityType_602041(
     name: "deprecateActivityType", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.DeprecateActivityType",
-    validator: validate_DeprecateActivityType_600020, base: "/",
-    url: url_DeprecateActivityType_600021, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeprecateActivityType_602042, base: "/",
+    url: url_DeprecateActivityType_602043, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeprecateDomain_600034 = ref object of OpenApiRestCall_599368
-proc url_DeprecateDomain_600036(protocol: Scheme; host: string; base: string;
+  Call_DeprecateDomain_602056 = ref object of OpenApiRestCall_601389
+proc url_DeprecateDomain_602058(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeprecateDomain_600035(path: JsonNode; query: JsonNode;
+proc validate_DeprecateDomain_602057(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Deprecates the specified domain. After a domain has been deprecated it cannot be used to create new workflow executions or register new types. However, you can still use visibility actions on this domain. Deprecating a domain also deprecates all activity and workflow types registered in the domain. Executions that were started before the domain was deprecated continues to run.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
@@ -741,57 +747,57 @@ proc validate_DeprecateDomain_600035(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600037 = header.getOrDefault("X-Amz-Date")
-  valid_600037 = validateParameter(valid_600037, JString, required = false,
-                                 default = nil)
-  if valid_600037 != nil:
-    section.add "X-Amz-Date", valid_600037
-  var valid_600038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600038 = validateParameter(valid_600038, JString, required = false,
-                                 default = nil)
-  if valid_600038 != nil:
-    section.add "X-Amz-Security-Token", valid_600038
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600039 = header.getOrDefault("X-Amz-Target")
-  valid_600039 = validateParameter(valid_600039, JString, required = true, default = newJString(
+  var valid_602059 = header.getOrDefault("X-Amz-Target")
+  valid_602059 = validateParameter(valid_602059, JString, required = true, default = newJString(
       "SimpleWorkflowService.DeprecateDomain"))
-  if valid_600039 != nil:
-    section.add "X-Amz-Target", valid_600039
-  var valid_600040 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600040 = validateParameter(valid_600040, JString, required = false,
+  if valid_602059 != nil:
+    section.add "X-Amz-Target", valid_602059
+  var valid_602060 = header.getOrDefault("X-Amz-Signature")
+  valid_602060 = validateParameter(valid_602060, JString, required = false,
                                  default = nil)
-  if valid_600040 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600040
-  var valid_600041 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600041 = validateParameter(valid_600041, JString, required = false,
+  if valid_602060 != nil:
+    section.add "X-Amz-Signature", valid_602060
+  var valid_602061 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602061 = validateParameter(valid_602061, JString, required = false,
                                  default = nil)
-  if valid_600041 != nil:
-    section.add "X-Amz-Algorithm", valid_600041
-  var valid_600042 = header.getOrDefault("X-Amz-Signature")
-  valid_600042 = validateParameter(valid_600042, JString, required = false,
+  if valid_602061 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602061
+  var valid_602062 = header.getOrDefault("X-Amz-Date")
+  valid_602062 = validateParameter(valid_602062, JString, required = false,
                                  default = nil)
-  if valid_600042 != nil:
-    section.add "X-Amz-Signature", valid_600042
-  var valid_600043 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600043 = validateParameter(valid_600043, JString, required = false,
+  if valid_602062 != nil:
+    section.add "X-Amz-Date", valid_602062
+  var valid_602063 = header.getOrDefault("X-Amz-Credential")
+  valid_602063 = validateParameter(valid_602063, JString, required = false,
                                  default = nil)
-  if valid_600043 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600043
-  var valid_600044 = header.getOrDefault("X-Amz-Credential")
-  valid_600044 = validateParameter(valid_600044, JString, required = false,
+  if valid_602063 != nil:
+    section.add "X-Amz-Credential", valid_602063
+  var valid_602064 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602064 = validateParameter(valid_602064, JString, required = false,
                                  default = nil)
-  if valid_600044 != nil:
-    section.add "X-Amz-Credential", valid_600044
+  if valid_602064 != nil:
+    section.add "X-Amz-Security-Token", valid_602064
+  var valid_602065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602065 = validateParameter(valid_602065, JString, required = false,
+                                 default = nil)
+  if valid_602065 != nil:
+    section.add "X-Amz-Algorithm", valid_602065
+  var valid_602066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602066 = validateParameter(valid_602066, JString, required = false,
+                                 default = nil)
+  if valid_602066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602066
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -802,47 +808,48 @@ proc validate_DeprecateDomain_600035(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600046: Call_DeprecateDomain_600034; path: JsonNode; query: JsonNode;
+proc call*(call_602068: Call_DeprecateDomain_602056; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deprecates the specified domain. After a domain has been deprecated it cannot be used to create new workflow executions or register new types. However, you can still use visibility actions on this domain. Deprecating a domain also deprecates all activity and workflow types registered in the domain. Executions that were started before the domain was deprecated continues to run.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600046.validator(path, query, header, formData, body)
-  let scheme = call_600046.pickScheme
+  let valid = call_602068.validator(path, query, header, formData, body)
+  let scheme = call_602068.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600046.url(scheme.get, call_600046.host, call_600046.base,
-                         call_600046.route, valid.getOrDefault("path"),
+  let url = call_602068.url(scheme.get, call_602068.host, call_602068.base,
+                         call_602068.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600046, url, valid)
+  result = atozHook(call_602068, url, valid)
 
-proc call*(call_600047: Call_DeprecateDomain_600034; body: JsonNode): Recallable =
+proc call*(call_602069: Call_DeprecateDomain_602056; body: JsonNode): Recallable =
   ## deprecateDomain
   ## <p>Deprecates the specified domain. After a domain has been deprecated it cannot be used to create new workflow executions or register new types. However, you can still use visibility actions on this domain. Deprecating a domain also deprecates all activity and workflow types registered in the domain. Executions that were started before the domain was deprecated continues to run.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600048 = newJObject()
+  var body_602070 = newJObject()
   if body != nil:
-    body_600048 = body
-  result = call_600047.call(nil, nil, nil, nil, body_600048)
+    body_602070 = body
+  result = call_602069.call(nil, nil, nil, nil, body_602070)
 
-var deprecateDomain* = Call_DeprecateDomain_600034(name: "deprecateDomain",
+var deprecateDomain* = Call_DeprecateDomain_602056(name: "deprecateDomain",
     meth: HttpMethod.HttpPost, host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.DeprecateDomain",
-    validator: validate_DeprecateDomain_600035, base: "/", url: url_DeprecateDomain_600036,
+    validator: validate_DeprecateDomain_602057, base: "/", url: url_DeprecateDomain_602058,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeprecateWorkflowType_600049 = ref object of OpenApiRestCall_599368
-proc url_DeprecateWorkflowType_600051(protocol: Scheme; host: string; base: string;
+  Call_DeprecateWorkflowType_602071 = ref object of OpenApiRestCall_601389
+proc url_DeprecateWorkflowType_602073(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeprecateWorkflowType_600050(path: JsonNode; query: JsonNode;
+proc validate_DeprecateWorkflowType_602072(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deprecates the specified <i>workflow type</i>. After a workflow type has been deprecated, you cannot create new executions of that type. Executions that were started before the type was deprecated continues to run. A deprecated workflow type may still be used when calling visibility actions.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -853,57 +860,57 @@ proc validate_DeprecateWorkflowType_600050(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600052 = header.getOrDefault("X-Amz-Date")
-  valid_600052 = validateParameter(valid_600052, JString, required = false,
-                                 default = nil)
-  if valid_600052 != nil:
-    section.add "X-Amz-Date", valid_600052
-  var valid_600053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600053 = validateParameter(valid_600053, JString, required = false,
-                                 default = nil)
-  if valid_600053 != nil:
-    section.add "X-Amz-Security-Token", valid_600053
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600054 = header.getOrDefault("X-Amz-Target")
-  valid_600054 = validateParameter(valid_600054, JString, required = true, default = newJString(
+  var valid_602074 = header.getOrDefault("X-Amz-Target")
+  valid_602074 = validateParameter(valid_602074, JString, required = true, default = newJString(
       "SimpleWorkflowService.DeprecateWorkflowType"))
-  if valid_600054 != nil:
-    section.add "X-Amz-Target", valid_600054
-  var valid_600055 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600055 = validateParameter(valid_600055, JString, required = false,
+  if valid_602074 != nil:
+    section.add "X-Amz-Target", valid_602074
+  var valid_602075 = header.getOrDefault("X-Amz-Signature")
+  valid_602075 = validateParameter(valid_602075, JString, required = false,
                                  default = nil)
-  if valid_600055 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600055
-  var valid_600056 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600056 = validateParameter(valid_600056, JString, required = false,
+  if valid_602075 != nil:
+    section.add "X-Amz-Signature", valid_602075
+  var valid_602076 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602076 = validateParameter(valid_602076, JString, required = false,
                                  default = nil)
-  if valid_600056 != nil:
-    section.add "X-Amz-Algorithm", valid_600056
-  var valid_600057 = header.getOrDefault("X-Amz-Signature")
-  valid_600057 = validateParameter(valid_600057, JString, required = false,
+  if valid_602076 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602076
+  var valid_602077 = header.getOrDefault("X-Amz-Date")
+  valid_602077 = validateParameter(valid_602077, JString, required = false,
                                  default = nil)
-  if valid_600057 != nil:
-    section.add "X-Amz-Signature", valid_600057
-  var valid_600058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600058 = validateParameter(valid_600058, JString, required = false,
+  if valid_602077 != nil:
+    section.add "X-Amz-Date", valid_602077
+  var valid_602078 = header.getOrDefault("X-Amz-Credential")
+  valid_602078 = validateParameter(valid_602078, JString, required = false,
                                  default = nil)
-  if valid_600058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600058
-  var valid_600059 = header.getOrDefault("X-Amz-Credential")
-  valid_600059 = validateParameter(valid_600059, JString, required = false,
+  if valid_602078 != nil:
+    section.add "X-Amz-Credential", valid_602078
+  var valid_602079 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602079 = validateParameter(valid_602079, JString, required = false,
                                  default = nil)
-  if valid_600059 != nil:
-    section.add "X-Amz-Credential", valid_600059
+  if valid_602079 != nil:
+    section.add "X-Amz-Security-Token", valid_602079
+  var valid_602080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602080 = validateParameter(valid_602080, JString, required = false,
+                                 default = nil)
+  if valid_602080 != nil:
+    section.add "X-Amz-Algorithm", valid_602080
+  var valid_602081 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602081 = validateParameter(valid_602081, JString, required = false,
+                                 default = nil)
+  if valid_602081 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602081
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -914,48 +921,49 @@ proc validate_DeprecateWorkflowType_600050(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600061: Call_DeprecateWorkflowType_600049; path: JsonNode;
+proc call*(call_602083: Call_DeprecateWorkflowType_602071; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deprecates the specified <i>workflow type</i>. After a workflow type has been deprecated, you cannot create new executions of that type. Executions that were started before the type was deprecated continues to run. A deprecated workflow type may still be used when calling visibility actions.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600061.validator(path, query, header, formData, body)
-  let scheme = call_600061.pickScheme
+  let valid = call_602083.validator(path, query, header, formData, body)
+  let scheme = call_602083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600061.url(scheme.get, call_600061.host, call_600061.base,
-                         call_600061.route, valid.getOrDefault("path"),
+  let url = call_602083.url(scheme.get, call_602083.host, call_602083.base,
+                         call_602083.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600061, url, valid)
+  result = atozHook(call_602083, url, valid)
 
-proc call*(call_600062: Call_DeprecateWorkflowType_600049; body: JsonNode): Recallable =
+proc call*(call_602084: Call_DeprecateWorkflowType_602071; body: JsonNode): Recallable =
   ## deprecateWorkflowType
   ## <p>Deprecates the specified <i>workflow type</i>. After a workflow type has been deprecated, you cannot create new executions of that type. Executions that were started before the type was deprecated continues to run. A deprecated workflow type may still be used when calling visibility actions.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600063 = newJObject()
+  var body_602085 = newJObject()
   if body != nil:
-    body_600063 = body
-  result = call_600062.call(nil, nil, nil, nil, body_600063)
+    body_602085 = body
+  result = call_602084.call(nil, nil, nil, nil, body_602085)
 
-var deprecateWorkflowType* = Call_DeprecateWorkflowType_600049(
+var deprecateWorkflowType* = Call_DeprecateWorkflowType_602071(
     name: "deprecateWorkflowType", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.DeprecateWorkflowType",
-    validator: validate_DeprecateWorkflowType_600050, base: "/",
-    url: url_DeprecateWorkflowType_600051, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeprecateWorkflowType_602072, base: "/",
+    url: url_DeprecateWorkflowType_602073, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeActivityType_600064 = ref object of OpenApiRestCall_599368
-proc url_DescribeActivityType_600066(protocol: Scheme; host: string; base: string;
+  Call_DescribeActivityType_602086 = ref object of OpenApiRestCall_601389
+proc url_DescribeActivityType_602088(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeActivityType_600065(path: JsonNode; query: JsonNode;
+proc validate_DescribeActivityType_602087(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about the specified activity type. This includes configuration settings provided when the type was registered and other general information about the type.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -966,57 +974,57 @@ proc validate_DescribeActivityType_600065(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600067 = header.getOrDefault("X-Amz-Date")
-  valid_600067 = validateParameter(valid_600067, JString, required = false,
-                                 default = nil)
-  if valid_600067 != nil:
-    section.add "X-Amz-Date", valid_600067
-  var valid_600068 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600068 = validateParameter(valid_600068, JString, required = false,
-                                 default = nil)
-  if valid_600068 != nil:
-    section.add "X-Amz-Security-Token", valid_600068
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600069 = header.getOrDefault("X-Amz-Target")
-  valid_600069 = validateParameter(valid_600069, JString, required = true, default = newJString(
+  var valid_602089 = header.getOrDefault("X-Amz-Target")
+  valid_602089 = validateParameter(valid_602089, JString, required = true, default = newJString(
       "SimpleWorkflowService.DescribeActivityType"))
-  if valid_600069 != nil:
-    section.add "X-Amz-Target", valid_600069
-  var valid_600070 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600070 = validateParameter(valid_600070, JString, required = false,
+  if valid_602089 != nil:
+    section.add "X-Amz-Target", valid_602089
+  var valid_602090 = header.getOrDefault("X-Amz-Signature")
+  valid_602090 = validateParameter(valid_602090, JString, required = false,
                                  default = nil)
-  if valid_600070 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600070
-  var valid_600071 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600071 = validateParameter(valid_600071, JString, required = false,
+  if valid_602090 != nil:
+    section.add "X-Amz-Signature", valid_602090
+  var valid_602091 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602091 = validateParameter(valid_602091, JString, required = false,
                                  default = nil)
-  if valid_600071 != nil:
-    section.add "X-Amz-Algorithm", valid_600071
-  var valid_600072 = header.getOrDefault("X-Amz-Signature")
-  valid_600072 = validateParameter(valid_600072, JString, required = false,
+  if valid_602091 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602091
+  var valid_602092 = header.getOrDefault("X-Amz-Date")
+  valid_602092 = validateParameter(valid_602092, JString, required = false,
                                  default = nil)
-  if valid_600072 != nil:
-    section.add "X-Amz-Signature", valid_600072
-  var valid_600073 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600073 = validateParameter(valid_600073, JString, required = false,
+  if valid_602092 != nil:
+    section.add "X-Amz-Date", valid_602092
+  var valid_602093 = header.getOrDefault("X-Amz-Credential")
+  valid_602093 = validateParameter(valid_602093, JString, required = false,
                                  default = nil)
-  if valid_600073 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600073
-  var valid_600074 = header.getOrDefault("X-Amz-Credential")
-  valid_600074 = validateParameter(valid_600074, JString, required = false,
+  if valid_602093 != nil:
+    section.add "X-Amz-Credential", valid_602093
+  var valid_602094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602094 = validateParameter(valid_602094, JString, required = false,
                                  default = nil)
-  if valid_600074 != nil:
-    section.add "X-Amz-Credential", valid_600074
+  if valid_602094 != nil:
+    section.add "X-Amz-Security-Token", valid_602094
+  var valid_602095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602095 = validateParameter(valid_602095, JString, required = false,
+                                 default = nil)
+  if valid_602095 != nil:
+    section.add "X-Amz-Algorithm", valid_602095
+  var valid_602096 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602096 = validateParameter(valid_602096, JString, required = false,
+                                 default = nil)
+  if valid_602096 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602096
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1027,48 +1035,49 @@ proc validate_DescribeActivityType_600065(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600076: Call_DescribeActivityType_600064; path: JsonNode;
+proc call*(call_602098: Call_DescribeActivityType_602086; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the specified activity type. This includes configuration settings provided when the type was registered and other general information about the type.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600076.validator(path, query, header, formData, body)
-  let scheme = call_600076.pickScheme
+  let valid = call_602098.validator(path, query, header, formData, body)
+  let scheme = call_602098.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600076.url(scheme.get, call_600076.host, call_600076.base,
-                         call_600076.route, valid.getOrDefault("path"),
+  let url = call_602098.url(scheme.get, call_602098.host, call_602098.base,
+                         call_602098.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600076, url, valid)
+  result = atozHook(call_602098, url, valid)
 
-proc call*(call_600077: Call_DescribeActivityType_600064; body: JsonNode): Recallable =
+proc call*(call_602099: Call_DescribeActivityType_602086; body: JsonNode): Recallable =
   ## describeActivityType
   ## <p>Returns information about the specified activity type. This includes configuration settings provided when the type was registered and other general information about the type.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600078 = newJObject()
+  var body_602100 = newJObject()
   if body != nil:
-    body_600078 = body
-  result = call_600077.call(nil, nil, nil, nil, body_600078)
+    body_602100 = body
+  result = call_602099.call(nil, nil, nil, nil, body_602100)
 
-var describeActivityType* = Call_DescribeActivityType_600064(
+var describeActivityType* = Call_DescribeActivityType_602086(
     name: "describeActivityType", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.DescribeActivityType",
-    validator: validate_DescribeActivityType_600065, base: "/",
-    url: url_DescribeActivityType_600066, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeActivityType_602087, base: "/",
+    url: url_DescribeActivityType_602088, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDomain_600079 = ref object of OpenApiRestCall_599368
-proc url_DescribeDomain_600081(protocol: Scheme; host: string; base: string;
+  Call_DescribeDomain_602101 = ref object of OpenApiRestCall_601389
+proc url_DescribeDomain_602103(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeDomain_600080(path: JsonNode; query: JsonNode;
+proc validate_DescribeDomain_602102(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns information about the specified domain, including description and status.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
@@ -1080,57 +1089,57 @@ proc validate_DescribeDomain_600080(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600082 = header.getOrDefault("X-Amz-Date")
-  valid_600082 = validateParameter(valid_600082, JString, required = false,
-                                 default = nil)
-  if valid_600082 != nil:
-    section.add "X-Amz-Date", valid_600082
-  var valid_600083 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600083 = validateParameter(valid_600083, JString, required = false,
-                                 default = nil)
-  if valid_600083 != nil:
-    section.add "X-Amz-Security-Token", valid_600083
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600084 = header.getOrDefault("X-Amz-Target")
-  valid_600084 = validateParameter(valid_600084, JString, required = true, default = newJString(
+  var valid_602104 = header.getOrDefault("X-Amz-Target")
+  valid_602104 = validateParameter(valid_602104, JString, required = true, default = newJString(
       "SimpleWorkflowService.DescribeDomain"))
-  if valid_600084 != nil:
-    section.add "X-Amz-Target", valid_600084
-  var valid_600085 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600085 = validateParameter(valid_600085, JString, required = false,
+  if valid_602104 != nil:
+    section.add "X-Amz-Target", valid_602104
+  var valid_602105 = header.getOrDefault("X-Amz-Signature")
+  valid_602105 = validateParameter(valid_602105, JString, required = false,
                                  default = nil)
-  if valid_600085 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600085
-  var valid_600086 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600086 = validateParameter(valid_600086, JString, required = false,
+  if valid_602105 != nil:
+    section.add "X-Amz-Signature", valid_602105
+  var valid_602106 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602106 = validateParameter(valid_602106, JString, required = false,
                                  default = nil)
-  if valid_600086 != nil:
-    section.add "X-Amz-Algorithm", valid_600086
-  var valid_600087 = header.getOrDefault("X-Amz-Signature")
-  valid_600087 = validateParameter(valid_600087, JString, required = false,
+  if valid_602106 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602106
+  var valid_602107 = header.getOrDefault("X-Amz-Date")
+  valid_602107 = validateParameter(valid_602107, JString, required = false,
                                  default = nil)
-  if valid_600087 != nil:
-    section.add "X-Amz-Signature", valid_600087
-  var valid_600088 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600088 = validateParameter(valid_600088, JString, required = false,
+  if valid_602107 != nil:
+    section.add "X-Amz-Date", valid_602107
+  var valid_602108 = header.getOrDefault("X-Amz-Credential")
+  valid_602108 = validateParameter(valid_602108, JString, required = false,
                                  default = nil)
-  if valid_600088 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600088
-  var valid_600089 = header.getOrDefault("X-Amz-Credential")
-  valid_600089 = validateParameter(valid_600089, JString, required = false,
+  if valid_602108 != nil:
+    section.add "X-Amz-Credential", valid_602108
+  var valid_602109 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602109 = validateParameter(valid_602109, JString, required = false,
                                  default = nil)
-  if valid_600089 != nil:
-    section.add "X-Amz-Credential", valid_600089
+  if valid_602109 != nil:
+    section.add "X-Amz-Security-Token", valid_602109
+  var valid_602110 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602110 = validateParameter(valid_602110, JString, required = false,
+                                 default = nil)
+  if valid_602110 != nil:
+    section.add "X-Amz-Algorithm", valid_602110
+  var valid_602111 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602111 = validateParameter(valid_602111, JString, required = false,
+                                 default = nil)
+  if valid_602111 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602111
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1141,47 +1150,48 @@ proc validate_DescribeDomain_600080(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600091: Call_DescribeDomain_600079; path: JsonNode; query: JsonNode;
+proc call*(call_602113: Call_DescribeDomain_602101; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the specified domain, including description and status.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600091.validator(path, query, header, formData, body)
-  let scheme = call_600091.pickScheme
+  let valid = call_602113.validator(path, query, header, formData, body)
+  let scheme = call_602113.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600091.url(scheme.get, call_600091.host, call_600091.base,
-                         call_600091.route, valid.getOrDefault("path"),
+  let url = call_602113.url(scheme.get, call_602113.host, call_602113.base,
+                         call_602113.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600091, url, valid)
+  result = atozHook(call_602113, url, valid)
 
-proc call*(call_600092: Call_DescribeDomain_600079; body: JsonNode): Recallable =
+proc call*(call_602114: Call_DescribeDomain_602101; body: JsonNode): Recallable =
   ## describeDomain
   ## <p>Returns information about the specified domain, including description and status.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600093 = newJObject()
+  var body_602115 = newJObject()
   if body != nil:
-    body_600093 = body
-  result = call_600092.call(nil, nil, nil, nil, body_600093)
+    body_602115 = body
+  result = call_602114.call(nil, nil, nil, nil, body_602115)
 
-var describeDomain* = Call_DescribeDomain_600079(name: "describeDomain",
+var describeDomain* = Call_DescribeDomain_602101(name: "describeDomain",
     meth: HttpMethod.HttpPost, host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.DescribeDomain",
-    validator: validate_DescribeDomain_600080, base: "/", url: url_DescribeDomain_600081,
+    validator: validate_DescribeDomain_602102, base: "/", url: url_DescribeDomain_602103,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkflowExecution_600094 = ref object of OpenApiRestCall_599368
-proc url_DescribeWorkflowExecution_600096(protocol: Scheme; host: string;
+  Call_DescribeWorkflowExecution_602116 = ref object of OpenApiRestCall_601389
+proc url_DescribeWorkflowExecution_602118(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeWorkflowExecution_600095(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkflowExecution_602117(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about the specified workflow execution including its type and some statistics.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -1192,57 +1202,57 @@ proc validate_DescribeWorkflowExecution_600095(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600097 = header.getOrDefault("X-Amz-Date")
-  valid_600097 = validateParameter(valid_600097, JString, required = false,
-                                 default = nil)
-  if valid_600097 != nil:
-    section.add "X-Amz-Date", valid_600097
-  var valid_600098 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600098 = validateParameter(valid_600098, JString, required = false,
-                                 default = nil)
-  if valid_600098 != nil:
-    section.add "X-Amz-Security-Token", valid_600098
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600099 = header.getOrDefault("X-Amz-Target")
-  valid_600099 = validateParameter(valid_600099, JString, required = true, default = newJString(
+  var valid_602119 = header.getOrDefault("X-Amz-Target")
+  valid_602119 = validateParameter(valid_602119, JString, required = true, default = newJString(
       "SimpleWorkflowService.DescribeWorkflowExecution"))
-  if valid_600099 != nil:
-    section.add "X-Amz-Target", valid_600099
-  var valid_600100 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600100 = validateParameter(valid_600100, JString, required = false,
+  if valid_602119 != nil:
+    section.add "X-Amz-Target", valid_602119
+  var valid_602120 = header.getOrDefault("X-Amz-Signature")
+  valid_602120 = validateParameter(valid_602120, JString, required = false,
                                  default = nil)
-  if valid_600100 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600100
-  var valid_600101 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600101 = validateParameter(valid_600101, JString, required = false,
+  if valid_602120 != nil:
+    section.add "X-Amz-Signature", valid_602120
+  var valid_602121 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602121 = validateParameter(valid_602121, JString, required = false,
                                  default = nil)
-  if valid_600101 != nil:
-    section.add "X-Amz-Algorithm", valid_600101
-  var valid_600102 = header.getOrDefault("X-Amz-Signature")
-  valid_600102 = validateParameter(valid_600102, JString, required = false,
+  if valid_602121 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602121
+  var valid_602122 = header.getOrDefault("X-Amz-Date")
+  valid_602122 = validateParameter(valid_602122, JString, required = false,
                                  default = nil)
-  if valid_600102 != nil:
-    section.add "X-Amz-Signature", valid_600102
-  var valid_600103 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600103 = validateParameter(valid_600103, JString, required = false,
+  if valid_602122 != nil:
+    section.add "X-Amz-Date", valid_602122
+  var valid_602123 = header.getOrDefault("X-Amz-Credential")
+  valid_602123 = validateParameter(valid_602123, JString, required = false,
                                  default = nil)
-  if valid_600103 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600103
-  var valid_600104 = header.getOrDefault("X-Amz-Credential")
-  valid_600104 = validateParameter(valid_600104, JString, required = false,
+  if valid_602123 != nil:
+    section.add "X-Amz-Credential", valid_602123
+  var valid_602124 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602124 = validateParameter(valid_602124, JString, required = false,
                                  default = nil)
-  if valid_600104 != nil:
-    section.add "X-Amz-Credential", valid_600104
+  if valid_602124 != nil:
+    section.add "X-Amz-Security-Token", valid_602124
+  var valid_602125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602125 = validateParameter(valid_602125, JString, required = false,
+                                 default = nil)
+  if valid_602125 != nil:
+    section.add "X-Amz-Algorithm", valid_602125
+  var valid_602126 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602126 = validateParameter(valid_602126, JString, required = false,
+                                 default = nil)
+  if valid_602126 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602126
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1253,49 +1263,50 @@ proc validate_DescribeWorkflowExecution_600095(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600106: Call_DescribeWorkflowExecution_600094; path: JsonNode;
+proc call*(call_602128: Call_DescribeWorkflowExecution_602116; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the specified workflow execution including its type and some statistics.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600106.validator(path, query, header, formData, body)
-  let scheme = call_600106.pickScheme
+  let valid = call_602128.validator(path, query, header, formData, body)
+  let scheme = call_602128.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600106.url(scheme.get, call_600106.host, call_600106.base,
-                         call_600106.route, valid.getOrDefault("path"),
+  let url = call_602128.url(scheme.get, call_602128.host, call_602128.base,
+                         call_602128.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600106, url, valid)
+  result = atozHook(call_602128, url, valid)
 
-proc call*(call_600107: Call_DescribeWorkflowExecution_600094; body: JsonNode): Recallable =
+proc call*(call_602129: Call_DescribeWorkflowExecution_602116; body: JsonNode): Recallable =
   ## describeWorkflowExecution
   ## <p>Returns information about the specified workflow execution including its type and some statistics.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600108 = newJObject()
+  var body_602130 = newJObject()
   if body != nil:
-    body_600108 = body
-  result = call_600107.call(nil, nil, nil, nil, body_600108)
+    body_602130 = body
+  result = call_602129.call(nil, nil, nil, nil, body_602130)
 
-var describeWorkflowExecution* = Call_DescribeWorkflowExecution_600094(
+var describeWorkflowExecution* = Call_DescribeWorkflowExecution_602116(
     name: "describeWorkflowExecution", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.DescribeWorkflowExecution",
-    validator: validate_DescribeWorkflowExecution_600095, base: "/",
-    url: url_DescribeWorkflowExecution_600096,
+    validator: validate_DescribeWorkflowExecution_602117, base: "/",
+    url: url_DescribeWorkflowExecution_602118,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkflowType_600109 = ref object of OpenApiRestCall_599368
-proc url_DescribeWorkflowType_600111(protocol: Scheme; host: string; base: string;
+  Call_DescribeWorkflowType_602131 = ref object of OpenApiRestCall_601389
+proc url_DescribeWorkflowType_602133(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeWorkflowType_600110(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkflowType_602132(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns information about the specified <i>workflow type</i>. This includes configuration settings specified when the type was registered and other information such as creation date, current status, etc.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -1306,57 +1317,57 @@ proc validate_DescribeWorkflowType_600110(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600112 = header.getOrDefault("X-Amz-Date")
-  valid_600112 = validateParameter(valid_600112, JString, required = false,
-                                 default = nil)
-  if valid_600112 != nil:
-    section.add "X-Amz-Date", valid_600112
-  var valid_600113 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600113 = validateParameter(valid_600113, JString, required = false,
-                                 default = nil)
-  if valid_600113 != nil:
-    section.add "X-Amz-Security-Token", valid_600113
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600114 = header.getOrDefault("X-Amz-Target")
-  valid_600114 = validateParameter(valid_600114, JString, required = true, default = newJString(
+  var valid_602134 = header.getOrDefault("X-Amz-Target")
+  valid_602134 = validateParameter(valid_602134, JString, required = true, default = newJString(
       "SimpleWorkflowService.DescribeWorkflowType"))
-  if valid_600114 != nil:
-    section.add "X-Amz-Target", valid_600114
-  var valid_600115 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600115 = validateParameter(valid_600115, JString, required = false,
+  if valid_602134 != nil:
+    section.add "X-Amz-Target", valid_602134
+  var valid_602135 = header.getOrDefault("X-Amz-Signature")
+  valid_602135 = validateParameter(valid_602135, JString, required = false,
                                  default = nil)
-  if valid_600115 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600115
-  var valid_600116 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600116 = validateParameter(valid_600116, JString, required = false,
+  if valid_602135 != nil:
+    section.add "X-Amz-Signature", valid_602135
+  var valid_602136 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602136 = validateParameter(valid_602136, JString, required = false,
                                  default = nil)
-  if valid_600116 != nil:
-    section.add "X-Amz-Algorithm", valid_600116
-  var valid_600117 = header.getOrDefault("X-Amz-Signature")
-  valid_600117 = validateParameter(valid_600117, JString, required = false,
+  if valid_602136 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602136
+  var valid_602137 = header.getOrDefault("X-Amz-Date")
+  valid_602137 = validateParameter(valid_602137, JString, required = false,
                                  default = nil)
-  if valid_600117 != nil:
-    section.add "X-Amz-Signature", valid_600117
-  var valid_600118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600118 = validateParameter(valid_600118, JString, required = false,
+  if valid_602137 != nil:
+    section.add "X-Amz-Date", valid_602137
+  var valid_602138 = header.getOrDefault("X-Amz-Credential")
+  valid_602138 = validateParameter(valid_602138, JString, required = false,
                                  default = nil)
-  if valid_600118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600118
-  var valid_600119 = header.getOrDefault("X-Amz-Credential")
-  valid_600119 = validateParameter(valid_600119, JString, required = false,
+  if valid_602138 != nil:
+    section.add "X-Amz-Credential", valid_602138
+  var valid_602139 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602139 = validateParameter(valid_602139, JString, required = false,
                                  default = nil)
-  if valid_600119 != nil:
-    section.add "X-Amz-Credential", valid_600119
+  if valid_602139 != nil:
+    section.add "X-Amz-Security-Token", valid_602139
+  var valid_602140 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602140 = validateParameter(valid_602140, JString, required = false,
+                                 default = nil)
+  if valid_602140 != nil:
+    section.add "X-Amz-Algorithm", valid_602140
+  var valid_602141 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602141 = validateParameter(valid_602141, JString, required = false,
+                                 default = nil)
+  if valid_602141 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602141
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1367,48 +1378,49 @@ proc validate_DescribeWorkflowType_600110(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600121: Call_DescribeWorkflowType_600109; path: JsonNode;
+proc call*(call_602143: Call_DescribeWorkflowType_602131; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about the specified <i>workflow type</i>. This includes configuration settings specified when the type was registered and other information such as creation date, current status, etc.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600121.validator(path, query, header, formData, body)
-  let scheme = call_600121.pickScheme
+  let valid = call_602143.validator(path, query, header, formData, body)
+  let scheme = call_602143.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600121.url(scheme.get, call_600121.host, call_600121.base,
-                         call_600121.route, valid.getOrDefault("path"),
+  let url = call_602143.url(scheme.get, call_602143.host, call_602143.base,
+                         call_602143.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600121, url, valid)
+  result = atozHook(call_602143, url, valid)
 
-proc call*(call_600122: Call_DescribeWorkflowType_600109; body: JsonNode): Recallable =
+proc call*(call_602144: Call_DescribeWorkflowType_602131; body: JsonNode): Recallable =
   ## describeWorkflowType
   ## <p>Returns information about the specified <i>workflow type</i>. This includes configuration settings specified when the type was registered and other information such as creation date, current status, etc.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600123 = newJObject()
+  var body_602145 = newJObject()
   if body != nil:
-    body_600123 = body
-  result = call_600122.call(nil, nil, nil, nil, body_600123)
+    body_602145 = body
+  result = call_602144.call(nil, nil, nil, nil, body_602145)
 
-var describeWorkflowType* = Call_DescribeWorkflowType_600109(
+var describeWorkflowType* = Call_DescribeWorkflowType_602131(
     name: "describeWorkflowType", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.DescribeWorkflowType",
-    validator: validate_DescribeWorkflowType_600110, base: "/",
-    url: url_DescribeWorkflowType_600111, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeWorkflowType_602132, base: "/",
+    url: url_DescribeWorkflowType_602133, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetWorkflowExecutionHistory_600124 = ref object of OpenApiRestCall_599368
-proc url_GetWorkflowExecutionHistory_600126(protocol: Scheme; host: string;
+  Call_GetWorkflowExecutionHistory_602146 = ref object of OpenApiRestCall_601389
+proc url_GetWorkflowExecutionHistory_602148(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetWorkflowExecutionHistory_600125(path: JsonNode; query: JsonNode;
+proc validate_GetWorkflowExecutionHistory_602147(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the history of the specified workflow execution. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the <code>nextPageToken</code> returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -1417,74 +1429,74 @@ proc validate_GetWorkflowExecutionHistory_600125(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextPageToken: JString
-  ##                : Pagination token
   ##   maximumPageSize: JString
   ##                  : Pagination limit
+  ##   nextPageToken: JString
+  ##                : Pagination token
   section = newJObject()
-  var valid_600127 = query.getOrDefault("nextPageToken")
-  valid_600127 = validateParameter(valid_600127, JString, required = false,
+  var valid_602149 = query.getOrDefault("maximumPageSize")
+  valid_602149 = validateParameter(valid_602149, JString, required = false,
                                  default = nil)
-  if valid_600127 != nil:
-    section.add "nextPageToken", valid_600127
-  var valid_600128 = query.getOrDefault("maximumPageSize")
-  valid_600128 = validateParameter(valid_600128, JString, required = false,
+  if valid_602149 != nil:
+    section.add "maximumPageSize", valid_602149
+  var valid_602150 = query.getOrDefault("nextPageToken")
+  valid_602150 = validateParameter(valid_602150, JString, required = false,
                                  default = nil)
-  if valid_600128 != nil:
-    section.add "maximumPageSize", valid_600128
+  if valid_602150 != nil:
+    section.add "nextPageToken", valid_602150
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600129 = header.getOrDefault("X-Amz-Date")
-  valid_600129 = validateParameter(valid_600129, JString, required = false,
-                                 default = nil)
-  if valid_600129 != nil:
-    section.add "X-Amz-Date", valid_600129
-  var valid_600130 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600130 = validateParameter(valid_600130, JString, required = false,
-                                 default = nil)
-  if valid_600130 != nil:
-    section.add "X-Amz-Security-Token", valid_600130
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600131 = header.getOrDefault("X-Amz-Target")
-  valid_600131 = validateParameter(valid_600131, JString, required = true, default = newJString(
+  var valid_602151 = header.getOrDefault("X-Amz-Target")
+  valid_602151 = validateParameter(valid_602151, JString, required = true, default = newJString(
       "SimpleWorkflowService.GetWorkflowExecutionHistory"))
-  if valid_600131 != nil:
-    section.add "X-Amz-Target", valid_600131
-  var valid_600132 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600132 = validateParameter(valid_600132, JString, required = false,
+  if valid_602151 != nil:
+    section.add "X-Amz-Target", valid_602151
+  var valid_602152 = header.getOrDefault("X-Amz-Signature")
+  valid_602152 = validateParameter(valid_602152, JString, required = false,
                                  default = nil)
-  if valid_600132 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600132
-  var valid_600133 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600133 = validateParameter(valid_600133, JString, required = false,
+  if valid_602152 != nil:
+    section.add "X-Amz-Signature", valid_602152
+  var valid_602153 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602153 = validateParameter(valid_602153, JString, required = false,
                                  default = nil)
-  if valid_600133 != nil:
-    section.add "X-Amz-Algorithm", valid_600133
-  var valid_600134 = header.getOrDefault("X-Amz-Signature")
-  valid_600134 = validateParameter(valid_600134, JString, required = false,
+  if valid_602153 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602153
+  var valid_602154 = header.getOrDefault("X-Amz-Date")
+  valid_602154 = validateParameter(valid_602154, JString, required = false,
                                  default = nil)
-  if valid_600134 != nil:
-    section.add "X-Amz-Signature", valid_600134
-  var valid_600135 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600135 = validateParameter(valid_600135, JString, required = false,
+  if valid_602154 != nil:
+    section.add "X-Amz-Date", valid_602154
+  var valid_602155 = header.getOrDefault("X-Amz-Credential")
+  valid_602155 = validateParameter(valid_602155, JString, required = false,
                                  default = nil)
-  if valid_600135 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600135
-  var valid_600136 = header.getOrDefault("X-Amz-Credential")
-  valid_600136 = validateParameter(valid_600136, JString, required = false,
+  if valid_602155 != nil:
+    section.add "X-Amz-Credential", valid_602155
+  var valid_602156 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602156 = validateParameter(valid_602156, JString, required = false,
                                  default = nil)
-  if valid_600136 != nil:
-    section.add "X-Amz-Credential", valid_600136
+  if valid_602156 != nil:
+    section.add "X-Amz-Security-Token", valid_602156
+  var valid_602157 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602157 = validateParameter(valid_602157, JString, required = false,
+                                 default = nil)
+  if valid_602157 != nil:
+    section.add "X-Amz-Algorithm", valid_602157
+  var valid_602158 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602158 = validateParameter(valid_602158, JString, required = false,
+                                 default = nil)
+  if valid_602158 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602158
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1495,57 +1507,58 @@ proc validate_GetWorkflowExecutionHistory_600125(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600138: Call_GetWorkflowExecutionHistory_600124; path: JsonNode;
+proc call*(call_602160: Call_GetWorkflowExecutionHistory_602146; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the history of the specified workflow execution. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the <code>nextPageToken</code> returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600138.validator(path, query, header, formData, body)
-  let scheme = call_600138.pickScheme
+  let valid = call_602160.validator(path, query, header, formData, body)
+  let scheme = call_602160.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600138.url(scheme.get, call_600138.host, call_600138.base,
-                         call_600138.route, valid.getOrDefault("path"),
+  let url = call_602160.url(scheme.get, call_602160.host, call_602160.base,
+                         call_602160.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600138, url, valid)
+  result = atozHook(call_602160, url, valid)
 
-proc call*(call_600139: Call_GetWorkflowExecutionHistory_600124; body: JsonNode;
-          nextPageToken: string = ""; maximumPageSize: string = ""): Recallable =
+proc call*(call_602161: Call_GetWorkflowExecutionHistory_602146; body: JsonNode;
+          maximumPageSize: string = ""; nextPageToken: string = ""): Recallable =
   ## getWorkflowExecutionHistory
   ## <p>Returns the history of the specified workflow execution. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the <code>nextPageToken</code> returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
-  ##   nextPageToken: string
-  ##                : Pagination token
   ##   maximumPageSize: string
   ##                  : Pagination limit
+  ##   nextPageToken: string
+  ##                : Pagination token
   ##   body: JObject (required)
-  var query_600140 = newJObject()
-  var body_600141 = newJObject()
-  add(query_600140, "nextPageToken", newJString(nextPageToken))
-  add(query_600140, "maximumPageSize", newJString(maximumPageSize))
+  var query_602162 = newJObject()
+  var body_602163 = newJObject()
+  add(query_602162, "maximumPageSize", newJString(maximumPageSize))
+  add(query_602162, "nextPageToken", newJString(nextPageToken))
   if body != nil:
-    body_600141 = body
-  result = call_600139.call(nil, query_600140, nil, nil, body_600141)
+    body_602163 = body
+  result = call_602161.call(nil, query_602162, nil, nil, body_602163)
 
-var getWorkflowExecutionHistory* = Call_GetWorkflowExecutionHistory_600124(
+var getWorkflowExecutionHistory* = Call_GetWorkflowExecutionHistory_602146(
     name: "getWorkflowExecutionHistory", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.GetWorkflowExecutionHistory",
-    validator: validate_GetWorkflowExecutionHistory_600125, base: "/",
-    url: url_GetWorkflowExecutionHistory_600126,
+    validator: validate_GetWorkflowExecutionHistory_602147, base: "/",
+    url: url_GetWorkflowExecutionHistory_602148,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListActivityTypes_600143 = ref object of OpenApiRestCall_599368
-proc url_ListActivityTypes_600145(protocol: Scheme; host: string; base: string;
+  Call_ListActivityTypes_602165 = ref object of OpenApiRestCall_601389
+proc url_ListActivityTypes_602167(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListActivityTypes_600144(path: JsonNode; query: JsonNode;
+proc validate_ListActivityTypes_602166(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Returns information about all activities registered in the specified domain that match the specified name and registration status. The result includes information like creation date, current status of the activity, etc. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the <code>nextPageToken</code> returned by the initial call.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
@@ -1555,74 +1568,74 @@ proc validate_ListActivityTypes_600144(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextPageToken: JString
-  ##                : Pagination token
   ##   maximumPageSize: JString
   ##                  : Pagination limit
+  ##   nextPageToken: JString
+  ##                : Pagination token
   section = newJObject()
-  var valid_600146 = query.getOrDefault("nextPageToken")
-  valid_600146 = validateParameter(valid_600146, JString, required = false,
+  var valid_602168 = query.getOrDefault("maximumPageSize")
+  valid_602168 = validateParameter(valid_602168, JString, required = false,
                                  default = nil)
-  if valid_600146 != nil:
-    section.add "nextPageToken", valid_600146
-  var valid_600147 = query.getOrDefault("maximumPageSize")
-  valid_600147 = validateParameter(valid_600147, JString, required = false,
+  if valid_602168 != nil:
+    section.add "maximumPageSize", valid_602168
+  var valid_602169 = query.getOrDefault("nextPageToken")
+  valid_602169 = validateParameter(valid_602169, JString, required = false,
                                  default = nil)
-  if valid_600147 != nil:
-    section.add "maximumPageSize", valid_600147
+  if valid_602169 != nil:
+    section.add "nextPageToken", valid_602169
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600148 = header.getOrDefault("X-Amz-Date")
-  valid_600148 = validateParameter(valid_600148, JString, required = false,
-                                 default = nil)
-  if valid_600148 != nil:
-    section.add "X-Amz-Date", valid_600148
-  var valid_600149 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600149 = validateParameter(valid_600149, JString, required = false,
-                                 default = nil)
-  if valid_600149 != nil:
-    section.add "X-Amz-Security-Token", valid_600149
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600150 = header.getOrDefault("X-Amz-Target")
-  valid_600150 = validateParameter(valid_600150, JString, required = true, default = newJString(
+  var valid_602170 = header.getOrDefault("X-Amz-Target")
+  valid_602170 = validateParameter(valid_602170, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListActivityTypes"))
-  if valid_600150 != nil:
-    section.add "X-Amz-Target", valid_600150
-  var valid_600151 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600151 = validateParameter(valid_600151, JString, required = false,
+  if valid_602170 != nil:
+    section.add "X-Amz-Target", valid_602170
+  var valid_602171 = header.getOrDefault("X-Amz-Signature")
+  valid_602171 = validateParameter(valid_602171, JString, required = false,
                                  default = nil)
-  if valid_600151 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600151
-  var valid_600152 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600152 = validateParameter(valid_600152, JString, required = false,
+  if valid_602171 != nil:
+    section.add "X-Amz-Signature", valid_602171
+  var valid_602172 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602172 = validateParameter(valid_602172, JString, required = false,
                                  default = nil)
-  if valid_600152 != nil:
-    section.add "X-Amz-Algorithm", valid_600152
-  var valid_600153 = header.getOrDefault("X-Amz-Signature")
-  valid_600153 = validateParameter(valid_600153, JString, required = false,
+  if valid_602172 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602172
+  var valid_602173 = header.getOrDefault("X-Amz-Date")
+  valid_602173 = validateParameter(valid_602173, JString, required = false,
                                  default = nil)
-  if valid_600153 != nil:
-    section.add "X-Amz-Signature", valid_600153
-  var valid_600154 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600154 = validateParameter(valid_600154, JString, required = false,
+  if valid_602173 != nil:
+    section.add "X-Amz-Date", valid_602173
+  var valid_602174 = header.getOrDefault("X-Amz-Credential")
+  valid_602174 = validateParameter(valid_602174, JString, required = false,
                                  default = nil)
-  if valid_600154 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600154
-  var valid_600155 = header.getOrDefault("X-Amz-Credential")
-  valid_600155 = validateParameter(valid_600155, JString, required = false,
+  if valid_602174 != nil:
+    section.add "X-Amz-Credential", valid_602174
+  var valid_602175 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602175 = validateParameter(valid_602175, JString, required = false,
                                  default = nil)
-  if valid_600155 != nil:
-    section.add "X-Amz-Credential", valid_600155
+  if valid_602175 != nil:
+    section.add "X-Amz-Security-Token", valid_602175
+  var valid_602176 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602176 = validateParameter(valid_602176, JString, required = false,
+                                 default = nil)
+  if valid_602176 != nil:
+    section.add "X-Amz-Algorithm", valid_602176
+  var valid_602177 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602177 = validateParameter(valid_602177, JString, required = false,
+                                 default = nil)
+  if valid_602177 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602177
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1633,55 +1646,56 @@ proc validate_ListActivityTypes_600144(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600157: Call_ListActivityTypes_600143; path: JsonNode;
+proc call*(call_602179: Call_ListActivityTypes_602165; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about all activities registered in the specified domain that match the specified name and registration status. The result includes information like creation date, current status of the activity, etc. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the <code>nextPageToken</code> returned by the initial call.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600157.validator(path, query, header, formData, body)
-  let scheme = call_600157.pickScheme
+  let valid = call_602179.validator(path, query, header, formData, body)
+  let scheme = call_602179.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600157.url(scheme.get, call_600157.host, call_600157.base,
-                         call_600157.route, valid.getOrDefault("path"),
+  let url = call_602179.url(scheme.get, call_602179.host, call_602179.base,
+                         call_602179.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600157, url, valid)
+  result = atozHook(call_602179, url, valid)
 
-proc call*(call_600158: Call_ListActivityTypes_600143; body: JsonNode;
-          nextPageToken: string = ""; maximumPageSize: string = ""): Recallable =
+proc call*(call_602180: Call_ListActivityTypes_602165; body: JsonNode;
+          maximumPageSize: string = ""; nextPageToken: string = ""): Recallable =
   ## listActivityTypes
   ## <p>Returns information about all activities registered in the specified domain that match the specified name and registration status. The result includes information like creation date, current status of the activity, etc. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the <code>nextPageToken</code> returned by the initial call.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
-  ##   nextPageToken: string
-  ##                : Pagination token
   ##   maximumPageSize: string
   ##                  : Pagination limit
+  ##   nextPageToken: string
+  ##                : Pagination token
   ##   body: JObject (required)
-  var query_600159 = newJObject()
-  var body_600160 = newJObject()
-  add(query_600159, "nextPageToken", newJString(nextPageToken))
-  add(query_600159, "maximumPageSize", newJString(maximumPageSize))
+  var query_602181 = newJObject()
+  var body_602182 = newJObject()
+  add(query_602181, "maximumPageSize", newJString(maximumPageSize))
+  add(query_602181, "nextPageToken", newJString(nextPageToken))
   if body != nil:
-    body_600160 = body
-  result = call_600158.call(nil, query_600159, nil, nil, body_600160)
+    body_602182 = body
+  result = call_602180.call(nil, query_602181, nil, nil, body_602182)
 
-var listActivityTypes* = Call_ListActivityTypes_600143(name: "listActivityTypes",
+var listActivityTypes* = Call_ListActivityTypes_602165(name: "listActivityTypes",
     meth: HttpMethod.HttpPost, host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.ListActivityTypes",
-    validator: validate_ListActivityTypes_600144, base: "/",
-    url: url_ListActivityTypes_600145, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListActivityTypes_602166, base: "/",
+    url: url_ListActivityTypes_602167, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListClosedWorkflowExecutions_600161 = ref object of OpenApiRestCall_599368
-proc url_ListClosedWorkflowExecutions_600163(protocol: Scheme; host: string;
+  Call_ListClosedWorkflowExecutions_602183 = ref object of OpenApiRestCall_601389
+proc url_ListClosedWorkflowExecutions_602185(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListClosedWorkflowExecutions_600162(path: JsonNode; query: JsonNode;
+proc validate_ListClosedWorkflowExecutions_602184(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of closed workflow executions in the specified domain that meet the filtering criteria. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -1690,74 +1704,74 @@ proc validate_ListClosedWorkflowExecutions_600162(path: JsonNode; query: JsonNod
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextPageToken: JString
-  ##                : Pagination token
   ##   maximumPageSize: JString
   ##                  : Pagination limit
+  ##   nextPageToken: JString
+  ##                : Pagination token
   section = newJObject()
-  var valid_600164 = query.getOrDefault("nextPageToken")
-  valid_600164 = validateParameter(valid_600164, JString, required = false,
+  var valid_602186 = query.getOrDefault("maximumPageSize")
+  valid_602186 = validateParameter(valid_602186, JString, required = false,
                                  default = nil)
-  if valid_600164 != nil:
-    section.add "nextPageToken", valid_600164
-  var valid_600165 = query.getOrDefault("maximumPageSize")
-  valid_600165 = validateParameter(valid_600165, JString, required = false,
+  if valid_602186 != nil:
+    section.add "maximumPageSize", valid_602186
+  var valid_602187 = query.getOrDefault("nextPageToken")
+  valid_602187 = validateParameter(valid_602187, JString, required = false,
                                  default = nil)
-  if valid_600165 != nil:
-    section.add "maximumPageSize", valid_600165
+  if valid_602187 != nil:
+    section.add "nextPageToken", valid_602187
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600166 = header.getOrDefault("X-Amz-Date")
-  valid_600166 = validateParameter(valid_600166, JString, required = false,
-                                 default = nil)
-  if valid_600166 != nil:
-    section.add "X-Amz-Date", valid_600166
-  var valid_600167 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600167 = validateParameter(valid_600167, JString, required = false,
-                                 default = nil)
-  if valid_600167 != nil:
-    section.add "X-Amz-Security-Token", valid_600167
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600168 = header.getOrDefault("X-Amz-Target")
-  valid_600168 = validateParameter(valid_600168, JString, required = true, default = newJString(
+  var valid_602188 = header.getOrDefault("X-Amz-Target")
+  valid_602188 = validateParameter(valid_602188, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListClosedWorkflowExecutions"))
-  if valid_600168 != nil:
-    section.add "X-Amz-Target", valid_600168
-  var valid_600169 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600169 = validateParameter(valid_600169, JString, required = false,
+  if valid_602188 != nil:
+    section.add "X-Amz-Target", valid_602188
+  var valid_602189 = header.getOrDefault("X-Amz-Signature")
+  valid_602189 = validateParameter(valid_602189, JString, required = false,
                                  default = nil)
-  if valid_600169 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600169
-  var valid_600170 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600170 = validateParameter(valid_600170, JString, required = false,
+  if valid_602189 != nil:
+    section.add "X-Amz-Signature", valid_602189
+  var valid_602190 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602190 = validateParameter(valid_602190, JString, required = false,
                                  default = nil)
-  if valid_600170 != nil:
-    section.add "X-Amz-Algorithm", valid_600170
-  var valid_600171 = header.getOrDefault("X-Amz-Signature")
-  valid_600171 = validateParameter(valid_600171, JString, required = false,
+  if valid_602190 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602190
+  var valid_602191 = header.getOrDefault("X-Amz-Date")
+  valid_602191 = validateParameter(valid_602191, JString, required = false,
                                  default = nil)
-  if valid_600171 != nil:
-    section.add "X-Amz-Signature", valid_600171
-  var valid_600172 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600172 = validateParameter(valid_600172, JString, required = false,
+  if valid_602191 != nil:
+    section.add "X-Amz-Date", valid_602191
+  var valid_602192 = header.getOrDefault("X-Amz-Credential")
+  valid_602192 = validateParameter(valid_602192, JString, required = false,
                                  default = nil)
-  if valid_600172 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600172
-  var valid_600173 = header.getOrDefault("X-Amz-Credential")
-  valid_600173 = validateParameter(valid_600173, JString, required = false,
+  if valid_602192 != nil:
+    section.add "X-Amz-Credential", valid_602192
+  var valid_602193 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602193 = validateParameter(valid_602193, JString, required = false,
                                  default = nil)
-  if valid_600173 != nil:
-    section.add "X-Amz-Credential", valid_600173
+  if valid_602193 != nil:
+    section.add "X-Amz-Security-Token", valid_602193
+  var valid_602194 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602194 = validateParameter(valid_602194, JString, required = false,
+                                 default = nil)
+  if valid_602194 != nil:
+    section.add "X-Amz-Algorithm", valid_602194
+  var valid_602195 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602195 = validateParameter(valid_602195, JString, required = false,
+                                 default = nil)
+  if valid_602195 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602195
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1768,57 +1782,58 @@ proc validate_ListClosedWorkflowExecutions_600162(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600175: Call_ListClosedWorkflowExecutions_600161; path: JsonNode;
+proc call*(call_602197: Call_ListClosedWorkflowExecutions_602183; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of closed workflow executions in the specified domain that meet the filtering criteria. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600175.validator(path, query, header, formData, body)
-  let scheme = call_600175.pickScheme
+  let valid = call_602197.validator(path, query, header, formData, body)
+  let scheme = call_602197.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600175.url(scheme.get, call_600175.host, call_600175.base,
-                         call_600175.route, valid.getOrDefault("path"),
+  let url = call_602197.url(scheme.get, call_602197.host, call_602197.base,
+                         call_602197.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600175, url, valid)
+  result = atozHook(call_602197, url, valid)
 
-proc call*(call_600176: Call_ListClosedWorkflowExecutions_600161; body: JsonNode;
-          nextPageToken: string = ""; maximumPageSize: string = ""): Recallable =
+proc call*(call_602198: Call_ListClosedWorkflowExecutions_602183; body: JsonNode;
+          maximumPageSize: string = ""; nextPageToken: string = ""): Recallable =
   ## listClosedWorkflowExecutions
   ## <p>Returns a list of closed workflow executions in the specified domain that meet the filtering criteria. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
-  ##   nextPageToken: string
-  ##                : Pagination token
   ##   maximumPageSize: string
   ##                  : Pagination limit
+  ##   nextPageToken: string
+  ##                : Pagination token
   ##   body: JObject (required)
-  var query_600177 = newJObject()
-  var body_600178 = newJObject()
-  add(query_600177, "nextPageToken", newJString(nextPageToken))
-  add(query_600177, "maximumPageSize", newJString(maximumPageSize))
+  var query_602199 = newJObject()
+  var body_602200 = newJObject()
+  add(query_602199, "maximumPageSize", newJString(maximumPageSize))
+  add(query_602199, "nextPageToken", newJString(nextPageToken))
   if body != nil:
-    body_600178 = body
-  result = call_600176.call(nil, query_600177, nil, nil, body_600178)
+    body_602200 = body
+  result = call_602198.call(nil, query_602199, nil, nil, body_602200)
 
-var listClosedWorkflowExecutions* = Call_ListClosedWorkflowExecutions_600161(
+var listClosedWorkflowExecutions* = Call_ListClosedWorkflowExecutions_602183(
     name: "listClosedWorkflowExecutions", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.ListClosedWorkflowExecutions",
-    validator: validate_ListClosedWorkflowExecutions_600162, base: "/",
-    url: url_ListClosedWorkflowExecutions_600163,
+    validator: validate_ListClosedWorkflowExecutions_602184, base: "/",
+    url: url_ListClosedWorkflowExecutions_602185,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDomains_600179 = ref object of OpenApiRestCall_599368
-proc url_ListDomains_600181(protocol: Scheme; host: string; base: string;
+  Call_ListDomains_602201 = ref object of OpenApiRestCall_601389
+proc url_ListDomains_602203(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListDomains_600180(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListDomains_602202(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the list of domains registered in the account. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains. The element must be set to <code>arn:aws:swf::AccountID:domain/*</code>, where <i>AccountID</i> is the account ID, with no dashes.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -1827,74 +1842,74 @@ proc validate_ListDomains_600180(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextPageToken: JString
-  ##                : Pagination token
   ##   maximumPageSize: JString
   ##                  : Pagination limit
+  ##   nextPageToken: JString
+  ##                : Pagination token
   section = newJObject()
-  var valid_600182 = query.getOrDefault("nextPageToken")
-  valid_600182 = validateParameter(valid_600182, JString, required = false,
+  var valid_602204 = query.getOrDefault("maximumPageSize")
+  valid_602204 = validateParameter(valid_602204, JString, required = false,
                                  default = nil)
-  if valid_600182 != nil:
-    section.add "nextPageToken", valid_600182
-  var valid_600183 = query.getOrDefault("maximumPageSize")
-  valid_600183 = validateParameter(valid_600183, JString, required = false,
+  if valid_602204 != nil:
+    section.add "maximumPageSize", valid_602204
+  var valid_602205 = query.getOrDefault("nextPageToken")
+  valid_602205 = validateParameter(valid_602205, JString, required = false,
                                  default = nil)
-  if valid_600183 != nil:
-    section.add "maximumPageSize", valid_600183
+  if valid_602205 != nil:
+    section.add "nextPageToken", valid_602205
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600184 = header.getOrDefault("X-Amz-Date")
-  valid_600184 = validateParameter(valid_600184, JString, required = false,
-                                 default = nil)
-  if valid_600184 != nil:
-    section.add "X-Amz-Date", valid_600184
-  var valid_600185 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600185 = validateParameter(valid_600185, JString, required = false,
-                                 default = nil)
-  if valid_600185 != nil:
-    section.add "X-Amz-Security-Token", valid_600185
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600186 = header.getOrDefault("X-Amz-Target")
-  valid_600186 = validateParameter(valid_600186, JString, required = true, default = newJString(
+  var valid_602206 = header.getOrDefault("X-Amz-Target")
+  valid_602206 = validateParameter(valid_602206, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListDomains"))
-  if valid_600186 != nil:
-    section.add "X-Amz-Target", valid_600186
-  var valid_600187 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600187 = validateParameter(valid_600187, JString, required = false,
+  if valid_602206 != nil:
+    section.add "X-Amz-Target", valid_602206
+  var valid_602207 = header.getOrDefault("X-Amz-Signature")
+  valid_602207 = validateParameter(valid_602207, JString, required = false,
                                  default = nil)
-  if valid_600187 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600187
-  var valid_600188 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600188 = validateParameter(valid_600188, JString, required = false,
+  if valid_602207 != nil:
+    section.add "X-Amz-Signature", valid_602207
+  var valid_602208 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602208 = validateParameter(valid_602208, JString, required = false,
                                  default = nil)
-  if valid_600188 != nil:
-    section.add "X-Amz-Algorithm", valid_600188
-  var valid_600189 = header.getOrDefault("X-Amz-Signature")
-  valid_600189 = validateParameter(valid_600189, JString, required = false,
+  if valid_602208 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602208
+  var valid_602209 = header.getOrDefault("X-Amz-Date")
+  valid_602209 = validateParameter(valid_602209, JString, required = false,
                                  default = nil)
-  if valid_600189 != nil:
-    section.add "X-Amz-Signature", valid_600189
-  var valid_600190 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600190 = validateParameter(valid_600190, JString, required = false,
+  if valid_602209 != nil:
+    section.add "X-Amz-Date", valid_602209
+  var valid_602210 = header.getOrDefault("X-Amz-Credential")
+  valid_602210 = validateParameter(valid_602210, JString, required = false,
                                  default = nil)
-  if valid_600190 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600190
-  var valid_600191 = header.getOrDefault("X-Amz-Credential")
-  valid_600191 = validateParameter(valid_600191, JString, required = false,
+  if valid_602210 != nil:
+    section.add "X-Amz-Credential", valid_602210
+  var valid_602211 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602211 = validateParameter(valid_602211, JString, required = false,
                                  default = nil)
-  if valid_600191 != nil:
-    section.add "X-Amz-Credential", valid_600191
+  if valid_602211 != nil:
+    section.add "X-Amz-Security-Token", valid_602211
+  var valid_602212 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602212 = validateParameter(valid_602212, JString, required = false,
+                                 default = nil)
+  if valid_602212 != nil:
+    section.add "X-Amz-Algorithm", valid_602212
+  var valid_602213 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602213 = validateParameter(valid_602213, JString, required = false,
+                                 default = nil)
+  if valid_602213 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602213
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1905,56 +1920,57 @@ proc validate_ListDomains_600180(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600193: Call_ListDomains_600179; path: JsonNode; query: JsonNode;
+proc call*(call_602215: Call_ListDomains_602201; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the list of domains registered in the account. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains. The element must be set to <code>arn:aws:swf::AccountID:domain/*</code>, where <i>AccountID</i> is the account ID, with no dashes.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600193.validator(path, query, header, formData, body)
-  let scheme = call_600193.pickScheme
+  let valid = call_602215.validator(path, query, header, formData, body)
+  let scheme = call_602215.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600193.url(scheme.get, call_600193.host, call_600193.base,
-                         call_600193.route, valid.getOrDefault("path"),
+  let url = call_602215.url(scheme.get, call_602215.host, call_602215.base,
+                         call_602215.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600193, url, valid)
+  result = atozHook(call_602215, url, valid)
 
-proc call*(call_600194: Call_ListDomains_600179; body: JsonNode;
-          nextPageToken: string = ""; maximumPageSize: string = ""): Recallable =
+proc call*(call_602216: Call_ListDomains_602201; body: JsonNode;
+          maximumPageSize: string = ""; nextPageToken: string = ""): Recallable =
   ## listDomains
   ## <p>Returns the list of domains registered in the account. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains. The element must be set to <code>arn:aws:swf::AccountID:domain/*</code>, where <i>AccountID</i> is the account ID, with no dashes.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
-  ##   nextPageToken: string
-  ##                : Pagination token
   ##   maximumPageSize: string
   ##                  : Pagination limit
+  ##   nextPageToken: string
+  ##                : Pagination token
   ##   body: JObject (required)
-  var query_600195 = newJObject()
-  var body_600196 = newJObject()
-  add(query_600195, "nextPageToken", newJString(nextPageToken))
-  add(query_600195, "maximumPageSize", newJString(maximumPageSize))
+  var query_602217 = newJObject()
+  var body_602218 = newJObject()
+  add(query_602217, "maximumPageSize", newJString(maximumPageSize))
+  add(query_602217, "nextPageToken", newJString(nextPageToken))
   if body != nil:
-    body_600196 = body
-  result = call_600194.call(nil, query_600195, nil, nil, body_600196)
+    body_602218 = body
+  result = call_602216.call(nil, query_602217, nil, nil, body_602218)
 
-var listDomains* = Call_ListDomains_600179(name: "listDomains",
+var listDomains* = Call_ListDomains_602201(name: "listDomains",
                                         meth: HttpMethod.HttpPost,
                                         host: "swf.amazonaws.com", route: "/#X-Amz-Target=SimpleWorkflowService.ListDomains",
-                                        validator: validate_ListDomains_600180,
-                                        base: "/", url: url_ListDomains_600181,
+                                        validator: validate_ListDomains_602202,
+                                        base: "/", url: url_ListDomains_602203,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListOpenWorkflowExecutions_600197 = ref object of OpenApiRestCall_599368
-proc url_ListOpenWorkflowExecutions_600199(protocol: Scheme; host: string;
+  Call_ListOpenWorkflowExecutions_602219 = ref object of OpenApiRestCall_601389
+proc url_ListOpenWorkflowExecutions_602221(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListOpenWorkflowExecutions_600198(path: JsonNode; query: JsonNode;
+proc validate_ListOpenWorkflowExecutions_602220(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns a list of open workflow executions in the specified domain that meet the filtering criteria. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -1963,74 +1979,74 @@ proc validate_ListOpenWorkflowExecutions_600198(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextPageToken: JString
-  ##                : Pagination token
   ##   maximumPageSize: JString
   ##                  : Pagination limit
+  ##   nextPageToken: JString
+  ##                : Pagination token
   section = newJObject()
-  var valid_600200 = query.getOrDefault("nextPageToken")
-  valid_600200 = validateParameter(valid_600200, JString, required = false,
+  var valid_602222 = query.getOrDefault("maximumPageSize")
+  valid_602222 = validateParameter(valid_602222, JString, required = false,
                                  default = nil)
-  if valid_600200 != nil:
-    section.add "nextPageToken", valid_600200
-  var valid_600201 = query.getOrDefault("maximumPageSize")
-  valid_600201 = validateParameter(valid_600201, JString, required = false,
+  if valid_602222 != nil:
+    section.add "maximumPageSize", valid_602222
+  var valid_602223 = query.getOrDefault("nextPageToken")
+  valid_602223 = validateParameter(valid_602223, JString, required = false,
                                  default = nil)
-  if valid_600201 != nil:
-    section.add "maximumPageSize", valid_600201
+  if valid_602223 != nil:
+    section.add "nextPageToken", valid_602223
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600202 = header.getOrDefault("X-Amz-Date")
-  valid_600202 = validateParameter(valid_600202, JString, required = false,
-                                 default = nil)
-  if valid_600202 != nil:
-    section.add "X-Amz-Date", valid_600202
-  var valid_600203 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600203 = validateParameter(valid_600203, JString, required = false,
-                                 default = nil)
-  if valid_600203 != nil:
-    section.add "X-Amz-Security-Token", valid_600203
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600204 = header.getOrDefault("X-Amz-Target")
-  valid_600204 = validateParameter(valid_600204, JString, required = true, default = newJString(
+  var valid_602224 = header.getOrDefault("X-Amz-Target")
+  valid_602224 = validateParameter(valid_602224, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListOpenWorkflowExecutions"))
-  if valid_600204 != nil:
-    section.add "X-Amz-Target", valid_600204
-  var valid_600205 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600205 = validateParameter(valid_600205, JString, required = false,
+  if valid_602224 != nil:
+    section.add "X-Amz-Target", valid_602224
+  var valid_602225 = header.getOrDefault("X-Amz-Signature")
+  valid_602225 = validateParameter(valid_602225, JString, required = false,
                                  default = nil)
-  if valid_600205 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600205
-  var valid_600206 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600206 = validateParameter(valid_600206, JString, required = false,
+  if valid_602225 != nil:
+    section.add "X-Amz-Signature", valid_602225
+  var valid_602226 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602226 = validateParameter(valid_602226, JString, required = false,
                                  default = nil)
-  if valid_600206 != nil:
-    section.add "X-Amz-Algorithm", valid_600206
-  var valid_600207 = header.getOrDefault("X-Amz-Signature")
-  valid_600207 = validateParameter(valid_600207, JString, required = false,
+  if valid_602226 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602226
+  var valid_602227 = header.getOrDefault("X-Amz-Date")
+  valid_602227 = validateParameter(valid_602227, JString, required = false,
                                  default = nil)
-  if valid_600207 != nil:
-    section.add "X-Amz-Signature", valid_600207
-  var valid_600208 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600208 = validateParameter(valid_600208, JString, required = false,
+  if valid_602227 != nil:
+    section.add "X-Amz-Date", valid_602227
+  var valid_602228 = header.getOrDefault("X-Amz-Credential")
+  valid_602228 = validateParameter(valid_602228, JString, required = false,
                                  default = nil)
-  if valid_600208 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600208
-  var valid_600209 = header.getOrDefault("X-Amz-Credential")
-  valid_600209 = validateParameter(valid_600209, JString, required = false,
+  if valid_602228 != nil:
+    section.add "X-Amz-Credential", valid_602228
+  var valid_602229 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602229 = validateParameter(valid_602229, JString, required = false,
                                  default = nil)
-  if valid_600209 != nil:
-    section.add "X-Amz-Credential", valid_600209
+  if valid_602229 != nil:
+    section.add "X-Amz-Security-Token", valid_602229
+  var valid_602230 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602230 = validateParameter(valid_602230, JString, required = false,
+                                 default = nil)
+  if valid_602230 != nil:
+    section.add "X-Amz-Algorithm", valid_602230
+  var valid_602231 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602231 = validateParameter(valid_602231, JString, required = false,
+                                 default = nil)
+  if valid_602231 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602231
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2041,57 +2057,58 @@ proc validate_ListOpenWorkflowExecutions_600198(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600211: Call_ListOpenWorkflowExecutions_600197; path: JsonNode;
+proc call*(call_602233: Call_ListOpenWorkflowExecutions_602219; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of open workflow executions in the specified domain that meet the filtering criteria. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600211.validator(path, query, header, formData, body)
-  let scheme = call_600211.pickScheme
+  let valid = call_602233.validator(path, query, header, formData, body)
+  let scheme = call_602233.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600211.url(scheme.get, call_600211.host, call_600211.base,
-                         call_600211.route, valid.getOrDefault("path"),
+  let url = call_602233.url(scheme.get, call_602233.host, call_602233.base,
+                         call_602233.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600211, url, valid)
+  result = atozHook(call_602233, url, valid)
 
-proc call*(call_600212: Call_ListOpenWorkflowExecutions_600197; body: JsonNode;
-          nextPageToken: string = ""; maximumPageSize: string = ""): Recallable =
+proc call*(call_602234: Call_ListOpenWorkflowExecutions_602219; body: JsonNode;
+          maximumPageSize: string = ""; nextPageToken: string = ""): Recallable =
   ## listOpenWorkflowExecutions
   ## <p>Returns a list of open workflow executions in the specified domain that meet the filtering criteria. The results may be split into multiple pages. To retrieve subsequent pages, make the call again using the nextPageToken returned by the initial call.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagFilter.tag</code>: String constraint. The key is <code>swf:tagFilter.tag</code>.</p> </li> <li> <p> <code>typeFilter.name</code>: String constraint. The key is <code>swf:typeFilter.name</code>.</p> </li> <li> <p> <code>typeFilter.version</code>: String constraint. The key is <code>swf:typeFilter.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
-  ##   nextPageToken: string
-  ##                : Pagination token
   ##   maximumPageSize: string
   ##                  : Pagination limit
+  ##   nextPageToken: string
+  ##                : Pagination token
   ##   body: JObject (required)
-  var query_600213 = newJObject()
-  var body_600214 = newJObject()
-  add(query_600213, "nextPageToken", newJString(nextPageToken))
-  add(query_600213, "maximumPageSize", newJString(maximumPageSize))
+  var query_602235 = newJObject()
+  var body_602236 = newJObject()
+  add(query_602235, "maximumPageSize", newJString(maximumPageSize))
+  add(query_602235, "nextPageToken", newJString(nextPageToken))
   if body != nil:
-    body_600214 = body
-  result = call_600212.call(nil, query_600213, nil, nil, body_600214)
+    body_602236 = body
+  result = call_602234.call(nil, query_602235, nil, nil, body_602236)
 
-var listOpenWorkflowExecutions* = Call_ListOpenWorkflowExecutions_600197(
+var listOpenWorkflowExecutions* = Call_ListOpenWorkflowExecutions_602219(
     name: "listOpenWorkflowExecutions", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.ListOpenWorkflowExecutions",
-    validator: validate_ListOpenWorkflowExecutions_600198, base: "/",
-    url: url_ListOpenWorkflowExecutions_600199,
+    validator: validate_ListOpenWorkflowExecutions_602220, base: "/",
+    url: url_ListOpenWorkflowExecutions_602221,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_600215 = ref object of OpenApiRestCall_599368
-proc url_ListTagsForResource_600217(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_602237 = ref object of OpenApiRestCall_601389
+proc url_ListTagsForResource_602239(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTagsForResource_600216(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_602238(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## List tags for a given domain.
@@ -2103,57 +2120,57 @@ proc validate_ListTagsForResource_600216(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600218 = header.getOrDefault("X-Amz-Date")
-  valid_600218 = validateParameter(valid_600218, JString, required = false,
-                                 default = nil)
-  if valid_600218 != nil:
-    section.add "X-Amz-Date", valid_600218
-  var valid_600219 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600219 = validateParameter(valid_600219, JString, required = false,
-                                 default = nil)
-  if valid_600219 != nil:
-    section.add "X-Amz-Security-Token", valid_600219
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600220 = header.getOrDefault("X-Amz-Target")
-  valid_600220 = validateParameter(valid_600220, JString, required = true, default = newJString(
+  var valid_602240 = header.getOrDefault("X-Amz-Target")
+  valid_602240 = validateParameter(valid_602240, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListTagsForResource"))
-  if valid_600220 != nil:
-    section.add "X-Amz-Target", valid_600220
-  var valid_600221 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600221 = validateParameter(valid_600221, JString, required = false,
+  if valid_602240 != nil:
+    section.add "X-Amz-Target", valid_602240
+  var valid_602241 = header.getOrDefault("X-Amz-Signature")
+  valid_602241 = validateParameter(valid_602241, JString, required = false,
                                  default = nil)
-  if valid_600221 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600221
-  var valid_600222 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600222 = validateParameter(valid_600222, JString, required = false,
+  if valid_602241 != nil:
+    section.add "X-Amz-Signature", valid_602241
+  var valid_602242 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602242 = validateParameter(valid_602242, JString, required = false,
                                  default = nil)
-  if valid_600222 != nil:
-    section.add "X-Amz-Algorithm", valid_600222
-  var valid_600223 = header.getOrDefault("X-Amz-Signature")
-  valid_600223 = validateParameter(valid_600223, JString, required = false,
+  if valid_602242 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602242
+  var valid_602243 = header.getOrDefault("X-Amz-Date")
+  valid_602243 = validateParameter(valid_602243, JString, required = false,
                                  default = nil)
-  if valid_600223 != nil:
-    section.add "X-Amz-Signature", valid_600223
-  var valid_600224 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600224 = validateParameter(valid_600224, JString, required = false,
+  if valid_602243 != nil:
+    section.add "X-Amz-Date", valid_602243
+  var valid_602244 = header.getOrDefault("X-Amz-Credential")
+  valid_602244 = validateParameter(valid_602244, JString, required = false,
                                  default = nil)
-  if valid_600224 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600224
-  var valid_600225 = header.getOrDefault("X-Amz-Credential")
-  valid_600225 = validateParameter(valid_600225, JString, required = false,
+  if valid_602244 != nil:
+    section.add "X-Amz-Credential", valid_602244
+  var valid_602245 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602245 = validateParameter(valid_602245, JString, required = false,
                                  default = nil)
-  if valid_600225 != nil:
-    section.add "X-Amz-Credential", valid_600225
+  if valid_602245 != nil:
+    section.add "X-Amz-Security-Token", valid_602245
+  var valid_602246 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602246 = validateParameter(valid_602246, JString, required = false,
+                                 default = nil)
+  if valid_602246 != nil:
+    section.add "X-Amz-Algorithm", valid_602246
+  var valid_602247 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602247 = validateParameter(valid_602247, JString, required = false,
+                                 default = nil)
+  if valid_602247 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602247
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2164,48 +2181,49 @@ proc validate_ListTagsForResource_600216(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600227: Call_ListTagsForResource_600215; path: JsonNode;
+proc call*(call_602249: Call_ListTagsForResource_602237; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List tags for a given domain.
   ## 
-  let valid = call_600227.validator(path, query, header, formData, body)
-  let scheme = call_600227.pickScheme
+  let valid = call_602249.validator(path, query, header, formData, body)
+  let scheme = call_602249.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600227.url(scheme.get, call_600227.host, call_600227.base,
-                         call_600227.route, valid.getOrDefault("path"),
+  let url = call_602249.url(scheme.get, call_602249.host, call_602249.base,
+                         call_602249.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600227, url, valid)
+  result = atozHook(call_602249, url, valid)
 
-proc call*(call_600228: Call_ListTagsForResource_600215; body: JsonNode): Recallable =
+proc call*(call_602250: Call_ListTagsForResource_602237; body: JsonNode): Recallable =
   ## listTagsForResource
   ## List tags for a given domain.
   ##   body: JObject (required)
-  var body_600229 = newJObject()
+  var body_602251 = newJObject()
   if body != nil:
-    body_600229 = body
-  result = call_600228.call(nil, nil, nil, nil, body_600229)
+    body_602251 = body
+  result = call_602250.call(nil, nil, nil, nil, body_602251)
 
-var listTagsForResource* = Call_ListTagsForResource_600215(
+var listTagsForResource* = Call_ListTagsForResource_602237(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.ListTagsForResource",
-    validator: validate_ListTagsForResource_600216, base: "/",
-    url: url_ListTagsForResource_600217, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_602238, base: "/",
+    url: url_ListTagsForResource_602239, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListWorkflowTypes_600230 = ref object of OpenApiRestCall_599368
-proc url_ListWorkflowTypes_600232(protocol: Scheme; host: string; base: string;
+  Call_ListWorkflowTypes_602252 = ref object of OpenApiRestCall_601389
+proc url_ListWorkflowTypes_602254(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListWorkflowTypes_600231(path: JsonNode; query: JsonNode;
+proc validate_ListWorkflowTypes_602253(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Returns information about workflow types in the specified domain. The results may be split into multiple pages that can be retrieved by making the call repeatedly.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
@@ -2215,74 +2233,74 @@ proc validate_ListWorkflowTypes_600231(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextPageToken: JString
-  ##                : Pagination token
   ##   maximumPageSize: JString
   ##                  : Pagination limit
+  ##   nextPageToken: JString
+  ##                : Pagination token
   section = newJObject()
-  var valid_600233 = query.getOrDefault("nextPageToken")
-  valid_600233 = validateParameter(valid_600233, JString, required = false,
+  var valid_602255 = query.getOrDefault("maximumPageSize")
+  valid_602255 = validateParameter(valid_602255, JString, required = false,
                                  default = nil)
-  if valid_600233 != nil:
-    section.add "nextPageToken", valid_600233
-  var valid_600234 = query.getOrDefault("maximumPageSize")
-  valid_600234 = validateParameter(valid_600234, JString, required = false,
+  if valid_602255 != nil:
+    section.add "maximumPageSize", valid_602255
+  var valid_602256 = query.getOrDefault("nextPageToken")
+  valid_602256 = validateParameter(valid_602256, JString, required = false,
                                  default = nil)
-  if valid_600234 != nil:
-    section.add "maximumPageSize", valid_600234
+  if valid_602256 != nil:
+    section.add "nextPageToken", valid_602256
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600235 = header.getOrDefault("X-Amz-Date")
-  valid_600235 = validateParameter(valid_600235, JString, required = false,
-                                 default = nil)
-  if valid_600235 != nil:
-    section.add "X-Amz-Date", valid_600235
-  var valid_600236 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600236 = validateParameter(valid_600236, JString, required = false,
-                                 default = nil)
-  if valid_600236 != nil:
-    section.add "X-Amz-Security-Token", valid_600236
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600237 = header.getOrDefault("X-Amz-Target")
-  valid_600237 = validateParameter(valid_600237, JString, required = true, default = newJString(
+  var valid_602257 = header.getOrDefault("X-Amz-Target")
+  valid_602257 = validateParameter(valid_602257, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListWorkflowTypes"))
-  if valid_600237 != nil:
-    section.add "X-Amz-Target", valid_600237
-  var valid_600238 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600238 = validateParameter(valid_600238, JString, required = false,
+  if valid_602257 != nil:
+    section.add "X-Amz-Target", valid_602257
+  var valid_602258 = header.getOrDefault("X-Amz-Signature")
+  valid_602258 = validateParameter(valid_602258, JString, required = false,
                                  default = nil)
-  if valid_600238 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600238
-  var valid_600239 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600239 = validateParameter(valid_600239, JString, required = false,
+  if valid_602258 != nil:
+    section.add "X-Amz-Signature", valid_602258
+  var valid_602259 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602259 = validateParameter(valid_602259, JString, required = false,
                                  default = nil)
-  if valid_600239 != nil:
-    section.add "X-Amz-Algorithm", valid_600239
-  var valid_600240 = header.getOrDefault("X-Amz-Signature")
-  valid_600240 = validateParameter(valid_600240, JString, required = false,
+  if valid_602259 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602259
+  var valid_602260 = header.getOrDefault("X-Amz-Date")
+  valid_602260 = validateParameter(valid_602260, JString, required = false,
                                  default = nil)
-  if valid_600240 != nil:
-    section.add "X-Amz-Signature", valid_600240
-  var valid_600241 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600241 = validateParameter(valid_600241, JString, required = false,
+  if valid_602260 != nil:
+    section.add "X-Amz-Date", valid_602260
+  var valid_602261 = header.getOrDefault("X-Amz-Credential")
+  valid_602261 = validateParameter(valid_602261, JString, required = false,
                                  default = nil)
-  if valid_600241 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600241
-  var valid_600242 = header.getOrDefault("X-Amz-Credential")
-  valid_600242 = validateParameter(valid_600242, JString, required = false,
+  if valid_602261 != nil:
+    section.add "X-Amz-Credential", valid_602261
+  var valid_602262 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602262 = validateParameter(valid_602262, JString, required = false,
                                  default = nil)
-  if valid_600242 != nil:
-    section.add "X-Amz-Credential", valid_600242
+  if valid_602262 != nil:
+    section.add "X-Amz-Security-Token", valid_602262
+  var valid_602263 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602263 = validateParameter(valid_602263, JString, required = false,
+                                 default = nil)
+  if valid_602263 != nil:
+    section.add "X-Amz-Algorithm", valid_602263
+  var valid_602264 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602264 = validateParameter(valid_602264, JString, required = false,
+                                 default = nil)
+  if valid_602264 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602264
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2293,55 +2311,56 @@ proc validate_ListWorkflowTypes_600231(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600244: Call_ListWorkflowTypes_600230; path: JsonNode;
+proc call*(call_602266: Call_ListWorkflowTypes_602252; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about workflow types in the specified domain. The results may be split into multiple pages that can be retrieved by making the call repeatedly.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600244.validator(path, query, header, formData, body)
-  let scheme = call_600244.pickScheme
+  let valid = call_602266.validator(path, query, header, formData, body)
+  let scheme = call_602266.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600244.url(scheme.get, call_600244.host, call_600244.base,
-                         call_600244.route, valid.getOrDefault("path"),
+  let url = call_602266.url(scheme.get, call_602266.host, call_602266.base,
+                         call_602266.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600244, url, valid)
+  result = atozHook(call_602266, url, valid)
 
-proc call*(call_600245: Call_ListWorkflowTypes_600230; body: JsonNode;
-          nextPageToken: string = ""; maximumPageSize: string = ""): Recallable =
+proc call*(call_602267: Call_ListWorkflowTypes_602252; body: JsonNode;
+          maximumPageSize: string = ""; nextPageToken: string = ""): Recallable =
   ## listWorkflowTypes
   ## <p>Returns information about workflow types in the specified domain. The results may be split into multiple pages that can be retrieved by making the call repeatedly.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
-  ##   nextPageToken: string
-  ##                : Pagination token
   ##   maximumPageSize: string
   ##                  : Pagination limit
+  ##   nextPageToken: string
+  ##                : Pagination token
   ##   body: JObject (required)
-  var query_600246 = newJObject()
-  var body_600247 = newJObject()
-  add(query_600246, "nextPageToken", newJString(nextPageToken))
-  add(query_600246, "maximumPageSize", newJString(maximumPageSize))
+  var query_602268 = newJObject()
+  var body_602269 = newJObject()
+  add(query_602268, "maximumPageSize", newJString(maximumPageSize))
+  add(query_602268, "nextPageToken", newJString(nextPageToken))
   if body != nil:
-    body_600247 = body
-  result = call_600245.call(nil, query_600246, nil, nil, body_600247)
+    body_602269 = body
+  result = call_602267.call(nil, query_602268, nil, nil, body_602269)
 
-var listWorkflowTypes* = Call_ListWorkflowTypes_600230(name: "listWorkflowTypes",
+var listWorkflowTypes* = Call_ListWorkflowTypes_602252(name: "listWorkflowTypes",
     meth: HttpMethod.HttpPost, host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.ListWorkflowTypes",
-    validator: validate_ListWorkflowTypes_600231, base: "/",
-    url: url_ListWorkflowTypes_600232, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListWorkflowTypes_602253, base: "/",
+    url: url_ListWorkflowTypes_602254, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PollForActivityTask_600248 = ref object of OpenApiRestCall_599368
-proc url_PollForActivityTask_600250(protocol: Scheme; host: string; base: string;
+  Call_PollForActivityTask_602270 = ref object of OpenApiRestCall_601389
+proc url_PollForActivityTask_602272(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PollForActivityTask_600249(path: JsonNode; query: JsonNode;
+proc validate_PollForActivityTask_602271(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Used by workers to get an <a>ActivityTask</a> from the specified activity <code>taskList</code>. This initiates a long poll, where the service holds the HTTP connection open and responds as soon as a task becomes available. The maximum time the service holds on to the request before responding is 60 seconds. If no task is available within 60 seconds, the poll returns an empty result. An empty result, in this context, means that an ActivityTask is returned, but that the value of taskToken is an empty string. If a task is returned, the worker should use its type to identify and process it correctly.</p> <important> <p>Workers should set their client side socket timeout to at least 70 seconds (10 seconds higher than the maximum time service may hold the poll request).</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
@@ -2353,57 +2372,57 @@ proc validate_PollForActivityTask_600249(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600251 = header.getOrDefault("X-Amz-Date")
-  valid_600251 = validateParameter(valid_600251, JString, required = false,
-                                 default = nil)
-  if valid_600251 != nil:
-    section.add "X-Amz-Date", valid_600251
-  var valid_600252 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600252 = validateParameter(valid_600252, JString, required = false,
-                                 default = nil)
-  if valid_600252 != nil:
-    section.add "X-Amz-Security-Token", valid_600252
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600253 = header.getOrDefault("X-Amz-Target")
-  valid_600253 = validateParameter(valid_600253, JString, required = true, default = newJString(
+  var valid_602273 = header.getOrDefault("X-Amz-Target")
+  valid_602273 = validateParameter(valid_602273, JString, required = true, default = newJString(
       "SimpleWorkflowService.PollForActivityTask"))
-  if valid_600253 != nil:
-    section.add "X-Amz-Target", valid_600253
-  var valid_600254 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600254 = validateParameter(valid_600254, JString, required = false,
+  if valid_602273 != nil:
+    section.add "X-Amz-Target", valid_602273
+  var valid_602274 = header.getOrDefault("X-Amz-Signature")
+  valid_602274 = validateParameter(valid_602274, JString, required = false,
                                  default = nil)
-  if valid_600254 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600254
-  var valid_600255 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600255 = validateParameter(valid_600255, JString, required = false,
+  if valid_602274 != nil:
+    section.add "X-Amz-Signature", valid_602274
+  var valid_602275 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602275 = validateParameter(valid_602275, JString, required = false,
                                  default = nil)
-  if valid_600255 != nil:
-    section.add "X-Amz-Algorithm", valid_600255
-  var valid_600256 = header.getOrDefault("X-Amz-Signature")
-  valid_600256 = validateParameter(valid_600256, JString, required = false,
+  if valid_602275 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602275
+  var valid_602276 = header.getOrDefault("X-Amz-Date")
+  valid_602276 = validateParameter(valid_602276, JString, required = false,
                                  default = nil)
-  if valid_600256 != nil:
-    section.add "X-Amz-Signature", valid_600256
-  var valid_600257 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600257 = validateParameter(valid_600257, JString, required = false,
+  if valid_602276 != nil:
+    section.add "X-Amz-Date", valid_602276
+  var valid_602277 = header.getOrDefault("X-Amz-Credential")
+  valid_602277 = validateParameter(valid_602277, JString, required = false,
                                  default = nil)
-  if valid_600257 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600257
-  var valid_600258 = header.getOrDefault("X-Amz-Credential")
-  valid_600258 = validateParameter(valid_600258, JString, required = false,
+  if valid_602277 != nil:
+    section.add "X-Amz-Credential", valid_602277
+  var valid_602278 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602278 = validateParameter(valid_602278, JString, required = false,
                                  default = nil)
-  if valid_600258 != nil:
-    section.add "X-Amz-Credential", valid_600258
+  if valid_602278 != nil:
+    section.add "X-Amz-Security-Token", valid_602278
+  var valid_602279 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602279 = validateParameter(valid_602279, JString, required = false,
+                                 default = nil)
+  if valid_602279 != nil:
+    section.add "X-Amz-Algorithm", valid_602279
+  var valid_602280 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602280 = validateParameter(valid_602280, JString, required = false,
+                                 default = nil)
+  if valid_602280 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602280
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2414,48 +2433,49 @@ proc validate_PollForActivityTask_600249(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600260: Call_PollForActivityTask_600248; path: JsonNode;
+proc call*(call_602282: Call_PollForActivityTask_602270; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Used by workers to get an <a>ActivityTask</a> from the specified activity <code>taskList</code>. This initiates a long poll, where the service holds the HTTP connection open and responds as soon as a task becomes available. The maximum time the service holds on to the request before responding is 60 seconds. If no task is available within 60 seconds, the poll returns an empty result. An empty result, in this context, means that an ActivityTask is returned, but that the value of taskToken is an empty string. If a task is returned, the worker should use its type to identify and process it correctly.</p> <important> <p>Workers should set their client side socket timeout to at least 70 seconds (10 seconds higher than the maximum time service may hold the poll request).</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600260.validator(path, query, header, formData, body)
-  let scheme = call_600260.pickScheme
+  let valid = call_602282.validator(path, query, header, formData, body)
+  let scheme = call_602282.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600260.url(scheme.get, call_600260.host, call_600260.base,
-                         call_600260.route, valid.getOrDefault("path"),
+  let url = call_602282.url(scheme.get, call_602282.host, call_602282.base,
+                         call_602282.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600260, url, valid)
+  result = atozHook(call_602282, url, valid)
 
-proc call*(call_600261: Call_PollForActivityTask_600248; body: JsonNode): Recallable =
+proc call*(call_602283: Call_PollForActivityTask_602270; body: JsonNode): Recallable =
   ## pollForActivityTask
   ## <p>Used by workers to get an <a>ActivityTask</a> from the specified activity <code>taskList</code>. This initiates a long poll, where the service holds the HTTP connection open and responds as soon as a task becomes available. The maximum time the service holds on to the request before responding is 60 seconds. If no task is available within 60 seconds, the poll returns an empty result. An empty result, in this context, means that an ActivityTask is returned, but that the value of taskToken is an empty string. If a task is returned, the worker should use its type to identify and process it correctly.</p> <important> <p>Workers should set their client side socket timeout to at least 70 seconds (10 seconds higher than the maximum time service may hold the poll request).</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600262 = newJObject()
+  var body_602284 = newJObject()
   if body != nil:
-    body_600262 = body
-  result = call_600261.call(nil, nil, nil, nil, body_600262)
+    body_602284 = body
+  result = call_602283.call(nil, nil, nil, nil, body_602284)
 
-var pollForActivityTask* = Call_PollForActivityTask_600248(
+var pollForActivityTask* = Call_PollForActivityTask_602270(
     name: "pollForActivityTask", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.PollForActivityTask",
-    validator: validate_PollForActivityTask_600249, base: "/",
-    url: url_PollForActivityTask_600250, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PollForActivityTask_602271, base: "/",
+    url: url_PollForActivityTask_602272, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PollForDecisionTask_600263 = ref object of OpenApiRestCall_599368
-proc url_PollForDecisionTask_600265(protocol: Scheme; host: string; base: string;
+  Call_PollForDecisionTask_602285 = ref object of OpenApiRestCall_601389
+proc url_PollForDecisionTask_602287(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PollForDecisionTask_600264(path: JsonNode; query: JsonNode;
+proc validate_PollForDecisionTask_602286(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Used by deciders to get a <a>DecisionTask</a> from the specified decision <code>taskList</code>. A decision task may be returned for any open workflow execution that is using the specified task list. The task includes a paginated view of the history of the workflow execution. The decider should use the workflow type and the history to determine how to properly handle the task.</p> <p>This action initiates a long poll, where the service holds the HTTP connection open and responds as soon a task becomes available. If no decision task is available in the specified task list before the timeout of 60 seconds expires, an empty result is returned. An empty result, in this context, means that a DecisionTask is returned, but that the value of taskToken is an empty string.</p> <important> <p>Deciders should set their client side socket timeout to at least 70 seconds (10 seconds higher than the timeout).</p> </important> <important> <p>Because the number of workflow history events for a single workflow execution might be very large, the result returned might be split up across a number of pages. To retrieve subsequent pages, make additional calls to <code>PollForDecisionTask</code> using the <code>nextPageToken</code> returned by the initial call. Note that you do <i>not</i> call <code>GetWorkflowExecutionHistory</code> with this <code>nextPageToken</code>. Instead, call <code>PollForDecisionTask</code> again.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
@@ -2465,74 +2485,74 @@ proc validate_PollForDecisionTask_600264(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   nextPageToken: JString
-  ##                : Pagination token
   ##   maximumPageSize: JString
   ##                  : Pagination limit
+  ##   nextPageToken: JString
+  ##                : Pagination token
   section = newJObject()
-  var valid_600266 = query.getOrDefault("nextPageToken")
-  valid_600266 = validateParameter(valid_600266, JString, required = false,
+  var valid_602288 = query.getOrDefault("maximumPageSize")
+  valid_602288 = validateParameter(valid_602288, JString, required = false,
                                  default = nil)
-  if valid_600266 != nil:
-    section.add "nextPageToken", valid_600266
-  var valid_600267 = query.getOrDefault("maximumPageSize")
-  valid_600267 = validateParameter(valid_600267, JString, required = false,
+  if valid_602288 != nil:
+    section.add "maximumPageSize", valid_602288
+  var valid_602289 = query.getOrDefault("nextPageToken")
+  valid_602289 = validateParameter(valid_602289, JString, required = false,
                                  default = nil)
-  if valid_600267 != nil:
-    section.add "maximumPageSize", valid_600267
+  if valid_602289 != nil:
+    section.add "nextPageToken", valid_602289
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600268 = header.getOrDefault("X-Amz-Date")
-  valid_600268 = validateParameter(valid_600268, JString, required = false,
-                                 default = nil)
-  if valid_600268 != nil:
-    section.add "X-Amz-Date", valid_600268
-  var valid_600269 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600269 = validateParameter(valid_600269, JString, required = false,
-                                 default = nil)
-  if valid_600269 != nil:
-    section.add "X-Amz-Security-Token", valid_600269
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600270 = header.getOrDefault("X-Amz-Target")
-  valid_600270 = validateParameter(valid_600270, JString, required = true, default = newJString(
+  var valid_602290 = header.getOrDefault("X-Amz-Target")
+  valid_602290 = validateParameter(valid_602290, JString, required = true, default = newJString(
       "SimpleWorkflowService.PollForDecisionTask"))
-  if valid_600270 != nil:
-    section.add "X-Amz-Target", valid_600270
-  var valid_600271 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600271 = validateParameter(valid_600271, JString, required = false,
+  if valid_602290 != nil:
+    section.add "X-Amz-Target", valid_602290
+  var valid_602291 = header.getOrDefault("X-Amz-Signature")
+  valid_602291 = validateParameter(valid_602291, JString, required = false,
                                  default = nil)
-  if valid_600271 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600271
-  var valid_600272 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600272 = validateParameter(valid_600272, JString, required = false,
+  if valid_602291 != nil:
+    section.add "X-Amz-Signature", valid_602291
+  var valid_602292 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602292 = validateParameter(valid_602292, JString, required = false,
                                  default = nil)
-  if valid_600272 != nil:
-    section.add "X-Amz-Algorithm", valid_600272
-  var valid_600273 = header.getOrDefault("X-Amz-Signature")
-  valid_600273 = validateParameter(valid_600273, JString, required = false,
+  if valid_602292 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602292
+  var valid_602293 = header.getOrDefault("X-Amz-Date")
+  valid_602293 = validateParameter(valid_602293, JString, required = false,
                                  default = nil)
-  if valid_600273 != nil:
-    section.add "X-Amz-Signature", valid_600273
-  var valid_600274 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600274 = validateParameter(valid_600274, JString, required = false,
+  if valid_602293 != nil:
+    section.add "X-Amz-Date", valid_602293
+  var valid_602294 = header.getOrDefault("X-Amz-Credential")
+  valid_602294 = validateParameter(valid_602294, JString, required = false,
                                  default = nil)
-  if valid_600274 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600274
-  var valid_600275 = header.getOrDefault("X-Amz-Credential")
-  valid_600275 = validateParameter(valid_600275, JString, required = false,
+  if valid_602294 != nil:
+    section.add "X-Amz-Credential", valid_602294
+  var valid_602295 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602295 = validateParameter(valid_602295, JString, required = false,
                                  default = nil)
-  if valid_600275 != nil:
-    section.add "X-Amz-Credential", valid_600275
+  if valid_602295 != nil:
+    section.add "X-Amz-Security-Token", valid_602295
+  var valid_602296 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602296 = validateParameter(valid_602296, JString, required = false,
+                                 default = nil)
+  if valid_602296 != nil:
+    section.add "X-Amz-Algorithm", valid_602296
+  var valid_602297 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602297 = validateParameter(valid_602297, JString, required = false,
+                                 default = nil)
+  if valid_602297 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602297
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2543,56 +2563,57 @@ proc validate_PollForDecisionTask_600264(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600277: Call_PollForDecisionTask_600263; path: JsonNode;
+proc call*(call_602299: Call_PollForDecisionTask_602285; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Used by deciders to get a <a>DecisionTask</a> from the specified decision <code>taskList</code>. A decision task may be returned for any open workflow execution that is using the specified task list. The task includes a paginated view of the history of the workflow execution. The decider should use the workflow type and the history to determine how to properly handle the task.</p> <p>This action initiates a long poll, where the service holds the HTTP connection open and responds as soon a task becomes available. If no decision task is available in the specified task list before the timeout of 60 seconds expires, an empty result is returned. An empty result, in this context, means that a DecisionTask is returned, but that the value of taskToken is an empty string.</p> <important> <p>Deciders should set their client side socket timeout to at least 70 seconds (10 seconds higher than the timeout).</p> </important> <important> <p>Because the number of workflow history events for a single workflow execution might be very large, the result returned might be split up across a number of pages. To retrieve subsequent pages, make additional calls to <code>PollForDecisionTask</code> using the <code>nextPageToken</code> returned by the initial call. Note that you do <i>not</i> call <code>GetWorkflowExecutionHistory</code> with this <code>nextPageToken</code>. Instead, call <code>PollForDecisionTask</code> again.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600277.validator(path, query, header, formData, body)
-  let scheme = call_600277.pickScheme
+  let valid = call_602299.validator(path, query, header, formData, body)
+  let scheme = call_602299.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600277.url(scheme.get, call_600277.host, call_600277.base,
-                         call_600277.route, valid.getOrDefault("path"),
+  let url = call_602299.url(scheme.get, call_602299.host, call_602299.base,
+                         call_602299.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600277, url, valid)
+  result = atozHook(call_602299, url, valid)
 
-proc call*(call_600278: Call_PollForDecisionTask_600263; body: JsonNode;
-          nextPageToken: string = ""; maximumPageSize: string = ""): Recallable =
+proc call*(call_602300: Call_PollForDecisionTask_602285; body: JsonNode;
+          maximumPageSize: string = ""; nextPageToken: string = ""): Recallable =
   ## pollForDecisionTask
   ## <p>Used by deciders to get a <a>DecisionTask</a> from the specified decision <code>taskList</code>. A decision task may be returned for any open workflow execution that is using the specified task list. The task includes a paginated view of the history of the workflow execution. The decider should use the workflow type and the history to determine how to properly handle the task.</p> <p>This action initiates a long poll, where the service holds the HTTP connection open and responds as soon a task becomes available. If no decision task is available in the specified task list before the timeout of 60 seconds expires, an empty result is returned. An empty result, in this context, means that a DecisionTask is returned, but that the value of taskToken is an empty string.</p> <important> <p>Deciders should set their client side socket timeout to at least 70 seconds (10 seconds higher than the timeout).</p> </important> <important> <p>Because the number of workflow history events for a single workflow execution might be very large, the result returned might be split up across a number of pages. To retrieve subsequent pages, make additional calls to <code>PollForDecisionTask</code> using the <code>nextPageToken</code> returned by the initial call. Note that you do <i>not</i> call <code>GetWorkflowExecutionHistory</code> with this <code>nextPageToken</code>. Instead, call <code>PollForDecisionTask</code> again.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the <code>taskList.name</code> parameter by using a <code>Condition</code> element with the <code>swf:taskList.name</code> key to allow the action to access only certain task lists.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
-  ##   nextPageToken: string
-  ##                : Pagination token
   ##   maximumPageSize: string
   ##                  : Pagination limit
+  ##   nextPageToken: string
+  ##                : Pagination token
   ##   body: JObject (required)
-  var query_600279 = newJObject()
-  var body_600280 = newJObject()
-  add(query_600279, "nextPageToken", newJString(nextPageToken))
-  add(query_600279, "maximumPageSize", newJString(maximumPageSize))
+  var query_602301 = newJObject()
+  var body_602302 = newJObject()
+  add(query_602301, "maximumPageSize", newJString(maximumPageSize))
+  add(query_602301, "nextPageToken", newJString(nextPageToken))
   if body != nil:
-    body_600280 = body
-  result = call_600278.call(nil, query_600279, nil, nil, body_600280)
+    body_602302 = body
+  result = call_602300.call(nil, query_602301, nil, nil, body_602302)
 
-var pollForDecisionTask* = Call_PollForDecisionTask_600263(
+var pollForDecisionTask* = Call_PollForDecisionTask_602285(
     name: "pollForDecisionTask", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.PollForDecisionTask",
-    validator: validate_PollForDecisionTask_600264, base: "/",
-    url: url_PollForDecisionTask_600265, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PollForDecisionTask_602286, base: "/",
+    url: url_PollForDecisionTask_602287, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RecordActivityTaskHeartbeat_600281 = ref object of OpenApiRestCall_599368
-proc url_RecordActivityTaskHeartbeat_600283(protocol: Scheme; host: string;
+  Call_RecordActivityTaskHeartbeat_602303 = ref object of OpenApiRestCall_601389
+proc url_RecordActivityTaskHeartbeat_602305(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RecordActivityTaskHeartbeat_600282(path: JsonNode; query: JsonNode;
+proc validate_RecordActivityTaskHeartbeat_602304(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Used by activity workers to report to the service that the <a>ActivityTask</a> represented by the specified <code>taskToken</code> is still making progress. The worker can also specify details of the progress, for example percent complete, using the <code>details</code> parameter. This action can also be used by the worker as a mechanism to check if cancellation is being requested for the activity task. If a cancellation is being attempted for the specified task, then the boolean <code>cancelRequested</code> flag returned by the service is set to <code>true</code>.</p> <p>This action resets the <code>taskHeartbeatTimeout</code> clock. The <code>taskHeartbeatTimeout</code> is specified in <a>RegisterActivityType</a>.</p> <p>This action doesn't in itself create an event in the workflow execution history. However, if the task times out, the workflow execution history contains a <code>ActivityTaskTimedOut</code> event that contains the information from the last heartbeat generated by the activity worker.</p> <note> <p>The <code>taskStartToCloseTimeout</code> of an activity type is the maximum duration of an activity task, regardless of the number of <a>RecordActivityTaskHeartbeat</a> requests received. The <code>taskStartToCloseTimeout</code> is also specified in <a>RegisterActivityType</a>.</p> </note> <note> <p>This operation is only useful for long-lived activities to report liveliness of the task and to determine if a cancellation is being attempted.</p> </note> <important> <p>If the <code>cancelRequested</code> flag returns <code>true</code>, a cancellation is being attempted. If the worker can cancel the activity, it should respond with <a>RespondActivityTaskCanceled</a>. Otherwise, it should ignore the cancellation request.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -2603,57 +2624,57 @@ proc validate_RecordActivityTaskHeartbeat_600282(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600284 = header.getOrDefault("X-Amz-Date")
-  valid_600284 = validateParameter(valid_600284, JString, required = false,
-                                 default = nil)
-  if valid_600284 != nil:
-    section.add "X-Amz-Date", valid_600284
-  var valid_600285 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600285 = validateParameter(valid_600285, JString, required = false,
-                                 default = nil)
-  if valid_600285 != nil:
-    section.add "X-Amz-Security-Token", valid_600285
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600286 = header.getOrDefault("X-Amz-Target")
-  valid_600286 = validateParameter(valid_600286, JString, required = true, default = newJString(
+  var valid_602306 = header.getOrDefault("X-Amz-Target")
+  valid_602306 = validateParameter(valid_602306, JString, required = true, default = newJString(
       "SimpleWorkflowService.RecordActivityTaskHeartbeat"))
-  if valid_600286 != nil:
-    section.add "X-Amz-Target", valid_600286
-  var valid_600287 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600287 = validateParameter(valid_600287, JString, required = false,
+  if valid_602306 != nil:
+    section.add "X-Amz-Target", valid_602306
+  var valid_602307 = header.getOrDefault("X-Amz-Signature")
+  valid_602307 = validateParameter(valid_602307, JString, required = false,
                                  default = nil)
-  if valid_600287 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600287
-  var valid_600288 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600288 = validateParameter(valid_600288, JString, required = false,
+  if valid_602307 != nil:
+    section.add "X-Amz-Signature", valid_602307
+  var valid_602308 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602308 = validateParameter(valid_602308, JString, required = false,
                                  default = nil)
-  if valid_600288 != nil:
-    section.add "X-Amz-Algorithm", valid_600288
-  var valid_600289 = header.getOrDefault("X-Amz-Signature")
-  valid_600289 = validateParameter(valid_600289, JString, required = false,
+  if valid_602308 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602308
+  var valid_602309 = header.getOrDefault("X-Amz-Date")
+  valid_602309 = validateParameter(valid_602309, JString, required = false,
                                  default = nil)
-  if valid_600289 != nil:
-    section.add "X-Amz-Signature", valid_600289
-  var valid_600290 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600290 = validateParameter(valid_600290, JString, required = false,
+  if valid_602309 != nil:
+    section.add "X-Amz-Date", valid_602309
+  var valid_602310 = header.getOrDefault("X-Amz-Credential")
+  valid_602310 = validateParameter(valid_602310, JString, required = false,
                                  default = nil)
-  if valid_600290 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600290
-  var valid_600291 = header.getOrDefault("X-Amz-Credential")
-  valid_600291 = validateParameter(valid_600291, JString, required = false,
+  if valid_602310 != nil:
+    section.add "X-Amz-Credential", valid_602310
+  var valid_602311 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602311 = validateParameter(valid_602311, JString, required = false,
                                  default = nil)
-  if valid_600291 != nil:
-    section.add "X-Amz-Credential", valid_600291
+  if valid_602311 != nil:
+    section.add "X-Amz-Security-Token", valid_602311
+  var valid_602312 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602312 = validateParameter(valid_602312, JString, required = false,
+                                 default = nil)
+  if valid_602312 != nil:
+    section.add "X-Amz-Algorithm", valid_602312
+  var valid_602313 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602313 = validateParameter(valid_602313, JString, required = false,
+                                 default = nil)
+  if valid_602313 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602313
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2664,49 +2685,50 @@ proc validate_RecordActivityTaskHeartbeat_600282(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600293: Call_RecordActivityTaskHeartbeat_600281; path: JsonNode;
+proc call*(call_602315: Call_RecordActivityTaskHeartbeat_602303; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Used by activity workers to report to the service that the <a>ActivityTask</a> represented by the specified <code>taskToken</code> is still making progress. The worker can also specify details of the progress, for example percent complete, using the <code>details</code> parameter. This action can also be used by the worker as a mechanism to check if cancellation is being requested for the activity task. If a cancellation is being attempted for the specified task, then the boolean <code>cancelRequested</code> flag returned by the service is set to <code>true</code>.</p> <p>This action resets the <code>taskHeartbeatTimeout</code> clock. The <code>taskHeartbeatTimeout</code> is specified in <a>RegisterActivityType</a>.</p> <p>This action doesn't in itself create an event in the workflow execution history. However, if the task times out, the workflow execution history contains a <code>ActivityTaskTimedOut</code> event that contains the information from the last heartbeat generated by the activity worker.</p> <note> <p>The <code>taskStartToCloseTimeout</code> of an activity type is the maximum duration of an activity task, regardless of the number of <a>RecordActivityTaskHeartbeat</a> requests received. The <code>taskStartToCloseTimeout</code> is also specified in <a>RegisterActivityType</a>.</p> </note> <note> <p>This operation is only useful for long-lived activities to report liveliness of the task and to determine if a cancellation is being attempted.</p> </note> <important> <p>If the <code>cancelRequested</code> flag returns <code>true</code>, a cancellation is being attempted. If the worker can cancel the activity, it should respond with <a>RespondActivityTaskCanceled</a>. Otherwise, it should ignore the cancellation request.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600293.validator(path, query, header, formData, body)
-  let scheme = call_600293.pickScheme
+  let valid = call_602315.validator(path, query, header, formData, body)
+  let scheme = call_602315.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600293.url(scheme.get, call_600293.host, call_600293.base,
-                         call_600293.route, valid.getOrDefault("path"),
+  let url = call_602315.url(scheme.get, call_602315.host, call_602315.base,
+                         call_602315.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600293, url, valid)
+  result = atozHook(call_602315, url, valid)
 
-proc call*(call_600294: Call_RecordActivityTaskHeartbeat_600281; body: JsonNode): Recallable =
+proc call*(call_602316: Call_RecordActivityTaskHeartbeat_602303; body: JsonNode): Recallable =
   ## recordActivityTaskHeartbeat
   ## <p>Used by activity workers to report to the service that the <a>ActivityTask</a> represented by the specified <code>taskToken</code> is still making progress. The worker can also specify details of the progress, for example percent complete, using the <code>details</code> parameter. This action can also be used by the worker as a mechanism to check if cancellation is being requested for the activity task. If a cancellation is being attempted for the specified task, then the boolean <code>cancelRequested</code> flag returned by the service is set to <code>true</code>.</p> <p>This action resets the <code>taskHeartbeatTimeout</code> clock. The <code>taskHeartbeatTimeout</code> is specified in <a>RegisterActivityType</a>.</p> <p>This action doesn't in itself create an event in the workflow execution history. However, if the task times out, the workflow execution history contains a <code>ActivityTaskTimedOut</code> event that contains the information from the last heartbeat generated by the activity worker.</p> <note> <p>The <code>taskStartToCloseTimeout</code> of an activity type is the maximum duration of an activity task, regardless of the number of <a>RecordActivityTaskHeartbeat</a> requests received. The <code>taskStartToCloseTimeout</code> is also specified in <a>RegisterActivityType</a>.</p> </note> <note> <p>This operation is only useful for long-lived activities to report liveliness of the task and to determine if a cancellation is being attempted.</p> </note> <important> <p>If the <code>cancelRequested</code> flag returns <code>true</code>, a cancellation is being attempted. If the worker can cancel the activity, it should respond with <a>RespondActivityTaskCanceled</a>. Otherwise, it should ignore the cancellation request.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600295 = newJObject()
+  var body_602317 = newJObject()
   if body != nil:
-    body_600295 = body
-  result = call_600294.call(nil, nil, nil, nil, body_600295)
+    body_602317 = body
+  result = call_602316.call(nil, nil, nil, nil, body_602317)
 
-var recordActivityTaskHeartbeat* = Call_RecordActivityTaskHeartbeat_600281(
+var recordActivityTaskHeartbeat* = Call_RecordActivityTaskHeartbeat_602303(
     name: "recordActivityTaskHeartbeat", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.RecordActivityTaskHeartbeat",
-    validator: validate_RecordActivityTaskHeartbeat_600282, base: "/",
-    url: url_RecordActivityTaskHeartbeat_600283,
+    validator: validate_RecordActivityTaskHeartbeat_602304, base: "/",
+    url: url_RecordActivityTaskHeartbeat_602305,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterActivityType_600296 = ref object of OpenApiRestCall_599368
-proc url_RegisterActivityType_600298(protocol: Scheme; host: string; base: string;
+  Call_RegisterActivityType_602318 = ref object of OpenApiRestCall_601389
+proc url_RegisterActivityType_602320(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterActivityType_600297(path: JsonNode; query: JsonNode;
+proc validate_RegisterActivityType_602319(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Registers a new <i>activity type</i> along with its configuration settings in the specified domain.</p> <important> <p>A <code>TypeAlreadyExists</code> fault is returned if the type already exists in the domain. You cannot change any configuration settings of the type after its registration, and it must be registered as a new version.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>defaultTaskList.name</code>: String constraint. The key is <code>swf:defaultTaskList.name</code>.</p> </li> <li> <p> <code>name</code>: String constraint. The key is <code>swf:name</code>.</p> </li> <li> <p> <code>version</code>: String constraint. The key is <code>swf:version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -2717,57 +2739,57 @@ proc validate_RegisterActivityType_600297(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600299 = header.getOrDefault("X-Amz-Date")
-  valid_600299 = validateParameter(valid_600299, JString, required = false,
-                                 default = nil)
-  if valid_600299 != nil:
-    section.add "X-Amz-Date", valid_600299
-  var valid_600300 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600300 = validateParameter(valid_600300, JString, required = false,
-                                 default = nil)
-  if valid_600300 != nil:
-    section.add "X-Amz-Security-Token", valid_600300
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600301 = header.getOrDefault("X-Amz-Target")
-  valid_600301 = validateParameter(valid_600301, JString, required = true, default = newJString(
+  var valid_602321 = header.getOrDefault("X-Amz-Target")
+  valid_602321 = validateParameter(valid_602321, JString, required = true, default = newJString(
       "SimpleWorkflowService.RegisterActivityType"))
-  if valid_600301 != nil:
-    section.add "X-Amz-Target", valid_600301
-  var valid_600302 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600302 = validateParameter(valid_600302, JString, required = false,
+  if valid_602321 != nil:
+    section.add "X-Amz-Target", valid_602321
+  var valid_602322 = header.getOrDefault("X-Amz-Signature")
+  valid_602322 = validateParameter(valid_602322, JString, required = false,
                                  default = nil)
-  if valid_600302 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600302
-  var valid_600303 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600303 = validateParameter(valid_600303, JString, required = false,
+  if valid_602322 != nil:
+    section.add "X-Amz-Signature", valid_602322
+  var valid_602323 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602323 = validateParameter(valid_602323, JString, required = false,
                                  default = nil)
-  if valid_600303 != nil:
-    section.add "X-Amz-Algorithm", valid_600303
-  var valid_600304 = header.getOrDefault("X-Amz-Signature")
-  valid_600304 = validateParameter(valid_600304, JString, required = false,
+  if valid_602323 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602323
+  var valid_602324 = header.getOrDefault("X-Amz-Date")
+  valid_602324 = validateParameter(valid_602324, JString, required = false,
                                  default = nil)
-  if valid_600304 != nil:
-    section.add "X-Amz-Signature", valid_600304
-  var valid_600305 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600305 = validateParameter(valid_600305, JString, required = false,
+  if valid_602324 != nil:
+    section.add "X-Amz-Date", valid_602324
+  var valid_602325 = header.getOrDefault("X-Amz-Credential")
+  valid_602325 = validateParameter(valid_602325, JString, required = false,
                                  default = nil)
-  if valid_600305 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600305
-  var valid_600306 = header.getOrDefault("X-Amz-Credential")
-  valid_600306 = validateParameter(valid_600306, JString, required = false,
+  if valid_602325 != nil:
+    section.add "X-Amz-Credential", valid_602325
+  var valid_602326 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602326 = validateParameter(valid_602326, JString, required = false,
                                  default = nil)
-  if valid_600306 != nil:
-    section.add "X-Amz-Credential", valid_600306
+  if valid_602326 != nil:
+    section.add "X-Amz-Security-Token", valid_602326
+  var valid_602327 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602327 = validateParameter(valid_602327, JString, required = false,
+                                 default = nil)
+  if valid_602327 != nil:
+    section.add "X-Amz-Algorithm", valid_602327
+  var valid_602328 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602328 = validateParameter(valid_602328, JString, required = false,
+                                 default = nil)
+  if valid_602328 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602328
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2778,48 +2800,49 @@ proc validate_RegisterActivityType_600297(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600308: Call_RegisterActivityType_600296; path: JsonNode;
+proc call*(call_602330: Call_RegisterActivityType_602318; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers a new <i>activity type</i> along with its configuration settings in the specified domain.</p> <important> <p>A <code>TypeAlreadyExists</code> fault is returned if the type already exists in the domain. You cannot change any configuration settings of the type after its registration, and it must be registered as a new version.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>defaultTaskList.name</code>: String constraint. The key is <code>swf:defaultTaskList.name</code>.</p> </li> <li> <p> <code>name</code>: String constraint. The key is <code>swf:name</code>.</p> </li> <li> <p> <code>version</code>: String constraint. The key is <code>swf:version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600308.validator(path, query, header, formData, body)
-  let scheme = call_600308.pickScheme
+  let valid = call_602330.validator(path, query, header, formData, body)
+  let scheme = call_602330.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600308.url(scheme.get, call_600308.host, call_600308.base,
-                         call_600308.route, valid.getOrDefault("path"),
+  let url = call_602330.url(scheme.get, call_602330.host, call_602330.base,
+                         call_602330.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600308, url, valid)
+  result = atozHook(call_602330, url, valid)
 
-proc call*(call_600309: Call_RegisterActivityType_600296; body: JsonNode): Recallable =
+proc call*(call_602331: Call_RegisterActivityType_602318; body: JsonNode): Recallable =
   ## registerActivityType
   ## <p>Registers a new <i>activity type</i> along with its configuration settings in the specified domain.</p> <important> <p>A <code>TypeAlreadyExists</code> fault is returned if the type already exists in the domain. You cannot change any configuration settings of the type after its registration, and it must be registered as a new version.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>defaultTaskList.name</code>: String constraint. The key is <code>swf:defaultTaskList.name</code>.</p> </li> <li> <p> <code>name</code>: String constraint. The key is <code>swf:name</code>.</p> </li> <li> <p> <code>version</code>: String constraint. The key is <code>swf:version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600310 = newJObject()
+  var body_602332 = newJObject()
   if body != nil:
-    body_600310 = body
-  result = call_600309.call(nil, nil, nil, nil, body_600310)
+    body_602332 = body
+  result = call_602331.call(nil, nil, nil, nil, body_602332)
 
-var registerActivityType* = Call_RegisterActivityType_600296(
+var registerActivityType* = Call_RegisterActivityType_602318(
     name: "registerActivityType", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.RegisterActivityType",
-    validator: validate_RegisterActivityType_600297, base: "/",
-    url: url_RegisterActivityType_600298, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterActivityType_602319, base: "/",
+    url: url_RegisterActivityType_602320, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterDomain_600311 = ref object of OpenApiRestCall_599368
-proc url_RegisterDomain_600313(protocol: Scheme; host: string; base: string;
+  Call_RegisterDomain_602333 = ref object of OpenApiRestCall_601389
+proc url_RegisterDomain_602335(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterDomain_600312(path: JsonNode; query: JsonNode;
+proc validate_RegisterDomain_602334(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Registers a new domain.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>You cannot use an IAM policy to control domain access for this action. The name of the domain being registered is available as the resource of this action.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
@@ -2831,57 +2854,57 @@ proc validate_RegisterDomain_600312(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600314 = header.getOrDefault("X-Amz-Date")
-  valid_600314 = validateParameter(valid_600314, JString, required = false,
-                                 default = nil)
-  if valid_600314 != nil:
-    section.add "X-Amz-Date", valid_600314
-  var valid_600315 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600315 = validateParameter(valid_600315, JString, required = false,
-                                 default = nil)
-  if valid_600315 != nil:
-    section.add "X-Amz-Security-Token", valid_600315
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600316 = header.getOrDefault("X-Amz-Target")
-  valid_600316 = validateParameter(valid_600316, JString, required = true, default = newJString(
+  var valid_602336 = header.getOrDefault("X-Amz-Target")
+  valid_602336 = validateParameter(valid_602336, JString, required = true, default = newJString(
       "SimpleWorkflowService.RegisterDomain"))
-  if valid_600316 != nil:
-    section.add "X-Amz-Target", valid_600316
-  var valid_600317 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600317 = validateParameter(valid_600317, JString, required = false,
+  if valid_602336 != nil:
+    section.add "X-Amz-Target", valid_602336
+  var valid_602337 = header.getOrDefault("X-Amz-Signature")
+  valid_602337 = validateParameter(valid_602337, JString, required = false,
                                  default = nil)
-  if valid_600317 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600317
-  var valid_600318 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600318 = validateParameter(valid_600318, JString, required = false,
+  if valid_602337 != nil:
+    section.add "X-Amz-Signature", valid_602337
+  var valid_602338 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602338 = validateParameter(valid_602338, JString, required = false,
                                  default = nil)
-  if valid_600318 != nil:
-    section.add "X-Amz-Algorithm", valid_600318
-  var valid_600319 = header.getOrDefault("X-Amz-Signature")
-  valid_600319 = validateParameter(valid_600319, JString, required = false,
+  if valid_602338 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602338
+  var valid_602339 = header.getOrDefault("X-Amz-Date")
+  valid_602339 = validateParameter(valid_602339, JString, required = false,
                                  default = nil)
-  if valid_600319 != nil:
-    section.add "X-Amz-Signature", valid_600319
-  var valid_600320 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600320 = validateParameter(valid_600320, JString, required = false,
+  if valid_602339 != nil:
+    section.add "X-Amz-Date", valid_602339
+  var valid_602340 = header.getOrDefault("X-Amz-Credential")
+  valid_602340 = validateParameter(valid_602340, JString, required = false,
                                  default = nil)
-  if valid_600320 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600320
-  var valid_600321 = header.getOrDefault("X-Amz-Credential")
-  valid_600321 = validateParameter(valid_600321, JString, required = false,
+  if valid_602340 != nil:
+    section.add "X-Amz-Credential", valid_602340
+  var valid_602341 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602341 = validateParameter(valid_602341, JString, required = false,
                                  default = nil)
-  if valid_600321 != nil:
-    section.add "X-Amz-Credential", valid_600321
+  if valid_602341 != nil:
+    section.add "X-Amz-Security-Token", valid_602341
+  var valid_602342 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602342 = validateParameter(valid_602342, JString, required = false,
+                                 default = nil)
+  if valid_602342 != nil:
+    section.add "X-Amz-Algorithm", valid_602342
+  var valid_602343 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602343 = validateParameter(valid_602343, JString, required = false,
+                                 default = nil)
+  if valid_602343 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602343
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2892,47 +2915,48 @@ proc validate_RegisterDomain_600312(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600323: Call_RegisterDomain_600311; path: JsonNode; query: JsonNode;
+proc call*(call_602345: Call_RegisterDomain_602333; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers a new domain.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>You cannot use an IAM policy to control domain access for this action. The name of the domain being registered is available as the resource of this action.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600323.validator(path, query, header, formData, body)
-  let scheme = call_600323.pickScheme
+  let valid = call_602345.validator(path, query, header, formData, body)
+  let scheme = call_602345.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600323.url(scheme.get, call_600323.host, call_600323.base,
-                         call_600323.route, valid.getOrDefault("path"),
+  let url = call_602345.url(scheme.get, call_602345.host, call_602345.base,
+                         call_602345.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600323, url, valid)
+  result = atozHook(call_602345, url, valid)
 
-proc call*(call_600324: Call_RegisterDomain_600311; body: JsonNode): Recallable =
+proc call*(call_602346: Call_RegisterDomain_602333; body: JsonNode): Recallable =
   ## registerDomain
   ## <p>Registers a new domain.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>You cannot use an IAM policy to control domain access for this action. The name of the domain being registered is available as the resource of this action.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600325 = newJObject()
+  var body_602347 = newJObject()
   if body != nil:
-    body_600325 = body
-  result = call_600324.call(nil, nil, nil, nil, body_600325)
+    body_602347 = body
+  result = call_602346.call(nil, nil, nil, nil, body_602347)
 
-var registerDomain* = Call_RegisterDomain_600311(name: "registerDomain",
+var registerDomain* = Call_RegisterDomain_602333(name: "registerDomain",
     meth: HttpMethod.HttpPost, host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.RegisterDomain",
-    validator: validate_RegisterDomain_600312, base: "/", url: url_RegisterDomain_600313,
+    validator: validate_RegisterDomain_602334, base: "/", url: url_RegisterDomain_602335,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterWorkflowType_600326 = ref object of OpenApiRestCall_599368
-proc url_RegisterWorkflowType_600328(protocol: Scheme; host: string; base: string;
+  Call_RegisterWorkflowType_602348 = ref object of OpenApiRestCall_601389
+proc url_RegisterWorkflowType_602350(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterWorkflowType_600327(path: JsonNode; query: JsonNode;
+proc validate_RegisterWorkflowType_602349(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Registers a new <i>workflow type</i> and its configuration settings in the specified domain.</p> <p>The retention period for the workflow history is set by the <a>RegisterDomain</a> action.</p> <important> <p>If the type already exists, then a <code>TypeAlreadyExists</code> fault is returned. You cannot change the configuration settings of a workflow type once it is registered and it must be registered as a new version.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>defaultTaskList.name</code>: String constraint. The key is <code>swf:defaultTaskList.name</code>.</p> </li> <li> <p> <code>name</code>: String constraint. The key is <code>swf:name</code>.</p> </li> <li> <p> <code>version</code>: String constraint. The key is <code>swf:version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -2943,57 +2967,57 @@ proc validate_RegisterWorkflowType_600327(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600329 = header.getOrDefault("X-Amz-Date")
-  valid_600329 = validateParameter(valid_600329, JString, required = false,
-                                 default = nil)
-  if valid_600329 != nil:
-    section.add "X-Amz-Date", valid_600329
-  var valid_600330 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600330 = validateParameter(valid_600330, JString, required = false,
-                                 default = nil)
-  if valid_600330 != nil:
-    section.add "X-Amz-Security-Token", valid_600330
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600331 = header.getOrDefault("X-Amz-Target")
-  valid_600331 = validateParameter(valid_600331, JString, required = true, default = newJString(
+  var valid_602351 = header.getOrDefault("X-Amz-Target")
+  valid_602351 = validateParameter(valid_602351, JString, required = true, default = newJString(
       "SimpleWorkflowService.RegisterWorkflowType"))
-  if valid_600331 != nil:
-    section.add "X-Amz-Target", valid_600331
-  var valid_600332 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600332 = validateParameter(valid_600332, JString, required = false,
+  if valid_602351 != nil:
+    section.add "X-Amz-Target", valid_602351
+  var valid_602352 = header.getOrDefault("X-Amz-Signature")
+  valid_602352 = validateParameter(valid_602352, JString, required = false,
                                  default = nil)
-  if valid_600332 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600332
-  var valid_600333 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600333 = validateParameter(valid_600333, JString, required = false,
+  if valid_602352 != nil:
+    section.add "X-Amz-Signature", valid_602352
+  var valid_602353 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602353 = validateParameter(valid_602353, JString, required = false,
                                  default = nil)
-  if valid_600333 != nil:
-    section.add "X-Amz-Algorithm", valid_600333
-  var valid_600334 = header.getOrDefault("X-Amz-Signature")
-  valid_600334 = validateParameter(valid_600334, JString, required = false,
+  if valid_602353 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602353
+  var valid_602354 = header.getOrDefault("X-Amz-Date")
+  valid_602354 = validateParameter(valid_602354, JString, required = false,
                                  default = nil)
-  if valid_600334 != nil:
-    section.add "X-Amz-Signature", valid_600334
-  var valid_600335 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600335 = validateParameter(valid_600335, JString, required = false,
+  if valid_602354 != nil:
+    section.add "X-Amz-Date", valid_602354
+  var valid_602355 = header.getOrDefault("X-Amz-Credential")
+  valid_602355 = validateParameter(valid_602355, JString, required = false,
                                  default = nil)
-  if valid_600335 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600335
-  var valid_600336 = header.getOrDefault("X-Amz-Credential")
-  valid_600336 = validateParameter(valid_600336, JString, required = false,
+  if valid_602355 != nil:
+    section.add "X-Amz-Credential", valid_602355
+  var valid_602356 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602356 = validateParameter(valid_602356, JString, required = false,
                                  default = nil)
-  if valid_600336 != nil:
-    section.add "X-Amz-Credential", valid_600336
+  if valid_602356 != nil:
+    section.add "X-Amz-Security-Token", valid_602356
+  var valid_602357 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602357 = validateParameter(valid_602357, JString, required = false,
+                                 default = nil)
+  if valid_602357 != nil:
+    section.add "X-Amz-Algorithm", valid_602357
+  var valid_602358 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602358 = validateParameter(valid_602358, JString, required = false,
+                                 default = nil)
+  if valid_602358 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602358
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3004,48 +3028,49 @@ proc validate_RegisterWorkflowType_600327(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600338: Call_RegisterWorkflowType_600326; path: JsonNode;
+proc call*(call_602360: Call_RegisterWorkflowType_602348; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers a new <i>workflow type</i> and its configuration settings in the specified domain.</p> <p>The retention period for the workflow history is set by the <a>RegisterDomain</a> action.</p> <important> <p>If the type already exists, then a <code>TypeAlreadyExists</code> fault is returned. You cannot change the configuration settings of a workflow type once it is registered and it must be registered as a new version.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>defaultTaskList.name</code>: String constraint. The key is <code>swf:defaultTaskList.name</code>.</p> </li> <li> <p> <code>name</code>: String constraint. The key is <code>swf:name</code>.</p> </li> <li> <p> <code>version</code>: String constraint. The key is <code>swf:version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600338.validator(path, query, header, formData, body)
-  let scheme = call_600338.pickScheme
+  let valid = call_602360.validator(path, query, header, formData, body)
+  let scheme = call_602360.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600338.url(scheme.get, call_600338.host, call_600338.base,
-                         call_600338.route, valid.getOrDefault("path"),
+  let url = call_602360.url(scheme.get, call_602360.host, call_602360.base,
+                         call_602360.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600338, url, valid)
+  result = atozHook(call_602360, url, valid)
 
-proc call*(call_600339: Call_RegisterWorkflowType_600326; body: JsonNode): Recallable =
+proc call*(call_602361: Call_RegisterWorkflowType_602348; body: JsonNode): Recallable =
   ## registerWorkflowType
   ## <p>Registers a new <i>workflow type</i> and its configuration settings in the specified domain.</p> <p>The retention period for the workflow history is set by the <a>RegisterDomain</a> action.</p> <important> <p>If the type already exists, then a <code>TypeAlreadyExists</code> fault is returned. You cannot change the configuration settings of a workflow type once it is registered and it must be registered as a new version.</p> </important> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>defaultTaskList.name</code>: String constraint. The key is <code>swf:defaultTaskList.name</code>.</p> </li> <li> <p> <code>name</code>: String constraint. The key is <code>swf:name</code>.</p> </li> <li> <p> <code>version</code>: String constraint. The key is <code>swf:version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600340 = newJObject()
+  var body_602362 = newJObject()
   if body != nil:
-    body_600340 = body
-  result = call_600339.call(nil, nil, nil, nil, body_600340)
+    body_602362 = body
+  result = call_602361.call(nil, nil, nil, nil, body_602362)
 
-var registerWorkflowType* = Call_RegisterWorkflowType_600326(
+var registerWorkflowType* = Call_RegisterWorkflowType_602348(
     name: "registerWorkflowType", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.RegisterWorkflowType",
-    validator: validate_RegisterWorkflowType_600327, base: "/",
-    url: url_RegisterWorkflowType_600328, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterWorkflowType_602349, base: "/",
+    url: url_RegisterWorkflowType_602350, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RequestCancelWorkflowExecution_600341 = ref object of OpenApiRestCall_599368
-proc url_RequestCancelWorkflowExecution_600343(protocol: Scheme; host: string;
+  Call_RequestCancelWorkflowExecution_602363 = ref object of OpenApiRestCall_601389
+proc url_RequestCancelWorkflowExecution_602365(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RequestCancelWorkflowExecution_600342(path: JsonNode;
+proc validate_RequestCancelWorkflowExecution_602364(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Records a <code>WorkflowExecutionCancelRequested</code> event in the currently running workflow execution identified by the given domain, workflowId, and runId. This logically requests the cancellation of the workflow execution as a whole. It is up to the decider to take appropriate actions when it receives an execution history with this event.</p> <note> <p>If the runId isn't specified, the <code>WorkflowExecutionCancelRequested</code> event is recorded in the history of the current open workflow execution with the specified workflowId in the domain.</p> </note> <note> <p>Because this action allows the workflow to properly clean up and gracefully close, it should be used instead of <a>TerminateWorkflowExecution</a> when possible.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -3056,57 +3081,57 @@ proc validate_RequestCancelWorkflowExecution_600342(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600344 = header.getOrDefault("X-Amz-Date")
-  valid_600344 = validateParameter(valid_600344, JString, required = false,
-                                 default = nil)
-  if valid_600344 != nil:
-    section.add "X-Amz-Date", valid_600344
-  var valid_600345 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600345 = validateParameter(valid_600345, JString, required = false,
-                                 default = nil)
-  if valid_600345 != nil:
-    section.add "X-Amz-Security-Token", valid_600345
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600346 = header.getOrDefault("X-Amz-Target")
-  valid_600346 = validateParameter(valid_600346, JString, required = true, default = newJString(
+  var valid_602366 = header.getOrDefault("X-Amz-Target")
+  valid_602366 = validateParameter(valid_602366, JString, required = true, default = newJString(
       "SimpleWorkflowService.RequestCancelWorkflowExecution"))
-  if valid_600346 != nil:
-    section.add "X-Amz-Target", valid_600346
-  var valid_600347 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600347 = validateParameter(valid_600347, JString, required = false,
+  if valid_602366 != nil:
+    section.add "X-Amz-Target", valid_602366
+  var valid_602367 = header.getOrDefault("X-Amz-Signature")
+  valid_602367 = validateParameter(valid_602367, JString, required = false,
                                  default = nil)
-  if valid_600347 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600347
-  var valid_600348 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600348 = validateParameter(valid_600348, JString, required = false,
+  if valid_602367 != nil:
+    section.add "X-Amz-Signature", valid_602367
+  var valid_602368 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602368 = validateParameter(valid_602368, JString, required = false,
                                  default = nil)
-  if valid_600348 != nil:
-    section.add "X-Amz-Algorithm", valid_600348
-  var valid_600349 = header.getOrDefault("X-Amz-Signature")
-  valid_600349 = validateParameter(valid_600349, JString, required = false,
+  if valid_602368 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602368
+  var valid_602369 = header.getOrDefault("X-Amz-Date")
+  valid_602369 = validateParameter(valid_602369, JString, required = false,
                                  default = nil)
-  if valid_600349 != nil:
-    section.add "X-Amz-Signature", valid_600349
-  var valid_600350 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600350 = validateParameter(valid_600350, JString, required = false,
+  if valid_602369 != nil:
+    section.add "X-Amz-Date", valid_602369
+  var valid_602370 = header.getOrDefault("X-Amz-Credential")
+  valid_602370 = validateParameter(valid_602370, JString, required = false,
                                  default = nil)
-  if valid_600350 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600350
-  var valid_600351 = header.getOrDefault("X-Amz-Credential")
-  valid_600351 = validateParameter(valid_600351, JString, required = false,
+  if valid_602370 != nil:
+    section.add "X-Amz-Credential", valid_602370
+  var valid_602371 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602371 = validateParameter(valid_602371, JString, required = false,
                                  default = nil)
-  if valid_600351 != nil:
-    section.add "X-Amz-Credential", valid_600351
+  if valid_602371 != nil:
+    section.add "X-Amz-Security-Token", valid_602371
+  var valid_602372 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602372 = validateParameter(valid_602372, JString, required = false,
+                                 default = nil)
+  if valid_602372 != nil:
+    section.add "X-Amz-Algorithm", valid_602372
+  var valid_602373 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602373 = validateParameter(valid_602373, JString, required = false,
+                                 default = nil)
+  if valid_602373 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602373
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3117,48 +3142,49 @@ proc validate_RequestCancelWorkflowExecution_600342(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600353: Call_RequestCancelWorkflowExecution_600341; path: JsonNode;
+proc call*(call_602375: Call_RequestCancelWorkflowExecution_602363; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Records a <code>WorkflowExecutionCancelRequested</code> event in the currently running workflow execution identified by the given domain, workflowId, and runId. This logically requests the cancellation of the workflow execution as a whole. It is up to the decider to take appropriate actions when it receives an execution history with this event.</p> <note> <p>If the runId isn't specified, the <code>WorkflowExecutionCancelRequested</code> event is recorded in the history of the current open workflow execution with the specified workflowId in the domain.</p> </note> <note> <p>Because this action allows the workflow to properly clean up and gracefully close, it should be used instead of <a>TerminateWorkflowExecution</a> when possible.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600353.validator(path, query, header, formData, body)
-  let scheme = call_600353.pickScheme
+  let valid = call_602375.validator(path, query, header, formData, body)
+  let scheme = call_602375.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600353.url(scheme.get, call_600353.host, call_600353.base,
-                         call_600353.route, valid.getOrDefault("path"),
+  let url = call_602375.url(scheme.get, call_602375.host, call_602375.base,
+                         call_602375.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600353, url, valid)
+  result = atozHook(call_602375, url, valid)
 
-proc call*(call_600354: Call_RequestCancelWorkflowExecution_600341; body: JsonNode): Recallable =
+proc call*(call_602376: Call_RequestCancelWorkflowExecution_602363; body: JsonNode): Recallable =
   ## requestCancelWorkflowExecution
   ## <p>Records a <code>WorkflowExecutionCancelRequested</code> event in the currently running workflow execution identified by the given domain, workflowId, and runId. This logically requests the cancellation of the workflow execution as a whole. It is up to the decider to take appropriate actions when it receives an execution history with this event.</p> <note> <p>If the runId isn't specified, the <code>WorkflowExecutionCancelRequested</code> event is recorded in the history of the current open workflow execution with the specified workflowId in the domain.</p> </note> <note> <p>Because this action allows the workflow to properly clean up and gracefully close, it should be used instead of <a>TerminateWorkflowExecution</a> when possible.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600355 = newJObject()
+  var body_602377 = newJObject()
   if body != nil:
-    body_600355 = body
-  result = call_600354.call(nil, nil, nil, nil, body_600355)
+    body_602377 = body
+  result = call_602376.call(nil, nil, nil, nil, body_602377)
 
-var requestCancelWorkflowExecution* = Call_RequestCancelWorkflowExecution_600341(
+var requestCancelWorkflowExecution* = Call_RequestCancelWorkflowExecution_602363(
     name: "requestCancelWorkflowExecution", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com", route: "/#X-Amz-Target=SimpleWorkflowService.RequestCancelWorkflowExecution",
-    validator: validate_RequestCancelWorkflowExecution_600342, base: "/",
-    url: url_RequestCancelWorkflowExecution_600343,
+    validator: validate_RequestCancelWorkflowExecution_602364, base: "/",
+    url: url_RequestCancelWorkflowExecution_602365,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RespondActivityTaskCanceled_600356 = ref object of OpenApiRestCall_599368
-proc url_RespondActivityTaskCanceled_600358(protocol: Scheme; host: string;
+  Call_RespondActivityTaskCanceled_602378 = ref object of OpenApiRestCall_601389
+proc url_RespondActivityTaskCanceled_602380(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RespondActivityTaskCanceled_600357(path: JsonNode; query: JsonNode;
+proc validate_RespondActivityTaskCanceled_602379(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> was successfully canceled. Additional <code>details</code> can be provided using the <code>details</code> argument.</p> <p>These <code>details</code> (if provided) appear in the <code>ActivityTaskCanceled</code> event added to the workflow history.</p> <important> <p>Only use this operation if the <code>canceled</code> flag of a <a>RecordActivityTaskHeartbeat</a> request returns <code>true</code> and if the activity can be safely undone or abandoned.</p> </important> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to <a>RespondActivityTaskCompleted</a>, RespondActivityTaskCanceled, <a>RespondActivityTaskFailed</a>, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -3169,57 +3195,57 @@ proc validate_RespondActivityTaskCanceled_600357(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600359 = header.getOrDefault("X-Amz-Date")
-  valid_600359 = validateParameter(valid_600359, JString, required = false,
-                                 default = nil)
-  if valid_600359 != nil:
-    section.add "X-Amz-Date", valid_600359
-  var valid_600360 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600360 = validateParameter(valid_600360, JString, required = false,
-                                 default = nil)
-  if valid_600360 != nil:
-    section.add "X-Amz-Security-Token", valid_600360
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600361 = header.getOrDefault("X-Amz-Target")
-  valid_600361 = validateParameter(valid_600361, JString, required = true, default = newJString(
+  var valid_602381 = header.getOrDefault("X-Amz-Target")
+  valid_602381 = validateParameter(valid_602381, JString, required = true, default = newJString(
       "SimpleWorkflowService.RespondActivityTaskCanceled"))
-  if valid_600361 != nil:
-    section.add "X-Amz-Target", valid_600361
-  var valid_600362 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600362 = validateParameter(valid_600362, JString, required = false,
+  if valid_602381 != nil:
+    section.add "X-Amz-Target", valid_602381
+  var valid_602382 = header.getOrDefault("X-Amz-Signature")
+  valid_602382 = validateParameter(valid_602382, JString, required = false,
                                  default = nil)
-  if valid_600362 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600362
-  var valid_600363 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600363 = validateParameter(valid_600363, JString, required = false,
+  if valid_602382 != nil:
+    section.add "X-Amz-Signature", valid_602382
+  var valid_602383 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602383 = validateParameter(valid_602383, JString, required = false,
                                  default = nil)
-  if valid_600363 != nil:
-    section.add "X-Amz-Algorithm", valid_600363
-  var valid_600364 = header.getOrDefault("X-Amz-Signature")
-  valid_600364 = validateParameter(valid_600364, JString, required = false,
+  if valid_602383 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602383
+  var valid_602384 = header.getOrDefault("X-Amz-Date")
+  valid_602384 = validateParameter(valid_602384, JString, required = false,
                                  default = nil)
-  if valid_600364 != nil:
-    section.add "X-Amz-Signature", valid_600364
-  var valid_600365 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600365 = validateParameter(valid_600365, JString, required = false,
+  if valid_602384 != nil:
+    section.add "X-Amz-Date", valid_602384
+  var valid_602385 = header.getOrDefault("X-Amz-Credential")
+  valid_602385 = validateParameter(valid_602385, JString, required = false,
                                  default = nil)
-  if valid_600365 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600365
-  var valid_600366 = header.getOrDefault("X-Amz-Credential")
-  valid_600366 = validateParameter(valid_600366, JString, required = false,
+  if valid_602385 != nil:
+    section.add "X-Amz-Credential", valid_602385
+  var valid_602386 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602386 = validateParameter(valid_602386, JString, required = false,
                                  default = nil)
-  if valid_600366 != nil:
-    section.add "X-Amz-Credential", valid_600366
+  if valid_602386 != nil:
+    section.add "X-Amz-Security-Token", valid_602386
+  var valid_602387 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602387 = validateParameter(valid_602387, JString, required = false,
+                                 default = nil)
+  if valid_602387 != nil:
+    section.add "X-Amz-Algorithm", valid_602387
+  var valid_602388 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602388 = validateParameter(valid_602388, JString, required = false,
+                                 default = nil)
+  if valid_602388 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602388
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3230,49 +3256,50 @@ proc validate_RespondActivityTaskCanceled_600357(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600368: Call_RespondActivityTaskCanceled_600356; path: JsonNode;
+proc call*(call_602390: Call_RespondActivityTaskCanceled_602378; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> was successfully canceled. Additional <code>details</code> can be provided using the <code>details</code> argument.</p> <p>These <code>details</code> (if provided) appear in the <code>ActivityTaskCanceled</code> event added to the workflow history.</p> <important> <p>Only use this operation if the <code>canceled</code> flag of a <a>RecordActivityTaskHeartbeat</a> request returns <code>true</code> and if the activity can be safely undone or abandoned.</p> </important> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to <a>RespondActivityTaskCompleted</a>, RespondActivityTaskCanceled, <a>RespondActivityTaskFailed</a>, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600368.validator(path, query, header, formData, body)
-  let scheme = call_600368.pickScheme
+  let valid = call_602390.validator(path, query, header, formData, body)
+  let scheme = call_602390.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600368.url(scheme.get, call_600368.host, call_600368.base,
-                         call_600368.route, valid.getOrDefault("path"),
+  let url = call_602390.url(scheme.get, call_602390.host, call_602390.base,
+                         call_602390.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600368, url, valid)
+  result = atozHook(call_602390, url, valid)
 
-proc call*(call_600369: Call_RespondActivityTaskCanceled_600356; body: JsonNode): Recallable =
+proc call*(call_602391: Call_RespondActivityTaskCanceled_602378; body: JsonNode): Recallable =
   ## respondActivityTaskCanceled
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> was successfully canceled. Additional <code>details</code> can be provided using the <code>details</code> argument.</p> <p>These <code>details</code> (if provided) appear in the <code>ActivityTaskCanceled</code> event added to the workflow history.</p> <important> <p>Only use this operation if the <code>canceled</code> flag of a <a>RecordActivityTaskHeartbeat</a> request returns <code>true</code> and if the activity can be safely undone or abandoned.</p> </important> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to <a>RespondActivityTaskCompleted</a>, RespondActivityTaskCanceled, <a>RespondActivityTaskFailed</a>, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600370 = newJObject()
+  var body_602392 = newJObject()
   if body != nil:
-    body_600370 = body
-  result = call_600369.call(nil, nil, nil, nil, body_600370)
+    body_602392 = body
+  result = call_602391.call(nil, nil, nil, nil, body_602392)
 
-var respondActivityTaskCanceled* = Call_RespondActivityTaskCanceled_600356(
+var respondActivityTaskCanceled* = Call_RespondActivityTaskCanceled_602378(
     name: "respondActivityTaskCanceled", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.RespondActivityTaskCanceled",
-    validator: validate_RespondActivityTaskCanceled_600357, base: "/",
-    url: url_RespondActivityTaskCanceled_600358,
+    validator: validate_RespondActivityTaskCanceled_602379, base: "/",
+    url: url_RespondActivityTaskCanceled_602380,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RespondActivityTaskCompleted_600371 = ref object of OpenApiRestCall_599368
-proc url_RespondActivityTaskCompleted_600373(protocol: Scheme; host: string;
+  Call_RespondActivityTaskCompleted_602393 = ref object of OpenApiRestCall_601389
+proc url_RespondActivityTaskCompleted_602395(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RespondActivityTaskCompleted_600372(path: JsonNode; query: JsonNode;
+proc validate_RespondActivityTaskCompleted_602394(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> completed successfully with a <code>result</code> (if provided). The <code>result</code> appears in the <code>ActivityTaskCompleted</code> event in the workflow history.</p> <important> <p>If the requested task doesn't complete successfully, use <a>RespondActivityTaskFailed</a> instead. If the worker finds that the task is canceled through the <code>canceled</code> flag returned by <a>RecordActivityTaskHeartbeat</a>, it should cancel the task, clean up and then call <a>RespondActivityTaskCanceled</a>.</p> </important> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to RespondActivityTaskCompleted, <a>RespondActivityTaskCanceled</a>, <a>RespondActivityTaskFailed</a>, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -3283,57 +3310,57 @@ proc validate_RespondActivityTaskCompleted_600372(path: JsonNode; query: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600374 = header.getOrDefault("X-Amz-Date")
-  valid_600374 = validateParameter(valid_600374, JString, required = false,
-                                 default = nil)
-  if valid_600374 != nil:
-    section.add "X-Amz-Date", valid_600374
-  var valid_600375 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600375 = validateParameter(valid_600375, JString, required = false,
-                                 default = nil)
-  if valid_600375 != nil:
-    section.add "X-Amz-Security-Token", valid_600375
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600376 = header.getOrDefault("X-Amz-Target")
-  valid_600376 = validateParameter(valid_600376, JString, required = true, default = newJString(
+  var valid_602396 = header.getOrDefault("X-Amz-Target")
+  valid_602396 = validateParameter(valid_602396, JString, required = true, default = newJString(
       "SimpleWorkflowService.RespondActivityTaskCompleted"))
-  if valid_600376 != nil:
-    section.add "X-Amz-Target", valid_600376
-  var valid_600377 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600377 = validateParameter(valid_600377, JString, required = false,
+  if valid_602396 != nil:
+    section.add "X-Amz-Target", valid_602396
+  var valid_602397 = header.getOrDefault("X-Amz-Signature")
+  valid_602397 = validateParameter(valid_602397, JString, required = false,
                                  default = nil)
-  if valid_600377 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600377
-  var valid_600378 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600378 = validateParameter(valid_600378, JString, required = false,
+  if valid_602397 != nil:
+    section.add "X-Amz-Signature", valid_602397
+  var valid_602398 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602398 = validateParameter(valid_602398, JString, required = false,
                                  default = nil)
-  if valid_600378 != nil:
-    section.add "X-Amz-Algorithm", valid_600378
-  var valid_600379 = header.getOrDefault("X-Amz-Signature")
-  valid_600379 = validateParameter(valid_600379, JString, required = false,
+  if valid_602398 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602398
+  var valid_602399 = header.getOrDefault("X-Amz-Date")
+  valid_602399 = validateParameter(valid_602399, JString, required = false,
                                  default = nil)
-  if valid_600379 != nil:
-    section.add "X-Amz-Signature", valid_600379
-  var valid_600380 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600380 = validateParameter(valid_600380, JString, required = false,
+  if valid_602399 != nil:
+    section.add "X-Amz-Date", valid_602399
+  var valid_602400 = header.getOrDefault("X-Amz-Credential")
+  valid_602400 = validateParameter(valid_602400, JString, required = false,
                                  default = nil)
-  if valid_600380 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600380
-  var valid_600381 = header.getOrDefault("X-Amz-Credential")
-  valid_600381 = validateParameter(valid_600381, JString, required = false,
+  if valid_602400 != nil:
+    section.add "X-Amz-Credential", valid_602400
+  var valid_602401 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602401 = validateParameter(valid_602401, JString, required = false,
                                  default = nil)
-  if valid_600381 != nil:
-    section.add "X-Amz-Credential", valid_600381
+  if valid_602401 != nil:
+    section.add "X-Amz-Security-Token", valid_602401
+  var valid_602402 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602402 = validateParameter(valid_602402, JString, required = false,
+                                 default = nil)
+  if valid_602402 != nil:
+    section.add "X-Amz-Algorithm", valid_602402
+  var valid_602403 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602403 = validateParameter(valid_602403, JString, required = false,
+                                 default = nil)
+  if valid_602403 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602403
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3344,49 +3371,50 @@ proc validate_RespondActivityTaskCompleted_600372(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600383: Call_RespondActivityTaskCompleted_600371; path: JsonNode;
+proc call*(call_602405: Call_RespondActivityTaskCompleted_602393; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> completed successfully with a <code>result</code> (if provided). The <code>result</code> appears in the <code>ActivityTaskCompleted</code> event in the workflow history.</p> <important> <p>If the requested task doesn't complete successfully, use <a>RespondActivityTaskFailed</a> instead. If the worker finds that the task is canceled through the <code>canceled</code> flag returned by <a>RecordActivityTaskHeartbeat</a>, it should cancel the task, clean up and then call <a>RespondActivityTaskCanceled</a>.</p> </important> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to RespondActivityTaskCompleted, <a>RespondActivityTaskCanceled</a>, <a>RespondActivityTaskFailed</a>, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600383.validator(path, query, header, formData, body)
-  let scheme = call_600383.pickScheme
+  let valid = call_602405.validator(path, query, header, formData, body)
+  let scheme = call_602405.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600383.url(scheme.get, call_600383.host, call_600383.base,
-                         call_600383.route, valid.getOrDefault("path"),
+  let url = call_602405.url(scheme.get, call_602405.host, call_602405.base,
+                         call_602405.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600383, url, valid)
+  result = atozHook(call_602405, url, valid)
 
-proc call*(call_600384: Call_RespondActivityTaskCompleted_600371; body: JsonNode): Recallable =
+proc call*(call_602406: Call_RespondActivityTaskCompleted_602393; body: JsonNode): Recallable =
   ## respondActivityTaskCompleted
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> completed successfully with a <code>result</code> (if provided). The <code>result</code> appears in the <code>ActivityTaskCompleted</code> event in the workflow history.</p> <important> <p>If the requested task doesn't complete successfully, use <a>RespondActivityTaskFailed</a> instead. If the worker finds that the task is canceled through the <code>canceled</code> flag returned by <a>RecordActivityTaskHeartbeat</a>, it should cancel the task, clean up and then call <a>RespondActivityTaskCanceled</a>.</p> </important> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to RespondActivityTaskCompleted, <a>RespondActivityTaskCanceled</a>, <a>RespondActivityTaskFailed</a>, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600385 = newJObject()
+  var body_602407 = newJObject()
   if body != nil:
-    body_600385 = body
-  result = call_600384.call(nil, nil, nil, nil, body_600385)
+    body_602407 = body
+  result = call_602406.call(nil, nil, nil, nil, body_602407)
 
-var respondActivityTaskCompleted* = Call_RespondActivityTaskCompleted_600371(
+var respondActivityTaskCompleted* = Call_RespondActivityTaskCompleted_602393(
     name: "respondActivityTaskCompleted", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.RespondActivityTaskCompleted",
-    validator: validate_RespondActivityTaskCompleted_600372, base: "/",
-    url: url_RespondActivityTaskCompleted_600373,
+    validator: validate_RespondActivityTaskCompleted_602394, base: "/",
+    url: url_RespondActivityTaskCompleted_602395,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RespondActivityTaskFailed_600386 = ref object of OpenApiRestCall_599368
-proc url_RespondActivityTaskFailed_600388(protocol: Scheme; host: string;
+  Call_RespondActivityTaskFailed_602408 = ref object of OpenApiRestCall_601389
+proc url_RespondActivityTaskFailed_602410(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RespondActivityTaskFailed_600387(path: JsonNode; query: JsonNode;
+proc validate_RespondActivityTaskFailed_602409(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> has failed with <code>reason</code> (if specified). The <code>reason</code> and <code>details</code> appear in the <code>ActivityTaskFailed</code> event added to the workflow history.</p> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to <a>RespondActivityTaskCompleted</a>, <a>RespondActivityTaskCanceled</a>, RespondActivityTaskFailed, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -3397,57 +3425,57 @@ proc validate_RespondActivityTaskFailed_600387(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600389 = header.getOrDefault("X-Amz-Date")
-  valid_600389 = validateParameter(valid_600389, JString, required = false,
-                                 default = nil)
-  if valid_600389 != nil:
-    section.add "X-Amz-Date", valid_600389
-  var valid_600390 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600390 = validateParameter(valid_600390, JString, required = false,
-                                 default = nil)
-  if valid_600390 != nil:
-    section.add "X-Amz-Security-Token", valid_600390
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600391 = header.getOrDefault("X-Amz-Target")
-  valid_600391 = validateParameter(valid_600391, JString, required = true, default = newJString(
+  var valid_602411 = header.getOrDefault("X-Amz-Target")
+  valid_602411 = validateParameter(valid_602411, JString, required = true, default = newJString(
       "SimpleWorkflowService.RespondActivityTaskFailed"))
-  if valid_600391 != nil:
-    section.add "X-Amz-Target", valid_600391
-  var valid_600392 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600392 = validateParameter(valid_600392, JString, required = false,
+  if valid_602411 != nil:
+    section.add "X-Amz-Target", valid_602411
+  var valid_602412 = header.getOrDefault("X-Amz-Signature")
+  valid_602412 = validateParameter(valid_602412, JString, required = false,
                                  default = nil)
-  if valid_600392 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600392
-  var valid_600393 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600393 = validateParameter(valid_600393, JString, required = false,
+  if valid_602412 != nil:
+    section.add "X-Amz-Signature", valid_602412
+  var valid_602413 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602413 = validateParameter(valid_602413, JString, required = false,
                                  default = nil)
-  if valid_600393 != nil:
-    section.add "X-Amz-Algorithm", valid_600393
-  var valid_600394 = header.getOrDefault("X-Amz-Signature")
-  valid_600394 = validateParameter(valid_600394, JString, required = false,
+  if valid_602413 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602413
+  var valid_602414 = header.getOrDefault("X-Amz-Date")
+  valid_602414 = validateParameter(valid_602414, JString, required = false,
                                  default = nil)
-  if valid_600394 != nil:
-    section.add "X-Amz-Signature", valid_600394
-  var valid_600395 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600395 = validateParameter(valid_600395, JString, required = false,
+  if valid_602414 != nil:
+    section.add "X-Amz-Date", valid_602414
+  var valid_602415 = header.getOrDefault("X-Amz-Credential")
+  valid_602415 = validateParameter(valid_602415, JString, required = false,
                                  default = nil)
-  if valid_600395 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600395
-  var valid_600396 = header.getOrDefault("X-Amz-Credential")
-  valid_600396 = validateParameter(valid_600396, JString, required = false,
+  if valid_602415 != nil:
+    section.add "X-Amz-Credential", valid_602415
+  var valid_602416 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602416 = validateParameter(valid_602416, JString, required = false,
                                  default = nil)
-  if valid_600396 != nil:
-    section.add "X-Amz-Credential", valid_600396
+  if valid_602416 != nil:
+    section.add "X-Amz-Security-Token", valid_602416
+  var valid_602417 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602417 = validateParameter(valid_602417, JString, required = false,
+                                 default = nil)
+  if valid_602417 != nil:
+    section.add "X-Amz-Algorithm", valid_602417
+  var valid_602418 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602418 = validateParameter(valid_602418, JString, required = false,
+                                 default = nil)
+  if valid_602418 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602418
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3458,49 +3486,50 @@ proc validate_RespondActivityTaskFailed_600387(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600398: Call_RespondActivityTaskFailed_600386; path: JsonNode;
+proc call*(call_602420: Call_RespondActivityTaskFailed_602408; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> has failed with <code>reason</code> (if specified). The <code>reason</code> and <code>details</code> appear in the <code>ActivityTaskFailed</code> event added to the workflow history.</p> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to <a>RespondActivityTaskCompleted</a>, <a>RespondActivityTaskCanceled</a>, RespondActivityTaskFailed, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600398.validator(path, query, header, formData, body)
-  let scheme = call_600398.pickScheme
+  let valid = call_602420.validator(path, query, header, formData, body)
+  let scheme = call_602420.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600398.url(scheme.get, call_600398.host, call_600398.base,
-                         call_600398.route, valid.getOrDefault("path"),
+  let url = call_602420.url(scheme.get, call_602420.host, call_602420.base,
+                         call_602420.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600398, url, valid)
+  result = atozHook(call_602420, url, valid)
 
-proc call*(call_600399: Call_RespondActivityTaskFailed_600386; body: JsonNode): Recallable =
+proc call*(call_602421: Call_RespondActivityTaskFailed_602408; body: JsonNode): Recallable =
   ## respondActivityTaskFailed
   ## <p>Used by workers to tell the service that the <a>ActivityTask</a> identified by the <code>taskToken</code> has failed with <code>reason</code> (if specified). The <code>reason</code> and <code>details</code> appear in the <code>ActivityTaskFailed</code> event added to the workflow history.</p> <p>A task is considered open from the time that it is scheduled until it is closed. Therefore a task is reported as open while a worker is processing it. A task is closed after it has been specified in a call to <a>RespondActivityTaskCompleted</a>, <a>RespondActivityTaskCanceled</a>, RespondActivityTaskFailed, or the task has <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dg-basic.html#swf-dev-timeout-types">timed out</a>.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600400 = newJObject()
+  var body_602422 = newJObject()
   if body != nil:
-    body_600400 = body
-  result = call_600399.call(nil, nil, nil, nil, body_600400)
+    body_602422 = body
+  result = call_602421.call(nil, nil, nil, nil, body_602422)
 
-var respondActivityTaskFailed* = Call_RespondActivityTaskFailed_600386(
+var respondActivityTaskFailed* = Call_RespondActivityTaskFailed_602408(
     name: "respondActivityTaskFailed", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.RespondActivityTaskFailed",
-    validator: validate_RespondActivityTaskFailed_600387, base: "/",
-    url: url_RespondActivityTaskFailed_600388,
+    validator: validate_RespondActivityTaskFailed_602409, base: "/",
+    url: url_RespondActivityTaskFailed_602410,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RespondDecisionTaskCompleted_600401 = ref object of OpenApiRestCall_599368
-proc url_RespondDecisionTaskCompleted_600403(protocol: Scheme; host: string;
+  Call_RespondDecisionTaskCompleted_602423 = ref object of OpenApiRestCall_601389
+proc url_RespondDecisionTaskCompleted_602425(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RespondDecisionTaskCompleted_600402(path: JsonNode; query: JsonNode;
+proc validate_RespondDecisionTaskCompleted_602424(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Used by deciders to tell the service that the <a>DecisionTask</a> identified by the <code>taskToken</code> has successfully completed. The <code>decisions</code> argument specifies the list of decisions made while processing the task.</p> <p>A <code>DecisionTaskCompleted</code> event is added to the workflow history. The <code>executionContext</code> specified is attached to the event in the workflow execution history.</p> <p> <b>Access Control</b> </p> <p>If an IAM policy grants permission to use <code>RespondDecisionTaskCompleted</code>, it can express permissions for the list of decisions in the <code>decisions</code> parameter. Each of the decisions has one or more parameters, much like a regular API call. To allow for policies to be as readable as possible, you can express permissions on decisions as if they were actual API calls, including applying conditions to some parameters. For more information, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -3511,57 +3540,57 @@ proc validate_RespondDecisionTaskCompleted_600402(path: JsonNode; query: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600404 = header.getOrDefault("X-Amz-Date")
-  valid_600404 = validateParameter(valid_600404, JString, required = false,
-                                 default = nil)
-  if valid_600404 != nil:
-    section.add "X-Amz-Date", valid_600404
-  var valid_600405 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600405 = validateParameter(valid_600405, JString, required = false,
-                                 default = nil)
-  if valid_600405 != nil:
-    section.add "X-Amz-Security-Token", valid_600405
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600406 = header.getOrDefault("X-Amz-Target")
-  valid_600406 = validateParameter(valid_600406, JString, required = true, default = newJString(
+  var valid_602426 = header.getOrDefault("X-Amz-Target")
+  valid_602426 = validateParameter(valid_602426, JString, required = true, default = newJString(
       "SimpleWorkflowService.RespondDecisionTaskCompleted"))
-  if valid_600406 != nil:
-    section.add "X-Amz-Target", valid_600406
-  var valid_600407 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600407 = validateParameter(valid_600407, JString, required = false,
+  if valid_602426 != nil:
+    section.add "X-Amz-Target", valid_602426
+  var valid_602427 = header.getOrDefault("X-Amz-Signature")
+  valid_602427 = validateParameter(valid_602427, JString, required = false,
                                  default = nil)
-  if valid_600407 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600407
-  var valid_600408 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600408 = validateParameter(valid_600408, JString, required = false,
+  if valid_602427 != nil:
+    section.add "X-Amz-Signature", valid_602427
+  var valid_602428 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602428 = validateParameter(valid_602428, JString, required = false,
                                  default = nil)
-  if valid_600408 != nil:
-    section.add "X-Amz-Algorithm", valid_600408
-  var valid_600409 = header.getOrDefault("X-Amz-Signature")
-  valid_600409 = validateParameter(valid_600409, JString, required = false,
+  if valid_602428 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602428
+  var valid_602429 = header.getOrDefault("X-Amz-Date")
+  valid_602429 = validateParameter(valid_602429, JString, required = false,
                                  default = nil)
-  if valid_600409 != nil:
-    section.add "X-Amz-Signature", valid_600409
-  var valid_600410 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600410 = validateParameter(valid_600410, JString, required = false,
+  if valid_602429 != nil:
+    section.add "X-Amz-Date", valid_602429
+  var valid_602430 = header.getOrDefault("X-Amz-Credential")
+  valid_602430 = validateParameter(valid_602430, JString, required = false,
                                  default = nil)
-  if valid_600410 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600410
-  var valid_600411 = header.getOrDefault("X-Amz-Credential")
-  valid_600411 = validateParameter(valid_600411, JString, required = false,
+  if valid_602430 != nil:
+    section.add "X-Amz-Credential", valid_602430
+  var valid_602431 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602431 = validateParameter(valid_602431, JString, required = false,
                                  default = nil)
-  if valid_600411 != nil:
-    section.add "X-Amz-Credential", valid_600411
+  if valid_602431 != nil:
+    section.add "X-Amz-Security-Token", valid_602431
+  var valid_602432 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602432 = validateParameter(valid_602432, JString, required = false,
+                                 default = nil)
+  if valid_602432 != nil:
+    section.add "X-Amz-Algorithm", valid_602432
+  var valid_602433 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602433 = validateParameter(valid_602433, JString, required = false,
+                                 default = nil)
+  if valid_602433 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602433
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3572,50 +3601,51 @@ proc validate_RespondDecisionTaskCompleted_600402(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600413: Call_RespondDecisionTaskCompleted_600401; path: JsonNode;
+proc call*(call_602435: Call_RespondDecisionTaskCompleted_602423; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Used by deciders to tell the service that the <a>DecisionTask</a> identified by the <code>taskToken</code> has successfully completed. The <code>decisions</code> argument specifies the list of decisions made while processing the task.</p> <p>A <code>DecisionTaskCompleted</code> event is added to the workflow history. The <code>executionContext</code> specified is attached to the event in the workflow execution history.</p> <p> <b>Access Control</b> </p> <p>If an IAM policy grants permission to use <code>RespondDecisionTaskCompleted</code>, it can express permissions for the list of decisions in the <code>decisions</code> parameter. Each of the decisions has one or more parameters, much like a regular API call. To allow for policies to be as readable as possible, you can express permissions on decisions as if they were actual API calls, including applying conditions to some parameters. For more information, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600413.validator(path, query, header, formData, body)
-  let scheme = call_600413.pickScheme
+  let valid = call_602435.validator(path, query, header, formData, body)
+  let scheme = call_602435.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600413.url(scheme.get, call_600413.host, call_600413.base,
-                         call_600413.route, valid.getOrDefault("path"),
+  let url = call_602435.url(scheme.get, call_602435.host, call_602435.base,
+                         call_602435.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600413, url, valid)
+  result = atozHook(call_602435, url, valid)
 
-proc call*(call_600414: Call_RespondDecisionTaskCompleted_600401; body: JsonNode): Recallable =
+proc call*(call_602436: Call_RespondDecisionTaskCompleted_602423; body: JsonNode): Recallable =
   ## respondDecisionTaskCompleted
   ## <p>Used by deciders to tell the service that the <a>DecisionTask</a> identified by the <code>taskToken</code> has successfully completed. The <code>decisions</code> argument specifies the list of decisions made while processing the task.</p> <p>A <code>DecisionTaskCompleted</code> event is added to the workflow history. The <code>executionContext</code> specified is attached to the event in the workflow execution history.</p> <p> <b>Access Control</b> </p> <p>If an IAM policy grants permission to use <code>RespondDecisionTaskCompleted</code>, it can express permissions for the list of decisions in the <code>decisions</code> parameter. Each of the decisions has one or more parameters, much like a regular API call. To allow for policies to be as readable as possible, you can express permissions on decisions as if they were actual API calls, including applying conditions to some parameters. For more information, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600415 = newJObject()
+  var body_602437 = newJObject()
   if body != nil:
-    body_600415 = body
-  result = call_600414.call(nil, nil, nil, nil, body_600415)
+    body_602437 = body
+  result = call_602436.call(nil, nil, nil, nil, body_602437)
 
-var respondDecisionTaskCompleted* = Call_RespondDecisionTaskCompleted_600401(
+var respondDecisionTaskCompleted* = Call_RespondDecisionTaskCompleted_602423(
     name: "respondDecisionTaskCompleted", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.RespondDecisionTaskCompleted",
-    validator: validate_RespondDecisionTaskCompleted_600402, base: "/",
-    url: url_RespondDecisionTaskCompleted_600403,
+    validator: validate_RespondDecisionTaskCompleted_602424, base: "/",
+    url: url_RespondDecisionTaskCompleted_602425,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SignalWorkflowExecution_600416 = ref object of OpenApiRestCall_599368
-proc url_SignalWorkflowExecution_600418(protocol: Scheme; host: string; base: string;
+  Call_SignalWorkflowExecution_602438 = ref object of OpenApiRestCall_601389
+proc url_SignalWorkflowExecution_602440(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SignalWorkflowExecution_600417(path: JsonNode; query: JsonNode;
+proc validate_SignalWorkflowExecution_602439(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Records a <code>WorkflowExecutionSignaled</code> event in the workflow execution history and creates a decision task for the workflow execution identified by the given domain, workflowId and runId. The event is recorded with the specified user defined signalName and input (if provided).</p> <note> <p>If a runId isn't specified, then the <code>WorkflowExecutionSignaled</code> event is recorded in the history of the current open workflow with the matching workflowId in the domain.</p> </note> <note> <p>If the specified workflow execution isn't open, this method fails with <code>UnknownResource</code>.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -3626,57 +3656,57 @@ proc validate_SignalWorkflowExecution_600417(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600419 = header.getOrDefault("X-Amz-Date")
-  valid_600419 = validateParameter(valid_600419, JString, required = false,
-                                 default = nil)
-  if valid_600419 != nil:
-    section.add "X-Amz-Date", valid_600419
-  var valid_600420 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600420 = validateParameter(valid_600420, JString, required = false,
-                                 default = nil)
-  if valid_600420 != nil:
-    section.add "X-Amz-Security-Token", valid_600420
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600421 = header.getOrDefault("X-Amz-Target")
-  valid_600421 = validateParameter(valid_600421, JString, required = true, default = newJString(
+  var valid_602441 = header.getOrDefault("X-Amz-Target")
+  valid_602441 = validateParameter(valid_602441, JString, required = true, default = newJString(
       "SimpleWorkflowService.SignalWorkflowExecution"))
-  if valid_600421 != nil:
-    section.add "X-Amz-Target", valid_600421
-  var valid_600422 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600422 = validateParameter(valid_600422, JString, required = false,
+  if valid_602441 != nil:
+    section.add "X-Amz-Target", valid_602441
+  var valid_602442 = header.getOrDefault("X-Amz-Signature")
+  valid_602442 = validateParameter(valid_602442, JString, required = false,
                                  default = nil)
-  if valid_600422 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600422
-  var valid_600423 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600423 = validateParameter(valid_600423, JString, required = false,
+  if valid_602442 != nil:
+    section.add "X-Amz-Signature", valid_602442
+  var valid_602443 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602443 = validateParameter(valid_602443, JString, required = false,
                                  default = nil)
-  if valid_600423 != nil:
-    section.add "X-Amz-Algorithm", valid_600423
-  var valid_600424 = header.getOrDefault("X-Amz-Signature")
-  valid_600424 = validateParameter(valid_600424, JString, required = false,
+  if valid_602443 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602443
+  var valid_602444 = header.getOrDefault("X-Amz-Date")
+  valid_602444 = validateParameter(valid_602444, JString, required = false,
                                  default = nil)
-  if valid_600424 != nil:
-    section.add "X-Amz-Signature", valid_600424
-  var valid_600425 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600425 = validateParameter(valid_600425, JString, required = false,
+  if valid_602444 != nil:
+    section.add "X-Amz-Date", valid_602444
+  var valid_602445 = header.getOrDefault("X-Amz-Credential")
+  valid_602445 = validateParameter(valid_602445, JString, required = false,
                                  default = nil)
-  if valid_600425 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600425
-  var valid_600426 = header.getOrDefault("X-Amz-Credential")
-  valid_600426 = validateParameter(valid_600426, JString, required = false,
+  if valid_602445 != nil:
+    section.add "X-Amz-Credential", valid_602445
+  var valid_602446 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602446 = validateParameter(valid_602446, JString, required = false,
                                  default = nil)
-  if valid_600426 != nil:
-    section.add "X-Amz-Credential", valid_600426
+  if valid_602446 != nil:
+    section.add "X-Amz-Security-Token", valid_602446
+  var valid_602447 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602447 = validateParameter(valid_602447, JString, required = false,
+                                 default = nil)
+  if valid_602447 != nil:
+    section.add "X-Amz-Algorithm", valid_602447
+  var valid_602448 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602448 = validateParameter(valid_602448, JString, required = false,
+                                 default = nil)
+  if valid_602448 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602448
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3687,48 +3717,49 @@ proc validate_SignalWorkflowExecution_600417(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600428: Call_SignalWorkflowExecution_600416; path: JsonNode;
+proc call*(call_602450: Call_SignalWorkflowExecution_602438; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Records a <code>WorkflowExecutionSignaled</code> event in the workflow execution history and creates a decision task for the workflow execution identified by the given domain, workflowId and runId. The event is recorded with the specified user defined signalName and input (if provided).</p> <note> <p>If a runId isn't specified, then the <code>WorkflowExecutionSignaled</code> event is recorded in the history of the current open workflow with the matching workflowId in the domain.</p> </note> <note> <p>If the specified workflow execution isn't open, this method fails with <code>UnknownResource</code>.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600428.validator(path, query, header, formData, body)
-  let scheme = call_600428.pickScheme
+  let valid = call_602450.validator(path, query, header, formData, body)
+  let scheme = call_602450.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600428.url(scheme.get, call_600428.host, call_600428.base,
-                         call_600428.route, valid.getOrDefault("path"),
+  let url = call_602450.url(scheme.get, call_602450.host, call_602450.base,
+                         call_602450.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600428, url, valid)
+  result = atozHook(call_602450, url, valid)
 
-proc call*(call_600429: Call_SignalWorkflowExecution_600416; body: JsonNode): Recallable =
+proc call*(call_602451: Call_SignalWorkflowExecution_602438; body: JsonNode): Recallable =
   ## signalWorkflowExecution
   ## <p>Records a <code>WorkflowExecutionSignaled</code> event in the workflow execution history and creates a decision task for the workflow execution identified by the given domain, workflowId and runId. The event is recorded with the specified user defined signalName and input (if provided).</p> <note> <p>If a runId isn't specified, then the <code>WorkflowExecutionSignaled</code> event is recorded in the history of the current open workflow with the matching workflowId in the domain.</p> </note> <note> <p>If the specified workflow execution isn't open, this method fails with <code>UnknownResource</code>.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600430 = newJObject()
+  var body_602452 = newJObject()
   if body != nil:
-    body_600430 = body
-  result = call_600429.call(nil, nil, nil, nil, body_600430)
+    body_602452 = body
+  result = call_602451.call(nil, nil, nil, nil, body_602452)
 
-var signalWorkflowExecution* = Call_SignalWorkflowExecution_600416(
+var signalWorkflowExecution* = Call_SignalWorkflowExecution_602438(
     name: "signalWorkflowExecution", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.SignalWorkflowExecution",
-    validator: validate_SignalWorkflowExecution_600417, base: "/",
-    url: url_SignalWorkflowExecution_600418, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SignalWorkflowExecution_602439, base: "/",
+    url: url_SignalWorkflowExecution_602440, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartWorkflowExecution_600431 = ref object of OpenApiRestCall_599368
-proc url_StartWorkflowExecution_600433(protocol: Scheme; host: string; base: string;
+  Call_StartWorkflowExecution_602453 = ref object of OpenApiRestCall_601389
+proc url_StartWorkflowExecution_602455(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StartWorkflowExecution_600432(path: JsonNode; query: JsonNode;
+proc validate_StartWorkflowExecution_602454(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts an execution of the workflow type in the specified domain using the provided <code>workflowId</code> and input data.</p> <p>This action returns the newly started workflow execution.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagList.member.0</code>: The key is <code>swf:tagList.member.0</code>.</p> </li> <li> <p> <code>tagList.member.1</code>: The key is <code>swf:tagList.member.1</code>.</p> </li> <li> <p> <code>tagList.member.2</code>: The key is <code>swf:tagList.member.2</code>.</p> </li> <li> <p> <code>tagList.member.3</code>: The key is <code>swf:tagList.member.3</code>.</p> </li> <li> <p> <code>tagList.member.4</code>: The key is <code>swf:tagList.member.4</code>.</p> </li> <li> <p> <code>taskList</code>: String constraint. The key is <code>swf:taskList.name</code>.</p> </li> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -3739,57 +3770,57 @@ proc validate_StartWorkflowExecution_600432(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600434 = header.getOrDefault("X-Amz-Date")
-  valid_600434 = validateParameter(valid_600434, JString, required = false,
-                                 default = nil)
-  if valid_600434 != nil:
-    section.add "X-Amz-Date", valid_600434
-  var valid_600435 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600435 = validateParameter(valid_600435, JString, required = false,
-                                 default = nil)
-  if valid_600435 != nil:
-    section.add "X-Amz-Security-Token", valid_600435
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600436 = header.getOrDefault("X-Amz-Target")
-  valid_600436 = validateParameter(valid_600436, JString, required = true, default = newJString(
+  var valid_602456 = header.getOrDefault("X-Amz-Target")
+  valid_602456 = validateParameter(valid_602456, JString, required = true, default = newJString(
       "SimpleWorkflowService.StartWorkflowExecution"))
-  if valid_600436 != nil:
-    section.add "X-Amz-Target", valid_600436
-  var valid_600437 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600437 = validateParameter(valid_600437, JString, required = false,
+  if valid_602456 != nil:
+    section.add "X-Amz-Target", valid_602456
+  var valid_602457 = header.getOrDefault("X-Amz-Signature")
+  valid_602457 = validateParameter(valid_602457, JString, required = false,
                                  default = nil)
-  if valid_600437 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600437
-  var valid_600438 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600438 = validateParameter(valid_600438, JString, required = false,
+  if valid_602457 != nil:
+    section.add "X-Amz-Signature", valid_602457
+  var valid_602458 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602458 = validateParameter(valid_602458, JString, required = false,
                                  default = nil)
-  if valid_600438 != nil:
-    section.add "X-Amz-Algorithm", valid_600438
-  var valid_600439 = header.getOrDefault("X-Amz-Signature")
-  valid_600439 = validateParameter(valid_600439, JString, required = false,
+  if valid_602458 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602458
+  var valid_602459 = header.getOrDefault("X-Amz-Date")
+  valid_602459 = validateParameter(valid_602459, JString, required = false,
                                  default = nil)
-  if valid_600439 != nil:
-    section.add "X-Amz-Signature", valid_600439
-  var valid_600440 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600440 = validateParameter(valid_600440, JString, required = false,
+  if valid_602459 != nil:
+    section.add "X-Amz-Date", valid_602459
+  var valid_602460 = header.getOrDefault("X-Amz-Credential")
+  valid_602460 = validateParameter(valid_602460, JString, required = false,
                                  default = nil)
-  if valid_600440 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600440
-  var valid_600441 = header.getOrDefault("X-Amz-Credential")
-  valid_600441 = validateParameter(valid_600441, JString, required = false,
+  if valid_602460 != nil:
+    section.add "X-Amz-Credential", valid_602460
+  var valid_602461 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602461 = validateParameter(valid_602461, JString, required = false,
                                  default = nil)
-  if valid_600441 != nil:
-    section.add "X-Amz-Credential", valid_600441
+  if valid_602461 != nil:
+    section.add "X-Amz-Security-Token", valid_602461
+  var valid_602462 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602462 = validateParameter(valid_602462, JString, required = false,
+                                 default = nil)
+  if valid_602462 != nil:
+    section.add "X-Amz-Algorithm", valid_602462
+  var valid_602463 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602463 = validateParameter(valid_602463, JString, required = false,
+                                 default = nil)
+  if valid_602463 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602463
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3800,48 +3831,49 @@ proc validate_StartWorkflowExecution_600432(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600443: Call_StartWorkflowExecution_600431; path: JsonNode;
+proc call*(call_602465: Call_StartWorkflowExecution_602453; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts an execution of the workflow type in the specified domain using the provided <code>workflowId</code> and input data.</p> <p>This action returns the newly started workflow execution.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagList.member.0</code>: The key is <code>swf:tagList.member.0</code>.</p> </li> <li> <p> <code>tagList.member.1</code>: The key is <code>swf:tagList.member.1</code>.</p> </li> <li> <p> <code>tagList.member.2</code>: The key is <code>swf:tagList.member.2</code>.</p> </li> <li> <p> <code>tagList.member.3</code>: The key is <code>swf:tagList.member.3</code>.</p> </li> <li> <p> <code>tagList.member.4</code>: The key is <code>swf:tagList.member.4</code>.</p> </li> <li> <p> <code>taskList</code>: String constraint. The key is <code>swf:taskList.name</code>.</p> </li> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600443.validator(path, query, header, formData, body)
-  let scheme = call_600443.pickScheme
+  let valid = call_602465.validator(path, query, header, formData, body)
+  let scheme = call_602465.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600443.url(scheme.get, call_600443.host, call_600443.base,
-                         call_600443.route, valid.getOrDefault("path"),
+  let url = call_602465.url(scheme.get, call_602465.host, call_602465.base,
+                         call_602465.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600443, url, valid)
+  result = atozHook(call_602465, url, valid)
 
-proc call*(call_600444: Call_StartWorkflowExecution_600431; body: JsonNode): Recallable =
+proc call*(call_602466: Call_StartWorkflowExecution_602453; body: JsonNode): Recallable =
   ## startWorkflowExecution
   ## <p>Starts an execution of the workflow type in the specified domain using the provided <code>workflowId</code> and input data.</p> <p>This action returns the newly started workflow execution.</p> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>tagList.member.0</code>: The key is <code>swf:tagList.member.0</code>.</p> </li> <li> <p> <code>tagList.member.1</code>: The key is <code>swf:tagList.member.1</code>.</p> </li> <li> <p> <code>tagList.member.2</code>: The key is <code>swf:tagList.member.2</code>.</p> </li> <li> <p> <code>tagList.member.3</code>: The key is <code>swf:tagList.member.3</code>.</p> </li> <li> <p> <code>tagList.member.4</code>: The key is <code>swf:tagList.member.4</code>.</p> </li> <li> <p> <code>taskList</code>: String constraint. The key is <code>swf:taskList.name</code>.</p> </li> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600445 = newJObject()
+  var body_602467 = newJObject()
   if body != nil:
-    body_600445 = body
-  result = call_600444.call(nil, nil, nil, nil, body_600445)
+    body_602467 = body
+  result = call_602466.call(nil, nil, nil, nil, body_602467)
 
-var startWorkflowExecution* = Call_StartWorkflowExecution_600431(
+var startWorkflowExecution* = Call_StartWorkflowExecution_602453(
     name: "startWorkflowExecution", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.StartWorkflowExecution",
-    validator: validate_StartWorkflowExecution_600432, base: "/",
-    url: url_StartWorkflowExecution_600433, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartWorkflowExecution_602454, base: "/",
+    url: url_StartWorkflowExecution_602455, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_600446 = ref object of OpenApiRestCall_599368
-proc url_TagResource_600448(protocol: Scheme; host: string; base: string;
+  Call_TagResource_602468 = ref object of OpenApiRestCall_601389
+proc url_TagResource_602470(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_TagResource_600447(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_602469(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Add a tag to a Amazon SWF domain.</p> <note> <p>Amazon SWF supports a maximum of 50 tags per resource.</p> </note>
   ## 
@@ -3852,57 +3884,57 @@ proc validate_TagResource_600447(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600449 = header.getOrDefault("X-Amz-Date")
-  valid_600449 = validateParameter(valid_600449, JString, required = false,
-                                 default = nil)
-  if valid_600449 != nil:
-    section.add "X-Amz-Date", valid_600449
-  var valid_600450 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600450 = validateParameter(valid_600450, JString, required = false,
-                                 default = nil)
-  if valid_600450 != nil:
-    section.add "X-Amz-Security-Token", valid_600450
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600451 = header.getOrDefault("X-Amz-Target")
-  valid_600451 = validateParameter(valid_600451, JString, required = true, default = newJString(
+  var valid_602471 = header.getOrDefault("X-Amz-Target")
+  valid_602471 = validateParameter(valid_602471, JString, required = true, default = newJString(
       "SimpleWorkflowService.TagResource"))
-  if valid_600451 != nil:
-    section.add "X-Amz-Target", valid_600451
-  var valid_600452 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600452 = validateParameter(valid_600452, JString, required = false,
+  if valid_602471 != nil:
+    section.add "X-Amz-Target", valid_602471
+  var valid_602472 = header.getOrDefault("X-Amz-Signature")
+  valid_602472 = validateParameter(valid_602472, JString, required = false,
                                  default = nil)
-  if valid_600452 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600452
-  var valid_600453 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600453 = validateParameter(valid_600453, JString, required = false,
+  if valid_602472 != nil:
+    section.add "X-Amz-Signature", valid_602472
+  var valid_602473 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602473 = validateParameter(valid_602473, JString, required = false,
                                  default = nil)
-  if valid_600453 != nil:
-    section.add "X-Amz-Algorithm", valid_600453
-  var valid_600454 = header.getOrDefault("X-Amz-Signature")
-  valid_600454 = validateParameter(valid_600454, JString, required = false,
+  if valid_602473 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602473
+  var valid_602474 = header.getOrDefault("X-Amz-Date")
+  valid_602474 = validateParameter(valid_602474, JString, required = false,
                                  default = nil)
-  if valid_600454 != nil:
-    section.add "X-Amz-Signature", valid_600454
-  var valid_600455 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600455 = validateParameter(valid_600455, JString, required = false,
+  if valid_602474 != nil:
+    section.add "X-Amz-Date", valid_602474
+  var valid_602475 = header.getOrDefault("X-Amz-Credential")
+  valid_602475 = validateParameter(valid_602475, JString, required = false,
                                  default = nil)
-  if valid_600455 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600455
-  var valid_600456 = header.getOrDefault("X-Amz-Credential")
-  valid_600456 = validateParameter(valid_600456, JString, required = false,
+  if valid_602475 != nil:
+    section.add "X-Amz-Credential", valid_602475
+  var valid_602476 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602476 = validateParameter(valid_602476, JString, required = false,
                                  default = nil)
-  if valid_600456 != nil:
-    section.add "X-Amz-Credential", valid_600456
+  if valid_602476 != nil:
+    section.add "X-Amz-Security-Token", valid_602476
+  var valid_602477 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602477 = validateParameter(valid_602477, JString, required = false,
+                                 default = nil)
+  if valid_602477 != nil:
+    section.add "X-Amz-Algorithm", valid_602477
+  var valid_602478 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602478 = validateParameter(valid_602478, JString, required = false,
+                                 default = nil)
+  if valid_602478 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602478
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3913,48 +3945,49 @@ proc validate_TagResource_600447(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_600458: Call_TagResource_600446; path: JsonNode; query: JsonNode;
+proc call*(call_602480: Call_TagResource_602468; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Add a tag to a Amazon SWF domain.</p> <note> <p>Amazon SWF supports a maximum of 50 tags per resource.</p> </note>
   ## 
-  let valid = call_600458.validator(path, query, header, formData, body)
-  let scheme = call_600458.pickScheme
+  let valid = call_602480.validator(path, query, header, formData, body)
+  let scheme = call_602480.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600458.url(scheme.get, call_600458.host, call_600458.base,
-                         call_600458.route, valid.getOrDefault("path"),
+  let url = call_602480.url(scheme.get, call_602480.host, call_602480.base,
+                         call_602480.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600458, url, valid)
+  result = atozHook(call_602480, url, valid)
 
-proc call*(call_600459: Call_TagResource_600446; body: JsonNode): Recallable =
+proc call*(call_602481: Call_TagResource_602468; body: JsonNode): Recallable =
   ## tagResource
   ## <p>Add a tag to a Amazon SWF domain.</p> <note> <p>Amazon SWF supports a maximum of 50 tags per resource.</p> </note>
   ##   body: JObject (required)
-  var body_600460 = newJObject()
+  var body_602482 = newJObject()
   if body != nil:
-    body_600460 = body
-  result = call_600459.call(nil, nil, nil, nil, body_600460)
+    body_602482 = body
+  result = call_602481.call(nil, nil, nil, nil, body_602482)
 
-var tagResource* = Call_TagResource_600446(name: "tagResource",
+var tagResource* = Call_TagResource_602468(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "swf.amazonaws.com", route: "/#X-Amz-Target=SimpleWorkflowService.TagResource",
-                                        validator: validate_TagResource_600447,
-                                        base: "/", url: url_TagResource_600448,
+                                        validator: validate_TagResource_602469,
+                                        base: "/", url: url_TagResource_602470,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TerminateWorkflowExecution_600461 = ref object of OpenApiRestCall_599368
-proc url_TerminateWorkflowExecution_600463(protocol: Scheme; host: string;
+  Call_TerminateWorkflowExecution_602483 = ref object of OpenApiRestCall_601389
+proc url_TerminateWorkflowExecution_602485(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_TerminateWorkflowExecution_600462(path: JsonNode; query: JsonNode;
+proc validate_TerminateWorkflowExecution_602484(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Records a <code>WorkflowExecutionTerminated</code> event and forces closure of the workflow execution identified by the given domain, runId, and workflowId. The child policy, registered with the workflow type or specified when starting this execution, is applied to any open child workflow executions of this workflow execution.</p> <important> <p>If the identified workflow execution was in progress, it is terminated immediately.</p> </important> <note> <p>If a runId isn't specified, then the <code>WorkflowExecutionTerminated</code> event is recorded in the history of the current open workflow with the matching workflowId in the domain.</p> </note> <note> <p>You should consider using <a>RequestCancelWorkflowExecution</a> action instead because it allows the workflow to gracefully close while <a>TerminateWorkflowExecution</a> doesn't.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -3965,57 +3998,57 @@ proc validate_TerminateWorkflowExecution_600462(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600464 = header.getOrDefault("X-Amz-Date")
-  valid_600464 = validateParameter(valid_600464, JString, required = false,
-                                 default = nil)
-  if valid_600464 != nil:
-    section.add "X-Amz-Date", valid_600464
-  var valid_600465 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600465 = validateParameter(valid_600465, JString, required = false,
-                                 default = nil)
-  if valid_600465 != nil:
-    section.add "X-Amz-Security-Token", valid_600465
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600466 = header.getOrDefault("X-Amz-Target")
-  valid_600466 = validateParameter(valid_600466, JString, required = true, default = newJString(
+  var valid_602486 = header.getOrDefault("X-Amz-Target")
+  valid_602486 = validateParameter(valid_602486, JString, required = true, default = newJString(
       "SimpleWorkflowService.TerminateWorkflowExecution"))
-  if valid_600466 != nil:
-    section.add "X-Amz-Target", valid_600466
-  var valid_600467 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600467 = validateParameter(valid_600467, JString, required = false,
+  if valid_602486 != nil:
+    section.add "X-Amz-Target", valid_602486
+  var valid_602487 = header.getOrDefault("X-Amz-Signature")
+  valid_602487 = validateParameter(valid_602487, JString, required = false,
                                  default = nil)
-  if valid_600467 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600467
-  var valid_600468 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600468 = validateParameter(valid_600468, JString, required = false,
+  if valid_602487 != nil:
+    section.add "X-Amz-Signature", valid_602487
+  var valid_602488 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602488 = validateParameter(valid_602488, JString, required = false,
                                  default = nil)
-  if valid_600468 != nil:
-    section.add "X-Amz-Algorithm", valid_600468
-  var valid_600469 = header.getOrDefault("X-Amz-Signature")
-  valid_600469 = validateParameter(valid_600469, JString, required = false,
+  if valid_602488 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602488
+  var valid_602489 = header.getOrDefault("X-Amz-Date")
+  valid_602489 = validateParameter(valid_602489, JString, required = false,
                                  default = nil)
-  if valid_600469 != nil:
-    section.add "X-Amz-Signature", valid_600469
-  var valid_600470 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600470 = validateParameter(valid_600470, JString, required = false,
+  if valid_602489 != nil:
+    section.add "X-Amz-Date", valid_602489
+  var valid_602490 = header.getOrDefault("X-Amz-Credential")
+  valid_602490 = validateParameter(valid_602490, JString, required = false,
                                  default = nil)
-  if valid_600470 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600470
-  var valid_600471 = header.getOrDefault("X-Amz-Credential")
-  valid_600471 = validateParameter(valid_600471, JString, required = false,
+  if valid_602490 != nil:
+    section.add "X-Amz-Credential", valid_602490
+  var valid_602491 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602491 = validateParameter(valid_602491, JString, required = false,
                                  default = nil)
-  if valid_600471 != nil:
-    section.add "X-Amz-Credential", valid_600471
+  if valid_602491 != nil:
+    section.add "X-Amz-Security-Token", valid_602491
+  var valid_602492 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602492 = validateParameter(valid_602492, JString, required = false,
+                                 default = nil)
+  if valid_602492 != nil:
+    section.add "X-Amz-Algorithm", valid_602492
+  var valid_602493 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602493 = validateParameter(valid_602493, JString, required = false,
+                                 default = nil)
+  if valid_602493 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602493
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4026,50 +4059,51 @@ proc validate_TerminateWorkflowExecution_600462(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600473: Call_TerminateWorkflowExecution_600461; path: JsonNode;
+proc call*(call_602495: Call_TerminateWorkflowExecution_602483; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Records a <code>WorkflowExecutionTerminated</code> event and forces closure of the workflow execution identified by the given domain, runId, and workflowId. The child policy, registered with the workflow type or specified when starting this execution, is applied to any open child workflow executions of this workflow execution.</p> <important> <p>If the identified workflow execution was in progress, it is terminated immediately.</p> </important> <note> <p>If a runId isn't specified, then the <code>WorkflowExecutionTerminated</code> event is recorded in the history of the current open workflow with the matching workflowId in the domain.</p> </note> <note> <p>You should consider using <a>RequestCancelWorkflowExecution</a> action instead because it allows the workflow to gracefully close while <a>TerminateWorkflowExecution</a> doesn't.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600473.validator(path, query, header, formData, body)
-  let scheme = call_600473.pickScheme
+  let valid = call_602495.validator(path, query, header, formData, body)
+  let scheme = call_602495.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600473.url(scheme.get, call_600473.host, call_600473.base,
-                         call_600473.route, valid.getOrDefault("path"),
+  let url = call_602495.url(scheme.get, call_602495.host, call_602495.base,
+                         call_602495.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600473, url, valid)
+  result = atozHook(call_602495, url, valid)
 
-proc call*(call_600474: Call_TerminateWorkflowExecution_600461; body: JsonNode): Recallable =
+proc call*(call_602496: Call_TerminateWorkflowExecution_602483; body: JsonNode): Recallable =
   ## terminateWorkflowExecution
   ## <p>Records a <code>WorkflowExecutionTerminated</code> event and forces closure of the workflow execution identified by the given domain, runId, and workflowId. The child policy, registered with the workflow type or specified when starting this execution, is applied to any open child workflow executions of this workflow execution.</p> <important> <p>If the identified workflow execution was in progress, it is terminated immediately.</p> </important> <note> <p>If a runId isn't specified, then the <code>WorkflowExecutionTerminated</code> event is recorded in the history of the current open workflow with the matching workflowId in the domain.</p> </note> <note> <p>You should consider using <a>RequestCancelWorkflowExecution</a> action instead because it allows the workflow to gracefully close while <a>TerminateWorkflowExecution</a> doesn't.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600475 = newJObject()
+  var body_602497 = newJObject()
   if body != nil:
-    body_600475 = body
-  result = call_600474.call(nil, nil, nil, nil, body_600475)
+    body_602497 = body
+  result = call_602496.call(nil, nil, nil, nil, body_602497)
 
-var terminateWorkflowExecution* = Call_TerminateWorkflowExecution_600461(
+var terminateWorkflowExecution* = Call_TerminateWorkflowExecution_602483(
     name: "terminateWorkflowExecution", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.TerminateWorkflowExecution",
-    validator: validate_TerminateWorkflowExecution_600462, base: "/",
-    url: url_TerminateWorkflowExecution_600463,
+    validator: validate_TerminateWorkflowExecution_602484, base: "/",
+    url: url_TerminateWorkflowExecution_602485,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UndeprecateActivityType_600476 = ref object of OpenApiRestCall_599368
-proc url_UndeprecateActivityType_600478(protocol: Scheme; host: string; base: string;
+  Call_UndeprecateActivityType_602498 = ref object of OpenApiRestCall_601389
+proc url_UndeprecateActivityType_602500(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UndeprecateActivityType_600477(path: JsonNode; query: JsonNode;
+proc validate_UndeprecateActivityType_602499(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Undeprecates a previously deprecated <i>activity type</i>. After an activity type has been undeprecated, you can create new tasks of that activity type.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -4080,57 +4114,57 @@ proc validate_UndeprecateActivityType_600477(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600479 = header.getOrDefault("X-Amz-Date")
-  valid_600479 = validateParameter(valid_600479, JString, required = false,
-                                 default = nil)
-  if valid_600479 != nil:
-    section.add "X-Amz-Date", valid_600479
-  var valid_600480 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600480 = validateParameter(valid_600480, JString, required = false,
-                                 default = nil)
-  if valid_600480 != nil:
-    section.add "X-Amz-Security-Token", valid_600480
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600481 = header.getOrDefault("X-Amz-Target")
-  valid_600481 = validateParameter(valid_600481, JString, required = true, default = newJString(
+  var valid_602501 = header.getOrDefault("X-Amz-Target")
+  valid_602501 = validateParameter(valid_602501, JString, required = true, default = newJString(
       "SimpleWorkflowService.UndeprecateActivityType"))
-  if valid_600481 != nil:
-    section.add "X-Amz-Target", valid_600481
-  var valid_600482 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600482 = validateParameter(valid_600482, JString, required = false,
+  if valid_602501 != nil:
+    section.add "X-Amz-Target", valid_602501
+  var valid_602502 = header.getOrDefault("X-Amz-Signature")
+  valid_602502 = validateParameter(valid_602502, JString, required = false,
                                  default = nil)
-  if valid_600482 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600482
-  var valid_600483 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600483 = validateParameter(valid_600483, JString, required = false,
+  if valid_602502 != nil:
+    section.add "X-Amz-Signature", valid_602502
+  var valid_602503 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602503 = validateParameter(valid_602503, JString, required = false,
                                  default = nil)
-  if valid_600483 != nil:
-    section.add "X-Amz-Algorithm", valid_600483
-  var valid_600484 = header.getOrDefault("X-Amz-Signature")
-  valid_600484 = validateParameter(valid_600484, JString, required = false,
+  if valid_602503 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602503
+  var valid_602504 = header.getOrDefault("X-Amz-Date")
+  valid_602504 = validateParameter(valid_602504, JString, required = false,
                                  default = nil)
-  if valid_600484 != nil:
-    section.add "X-Amz-Signature", valid_600484
-  var valid_600485 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600485 = validateParameter(valid_600485, JString, required = false,
+  if valid_602504 != nil:
+    section.add "X-Amz-Date", valid_602504
+  var valid_602505 = header.getOrDefault("X-Amz-Credential")
+  valid_602505 = validateParameter(valid_602505, JString, required = false,
                                  default = nil)
-  if valid_600485 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600485
-  var valid_600486 = header.getOrDefault("X-Amz-Credential")
-  valid_600486 = validateParameter(valid_600486, JString, required = false,
+  if valid_602505 != nil:
+    section.add "X-Amz-Credential", valid_602505
+  var valid_602506 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602506 = validateParameter(valid_602506, JString, required = false,
                                  default = nil)
-  if valid_600486 != nil:
-    section.add "X-Amz-Credential", valid_600486
+  if valid_602506 != nil:
+    section.add "X-Amz-Security-Token", valid_602506
+  var valid_602507 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602507 = validateParameter(valid_602507, JString, required = false,
+                                 default = nil)
+  if valid_602507 != nil:
+    section.add "X-Amz-Algorithm", valid_602507
+  var valid_602508 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602508 = validateParameter(valid_602508, JString, required = false,
+                                 default = nil)
+  if valid_602508 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602508
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4141,48 +4175,49 @@ proc validate_UndeprecateActivityType_600477(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600488: Call_UndeprecateActivityType_600476; path: JsonNode;
+proc call*(call_602510: Call_UndeprecateActivityType_602498; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Undeprecates a previously deprecated <i>activity type</i>. After an activity type has been undeprecated, you can create new tasks of that activity type.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600488.validator(path, query, header, formData, body)
-  let scheme = call_600488.pickScheme
+  let valid = call_602510.validator(path, query, header, formData, body)
+  let scheme = call_602510.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600488.url(scheme.get, call_600488.host, call_600488.base,
-                         call_600488.route, valid.getOrDefault("path"),
+  let url = call_602510.url(scheme.get, call_602510.host, call_602510.base,
+                         call_602510.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600488, url, valid)
+  result = atozHook(call_602510, url, valid)
 
-proc call*(call_600489: Call_UndeprecateActivityType_600476; body: JsonNode): Recallable =
+proc call*(call_602511: Call_UndeprecateActivityType_602498; body: JsonNode): Recallable =
   ## undeprecateActivityType
   ## <p>Undeprecates a previously deprecated <i>activity type</i>. After an activity type has been undeprecated, you can create new tasks of that activity type.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>activityType.name</code>: String constraint. The key is <code>swf:activityType.name</code>.</p> </li> <li> <p> <code>activityType.version</code>: String constraint. The key is <code>swf:activityType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600490 = newJObject()
+  var body_602512 = newJObject()
   if body != nil:
-    body_600490 = body
-  result = call_600489.call(nil, nil, nil, nil, body_600490)
+    body_602512 = body
+  result = call_602511.call(nil, nil, nil, nil, body_602512)
 
-var undeprecateActivityType* = Call_UndeprecateActivityType_600476(
+var undeprecateActivityType* = Call_UndeprecateActivityType_602498(
     name: "undeprecateActivityType", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.UndeprecateActivityType",
-    validator: validate_UndeprecateActivityType_600477, base: "/",
-    url: url_UndeprecateActivityType_600478, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UndeprecateActivityType_602499, base: "/",
+    url: url_UndeprecateActivityType_602500, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UndeprecateDomain_600491 = ref object of OpenApiRestCall_599368
-proc url_UndeprecateDomain_600493(protocol: Scheme; host: string; base: string;
+  Call_UndeprecateDomain_602513 = ref object of OpenApiRestCall_601389
+proc url_UndeprecateDomain_602515(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UndeprecateDomain_600492(path: JsonNode; query: JsonNode;
+proc validate_UndeprecateDomain_602514(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Undeprecates a previously deprecated domain. After a domain has been undeprecated it can be used to create new workflow executions or register new types.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
@@ -4194,57 +4229,57 @@ proc validate_UndeprecateDomain_600492(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600494 = header.getOrDefault("X-Amz-Date")
-  valid_600494 = validateParameter(valid_600494, JString, required = false,
-                                 default = nil)
-  if valid_600494 != nil:
-    section.add "X-Amz-Date", valid_600494
-  var valid_600495 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600495 = validateParameter(valid_600495, JString, required = false,
-                                 default = nil)
-  if valid_600495 != nil:
-    section.add "X-Amz-Security-Token", valid_600495
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600496 = header.getOrDefault("X-Amz-Target")
-  valid_600496 = validateParameter(valid_600496, JString, required = true, default = newJString(
+  var valid_602516 = header.getOrDefault("X-Amz-Target")
+  valid_602516 = validateParameter(valid_602516, JString, required = true, default = newJString(
       "SimpleWorkflowService.UndeprecateDomain"))
-  if valid_600496 != nil:
-    section.add "X-Amz-Target", valid_600496
-  var valid_600497 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600497 = validateParameter(valid_600497, JString, required = false,
+  if valid_602516 != nil:
+    section.add "X-Amz-Target", valid_602516
+  var valid_602517 = header.getOrDefault("X-Amz-Signature")
+  valid_602517 = validateParameter(valid_602517, JString, required = false,
                                  default = nil)
-  if valid_600497 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600497
-  var valid_600498 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600498 = validateParameter(valid_600498, JString, required = false,
+  if valid_602517 != nil:
+    section.add "X-Amz-Signature", valid_602517
+  var valid_602518 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602518 = validateParameter(valid_602518, JString, required = false,
                                  default = nil)
-  if valid_600498 != nil:
-    section.add "X-Amz-Algorithm", valid_600498
-  var valid_600499 = header.getOrDefault("X-Amz-Signature")
-  valid_600499 = validateParameter(valid_600499, JString, required = false,
+  if valid_602518 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602518
+  var valid_602519 = header.getOrDefault("X-Amz-Date")
+  valid_602519 = validateParameter(valid_602519, JString, required = false,
                                  default = nil)
-  if valid_600499 != nil:
-    section.add "X-Amz-Signature", valid_600499
-  var valid_600500 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600500 = validateParameter(valid_600500, JString, required = false,
+  if valid_602519 != nil:
+    section.add "X-Amz-Date", valid_602519
+  var valid_602520 = header.getOrDefault("X-Amz-Credential")
+  valid_602520 = validateParameter(valid_602520, JString, required = false,
                                  default = nil)
-  if valid_600500 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600500
-  var valid_600501 = header.getOrDefault("X-Amz-Credential")
-  valid_600501 = validateParameter(valid_600501, JString, required = false,
+  if valid_602520 != nil:
+    section.add "X-Amz-Credential", valid_602520
+  var valid_602521 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602521 = validateParameter(valid_602521, JString, required = false,
                                  default = nil)
-  if valid_600501 != nil:
-    section.add "X-Amz-Credential", valid_600501
+  if valid_602521 != nil:
+    section.add "X-Amz-Security-Token", valid_602521
+  var valid_602522 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602522 = validateParameter(valid_602522, JString, required = false,
+                                 default = nil)
+  if valid_602522 != nil:
+    section.add "X-Amz-Algorithm", valid_602522
+  var valid_602523 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602523 = validateParameter(valid_602523, JString, required = false,
+                                 default = nil)
+  if valid_602523 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602523
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4255,48 +4290,49 @@ proc validate_UndeprecateDomain_600492(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600503: Call_UndeprecateDomain_600491; path: JsonNode;
+proc call*(call_602525: Call_UndeprecateDomain_602513; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Undeprecates a previously deprecated domain. After a domain has been undeprecated it can be used to create new workflow executions or register new types.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600503.validator(path, query, header, formData, body)
-  let scheme = call_600503.pickScheme
+  let valid = call_602525.validator(path, query, header, formData, body)
+  let scheme = call_602525.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600503.url(scheme.get, call_600503.host, call_600503.base,
-                         call_600503.route, valid.getOrDefault("path"),
+  let url = call_602525.url(scheme.get, call_602525.host, call_602525.base,
+                         call_602525.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600503, url, valid)
+  result = atozHook(call_602525, url, valid)
 
-proc call*(call_600504: Call_UndeprecateDomain_600491; body: JsonNode): Recallable =
+proc call*(call_602526: Call_UndeprecateDomain_602513; body: JsonNode): Recallable =
   ## undeprecateDomain
   ## <p>Undeprecates a previously deprecated domain. After a domain has been undeprecated it can be used to create new workflow executions or register new types.</p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>You cannot use an IAM policy to constrain this action's parameters.</p> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600505 = newJObject()
+  var body_602527 = newJObject()
   if body != nil:
-    body_600505 = body
-  result = call_600504.call(nil, nil, nil, nil, body_600505)
+    body_602527 = body
+  result = call_602526.call(nil, nil, nil, nil, body_602527)
 
-var undeprecateDomain* = Call_UndeprecateDomain_600491(name: "undeprecateDomain",
+var undeprecateDomain* = Call_UndeprecateDomain_602513(name: "undeprecateDomain",
     meth: HttpMethod.HttpPost, host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.UndeprecateDomain",
-    validator: validate_UndeprecateDomain_600492, base: "/",
-    url: url_UndeprecateDomain_600493, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UndeprecateDomain_602514, base: "/",
+    url: url_UndeprecateDomain_602515, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UndeprecateWorkflowType_600506 = ref object of OpenApiRestCall_599368
-proc url_UndeprecateWorkflowType_600508(protocol: Scheme; host: string; base: string;
+  Call_UndeprecateWorkflowType_602528 = ref object of OpenApiRestCall_601389
+proc url_UndeprecateWorkflowType_602530(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UndeprecateWorkflowType_600507(path: JsonNode; query: JsonNode;
+proc validate_UndeprecateWorkflowType_602529(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Undeprecates a previously deprecated <i>workflow type</i>. After a workflow type has been undeprecated, you can create new executions of that type. </p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
@@ -4307,57 +4343,57 @@ proc validate_UndeprecateWorkflowType_600507(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600509 = header.getOrDefault("X-Amz-Date")
-  valid_600509 = validateParameter(valid_600509, JString, required = false,
-                                 default = nil)
-  if valid_600509 != nil:
-    section.add "X-Amz-Date", valid_600509
-  var valid_600510 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600510 = validateParameter(valid_600510, JString, required = false,
-                                 default = nil)
-  if valid_600510 != nil:
-    section.add "X-Amz-Security-Token", valid_600510
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600511 = header.getOrDefault("X-Amz-Target")
-  valid_600511 = validateParameter(valid_600511, JString, required = true, default = newJString(
+  var valid_602531 = header.getOrDefault("X-Amz-Target")
+  valid_602531 = validateParameter(valid_602531, JString, required = true, default = newJString(
       "SimpleWorkflowService.UndeprecateWorkflowType"))
-  if valid_600511 != nil:
-    section.add "X-Amz-Target", valid_600511
-  var valid_600512 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600512 = validateParameter(valid_600512, JString, required = false,
+  if valid_602531 != nil:
+    section.add "X-Amz-Target", valid_602531
+  var valid_602532 = header.getOrDefault("X-Amz-Signature")
+  valid_602532 = validateParameter(valid_602532, JString, required = false,
                                  default = nil)
-  if valid_600512 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600512
-  var valid_600513 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600513 = validateParameter(valid_600513, JString, required = false,
+  if valid_602532 != nil:
+    section.add "X-Amz-Signature", valid_602532
+  var valid_602533 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602533 = validateParameter(valid_602533, JString, required = false,
                                  default = nil)
-  if valid_600513 != nil:
-    section.add "X-Amz-Algorithm", valid_600513
-  var valid_600514 = header.getOrDefault("X-Amz-Signature")
-  valid_600514 = validateParameter(valid_600514, JString, required = false,
+  if valid_602533 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602533
+  var valid_602534 = header.getOrDefault("X-Amz-Date")
+  valid_602534 = validateParameter(valid_602534, JString, required = false,
                                  default = nil)
-  if valid_600514 != nil:
-    section.add "X-Amz-Signature", valid_600514
-  var valid_600515 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600515 = validateParameter(valid_600515, JString, required = false,
+  if valid_602534 != nil:
+    section.add "X-Amz-Date", valid_602534
+  var valid_602535 = header.getOrDefault("X-Amz-Credential")
+  valid_602535 = validateParameter(valid_602535, JString, required = false,
                                  default = nil)
-  if valid_600515 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600515
-  var valid_600516 = header.getOrDefault("X-Amz-Credential")
-  valid_600516 = validateParameter(valid_600516, JString, required = false,
+  if valid_602535 != nil:
+    section.add "X-Amz-Credential", valid_602535
+  var valid_602536 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602536 = validateParameter(valid_602536, JString, required = false,
                                  default = nil)
-  if valid_600516 != nil:
-    section.add "X-Amz-Credential", valid_600516
+  if valid_602536 != nil:
+    section.add "X-Amz-Security-Token", valid_602536
+  var valid_602537 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602537 = validateParameter(valid_602537, JString, required = false,
+                                 default = nil)
+  if valid_602537 != nil:
+    section.add "X-Amz-Algorithm", valid_602537
+  var valid_602538 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602538 = validateParameter(valid_602538, JString, required = false,
+                                 default = nil)
+  if valid_602538 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602538
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4368,48 +4404,49 @@ proc validate_UndeprecateWorkflowType_600507(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600518: Call_UndeprecateWorkflowType_600506; path: JsonNode;
+proc call*(call_602540: Call_UndeprecateWorkflowType_602528; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Undeprecates a previously deprecated <i>workflow type</i>. After a workflow type has been undeprecated, you can create new executions of that type. </p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ## 
-  let valid = call_600518.validator(path, query, header, formData, body)
-  let scheme = call_600518.pickScheme
+  let valid = call_602540.validator(path, query, header, formData, body)
+  let scheme = call_602540.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600518.url(scheme.get, call_600518.host, call_600518.base,
-                         call_600518.route, valid.getOrDefault("path"),
+  let url = call_602540.url(scheme.get, call_602540.host, call_602540.base,
+                         call_602540.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600518, url, valid)
+  result = atozHook(call_602540, url, valid)
 
-proc call*(call_600519: Call_UndeprecateWorkflowType_600506; body: JsonNode): Recallable =
+proc call*(call_602541: Call_UndeprecateWorkflowType_602528; body: JsonNode): Recallable =
   ## undeprecateWorkflowType
   ## <p>Undeprecates a previously deprecated <i>workflow type</i>. After a workflow type has been undeprecated, you can create new executions of that type. </p> <note> <p>This operation is eventually consistent. The results are best effort and may not exactly reflect recent updates and changes.</p> </note> <p> <b>Access Control</b> </p> <p>You can use IAM policies to control this action's access to Amazon SWF resources as follows:</p> <ul> <li> <p>Use a <code>Resource</code> element with the domain name to limit the action to only specified domains.</p> </li> <li> <p>Use an <code>Action</code> element to allow or deny permission to call this action.</p> </li> <li> <p>Constrain the following parameters by using a <code>Condition</code> element with the appropriate keys.</p> <ul> <li> <p> <code>workflowType.name</code>: String constraint. The key is <code>swf:workflowType.name</code>.</p> </li> <li> <p> <code>workflowType.version</code>: String constraint. The key is <code>swf:workflowType.version</code>.</p> </li> </ul> </li> </ul> <p>If the caller doesn't have sufficient permissions to invoke the action, or the parameter values fall outside the specified constraints, the action fails. The associated event attribute's <code>cause</code> parameter is set to <code>OPERATION_NOT_PERMITTED</code>. For details and example IAM policies, see <a href="https://docs.aws.amazon.com/amazonswf/latest/developerguide/swf-dev-iam.html">Using IAM to Manage Access to Amazon SWF Workflows</a> in the <i>Amazon SWF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_600520 = newJObject()
+  var body_602542 = newJObject()
   if body != nil:
-    body_600520 = body
-  result = call_600519.call(nil, nil, nil, nil, body_600520)
+    body_602542 = body
+  result = call_602541.call(nil, nil, nil, nil, body_602542)
 
-var undeprecateWorkflowType* = Call_UndeprecateWorkflowType_600506(
+var undeprecateWorkflowType* = Call_UndeprecateWorkflowType_602528(
     name: "undeprecateWorkflowType", meth: HttpMethod.HttpPost,
     host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.UndeprecateWorkflowType",
-    validator: validate_UndeprecateWorkflowType_600507, base: "/",
-    url: url_UndeprecateWorkflowType_600508, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UndeprecateWorkflowType_602529, base: "/",
+    url: url_UndeprecateWorkflowType_602530, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_600521 = ref object of OpenApiRestCall_599368
-proc url_UntagResource_600523(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_602543 = ref object of OpenApiRestCall_601389
+proc url_UntagResource_602545(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UntagResource_600522(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_602544(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Remove a tag from a Amazon SWF domain.
   ## 
@@ -4420,57 +4457,57 @@ proc validate_UntagResource_600522(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600524 = header.getOrDefault("X-Amz-Date")
-  valid_600524 = validateParameter(valid_600524, JString, required = false,
-                                 default = nil)
-  if valid_600524 != nil:
-    section.add "X-Amz-Date", valid_600524
-  var valid_600525 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600525 = validateParameter(valid_600525, JString, required = false,
-                                 default = nil)
-  if valid_600525 != nil:
-    section.add "X-Amz-Security-Token", valid_600525
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600526 = header.getOrDefault("X-Amz-Target")
-  valid_600526 = validateParameter(valid_600526, JString, required = true, default = newJString(
+  var valid_602546 = header.getOrDefault("X-Amz-Target")
+  valid_602546 = validateParameter(valid_602546, JString, required = true, default = newJString(
       "SimpleWorkflowService.UntagResource"))
-  if valid_600526 != nil:
-    section.add "X-Amz-Target", valid_600526
-  var valid_600527 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600527 = validateParameter(valid_600527, JString, required = false,
+  if valid_602546 != nil:
+    section.add "X-Amz-Target", valid_602546
+  var valid_602547 = header.getOrDefault("X-Amz-Signature")
+  valid_602547 = validateParameter(valid_602547, JString, required = false,
                                  default = nil)
-  if valid_600527 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600527
-  var valid_600528 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600528 = validateParameter(valid_600528, JString, required = false,
+  if valid_602547 != nil:
+    section.add "X-Amz-Signature", valid_602547
+  var valid_602548 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602548 = validateParameter(valid_602548, JString, required = false,
                                  default = nil)
-  if valid_600528 != nil:
-    section.add "X-Amz-Algorithm", valid_600528
-  var valid_600529 = header.getOrDefault("X-Amz-Signature")
-  valid_600529 = validateParameter(valid_600529, JString, required = false,
+  if valid_602548 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602548
+  var valid_602549 = header.getOrDefault("X-Amz-Date")
+  valid_602549 = validateParameter(valid_602549, JString, required = false,
                                  default = nil)
-  if valid_600529 != nil:
-    section.add "X-Amz-Signature", valid_600529
-  var valid_600530 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600530 = validateParameter(valid_600530, JString, required = false,
+  if valid_602549 != nil:
+    section.add "X-Amz-Date", valid_602549
+  var valid_602550 = header.getOrDefault("X-Amz-Credential")
+  valid_602550 = validateParameter(valid_602550, JString, required = false,
                                  default = nil)
-  if valid_600530 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600530
-  var valid_600531 = header.getOrDefault("X-Amz-Credential")
-  valid_600531 = validateParameter(valid_600531, JString, required = false,
+  if valid_602550 != nil:
+    section.add "X-Amz-Credential", valid_602550
+  var valid_602551 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602551 = validateParameter(valid_602551, JString, required = false,
                                  default = nil)
-  if valid_600531 != nil:
-    section.add "X-Amz-Credential", valid_600531
+  if valid_602551 != nil:
+    section.add "X-Amz-Security-Token", valid_602551
+  var valid_602552 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602552 = validateParameter(valid_602552, JString, required = false,
+                                 default = nil)
+  if valid_602552 != nil:
+    section.add "X-Amz-Algorithm", valid_602552
+  var valid_602553 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602553 = validateParameter(valid_602553, JString, required = false,
+                                 default = nil)
+  if valid_602553 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602553
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4481,32 +4518,32 @@ proc validate_UntagResource_600522(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600533: Call_UntagResource_600521; path: JsonNode; query: JsonNode;
+proc call*(call_602555: Call_UntagResource_602543; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Remove a tag from a Amazon SWF domain.
   ## 
-  let valid = call_600533.validator(path, query, header, formData, body)
-  let scheme = call_600533.pickScheme
+  let valid = call_602555.validator(path, query, header, formData, body)
+  let scheme = call_602555.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600533.url(scheme.get, call_600533.host, call_600533.base,
-                         call_600533.route, valid.getOrDefault("path"),
+  let url = call_602555.url(scheme.get, call_602555.host, call_602555.base,
+                         call_602555.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600533, url, valid)
+  result = atozHook(call_602555, url, valid)
 
-proc call*(call_600534: Call_UntagResource_600521; body: JsonNode): Recallable =
+proc call*(call_602556: Call_UntagResource_602543; body: JsonNode): Recallable =
   ## untagResource
   ## Remove a tag from a Amazon SWF domain.
   ##   body: JObject (required)
-  var body_600535 = newJObject()
+  var body_602557 = newJObject()
   if body != nil:
-    body_600535 = body
-  result = call_600534.call(nil, nil, nil, nil, body_600535)
+    body_602557 = body
+  result = call_602556.call(nil, nil, nil, nil, body_602557)
 
-var untagResource* = Call_UntagResource_600521(name: "untagResource",
+var untagResource* = Call_UntagResource_602543(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "swf.amazonaws.com",
     route: "/#X-Amz-Target=SimpleWorkflowService.UntagResource",
-    validator: validate_UntagResource_600522, base: "/", url: url_UntagResource_600523,
+    validator: validate_UntagResource_602544, base: "/", url: url_UntagResource_602545,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_597389 = ref object of OpenApiRestCall
+  OpenApiRestCall_601389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_597389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_597389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,8 +134,8 @@ const
   awsServiceName = "codeguruprofiler"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_ConfigureAgent_597727 = ref object of OpenApiRestCall_597389
-proc url_ConfigureAgent_597729(protocol: Scheme; host: string; base: string;
+  Call_ConfigureAgent_601727 = ref object of OpenApiRestCall_601389
+proc url_ConfigureAgent_601729(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -157,7 +157,7 @@ proc url_ConfigureAgent_597729(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ConfigureAgent_597728(path: JsonNode; query: JsonNode;
+proc validate_ConfigureAgent_601728(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Provides the configuration to use for an agent of the profiling group.
@@ -170,11 +170,11 @@ proc validate_ConfigureAgent_597728(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profilingGroupName` field"
-  var valid_597855 = path.getOrDefault("profilingGroupName")
-  valid_597855 = validateParameter(valid_597855, JString, required = true,
+  var valid_601855 = path.getOrDefault("profilingGroupName")
+  valid_601855 = validateParameter(valid_601855, JString, required = true,
                                  default = nil)
-  if valid_597855 != nil:
-    section.add "profilingGroupName", valid_597855
+  if valid_601855 != nil:
+    section.add "profilingGroupName", valid_601855
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -187,41 +187,41 @@ proc validate_ConfigureAgent_597728(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_597856 = header.getOrDefault("X-Amz-Signature")
-  valid_597856 = validateParameter(valid_597856, JString, required = false,
+  var valid_601856 = header.getOrDefault("X-Amz-Signature")
+  valid_601856 = validateParameter(valid_601856, JString, required = false,
                                  default = nil)
-  if valid_597856 != nil:
-    section.add "X-Amz-Signature", valid_597856
-  var valid_597857 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_597857 = validateParameter(valid_597857, JString, required = false,
+  if valid_601856 != nil:
+    section.add "X-Amz-Signature", valid_601856
+  var valid_601857 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601857 = validateParameter(valid_601857, JString, required = false,
                                  default = nil)
-  if valid_597857 != nil:
-    section.add "X-Amz-Content-Sha256", valid_597857
-  var valid_597858 = header.getOrDefault("X-Amz-Date")
-  valid_597858 = validateParameter(valid_597858, JString, required = false,
+  if valid_601857 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601857
+  var valid_601858 = header.getOrDefault("X-Amz-Date")
+  valid_601858 = validateParameter(valid_601858, JString, required = false,
                                  default = nil)
-  if valid_597858 != nil:
-    section.add "X-Amz-Date", valid_597858
-  var valid_597859 = header.getOrDefault("X-Amz-Credential")
-  valid_597859 = validateParameter(valid_597859, JString, required = false,
+  if valid_601858 != nil:
+    section.add "X-Amz-Date", valid_601858
+  var valid_601859 = header.getOrDefault("X-Amz-Credential")
+  valid_601859 = validateParameter(valid_601859, JString, required = false,
                                  default = nil)
-  if valid_597859 != nil:
-    section.add "X-Amz-Credential", valid_597859
-  var valid_597860 = header.getOrDefault("X-Amz-Security-Token")
-  valid_597860 = validateParameter(valid_597860, JString, required = false,
+  if valid_601859 != nil:
+    section.add "X-Amz-Credential", valid_601859
+  var valid_601860 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601860 = validateParameter(valid_601860, JString, required = false,
                                  default = nil)
-  if valid_597860 != nil:
-    section.add "X-Amz-Security-Token", valid_597860
-  var valid_597861 = header.getOrDefault("X-Amz-Algorithm")
-  valid_597861 = validateParameter(valid_597861, JString, required = false,
+  if valid_601860 != nil:
+    section.add "X-Amz-Security-Token", valid_601860
+  var valid_601861 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601861 = validateParameter(valid_601861, JString, required = false,
                                  default = nil)
-  if valid_597861 != nil:
-    section.add "X-Amz-Algorithm", valid_597861
-  var valid_597862 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_597862 = validateParameter(valid_597862, JString, required = false,
+  if valid_601861 != nil:
+    section.add "X-Amz-Algorithm", valid_601861
+  var valid_601862 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601862 = validateParameter(valid_601862, JString, required = false,
                                  default = nil)
-  if valid_597862 != nil:
-    section.add "X-Amz-SignedHeaders", valid_597862
+  if valid_601862 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601862
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -232,41 +232,41 @@ proc validate_ConfigureAgent_597728(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_597886: Call_ConfigureAgent_597727; path: JsonNode; query: JsonNode;
+proc call*(call_601886: Call_ConfigureAgent_601727; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Provides the configuration to use for an agent of the profiling group.
   ## 
-  let valid = call_597886.validator(path, query, header, formData, body)
-  let scheme = call_597886.pickScheme
+  let valid = call_601886.validator(path, query, header, formData, body)
+  let scheme = call_601886.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_597886.url(scheme.get, call_597886.host, call_597886.base,
-                         call_597886.route, valid.getOrDefault("path"),
+  let url = call_601886.url(scheme.get, call_601886.host, call_601886.base,
+                         call_601886.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_597886, url, valid)
+  result = atozHook(call_601886, url, valid)
 
-proc call*(call_597957: Call_ConfigureAgent_597727; profilingGroupName: string;
+proc call*(call_601957: Call_ConfigureAgent_601727; profilingGroupName: string;
           body: JsonNode): Recallable =
   ## configureAgent
   ## Provides the configuration to use for an agent of the profiling group.
   ##   profilingGroupName: string (required)
   ##                     : The name of the profiling group.
   ##   body: JObject (required)
-  var path_597958 = newJObject()
-  var body_597960 = newJObject()
-  add(path_597958, "profilingGroupName", newJString(profilingGroupName))
+  var path_601958 = newJObject()
+  var body_601960 = newJObject()
+  add(path_601958, "profilingGroupName", newJString(profilingGroupName))
   if body != nil:
-    body_597960 = body
-  result = call_597957.call(path_597958, nil, nil, nil, body_597960)
+    body_601960 = body
+  result = call_601957.call(path_601958, nil, nil, nil, body_601960)
 
-var configureAgent* = Call_ConfigureAgent_597727(name: "configureAgent",
+var configureAgent* = Call_ConfigureAgent_601727(name: "configureAgent",
     meth: HttpMethod.HttpPost, host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}/configureAgent",
-    validator: validate_ConfigureAgent_597728, base: "/", url: url_ConfigureAgent_597729,
+    validator: validate_ConfigureAgent_601728, base: "/", url: url_ConfigureAgent_601729,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateProfilingGroup_597999 = ref object of OpenApiRestCall_597389
-proc url_CreateProfilingGroup_598001(protocol: Scheme; host: string; base: string;
+  Call_CreateProfilingGroup_601999 = ref object of OpenApiRestCall_601389
+proc url_CreateProfilingGroup_602001(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -278,7 +278,7 @@ proc url_CreateProfilingGroup_598001(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_CreateProfilingGroup_598000(path: JsonNode; query: JsonNode;
+proc validate_CreateProfilingGroup_602000(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Create a profiling group.
   ## 
@@ -292,11 +292,11 @@ proc validate_CreateProfilingGroup_598000(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `clientToken` field"
-  var valid_598002 = query.getOrDefault("clientToken")
-  valid_598002 = validateParameter(valid_598002, JString, required = true,
+  var valid_602002 = query.getOrDefault("clientToken")
+  valid_602002 = validateParameter(valid_602002, JString, required = true,
                                  default = nil)
-  if valid_598002 != nil:
-    section.add "clientToken", valid_598002
+  if valid_602002 != nil:
+    section.add "clientToken", valid_602002
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -307,41 +307,41 @@ proc validate_CreateProfilingGroup_598000(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598003 = header.getOrDefault("X-Amz-Signature")
-  valid_598003 = validateParameter(valid_598003, JString, required = false,
+  var valid_602003 = header.getOrDefault("X-Amz-Signature")
+  valid_602003 = validateParameter(valid_602003, JString, required = false,
                                  default = nil)
-  if valid_598003 != nil:
-    section.add "X-Amz-Signature", valid_598003
-  var valid_598004 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598004 = validateParameter(valid_598004, JString, required = false,
+  if valid_602003 != nil:
+    section.add "X-Amz-Signature", valid_602003
+  var valid_602004 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602004 = validateParameter(valid_602004, JString, required = false,
                                  default = nil)
-  if valid_598004 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598004
-  var valid_598005 = header.getOrDefault("X-Amz-Date")
-  valid_598005 = validateParameter(valid_598005, JString, required = false,
+  if valid_602004 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602004
+  var valid_602005 = header.getOrDefault("X-Amz-Date")
+  valid_602005 = validateParameter(valid_602005, JString, required = false,
                                  default = nil)
-  if valid_598005 != nil:
-    section.add "X-Amz-Date", valid_598005
-  var valid_598006 = header.getOrDefault("X-Amz-Credential")
-  valid_598006 = validateParameter(valid_598006, JString, required = false,
+  if valid_602005 != nil:
+    section.add "X-Amz-Date", valid_602005
+  var valid_602006 = header.getOrDefault("X-Amz-Credential")
+  valid_602006 = validateParameter(valid_602006, JString, required = false,
                                  default = nil)
-  if valid_598006 != nil:
-    section.add "X-Amz-Credential", valid_598006
-  var valid_598007 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598007 = validateParameter(valid_598007, JString, required = false,
+  if valid_602006 != nil:
+    section.add "X-Amz-Credential", valid_602006
+  var valid_602007 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602007 = validateParameter(valid_602007, JString, required = false,
                                  default = nil)
-  if valid_598007 != nil:
-    section.add "X-Amz-Security-Token", valid_598007
-  var valid_598008 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598008 = validateParameter(valid_598008, JString, required = false,
+  if valid_602007 != nil:
+    section.add "X-Amz-Security-Token", valid_602007
+  var valid_602008 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602008 = validateParameter(valid_602008, JString, required = false,
                                  default = nil)
-  if valid_598008 != nil:
-    section.add "X-Amz-Algorithm", valid_598008
-  var valid_598009 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598009 = validateParameter(valid_598009, JString, required = false,
+  if valid_602008 != nil:
+    section.add "X-Amz-Algorithm", valid_602008
+  var valid_602009 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602009 = validateParameter(valid_602009, JString, required = false,
                                  default = nil)
-  if valid_598009 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598009
+  if valid_602009 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602009
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -352,42 +352,42 @@ proc validate_CreateProfilingGroup_598000(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_598011: Call_CreateProfilingGroup_597999; path: JsonNode;
+proc call*(call_602011: Call_CreateProfilingGroup_601999; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Create a profiling group.
   ## 
-  let valid = call_598011.validator(path, query, header, formData, body)
-  let scheme = call_598011.pickScheme
+  let valid = call_602011.validator(path, query, header, formData, body)
+  let scheme = call_602011.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598011.url(scheme.get, call_598011.host, call_598011.base,
-                         call_598011.route, valid.getOrDefault("path"),
+  let url = call_602011.url(scheme.get, call_602011.host, call_602011.base,
+                         call_602011.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598011, url, valid)
+  result = atozHook(call_602011, url, valid)
 
-proc call*(call_598012: Call_CreateProfilingGroup_597999; body: JsonNode;
+proc call*(call_602012: Call_CreateProfilingGroup_601999; body: JsonNode;
           clientToken: string): Recallable =
   ## createProfilingGroup
   ## Create a profiling group.
   ##   body: JObject (required)
   ##   clientToken: string (required)
   ##              : Client token for the request.
-  var query_598013 = newJObject()
-  var body_598014 = newJObject()
+  var query_602013 = newJObject()
+  var body_602014 = newJObject()
   if body != nil:
-    body_598014 = body
-  add(query_598013, "clientToken", newJString(clientToken))
-  result = call_598012.call(nil, query_598013, nil, nil, body_598014)
+    body_602014 = body
+  add(query_602013, "clientToken", newJString(clientToken))
+  result = call_602012.call(nil, query_602013, nil, nil, body_602014)
 
-var createProfilingGroup* = Call_CreateProfilingGroup_597999(
+var createProfilingGroup* = Call_CreateProfilingGroup_601999(
     name: "createProfilingGroup", meth: HttpMethod.HttpPost,
     host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups#clientToken",
-    validator: validate_CreateProfilingGroup_598000, base: "/",
-    url: url_CreateProfilingGroup_598001, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateProfilingGroup_602000, base: "/",
+    url: url_CreateProfilingGroup_602001, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateProfilingGroup_598029 = ref object of OpenApiRestCall_597389
-proc url_UpdateProfilingGroup_598031(protocol: Scheme; host: string; base: string;
+  Call_UpdateProfilingGroup_602029 = ref object of OpenApiRestCall_601389
+proc url_UpdateProfilingGroup_602031(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -408,7 +408,7 @@ proc url_UpdateProfilingGroup_598031(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateProfilingGroup_598030(path: JsonNode; query: JsonNode;
+proc validate_UpdateProfilingGroup_602030(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Update a profiling group.
   ## 
@@ -420,11 +420,11 @@ proc validate_UpdateProfilingGroup_598030(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profilingGroupName` field"
-  var valid_598032 = path.getOrDefault("profilingGroupName")
-  valid_598032 = validateParameter(valid_598032, JString, required = true,
+  var valid_602032 = path.getOrDefault("profilingGroupName")
+  valid_602032 = validateParameter(valid_602032, JString, required = true,
                                  default = nil)
-  if valid_598032 != nil:
-    section.add "profilingGroupName", valid_598032
+  if valid_602032 != nil:
+    section.add "profilingGroupName", valid_602032
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -437,41 +437,41 @@ proc validate_UpdateProfilingGroup_598030(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598033 = header.getOrDefault("X-Amz-Signature")
-  valid_598033 = validateParameter(valid_598033, JString, required = false,
+  var valid_602033 = header.getOrDefault("X-Amz-Signature")
+  valid_602033 = validateParameter(valid_602033, JString, required = false,
                                  default = nil)
-  if valid_598033 != nil:
-    section.add "X-Amz-Signature", valid_598033
-  var valid_598034 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598034 = validateParameter(valid_598034, JString, required = false,
+  if valid_602033 != nil:
+    section.add "X-Amz-Signature", valid_602033
+  var valid_602034 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602034 = validateParameter(valid_602034, JString, required = false,
                                  default = nil)
-  if valid_598034 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598034
-  var valid_598035 = header.getOrDefault("X-Amz-Date")
-  valid_598035 = validateParameter(valid_598035, JString, required = false,
+  if valid_602034 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602034
+  var valid_602035 = header.getOrDefault("X-Amz-Date")
+  valid_602035 = validateParameter(valid_602035, JString, required = false,
                                  default = nil)
-  if valid_598035 != nil:
-    section.add "X-Amz-Date", valid_598035
-  var valid_598036 = header.getOrDefault("X-Amz-Credential")
-  valid_598036 = validateParameter(valid_598036, JString, required = false,
+  if valid_602035 != nil:
+    section.add "X-Amz-Date", valid_602035
+  var valid_602036 = header.getOrDefault("X-Amz-Credential")
+  valid_602036 = validateParameter(valid_602036, JString, required = false,
                                  default = nil)
-  if valid_598036 != nil:
-    section.add "X-Amz-Credential", valid_598036
-  var valid_598037 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598037 = validateParameter(valid_598037, JString, required = false,
+  if valid_602036 != nil:
+    section.add "X-Amz-Credential", valid_602036
+  var valid_602037 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602037 = validateParameter(valid_602037, JString, required = false,
                                  default = nil)
-  if valid_598037 != nil:
-    section.add "X-Amz-Security-Token", valid_598037
-  var valid_598038 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598038 = validateParameter(valid_598038, JString, required = false,
+  if valid_602037 != nil:
+    section.add "X-Amz-Security-Token", valid_602037
+  var valid_602038 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602038 = validateParameter(valid_602038, JString, required = false,
                                  default = nil)
-  if valid_598038 != nil:
-    section.add "X-Amz-Algorithm", valid_598038
-  var valid_598039 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598039 = validateParameter(valid_598039, JString, required = false,
+  if valid_602038 != nil:
+    section.add "X-Amz-Algorithm", valid_602038
+  var valid_602039 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602039 = validateParameter(valid_602039, JString, required = false,
                                  default = nil)
-  if valid_598039 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598039
+  if valid_602039 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602039
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -482,42 +482,42 @@ proc validate_UpdateProfilingGroup_598030(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_598041: Call_UpdateProfilingGroup_598029; path: JsonNode;
+proc call*(call_602041: Call_UpdateProfilingGroup_602029; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Update a profiling group.
   ## 
-  let valid = call_598041.validator(path, query, header, formData, body)
-  let scheme = call_598041.pickScheme
+  let valid = call_602041.validator(path, query, header, formData, body)
+  let scheme = call_602041.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598041.url(scheme.get, call_598041.host, call_598041.base,
-                         call_598041.route, valid.getOrDefault("path"),
+  let url = call_602041.url(scheme.get, call_602041.host, call_602041.base,
+                         call_602041.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598041, url, valid)
+  result = atozHook(call_602041, url, valid)
 
-proc call*(call_598042: Call_UpdateProfilingGroup_598029;
+proc call*(call_602042: Call_UpdateProfilingGroup_602029;
           profilingGroupName: string; body: JsonNode): Recallable =
   ## updateProfilingGroup
   ## Update a profiling group.
   ##   profilingGroupName: string (required)
   ##                     : The name of the profiling group.
   ##   body: JObject (required)
-  var path_598043 = newJObject()
-  var body_598044 = newJObject()
-  add(path_598043, "profilingGroupName", newJString(profilingGroupName))
+  var path_602043 = newJObject()
+  var body_602044 = newJObject()
+  add(path_602043, "profilingGroupName", newJString(profilingGroupName))
   if body != nil:
-    body_598044 = body
-  result = call_598042.call(path_598043, nil, nil, nil, body_598044)
+    body_602044 = body
+  result = call_602042.call(path_602043, nil, nil, nil, body_602044)
 
-var updateProfilingGroup* = Call_UpdateProfilingGroup_598029(
+var updateProfilingGroup* = Call_UpdateProfilingGroup_602029(
     name: "updateProfilingGroup", meth: HttpMethod.HttpPut,
     host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}",
-    validator: validate_UpdateProfilingGroup_598030, base: "/",
-    url: url_UpdateProfilingGroup_598031, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateProfilingGroup_602030, base: "/",
+    url: url_UpdateProfilingGroup_602031, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeProfilingGroup_598015 = ref object of OpenApiRestCall_597389
-proc url_DescribeProfilingGroup_598017(protocol: Scheme; host: string; base: string;
+  Call_DescribeProfilingGroup_602015 = ref object of OpenApiRestCall_601389
+proc url_DescribeProfilingGroup_602017(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -538,7 +538,7 @@ proc url_DescribeProfilingGroup_598017(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeProfilingGroup_598016(path: JsonNode; query: JsonNode;
+proc validate_DescribeProfilingGroup_602016(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describe a profiling group.
   ## 
@@ -550,11 +550,11 @@ proc validate_DescribeProfilingGroup_598016(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profilingGroupName` field"
-  var valid_598018 = path.getOrDefault("profilingGroupName")
-  valid_598018 = validateParameter(valid_598018, JString, required = true,
+  var valid_602018 = path.getOrDefault("profilingGroupName")
+  valid_602018 = validateParameter(valid_602018, JString, required = true,
                                  default = nil)
-  if valid_598018 != nil:
-    section.add "profilingGroupName", valid_598018
+  if valid_602018 != nil:
+    section.add "profilingGroupName", valid_602018
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -567,79 +567,79 @@ proc validate_DescribeProfilingGroup_598016(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598019 = header.getOrDefault("X-Amz-Signature")
-  valid_598019 = validateParameter(valid_598019, JString, required = false,
+  var valid_602019 = header.getOrDefault("X-Amz-Signature")
+  valid_602019 = validateParameter(valid_602019, JString, required = false,
                                  default = nil)
-  if valid_598019 != nil:
-    section.add "X-Amz-Signature", valid_598019
-  var valid_598020 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598020 = validateParameter(valid_598020, JString, required = false,
+  if valid_602019 != nil:
+    section.add "X-Amz-Signature", valid_602019
+  var valid_602020 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602020 = validateParameter(valid_602020, JString, required = false,
                                  default = nil)
-  if valid_598020 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598020
-  var valid_598021 = header.getOrDefault("X-Amz-Date")
-  valid_598021 = validateParameter(valid_598021, JString, required = false,
+  if valid_602020 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602020
+  var valid_602021 = header.getOrDefault("X-Amz-Date")
+  valid_602021 = validateParameter(valid_602021, JString, required = false,
                                  default = nil)
-  if valid_598021 != nil:
-    section.add "X-Amz-Date", valid_598021
-  var valid_598022 = header.getOrDefault("X-Amz-Credential")
-  valid_598022 = validateParameter(valid_598022, JString, required = false,
+  if valid_602021 != nil:
+    section.add "X-Amz-Date", valid_602021
+  var valid_602022 = header.getOrDefault("X-Amz-Credential")
+  valid_602022 = validateParameter(valid_602022, JString, required = false,
                                  default = nil)
-  if valid_598022 != nil:
-    section.add "X-Amz-Credential", valid_598022
-  var valid_598023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598023 = validateParameter(valid_598023, JString, required = false,
+  if valid_602022 != nil:
+    section.add "X-Amz-Credential", valid_602022
+  var valid_602023 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602023 = validateParameter(valid_602023, JString, required = false,
                                  default = nil)
-  if valid_598023 != nil:
-    section.add "X-Amz-Security-Token", valid_598023
-  var valid_598024 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598024 = validateParameter(valid_598024, JString, required = false,
+  if valid_602023 != nil:
+    section.add "X-Amz-Security-Token", valid_602023
+  var valid_602024 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602024 = validateParameter(valid_602024, JString, required = false,
                                  default = nil)
-  if valid_598024 != nil:
-    section.add "X-Amz-Algorithm", valid_598024
-  var valid_598025 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598025 = validateParameter(valid_598025, JString, required = false,
+  if valid_602024 != nil:
+    section.add "X-Amz-Algorithm", valid_602024
+  var valid_602025 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602025 = validateParameter(valid_602025, JString, required = false,
                                  default = nil)
-  if valid_598025 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598025
+  if valid_602025 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602025
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598026: Call_DescribeProfilingGroup_598015; path: JsonNode;
+proc call*(call_602026: Call_DescribeProfilingGroup_602015; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describe a profiling group.
   ## 
-  let valid = call_598026.validator(path, query, header, formData, body)
-  let scheme = call_598026.pickScheme
+  let valid = call_602026.validator(path, query, header, formData, body)
+  let scheme = call_602026.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598026.url(scheme.get, call_598026.host, call_598026.base,
-                         call_598026.route, valid.getOrDefault("path"),
+  let url = call_602026.url(scheme.get, call_602026.host, call_602026.base,
+                         call_602026.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598026, url, valid)
+  result = atozHook(call_602026, url, valid)
 
-proc call*(call_598027: Call_DescribeProfilingGroup_598015;
+proc call*(call_602027: Call_DescribeProfilingGroup_602015;
           profilingGroupName: string): Recallable =
   ## describeProfilingGroup
   ## Describe a profiling group.
   ##   profilingGroupName: string (required)
   ##                     : The name of the profiling group.
-  var path_598028 = newJObject()
-  add(path_598028, "profilingGroupName", newJString(profilingGroupName))
-  result = call_598027.call(path_598028, nil, nil, nil, nil)
+  var path_602028 = newJObject()
+  add(path_602028, "profilingGroupName", newJString(profilingGroupName))
+  result = call_602027.call(path_602028, nil, nil, nil, nil)
 
-var describeProfilingGroup* = Call_DescribeProfilingGroup_598015(
+var describeProfilingGroup* = Call_DescribeProfilingGroup_602015(
     name: "describeProfilingGroup", meth: HttpMethod.HttpGet,
     host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}",
-    validator: validate_DescribeProfilingGroup_598016, base: "/",
-    url: url_DescribeProfilingGroup_598017, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeProfilingGroup_602016, base: "/",
+    url: url_DescribeProfilingGroup_602017, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteProfilingGroup_598045 = ref object of OpenApiRestCall_597389
-proc url_DeleteProfilingGroup_598047(protocol: Scheme; host: string; base: string;
+  Call_DeleteProfilingGroup_602045 = ref object of OpenApiRestCall_601389
+proc url_DeleteProfilingGroup_602047(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -660,7 +660,7 @@ proc url_DeleteProfilingGroup_598047(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteProfilingGroup_598046(path: JsonNode; query: JsonNode;
+proc validate_DeleteProfilingGroup_602046(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Delete a profiling group.
   ## 
@@ -672,11 +672,11 @@ proc validate_DeleteProfilingGroup_598046(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profilingGroupName` field"
-  var valid_598048 = path.getOrDefault("profilingGroupName")
-  valid_598048 = validateParameter(valid_598048, JString, required = true,
+  var valid_602048 = path.getOrDefault("profilingGroupName")
+  valid_602048 = validateParameter(valid_602048, JString, required = true,
                                  default = nil)
-  if valid_598048 != nil:
-    section.add "profilingGroupName", valid_598048
+  if valid_602048 != nil:
+    section.add "profilingGroupName", valid_602048
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -689,79 +689,79 @@ proc validate_DeleteProfilingGroup_598046(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598049 = header.getOrDefault("X-Amz-Signature")
-  valid_598049 = validateParameter(valid_598049, JString, required = false,
+  var valid_602049 = header.getOrDefault("X-Amz-Signature")
+  valid_602049 = validateParameter(valid_602049, JString, required = false,
                                  default = nil)
-  if valid_598049 != nil:
-    section.add "X-Amz-Signature", valid_598049
-  var valid_598050 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598050 = validateParameter(valid_598050, JString, required = false,
+  if valid_602049 != nil:
+    section.add "X-Amz-Signature", valid_602049
+  var valid_602050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602050 = validateParameter(valid_602050, JString, required = false,
                                  default = nil)
-  if valid_598050 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598050
-  var valid_598051 = header.getOrDefault("X-Amz-Date")
-  valid_598051 = validateParameter(valid_598051, JString, required = false,
+  if valid_602050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602050
+  var valid_602051 = header.getOrDefault("X-Amz-Date")
+  valid_602051 = validateParameter(valid_602051, JString, required = false,
                                  default = nil)
-  if valid_598051 != nil:
-    section.add "X-Amz-Date", valid_598051
-  var valid_598052 = header.getOrDefault("X-Amz-Credential")
-  valid_598052 = validateParameter(valid_598052, JString, required = false,
+  if valid_602051 != nil:
+    section.add "X-Amz-Date", valid_602051
+  var valid_602052 = header.getOrDefault("X-Amz-Credential")
+  valid_602052 = validateParameter(valid_602052, JString, required = false,
                                  default = nil)
-  if valid_598052 != nil:
-    section.add "X-Amz-Credential", valid_598052
-  var valid_598053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598053 = validateParameter(valid_598053, JString, required = false,
+  if valid_602052 != nil:
+    section.add "X-Amz-Credential", valid_602052
+  var valid_602053 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602053 = validateParameter(valid_602053, JString, required = false,
                                  default = nil)
-  if valid_598053 != nil:
-    section.add "X-Amz-Security-Token", valid_598053
-  var valid_598054 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598054 = validateParameter(valid_598054, JString, required = false,
+  if valid_602053 != nil:
+    section.add "X-Amz-Security-Token", valid_602053
+  var valid_602054 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602054 = validateParameter(valid_602054, JString, required = false,
                                  default = nil)
-  if valid_598054 != nil:
-    section.add "X-Amz-Algorithm", valid_598054
-  var valid_598055 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598055 = validateParameter(valid_598055, JString, required = false,
+  if valid_602054 != nil:
+    section.add "X-Amz-Algorithm", valid_602054
+  var valid_602055 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602055 = validateParameter(valid_602055, JString, required = false,
                                  default = nil)
-  if valid_598055 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598055
+  if valid_602055 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602055
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598056: Call_DeleteProfilingGroup_598045; path: JsonNode;
+proc call*(call_602056: Call_DeleteProfilingGroup_602045; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Delete a profiling group.
   ## 
-  let valid = call_598056.validator(path, query, header, formData, body)
-  let scheme = call_598056.pickScheme
+  let valid = call_602056.validator(path, query, header, formData, body)
+  let scheme = call_602056.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598056.url(scheme.get, call_598056.host, call_598056.base,
-                         call_598056.route, valid.getOrDefault("path"),
+  let url = call_602056.url(scheme.get, call_602056.host, call_602056.base,
+                         call_602056.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598056, url, valid)
+  result = atozHook(call_602056, url, valid)
 
-proc call*(call_598057: Call_DeleteProfilingGroup_598045;
+proc call*(call_602057: Call_DeleteProfilingGroup_602045;
           profilingGroupName: string): Recallable =
   ## deleteProfilingGroup
   ## Delete a profiling group.
   ##   profilingGroupName: string (required)
   ##                     : The name of the profiling group.
-  var path_598058 = newJObject()
-  add(path_598058, "profilingGroupName", newJString(profilingGroupName))
-  result = call_598057.call(path_598058, nil, nil, nil, nil)
+  var path_602058 = newJObject()
+  add(path_602058, "profilingGroupName", newJString(profilingGroupName))
+  result = call_602057.call(path_602058, nil, nil, nil, nil)
 
-var deleteProfilingGroup* = Call_DeleteProfilingGroup_598045(
+var deleteProfilingGroup* = Call_DeleteProfilingGroup_602045(
     name: "deleteProfilingGroup", meth: HttpMethod.HttpDelete,
     host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}",
-    validator: validate_DeleteProfilingGroup_598046, base: "/",
-    url: url_DeleteProfilingGroup_598047, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteProfilingGroup_602046, base: "/",
+    url: url_DeleteProfilingGroup_602047, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetProfile_598059 = ref object of OpenApiRestCall_597389
-proc url_GetProfile_598061(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetProfile_602059 = ref object of OpenApiRestCall_601389
+proc url_GetProfile_602061(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -783,7 +783,7 @@ proc url_GetProfile_598061(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & hydrated.get
 
-proc validate_GetProfile_598060(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetProfile_602060(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Get the aggregated profile of a profiling group for the specified time range. If the requested time range does not align with the available aggregated profiles, it will be expanded to attain alignment. If aggregated profiles are available only for part of the period requested, the profile is returned from the earliest available to the latest within the requested time range. For instance, if the requested time range is from 00:00 to 00:20 and the available profiles are from 00:15 to 00:25, then the returned profile will be from 00:15 to 00:20.
   ## 
@@ -795,11 +795,11 @@ proc validate_GetProfile_598060(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profilingGroupName` field"
-  var valid_598062 = path.getOrDefault("profilingGroupName")
-  valid_598062 = validateParameter(valid_598062, JString, required = true,
+  var valid_602062 = path.getOrDefault("profilingGroupName")
+  valid_602062 = validateParameter(valid_602062, JString, required = true,
                                  default = nil)
-  if valid_598062 != nil:
-    section.add "profilingGroupName", valid_598062
+  if valid_602062 != nil:
+    section.add "profilingGroupName", valid_602062
   result.add "path", section
   ## parameters in `query` object:
   ##   startTime: JString
@@ -811,25 +811,25 @@ proc validate_GetProfile_598060(path: JsonNode; query: JsonNode; header: JsonNod
   ##   endTime: JString
   ##          : The end time of the profile to get. Either period or endTime must be specified. Must be greater than start and the overall time range to be in the past and not larger than a week.
   section = newJObject()
-  var valid_598063 = query.getOrDefault("startTime")
-  valid_598063 = validateParameter(valid_598063, JString, required = false,
+  var valid_602063 = query.getOrDefault("startTime")
+  valid_602063 = validateParameter(valid_602063, JString, required = false,
                                  default = nil)
-  if valid_598063 != nil:
-    section.add "startTime", valid_598063
-  var valid_598064 = query.getOrDefault("period")
-  valid_598064 = validateParameter(valid_598064, JString, required = false,
+  if valid_602063 != nil:
+    section.add "startTime", valid_602063
+  var valid_602064 = query.getOrDefault("period")
+  valid_602064 = validateParameter(valid_602064, JString, required = false,
                                  default = nil)
-  if valid_598064 != nil:
-    section.add "period", valid_598064
-  var valid_598065 = query.getOrDefault("maxDepth")
-  valid_598065 = validateParameter(valid_598065, JInt, required = false, default = nil)
-  if valid_598065 != nil:
-    section.add "maxDepth", valid_598065
-  var valid_598066 = query.getOrDefault("endTime")
-  valid_598066 = validateParameter(valid_598066, JString, required = false,
+  if valid_602064 != nil:
+    section.add "period", valid_602064
+  var valid_602065 = query.getOrDefault("maxDepth")
+  valid_602065 = validateParameter(valid_602065, JInt, required = false, default = nil)
+  if valid_602065 != nil:
+    section.add "maxDepth", valid_602065
+  var valid_602066 = query.getOrDefault("endTime")
+  valid_602066 = validateParameter(valid_602066, JString, required = false,
                                  default = nil)
-  if valid_598066 != nil:
-    section.add "endTime", valid_598066
+  if valid_602066 != nil:
+    section.add "endTime", valid_602066
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -842,66 +842,66 @@ proc validate_GetProfile_598060(path: JsonNode; query: JsonNode; header: JsonNod
   ##         : The format of the profile to return. Supports application/json or application/x-amzn-ion. Defaults to application/x-amzn-ion.
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598067 = header.getOrDefault("X-Amz-Signature")
-  valid_598067 = validateParameter(valid_598067, JString, required = false,
+  var valid_602067 = header.getOrDefault("X-Amz-Signature")
+  valid_602067 = validateParameter(valid_602067, JString, required = false,
                                  default = nil)
-  if valid_598067 != nil:
-    section.add "X-Amz-Signature", valid_598067
-  var valid_598068 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598068 = validateParameter(valid_598068, JString, required = false,
+  if valid_602067 != nil:
+    section.add "X-Amz-Signature", valid_602067
+  var valid_602068 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602068 = validateParameter(valid_602068, JString, required = false,
                                  default = nil)
-  if valid_598068 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598068
-  var valid_598069 = header.getOrDefault("X-Amz-Date")
-  valid_598069 = validateParameter(valid_598069, JString, required = false,
+  if valid_602068 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602068
+  var valid_602069 = header.getOrDefault("X-Amz-Date")
+  valid_602069 = validateParameter(valid_602069, JString, required = false,
                                  default = nil)
-  if valid_598069 != nil:
-    section.add "X-Amz-Date", valid_598069
-  var valid_598070 = header.getOrDefault("X-Amz-Credential")
-  valid_598070 = validateParameter(valid_598070, JString, required = false,
+  if valid_602069 != nil:
+    section.add "X-Amz-Date", valid_602069
+  var valid_602070 = header.getOrDefault("X-Amz-Credential")
+  valid_602070 = validateParameter(valid_602070, JString, required = false,
                                  default = nil)
-  if valid_598070 != nil:
-    section.add "X-Amz-Credential", valid_598070
-  var valid_598071 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598071 = validateParameter(valid_598071, JString, required = false,
+  if valid_602070 != nil:
+    section.add "X-Amz-Credential", valid_602070
+  var valid_602071 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602071 = validateParameter(valid_602071, JString, required = false,
                                  default = nil)
-  if valid_598071 != nil:
-    section.add "X-Amz-Security-Token", valid_598071
-  var valid_598072 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598072 = validateParameter(valid_598072, JString, required = false,
+  if valid_602071 != nil:
+    section.add "X-Amz-Security-Token", valid_602071
+  var valid_602072 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602072 = validateParameter(valid_602072, JString, required = false,
                                  default = nil)
-  if valid_598072 != nil:
-    section.add "X-Amz-Algorithm", valid_598072
-  var valid_598073 = header.getOrDefault("Accept")
-  valid_598073 = validateParameter(valid_598073, JString, required = false,
+  if valid_602072 != nil:
+    section.add "X-Amz-Algorithm", valid_602072
+  var valid_602073 = header.getOrDefault("Accept")
+  valid_602073 = validateParameter(valid_602073, JString, required = false,
                                  default = nil)
-  if valid_598073 != nil:
-    section.add "Accept", valid_598073
-  var valid_598074 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598074 = validateParameter(valid_598074, JString, required = false,
+  if valid_602073 != nil:
+    section.add "Accept", valid_602073
+  var valid_602074 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602074 = validateParameter(valid_602074, JString, required = false,
                                  default = nil)
-  if valid_598074 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598074
+  if valid_602074 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602074
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598075: Call_GetProfile_598059; path: JsonNode; query: JsonNode;
+proc call*(call_602075: Call_GetProfile_602059; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Get the aggregated profile of a profiling group for the specified time range. If the requested time range does not align with the available aggregated profiles, it will be expanded to attain alignment. If aggregated profiles are available only for part of the period requested, the profile is returned from the earliest available to the latest within the requested time range. For instance, if the requested time range is from 00:00 to 00:20 and the available profiles are from 00:15 to 00:25, then the returned profile will be from 00:15 to 00:20.
   ## 
-  let valid = call_598075.validator(path, query, header, formData, body)
-  let scheme = call_598075.pickScheme
+  let valid = call_602075.validator(path, query, header, formData, body)
+  let scheme = call_602075.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598075.url(scheme.get, call_598075.host, call_598075.base,
-                         call_598075.route, valid.getOrDefault("path"),
+  let url = call_602075.url(scheme.get, call_602075.host, call_602075.base,
+                         call_602075.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598075, url, valid)
+  result = atozHook(call_602075, url, valid)
 
-proc call*(call_598076: Call_GetProfile_598059; profilingGroupName: string;
+proc call*(call_602076: Call_GetProfile_602059; profilingGroupName: string;
           startTime: string = ""; period: string = ""; maxDepth: int = 0;
           endTime: string = ""): Recallable =
   ## getProfile
@@ -916,24 +916,24 @@ proc call*(call_598076: Call_GetProfile_598059; profilingGroupName: string;
   ##           : Limit the max depth of the profile.
   ##   endTime: string
   ##          : The end time of the profile to get. Either period or endTime must be specified. Must be greater than start and the overall time range to be in the past and not larger than a week.
-  var path_598077 = newJObject()
-  var query_598078 = newJObject()
-  add(query_598078, "startTime", newJString(startTime))
-  add(path_598077, "profilingGroupName", newJString(profilingGroupName))
-  add(query_598078, "period", newJString(period))
-  add(query_598078, "maxDepth", newJInt(maxDepth))
-  add(query_598078, "endTime", newJString(endTime))
-  result = call_598076.call(path_598077, query_598078, nil, nil, nil)
+  var path_602077 = newJObject()
+  var query_602078 = newJObject()
+  add(query_602078, "startTime", newJString(startTime))
+  add(path_602077, "profilingGroupName", newJString(profilingGroupName))
+  add(query_602078, "period", newJString(period))
+  add(query_602078, "maxDepth", newJInt(maxDepth))
+  add(query_602078, "endTime", newJString(endTime))
+  result = call_602076.call(path_602077, query_602078, nil, nil, nil)
 
-var getProfile* = Call_GetProfile_598059(name: "getProfile",
+var getProfile* = Call_GetProfile_602059(name: "getProfile",
                                       meth: HttpMethod.HttpGet,
                                       host: "codeguru-profiler.amazonaws.com", route: "/profilingGroups/{profilingGroupName}/profile",
-                                      validator: validate_GetProfile_598060,
-                                      base: "/", url: url_GetProfile_598061,
+                                      validator: validate_GetProfile_602060,
+                                      base: "/", url: url_GetProfile_602061,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListProfileTimes_598079 = ref object of OpenApiRestCall_597389
-proc url_ListProfileTimes_598081(protocol: Scheme; host: string; base: string;
+  Call_ListProfileTimes_602079 = ref object of OpenApiRestCall_601389
+proc url_ListProfileTimes_602081(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -955,7 +955,7 @@ proc url_ListProfileTimes_598081(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListProfileTimes_598080(path: JsonNode; query: JsonNode;
+proc validate_ListProfileTimes_602080(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## List the start times of the available aggregated profiles of a profiling group for an aggregation period within the specified time range.
@@ -968,11 +968,11 @@ proc validate_ListProfileTimes_598080(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profilingGroupName` field"
-  var valid_598082 = path.getOrDefault("profilingGroupName")
-  valid_598082 = validateParameter(valid_598082, JString, required = true,
+  var valid_602082 = path.getOrDefault("profilingGroupName")
+  valid_602082 = validateParameter(valid_602082, JString, required = true,
                                  default = nil)
-  if valid_598082 != nil:
-    section.add "profilingGroupName", valid_598082
+  if valid_602082 != nil:
+    section.add "profilingGroupName", valid_602082
   result.add "path", section
   ## parameters in `query` object:
   ##   endTime: JString (required)
@@ -989,35 +989,35 @@ proc validate_ListProfileTimes_598080(path: JsonNode; query: JsonNode;
   ##             : Upper bound on the number of results to list in a single call.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `endTime` field"
-  var valid_598083 = query.getOrDefault("endTime")
-  valid_598083 = validateParameter(valid_598083, JString, required = true,
+  var valid_602083 = query.getOrDefault("endTime")
+  valid_602083 = validateParameter(valid_602083, JString, required = true,
                                  default = nil)
-  if valid_598083 != nil:
-    section.add "endTime", valid_598083
-  var valid_598084 = query.getOrDefault("nextToken")
-  valid_598084 = validateParameter(valid_598084, JString, required = false,
+  if valid_602083 != nil:
+    section.add "endTime", valid_602083
+  var valid_602084 = query.getOrDefault("nextToken")
+  valid_602084 = validateParameter(valid_602084, JString, required = false,
                                  default = nil)
-  if valid_598084 != nil:
-    section.add "nextToken", valid_598084
-  var valid_598085 = query.getOrDefault("startTime")
-  valid_598085 = validateParameter(valid_598085, JString, required = true,
+  if valid_602084 != nil:
+    section.add "nextToken", valid_602084
+  var valid_602085 = query.getOrDefault("startTime")
+  valid_602085 = validateParameter(valid_602085, JString, required = true,
                                  default = nil)
-  if valid_598085 != nil:
-    section.add "startTime", valid_598085
-  var valid_598099 = query.getOrDefault("orderBy")
-  valid_598099 = validateParameter(valid_598099, JString, required = false,
+  if valid_602085 != nil:
+    section.add "startTime", valid_602085
+  var valid_602099 = query.getOrDefault("orderBy")
+  valid_602099 = validateParameter(valid_602099, JString, required = false,
                                  default = newJString("TimestampAscending"))
-  if valid_598099 != nil:
-    section.add "orderBy", valid_598099
-  var valid_598100 = query.getOrDefault("period")
-  valid_598100 = validateParameter(valid_598100, JString, required = true,
+  if valid_602099 != nil:
+    section.add "orderBy", valid_602099
+  var valid_602100 = query.getOrDefault("period")
+  valid_602100 = validateParameter(valid_602100, JString, required = true,
                                  default = newJString("P1D"))
-  if valid_598100 != nil:
-    section.add "period", valid_598100
-  var valid_598101 = query.getOrDefault("maxResults")
-  valid_598101 = validateParameter(valid_598101, JInt, required = false, default = nil)
-  if valid_598101 != nil:
-    section.add "maxResults", valid_598101
+  if valid_602100 != nil:
+    section.add "period", valid_602100
+  var valid_602101 = query.getOrDefault("maxResults")
+  valid_602101 = validateParameter(valid_602101, JInt, required = false, default = nil)
+  if valid_602101 != nil:
+    section.add "maxResults", valid_602101
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1028,61 +1028,61 @@ proc validate_ListProfileTimes_598080(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598102 = header.getOrDefault("X-Amz-Signature")
-  valid_598102 = validateParameter(valid_598102, JString, required = false,
+  var valid_602102 = header.getOrDefault("X-Amz-Signature")
+  valid_602102 = validateParameter(valid_602102, JString, required = false,
                                  default = nil)
-  if valid_598102 != nil:
-    section.add "X-Amz-Signature", valid_598102
-  var valid_598103 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598103 = validateParameter(valid_598103, JString, required = false,
+  if valid_602102 != nil:
+    section.add "X-Amz-Signature", valid_602102
+  var valid_602103 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602103 = validateParameter(valid_602103, JString, required = false,
                                  default = nil)
-  if valid_598103 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598103
-  var valid_598104 = header.getOrDefault("X-Amz-Date")
-  valid_598104 = validateParameter(valid_598104, JString, required = false,
+  if valid_602103 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602103
+  var valid_602104 = header.getOrDefault("X-Amz-Date")
+  valid_602104 = validateParameter(valid_602104, JString, required = false,
                                  default = nil)
-  if valid_598104 != nil:
-    section.add "X-Amz-Date", valid_598104
-  var valid_598105 = header.getOrDefault("X-Amz-Credential")
-  valid_598105 = validateParameter(valid_598105, JString, required = false,
+  if valid_602104 != nil:
+    section.add "X-Amz-Date", valid_602104
+  var valid_602105 = header.getOrDefault("X-Amz-Credential")
+  valid_602105 = validateParameter(valid_602105, JString, required = false,
                                  default = nil)
-  if valid_598105 != nil:
-    section.add "X-Amz-Credential", valid_598105
-  var valid_598106 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598106 = validateParameter(valid_598106, JString, required = false,
+  if valid_602105 != nil:
+    section.add "X-Amz-Credential", valid_602105
+  var valid_602106 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602106 = validateParameter(valid_602106, JString, required = false,
                                  default = nil)
-  if valid_598106 != nil:
-    section.add "X-Amz-Security-Token", valid_598106
-  var valid_598107 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598107 = validateParameter(valid_598107, JString, required = false,
+  if valid_602106 != nil:
+    section.add "X-Amz-Security-Token", valid_602106
+  var valid_602107 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602107 = validateParameter(valid_602107, JString, required = false,
                                  default = nil)
-  if valid_598107 != nil:
-    section.add "X-Amz-Algorithm", valid_598107
-  var valid_598108 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598108 = validateParameter(valid_598108, JString, required = false,
+  if valid_602107 != nil:
+    section.add "X-Amz-Algorithm", valid_602107
+  var valid_602108 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602108 = validateParameter(valid_602108, JString, required = false,
                                  default = nil)
-  if valid_598108 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598108
+  if valid_602108 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602108
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598109: Call_ListProfileTimes_598079; path: JsonNode;
+proc call*(call_602109: Call_ListProfileTimes_602079; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List the start times of the available aggregated profiles of a profiling group for an aggregation period within the specified time range.
   ## 
-  let valid = call_598109.validator(path, query, header, formData, body)
-  let scheme = call_598109.pickScheme
+  let valid = call_602109.validator(path, query, header, formData, body)
+  let scheme = call_602109.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598109.url(scheme.get, call_598109.host, call_598109.base,
-                         call_598109.route, valid.getOrDefault("path"),
+  let url = call_602109.url(scheme.get, call_602109.host, call_602109.base,
+                         call_602109.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598109, url, valid)
+  result = atozHook(call_602109, url, valid)
 
-proc call*(call_598110: Call_ListProfileTimes_598079; endTime: string;
+proc call*(call_602110: Call_ListProfileTimes_602079; endTime: string;
           startTime: string; profilingGroupName: string; nextToken: string = "";
           orderBy: string = "TimestampAscending"; period: string = "P1D";
           maxResults: int = 0): Recallable =
@@ -1102,24 +1102,24 @@ proc call*(call_598110: Call_ListProfileTimes_598079; endTime: string;
   ##         : Periods of time used for aggregation of profiles, represented using ISO 8601 format.
   ##   maxResults: int
   ##             : Upper bound on the number of results to list in a single call.
-  var path_598111 = newJObject()
-  var query_598112 = newJObject()
-  add(query_598112, "endTime", newJString(endTime))
-  add(query_598112, "nextToken", newJString(nextToken))
-  add(query_598112, "startTime", newJString(startTime))
-  add(path_598111, "profilingGroupName", newJString(profilingGroupName))
-  add(query_598112, "orderBy", newJString(orderBy))
-  add(query_598112, "period", newJString(period))
-  add(query_598112, "maxResults", newJInt(maxResults))
-  result = call_598110.call(path_598111, query_598112, nil, nil, nil)
+  var path_602111 = newJObject()
+  var query_602112 = newJObject()
+  add(query_602112, "endTime", newJString(endTime))
+  add(query_602112, "nextToken", newJString(nextToken))
+  add(query_602112, "startTime", newJString(startTime))
+  add(path_602111, "profilingGroupName", newJString(profilingGroupName))
+  add(query_602112, "orderBy", newJString(orderBy))
+  add(query_602112, "period", newJString(period))
+  add(query_602112, "maxResults", newJInt(maxResults))
+  result = call_602110.call(path_602111, query_602112, nil, nil, nil)
 
-var listProfileTimes* = Call_ListProfileTimes_598079(name: "listProfileTimes",
+var listProfileTimes* = Call_ListProfileTimes_602079(name: "listProfileTimes",
     meth: HttpMethod.HttpGet, host: "codeguru-profiler.amazonaws.com", route: "/profilingGroups/{profilingGroupName}/profileTimes#endTime&period&startTime",
-    validator: validate_ListProfileTimes_598080, base: "/",
-    url: url_ListProfileTimes_598081, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListProfileTimes_602080, base: "/",
+    url: url_ListProfileTimes_602081, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListProfilingGroups_598113 = ref object of OpenApiRestCall_597389
-proc url_ListProfilingGroups_598115(protocol: Scheme; host: string; base: string;
+  Call_ListProfilingGroups_602113 = ref object of OpenApiRestCall_601389
+proc url_ListProfilingGroups_602115(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1131,7 +1131,7 @@ proc url_ListProfilingGroups_598115(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListProfilingGroups_598114(path: JsonNode; query: JsonNode;
+proc validate_ListProfilingGroups_602114(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## List profiling groups in the account.
@@ -1148,19 +1148,19 @@ proc validate_ListProfilingGroups_598114(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             : Upper bound on the number of results to list in a single call.
   section = newJObject()
-  var valid_598116 = query.getOrDefault("nextToken")
-  valid_598116 = validateParameter(valid_598116, JString, required = false,
+  var valid_602116 = query.getOrDefault("nextToken")
+  valid_602116 = validateParameter(valid_602116, JString, required = false,
                                  default = nil)
-  if valid_598116 != nil:
-    section.add "nextToken", valid_598116
-  var valid_598117 = query.getOrDefault("includeDescription")
-  valid_598117 = validateParameter(valid_598117, JBool, required = false, default = nil)
-  if valid_598117 != nil:
-    section.add "includeDescription", valid_598117
-  var valid_598118 = query.getOrDefault("maxResults")
-  valid_598118 = validateParameter(valid_598118, JInt, required = false, default = nil)
-  if valid_598118 != nil:
-    section.add "maxResults", valid_598118
+  if valid_602116 != nil:
+    section.add "nextToken", valid_602116
+  var valid_602117 = query.getOrDefault("includeDescription")
+  valid_602117 = validateParameter(valid_602117, JBool, required = false, default = nil)
+  if valid_602117 != nil:
+    section.add "includeDescription", valid_602117
+  var valid_602118 = query.getOrDefault("maxResults")
+  valid_602118 = validateParameter(valid_602118, JInt, required = false, default = nil)
+  if valid_602118 != nil:
+    section.add "maxResults", valid_602118
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1171,61 +1171,61 @@ proc validate_ListProfilingGroups_598114(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598119 = header.getOrDefault("X-Amz-Signature")
-  valid_598119 = validateParameter(valid_598119, JString, required = false,
+  var valid_602119 = header.getOrDefault("X-Amz-Signature")
+  valid_602119 = validateParameter(valid_602119, JString, required = false,
                                  default = nil)
-  if valid_598119 != nil:
-    section.add "X-Amz-Signature", valid_598119
-  var valid_598120 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598120 = validateParameter(valid_598120, JString, required = false,
+  if valid_602119 != nil:
+    section.add "X-Amz-Signature", valid_602119
+  var valid_602120 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602120 = validateParameter(valid_602120, JString, required = false,
                                  default = nil)
-  if valid_598120 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598120
-  var valid_598121 = header.getOrDefault("X-Amz-Date")
-  valid_598121 = validateParameter(valid_598121, JString, required = false,
+  if valid_602120 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602120
+  var valid_602121 = header.getOrDefault("X-Amz-Date")
+  valid_602121 = validateParameter(valid_602121, JString, required = false,
                                  default = nil)
-  if valid_598121 != nil:
-    section.add "X-Amz-Date", valid_598121
-  var valid_598122 = header.getOrDefault("X-Amz-Credential")
-  valid_598122 = validateParameter(valid_598122, JString, required = false,
+  if valid_602121 != nil:
+    section.add "X-Amz-Date", valid_602121
+  var valid_602122 = header.getOrDefault("X-Amz-Credential")
+  valid_602122 = validateParameter(valid_602122, JString, required = false,
                                  default = nil)
-  if valid_598122 != nil:
-    section.add "X-Amz-Credential", valid_598122
-  var valid_598123 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598123 = validateParameter(valid_598123, JString, required = false,
+  if valid_602122 != nil:
+    section.add "X-Amz-Credential", valid_602122
+  var valid_602123 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602123 = validateParameter(valid_602123, JString, required = false,
                                  default = nil)
-  if valid_598123 != nil:
-    section.add "X-Amz-Security-Token", valid_598123
-  var valid_598124 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598124 = validateParameter(valid_598124, JString, required = false,
+  if valid_602123 != nil:
+    section.add "X-Amz-Security-Token", valid_602123
+  var valid_602124 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602124 = validateParameter(valid_602124, JString, required = false,
                                  default = nil)
-  if valid_598124 != nil:
-    section.add "X-Amz-Algorithm", valid_598124
-  var valid_598125 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598125 = validateParameter(valid_598125, JString, required = false,
+  if valid_602124 != nil:
+    section.add "X-Amz-Algorithm", valid_602124
+  var valid_602125 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602125 = validateParameter(valid_602125, JString, required = false,
                                  default = nil)
-  if valid_598125 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598125
+  if valid_602125 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602125
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598126: Call_ListProfilingGroups_598113; path: JsonNode;
+proc call*(call_602126: Call_ListProfilingGroups_602113; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List profiling groups in the account.
   ## 
-  let valid = call_598126.validator(path, query, header, formData, body)
-  let scheme = call_598126.pickScheme
+  let valid = call_602126.validator(path, query, header, formData, body)
+  let scheme = call_602126.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598126.url(scheme.get, call_598126.host, call_598126.base,
-                         call_598126.route, valid.getOrDefault("path"),
+  let url = call_602126.url(scheme.get, call_602126.host, call_602126.base,
+                         call_602126.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598126, url, valid)
+  result = atozHook(call_602126, url, valid)
 
-proc call*(call_598127: Call_ListProfilingGroups_598113; nextToken: string = "";
+proc call*(call_602127: Call_ListProfilingGroups_602113; nextToken: string = "";
           includeDescription: bool = false; maxResults: int = 0): Recallable =
   ## listProfilingGroups
   ## List profiling groups in the account.
@@ -1235,20 +1235,20 @@ proc call*(call_598127: Call_ListProfilingGroups_598113; nextToken: string = "";
   ##                     : If set to true, returns the full description of the profiling groups instead of the names. Defaults to false.
   ##   maxResults: int
   ##             : Upper bound on the number of results to list in a single call.
-  var query_598128 = newJObject()
-  add(query_598128, "nextToken", newJString(nextToken))
-  add(query_598128, "includeDescription", newJBool(includeDescription))
-  add(query_598128, "maxResults", newJInt(maxResults))
-  result = call_598127.call(nil, query_598128, nil, nil, nil)
+  var query_602128 = newJObject()
+  add(query_602128, "nextToken", newJString(nextToken))
+  add(query_602128, "includeDescription", newJBool(includeDescription))
+  add(query_602128, "maxResults", newJInt(maxResults))
+  result = call_602127.call(nil, query_602128, nil, nil, nil)
 
-var listProfilingGroups* = Call_ListProfilingGroups_598113(
+var listProfilingGroups* = Call_ListProfilingGroups_602113(
     name: "listProfilingGroups", meth: HttpMethod.HttpGet,
     host: "codeguru-profiler.amazonaws.com", route: "/profilingGroups",
-    validator: validate_ListProfilingGroups_598114, base: "/",
-    url: url_ListProfilingGroups_598115, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListProfilingGroups_602114, base: "/",
+    url: url_ListProfilingGroups_602115, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostAgentProfile_598129 = ref object of OpenApiRestCall_597389
-proc url_PostAgentProfile_598131(protocol: Scheme; host: string; base: string;
+  Call_PostAgentProfile_602129 = ref object of OpenApiRestCall_601389
+proc url_PostAgentProfile_602131(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1270,7 +1270,7 @@ proc url_PostAgentProfile_598131(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_PostAgentProfile_598130(path: JsonNode; query: JsonNode;
+proc validate_PostAgentProfile_602130(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Submit profile collected by an agent belonging to a profiling group for aggregation.
@@ -1283,21 +1283,21 @@ proc validate_PostAgentProfile_598130(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profilingGroupName` field"
-  var valid_598132 = path.getOrDefault("profilingGroupName")
-  valid_598132 = validateParameter(valid_598132, JString, required = true,
+  var valid_602132 = path.getOrDefault("profilingGroupName")
+  valid_602132 = validateParameter(valid_602132, JString, required = true,
                                  default = nil)
-  if valid_598132 != nil:
-    section.add "profilingGroupName", valid_598132
+  if valid_602132 != nil:
+    section.add "profilingGroupName", valid_602132
   result.add "path", section
   ## parameters in `query` object:
   ##   profileToken: JString
   ##               : Client token for the request.
   section = newJObject()
-  var valid_598133 = query.getOrDefault("profileToken")
-  valid_598133 = validateParameter(valid_598133, JString, required = false,
+  var valid_602133 = query.getOrDefault("profileToken")
+  valid_602133 = validateParameter(valid_602133, JString, required = false,
                                  default = nil)
-  if valid_598133 != nil:
-    section.add "profileToken", valid_598133
+  if valid_602133 != nil:
+    section.add "profileToken", valid_602133
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1310,48 +1310,48 @@ proc validate_PostAgentProfile_598130(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598134 = header.getOrDefault("X-Amz-Signature")
-  valid_598134 = validateParameter(valid_598134, JString, required = false,
+  var valid_602134 = header.getOrDefault("X-Amz-Signature")
+  valid_602134 = validateParameter(valid_602134, JString, required = false,
                                  default = nil)
-  if valid_598134 != nil:
-    section.add "X-Amz-Signature", valid_598134
-  var valid_598135 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598135 = validateParameter(valid_598135, JString, required = false,
+  if valid_602134 != nil:
+    section.add "X-Amz-Signature", valid_602134
+  var valid_602135 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602135 = validateParameter(valid_602135, JString, required = false,
                                  default = nil)
-  if valid_598135 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598135
-  var valid_598136 = header.getOrDefault("X-Amz-Date")
-  valid_598136 = validateParameter(valid_598136, JString, required = false,
+  if valid_602135 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602135
+  var valid_602136 = header.getOrDefault("X-Amz-Date")
+  valid_602136 = validateParameter(valid_602136, JString, required = false,
                                  default = nil)
-  if valid_598136 != nil:
-    section.add "X-Amz-Date", valid_598136
-  var valid_598137 = header.getOrDefault("X-Amz-Credential")
-  valid_598137 = validateParameter(valid_598137, JString, required = false,
+  if valid_602136 != nil:
+    section.add "X-Amz-Date", valid_602136
+  var valid_602137 = header.getOrDefault("X-Amz-Credential")
+  valid_602137 = validateParameter(valid_602137, JString, required = false,
                                  default = nil)
-  if valid_598137 != nil:
-    section.add "X-Amz-Credential", valid_598137
-  var valid_598138 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598138 = validateParameter(valid_598138, JString, required = false,
+  if valid_602137 != nil:
+    section.add "X-Amz-Credential", valid_602137
+  var valid_602138 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602138 = validateParameter(valid_602138, JString, required = false,
                                  default = nil)
-  if valid_598138 != nil:
-    section.add "X-Amz-Security-Token", valid_598138
+  if valid_602138 != nil:
+    section.add "X-Amz-Security-Token", valid_602138
   assert header != nil,
         "header argument is necessary due to required `Content-Type` field"
-  var valid_598139 = header.getOrDefault("Content-Type")
-  valid_598139 = validateParameter(valid_598139, JString, required = true,
+  var valid_602139 = header.getOrDefault("Content-Type")
+  valid_602139 = validateParameter(valid_602139, JString, required = true,
                                  default = nil)
-  if valid_598139 != nil:
-    section.add "Content-Type", valid_598139
-  var valid_598140 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598140 = validateParameter(valid_598140, JString, required = false,
+  if valid_602139 != nil:
+    section.add "Content-Type", valid_602139
+  var valid_602140 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602140 = validateParameter(valid_602140, JString, required = false,
                                  default = nil)
-  if valid_598140 != nil:
-    section.add "X-Amz-Algorithm", valid_598140
-  var valid_598141 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598141 = validateParameter(valid_598141, JString, required = false,
+  if valid_602140 != nil:
+    section.add "X-Amz-Algorithm", valid_602140
+  var valid_602141 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602141 = validateParameter(valid_602141, JString, required = false,
                                  default = nil)
-  if valid_598141 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598141
+  if valid_602141 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602141
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1362,20 +1362,20 @@ proc validate_PostAgentProfile_598130(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_598143: Call_PostAgentProfile_598129; path: JsonNode;
+proc call*(call_602143: Call_PostAgentProfile_602129; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Submit profile collected by an agent belonging to a profiling group for aggregation.
   ## 
-  let valid = call_598143.validator(path, query, header, formData, body)
-  let scheme = call_598143.pickScheme
+  let valid = call_602143.validator(path, query, header, formData, body)
+  let scheme = call_602143.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598143.url(scheme.get, call_598143.host, call_598143.base,
-                         call_598143.route, valid.getOrDefault("path"),
+  let url = call_602143.url(scheme.get, call_602143.host, call_602143.base,
+                         call_602143.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598143, url, valid)
+  result = atozHook(call_602143, url, valid)
 
-proc call*(call_598144: Call_PostAgentProfile_598129; profilingGroupName: string;
+proc call*(call_602144: Call_PostAgentProfile_602129; profilingGroupName: string;
           body: JsonNode; profileToken: string = ""): Recallable =
   ## postAgentProfile
   ## Submit profile collected by an agent belonging to a profiling group for aggregation.
@@ -1384,20 +1384,20 @@ proc call*(call_598144: Call_PostAgentProfile_598129; profilingGroupName: string
   ##   profileToken: string
   ##               : Client token for the request.
   ##   body: JObject (required)
-  var path_598145 = newJObject()
-  var query_598146 = newJObject()
-  var body_598147 = newJObject()
-  add(path_598145, "profilingGroupName", newJString(profilingGroupName))
-  add(query_598146, "profileToken", newJString(profileToken))
+  var path_602145 = newJObject()
+  var query_602146 = newJObject()
+  var body_602147 = newJObject()
+  add(path_602145, "profilingGroupName", newJString(profilingGroupName))
+  add(query_602146, "profileToken", newJString(profileToken))
   if body != nil:
-    body_598147 = body
-  result = call_598144.call(path_598145, query_598146, nil, nil, body_598147)
+    body_602147 = body
+  result = call_602144.call(path_602145, query_602146, nil, nil, body_602147)
 
-var postAgentProfile* = Call_PostAgentProfile_598129(name: "postAgentProfile",
+var postAgentProfile* = Call_PostAgentProfile_602129(name: "postAgentProfile",
     meth: HttpMethod.HttpPost, host: "codeguru-profiler.amazonaws.com",
     route: "/profilingGroups/{profilingGroupName}/agentProfile#Content-Type",
-    validator: validate_PostAgentProfile_598130, base: "/",
-    url: url_PostAgentProfile_598131, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostAgentProfile_602130, base: "/",
+    url: url_PostAgentProfile_602131, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

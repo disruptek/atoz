@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599368 = ref object of OpenApiRestCall
+  OpenApiRestCall_601389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -146,19 +146,20 @@ const
   awsServiceName = "acm-pca"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateCertificateAuthority_599705 = ref object of OpenApiRestCall_599368
-proc url_CreateCertificateAuthority_599707(protocol: Scheme; host: string;
+  Call_CreateCertificateAuthority_601727 = ref object of OpenApiRestCall_601389
+proc url_CreateCertificateAuthority_601729(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateCertificateAuthority_599706(path: JsonNode; query: JsonNode;
+proc validate_CreateCertificateAuthority_601728(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a root or subordinate private certificate authority (CA). You must specify the CA configuration, the certificate revocation list (CRL) configuration, the CA type, and an optional idempotency token to avoid accidental creation of multiple CAs. The CA configuration specifies the name of the algorithm and key size to be used to create the CA private key, the type of signing algorithm that the CA uses, and X.500 subject information. The CRL configuration specifies the CRL expiration period in days (the validity period of the CRL), the Amazon S3 bucket that will contain the CRL, and a CNAME alias for the S3 bucket that is included in certificates issued by the CA. If successful, this action returns the Amazon Resource Name (ARN) of the CA.
   ## 
@@ -169,57 +170,57 @@ proc validate_CreateCertificateAuthority_599706(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599819 = header.getOrDefault("X-Amz-Date")
-  valid_599819 = validateParameter(valid_599819, JString, required = false,
-                                 default = nil)
-  if valid_599819 != nil:
-    section.add "X-Amz-Date", valid_599819
-  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599820 = validateParameter(valid_599820, JString, required = false,
-                                 default = nil)
-  if valid_599820 != nil:
-    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599834 = header.getOrDefault("X-Amz-Target")
-  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
+  var valid_601854 = header.getOrDefault("X-Amz-Target")
+  valid_601854 = validateParameter(valid_601854, JString, required = true, default = newJString(
       "ACMPrivateCA.CreateCertificateAuthority"))
-  if valid_599834 != nil:
-    section.add "X-Amz-Target", valid_599834
-  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599835 = validateParameter(valid_599835, JString, required = false,
+  if valid_601854 != nil:
+    section.add "X-Amz-Target", valid_601854
+  var valid_601855 = header.getOrDefault("X-Amz-Signature")
+  valid_601855 = validateParameter(valid_601855, JString, required = false,
                                  default = nil)
-  if valid_599835 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599835
-  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599836 = validateParameter(valid_599836, JString, required = false,
+  if valid_601855 != nil:
+    section.add "X-Amz-Signature", valid_601855
+  var valid_601856 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601856 = validateParameter(valid_601856, JString, required = false,
                                  default = nil)
-  if valid_599836 != nil:
-    section.add "X-Amz-Algorithm", valid_599836
-  var valid_599837 = header.getOrDefault("X-Amz-Signature")
-  valid_599837 = validateParameter(valid_599837, JString, required = false,
+  if valid_601856 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601856
+  var valid_601857 = header.getOrDefault("X-Amz-Date")
+  valid_601857 = validateParameter(valid_601857, JString, required = false,
                                  default = nil)
-  if valid_599837 != nil:
-    section.add "X-Amz-Signature", valid_599837
-  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599838 = validateParameter(valid_599838, JString, required = false,
+  if valid_601857 != nil:
+    section.add "X-Amz-Date", valid_601857
+  var valid_601858 = header.getOrDefault("X-Amz-Credential")
+  valid_601858 = validateParameter(valid_601858, JString, required = false,
                                  default = nil)
-  if valid_599838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599838
-  var valid_599839 = header.getOrDefault("X-Amz-Credential")
-  valid_599839 = validateParameter(valid_599839, JString, required = false,
+  if valid_601858 != nil:
+    section.add "X-Amz-Credential", valid_601858
+  var valid_601859 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601859 = validateParameter(valid_601859, JString, required = false,
                                  default = nil)
-  if valid_599839 != nil:
-    section.add "X-Amz-Credential", valid_599839
+  if valid_601859 != nil:
+    section.add "X-Amz-Security-Token", valid_601859
+  var valid_601860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601860 = validateParameter(valid_601860, JString, required = false,
+                                 default = nil)
+  if valid_601860 != nil:
+    section.add "X-Amz-Algorithm", valid_601860
+  var valid_601861 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601861 = validateParameter(valid_601861, JString, required = false,
+                                 default = nil)
+  if valid_601861 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601861
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -230,49 +231,50 @@ proc validate_CreateCertificateAuthority_599706(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599863: Call_CreateCertificateAuthority_599705; path: JsonNode;
+proc call*(call_601885: Call_CreateCertificateAuthority_601727; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a root or subordinate private certificate authority (CA). You must specify the CA configuration, the certificate revocation list (CRL) configuration, the CA type, and an optional idempotency token to avoid accidental creation of multiple CAs. The CA configuration specifies the name of the algorithm and key size to be used to create the CA private key, the type of signing algorithm that the CA uses, and X.500 subject information. The CRL configuration specifies the CRL expiration period in days (the validity period of the CRL), the Amazon S3 bucket that will contain the CRL, and a CNAME alias for the S3 bucket that is included in certificates issued by the CA. If successful, this action returns the Amazon Resource Name (ARN) of the CA.
   ## 
-  let valid = call_599863.validator(path, query, header, formData, body)
-  let scheme = call_599863.pickScheme
+  let valid = call_601885.validator(path, query, header, formData, body)
+  let scheme = call_601885.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
-                         call_599863.route, valid.getOrDefault("path"),
+  let url = call_601885.url(scheme.get, call_601885.host, call_601885.base,
+                         call_601885.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599863, url, valid)
+  result = atozHook(call_601885, url, valid)
 
-proc call*(call_599934: Call_CreateCertificateAuthority_599705; body: JsonNode): Recallable =
+proc call*(call_601956: Call_CreateCertificateAuthority_601727; body: JsonNode): Recallable =
   ## createCertificateAuthority
   ## Creates a root or subordinate private certificate authority (CA). You must specify the CA configuration, the certificate revocation list (CRL) configuration, the CA type, and an optional idempotency token to avoid accidental creation of multiple CAs. The CA configuration specifies the name of the algorithm and key size to be used to create the CA private key, the type of signing algorithm that the CA uses, and X.500 subject information. The CRL configuration specifies the CRL expiration period in days (the validity period of the CRL), the Amazon S3 bucket that will contain the CRL, and a CNAME alias for the S3 bucket that is included in certificates issued by the CA. If successful, this action returns the Amazon Resource Name (ARN) of the CA.
   ##   body: JObject (required)
-  var body_599935 = newJObject()
+  var body_601957 = newJObject()
   if body != nil:
-    body_599935 = body
-  result = call_599934.call(nil, nil, nil, nil, body_599935)
+    body_601957 = body
+  result = call_601956.call(nil, nil, nil, nil, body_601957)
 
-var createCertificateAuthority* = Call_CreateCertificateAuthority_599705(
+var createCertificateAuthority* = Call_CreateCertificateAuthority_601727(
     name: "createCertificateAuthority", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.CreateCertificateAuthority",
-    validator: validate_CreateCertificateAuthority_599706, base: "/",
-    url: url_CreateCertificateAuthority_599707,
+    validator: validate_CreateCertificateAuthority_601728, base: "/",
+    url: url_CreateCertificateAuthority_601729,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateCertificateAuthorityAuditReport_599974 = ref object of OpenApiRestCall_599368
-proc url_CreateCertificateAuthorityAuditReport_599976(protocol: Scheme;
+  Call_CreateCertificateAuthorityAuditReport_601996 = ref object of OpenApiRestCall_601389
+proc url_CreateCertificateAuthorityAuditReport_601998(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateCertificateAuthorityAuditReport_599975(path: JsonNode;
+proc validate_CreateCertificateAuthorityAuditReport_601997(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates an audit report that lists every time that your CA private key is used. The report is saved in the Amazon S3 bucket that you specify on input. The <a>IssueCertificate</a> and <a>RevokeCertificate</a> actions use the private key.
   ## 
@@ -283,57 +285,57 @@ proc validate_CreateCertificateAuthorityAuditReport_599975(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599977 = header.getOrDefault("X-Amz-Date")
-  valid_599977 = validateParameter(valid_599977, JString, required = false,
-                                 default = nil)
-  if valid_599977 != nil:
-    section.add "X-Amz-Date", valid_599977
-  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599978 = validateParameter(valid_599978, JString, required = false,
-                                 default = nil)
-  if valid_599978 != nil:
-    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599979 = header.getOrDefault("X-Amz-Target")
-  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
+  var valid_601999 = header.getOrDefault("X-Amz-Target")
+  valid_601999 = validateParameter(valid_601999, JString, required = true, default = newJString(
       "ACMPrivateCA.CreateCertificateAuthorityAuditReport"))
-  if valid_599979 != nil:
-    section.add "X-Amz-Target", valid_599979
-  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599980 = validateParameter(valid_599980, JString, required = false,
+  if valid_601999 != nil:
+    section.add "X-Amz-Target", valid_601999
+  var valid_602000 = header.getOrDefault("X-Amz-Signature")
+  valid_602000 = validateParameter(valid_602000, JString, required = false,
                                  default = nil)
-  if valid_599980 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599980
-  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599981 = validateParameter(valid_599981, JString, required = false,
+  if valid_602000 != nil:
+    section.add "X-Amz-Signature", valid_602000
+  var valid_602001 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602001 = validateParameter(valid_602001, JString, required = false,
                                  default = nil)
-  if valid_599981 != nil:
-    section.add "X-Amz-Algorithm", valid_599981
-  var valid_599982 = header.getOrDefault("X-Amz-Signature")
-  valid_599982 = validateParameter(valid_599982, JString, required = false,
+  if valid_602001 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602001
+  var valid_602002 = header.getOrDefault("X-Amz-Date")
+  valid_602002 = validateParameter(valid_602002, JString, required = false,
                                  default = nil)
-  if valid_599982 != nil:
-    section.add "X-Amz-Signature", valid_599982
-  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599983 = validateParameter(valid_599983, JString, required = false,
+  if valid_602002 != nil:
+    section.add "X-Amz-Date", valid_602002
+  var valid_602003 = header.getOrDefault("X-Amz-Credential")
+  valid_602003 = validateParameter(valid_602003, JString, required = false,
                                  default = nil)
-  if valid_599983 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599983
-  var valid_599984 = header.getOrDefault("X-Amz-Credential")
-  valid_599984 = validateParameter(valid_599984, JString, required = false,
+  if valid_602003 != nil:
+    section.add "X-Amz-Credential", valid_602003
+  var valid_602004 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602004 = validateParameter(valid_602004, JString, required = false,
                                  default = nil)
-  if valid_599984 != nil:
-    section.add "X-Amz-Credential", valid_599984
+  if valid_602004 != nil:
+    section.add "X-Amz-Security-Token", valid_602004
+  var valid_602005 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602005 = validateParameter(valid_602005, JString, required = false,
+                                 default = nil)
+  if valid_602005 != nil:
+    section.add "X-Amz-Algorithm", valid_602005
+  var valid_602006 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602006 = validateParameter(valid_602006, JString, required = false,
+                                 default = nil)
+  if valid_602006 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602006
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -344,51 +346,52 @@ proc validate_CreateCertificateAuthorityAuditReport_599975(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599986: Call_CreateCertificateAuthorityAuditReport_599974;
+proc call*(call_602008: Call_CreateCertificateAuthorityAuditReport_601996;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Creates an audit report that lists every time that your CA private key is used. The report is saved in the Amazon S3 bucket that you specify on input. The <a>IssueCertificate</a> and <a>RevokeCertificate</a> actions use the private key.
   ## 
-  let valid = call_599986.validator(path, query, header, formData, body)
-  let scheme = call_599986.pickScheme
+  let valid = call_602008.validator(path, query, header, formData, body)
+  let scheme = call_602008.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
-                         call_599986.route, valid.getOrDefault("path"),
+  let url = call_602008.url(scheme.get, call_602008.host, call_602008.base,
+                         call_602008.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599986, url, valid)
+  result = atozHook(call_602008, url, valid)
 
-proc call*(call_599987: Call_CreateCertificateAuthorityAuditReport_599974;
+proc call*(call_602009: Call_CreateCertificateAuthorityAuditReport_601996;
           body: JsonNode): Recallable =
   ## createCertificateAuthorityAuditReport
   ## Creates an audit report that lists every time that your CA private key is used. The report is saved in the Amazon S3 bucket that you specify on input. The <a>IssueCertificate</a> and <a>RevokeCertificate</a> actions use the private key.
   ##   body: JObject (required)
-  var body_599988 = newJObject()
+  var body_602010 = newJObject()
   if body != nil:
-    body_599988 = body
-  result = call_599987.call(nil, nil, nil, nil, body_599988)
+    body_602010 = body
+  result = call_602009.call(nil, nil, nil, nil, body_602010)
 
-var createCertificateAuthorityAuditReport* = Call_CreateCertificateAuthorityAuditReport_599974(
+var createCertificateAuthorityAuditReport* = Call_CreateCertificateAuthorityAuditReport_601996(
     name: "createCertificateAuthorityAuditReport", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.CreateCertificateAuthorityAuditReport",
-    validator: validate_CreateCertificateAuthorityAuditReport_599975, base: "/",
-    url: url_CreateCertificateAuthorityAuditReport_599976,
+    validator: validate_CreateCertificateAuthorityAuditReport_601997, base: "/",
+    url: url_CreateCertificateAuthorityAuditReport_601998,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreatePermission_599989 = ref object of OpenApiRestCall_599368
-proc url_CreatePermission_599991(protocol: Scheme; host: string; base: string;
+  Call_CreatePermission_602011 = ref object of OpenApiRestCall_601389
+proc url_CreatePermission_602013(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreatePermission_599990(path: JsonNode; query: JsonNode;
+proc validate_CreatePermission_602012(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Assigns permissions from a private CA to a designated AWS service. Services are specified by their service principals and can be given permission to create and retrieve certificates on a private CA. Services can also be given permission to list the active permissions that the private CA has granted. For ACM to automatically renew your private CA's certificates, you must assign all possible permissions from the CA to the ACM service principal.</p> <p>At this time, you can only assign permissions to ACM (<code>acm.amazonaws.com</code>). Permissions can be revoked with the <a>DeletePermission</a> action and listed with the <a>ListPermissions</a> action.</p>
@@ -400,57 +403,57 @@ proc validate_CreatePermission_599990(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599992 = header.getOrDefault("X-Amz-Date")
-  valid_599992 = validateParameter(valid_599992, JString, required = false,
-                                 default = nil)
-  if valid_599992 != nil:
-    section.add "X-Amz-Date", valid_599992
-  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599993 = validateParameter(valid_599993, JString, required = false,
-                                 default = nil)
-  if valid_599993 != nil:
-    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599994 = header.getOrDefault("X-Amz-Target")
-  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
+  var valid_602014 = header.getOrDefault("X-Amz-Target")
+  valid_602014 = validateParameter(valid_602014, JString, required = true, default = newJString(
       "ACMPrivateCA.CreatePermission"))
-  if valid_599994 != nil:
-    section.add "X-Amz-Target", valid_599994
-  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599995 = validateParameter(valid_599995, JString, required = false,
+  if valid_602014 != nil:
+    section.add "X-Amz-Target", valid_602014
+  var valid_602015 = header.getOrDefault("X-Amz-Signature")
+  valid_602015 = validateParameter(valid_602015, JString, required = false,
                                  default = nil)
-  if valid_599995 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599995
-  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599996 = validateParameter(valid_599996, JString, required = false,
+  if valid_602015 != nil:
+    section.add "X-Amz-Signature", valid_602015
+  var valid_602016 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602016 = validateParameter(valid_602016, JString, required = false,
                                  default = nil)
-  if valid_599996 != nil:
-    section.add "X-Amz-Algorithm", valid_599996
-  var valid_599997 = header.getOrDefault("X-Amz-Signature")
-  valid_599997 = validateParameter(valid_599997, JString, required = false,
+  if valid_602016 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602016
+  var valid_602017 = header.getOrDefault("X-Amz-Date")
+  valid_602017 = validateParameter(valid_602017, JString, required = false,
                                  default = nil)
-  if valid_599997 != nil:
-    section.add "X-Amz-Signature", valid_599997
-  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599998 = validateParameter(valid_599998, JString, required = false,
+  if valid_602017 != nil:
+    section.add "X-Amz-Date", valid_602017
+  var valid_602018 = header.getOrDefault("X-Amz-Credential")
+  valid_602018 = validateParameter(valid_602018, JString, required = false,
                                  default = nil)
-  if valid_599998 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599998
-  var valid_599999 = header.getOrDefault("X-Amz-Credential")
-  valid_599999 = validateParameter(valid_599999, JString, required = false,
+  if valid_602018 != nil:
+    section.add "X-Amz-Credential", valid_602018
+  var valid_602019 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602019 = validateParameter(valid_602019, JString, required = false,
                                  default = nil)
-  if valid_599999 != nil:
-    section.add "X-Amz-Credential", valid_599999
+  if valid_602019 != nil:
+    section.add "X-Amz-Security-Token", valid_602019
+  var valid_602020 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602020 = validateParameter(valid_602020, JString, required = false,
+                                 default = nil)
+  if valid_602020 != nil:
+    section.add "X-Amz-Algorithm", valid_602020
+  var valid_602021 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602021 = validateParameter(valid_602021, JString, required = false,
+                                 default = nil)
+  if valid_602021 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602021
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -461,47 +464,48 @@ proc validate_CreatePermission_599990(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600001: Call_CreatePermission_599989; path: JsonNode;
+proc call*(call_602023: Call_CreatePermission_602011; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Assigns permissions from a private CA to a designated AWS service. Services are specified by their service principals and can be given permission to create and retrieve certificates on a private CA. Services can also be given permission to list the active permissions that the private CA has granted. For ACM to automatically renew your private CA's certificates, you must assign all possible permissions from the CA to the ACM service principal.</p> <p>At this time, you can only assign permissions to ACM (<code>acm.amazonaws.com</code>). Permissions can be revoked with the <a>DeletePermission</a> action and listed with the <a>ListPermissions</a> action.</p>
   ## 
-  let valid = call_600001.validator(path, query, header, formData, body)
-  let scheme = call_600001.pickScheme
+  let valid = call_602023.validator(path, query, header, formData, body)
+  let scheme = call_602023.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
-                         call_600001.route, valid.getOrDefault("path"),
+  let url = call_602023.url(scheme.get, call_602023.host, call_602023.base,
+                         call_602023.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600001, url, valid)
+  result = atozHook(call_602023, url, valid)
 
-proc call*(call_600002: Call_CreatePermission_599989; body: JsonNode): Recallable =
+proc call*(call_602024: Call_CreatePermission_602011; body: JsonNode): Recallable =
   ## createPermission
   ## <p>Assigns permissions from a private CA to a designated AWS service. Services are specified by their service principals and can be given permission to create and retrieve certificates on a private CA. Services can also be given permission to list the active permissions that the private CA has granted. For ACM to automatically renew your private CA's certificates, you must assign all possible permissions from the CA to the ACM service principal.</p> <p>At this time, you can only assign permissions to ACM (<code>acm.amazonaws.com</code>). Permissions can be revoked with the <a>DeletePermission</a> action and listed with the <a>ListPermissions</a> action.</p>
   ##   body: JObject (required)
-  var body_600003 = newJObject()
+  var body_602025 = newJObject()
   if body != nil:
-    body_600003 = body
-  result = call_600002.call(nil, nil, nil, nil, body_600003)
+    body_602025 = body
+  result = call_602024.call(nil, nil, nil, nil, body_602025)
 
-var createPermission* = Call_CreatePermission_599989(name: "createPermission",
+var createPermission* = Call_CreatePermission_602011(name: "createPermission",
     meth: HttpMethod.HttpPost, host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.CreatePermission",
-    validator: validate_CreatePermission_599990, base: "/",
-    url: url_CreatePermission_599991, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreatePermission_602012, base: "/",
+    url: url_CreatePermission_602013, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteCertificateAuthority_600004 = ref object of OpenApiRestCall_599368
-proc url_DeleteCertificateAuthority_600006(protocol: Scheme; host: string;
+  Call_DeleteCertificateAuthority_602026 = ref object of OpenApiRestCall_601389
+proc url_DeleteCertificateAuthority_602028(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteCertificateAuthority_600005(path: JsonNode; query: JsonNode;
+proc validate_DeleteCertificateAuthority_602027(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a private certificate authority (CA). You must provide the Amazon Resource Name (ARN) of the private CA that you want to delete. You can find the ARN by calling the <a>ListCertificateAuthorities</a> action. </p> <note> <p>Deleting a CA will invalidate other CAs and certificates below it in your CA hierarchy.</p> </note> <p>Before you can delete a CA that you have created and activated, you must disable it. To do this, call the <a>UpdateCertificateAuthority</a> action and set the <b>CertificateAuthorityStatus</b> parameter to <code>DISABLED</code>. </p> <p>Additionally, you can delete a CA if you are waiting for it to be created (that is, the status of the CA is <code>CREATING</code>). You can also delete it if the CA has been created but you haven't yet imported the signed certificate into ACM Private CA (that is, the status of the CA is <code>PENDING_CERTIFICATE</code>). </p> <p>When you successfully call <a>DeleteCertificateAuthority</a>, the CA's status changes to <code>DELETED</code>. However, the CA won't be permanently deleted until the restoration period has passed. By default, if you do not set the <code>PermanentDeletionTimeInDays</code> parameter, the CA remains restorable for 30 days. You can set the parameter from 7 to 30 days. The <a>DescribeCertificateAuthority</a> action returns the time remaining in the restoration window of a private CA in the <code>DELETED</code> state. To restore an eligible CA, call the <a>RestoreCertificateAuthority</a> action.</p>
   ## 
@@ -512,57 +516,57 @@ proc validate_DeleteCertificateAuthority_600005(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600007 = header.getOrDefault("X-Amz-Date")
-  valid_600007 = validateParameter(valid_600007, JString, required = false,
-                                 default = nil)
-  if valid_600007 != nil:
-    section.add "X-Amz-Date", valid_600007
-  var valid_600008 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600008 = validateParameter(valid_600008, JString, required = false,
-                                 default = nil)
-  if valid_600008 != nil:
-    section.add "X-Amz-Security-Token", valid_600008
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600009 = header.getOrDefault("X-Amz-Target")
-  valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
+  var valid_602029 = header.getOrDefault("X-Amz-Target")
+  valid_602029 = validateParameter(valid_602029, JString, required = true, default = newJString(
       "ACMPrivateCA.DeleteCertificateAuthority"))
-  if valid_600009 != nil:
-    section.add "X-Amz-Target", valid_600009
-  var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600010 = validateParameter(valid_600010, JString, required = false,
+  if valid_602029 != nil:
+    section.add "X-Amz-Target", valid_602029
+  var valid_602030 = header.getOrDefault("X-Amz-Signature")
+  valid_602030 = validateParameter(valid_602030, JString, required = false,
                                  default = nil)
-  if valid_600010 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600010
-  var valid_600011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600011 = validateParameter(valid_600011, JString, required = false,
+  if valid_602030 != nil:
+    section.add "X-Amz-Signature", valid_602030
+  var valid_602031 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602031 = validateParameter(valid_602031, JString, required = false,
                                  default = nil)
-  if valid_600011 != nil:
-    section.add "X-Amz-Algorithm", valid_600011
-  var valid_600012 = header.getOrDefault("X-Amz-Signature")
-  valid_600012 = validateParameter(valid_600012, JString, required = false,
+  if valid_602031 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602031
+  var valid_602032 = header.getOrDefault("X-Amz-Date")
+  valid_602032 = validateParameter(valid_602032, JString, required = false,
                                  default = nil)
-  if valid_600012 != nil:
-    section.add "X-Amz-Signature", valid_600012
-  var valid_600013 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600013 = validateParameter(valid_600013, JString, required = false,
+  if valid_602032 != nil:
+    section.add "X-Amz-Date", valid_602032
+  var valid_602033 = header.getOrDefault("X-Amz-Credential")
+  valid_602033 = validateParameter(valid_602033, JString, required = false,
                                  default = nil)
-  if valid_600013 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600013
-  var valid_600014 = header.getOrDefault("X-Amz-Credential")
-  valid_600014 = validateParameter(valid_600014, JString, required = false,
+  if valid_602033 != nil:
+    section.add "X-Amz-Credential", valid_602033
+  var valid_602034 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602034 = validateParameter(valid_602034, JString, required = false,
                                  default = nil)
-  if valid_600014 != nil:
-    section.add "X-Amz-Credential", valid_600014
+  if valid_602034 != nil:
+    section.add "X-Amz-Security-Token", valid_602034
+  var valid_602035 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602035 = validateParameter(valid_602035, JString, required = false,
+                                 default = nil)
+  if valid_602035 != nil:
+    section.add "X-Amz-Algorithm", valid_602035
+  var valid_602036 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602036 = validateParameter(valid_602036, JString, required = false,
+                                 default = nil)
+  if valid_602036 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602036
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -573,49 +577,50 @@ proc validate_DeleteCertificateAuthority_600005(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600016: Call_DeleteCertificateAuthority_600004; path: JsonNode;
+proc call*(call_602038: Call_DeleteCertificateAuthority_602026; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a private certificate authority (CA). You must provide the Amazon Resource Name (ARN) of the private CA that you want to delete. You can find the ARN by calling the <a>ListCertificateAuthorities</a> action. </p> <note> <p>Deleting a CA will invalidate other CAs and certificates below it in your CA hierarchy.</p> </note> <p>Before you can delete a CA that you have created and activated, you must disable it. To do this, call the <a>UpdateCertificateAuthority</a> action and set the <b>CertificateAuthorityStatus</b> parameter to <code>DISABLED</code>. </p> <p>Additionally, you can delete a CA if you are waiting for it to be created (that is, the status of the CA is <code>CREATING</code>). You can also delete it if the CA has been created but you haven't yet imported the signed certificate into ACM Private CA (that is, the status of the CA is <code>PENDING_CERTIFICATE</code>). </p> <p>When you successfully call <a>DeleteCertificateAuthority</a>, the CA's status changes to <code>DELETED</code>. However, the CA won't be permanently deleted until the restoration period has passed. By default, if you do not set the <code>PermanentDeletionTimeInDays</code> parameter, the CA remains restorable for 30 days. You can set the parameter from 7 to 30 days. The <a>DescribeCertificateAuthority</a> action returns the time remaining in the restoration window of a private CA in the <code>DELETED</code> state. To restore an eligible CA, call the <a>RestoreCertificateAuthority</a> action.</p>
   ## 
-  let valid = call_600016.validator(path, query, header, formData, body)
-  let scheme = call_600016.pickScheme
+  let valid = call_602038.validator(path, query, header, formData, body)
+  let scheme = call_602038.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600016.url(scheme.get, call_600016.host, call_600016.base,
-                         call_600016.route, valid.getOrDefault("path"),
+  let url = call_602038.url(scheme.get, call_602038.host, call_602038.base,
+                         call_602038.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600016, url, valid)
+  result = atozHook(call_602038, url, valid)
 
-proc call*(call_600017: Call_DeleteCertificateAuthority_600004; body: JsonNode): Recallable =
+proc call*(call_602039: Call_DeleteCertificateAuthority_602026; body: JsonNode): Recallable =
   ## deleteCertificateAuthority
   ## <p>Deletes a private certificate authority (CA). You must provide the Amazon Resource Name (ARN) of the private CA that you want to delete. You can find the ARN by calling the <a>ListCertificateAuthorities</a> action. </p> <note> <p>Deleting a CA will invalidate other CAs and certificates below it in your CA hierarchy.</p> </note> <p>Before you can delete a CA that you have created and activated, you must disable it. To do this, call the <a>UpdateCertificateAuthority</a> action and set the <b>CertificateAuthorityStatus</b> parameter to <code>DISABLED</code>. </p> <p>Additionally, you can delete a CA if you are waiting for it to be created (that is, the status of the CA is <code>CREATING</code>). You can also delete it if the CA has been created but you haven't yet imported the signed certificate into ACM Private CA (that is, the status of the CA is <code>PENDING_CERTIFICATE</code>). </p> <p>When you successfully call <a>DeleteCertificateAuthority</a>, the CA's status changes to <code>DELETED</code>. However, the CA won't be permanently deleted until the restoration period has passed. By default, if you do not set the <code>PermanentDeletionTimeInDays</code> parameter, the CA remains restorable for 30 days. You can set the parameter from 7 to 30 days. The <a>DescribeCertificateAuthority</a> action returns the time remaining in the restoration window of a private CA in the <code>DELETED</code> state. To restore an eligible CA, call the <a>RestoreCertificateAuthority</a> action.</p>
   ##   body: JObject (required)
-  var body_600018 = newJObject()
+  var body_602040 = newJObject()
   if body != nil:
-    body_600018 = body
-  result = call_600017.call(nil, nil, nil, nil, body_600018)
+    body_602040 = body
+  result = call_602039.call(nil, nil, nil, nil, body_602040)
 
-var deleteCertificateAuthority* = Call_DeleteCertificateAuthority_600004(
+var deleteCertificateAuthority* = Call_DeleteCertificateAuthority_602026(
     name: "deleteCertificateAuthority", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.DeleteCertificateAuthority",
-    validator: validate_DeleteCertificateAuthority_600005, base: "/",
-    url: url_DeleteCertificateAuthority_600006,
+    validator: validate_DeleteCertificateAuthority_602027, base: "/",
+    url: url_DeleteCertificateAuthority_602028,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeletePermission_600019 = ref object of OpenApiRestCall_599368
-proc url_DeletePermission_600021(protocol: Scheme; host: string; base: string;
+  Call_DeletePermission_602041 = ref object of OpenApiRestCall_601389
+proc url_DeletePermission_602043(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeletePermission_600020(path: JsonNode; query: JsonNode;
+proc validate_DeletePermission_602042(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Revokes permissions that a private CA assigned to a designated AWS service. Permissions can be created with the <a>CreatePermission</a> action and listed with the <a>ListPermissions</a> action. 
@@ -627,57 +632,57 @@ proc validate_DeletePermission_600020(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600022 = header.getOrDefault("X-Amz-Date")
-  valid_600022 = validateParameter(valid_600022, JString, required = false,
-                                 default = nil)
-  if valid_600022 != nil:
-    section.add "X-Amz-Date", valid_600022
-  var valid_600023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600023 = validateParameter(valid_600023, JString, required = false,
-                                 default = nil)
-  if valid_600023 != nil:
-    section.add "X-Amz-Security-Token", valid_600023
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600024 = header.getOrDefault("X-Amz-Target")
-  valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
+  var valid_602044 = header.getOrDefault("X-Amz-Target")
+  valid_602044 = validateParameter(valid_602044, JString, required = true, default = newJString(
       "ACMPrivateCA.DeletePermission"))
-  if valid_600024 != nil:
-    section.add "X-Amz-Target", valid_600024
-  var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600025 = validateParameter(valid_600025, JString, required = false,
+  if valid_602044 != nil:
+    section.add "X-Amz-Target", valid_602044
+  var valid_602045 = header.getOrDefault("X-Amz-Signature")
+  valid_602045 = validateParameter(valid_602045, JString, required = false,
                                  default = nil)
-  if valid_600025 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600025
-  var valid_600026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600026 = validateParameter(valid_600026, JString, required = false,
+  if valid_602045 != nil:
+    section.add "X-Amz-Signature", valid_602045
+  var valid_602046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602046 = validateParameter(valid_602046, JString, required = false,
                                  default = nil)
-  if valid_600026 != nil:
-    section.add "X-Amz-Algorithm", valid_600026
-  var valid_600027 = header.getOrDefault("X-Amz-Signature")
-  valid_600027 = validateParameter(valid_600027, JString, required = false,
+  if valid_602046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602046
+  var valid_602047 = header.getOrDefault("X-Amz-Date")
+  valid_602047 = validateParameter(valid_602047, JString, required = false,
                                  default = nil)
-  if valid_600027 != nil:
-    section.add "X-Amz-Signature", valid_600027
-  var valid_600028 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600028 = validateParameter(valid_600028, JString, required = false,
+  if valid_602047 != nil:
+    section.add "X-Amz-Date", valid_602047
+  var valid_602048 = header.getOrDefault("X-Amz-Credential")
+  valid_602048 = validateParameter(valid_602048, JString, required = false,
                                  default = nil)
-  if valid_600028 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600028
-  var valid_600029 = header.getOrDefault("X-Amz-Credential")
-  valid_600029 = validateParameter(valid_600029, JString, required = false,
+  if valid_602048 != nil:
+    section.add "X-Amz-Credential", valid_602048
+  var valid_602049 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602049 = validateParameter(valid_602049, JString, required = false,
                                  default = nil)
-  if valid_600029 != nil:
-    section.add "X-Amz-Credential", valid_600029
+  if valid_602049 != nil:
+    section.add "X-Amz-Security-Token", valid_602049
+  var valid_602050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602050 = validateParameter(valid_602050, JString, required = false,
+                                 default = nil)
+  if valid_602050 != nil:
+    section.add "X-Amz-Algorithm", valid_602050
+  var valid_602051 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602051 = validateParameter(valid_602051, JString, required = false,
+                                 default = nil)
+  if valid_602051 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602051
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -688,47 +693,48 @@ proc validate_DeletePermission_600020(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600031: Call_DeletePermission_600019; path: JsonNode;
+proc call*(call_602053: Call_DeletePermission_602041; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Revokes permissions that a private CA assigned to a designated AWS service. Permissions can be created with the <a>CreatePermission</a> action and listed with the <a>ListPermissions</a> action. 
   ## 
-  let valid = call_600031.validator(path, query, header, formData, body)
-  let scheme = call_600031.pickScheme
+  let valid = call_602053.validator(path, query, header, formData, body)
+  let scheme = call_602053.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600031.url(scheme.get, call_600031.host, call_600031.base,
-                         call_600031.route, valid.getOrDefault("path"),
+  let url = call_602053.url(scheme.get, call_602053.host, call_602053.base,
+                         call_602053.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600031, url, valid)
+  result = atozHook(call_602053, url, valid)
 
-proc call*(call_600032: Call_DeletePermission_600019; body: JsonNode): Recallable =
+proc call*(call_602054: Call_DeletePermission_602041; body: JsonNode): Recallable =
   ## deletePermission
   ## Revokes permissions that a private CA assigned to a designated AWS service. Permissions can be created with the <a>CreatePermission</a> action and listed with the <a>ListPermissions</a> action. 
   ##   body: JObject (required)
-  var body_600033 = newJObject()
+  var body_602055 = newJObject()
   if body != nil:
-    body_600033 = body
-  result = call_600032.call(nil, nil, nil, nil, body_600033)
+    body_602055 = body
+  result = call_602054.call(nil, nil, nil, nil, body_602055)
 
-var deletePermission* = Call_DeletePermission_600019(name: "deletePermission",
+var deletePermission* = Call_DeletePermission_602041(name: "deletePermission",
     meth: HttpMethod.HttpPost, host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.DeletePermission",
-    validator: validate_DeletePermission_600020, base: "/",
-    url: url_DeletePermission_600021, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeletePermission_602042, base: "/",
+    url: url_DeletePermission_602043, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCertificateAuthority_600034 = ref object of OpenApiRestCall_599368
-proc url_DescribeCertificateAuthority_600036(protocol: Scheme; host: string;
+  Call_DescribeCertificateAuthority_602056 = ref object of OpenApiRestCall_601389
+proc url_DescribeCertificateAuthority_602058(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeCertificateAuthority_600035(path: JsonNode; query: JsonNode;
+proc validate_DescribeCertificateAuthority_602057(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists information about your private certificate authority (CA). You specify the private CA on input by its ARN (Amazon Resource Name). The output contains the status of your CA. This can be any of the following: </p> <ul> <li> <p> <code>CREATING</code> - ACM Private CA is creating your private certificate authority.</p> </li> <li> <p> <code>PENDING_CERTIFICATE</code> - The certificate is pending. You must use your ACM Private CA-hosted or on-premises root or subordinate CA to sign your private CA CSR and then import it into PCA. </p> </li> <li> <p> <code>ACTIVE</code> - Your private CA is active.</p> </li> <li> <p> <code>DISABLED</code> - Your private CA has been disabled.</p> </li> <li> <p> <code>EXPIRED</code> - Your private CA certificate has expired.</p> </li> <li> <p> <code>FAILED</code> - Your private CA has failed. Your CA can fail because of problems such a network outage or backend AWS failure or other errors. A failed CA can never return to the pending state. You must create a new CA. </p> </li> <li> <p> <code>DELETED</code> - Your private CA is within the restoration period, after which it is permanently deleted. The length of time remaining in the CA's restoration period is also included in this action's output.</p> </li> </ul>
   ## 
@@ -739,57 +745,57 @@ proc validate_DescribeCertificateAuthority_600035(path: JsonNode; query: JsonNod
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600037 = header.getOrDefault("X-Amz-Date")
-  valid_600037 = validateParameter(valid_600037, JString, required = false,
-                                 default = nil)
-  if valid_600037 != nil:
-    section.add "X-Amz-Date", valid_600037
-  var valid_600038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600038 = validateParameter(valid_600038, JString, required = false,
-                                 default = nil)
-  if valid_600038 != nil:
-    section.add "X-Amz-Security-Token", valid_600038
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600039 = header.getOrDefault("X-Amz-Target")
-  valid_600039 = validateParameter(valid_600039, JString, required = true, default = newJString(
+  var valid_602059 = header.getOrDefault("X-Amz-Target")
+  valid_602059 = validateParameter(valid_602059, JString, required = true, default = newJString(
       "ACMPrivateCA.DescribeCertificateAuthority"))
-  if valid_600039 != nil:
-    section.add "X-Amz-Target", valid_600039
-  var valid_600040 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600040 = validateParameter(valid_600040, JString, required = false,
+  if valid_602059 != nil:
+    section.add "X-Amz-Target", valid_602059
+  var valid_602060 = header.getOrDefault("X-Amz-Signature")
+  valid_602060 = validateParameter(valid_602060, JString, required = false,
                                  default = nil)
-  if valid_600040 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600040
-  var valid_600041 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600041 = validateParameter(valid_600041, JString, required = false,
+  if valid_602060 != nil:
+    section.add "X-Amz-Signature", valid_602060
+  var valid_602061 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602061 = validateParameter(valid_602061, JString, required = false,
                                  default = nil)
-  if valid_600041 != nil:
-    section.add "X-Amz-Algorithm", valid_600041
-  var valid_600042 = header.getOrDefault("X-Amz-Signature")
-  valid_600042 = validateParameter(valid_600042, JString, required = false,
+  if valid_602061 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602061
+  var valid_602062 = header.getOrDefault("X-Amz-Date")
+  valid_602062 = validateParameter(valid_602062, JString, required = false,
                                  default = nil)
-  if valid_600042 != nil:
-    section.add "X-Amz-Signature", valid_600042
-  var valid_600043 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600043 = validateParameter(valid_600043, JString, required = false,
+  if valid_602062 != nil:
+    section.add "X-Amz-Date", valid_602062
+  var valid_602063 = header.getOrDefault("X-Amz-Credential")
+  valid_602063 = validateParameter(valid_602063, JString, required = false,
                                  default = nil)
-  if valid_600043 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600043
-  var valid_600044 = header.getOrDefault("X-Amz-Credential")
-  valid_600044 = validateParameter(valid_600044, JString, required = false,
+  if valid_602063 != nil:
+    section.add "X-Amz-Credential", valid_602063
+  var valid_602064 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602064 = validateParameter(valid_602064, JString, required = false,
                                  default = nil)
-  if valid_600044 != nil:
-    section.add "X-Amz-Credential", valid_600044
+  if valid_602064 != nil:
+    section.add "X-Amz-Security-Token", valid_602064
+  var valid_602065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602065 = validateParameter(valid_602065, JString, required = false,
+                                 default = nil)
+  if valid_602065 != nil:
+    section.add "X-Amz-Algorithm", valid_602065
+  var valid_602066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602066 = validateParameter(valid_602066, JString, required = false,
+                                 default = nil)
+  if valid_602066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602066
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -800,49 +806,50 @@ proc validate_DescribeCertificateAuthority_600035(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_600046: Call_DescribeCertificateAuthority_600034; path: JsonNode;
+proc call*(call_602068: Call_DescribeCertificateAuthority_602056; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists information about your private certificate authority (CA). You specify the private CA on input by its ARN (Amazon Resource Name). The output contains the status of your CA. This can be any of the following: </p> <ul> <li> <p> <code>CREATING</code> - ACM Private CA is creating your private certificate authority.</p> </li> <li> <p> <code>PENDING_CERTIFICATE</code> - The certificate is pending. You must use your ACM Private CA-hosted or on-premises root or subordinate CA to sign your private CA CSR and then import it into PCA. </p> </li> <li> <p> <code>ACTIVE</code> - Your private CA is active.</p> </li> <li> <p> <code>DISABLED</code> - Your private CA has been disabled.</p> </li> <li> <p> <code>EXPIRED</code> - Your private CA certificate has expired.</p> </li> <li> <p> <code>FAILED</code> - Your private CA has failed. Your CA can fail because of problems such a network outage or backend AWS failure or other errors. A failed CA can never return to the pending state. You must create a new CA. </p> </li> <li> <p> <code>DELETED</code> - Your private CA is within the restoration period, after which it is permanently deleted. The length of time remaining in the CA's restoration period is also included in this action's output.</p> </li> </ul>
   ## 
-  let valid = call_600046.validator(path, query, header, formData, body)
-  let scheme = call_600046.pickScheme
+  let valid = call_602068.validator(path, query, header, formData, body)
+  let scheme = call_602068.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600046.url(scheme.get, call_600046.host, call_600046.base,
-                         call_600046.route, valid.getOrDefault("path"),
+  let url = call_602068.url(scheme.get, call_602068.host, call_602068.base,
+                         call_602068.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600046, url, valid)
+  result = atozHook(call_602068, url, valid)
 
-proc call*(call_600047: Call_DescribeCertificateAuthority_600034; body: JsonNode): Recallable =
+proc call*(call_602069: Call_DescribeCertificateAuthority_602056; body: JsonNode): Recallable =
   ## describeCertificateAuthority
   ## <p>Lists information about your private certificate authority (CA). You specify the private CA on input by its ARN (Amazon Resource Name). The output contains the status of your CA. This can be any of the following: </p> <ul> <li> <p> <code>CREATING</code> - ACM Private CA is creating your private certificate authority.</p> </li> <li> <p> <code>PENDING_CERTIFICATE</code> - The certificate is pending. You must use your ACM Private CA-hosted or on-premises root or subordinate CA to sign your private CA CSR and then import it into PCA. </p> </li> <li> <p> <code>ACTIVE</code> - Your private CA is active.</p> </li> <li> <p> <code>DISABLED</code> - Your private CA has been disabled.</p> </li> <li> <p> <code>EXPIRED</code> - Your private CA certificate has expired.</p> </li> <li> <p> <code>FAILED</code> - Your private CA has failed. Your CA can fail because of problems such a network outage or backend AWS failure or other errors. A failed CA can never return to the pending state. You must create a new CA. </p> </li> <li> <p> <code>DELETED</code> - Your private CA is within the restoration period, after which it is permanently deleted. The length of time remaining in the CA's restoration period is also included in this action's output.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_600048 = newJObject()
+  var body_602070 = newJObject()
   if body != nil:
-    body_600048 = body
-  result = call_600047.call(nil, nil, nil, nil, body_600048)
+    body_602070 = body
+  result = call_602069.call(nil, nil, nil, nil, body_602070)
 
-var describeCertificateAuthority* = Call_DescribeCertificateAuthority_600034(
+var describeCertificateAuthority* = Call_DescribeCertificateAuthority_602056(
     name: "describeCertificateAuthority", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.DescribeCertificateAuthority",
-    validator: validate_DescribeCertificateAuthority_600035, base: "/",
-    url: url_DescribeCertificateAuthority_600036,
+    validator: validate_DescribeCertificateAuthority_602057, base: "/",
+    url: url_DescribeCertificateAuthority_602058,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCertificateAuthorityAuditReport_600049 = ref object of OpenApiRestCall_599368
-proc url_DescribeCertificateAuthorityAuditReport_600051(protocol: Scheme;
+  Call_DescribeCertificateAuthorityAuditReport_602071 = ref object of OpenApiRestCall_601389
+proc url_DescribeCertificateAuthorityAuditReport_602073(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeCertificateAuthorityAuditReport_600050(path: JsonNode;
+proc validate_DescribeCertificateAuthorityAuditReport_602072(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists information about a specific audit report created by calling the <a>CreateCertificateAuthorityAuditReport</a> action. Audit information is created every time the certificate authority (CA) private key is used. The private key is used when you call the <a>IssueCertificate</a> action or the <a>RevokeCertificate</a> action. 
   ## 
@@ -853,57 +860,57 @@ proc validate_DescribeCertificateAuthorityAuditReport_600050(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600052 = header.getOrDefault("X-Amz-Date")
-  valid_600052 = validateParameter(valid_600052, JString, required = false,
-                                 default = nil)
-  if valid_600052 != nil:
-    section.add "X-Amz-Date", valid_600052
-  var valid_600053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600053 = validateParameter(valid_600053, JString, required = false,
-                                 default = nil)
-  if valid_600053 != nil:
-    section.add "X-Amz-Security-Token", valid_600053
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600054 = header.getOrDefault("X-Amz-Target")
-  valid_600054 = validateParameter(valid_600054, JString, required = true, default = newJString(
+  var valid_602074 = header.getOrDefault("X-Amz-Target")
+  valid_602074 = validateParameter(valid_602074, JString, required = true, default = newJString(
       "ACMPrivateCA.DescribeCertificateAuthorityAuditReport"))
-  if valid_600054 != nil:
-    section.add "X-Amz-Target", valid_600054
-  var valid_600055 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600055 = validateParameter(valid_600055, JString, required = false,
+  if valid_602074 != nil:
+    section.add "X-Amz-Target", valid_602074
+  var valid_602075 = header.getOrDefault("X-Amz-Signature")
+  valid_602075 = validateParameter(valid_602075, JString, required = false,
                                  default = nil)
-  if valid_600055 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600055
-  var valid_600056 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600056 = validateParameter(valid_600056, JString, required = false,
+  if valid_602075 != nil:
+    section.add "X-Amz-Signature", valid_602075
+  var valid_602076 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602076 = validateParameter(valid_602076, JString, required = false,
                                  default = nil)
-  if valid_600056 != nil:
-    section.add "X-Amz-Algorithm", valid_600056
-  var valid_600057 = header.getOrDefault("X-Amz-Signature")
-  valid_600057 = validateParameter(valid_600057, JString, required = false,
+  if valid_602076 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602076
+  var valid_602077 = header.getOrDefault("X-Amz-Date")
+  valid_602077 = validateParameter(valid_602077, JString, required = false,
                                  default = nil)
-  if valid_600057 != nil:
-    section.add "X-Amz-Signature", valid_600057
-  var valid_600058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600058 = validateParameter(valid_600058, JString, required = false,
+  if valid_602077 != nil:
+    section.add "X-Amz-Date", valid_602077
+  var valid_602078 = header.getOrDefault("X-Amz-Credential")
+  valid_602078 = validateParameter(valid_602078, JString, required = false,
                                  default = nil)
-  if valid_600058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600058
-  var valid_600059 = header.getOrDefault("X-Amz-Credential")
-  valid_600059 = validateParameter(valid_600059, JString, required = false,
+  if valid_602078 != nil:
+    section.add "X-Amz-Credential", valid_602078
+  var valid_602079 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602079 = validateParameter(valid_602079, JString, required = false,
                                  default = nil)
-  if valid_600059 != nil:
-    section.add "X-Amz-Credential", valid_600059
+  if valid_602079 != nil:
+    section.add "X-Amz-Security-Token", valid_602079
+  var valid_602080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602080 = validateParameter(valid_602080, JString, required = false,
+                                 default = nil)
+  if valid_602080 != nil:
+    section.add "X-Amz-Algorithm", valid_602080
+  var valid_602081 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602081 = validateParameter(valid_602081, JString, required = false,
+                                 default = nil)
+  if valid_602081 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602081
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -914,50 +921,51 @@ proc validate_DescribeCertificateAuthorityAuditReport_600050(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600061: Call_DescribeCertificateAuthorityAuditReport_600049;
+proc call*(call_602083: Call_DescribeCertificateAuthorityAuditReport_602071;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Lists information about a specific audit report created by calling the <a>CreateCertificateAuthorityAuditReport</a> action. Audit information is created every time the certificate authority (CA) private key is used. The private key is used when you call the <a>IssueCertificate</a> action or the <a>RevokeCertificate</a> action. 
   ## 
-  let valid = call_600061.validator(path, query, header, formData, body)
-  let scheme = call_600061.pickScheme
+  let valid = call_602083.validator(path, query, header, formData, body)
+  let scheme = call_602083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600061.url(scheme.get, call_600061.host, call_600061.base,
-                         call_600061.route, valid.getOrDefault("path"),
+  let url = call_602083.url(scheme.get, call_602083.host, call_602083.base,
+                         call_602083.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600061, url, valid)
+  result = atozHook(call_602083, url, valid)
 
-proc call*(call_600062: Call_DescribeCertificateAuthorityAuditReport_600049;
+proc call*(call_602084: Call_DescribeCertificateAuthorityAuditReport_602071;
           body: JsonNode): Recallable =
   ## describeCertificateAuthorityAuditReport
   ## Lists information about a specific audit report created by calling the <a>CreateCertificateAuthorityAuditReport</a> action. Audit information is created every time the certificate authority (CA) private key is used. The private key is used when you call the <a>IssueCertificate</a> action or the <a>RevokeCertificate</a> action. 
   ##   body: JObject (required)
-  var body_600063 = newJObject()
+  var body_602085 = newJObject()
   if body != nil:
-    body_600063 = body
-  result = call_600062.call(nil, nil, nil, nil, body_600063)
+    body_602085 = body
+  result = call_602084.call(nil, nil, nil, nil, body_602085)
 
-var describeCertificateAuthorityAuditReport* = Call_DescribeCertificateAuthorityAuditReport_600049(
+var describeCertificateAuthorityAuditReport* = Call_DescribeCertificateAuthorityAuditReport_602071(
     name: "describeCertificateAuthorityAuditReport", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com", route: "/#X-Amz-Target=ACMPrivateCA.DescribeCertificateAuthorityAuditReport",
-    validator: validate_DescribeCertificateAuthorityAuditReport_600050, base: "/",
-    url: url_DescribeCertificateAuthorityAuditReport_600051,
+    validator: validate_DescribeCertificateAuthorityAuditReport_602072, base: "/",
+    url: url_DescribeCertificateAuthorityAuditReport_602073,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCertificate_600064 = ref object of OpenApiRestCall_599368
-proc url_GetCertificate_600066(protocol: Scheme; host: string; base: string;
+  Call_GetCertificate_602086 = ref object of OpenApiRestCall_601389
+proc url_GetCertificate_602088(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCertificate_600065(path: JsonNode; query: JsonNode;
+proc validate_GetCertificate_602087(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Retrieves a certificate from your private CA. The ARN of the certificate is returned when you call the <a>IssueCertificate</a> action. You must specify both the ARN of your private CA and the ARN of the issued certificate when calling the <b>GetCertificate</b> action. You can retrieve the certificate if it is in the <b>ISSUED</b> state. You can call the <a>CreateCertificateAuthorityAuditReport</a> action to create a report that contains information about all of the certificates issued and revoked by your private CA. 
@@ -969,57 +977,57 @@ proc validate_GetCertificate_600065(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600067 = header.getOrDefault("X-Amz-Date")
-  valid_600067 = validateParameter(valid_600067, JString, required = false,
-                                 default = nil)
-  if valid_600067 != nil:
-    section.add "X-Amz-Date", valid_600067
-  var valid_600068 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600068 = validateParameter(valid_600068, JString, required = false,
-                                 default = nil)
-  if valid_600068 != nil:
-    section.add "X-Amz-Security-Token", valid_600068
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600069 = header.getOrDefault("X-Amz-Target")
-  valid_600069 = validateParameter(valid_600069, JString, required = true, default = newJString(
+  var valid_602089 = header.getOrDefault("X-Amz-Target")
+  valid_602089 = validateParameter(valid_602089, JString, required = true, default = newJString(
       "ACMPrivateCA.GetCertificate"))
-  if valid_600069 != nil:
-    section.add "X-Amz-Target", valid_600069
-  var valid_600070 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600070 = validateParameter(valid_600070, JString, required = false,
+  if valid_602089 != nil:
+    section.add "X-Amz-Target", valid_602089
+  var valid_602090 = header.getOrDefault("X-Amz-Signature")
+  valid_602090 = validateParameter(valid_602090, JString, required = false,
                                  default = nil)
-  if valid_600070 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600070
-  var valid_600071 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600071 = validateParameter(valid_600071, JString, required = false,
+  if valid_602090 != nil:
+    section.add "X-Amz-Signature", valid_602090
+  var valid_602091 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602091 = validateParameter(valid_602091, JString, required = false,
                                  default = nil)
-  if valid_600071 != nil:
-    section.add "X-Amz-Algorithm", valid_600071
-  var valid_600072 = header.getOrDefault("X-Amz-Signature")
-  valid_600072 = validateParameter(valid_600072, JString, required = false,
+  if valid_602091 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602091
+  var valid_602092 = header.getOrDefault("X-Amz-Date")
+  valid_602092 = validateParameter(valid_602092, JString, required = false,
                                  default = nil)
-  if valid_600072 != nil:
-    section.add "X-Amz-Signature", valid_600072
-  var valid_600073 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600073 = validateParameter(valid_600073, JString, required = false,
+  if valid_602092 != nil:
+    section.add "X-Amz-Date", valid_602092
+  var valid_602093 = header.getOrDefault("X-Amz-Credential")
+  valid_602093 = validateParameter(valid_602093, JString, required = false,
                                  default = nil)
-  if valid_600073 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600073
-  var valid_600074 = header.getOrDefault("X-Amz-Credential")
-  valid_600074 = validateParameter(valid_600074, JString, required = false,
+  if valid_602093 != nil:
+    section.add "X-Amz-Credential", valid_602093
+  var valid_602094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602094 = validateParameter(valid_602094, JString, required = false,
                                  default = nil)
-  if valid_600074 != nil:
-    section.add "X-Amz-Credential", valid_600074
+  if valid_602094 != nil:
+    section.add "X-Amz-Security-Token", valid_602094
+  var valid_602095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602095 = validateParameter(valid_602095, JString, required = false,
+                                 default = nil)
+  if valid_602095 != nil:
+    section.add "X-Amz-Algorithm", valid_602095
+  var valid_602096 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602096 = validateParameter(valid_602096, JString, required = false,
+                                 default = nil)
+  if valid_602096 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602096
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1030,47 +1038,48 @@ proc validate_GetCertificate_600065(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600076: Call_GetCertificate_600064; path: JsonNode; query: JsonNode;
+proc call*(call_602098: Call_GetCertificate_602086; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a certificate from your private CA. The ARN of the certificate is returned when you call the <a>IssueCertificate</a> action. You must specify both the ARN of your private CA and the ARN of the issued certificate when calling the <b>GetCertificate</b> action. You can retrieve the certificate if it is in the <b>ISSUED</b> state. You can call the <a>CreateCertificateAuthorityAuditReport</a> action to create a report that contains information about all of the certificates issued and revoked by your private CA. 
   ## 
-  let valid = call_600076.validator(path, query, header, formData, body)
-  let scheme = call_600076.pickScheme
+  let valid = call_602098.validator(path, query, header, formData, body)
+  let scheme = call_602098.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600076.url(scheme.get, call_600076.host, call_600076.base,
-                         call_600076.route, valid.getOrDefault("path"),
+  let url = call_602098.url(scheme.get, call_602098.host, call_602098.base,
+                         call_602098.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600076, url, valid)
+  result = atozHook(call_602098, url, valid)
 
-proc call*(call_600077: Call_GetCertificate_600064; body: JsonNode): Recallable =
+proc call*(call_602099: Call_GetCertificate_602086; body: JsonNode): Recallable =
   ## getCertificate
   ## Retrieves a certificate from your private CA. The ARN of the certificate is returned when you call the <a>IssueCertificate</a> action. You must specify both the ARN of your private CA and the ARN of the issued certificate when calling the <b>GetCertificate</b> action. You can retrieve the certificate if it is in the <b>ISSUED</b> state. You can call the <a>CreateCertificateAuthorityAuditReport</a> action to create a report that contains information about all of the certificates issued and revoked by your private CA. 
   ##   body: JObject (required)
-  var body_600078 = newJObject()
+  var body_602100 = newJObject()
   if body != nil:
-    body_600078 = body
-  result = call_600077.call(nil, nil, nil, nil, body_600078)
+    body_602100 = body
+  result = call_602099.call(nil, nil, nil, nil, body_602100)
 
-var getCertificate* = Call_GetCertificate_600064(name: "getCertificate",
+var getCertificate* = Call_GetCertificate_602086(name: "getCertificate",
     meth: HttpMethod.HttpPost, host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.GetCertificate",
-    validator: validate_GetCertificate_600065, base: "/", url: url_GetCertificate_600066,
+    validator: validate_GetCertificate_602087, base: "/", url: url_GetCertificate_602088,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCertificateAuthorityCertificate_600079 = ref object of OpenApiRestCall_599368
-proc url_GetCertificateAuthorityCertificate_600081(protocol: Scheme; host: string;
+  Call_GetCertificateAuthorityCertificate_602101 = ref object of OpenApiRestCall_601389
+proc url_GetCertificateAuthorityCertificate_602103(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCertificateAuthorityCertificate_600080(path: JsonNode;
+proc validate_GetCertificateAuthorityCertificate_602102(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the certificate and certificate chain for your private certificate authority (CA). Both the certificate and the chain are base64 PEM-encoded. The chain does not include the CA certificate. Each certificate in the chain signs the one before it. 
   ## 
@@ -1081,57 +1090,57 @@ proc validate_GetCertificateAuthorityCertificate_600080(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600082 = header.getOrDefault("X-Amz-Date")
-  valid_600082 = validateParameter(valid_600082, JString, required = false,
-                                 default = nil)
-  if valid_600082 != nil:
-    section.add "X-Amz-Date", valid_600082
-  var valid_600083 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600083 = validateParameter(valid_600083, JString, required = false,
-                                 default = nil)
-  if valid_600083 != nil:
-    section.add "X-Amz-Security-Token", valid_600083
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600084 = header.getOrDefault("X-Amz-Target")
-  valid_600084 = validateParameter(valid_600084, JString, required = true, default = newJString(
+  var valid_602104 = header.getOrDefault("X-Amz-Target")
+  valid_602104 = validateParameter(valid_602104, JString, required = true, default = newJString(
       "ACMPrivateCA.GetCertificateAuthorityCertificate"))
-  if valid_600084 != nil:
-    section.add "X-Amz-Target", valid_600084
-  var valid_600085 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600085 = validateParameter(valid_600085, JString, required = false,
+  if valid_602104 != nil:
+    section.add "X-Amz-Target", valid_602104
+  var valid_602105 = header.getOrDefault("X-Amz-Signature")
+  valid_602105 = validateParameter(valid_602105, JString, required = false,
                                  default = nil)
-  if valid_600085 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600085
-  var valid_600086 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600086 = validateParameter(valid_600086, JString, required = false,
+  if valid_602105 != nil:
+    section.add "X-Amz-Signature", valid_602105
+  var valid_602106 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602106 = validateParameter(valid_602106, JString, required = false,
                                  default = nil)
-  if valid_600086 != nil:
-    section.add "X-Amz-Algorithm", valid_600086
-  var valid_600087 = header.getOrDefault("X-Amz-Signature")
-  valid_600087 = validateParameter(valid_600087, JString, required = false,
+  if valid_602106 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602106
+  var valid_602107 = header.getOrDefault("X-Amz-Date")
+  valid_602107 = validateParameter(valid_602107, JString, required = false,
                                  default = nil)
-  if valid_600087 != nil:
-    section.add "X-Amz-Signature", valid_600087
-  var valid_600088 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600088 = validateParameter(valid_600088, JString, required = false,
+  if valid_602107 != nil:
+    section.add "X-Amz-Date", valid_602107
+  var valid_602108 = header.getOrDefault("X-Amz-Credential")
+  valid_602108 = validateParameter(valid_602108, JString, required = false,
                                  default = nil)
-  if valid_600088 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600088
-  var valid_600089 = header.getOrDefault("X-Amz-Credential")
-  valid_600089 = validateParameter(valid_600089, JString, required = false,
+  if valid_602108 != nil:
+    section.add "X-Amz-Credential", valid_602108
+  var valid_602109 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602109 = validateParameter(valid_602109, JString, required = false,
                                  default = nil)
-  if valid_600089 != nil:
-    section.add "X-Amz-Credential", valid_600089
+  if valid_602109 != nil:
+    section.add "X-Amz-Security-Token", valid_602109
+  var valid_602110 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602110 = validateParameter(valid_602110, JString, required = false,
+                                 default = nil)
+  if valid_602110 != nil:
+    section.add "X-Amz-Algorithm", valid_602110
+  var valid_602111 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602111 = validateParameter(valid_602111, JString, required = false,
+                                 default = nil)
+  if valid_602111 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602111
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1142,51 +1151,52 @@ proc validate_GetCertificateAuthorityCertificate_600080(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600091: Call_GetCertificateAuthorityCertificate_600079;
+proc call*(call_602113: Call_GetCertificateAuthorityCertificate_602101;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Retrieves the certificate and certificate chain for your private certificate authority (CA). Both the certificate and the chain are base64 PEM-encoded. The chain does not include the CA certificate. Each certificate in the chain signs the one before it. 
   ## 
-  let valid = call_600091.validator(path, query, header, formData, body)
-  let scheme = call_600091.pickScheme
+  let valid = call_602113.validator(path, query, header, formData, body)
+  let scheme = call_602113.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600091.url(scheme.get, call_600091.host, call_600091.base,
-                         call_600091.route, valid.getOrDefault("path"),
+  let url = call_602113.url(scheme.get, call_602113.host, call_602113.base,
+                         call_602113.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600091, url, valid)
+  result = atozHook(call_602113, url, valid)
 
-proc call*(call_600092: Call_GetCertificateAuthorityCertificate_600079;
+proc call*(call_602114: Call_GetCertificateAuthorityCertificate_602101;
           body: JsonNode): Recallable =
   ## getCertificateAuthorityCertificate
   ## Retrieves the certificate and certificate chain for your private certificate authority (CA). Both the certificate and the chain are base64 PEM-encoded. The chain does not include the CA certificate. Each certificate in the chain signs the one before it. 
   ##   body: JObject (required)
-  var body_600093 = newJObject()
+  var body_602115 = newJObject()
   if body != nil:
-    body_600093 = body
-  result = call_600092.call(nil, nil, nil, nil, body_600093)
+    body_602115 = body
+  result = call_602114.call(nil, nil, nil, nil, body_602115)
 
-var getCertificateAuthorityCertificate* = Call_GetCertificateAuthorityCertificate_600079(
+var getCertificateAuthorityCertificate* = Call_GetCertificateAuthorityCertificate_602101(
     name: "getCertificateAuthorityCertificate", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.GetCertificateAuthorityCertificate",
-    validator: validate_GetCertificateAuthorityCertificate_600080, base: "/",
-    url: url_GetCertificateAuthorityCertificate_600081,
+    validator: validate_GetCertificateAuthorityCertificate_602102, base: "/",
+    url: url_GetCertificateAuthorityCertificate_602103,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCertificateAuthorityCsr_600094 = ref object of OpenApiRestCall_599368
-proc url_GetCertificateAuthorityCsr_600096(protocol: Scheme; host: string;
+  Call_GetCertificateAuthorityCsr_602116 = ref object of OpenApiRestCall_601389
+proc url_GetCertificateAuthorityCsr_602118(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCertificateAuthorityCsr_600095(path: JsonNode; query: JsonNode;
+proc validate_GetCertificateAuthorityCsr_602117(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the certificate signing request (CSR) for your private certificate authority (CA). The CSR is created when you call the <a>CreateCertificateAuthority</a> action. Sign the CSR with your ACM Private CA-hosted or on-premises root or subordinate CA. Then import the signed certificate back into ACM Private CA by calling the <a>ImportCertificateAuthorityCertificate</a> action. The CSR is returned as a base64 PEM-encoded string. 
   ## 
@@ -1197,57 +1207,57 @@ proc validate_GetCertificateAuthorityCsr_600095(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600097 = header.getOrDefault("X-Amz-Date")
-  valid_600097 = validateParameter(valid_600097, JString, required = false,
-                                 default = nil)
-  if valid_600097 != nil:
-    section.add "X-Amz-Date", valid_600097
-  var valid_600098 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600098 = validateParameter(valid_600098, JString, required = false,
-                                 default = nil)
-  if valid_600098 != nil:
-    section.add "X-Amz-Security-Token", valid_600098
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600099 = header.getOrDefault("X-Amz-Target")
-  valid_600099 = validateParameter(valid_600099, JString, required = true, default = newJString(
+  var valid_602119 = header.getOrDefault("X-Amz-Target")
+  valid_602119 = validateParameter(valid_602119, JString, required = true, default = newJString(
       "ACMPrivateCA.GetCertificateAuthorityCsr"))
-  if valid_600099 != nil:
-    section.add "X-Amz-Target", valid_600099
-  var valid_600100 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600100 = validateParameter(valid_600100, JString, required = false,
+  if valid_602119 != nil:
+    section.add "X-Amz-Target", valid_602119
+  var valid_602120 = header.getOrDefault("X-Amz-Signature")
+  valid_602120 = validateParameter(valid_602120, JString, required = false,
                                  default = nil)
-  if valid_600100 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600100
-  var valid_600101 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600101 = validateParameter(valid_600101, JString, required = false,
+  if valid_602120 != nil:
+    section.add "X-Amz-Signature", valid_602120
+  var valid_602121 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602121 = validateParameter(valid_602121, JString, required = false,
                                  default = nil)
-  if valid_600101 != nil:
-    section.add "X-Amz-Algorithm", valid_600101
-  var valid_600102 = header.getOrDefault("X-Amz-Signature")
-  valid_600102 = validateParameter(valid_600102, JString, required = false,
+  if valid_602121 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602121
+  var valid_602122 = header.getOrDefault("X-Amz-Date")
+  valid_602122 = validateParameter(valid_602122, JString, required = false,
                                  default = nil)
-  if valid_600102 != nil:
-    section.add "X-Amz-Signature", valid_600102
-  var valid_600103 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600103 = validateParameter(valid_600103, JString, required = false,
+  if valid_602122 != nil:
+    section.add "X-Amz-Date", valid_602122
+  var valid_602123 = header.getOrDefault("X-Amz-Credential")
+  valid_602123 = validateParameter(valid_602123, JString, required = false,
                                  default = nil)
-  if valid_600103 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600103
-  var valid_600104 = header.getOrDefault("X-Amz-Credential")
-  valid_600104 = validateParameter(valid_600104, JString, required = false,
+  if valid_602123 != nil:
+    section.add "X-Amz-Credential", valid_602123
+  var valid_602124 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602124 = validateParameter(valid_602124, JString, required = false,
                                  default = nil)
-  if valid_600104 != nil:
-    section.add "X-Amz-Credential", valid_600104
+  if valid_602124 != nil:
+    section.add "X-Amz-Security-Token", valid_602124
+  var valid_602125 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602125 = validateParameter(valid_602125, JString, required = false,
+                                 default = nil)
+  if valid_602125 != nil:
+    section.add "X-Amz-Algorithm", valid_602125
+  var valid_602126 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602126 = validateParameter(valid_602126, JString, required = false,
+                                 default = nil)
+  if valid_602126 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602126
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1258,49 +1268,50 @@ proc validate_GetCertificateAuthorityCsr_600095(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600106: Call_GetCertificateAuthorityCsr_600094; path: JsonNode;
+proc call*(call_602128: Call_GetCertificateAuthorityCsr_602116; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the certificate signing request (CSR) for your private certificate authority (CA). The CSR is created when you call the <a>CreateCertificateAuthority</a> action. Sign the CSR with your ACM Private CA-hosted or on-premises root or subordinate CA. Then import the signed certificate back into ACM Private CA by calling the <a>ImportCertificateAuthorityCertificate</a> action. The CSR is returned as a base64 PEM-encoded string. 
   ## 
-  let valid = call_600106.validator(path, query, header, formData, body)
-  let scheme = call_600106.pickScheme
+  let valid = call_602128.validator(path, query, header, formData, body)
+  let scheme = call_602128.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600106.url(scheme.get, call_600106.host, call_600106.base,
-                         call_600106.route, valid.getOrDefault("path"),
+  let url = call_602128.url(scheme.get, call_602128.host, call_602128.base,
+                         call_602128.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600106, url, valid)
+  result = atozHook(call_602128, url, valid)
 
-proc call*(call_600107: Call_GetCertificateAuthorityCsr_600094; body: JsonNode): Recallable =
+proc call*(call_602129: Call_GetCertificateAuthorityCsr_602116; body: JsonNode): Recallable =
   ## getCertificateAuthorityCsr
   ## Retrieves the certificate signing request (CSR) for your private certificate authority (CA). The CSR is created when you call the <a>CreateCertificateAuthority</a> action. Sign the CSR with your ACM Private CA-hosted or on-premises root or subordinate CA. Then import the signed certificate back into ACM Private CA by calling the <a>ImportCertificateAuthorityCertificate</a> action. The CSR is returned as a base64 PEM-encoded string. 
   ##   body: JObject (required)
-  var body_600108 = newJObject()
+  var body_602130 = newJObject()
   if body != nil:
-    body_600108 = body
-  result = call_600107.call(nil, nil, nil, nil, body_600108)
+    body_602130 = body
+  result = call_602129.call(nil, nil, nil, nil, body_602130)
 
-var getCertificateAuthorityCsr* = Call_GetCertificateAuthorityCsr_600094(
+var getCertificateAuthorityCsr* = Call_GetCertificateAuthorityCsr_602116(
     name: "getCertificateAuthorityCsr", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.GetCertificateAuthorityCsr",
-    validator: validate_GetCertificateAuthorityCsr_600095, base: "/",
-    url: url_GetCertificateAuthorityCsr_600096,
+    validator: validate_GetCertificateAuthorityCsr_602117, base: "/",
+    url: url_GetCertificateAuthorityCsr_602118,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ImportCertificateAuthorityCertificate_600109 = ref object of OpenApiRestCall_599368
-proc url_ImportCertificateAuthorityCertificate_600111(protocol: Scheme;
+  Call_ImportCertificateAuthorityCertificate_602131 = ref object of OpenApiRestCall_601389
+proc url_ImportCertificateAuthorityCertificate_602133(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ImportCertificateAuthorityCertificate_600110(path: JsonNode;
+proc validate_ImportCertificateAuthorityCertificate_602132(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Imports a signed private CA certificate into ACM Private CA. This action is used when you are using a chain of trust whose root is located outside ACM Private CA. Before you can call this action, the following preparations must in place:</p> <ol> <li> <p>In ACM Private CA, call the <a>CreateCertificateAuthority</a> action to create the private CA that that you plan to back with the imported certificate.</p> </li> <li> <p>Call the <a>GetCertificateAuthorityCsr</a> action to generate a certificate signing request (CSR).</p> </li> <li> <p>Sign the CSR using a root or intermediate CA hosted either by an on-premises PKI hierarchy or a commercial CA..</p> </li> <li> <p>Create a certificate chain and copy the signed certificate and the certificate chain to your working directory.</p> </li> </ol> <p>The following requirements apply when you import a CA certificate.</p> <ul> <li> <p>You cannot import a non-self-signed certificate for use as a root CA.</p> </li> <li> <p>You cannot import a self-signed certificate for use as a subordinate CA.</p> </li> <li> <p>Your certificate chain must not include the private CA certificate that you are importing.</p> </li> <li> <p>Your ACM Private CA-hosted or on-premises CA certificate must be the last certificate in your chain. The subordinate certificate, if any, that your root CA signed must be next to last. The subordinate certificate signed by the preceding subordinate CA must come next, and so on until your chain is built. </p> </li> <li> <p>The chain must be PEM-encoded.</p> </li> </ul>
   ## 
@@ -1311,57 +1322,57 @@ proc validate_ImportCertificateAuthorityCertificate_600110(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600112 = header.getOrDefault("X-Amz-Date")
-  valid_600112 = validateParameter(valid_600112, JString, required = false,
-                                 default = nil)
-  if valid_600112 != nil:
-    section.add "X-Amz-Date", valid_600112
-  var valid_600113 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600113 = validateParameter(valid_600113, JString, required = false,
-                                 default = nil)
-  if valid_600113 != nil:
-    section.add "X-Amz-Security-Token", valid_600113
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600114 = header.getOrDefault("X-Amz-Target")
-  valid_600114 = validateParameter(valid_600114, JString, required = true, default = newJString(
+  var valid_602134 = header.getOrDefault("X-Amz-Target")
+  valid_602134 = validateParameter(valid_602134, JString, required = true, default = newJString(
       "ACMPrivateCA.ImportCertificateAuthorityCertificate"))
-  if valid_600114 != nil:
-    section.add "X-Amz-Target", valid_600114
-  var valid_600115 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600115 = validateParameter(valid_600115, JString, required = false,
+  if valid_602134 != nil:
+    section.add "X-Amz-Target", valid_602134
+  var valid_602135 = header.getOrDefault("X-Amz-Signature")
+  valid_602135 = validateParameter(valid_602135, JString, required = false,
                                  default = nil)
-  if valid_600115 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600115
-  var valid_600116 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600116 = validateParameter(valid_600116, JString, required = false,
+  if valid_602135 != nil:
+    section.add "X-Amz-Signature", valid_602135
+  var valid_602136 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602136 = validateParameter(valid_602136, JString, required = false,
                                  default = nil)
-  if valid_600116 != nil:
-    section.add "X-Amz-Algorithm", valid_600116
-  var valid_600117 = header.getOrDefault("X-Amz-Signature")
-  valid_600117 = validateParameter(valid_600117, JString, required = false,
+  if valid_602136 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602136
+  var valid_602137 = header.getOrDefault("X-Amz-Date")
+  valid_602137 = validateParameter(valid_602137, JString, required = false,
                                  default = nil)
-  if valid_600117 != nil:
-    section.add "X-Amz-Signature", valid_600117
-  var valid_600118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600118 = validateParameter(valid_600118, JString, required = false,
+  if valid_602137 != nil:
+    section.add "X-Amz-Date", valid_602137
+  var valid_602138 = header.getOrDefault("X-Amz-Credential")
+  valid_602138 = validateParameter(valid_602138, JString, required = false,
                                  default = nil)
-  if valid_600118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600118
-  var valid_600119 = header.getOrDefault("X-Amz-Credential")
-  valid_600119 = validateParameter(valid_600119, JString, required = false,
+  if valid_602138 != nil:
+    section.add "X-Amz-Credential", valid_602138
+  var valid_602139 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602139 = validateParameter(valid_602139, JString, required = false,
                                  default = nil)
-  if valid_600119 != nil:
-    section.add "X-Amz-Credential", valid_600119
+  if valid_602139 != nil:
+    section.add "X-Amz-Security-Token", valid_602139
+  var valid_602140 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602140 = validateParameter(valid_602140, JString, required = false,
+                                 default = nil)
+  if valid_602140 != nil:
+    section.add "X-Amz-Algorithm", valid_602140
+  var valid_602141 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602141 = validateParameter(valid_602141, JString, required = false,
+                                 default = nil)
+  if valid_602141 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602141
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1372,51 +1383,52 @@ proc validate_ImportCertificateAuthorityCertificate_600110(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600121: Call_ImportCertificateAuthorityCertificate_600109;
+proc call*(call_602143: Call_ImportCertificateAuthorityCertificate_602131;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Imports a signed private CA certificate into ACM Private CA. This action is used when you are using a chain of trust whose root is located outside ACM Private CA. Before you can call this action, the following preparations must in place:</p> <ol> <li> <p>In ACM Private CA, call the <a>CreateCertificateAuthority</a> action to create the private CA that that you plan to back with the imported certificate.</p> </li> <li> <p>Call the <a>GetCertificateAuthorityCsr</a> action to generate a certificate signing request (CSR).</p> </li> <li> <p>Sign the CSR using a root or intermediate CA hosted either by an on-premises PKI hierarchy or a commercial CA..</p> </li> <li> <p>Create a certificate chain and copy the signed certificate and the certificate chain to your working directory.</p> </li> </ol> <p>The following requirements apply when you import a CA certificate.</p> <ul> <li> <p>You cannot import a non-self-signed certificate for use as a root CA.</p> </li> <li> <p>You cannot import a self-signed certificate for use as a subordinate CA.</p> </li> <li> <p>Your certificate chain must not include the private CA certificate that you are importing.</p> </li> <li> <p>Your ACM Private CA-hosted or on-premises CA certificate must be the last certificate in your chain. The subordinate certificate, if any, that your root CA signed must be next to last. The subordinate certificate signed by the preceding subordinate CA must come next, and so on until your chain is built. </p> </li> <li> <p>The chain must be PEM-encoded.</p> </li> </ul>
   ## 
-  let valid = call_600121.validator(path, query, header, formData, body)
-  let scheme = call_600121.pickScheme
+  let valid = call_602143.validator(path, query, header, formData, body)
+  let scheme = call_602143.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600121.url(scheme.get, call_600121.host, call_600121.base,
-                         call_600121.route, valid.getOrDefault("path"),
+  let url = call_602143.url(scheme.get, call_602143.host, call_602143.base,
+                         call_602143.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600121, url, valid)
+  result = atozHook(call_602143, url, valid)
 
-proc call*(call_600122: Call_ImportCertificateAuthorityCertificate_600109;
+proc call*(call_602144: Call_ImportCertificateAuthorityCertificate_602131;
           body: JsonNode): Recallable =
   ## importCertificateAuthorityCertificate
   ## <p>Imports a signed private CA certificate into ACM Private CA. This action is used when you are using a chain of trust whose root is located outside ACM Private CA. Before you can call this action, the following preparations must in place:</p> <ol> <li> <p>In ACM Private CA, call the <a>CreateCertificateAuthority</a> action to create the private CA that that you plan to back with the imported certificate.</p> </li> <li> <p>Call the <a>GetCertificateAuthorityCsr</a> action to generate a certificate signing request (CSR).</p> </li> <li> <p>Sign the CSR using a root or intermediate CA hosted either by an on-premises PKI hierarchy or a commercial CA..</p> </li> <li> <p>Create a certificate chain and copy the signed certificate and the certificate chain to your working directory.</p> </li> </ol> <p>The following requirements apply when you import a CA certificate.</p> <ul> <li> <p>You cannot import a non-self-signed certificate for use as a root CA.</p> </li> <li> <p>You cannot import a self-signed certificate for use as a subordinate CA.</p> </li> <li> <p>Your certificate chain must not include the private CA certificate that you are importing.</p> </li> <li> <p>Your ACM Private CA-hosted or on-premises CA certificate must be the last certificate in your chain. The subordinate certificate, if any, that your root CA signed must be next to last. The subordinate certificate signed by the preceding subordinate CA must come next, and so on until your chain is built. </p> </li> <li> <p>The chain must be PEM-encoded.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_600123 = newJObject()
+  var body_602145 = newJObject()
   if body != nil:
-    body_600123 = body
-  result = call_600122.call(nil, nil, nil, nil, body_600123)
+    body_602145 = body
+  result = call_602144.call(nil, nil, nil, nil, body_602145)
 
-var importCertificateAuthorityCertificate* = Call_ImportCertificateAuthorityCertificate_600109(
+var importCertificateAuthorityCertificate* = Call_ImportCertificateAuthorityCertificate_602131(
     name: "importCertificateAuthorityCertificate", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.ImportCertificateAuthorityCertificate",
-    validator: validate_ImportCertificateAuthorityCertificate_600110, base: "/",
-    url: url_ImportCertificateAuthorityCertificate_600111,
+    validator: validate_ImportCertificateAuthorityCertificate_602132, base: "/",
+    url: url_ImportCertificateAuthorityCertificate_602133,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_IssueCertificate_600124 = ref object of OpenApiRestCall_599368
-proc url_IssueCertificate_600126(protocol: Scheme; host: string; base: string;
+  Call_IssueCertificate_602146 = ref object of OpenApiRestCall_601389
+proc url_IssueCertificate_602148(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_IssueCertificate_600125(path: JsonNode; query: JsonNode;
+proc validate_IssueCertificate_602147(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Uses your private certificate authority (CA) to issue a client certificate. This action returns the Amazon Resource Name (ARN) of the certificate. You can retrieve the certificate by calling the <a>GetCertificate</a> action and specifying the ARN. </p> <note> <p>You cannot use the ACM <b>ListCertificateAuthorities</b> action to retrieve the ARNs of the certificates that you issue by using ACM Private CA.</p> </note>
@@ -1428,57 +1440,57 @@ proc validate_IssueCertificate_600125(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600127 = header.getOrDefault("X-Amz-Date")
-  valid_600127 = validateParameter(valid_600127, JString, required = false,
-                                 default = nil)
-  if valid_600127 != nil:
-    section.add "X-Amz-Date", valid_600127
-  var valid_600128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600128 = validateParameter(valid_600128, JString, required = false,
-                                 default = nil)
-  if valid_600128 != nil:
-    section.add "X-Amz-Security-Token", valid_600128
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600129 = header.getOrDefault("X-Amz-Target")
-  valid_600129 = validateParameter(valid_600129, JString, required = true, default = newJString(
+  var valid_602149 = header.getOrDefault("X-Amz-Target")
+  valid_602149 = validateParameter(valid_602149, JString, required = true, default = newJString(
       "ACMPrivateCA.IssueCertificate"))
-  if valid_600129 != nil:
-    section.add "X-Amz-Target", valid_600129
-  var valid_600130 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600130 = validateParameter(valid_600130, JString, required = false,
+  if valid_602149 != nil:
+    section.add "X-Amz-Target", valid_602149
+  var valid_602150 = header.getOrDefault("X-Amz-Signature")
+  valid_602150 = validateParameter(valid_602150, JString, required = false,
                                  default = nil)
-  if valid_600130 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600130
-  var valid_600131 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600131 = validateParameter(valid_600131, JString, required = false,
+  if valid_602150 != nil:
+    section.add "X-Amz-Signature", valid_602150
+  var valid_602151 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602151 = validateParameter(valid_602151, JString, required = false,
                                  default = nil)
-  if valid_600131 != nil:
-    section.add "X-Amz-Algorithm", valid_600131
-  var valid_600132 = header.getOrDefault("X-Amz-Signature")
-  valid_600132 = validateParameter(valid_600132, JString, required = false,
+  if valid_602151 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602151
+  var valid_602152 = header.getOrDefault("X-Amz-Date")
+  valid_602152 = validateParameter(valid_602152, JString, required = false,
                                  default = nil)
-  if valid_600132 != nil:
-    section.add "X-Amz-Signature", valid_600132
-  var valid_600133 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600133 = validateParameter(valid_600133, JString, required = false,
+  if valid_602152 != nil:
+    section.add "X-Amz-Date", valid_602152
+  var valid_602153 = header.getOrDefault("X-Amz-Credential")
+  valid_602153 = validateParameter(valid_602153, JString, required = false,
                                  default = nil)
-  if valid_600133 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600133
-  var valid_600134 = header.getOrDefault("X-Amz-Credential")
-  valid_600134 = validateParameter(valid_600134, JString, required = false,
+  if valid_602153 != nil:
+    section.add "X-Amz-Credential", valid_602153
+  var valid_602154 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602154 = validateParameter(valid_602154, JString, required = false,
                                  default = nil)
-  if valid_600134 != nil:
-    section.add "X-Amz-Credential", valid_600134
+  if valid_602154 != nil:
+    section.add "X-Amz-Security-Token", valid_602154
+  var valid_602155 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602155 = validateParameter(valid_602155, JString, required = false,
+                                 default = nil)
+  if valid_602155 != nil:
+    section.add "X-Amz-Algorithm", valid_602155
+  var valid_602156 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602156 = validateParameter(valid_602156, JString, required = false,
+                                 default = nil)
+  if valid_602156 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602156
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1489,47 +1501,48 @@ proc validate_IssueCertificate_600125(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600136: Call_IssueCertificate_600124; path: JsonNode;
+proc call*(call_602158: Call_IssueCertificate_602146; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Uses your private certificate authority (CA) to issue a client certificate. This action returns the Amazon Resource Name (ARN) of the certificate. You can retrieve the certificate by calling the <a>GetCertificate</a> action and specifying the ARN. </p> <note> <p>You cannot use the ACM <b>ListCertificateAuthorities</b> action to retrieve the ARNs of the certificates that you issue by using ACM Private CA.</p> </note>
   ## 
-  let valid = call_600136.validator(path, query, header, formData, body)
-  let scheme = call_600136.pickScheme
+  let valid = call_602158.validator(path, query, header, formData, body)
+  let scheme = call_602158.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600136.url(scheme.get, call_600136.host, call_600136.base,
-                         call_600136.route, valid.getOrDefault("path"),
+  let url = call_602158.url(scheme.get, call_602158.host, call_602158.base,
+                         call_602158.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600136, url, valid)
+  result = atozHook(call_602158, url, valid)
 
-proc call*(call_600137: Call_IssueCertificate_600124; body: JsonNode): Recallable =
+proc call*(call_602159: Call_IssueCertificate_602146; body: JsonNode): Recallable =
   ## issueCertificate
   ## <p>Uses your private certificate authority (CA) to issue a client certificate. This action returns the Amazon Resource Name (ARN) of the certificate. You can retrieve the certificate by calling the <a>GetCertificate</a> action and specifying the ARN. </p> <note> <p>You cannot use the ACM <b>ListCertificateAuthorities</b> action to retrieve the ARNs of the certificates that you issue by using ACM Private CA.</p> </note>
   ##   body: JObject (required)
-  var body_600138 = newJObject()
+  var body_602160 = newJObject()
   if body != nil:
-    body_600138 = body
-  result = call_600137.call(nil, nil, nil, nil, body_600138)
+    body_602160 = body
+  result = call_602159.call(nil, nil, nil, nil, body_602160)
 
-var issueCertificate* = Call_IssueCertificate_600124(name: "issueCertificate",
+var issueCertificate* = Call_IssueCertificate_602146(name: "issueCertificate",
     meth: HttpMethod.HttpPost, host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.IssueCertificate",
-    validator: validate_IssueCertificate_600125, base: "/",
-    url: url_IssueCertificate_600126, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_IssueCertificate_602147, base: "/",
+    url: url_IssueCertificate_602148, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCertificateAuthorities_600139 = ref object of OpenApiRestCall_599368
-proc url_ListCertificateAuthorities_600141(protocol: Scheme; host: string;
+  Call_ListCertificateAuthorities_602161 = ref object of OpenApiRestCall_601389
+proc url_ListCertificateAuthorities_602163(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListCertificateAuthorities_600140(path: JsonNode; query: JsonNode;
+proc validate_ListCertificateAuthorities_602162(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the private certificate authorities that you created by using the <a>CreateCertificateAuthority</a> action.
   ## 
@@ -1538,74 +1551,74 @@ proc validate_ListCertificateAuthorities_600140(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600142 = query.getOrDefault("NextToken")
-  valid_600142 = validateParameter(valid_600142, JString, required = false,
+  var valid_602164 = query.getOrDefault("MaxResults")
+  valid_602164 = validateParameter(valid_602164, JString, required = false,
                                  default = nil)
-  if valid_600142 != nil:
-    section.add "NextToken", valid_600142
-  var valid_600143 = query.getOrDefault("MaxResults")
-  valid_600143 = validateParameter(valid_600143, JString, required = false,
+  if valid_602164 != nil:
+    section.add "MaxResults", valid_602164
+  var valid_602165 = query.getOrDefault("NextToken")
+  valid_602165 = validateParameter(valid_602165, JString, required = false,
                                  default = nil)
-  if valid_600143 != nil:
-    section.add "MaxResults", valid_600143
+  if valid_602165 != nil:
+    section.add "NextToken", valid_602165
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600144 = header.getOrDefault("X-Amz-Date")
-  valid_600144 = validateParameter(valid_600144, JString, required = false,
-                                 default = nil)
-  if valid_600144 != nil:
-    section.add "X-Amz-Date", valid_600144
-  var valid_600145 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600145 = validateParameter(valid_600145, JString, required = false,
-                                 default = nil)
-  if valid_600145 != nil:
-    section.add "X-Amz-Security-Token", valid_600145
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600146 = header.getOrDefault("X-Amz-Target")
-  valid_600146 = validateParameter(valid_600146, JString, required = true, default = newJString(
+  var valid_602166 = header.getOrDefault("X-Amz-Target")
+  valid_602166 = validateParameter(valid_602166, JString, required = true, default = newJString(
       "ACMPrivateCA.ListCertificateAuthorities"))
-  if valid_600146 != nil:
-    section.add "X-Amz-Target", valid_600146
-  var valid_600147 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600147 = validateParameter(valid_600147, JString, required = false,
+  if valid_602166 != nil:
+    section.add "X-Amz-Target", valid_602166
+  var valid_602167 = header.getOrDefault("X-Amz-Signature")
+  valid_602167 = validateParameter(valid_602167, JString, required = false,
                                  default = nil)
-  if valid_600147 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600147
-  var valid_600148 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600148 = validateParameter(valid_600148, JString, required = false,
+  if valid_602167 != nil:
+    section.add "X-Amz-Signature", valid_602167
+  var valid_602168 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602168 = validateParameter(valid_602168, JString, required = false,
                                  default = nil)
-  if valid_600148 != nil:
-    section.add "X-Amz-Algorithm", valid_600148
-  var valid_600149 = header.getOrDefault("X-Amz-Signature")
-  valid_600149 = validateParameter(valid_600149, JString, required = false,
+  if valid_602168 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602168
+  var valid_602169 = header.getOrDefault("X-Amz-Date")
+  valid_602169 = validateParameter(valid_602169, JString, required = false,
                                  default = nil)
-  if valid_600149 != nil:
-    section.add "X-Amz-Signature", valid_600149
-  var valid_600150 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600150 = validateParameter(valid_600150, JString, required = false,
+  if valid_602169 != nil:
+    section.add "X-Amz-Date", valid_602169
+  var valid_602170 = header.getOrDefault("X-Amz-Credential")
+  valid_602170 = validateParameter(valid_602170, JString, required = false,
                                  default = nil)
-  if valid_600150 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600150
-  var valid_600151 = header.getOrDefault("X-Amz-Credential")
-  valid_600151 = validateParameter(valid_600151, JString, required = false,
+  if valid_602170 != nil:
+    section.add "X-Amz-Credential", valid_602170
+  var valid_602171 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602171 = validateParameter(valid_602171, JString, required = false,
                                  default = nil)
-  if valid_600151 != nil:
-    section.add "X-Amz-Credential", valid_600151
+  if valid_602171 != nil:
+    section.add "X-Amz-Security-Token", valid_602171
+  var valid_602172 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602172 = validateParameter(valid_602172, JString, required = false,
+                                 default = nil)
+  if valid_602172 != nil:
+    section.add "X-Amz-Algorithm", valid_602172
+  var valid_602173 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602173 = validateParameter(valid_602173, JString, required = false,
+                                 default = nil)
+  if valid_602173 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602173
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1616,57 +1629,58 @@ proc validate_ListCertificateAuthorities_600140(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600153: Call_ListCertificateAuthorities_600139; path: JsonNode;
+proc call*(call_602175: Call_ListCertificateAuthorities_602161; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the private certificate authorities that you created by using the <a>CreateCertificateAuthority</a> action.
   ## 
-  let valid = call_600153.validator(path, query, header, formData, body)
-  let scheme = call_600153.pickScheme
+  let valid = call_602175.validator(path, query, header, formData, body)
+  let scheme = call_602175.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600153.url(scheme.get, call_600153.host, call_600153.base,
-                         call_600153.route, valid.getOrDefault("path"),
+  let url = call_602175.url(scheme.get, call_602175.host, call_602175.base,
+                         call_602175.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600153, url, valid)
+  result = atozHook(call_602175, url, valid)
 
-proc call*(call_600154: Call_ListCertificateAuthorities_600139; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602176: Call_ListCertificateAuthorities_602161; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listCertificateAuthorities
   ## Lists the private certificate authorities that you created by using the <a>CreateCertificateAuthority</a> action.
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600155 = newJObject()
-  var body_600156 = newJObject()
-  add(query_600155, "NextToken", newJString(NextToken))
+  var query_602177 = newJObject()
+  var body_602178 = newJObject()
+  add(query_602177, "MaxResults", newJString(MaxResults))
+  add(query_602177, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600156 = body
-  add(query_600155, "MaxResults", newJString(MaxResults))
-  result = call_600154.call(nil, query_600155, nil, nil, body_600156)
+    body_602178 = body
+  result = call_602176.call(nil, query_602177, nil, nil, body_602178)
 
-var listCertificateAuthorities* = Call_ListCertificateAuthorities_600139(
+var listCertificateAuthorities* = Call_ListCertificateAuthorities_602161(
     name: "listCertificateAuthorities", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.ListCertificateAuthorities",
-    validator: validate_ListCertificateAuthorities_600140, base: "/",
-    url: url_ListCertificateAuthorities_600141,
+    validator: validate_ListCertificateAuthorities_602162, base: "/",
+    url: url_ListCertificateAuthorities_602163,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPermissions_600158 = ref object of OpenApiRestCall_599368
-proc url_ListPermissions_600160(protocol: Scheme; host: string; base: string;
+  Call_ListPermissions_602180 = ref object of OpenApiRestCall_601389
+proc url_ListPermissions_602182(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListPermissions_600159(path: JsonNode; query: JsonNode;
+proc validate_ListPermissions_602181(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Lists all the permissions, if any, that have been assigned by a private CA. Permissions can be granted with the <a>CreatePermission</a> action and revoked with the <a>DeletePermission</a> action.
@@ -1676,74 +1690,74 @@ proc validate_ListPermissions_600159(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600161 = query.getOrDefault("NextToken")
-  valid_600161 = validateParameter(valid_600161, JString, required = false,
+  var valid_602183 = query.getOrDefault("MaxResults")
+  valid_602183 = validateParameter(valid_602183, JString, required = false,
                                  default = nil)
-  if valid_600161 != nil:
-    section.add "NextToken", valid_600161
-  var valid_600162 = query.getOrDefault("MaxResults")
-  valid_600162 = validateParameter(valid_600162, JString, required = false,
+  if valid_602183 != nil:
+    section.add "MaxResults", valid_602183
+  var valid_602184 = query.getOrDefault("NextToken")
+  valid_602184 = validateParameter(valid_602184, JString, required = false,
                                  default = nil)
-  if valid_600162 != nil:
-    section.add "MaxResults", valid_600162
+  if valid_602184 != nil:
+    section.add "NextToken", valid_602184
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600163 = header.getOrDefault("X-Amz-Date")
-  valid_600163 = validateParameter(valid_600163, JString, required = false,
-                                 default = nil)
-  if valid_600163 != nil:
-    section.add "X-Amz-Date", valid_600163
-  var valid_600164 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600164 = validateParameter(valid_600164, JString, required = false,
-                                 default = nil)
-  if valid_600164 != nil:
-    section.add "X-Amz-Security-Token", valid_600164
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600165 = header.getOrDefault("X-Amz-Target")
-  valid_600165 = validateParameter(valid_600165, JString, required = true, default = newJString(
+  var valid_602185 = header.getOrDefault("X-Amz-Target")
+  valid_602185 = validateParameter(valid_602185, JString, required = true, default = newJString(
       "ACMPrivateCA.ListPermissions"))
-  if valid_600165 != nil:
-    section.add "X-Amz-Target", valid_600165
-  var valid_600166 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600166 = validateParameter(valid_600166, JString, required = false,
+  if valid_602185 != nil:
+    section.add "X-Amz-Target", valid_602185
+  var valid_602186 = header.getOrDefault("X-Amz-Signature")
+  valid_602186 = validateParameter(valid_602186, JString, required = false,
                                  default = nil)
-  if valid_600166 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600166
-  var valid_600167 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600167 = validateParameter(valid_600167, JString, required = false,
+  if valid_602186 != nil:
+    section.add "X-Amz-Signature", valid_602186
+  var valid_602187 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602187 = validateParameter(valid_602187, JString, required = false,
                                  default = nil)
-  if valid_600167 != nil:
-    section.add "X-Amz-Algorithm", valid_600167
-  var valid_600168 = header.getOrDefault("X-Amz-Signature")
-  valid_600168 = validateParameter(valid_600168, JString, required = false,
+  if valid_602187 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602187
+  var valid_602188 = header.getOrDefault("X-Amz-Date")
+  valid_602188 = validateParameter(valid_602188, JString, required = false,
                                  default = nil)
-  if valid_600168 != nil:
-    section.add "X-Amz-Signature", valid_600168
-  var valid_600169 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600169 = validateParameter(valid_600169, JString, required = false,
+  if valid_602188 != nil:
+    section.add "X-Amz-Date", valid_602188
+  var valid_602189 = header.getOrDefault("X-Amz-Credential")
+  valid_602189 = validateParameter(valid_602189, JString, required = false,
                                  default = nil)
-  if valid_600169 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600169
-  var valid_600170 = header.getOrDefault("X-Amz-Credential")
-  valid_600170 = validateParameter(valid_600170, JString, required = false,
+  if valid_602189 != nil:
+    section.add "X-Amz-Credential", valid_602189
+  var valid_602190 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602190 = validateParameter(valid_602190, JString, required = false,
                                  default = nil)
-  if valid_600170 != nil:
-    section.add "X-Amz-Credential", valid_600170
+  if valid_602190 != nil:
+    section.add "X-Amz-Security-Token", valid_602190
+  var valid_602191 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602191 = validateParameter(valid_602191, JString, required = false,
+                                 default = nil)
+  if valid_602191 != nil:
+    section.add "X-Amz-Algorithm", valid_602191
+  var valid_602192 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602192 = validateParameter(valid_602192, JString, required = false,
+                                 default = nil)
+  if valid_602192 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602192
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1754,55 +1768,56 @@ proc validate_ListPermissions_600159(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600172: Call_ListPermissions_600158; path: JsonNode; query: JsonNode;
+proc call*(call_602194: Call_ListPermissions_602180; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all the permissions, if any, that have been assigned by a private CA. Permissions can be granted with the <a>CreatePermission</a> action and revoked with the <a>DeletePermission</a> action.
   ## 
-  let valid = call_600172.validator(path, query, header, formData, body)
-  let scheme = call_600172.pickScheme
+  let valid = call_602194.validator(path, query, header, formData, body)
+  let scheme = call_602194.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600172.url(scheme.get, call_600172.host, call_600172.base,
-                         call_600172.route, valid.getOrDefault("path"),
+  let url = call_602194.url(scheme.get, call_602194.host, call_602194.base,
+                         call_602194.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600172, url, valid)
+  result = atozHook(call_602194, url, valid)
 
-proc call*(call_600173: Call_ListPermissions_600158; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602195: Call_ListPermissions_602180; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listPermissions
   ## Lists all the permissions, if any, that have been assigned by a private CA. Permissions can be granted with the <a>CreatePermission</a> action and revoked with the <a>DeletePermission</a> action.
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600174 = newJObject()
-  var body_600175 = newJObject()
-  add(query_600174, "NextToken", newJString(NextToken))
+  var query_602196 = newJObject()
+  var body_602197 = newJObject()
+  add(query_602196, "MaxResults", newJString(MaxResults))
+  add(query_602196, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600175 = body
-  add(query_600174, "MaxResults", newJString(MaxResults))
-  result = call_600173.call(nil, query_600174, nil, nil, body_600175)
+    body_602197 = body
+  result = call_602195.call(nil, query_602196, nil, nil, body_602197)
 
-var listPermissions* = Call_ListPermissions_600158(name: "listPermissions",
+var listPermissions* = Call_ListPermissions_602180(name: "listPermissions",
     meth: HttpMethod.HttpPost, host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.ListPermissions",
-    validator: validate_ListPermissions_600159, base: "/", url: url_ListPermissions_600160,
+    validator: validate_ListPermissions_602181, base: "/", url: url_ListPermissions_602182,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTags_600176 = ref object of OpenApiRestCall_599368
-proc url_ListTags_600178(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTags_602198 = ref object of OpenApiRestCall_601389
+proc url_ListTags_602200(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTags_600177(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTags_602199(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the tags, if any, that are associated with your private CA. Tags are labels that you can use to identify and organize your CAs. Each tag consists of a key and an optional value. Call the <a>TagCertificateAuthority</a> action to add one or more tags to your CA. Call the <a>UntagCertificateAuthority</a> action to remove tags. 
   ## 
@@ -1811,74 +1826,74 @@ proc validate_ListTags_600177(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600179 = query.getOrDefault("NextToken")
-  valid_600179 = validateParameter(valid_600179, JString, required = false,
+  var valid_602201 = query.getOrDefault("MaxResults")
+  valid_602201 = validateParameter(valid_602201, JString, required = false,
                                  default = nil)
-  if valid_600179 != nil:
-    section.add "NextToken", valid_600179
-  var valid_600180 = query.getOrDefault("MaxResults")
-  valid_600180 = validateParameter(valid_600180, JString, required = false,
+  if valid_602201 != nil:
+    section.add "MaxResults", valid_602201
+  var valid_602202 = query.getOrDefault("NextToken")
+  valid_602202 = validateParameter(valid_602202, JString, required = false,
                                  default = nil)
-  if valid_600180 != nil:
-    section.add "MaxResults", valid_600180
+  if valid_602202 != nil:
+    section.add "NextToken", valid_602202
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600181 = header.getOrDefault("X-Amz-Date")
-  valid_600181 = validateParameter(valid_600181, JString, required = false,
-                                 default = nil)
-  if valid_600181 != nil:
-    section.add "X-Amz-Date", valid_600181
-  var valid_600182 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600182 = validateParameter(valid_600182, JString, required = false,
-                                 default = nil)
-  if valid_600182 != nil:
-    section.add "X-Amz-Security-Token", valid_600182
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600183 = header.getOrDefault("X-Amz-Target")
-  valid_600183 = validateParameter(valid_600183, JString, required = true,
+  var valid_602203 = header.getOrDefault("X-Amz-Target")
+  valid_602203 = validateParameter(valid_602203, JString, required = true,
                                  default = newJString("ACMPrivateCA.ListTags"))
-  if valid_600183 != nil:
-    section.add "X-Amz-Target", valid_600183
-  var valid_600184 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600184 = validateParameter(valid_600184, JString, required = false,
+  if valid_602203 != nil:
+    section.add "X-Amz-Target", valid_602203
+  var valid_602204 = header.getOrDefault("X-Amz-Signature")
+  valid_602204 = validateParameter(valid_602204, JString, required = false,
                                  default = nil)
-  if valid_600184 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600184
-  var valid_600185 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600185 = validateParameter(valid_600185, JString, required = false,
+  if valid_602204 != nil:
+    section.add "X-Amz-Signature", valid_602204
+  var valid_602205 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602205 = validateParameter(valid_602205, JString, required = false,
                                  default = nil)
-  if valid_600185 != nil:
-    section.add "X-Amz-Algorithm", valid_600185
-  var valid_600186 = header.getOrDefault("X-Amz-Signature")
-  valid_600186 = validateParameter(valid_600186, JString, required = false,
+  if valid_602205 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602205
+  var valid_602206 = header.getOrDefault("X-Amz-Date")
+  valid_602206 = validateParameter(valid_602206, JString, required = false,
                                  default = nil)
-  if valid_600186 != nil:
-    section.add "X-Amz-Signature", valid_600186
-  var valid_600187 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600187 = validateParameter(valid_600187, JString, required = false,
+  if valid_602206 != nil:
+    section.add "X-Amz-Date", valid_602206
+  var valid_602207 = header.getOrDefault("X-Amz-Credential")
+  valid_602207 = validateParameter(valid_602207, JString, required = false,
                                  default = nil)
-  if valid_600187 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600187
-  var valid_600188 = header.getOrDefault("X-Amz-Credential")
-  valid_600188 = validateParameter(valid_600188, JString, required = false,
+  if valid_602207 != nil:
+    section.add "X-Amz-Credential", valid_602207
+  var valid_602208 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602208 = validateParameter(valid_602208, JString, required = false,
                                  default = nil)
-  if valid_600188 != nil:
-    section.add "X-Amz-Credential", valid_600188
+  if valid_602208 != nil:
+    section.add "X-Amz-Security-Token", valid_602208
+  var valid_602209 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602209 = validateParameter(valid_602209, JString, required = false,
+                                 default = nil)
+  if valid_602209 != nil:
+    section.add "X-Amz-Algorithm", valid_602209
+  var valid_602210 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602210 = validateParameter(valid_602210, JString, required = false,
+                                 default = nil)
+  if valid_602210 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602210
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1889,55 +1904,56 @@ proc validate_ListTags_600177(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600190: Call_ListTags_600176; path: JsonNode; query: JsonNode;
+proc call*(call_602212: Call_ListTags_602198; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the tags, if any, that are associated with your private CA. Tags are labels that you can use to identify and organize your CAs. Each tag consists of a key and an optional value. Call the <a>TagCertificateAuthority</a> action to add one or more tags to your CA. Call the <a>UntagCertificateAuthority</a> action to remove tags. 
   ## 
-  let valid = call_600190.validator(path, query, header, formData, body)
-  let scheme = call_600190.pickScheme
+  let valid = call_602212.validator(path, query, header, formData, body)
+  let scheme = call_602212.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600190.url(scheme.get, call_600190.host, call_600190.base,
-                         call_600190.route, valid.getOrDefault("path"),
+  let url = call_602212.url(scheme.get, call_602212.host, call_602212.base,
+                         call_602212.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600190, url, valid)
+  result = atozHook(call_602212, url, valid)
 
-proc call*(call_600191: Call_ListTags_600176; body: JsonNode; NextToken: string = "";
-          MaxResults: string = ""): Recallable =
+proc call*(call_602213: Call_ListTags_602198; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTags
   ## Lists the tags, if any, that are associated with your private CA. Tags are labels that you can use to identify and organize your CAs. Each tag consists of a key and an optional value. Call the <a>TagCertificateAuthority</a> action to add one or more tags to your CA. Call the <a>UntagCertificateAuthority</a> action to remove tags. 
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600192 = newJObject()
-  var body_600193 = newJObject()
-  add(query_600192, "NextToken", newJString(NextToken))
+  var query_602214 = newJObject()
+  var body_602215 = newJObject()
+  add(query_602214, "MaxResults", newJString(MaxResults))
+  add(query_602214, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600193 = body
-  add(query_600192, "MaxResults", newJString(MaxResults))
-  result = call_600191.call(nil, query_600192, nil, nil, body_600193)
+    body_602215 = body
+  result = call_602213.call(nil, query_602214, nil, nil, body_602215)
 
-var listTags* = Call_ListTags_600176(name: "listTags", meth: HttpMethod.HttpPost,
+var listTags* = Call_ListTags_602198(name: "listTags", meth: HttpMethod.HttpPost,
                                   host: "acm-pca.amazonaws.com", route: "/#X-Amz-Target=ACMPrivateCA.ListTags",
-                                  validator: validate_ListTags_600177, base: "/",
-                                  url: url_ListTags_600178,
+                                  validator: validate_ListTags_602199, base: "/",
+                                  url: url_ListTags_602200,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestoreCertificateAuthority_600194 = ref object of OpenApiRestCall_599368
-proc url_RestoreCertificateAuthority_600196(protocol: Scheme; host: string;
+  Call_RestoreCertificateAuthority_602216 = ref object of OpenApiRestCall_601389
+proc url_RestoreCertificateAuthority_602218(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RestoreCertificateAuthority_600195(path: JsonNode; query: JsonNode;
+proc validate_RestoreCertificateAuthority_602217(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Restores a certificate authority (CA) that is in the <code>DELETED</code> state. You can restore a CA during the period that you defined in the <b>PermanentDeletionTimeInDays</b> parameter of the <a>DeleteCertificateAuthority</a> action. Currently, you can specify 7 to 30 days. If you did not specify a <b>PermanentDeletionTimeInDays</b> value, by default you can restore the CA at any time in a 30 day period. You can check the time remaining in the restoration period of a private CA in the <code>DELETED</code> state by calling the <a>DescribeCertificateAuthority</a> or <a>ListCertificateAuthorities</a> actions. The status of a restored CA is set to its pre-deletion status when the <b>RestoreCertificateAuthority</b> action returns. To change its status to <code>ACTIVE</code>, call the <a>UpdateCertificateAuthority</a> action. If the private CA was in the <code>PENDING_CERTIFICATE</code> state at deletion, you must use the <a>ImportCertificateAuthorityCertificate</a> action to import a certificate authority into the private CA before it can be activated. You cannot restore a CA after the restoration period has ended.
   ## 
@@ -1948,57 +1964,57 @@ proc validate_RestoreCertificateAuthority_600195(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600197 = header.getOrDefault("X-Amz-Date")
-  valid_600197 = validateParameter(valid_600197, JString, required = false,
-                                 default = nil)
-  if valid_600197 != nil:
-    section.add "X-Amz-Date", valid_600197
-  var valid_600198 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600198 = validateParameter(valid_600198, JString, required = false,
-                                 default = nil)
-  if valid_600198 != nil:
-    section.add "X-Amz-Security-Token", valid_600198
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600199 = header.getOrDefault("X-Amz-Target")
-  valid_600199 = validateParameter(valid_600199, JString, required = true, default = newJString(
+  var valid_602219 = header.getOrDefault("X-Amz-Target")
+  valid_602219 = validateParameter(valid_602219, JString, required = true, default = newJString(
       "ACMPrivateCA.RestoreCertificateAuthority"))
-  if valid_600199 != nil:
-    section.add "X-Amz-Target", valid_600199
-  var valid_600200 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600200 = validateParameter(valid_600200, JString, required = false,
+  if valid_602219 != nil:
+    section.add "X-Amz-Target", valid_602219
+  var valid_602220 = header.getOrDefault("X-Amz-Signature")
+  valid_602220 = validateParameter(valid_602220, JString, required = false,
                                  default = nil)
-  if valid_600200 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600200
-  var valid_600201 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600201 = validateParameter(valid_600201, JString, required = false,
+  if valid_602220 != nil:
+    section.add "X-Amz-Signature", valid_602220
+  var valid_602221 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602221 = validateParameter(valid_602221, JString, required = false,
                                  default = nil)
-  if valid_600201 != nil:
-    section.add "X-Amz-Algorithm", valid_600201
-  var valid_600202 = header.getOrDefault("X-Amz-Signature")
-  valid_600202 = validateParameter(valid_600202, JString, required = false,
+  if valid_602221 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602221
+  var valid_602222 = header.getOrDefault("X-Amz-Date")
+  valid_602222 = validateParameter(valid_602222, JString, required = false,
                                  default = nil)
-  if valid_600202 != nil:
-    section.add "X-Amz-Signature", valid_600202
-  var valid_600203 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600203 = validateParameter(valid_600203, JString, required = false,
+  if valid_602222 != nil:
+    section.add "X-Amz-Date", valid_602222
+  var valid_602223 = header.getOrDefault("X-Amz-Credential")
+  valid_602223 = validateParameter(valid_602223, JString, required = false,
                                  default = nil)
-  if valid_600203 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600203
-  var valid_600204 = header.getOrDefault("X-Amz-Credential")
-  valid_600204 = validateParameter(valid_600204, JString, required = false,
+  if valid_602223 != nil:
+    section.add "X-Amz-Credential", valid_602223
+  var valid_602224 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602224 = validateParameter(valid_602224, JString, required = false,
                                  default = nil)
-  if valid_600204 != nil:
-    section.add "X-Amz-Credential", valid_600204
+  if valid_602224 != nil:
+    section.add "X-Amz-Security-Token", valid_602224
+  var valid_602225 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602225 = validateParameter(valid_602225, JString, required = false,
+                                 default = nil)
+  if valid_602225 != nil:
+    section.add "X-Amz-Algorithm", valid_602225
+  var valid_602226 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602226 = validateParameter(valid_602226, JString, required = false,
+                                 default = nil)
+  if valid_602226 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602226
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2009,49 +2025,50 @@ proc validate_RestoreCertificateAuthority_600195(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600206: Call_RestoreCertificateAuthority_600194; path: JsonNode;
+proc call*(call_602228: Call_RestoreCertificateAuthority_602216; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Restores a certificate authority (CA) that is in the <code>DELETED</code> state. You can restore a CA during the period that you defined in the <b>PermanentDeletionTimeInDays</b> parameter of the <a>DeleteCertificateAuthority</a> action. Currently, you can specify 7 to 30 days. If you did not specify a <b>PermanentDeletionTimeInDays</b> value, by default you can restore the CA at any time in a 30 day period. You can check the time remaining in the restoration period of a private CA in the <code>DELETED</code> state by calling the <a>DescribeCertificateAuthority</a> or <a>ListCertificateAuthorities</a> actions. The status of a restored CA is set to its pre-deletion status when the <b>RestoreCertificateAuthority</b> action returns. To change its status to <code>ACTIVE</code>, call the <a>UpdateCertificateAuthority</a> action. If the private CA was in the <code>PENDING_CERTIFICATE</code> state at deletion, you must use the <a>ImportCertificateAuthorityCertificate</a> action to import a certificate authority into the private CA before it can be activated. You cannot restore a CA after the restoration period has ended.
   ## 
-  let valid = call_600206.validator(path, query, header, formData, body)
-  let scheme = call_600206.pickScheme
+  let valid = call_602228.validator(path, query, header, formData, body)
+  let scheme = call_602228.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600206.url(scheme.get, call_600206.host, call_600206.base,
-                         call_600206.route, valid.getOrDefault("path"),
+  let url = call_602228.url(scheme.get, call_602228.host, call_602228.base,
+                         call_602228.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600206, url, valid)
+  result = atozHook(call_602228, url, valid)
 
-proc call*(call_600207: Call_RestoreCertificateAuthority_600194; body: JsonNode): Recallable =
+proc call*(call_602229: Call_RestoreCertificateAuthority_602216; body: JsonNode): Recallable =
   ## restoreCertificateAuthority
   ## Restores a certificate authority (CA) that is in the <code>DELETED</code> state. You can restore a CA during the period that you defined in the <b>PermanentDeletionTimeInDays</b> parameter of the <a>DeleteCertificateAuthority</a> action. Currently, you can specify 7 to 30 days. If you did not specify a <b>PermanentDeletionTimeInDays</b> value, by default you can restore the CA at any time in a 30 day period. You can check the time remaining in the restoration period of a private CA in the <code>DELETED</code> state by calling the <a>DescribeCertificateAuthority</a> or <a>ListCertificateAuthorities</a> actions. The status of a restored CA is set to its pre-deletion status when the <b>RestoreCertificateAuthority</b> action returns. To change its status to <code>ACTIVE</code>, call the <a>UpdateCertificateAuthority</a> action. If the private CA was in the <code>PENDING_CERTIFICATE</code> state at deletion, you must use the <a>ImportCertificateAuthorityCertificate</a> action to import a certificate authority into the private CA before it can be activated. You cannot restore a CA after the restoration period has ended.
   ##   body: JObject (required)
-  var body_600208 = newJObject()
+  var body_602230 = newJObject()
   if body != nil:
-    body_600208 = body
-  result = call_600207.call(nil, nil, nil, nil, body_600208)
+    body_602230 = body
+  result = call_602229.call(nil, nil, nil, nil, body_602230)
 
-var restoreCertificateAuthority* = Call_RestoreCertificateAuthority_600194(
+var restoreCertificateAuthority* = Call_RestoreCertificateAuthority_602216(
     name: "restoreCertificateAuthority", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.RestoreCertificateAuthority",
-    validator: validate_RestoreCertificateAuthority_600195, base: "/",
-    url: url_RestoreCertificateAuthority_600196,
+    validator: validate_RestoreCertificateAuthority_602217, base: "/",
+    url: url_RestoreCertificateAuthority_602218,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RevokeCertificate_600209 = ref object of OpenApiRestCall_599368
-proc url_RevokeCertificate_600211(protocol: Scheme; host: string; base: string;
+  Call_RevokeCertificate_602231 = ref object of OpenApiRestCall_601389
+proc url_RevokeCertificate_602233(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RevokeCertificate_600210(path: JsonNode; query: JsonNode;
+proc validate_RevokeCertificate_602232(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Revokes a certificate that was issued inside ACM Private CA. If you enable a certificate revocation list (CRL) when you create or update your private CA, information about the revoked certificates will be included in the CRL. ACM Private CA writes the CRL to an S3 bucket that you specify. For more information about revocation, see the <a>CrlConfiguration</a> structure. ACM Private CA also writes revocation information to the audit report. For more information, see <a>CreateCertificateAuthorityAuditReport</a>. </p> <note> <p>You cannot revoke a root CA self-signed certificate.</p> </note>
@@ -2063,57 +2080,57 @@ proc validate_RevokeCertificate_600210(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600212 = header.getOrDefault("X-Amz-Date")
-  valid_600212 = validateParameter(valid_600212, JString, required = false,
-                                 default = nil)
-  if valid_600212 != nil:
-    section.add "X-Amz-Date", valid_600212
-  var valid_600213 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600213 = validateParameter(valid_600213, JString, required = false,
-                                 default = nil)
-  if valid_600213 != nil:
-    section.add "X-Amz-Security-Token", valid_600213
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600214 = header.getOrDefault("X-Amz-Target")
-  valid_600214 = validateParameter(valid_600214, JString, required = true, default = newJString(
+  var valid_602234 = header.getOrDefault("X-Amz-Target")
+  valid_602234 = validateParameter(valid_602234, JString, required = true, default = newJString(
       "ACMPrivateCA.RevokeCertificate"))
-  if valid_600214 != nil:
-    section.add "X-Amz-Target", valid_600214
-  var valid_600215 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600215 = validateParameter(valid_600215, JString, required = false,
+  if valid_602234 != nil:
+    section.add "X-Amz-Target", valid_602234
+  var valid_602235 = header.getOrDefault("X-Amz-Signature")
+  valid_602235 = validateParameter(valid_602235, JString, required = false,
                                  default = nil)
-  if valid_600215 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600215
-  var valid_600216 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600216 = validateParameter(valid_600216, JString, required = false,
+  if valid_602235 != nil:
+    section.add "X-Amz-Signature", valid_602235
+  var valid_602236 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602236 = validateParameter(valid_602236, JString, required = false,
                                  default = nil)
-  if valid_600216 != nil:
-    section.add "X-Amz-Algorithm", valid_600216
-  var valid_600217 = header.getOrDefault("X-Amz-Signature")
-  valid_600217 = validateParameter(valid_600217, JString, required = false,
+  if valid_602236 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602236
+  var valid_602237 = header.getOrDefault("X-Amz-Date")
+  valid_602237 = validateParameter(valid_602237, JString, required = false,
                                  default = nil)
-  if valid_600217 != nil:
-    section.add "X-Amz-Signature", valid_600217
-  var valid_600218 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600218 = validateParameter(valid_600218, JString, required = false,
+  if valid_602237 != nil:
+    section.add "X-Amz-Date", valid_602237
+  var valid_602238 = header.getOrDefault("X-Amz-Credential")
+  valid_602238 = validateParameter(valid_602238, JString, required = false,
                                  default = nil)
-  if valid_600218 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600218
-  var valid_600219 = header.getOrDefault("X-Amz-Credential")
-  valid_600219 = validateParameter(valid_600219, JString, required = false,
+  if valid_602238 != nil:
+    section.add "X-Amz-Credential", valid_602238
+  var valid_602239 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602239 = validateParameter(valid_602239, JString, required = false,
                                  default = nil)
-  if valid_600219 != nil:
-    section.add "X-Amz-Credential", valid_600219
+  if valid_602239 != nil:
+    section.add "X-Amz-Security-Token", valid_602239
+  var valid_602240 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602240 = validateParameter(valid_602240, JString, required = false,
+                                 default = nil)
+  if valid_602240 != nil:
+    section.add "X-Amz-Algorithm", valid_602240
+  var valid_602241 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602241 = validateParameter(valid_602241, JString, required = false,
+                                 default = nil)
+  if valid_602241 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602241
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2124,48 +2141,49 @@ proc validate_RevokeCertificate_600210(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600221: Call_RevokeCertificate_600209; path: JsonNode;
+proc call*(call_602243: Call_RevokeCertificate_602231; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Revokes a certificate that was issued inside ACM Private CA. If you enable a certificate revocation list (CRL) when you create or update your private CA, information about the revoked certificates will be included in the CRL. ACM Private CA writes the CRL to an S3 bucket that you specify. For more information about revocation, see the <a>CrlConfiguration</a> structure. ACM Private CA also writes revocation information to the audit report. For more information, see <a>CreateCertificateAuthorityAuditReport</a>. </p> <note> <p>You cannot revoke a root CA self-signed certificate.</p> </note>
   ## 
-  let valid = call_600221.validator(path, query, header, formData, body)
-  let scheme = call_600221.pickScheme
+  let valid = call_602243.validator(path, query, header, formData, body)
+  let scheme = call_602243.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600221.url(scheme.get, call_600221.host, call_600221.base,
-                         call_600221.route, valid.getOrDefault("path"),
+  let url = call_602243.url(scheme.get, call_602243.host, call_602243.base,
+                         call_602243.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600221, url, valid)
+  result = atozHook(call_602243, url, valid)
 
-proc call*(call_600222: Call_RevokeCertificate_600209; body: JsonNode): Recallable =
+proc call*(call_602244: Call_RevokeCertificate_602231; body: JsonNode): Recallable =
   ## revokeCertificate
   ## <p>Revokes a certificate that was issued inside ACM Private CA. If you enable a certificate revocation list (CRL) when you create or update your private CA, information about the revoked certificates will be included in the CRL. ACM Private CA writes the CRL to an S3 bucket that you specify. For more information about revocation, see the <a>CrlConfiguration</a> structure. ACM Private CA also writes revocation information to the audit report. For more information, see <a>CreateCertificateAuthorityAuditReport</a>. </p> <note> <p>You cannot revoke a root CA self-signed certificate.</p> </note>
   ##   body: JObject (required)
-  var body_600223 = newJObject()
+  var body_602245 = newJObject()
   if body != nil:
-    body_600223 = body
-  result = call_600222.call(nil, nil, nil, nil, body_600223)
+    body_602245 = body
+  result = call_602244.call(nil, nil, nil, nil, body_602245)
 
-var revokeCertificate* = Call_RevokeCertificate_600209(name: "revokeCertificate",
+var revokeCertificate* = Call_RevokeCertificate_602231(name: "revokeCertificate",
     meth: HttpMethod.HttpPost, host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.RevokeCertificate",
-    validator: validate_RevokeCertificate_600210, base: "/",
-    url: url_RevokeCertificate_600211, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RevokeCertificate_602232, base: "/",
+    url: url_RevokeCertificate_602233, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagCertificateAuthority_600224 = ref object of OpenApiRestCall_599368
-proc url_TagCertificateAuthority_600226(protocol: Scheme; host: string; base: string;
+  Call_TagCertificateAuthority_602246 = ref object of OpenApiRestCall_601389
+proc url_TagCertificateAuthority_602248(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_TagCertificateAuthority_600225(path: JsonNode; query: JsonNode;
+proc validate_TagCertificateAuthority_602247(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds one or more tags to your private CA. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a key and an optional value. You specify the private CA on input by its Amazon Resource Name (ARN). You specify the tag by using a key-value pair. You can apply a tag to just one private CA if you want to identify a specific characteristic of that CA, or you can apply the same tag to multiple private CAs if you want to filter for a common relationship among those CAs. To remove one or more tags, use the <a>UntagCertificateAuthority</a> action. Call the <a>ListTags</a> action to see what tags are associated with your CA. 
   ## 
@@ -2176,57 +2194,57 @@ proc validate_TagCertificateAuthority_600225(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600227 = header.getOrDefault("X-Amz-Date")
-  valid_600227 = validateParameter(valid_600227, JString, required = false,
-                                 default = nil)
-  if valid_600227 != nil:
-    section.add "X-Amz-Date", valid_600227
-  var valid_600228 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600228 = validateParameter(valid_600228, JString, required = false,
-                                 default = nil)
-  if valid_600228 != nil:
-    section.add "X-Amz-Security-Token", valid_600228
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600229 = header.getOrDefault("X-Amz-Target")
-  valid_600229 = validateParameter(valid_600229, JString, required = true, default = newJString(
+  var valid_602249 = header.getOrDefault("X-Amz-Target")
+  valid_602249 = validateParameter(valid_602249, JString, required = true, default = newJString(
       "ACMPrivateCA.TagCertificateAuthority"))
-  if valid_600229 != nil:
-    section.add "X-Amz-Target", valid_600229
-  var valid_600230 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600230 = validateParameter(valid_600230, JString, required = false,
+  if valid_602249 != nil:
+    section.add "X-Amz-Target", valid_602249
+  var valid_602250 = header.getOrDefault("X-Amz-Signature")
+  valid_602250 = validateParameter(valid_602250, JString, required = false,
                                  default = nil)
-  if valid_600230 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600230
-  var valid_600231 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600231 = validateParameter(valid_600231, JString, required = false,
+  if valid_602250 != nil:
+    section.add "X-Amz-Signature", valid_602250
+  var valid_602251 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602251 = validateParameter(valid_602251, JString, required = false,
                                  default = nil)
-  if valid_600231 != nil:
-    section.add "X-Amz-Algorithm", valid_600231
-  var valid_600232 = header.getOrDefault("X-Amz-Signature")
-  valid_600232 = validateParameter(valid_600232, JString, required = false,
+  if valid_602251 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602251
+  var valid_602252 = header.getOrDefault("X-Amz-Date")
+  valid_602252 = validateParameter(valid_602252, JString, required = false,
                                  default = nil)
-  if valid_600232 != nil:
-    section.add "X-Amz-Signature", valid_600232
-  var valid_600233 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600233 = validateParameter(valid_600233, JString, required = false,
+  if valid_602252 != nil:
+    section.add "X-Amz-Date", valid_602252
+  var valid_602253 = header.getOrDefault("X-Amz-Credential")
+  valid_602253 = validateParameter(valid_602253, JString, required = false,
                                  default = nil)
-  if valid_600233 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600233
-  var valid_600234 = header.getOrDefault("X-Amz-Credential")
-  valid_600234 = validateParameter(valid_600234, JString, required = false,
+  if valid_602253 != nil:
+    section.add "X-Amz-Credential", valid_602253
+  var valid_602254 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602254 = validateParameter(valid_602254, JString, required = false,
                                  default = nil)
-  if valid_600234 != nil:
-    section.add "X-Amz-Credential", valid_600234
+  if valid_602254 != nil:
+    section.add "X-Amz-Security-Token", valid_602254
+  var valid_602255 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602255 = validateParameter(valid_602255, JString, required = false,
+                                 default = nil)
+  if valid_602255 != nil:
+    section.add "X-Amz-Algorithm", valid_602255
+  var valid_602256 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602256 = validateParameter(valid_602256, JString, required = false,
+                                 default = nil)
+  if valid_602256 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602256
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2237,48 +2255,49 @@ proc validate_TagCertificateAuthority_600225(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600236: Call_TagCertificateAuthority_600224; path: JsonNode;
+proc call*(call_602258: Call_TagCertificateAuthority_602246; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds one or more tags to your private CA. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a key and an optional value. You specify the private CA on input by its Amazon Resource Name (ARN). You specify the tag by using a key-value pair. You can apply a tag to just one private CA if you want to identify a specific characteristic of that CA, or you can apply the same tag to multiple private CAs if you want to filter for a common relationship among those CAs. To remove one or more tags, use the <a>UntagCertificateAuthority</a> action. Call the <a>ListTags</a> action to see what tags are associated with your CA. 
   ## 
-  let valid = call_600236.validator(path, query, header, formData, body)
-  let scheme = call_600236.pickScheme
+  let valid = call_602258.validator(path, query, header, formData, body)
+  let scheme = call_602258.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600236.url(scheme.get, call_600236.host, call_600236.base,
-                         call_600236.route, valid.getOrDefault("path"),
+  let url = call_602258.url(scheme.get, call_602258.host, call_602258.base,
+                         call_602258.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600236, url, valid)
+  result = atozHook(call_602258, url, valid)
 
-proc call*(call_600237: Call_TagCertificateAuthority_600224; body: JsonNode): Recallable =
+proc call*(call_602259: Call_TagCertificateAuthority_602246; body: JsonNode): Recallable =
   ## tagCertificateAuthority
   ## Adds one or more tags to your private CA. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a key and an optional value. You specify the private CA on input by its Amazon Resource Name (ARN). You specify the tag by using a key-value pair. You can apply a tag to just one private CA if you want to identify a specific characteristic of that CA, or you can apply the same tag to multiple private CAs if you want to filter for a common relationship among those CAs. To remove one or more tags, use the <a>UntagCertificateAuthority</a> action. Call the <a>ListTags</a> action to see what tags are associated with your CA. 
   ##   body: JObject (required)
-  var body_600238 = newJObject()
+  var body_602260 = newJObject()
   if body != nil:
-    body_600238 = body
-  result = call_600237.call(nil, nil, nil, nil, body_600238)
+    body_602260 = body
+  result = call_602259.call(nil, nil, nil, nil, body_602260)
 
-var tagCertificateAuthority* = Call_TagCertificateAuthority_600224(
+var tagCertificateAuthority* = Call_TagCertificateAuthority_602246(
     name: "tagCertificateAuthority", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.TagCertificateAuthority",
-    validator: validate_TagCertificateAuthority_600225, base: "/",
-    url: url_TagCertificateAuthority_600226, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_TagCertificateAuthority_602247, base: "/",
+    url: url_TagCertificateAuthority_602248, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagCertificateAuthority_600239 = ref object of OpenApiRestCall_599368
-proc url_UntagCertificateAuthority_600241(protocol: Scheme; host: string;
+  Call_UntagCertificateAuthority_602261 = ref object of OpenApiRestCall_601389
+proc url_UntagCertificateAuthority_602263(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UntagCertificateAuthority_600240(path: JsonNode; query: JsonNode;
+proc validate_UntagCertificateAuthority_602262(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Remove one or more tags from your private CA. A tag consists of a key-value pair. If you do not specify the value portion of the tag when calling this action, the tag will be removed regardless of value. If you specify a value, the tag is removed only if it is associated with the specified value. To add tags to a private CA, use the <a>TagCertificateAuthority</a>. Call the <a>ListTags</a> action to see what tags are associated with your CA. 
   ## 
@@ -2289,57 +2308,57 @@ proc validate_UntagCertificateAuthority_600240(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600242 = header.getOrDefault("X-Amz-Date")
-  valid_600242 = validateParameter(valid_600242, JString, required = false,
-                                 default = nil)
-  if valid_600242 != nil:
-    section.add "X-Amz-Date", valid_600242
-  var valid_600243 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600243 = validateParameter(valid_600243, JString, required = false,
-                                 default = nil)
-  if valid_600243 != nil:
-    section.add "X-Amz-Security-Token", valid_600243
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600244 = header.getOrDefault("X-Amz-Target")
-  valid_600244 = validateParameter(valid_600244, JString, required = true, default = newJString(
+  var valid_602264 = header.getOrDefault("X-Amz-Target")
+  valid_602264 = validateParameter(valid_602264, JString, required = true, default = newJString(
       "ACMPrivateCA.UntagCertificateAuthority"))
-  if valid_600244 != nil:
-    section.add "X-Amz-Target", valid_600244
-  var valid_600245 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600245 = validateParameter(valid_600245, JString, required = false,
+  if valid_602264 != nil:
+    section.add "X-Amz-Target", valid_602264
+  var valid_602265 = header.getOrDefault("X-Amz-Signature")
+  valid_602265 = validateParameter(valid_602265, JString, required = false,
                                  default = nil)
-  if valid_600245 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600245
-  var valid_600246 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600246 = validateParameter(valid_600246, JString, required = false,
+  if valid_602265 != nil:
+    section.add "X-Amz-Signature", valid_602265
+  var valid_602266 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602266 = validateParameter(valid_602266, JString, required = false,
                                  default = nil)
-  if valid_600246 != nil:
-    section.add "X-Amz-Algorithm", valid_600246
-  var valid_600247 = header.getOrDefault("X-Amz-Signature")
-  valid_600247 = validateParameter(valid_600247, JString, required = false,
+  if valid_602266 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602266
+  var valid_602267 = header.getOrDefault("X-Amz-Date")
+  valid_602267 = validateParameter(valid_602267, JString, required = false,
                                  default = nil)
-  if valid_600247 != nil:
-    section.add "X-Amz-Signature", valid_600247
-  var valid_600248 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600248 = validateParameter(valid_600248, JString, required = false,
+  if valid_602267 != nil:
+    section.add "X-Amz-Date", valid_602267
+  var valid_602268 = header.getOrDefault("X-Amz-Credential")
+  valid_602268 = validateParameter(valid_602268, JString, required = false,
                                  default = nil)
-  if valid_600248 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600248
-  var valid_600249 = header.getOrDefault("X-Amz-Credential")
-  valid_600249 = validateParameter(valid_600249, JString, required = false,
+  if valid_602268 != nil:
+    section.add "X-Amz-Credential", valid_602268
+  var valid_602269 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602269 = validateParameter(valid_602269, JString, required = false,
                                  default = nil)
-  if valid_600249 != nil:
-    section.add "X-Amz-Credential", valid_600249
+  if valid_602269 != nil:
+    section.add "X-Amz-Security-Token", valid_602269
+  var valid_602270 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602270 = validateParameter(valid_602270, JString, required = false,
+                                 default = nil)
+  if valid_602270 != nil:
+    section.add "X-Amz-Algorithm", valid_602270
+  var valid_602271 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602271 = validateParameter(valid_602271, JString, required = false,
+                                 default = nil)
+  if valid_602271 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602271
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2350,49 +2369,50 @@ proc validate_UntagCertificateAuthority_600240(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600251: Call_UntagCertificateAuthority_600239; path: JsonNode;
+proc call*(call_602273: Call_UntagCertificateAuthority_602261; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Remove one or more tags from your private CA. A tag consists of a key-value pair. If you do not specify the value portion of the tag when calling this action, the tag will be removed regardless of value. If you specify a value, the tag is removed only if it is associated with the specified value. To add tags to a private CA, use the <a>TagCertificateAuthority</a>. Call the <a>ListTags</a> action to see what tags are associated with your CA. 
   ## 
-  let valid = call_600251.validator(path, query, header, formData, body)
-  let scheme = call_600251.pickScheme
+  let valid = call_602273.validator(path, query, header, formData, body)
+  let scheme = call_602273.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600251.url(scheme.get, call_600251.host, call_600251.base,
-                         call_600251.route, valid.getOrDefault("path"),
+  let url = call_602273.url(scheme.get, call_602273.host, call_602273.base,
+                         call_602273.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600251, url, valid)
+  result = atozHook(call_602273, url, valid)
 
-proc call*(call_600252: Call_UntagCertificateAuthority_600239; body: JsonNode): Recallable =
+proc call*(call_602274: Call_UntagCertificateAuthority_602261; body: JsonNode): Recallable =
   ## untagCertificateAuthority
   ## Remove one or more tags from your private CA. A tag consists of a key-value pair. If you do not specify the value portion of the tag when calling this action, the tag will be removed regardless of value. If you specify a value, the tag is removed only if it is associated with the specified value. To add tags to a private CA, use the <a>TagCertificateAuthority</a>. Call the <a>ListTags</a> action to see what tags are associated with your CA. 
   ##   body: JObject (required)
-  var body_600253 = newJObject()
+  var body_602275 = newJObject()
   if body != nil:
-    body_600253 = body
-  result = call_600252.call(nil, nil, nil, nil, body_600253)
+    body_602275 = body
+  result = call_602274.call(nil, nil, nil, nil, body_602275)
 
-var untagCertificateAuthority* = Call_UntagCertificateAuthority_600239(
+var untagCertificateAuthority* = Call_UntagCertificateAuthority_602261(
     name: "untagCertificateAuthority", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.UntagCertificateAuthority",
-    validator: validate_UntagCertificateAuthority_600240, base: "/",
-    url: url_UntagCertificateAuthority_600241,
+    validator: validate_UntagCertificateAuthority_602262, base: "/",
+    url: url_UntagCertificateAuthority_602263,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateCertificateAuthority_600254 = ref object of OpenApiRestCall_599368
-proc url_UpdateCertificateAuthority_600256(protocol: Scheme; host: string;
+  Call_UpdateCertificateAuthority_602276 = ref object of OpenApiRestCall_601389
+proc url_UpdateCertificateAuthority_602278(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateCertificateAuthority_600255(path: JsonNode; query: JsonNode;
+proc validate_UpdateCertificateAuthority_602277(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates the status or configuration of a private certificate authority (CA). Your private CA must be in the <code>ACTIVE</code> or <code>DISABLED</code> state before you can update it. You can disable a private CA that is in the <code>ACTIVE</code> state or make a CA that is in the <code>DISABLED</code> state active again.
   ## 
@@ -2403,57 +2423,57 @@ proc validate_UpdateCertificateAuthority_600255(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600257 = header.getOrDefault("X-Amz-Date")
-  valid_600257 = validateParameter(valid_600257, JString, required = false,
-                                 default = nil)
-  if valid_600257 != nil:
-    section.add "X-Amz-Date", valid_600257
-  var valid_600258 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600258 = validateParameter(valid_600258, JString, required = false,
-                                 default = nil)
-  if valid_600258 != nil:
-    section.add "X-Amz-Security-Token", valid_600258
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600259 = header.getOrDefault("X-Amz-Target")
-  valid_600259 = validateParameter(valid_600259, JString, required = true, default = newJString(
+  var valid_602279 = header.getOrDefault("X-Amz-Target")
+  valid_602279 = validateParameter(valid_602279, JString, required = true, default = newJString(
       "ACMPrivateCA.UpdateCertificateAuthority"))
-  if valid_600259 != nil:
-    section.add "X-Amz-Target", valid_600259
-  var valid_600260 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600260 = validateParameter(valid_600260, JString, required = false,
+  if valid_602279 != nil:
+    section.add "X-Amz-Target", valid_602279
+  var valid_602280 = header.getOrDefault("X-Amz-Signature")
+  valid_602280 = validateParameter(valid_602280, JString, required = false,
                                  default = nil)
-  if valid_600260 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600260
-  var valid_600261 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600261 = validateParameter(valid_600261, JString, required = false,
+  if valid_602280 != nil:
+    section.add "X-Amz-Signature", valid_602280
+  var valid_602281 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602281 = validateParameter(valid_602281, JString, required = false,
                                  default = nil)
-  if valid_600261 != nil:
-    section.add "X-Amz-Algorithm", valid_600261
-  var valid_600262 = header.getOrDefault("X-Amz-Signature")
-  valid_600262 = validateParameter(valid_600262, JString, required = false,
+  if valid_602281 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602281
+  var valid_602282 = header.getOrDefault("X-Amz-Date")
+  valid_602282 = validateParameter(valid_602282, JString, required = false,
                                  default = nil)
-  if valid_600262 != nil:
-    section.add "X-Amz-Signature", valid_600262
-  var valid_600263 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600263 = validateParameter(valid_600263, JString, required = false,
+  if valid_602282 != nil:
+    section.add "X-Amz-Date", valid_602282
+  var valid_602283 = header.getOrDefault("X-Amz-Credential")
+  valid_602283 = validateParameter(valid_602283, JString, required = false,
                                  default = nil)
-  if valid_600263 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600263
-  var valid_600264 = header.getOrDefault("X-Amz-Credential")
-  valid_600264 = validateParameter(valid_600264, JString, required = false,
+  if valid_602283 != nil:
+    section.add "X-Amz-Credential", valid_602283
+  var valid_602284 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602284 = validateParameter(valid_602284, JString, required = false,
                                  default = nil)
-  if valid_600264 != nil:
-    section.add "X-Amz-Credential", valid_600264
+  if valid_602284 != nil:
+    section.add "X-Amz-Security-Token", valid_602284
+  var valid_602285 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602285 = validateParameter(valid_602285, JString, required = false,
+                                 default = nil)
+  if valid_602285 != nil:
+    section.add "X-Amz-Algorithm", valid_602285
+  var valid_602286 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602286 = validateParameter(valid_602286, JString, required = false,
+                                 default = nil)
+  if valid_602286 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602286
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2464,34 +2484,34 @@ proc validate_UpdateCertificateAuthority_600255(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600266: Call_UpdateCertificateAuthority_600254; path: JsonNode;
+proc call*(call_602288: Call_UpdateCertificateAuthority_602276; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the status or configuration of a private certificate authority (CA). Your private CA must be in the <code>ACTIVE</code> or <code>DISABLED</code> state before you can update it. You can disable a private CA that is in the <code>ACTIVE</code> state or make a CA that is in the <code>DISABLED</code> state active again.
   ## 
-  let valid = call_600266.validator(path, query, header, formData, body)
-  let scheme = call_600266.pickScheme
+  let valid = call_602288.validator(path, query, header, formData, body)
+  let scheme = call_602288.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600266.url(scheme.get, call_600266.host, call_600266.base,
-                         call_600266.route, valid.getOrDefault("path"),
+  let url = call_602288.url(scheme.get, call_602288.host, call_602288.base,
+                         call_602288.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600266, url, valid)
+  result = atozHook(call_602288, url, valid)
 
-proc call*(call_600267: Call_UpdateCertificateAuthority_600254; body: JsonNode): Recallable =
+proc call*(call_602289: Call_UpdateCertificateAuthority_602276; body: JsonNode): Recallable =
   ## updateCertificateAuthority
   ## Updates the status or configuration of a private certificate authority (CA). Your private CA must be in the <code>ACTIVE</code> or <code>DISABLED</code> state before you can update it. You can disable a private CA that is in the <code>ACTIVE</code> state or make a CA that is in the <code>DISABLED</code> state active again.
   ##   body: JObject (required)
-  var body_600268 = newJObject()
+  var body_602290 = newJObject()
   if body != nil:
-    body_600268 = body
-  result = call_600267.call(nil, nil, nil, nil, body_600268)
+    body_602290 = body
+  result = call_602289.call(nil, nil, nil, nil, body_602290)
 
-var updateCertificateAuthority* = Call_UpdateCertificateAuthority_600254(
+var updateCertificateAuthority* = Call_UpdateCertificateAuthority_602276(
     name: "updateCertificateAuthority", meth: HttpMethod.HttpPost,
     host: "acm-pca.amazonaws.com",
     route: "/#X-Amz-Target=ACMPrivateCA.UpdateCertificateAuthority",
-    validator: validate_UpdateCertificateAuthority_600255, base: "/",
-    url: url_UpdateCertificateAuthority_600256,
+    validator: validate_UpdateCertificateAuthority_602277, base: "/",
+    url: url_UpdateCertificateAuthority_602278,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

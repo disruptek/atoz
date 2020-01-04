@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_597389 = ref object of OpenApiRestCall
+  OpenApiRestCall_601389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_597389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_597389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -153,8 +153,8 @@ const
   awsServiceName = "es"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AddTags_597727 = ref object of OpenApiRestCall_597389
-proc url_AddTags_597729(protocol: Scheme; host: string; base: string; route: string;
+  Call_AddTags_601727 = ref object of OpenApiRestCall_601389
+proc url_AddTags_601729(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -166,7 +166,7 @@ proc url_AddTags_597729(protocol: Scheme; host: string; base: string; route: str
   else:
     result.path = base & route
 
-proc validate_AddTags_597728(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_AddTags_601728(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## Attaches tags to an existing Elasticsearch domain. Tags are a set of case-sensitive key value pairs. An Elasticsearch domain may have up to 10 tags. See <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-awsresorcetagging" target="_blank"> Tagging Amazon Elasticsearch Service Domains for more information.</a>
   ## 
@@ -185,41 +185,41 @@ proc validate_AddTags_597728(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_597841 = header.getOrDefault("X-Amz-Signature")
-  valid_597841 = validateParameter(valid_597841, JString, required = false,
+  var valid_601841 = header.getOrDefault("X-Amz-Signature")
+  valid_601841 = validateParameter(valid_601841, JString, required = false,
                                  default = nil)
-  if valid_597841 != nil:
-    section.add "X-Amz-Signature", valid_597841
-  var valid_597842 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_597842 = validateParameter(valid_597842, JString, required = false,
+  if valid_601841 != nil:
+    section.add "X-Amz-Signature", valid_601841
+  var valid_601842 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601842 = validateParameter(valid_601842, JString, required = false,
                                  default = nil)
-  if valid_597842 != nil:
-    section.add "X-Amz-Content-Sha256", valid_597842
-  var valid_597843 = header.getOrDefault("X-Amz-Date")
-  valid_597843 = validateParameter(valid_597843, JString, required = false,
+  if valid_601842 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601842
+  var valid_601843 = header.getOrDefault("X-Amz-Date")
+  valid_601843 = validateParameter(valid_601843, JString, required = false,
                                  default = nil)
-  if valid_597843 != nil:
-    section.add "X-Amz-Date", valid_597843
-  var valid_597844 = header.getOrDefault("X-Amz-Credential")
-  valid_597844 = validateParameter(valid_597844, JString, required = false,
+  if valid_601843 != nil:
+    section.add "X-Amz-Date", valid_601843
+  var valid_601844 = header.getOrDefault("X-Amz-Credential")
+  valid_601844 = validateParameter(valid_601844, JString, required = false,
                                  default = nil)
-  if valid_597844 != nil:
-    section.add "X-Amz-Credential", valid_597844
-  var valid_597845 = header.getOrDefault("X-Amz-Security-Token")
-  valid_597845 = validateParameter(valid_597845, JString, required = false,
+  if valid_601844 != nil:
+    section.add "X-Amz-Credential", valid_601844
+  var valid_601845 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601845 = validateParameter(valid_601845, JString, required = false,
                                  default = nil)
-  if valid_597845 != nil:
-    section.add "X-Amz-Security-Token", valid_597845
-  var valid_597846 = header.getOrDefault("X-Amz-Algorithm")
-  valid_597846 = validateParameter(valid_597846, JString, required = false,
+  if valid_601845 != nil:
+    section.add "X-Amz-Security-Token", valid_601845
+  var valid_601846 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601846 = validateParameter(valid_601846, JString, required = false,
                                  default = nil)
-  if valid_597846 != nil:
-    section.add "X-Amz-Algorithm", valid_597846
-  var valid_597847 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_597847 = validateParameter(valid_597847, JString, required = false,
+  if valid_601846 != nil:
+    section.add "X-Amz-Algorithm", valid_601846
+  var valid_601847 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601847 = validateParameter(valid_601847, JString, required = false,
                                  default = nil)
-  if valid_597847 != nil:
-    section.add "X-Amz-SignedHeaders", valid_597847
+  if valid_601847 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601847
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -230,37 +230,37 @@ proc validate_AddTags_597728(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_597871: Call_AddTags_597727; path: JsonNode; query: JsonNode;
+proc call*(call_601871: Call_AddTags_601727; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Attaches tags to an existing Elasticsearch domain. Tags are a set of case-sensitive key value pairs. An Elasticsearch domain may have up to 10 tags. See <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-awsresorcetagging" target="_blank"> Tagging Amazon Elasticsearch Service Domains for more information.</a>
   ## 
-  let valid = call_597871.validator(path, query, header, formData, body)
-  let scheme = call_597871.pickScheme
+  let valid = call_601871.validator(path, query, header, formData, body)
+  let scheme = call_601871.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_597871.url(scheme.get, call_597871.host, call_597871.base,
-                         call_597871.route, valid.getOrDefault("path"),
+  let url = call_601871.url(scheme.get, call_601871.host, call_601871.base,
+                         call_601871.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_597871, url, valid)
+  result = atozHook(call_601871, url, valid)
 
-proc call*(call_597942: Call_AddTags_597727; body: JsonNode): Recallable =
+proc call*(call_601942: Call_AddTags_601727; body: JsonNode): Recallable =
   ## addTags
   ## Attaches tags to an existing Elasticsearch domain. Tags are a set of case-sensitive key value pairs. An Elasticsearch domain may have up to 10 tags. See <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-managedomains.html#es-managedomains-awsresorcetagging" target="_blank"> Tagging Amazon Elasticsearch Service Domains for more information.</a>
   ##   body: JObject (required)
-  var body_597943 = newJObject()
+  var body_601943 = newJObject()
   if body != nil:
-    body_597943 = body
-  result = call_597942.call(nil, nil, nil, nil, body_597943)
+    body_601943 = body
+  result = call_601942.call(nil, nil, nil, nil, body_601943)
 
-var addTags* = Call_AddTags_597727(name: "addTags", meth: HttpMethod.HttpPost,
+var addTags* = Call_AddTags_601727(name: "addTags", meth: HttpMethod.HttpPost,
                                 host: "es.amazonaws.com",
                                 route: "/2015-01-01/tags",
-                                validator: validate_AddTags_597728, base: "/",
-                                url: url_AddTags_597729,
+                                validator: validate_AddTags_601728, base: "/",
+                                url: url_AddTags_601729,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CancelElasticsearchServiceSoftwareUpdate_597982 = ref object of OpenApiRestCall_597389
-proc url_CancelElasticsearchServiceSoftwareUpdate_597984(protocol: Scheme;
+  Call_CancelElasticsearchServiceSoftwareUpdate_601982 = ref object of OpenApiRestCall_601389
+proc url_CancelElasticsearchServiceSoftwareUpdate_601984(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -272,7 +272,7 @@ proc url_CancelElasticsearchServiceSoftwareUpdate_597984(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_CancelElasticsearchServiceSoftwareUpdate_597983(path: JsonNode;
+proc validate_CancelElasticsearchServiceSoftwareUpdate_601983(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Cancels a scheduled service software update for an Amazon ES domain. You can only perform this operation before the <code>AutomatedUpdateDate</code> and when the <code>UpdateStatus</code> is in the <code>PENDING_UPDATE</code> state.
   ## 
@@ -291,41 +291,41 @@ proc validate_CancelElasticsearchServiceSoftwareUpdate_597983(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_597985 = header.getOrDefault("X-Amz-Signature")
-  valid_597985 = validateParameter(valid_597985, JString, required = false,
+  var valid_601985 = header.getOrDefault("X-Amz-Signature")
+  valid_601985 = validateParameter(valid_601985, JString, required = false,
                                  default = nil)
-  if valid_597985 != nil:
-    section.add "X-Amz-Signature", valid_597985
-  var valid_597986 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_597986 = validateParameter(valid_597986, JString, required = false,
+  if valid_601985 != nil:
+    section.add "X-Amz-Signature", valid_601985
+  var valid_601986 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601986 = validateParameter(valid_601986, JString, required = false,
                                  default = nil)
-  if valid_597986 != nil:
-    section.add "X-Amz-Content-Sha256", valid_597986
-  var valid_597987 = header.getOrDefault("X-Amz-Date")
-  valid_597987 = validateParameter(valid_597987, JString, required = false,
+  if valid_601986 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601986
+  var valid_601987 = header.getOrDefault("X-Amz-Date")
+  valid_601987 = validateParameter(valid_601987, JString, required = false,
                                  default = nil)
-  if valid_597987 != nil:
-    section.add "X-Amz-Date", valid_597987
-  var valid_597988 = header.getOrDefault("X-Amz-Credential")
-  valid_597988 = validateParameter(valid_597988, JString, required = false,
+  if valid_601987 != nil:
+    section.add "X-Amz-Date", valid_601987
+  var valid_601988 = header.getOrDefault("X-Amz-Credential")
+  valid_601988 = validateParameter(valid_601988, JString, required = false,
                                  default = nil)
-  if valid_597988 != nil:
-    section.add "X-Amz-Credential", valid_597988
-  var valid_597989 = header.getOrDefault("X-Amz-Security-Token")
-  valid_597989 = validateParameter(valid_597989, JString, required = false,
+  if valid_601988 != nil:
+    section.add "X-Amz-Credential", valid_601988
+  var valid_601989 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601989 = validateParameter(valid_601989, JString, required = false,
                                  default = nil)
-  if valid_597989 != nil:
-    section.add "X-Amz-Security-Token", valid_597989
-  var valid_597990 = header.getOrDefault("X-Amz-Algorithm")
-  valid_597990 = validateParameter(valid_597990, JString, required = false,
+  if valid_601989 != nil:
+    section.add "X-Amz-Security-Token", valid_601989
+  var valid_601990 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601990 = validateParameter(valid_601990, JString, required = false,
                                  default = nil)
-  if valid_597990 != nil:
-    section.add "X-Amz-Algorithm", valid_597990
-  var valid_597991 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_597991 = validateParameter(valid_597991, JString, required = false,
+  if valid_601990 != nil:
+    section.add "X-Amz-Algorithm", valid_601990
+  var valid_601991 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601991 = validateParameter(valid_601991, JString, required = false,
                                  default = nil)
-  if valid_597991 != nil:
-    section.add "X-Amz-SignedHeaders", valid_597991
+  if valid_601991 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601991
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -336,40 +336,40 @@ proc validate_CancelElasticsearchServiceSoftwareUpdate_597983(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_597993: Call_CancelElasticsearchServiceSoftwareUpdate_597982;
+proc call*(call_601993: Call_CancelElasticsearchServiceSoftwareUpdate_601982;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Cancels a scheduled service software update for an Amazon ES domain. You can only perform this operation before the <code>AutomatedUpdateDate</code> and when the <code>UpdateStatus</code> is in the <code>PENDING_UPDATE</code> state.
   ## 
-  let valid = call_597993.validator(path, query, header, formData, body)
-  let scheme = call_597993.pickScheme
+  let valid = call_601993.validator(path, query, header, formData, body)
+  let scheme = call_601993.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_597993.url(scheme.get, call_597993.host, call_597993.base,
-                         call_597993.route, valid.getOrDefault("path"),
+  let url = call_601993.url(scheme.get, call_601993.host, call_601993.base,
+                         call_601993.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_597993, url, valid)
+  result = atozHook(call_601993, url, valid)
 
-proc call*(call_597994: Call_CancelElasticsearchServiceSoftwareUpdate_597982;
+proc call*(call_601994: Call_CancelElasticsearchServiceSoftwareUpdate_601982;
           body: JsonNode): Recallable =
   ## cancelElasticsearchServiceSoftwareUpdate
   ## Cancels a scheduled service software update for an Amazon ES domain. You can only perform this operation before the <code>AutomatedUpdateDate</code> and when the <code>UpdateStatus</code> is in the <code>PENDING_UPDATE</code> state.
   ##   body: JObject (required)
-  var body_597995 = newJObject()
+  var body_601995 = newJObject()
   if body != nil:
-    body_597995 = body
-  result = call_597994.call(nil, nil, nil, nil, body_597995)
+    body_601995 = body
+  result = call_601994.call(nil, nil, nil, nil, body_601995)
 
-var cancelElasticsearchServiceSoftwareUpdate* = Call_CancelElasticsearchServiceSoftwareUpdate_597982(
+var cancelElasticsearchServiceSoftwareUpdate* = Call_CancelElasticsearchServiceSoftwareUpdate_601982(
     name: "cancelElasticsearchServiceSoftwareUpdate", meth: HttpMethod.HttpPost,
     host: "es.amazonaws.com",
     route: "/2015-01-01/es/serviceSoftwareUpdate/cancel",
-    validator: validate_CancelElasticsearchServiceSoftwareUpdate_597983,
-    base: "/", url: url_CancelElasticsearchServiceSoftwareUpdate_597984,
+    validator: validate_CancelElasticsearchServiceSoftwareUpdate_601983,
+    base: "/", url: url_CancelElasticsearchServiceSoftwareUpdate_601984,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateElasticsearchDomain_597996 = ref object of OpenApiRestCall_597389
-proc url_CreateElasticsearchDomain_597998(protocol: Scheme; host: string;
+  Call_CreateElasticsearchDomain_601996 = ref object of OpenApiRestCall_601389
+proc url_CreateElasticsearchDomain_601998(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -381,7 +381,7 @@ proc url_CreateElasticsearchDomain_597998(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CreateElasticsearchDomain_597997(path: JsonNode; query: JsonNode;
+proc validate_CreateElasticsearchDomain_601997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a new Elasticsearch domain. For more information, see <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html#es-createdomains" target="_blank">Creating Elasticsearch Domains</a> in the <i>Amazon Elasticsearch Service Developer Guide</i>.
   ## 
@@ -400,41 +400,41 @@ proc validate_CreateElasticsearchDomain_597997(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_597999 = header.getOrDefault("X-Amz-Signature")
-  valid_597999 = validateParameter(valid_597999, JString, required = false,
+  var valid_601999 = header.getOrDefault("X-Amz-Signature")
+  valid_601999 = validateParameter(valid_601999, JString, required = false,
                                  default = nil)
-  if valid_597999 != nil:
-    section.add "X-Amz-Signature", valid_597999
-  var valid_598000 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598000 = validateParameter(valid_598000, JString, required = false,
+  if valid_601999 != nil:
+    section.add "X-Amz-Signature", valid_601999
+  var valid_602000 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602000 = validateParameter(valid_602000, JString, required = false,
                                  default = nil)
-  if valid_598000 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598000
-  var valid_598001 = header.getOrDefault("X-Amz-Date")
-  valid_598001 = validateParameter(valid_598001, JString, required = false,
+  if valid_602000 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602000
+  var valid_602001 = header.getOrDefault("X-Amz-Date")
+  valid_602001 = validateParameter(valid_602001, JString, required = false,
                                  default = nil)
-  if valid_598001 != nil:
-    section.add "X-Amz-Date", valid_598001
-  var valid_598002 = header.getOrDefault("X-Amz-Credential")
-  valid_598002 = validateParameter(valid_598002, JString, required = false,
+  if valid_602001 != nil:
+    section.add "X-Amz-Date", valid_602001
+  var valid_602002 = header.getOrDefault("X-Amz-Credential")
+  valid_602002 = validateParameter(valid_602002, JString, required = false,
                                  default = nil)
-  if valid_598002 != nil:
-    section.add "X-Amz-Credential", valid_598002
-  var valid_598003 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598003 = validateParameter(valid_598003, JString, required = false,
+  if valid_602002 != nil:
+    section.add "X-Amz-Credential", valid_602002
+  var valid_602003 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602003 = validateParameter(valid_602003, JString, required = false,
                                  default = nil)
-  if valid_598003 != nil:
-    section.add "X-Amz-Security-Token", valid_598003
-  var valid_598004 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598004 = validateParameter(valid_598004, JString, required = false,
+  if valid_602003 != nil:
+    section.add "X-Amz-Security-Token", valid_602003
+  var valid_602004 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602004 = validateParameter(valid_602004, JString, required = false,
                                  default = nil)
-  if valid_598004 != nil:
-    section.add "X-Amz-Algorithm", valid_598004
-  var valid_598005 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598005 = validateParameter(valid_598005, JString, required = false,
+  if valid_602004 != nil:
+    section.add "X-Amz-Algorithm", valid_602004
+  var valid_602005 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602005 = validateParameter(valid_602005, JString, required = false,
                                  default = nil)
-  if valid_598005 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598005
+  if valid_602005 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602005
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -445,37 +445,37 @@ proc validate_CreateElasticsearchDomain_597997(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_598007: Call_CreateElasticsearchDomain_597996; path: JsonNode;
+proc call*(call_602007: Call_CreateElasticsearchDomain_601996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a new Elasticsearch domain. For more information, see <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html#es-createdomains" target="_blank">Creating Elasticsearch Domains</a> in the <i>Amazon Elasticsearch Service Developer Guide</i>.
   ## 
-  let valid = call_598007.validator(path, query, header, formData, body)
-  let scheme = call_598007.pickScheme
+  let valid = call_602007.validator(path, query, header, formData, body)
+  let scheme = call_602007.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598007.url(scheme.get, call_598007.host, call_598007.base,
-                         call_598007.route, valid.getOrDefault("path"),
+  let url = call_602007.url(scheme.get, call_602007.host, call_602007.base,
+                         call_602007.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598007, url, valid)
+  result = atozHook(call_602007, url, valid)
 
-proc call*(call_598008: Call_CreateElasticsearchDomain_597996; body: JsonNode): Recallable =
+proc call*(call_602008: Call_CreateElasticsearchDomain_601996; body: JsonNode): Recallable =
   ## createElasticsearchDomain
   ## Creates a new Elasticsearch domain. For more information, see <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-createupdatedomains.html#es-createdomains" target="_blank">Creating Elasticsearch Domains</a> in the <i>Amazon Elasticsearch Service Developer Guide</i>.
   ##   body: JObject (required)
-  var body_598009 = newJObject()
+  var body_602009 = newJObject()
   if body != nil:
-    body_598009 = body
-  result = call_598008.call(nil, nil, nil, nil, body_598009)
+    body_602009 = body
+  result = call_602008.call(nil, nil, nil, nil, body_602009)
 
-var createElasticsearchDomain* = Call_CreateElasticsearchDomain_597996(
+var createElasticsearchDomain* = Call_CreateElasticsearchDomain_601996(
     name: "createElasticsearchDomain", meth: HttpMethod.HttpPost,
     host: "es.amazonaws.com", route: "/2015-01-01/es/domain",
-    validator: validate_CreateElasticsearchDomain_597997, base: "/",
-    url: url_CreateElasticsearchDomain_597998,
+    validator: validate_CreateElasticsearchDomain_601997, base: "/",
+    url: url_CreateElasticsearchDomain_601998,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeElasticsearchDomain_598010 = ref object of OpenApiRestCall_597389
-proc url_DescribeElasticsearchDomain_598012(protocol: Scheme; host: string;
+  Call_DescribeElasticsearchDomain_602010 = ref object of OpenApiRestCall_601389
+proc url_DescribeElasticsearchDomain_602012(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -495,7 +495,7 @@ proc url_DescribeElasticsearchDomain_598012(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeElasticsearchDomain_598011(path: JsonNode; query: JsonNode;
+proc validate_DescribeElasticsearchDomain_602011(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns domain configuration information about the specified Elasticsearch domain, including the domain ID, domain endpoint, and domain ARN.
   ## 
@@ -507,11 +507,11 @@ proc validate_DescribeElasticsearchDomain_598011(path: JsonNode; query: JsonNode
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `DomainName` field"
-  var valid_598027 = path.getOrDefault("DomainName")
-  valid_598027 = validateParameter(valid_598027, JString, required = true,
+  var valid_602027 = path.getOrDefault("DomainName")
+  valid_602027 = validateParameter(valid_602027, JString, required = true,
                                  default = nil)
-  if valid_598027 != nil:
-    section.add "DomainName", valid_598027
+  if valid_602027 != nil:
+    section.add "DomainName", valid_602027
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -524,78 +524,78 @@ proc validate_DescribeElasticsearchDomain_598011(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598028 = header.getOrDefault("X-Amz-Signature")
-  valid_598028 = validateParameter(valid_598028, JString, required = false,
+  var valid_602028 = header.getOrDefault("X-Amz-Signature")
+  valid_602028 = validateParameter(valid_602028, JString, required = false,
                                  default = nil)
-  if valid_598028 != nil:
-    section.add "X-Amz-Signature", valid_598028
-  var valid_598029 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598029 = validateParameter(valid_598029, JString, required = false,
+  if valid_602028 != nil:
+    section.add "X-Amz-Signature", valid_602028
+  var valid_602029 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602029 = validateParameter(valid_602029, JString, required = false,
                                  default = nil)
-  if valid_598029 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598029
-  var valid_598030 = header.getOrDefault("X-Amz-Date")
-  valid_598030 = validateParameter(valid_598030, JString, required = false,
+  if valid_602029 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602029
+  var valid_602030 = header.getOrDefault("X-Amz-Date")
+  valid_602030 = validateParameter(valid_602030, JString, required = false,
                                  default = nil)
-  if valid_598030 != nil:
-    section.add "X-Amz-Date", valid_598030
-  var valid_598031 = header.getOrDefault("X-Amz-Credential")
-  valid_598031 = validateParameter(valid_598031, JString, required = false,
+  if valid_602030 != nil:
+    section.add "X-Amz-Date", valid_602030
+  var valid_602031 = header.getOrDefault("X-Amz-Credential")
+  valid_602031 = validateParameter(valid_602031, JString, required = false,
                                  default = nil)
-  if valid_598031 != nil:
-    section.add "X-Amz-Credential", valid_598031
-  var valid_598032 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598032 = validateParameter(valid_598032, JString, required = false,
+  if valid_602031 != nil:
+    section.add "X-Amz-Credential", valid_602031
+  var valid_602032 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602032 = validateParameter(valid_602032, JString, required = false,
                                  default = nil)
-  if valid_598032 != nil:
-    section.add "X-Amz-Security-Token", valid_598032
-  var valid_598033 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598033 = validateParameter(valid_598033, JString, required = false,
+  if valid_602032 != nil:
+    section.add "X-Amz-Security-Token", valid_602032
+  var valid_602033 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602033 = validateParameter(valid_602033, JString, required = false,
                                  default = nil)
-  if valid_598033 != nil:
-    section.add "X-Amz-Algorithm", valid_598033
-  var valid_598034 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598034 = validateParameter(valid_598034, JString, required = false,
+  if valid_602033 != nil:
+    section.add "X-Amz-Algorithm", valid_602033
+  var valid_602034 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602034 = validateParameter(valid_602034, JString, required = false,
                                  default = nil)
-  if valid_598034 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598034
+  if valid_602034 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602034
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598035: Call_DescribeElasticsearchDomain_598010; path: JsonNode;
+proc call*(call_602035: Call_DescribeElasticsearchDomain_602010; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns domain configuration information about the specified Elasticsearch domain, including the domain ID, domain endpoint, and domain ARN.
   ## 
-  let valid = call_598035.validator(path, query, header, formData, body)
-  let scheme = call_598035.pickScheme
+  let valid = call_602035.validator(path, query, header, formData, body)
+  let scheme = call_602035.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598035.url(scheme.get, call_598035.host, call_598035.base,
-                         call_598035.route, valid.getOrDefault("path"),
+  let url = call_602035.url(scheme.get, call_602035.host, call_602035.base,
+                         call_602035.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598035, url, valid)
+  result = atozHook(call_602035, url, valid)
 
-proc call*(call_598036: Call_DescribeElasticsearchDomain_598010; DomainName: string): Recallable =
+proc call*(call_602036: Call_DescribeElasticsearchDomain_602010; DomainName: string): Recallable =
   ## describeElasticsearchDomain
   ## Returns domain configuration information about the specified Elasticsearch domain, including the domain ID, domain endpoint, and domain ARN.
   ##   DomainName: string (required)
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
-  var path_598037 = newJObject()
-  add(path_598037, "DomainName", newJString(DomainName))
-  result = call_598036.call(path_598037, nil, nil, nil, nil)
+  var path_602037 = newJObject()
+  add(path_602037, "DomainName", newJString(DomainName))
+  result = call_602036.call(path_602037, nil, nil, nil, nil)
 
-var describeElasticsearchDomain* = Call_DescribeElasticsearchDomain_598010(
+var describeElasticsearchDomain* = Call_DescribeElasticsearchDomain_602010(
     name: "describeElasticsearchDomain", meth: HttpMethod.HttpGet,
     host: "es.amazonaws.com", route: "/2015-01-01/es/domain/{DomainName}",
-    validator: validate_DescribeElasticsearchDomain_598011, base: "/",
-    url: url_DescribeElasticsearchDomain_598012,
+    validator: validate_DescribeElasticsearchDomain_602011, base: "/",
+    url: url_DescribeElasticsearchDomain_602012,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteElasticsearchDomain_598039 = ref object of OpenApiRestCall_597389
-proc url_DeleteElasticsearchDomain_598041(protocol: Scheme; host: string;
+  Call_DeleteElasticsearchDomain_602039 = ref object of OpenApiRestCall_601389
+proc url_DeleteElasticsearchDomain_602041(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -615,7 +615,7 @@ proc url_DeleteElasticsearchDomain_598041(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteElasticsearchDomain_598040(path: JsonNode; query: JsonNode;
+proc validate_DeleteElasticsearchDomain_602040(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Permanently deletes the specified Elasticsearch domain and all of its data. Once a domain is deleted, it cannot be recovered.
   ## 
@@ -627,11 +627,11 @@ proc validate_DeleteElasticsearchDomain_598040(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `DomainName` field"
-  var valid_598042 = path.getOrDefault("DomainName")
-  valid_598042 = validateParameter(valid_598042, JString, required = true,
+  var valid_602042 = path.getOrDefault("DomainName")
+  valid_602042 = validateParameter(valid_602042, JString, required = true,
                                  default = nil)
-  if valid_598042 != nil:
-    section.add "DomainName", valid_598042
+  if valid_602042 != nil:
+    section.add "DomainName", valid_602042
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -644,78 +644,78 @@ proc validate_DeleteElasticsearchDomain_598040(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598043 = header.getOrDefault("X-Amz-Signature")
-  valid_598043 = validateParameter(valid_598043, JString, required = false,
+  var valid_602043 = header.getOrDefault("X-Amz-Signature")
+  valid_602043 = validateParameter(valid_602043, JString, required = false,
                                  default = nil)
-  if valid_598043 != nil:
-    section.add "X-Amz-Signature", valid_598043
-  var valid_598044 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598044 = validateParameter(valid_598044, JString, required = false,
+  if valid_602043 != nil:
+    section.add "X-Amz-Signature", valid_602043
+  var valid_602044 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602044 = validateParameter(valid_602044, JString, required = false,
                                  default = nil)
-  if valid_598044 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598044
-  var valid_598045 = header.getOrDefault("X-Amz-Date")
-  valid_598045 = validateParameter(valid_598045, JString, required = false,
+  if valid_602044 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602044
+  var valid_602045 = header.getOrDefault("X-Amz-Date")
+  valid_602045 = validateParameter(valid_602045, JString, required = false,
                                  default = nil)
-  if valid_598045 != nil:
-    section.add "X-Amz-Date", valid_598045
-  var valid_598046 = header.getOrDefault("X-Amz-Credential")
-  valid_598046 = validateParameter(valid_598046, JString, required = false,
+  if valid_602045 != nil:
+    section.add "X-Amz-Date", valid_602045
+  var valid_602046 = header.getOrDefault("X-Amz-Credential")
+  valid_602046 = validateParameter(valid_602046, JString, required = false,
                                  default = nil)
-  if valid_598046 != nil:
-    section.add "X-Amz-Credential", valid_598046
-  var valid_598047 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598047 = validateParameter(valid_598047, JString, required = false,
+  if valid_602046 != nil:
+    section.add "X-Amz-Credential", valid_602046
+  var valid_602047 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602047 = validateParameter(valid_602047, JString, required = false,
                                  default = nil)
-  if valid_598047 != nil:
-    section.add "X-Amz-Security-Token", valid_598047
-  var valid_598048 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598048 = validateParameter(valid_598048, JString, required = false,
+  if valid_602047 != nil:
+    section.add "X-Amz-Security-Token", valid_602047
+  var valid_602048 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602048 = validateParameter(valid_602048, JString, required = false,
                                  default = nil)
-  if valid_598048 != nil:
-    section.add "X-Amz-Algorithm", valid_598048
-  var valid_598049 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598049 = validateParameter(valid_598049, JString, required = false,
+  if valid_602048 != nil:
+    section.add "X-Amz-Algorithm", valid_602048
+  var valid_602049 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602049 = validateParameter(valid_602049, JString, required = false,
                                  default = nil)
-  if valid_598049 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598049
+  if valid_602049 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602049
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598050: Call_DeleteElasticsearchDomain_598039; path: JsonNode;
+proc call*(call_602050: Call_DeleteElasticsearchDomain_602039; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Permanently deletes the specified Elasticsearch domain and all of its data. Once a domain is deleted, it cannot be recovered.
   ## 
-  let valid = call_598050.validator(path, query, header, formData, body)
-  let scheme = call_598050.pickScheme
+  let valid = call_602050.validator(path, query, header, formData, body)
+  let scheme = call_602050.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598050.url(scheme.get, call_598050.host, call_598050.base,
-                         call_598050.route, valid.getOrDefault("path"),
+  let url = call_602050.url(scheme.get, call_602050.host, call_602050.base,
+                         call_602050.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598050, url, valid)
+  result = atozHook(call_602050, url, valid)
 
-proc call*(call_598051: Call_DeleteElasticsearchDomain_598039; DomainName: string): Recallable =
+proc call*(call_602051: Call_DeleteElasticsearchDomain_602039; DomainName: string): Recallable =
   ## deleteElasticsearchDomain
   ## Permanently deletes the specified Elasticsearch domain and all of its data. Once a domain is deleted, it cannot be recovered.
   ##   DomainName: string (required)
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
-  var path_598052 = newJObject()
-  add(path_598052, "DomainName", newJString(DomainName))
-  result = call_598051.call(path_598052, nil, nil, nil, nil)
+  var path_602052 = newJObject()
+  add(path_602052, "DomainName", newJString(DomainName))
+  result = call_602051.call(path_602052, nil, nil, nil, nil)
 
-var deleteElasticsearchDomain* = Call_DeleteElasticsearchDomain_598039(
+var deleteElasticsearchDomain* = Call_DeleteElasticsearchDomain_602039(
     name: "deleteElasticsearchDomain", meth: HttpMethod.HttpDelete,
     host: "es.amazonaws.com", route: "/2015-01-01/es/domain/{DomainName}",
-    validator: validate_DeleteElasticsearchDomain_598040, base: "/",
-    url: url_DeleteElasticsearchDomain_598041,
+    validator: validate_DeleteElasticsearchDomain_602040, base: "/",
+    url: url_DeleteElasticsearchDomain_602041,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteElasticsearchServiceRole_598053 = ref object of OpenApiRestCall_597389
-proc url_DeleteElasticsearchServiceRole_598055(protocol: Scheme; host: string;
+  Call_DeleteElasticsearchServiceRole_602053 = ref object of OpenApiRestCall_601389
+proc url_DeleteElasticsearchServiceRole_602055(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -727,7 +727,7 @@ proc url_DeleteElasticsearchServiceRole_598055(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DeleteElasticsearchServiceRole_598054(path: JsonNode;
+proc validate_DeleteElasticsearchServiceRole_602054(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the service-linked role that Elasticsearch Service uses to manage and maintain VPC domains. Role deletion will fail if any existing VPC domains use the role. You must delete any such Elasticsearch domains before deleting the role. See <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html#es-enabling-slr" target="_blank">Deleting Elasticsearch Service Role</a> in <i>VPC Endpoints for Amazon Elasticsearch Service Domains</i>.
   ## 
@@ -746,74 +746,74 @@ proc validate_DeleteElasticsearchServiceRole_598054(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598056 = header.getOrDefault("X-Amz-Signature")
-  valid_598056 = validateParameter(valid_598056, JString, required = false,
+  var valid_602056 = header.getOrDefault("X-Amz-Signature")
+  valid_602056 = validateParameter(valid_602056, JString, required = false,
                                  default = nil)
-  if valid_598056 != nil:
-    section.add "X-Amz-Signature", valid_598056
-  var valid_598057 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598057 = validateParameter(valid_598057, JString, required = false,
+  if valid_602056 != nil:
+    section.add "X-Amz-Signature", valid_602056
+  var valid_602057 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602057 = validateParameter(valid_602057, JString, required = false,
                                  default = nil)
-  if valid_598057 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598057
-  var valid_598058 = header.getOrDefault("X-Amz-Date")
-  valid_598058 = validateParameter(valid_598058, JString, required = false,
+  if valid_602057 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602057
+  var valid_602058 = header.getOrDefault("X-Amz-Date")
+  valid_602058 = validateParameter(valid_602058, JString, required = false,
                                  default = nil)
-  if valid_598058 != nil:
-    section.add "X-Amz-Date", valid_598058
-  var valid_598059 = header.getOrDefault("X-Amz-Credential")
-  valid_598059 = validateParameter(valid_598059, JString, required = false,
+  if valid_602058 != nil:
+    section.add "X-Amz-Date", valid_602058
+  var valid_602059 = header.getOrDefault("X-Amz-Credential")
+  valid_602059 = validateParameter(valid_602059, JString, required = false,
                                  default = nil)
-  if valid_598059 != nil:
-    section.add "X-Amz-Credential", valid_598059
-  var valid_598060 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598060 = validateParameter(valid_598060, JString, required = false,
+  if valid_602059 != nil:
+    section.add "X-Amz-Credential", valid_602059
+  var valid_602060 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602060 = validateParameter(valid_602060, JString, required = false,
                                  default = nil)
-  if valid_598060 != nil:
-    section.add "X-Amz-Security-Token", valid_598060
-  var valid_598061 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598061 = validateParameter(valid_598061, JString, required = false,
+  if valid_602060 != nil:
+    section.add "X-Amz-Security-Token", valid_602060
+  var valid_602061 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602061 = validateParameter(valid_602061, JString, required = false,
                                  default = nil)
-  if valid_598061 != nil:
-    section.add "X-Amz-Algorithm", valid_598061
-  var valid_598062 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598062 = validateParameter(valid_598062, JString, required = false,
+  if valid_602061 != nil:
+    section.add "X-Amz-Algorithm", valid_602061
+  var valid_602062 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602062 = validateParameter(valid_602062, JString, required = false,
                                  default = nil)
-  if valid_598062 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598062
+  if valid_602062 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602062
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598063: Call_DeleteElasticsearchServiceRole_598053; path: JsonNode;
+proc call*(call_602063: Call_DeleteElasticsearchServiceRole_602053; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the service-linked role that Elasticsearch Service uses to manage and maintain VPC domains. Role deletion will fail if any existing VPC domains use the role. You must delete any such Elasticsearch domains before deleting the role. See <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html#es-enabling-slr" target="_blank">Deleting Elasticsearch Service Role</a> in <i>VPC Endpoints for Amazon Elasticsearch Service Domains</i>.
   ## 
-  let valid = call_598063.validator(path, query, header, formData, body)
-  let scheme = call_598063.pickScheme
+  let valid = call_602063.validator(path, query, header, formData, body)
+  let scheme = call_602063.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598063.url(scheme.get, call_598063.host, call_598063.base,
-                         call_598063.route, valid.getOrDefault("path"),
+  let url = call_602063.url(scheme.get, call_602063.host, call_602063.base,
+                         call_602063.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598063, url, valid)
+  result = atozHook(call_602063, url, valid)
 
-proc call*(call_598064: Call_DeleteElasticsearchServiceRole_598053): Recallable =
+proc call*(call_602064: Call_DeleteElasticsearchServiceRole_602053): Recallable =
   ## deleteElasticsearchServiceRole
   ## Deletes the service-linked role that Elasticsearch Service uses to manage and maintain VPC domains. Role deletion will fail if any existing VPC domains use the role. You must delete any such Elasticsearch domains before deleting the role. See <a href="http://docs.aws.amazon.com/elasticsearch-service/latest/developerguide/es-vpc.html#es-enabling-slr" target="_blank">Deleting Elasticsearch Service Role</a> in <i>VPC Endpoints for Amazon Elasticsearch Service Domains</i>.
-  result = call_598064.call(nil, nil, nil, nil, nil)
+  result = call_602064.call(nil, nil, nil, nil, nil)
 
-var deleteElasticsearchServiceRole* = Call_DeleteElasticsearchServiceRole_598053(
+var deleteElasticsearchServiceRole* = Call_DeleteElasticsearchServiceRole_602053(
     name: "deleteElasticsearchServiceRole", meth: HttpMethod.HttpDelete,
     host: "es.amazonaws.com", route: "/2015-01-01/es/role",
-    validator: validate_DeleteElasticsearchServiceRole_598054, base: "/",
-    url: url_DeleteElasticsearchServiceRole_598055,
+    validator: validate_DeleteElasticsearchServiceRole_602054, base: "/",
+    url: url_DeleteElasticsearchServiceRole_602055,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateElasticsearchDomainConfig_598079 = ref object of OpenApiRestCall_597389
-proc url_UpdateElasticsearchDomainConfig_598081(protocol: Scheme; host: string;
+  Call_UpdateElasticsearchDomainConfig_602079 = ref object of OpenApiRestCall_601389
+proc url_UpdateElasticsearchDomainConfig_602081(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -834,7 +834,7 @@ proc url_UpdateElasticsearchDomainConfig_598081(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateElasticsearchDomainConfig_598080(path: JsonNode;
+proc validate_UpdateElasticsearchDomainConfig_602080(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies the cluster configuration of the specified Elasticsearch domain, setting as setting the instance type and the number of instances. 
   ## 
@@ -846,11 +846,11 @@ proc validate_UpdateElasticsearchDomainConfig_598080(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `DomainName` field"
-  var valid_598082 = path.getOrDefault("DomainName")
-  valid_598082 = validateParameter(valid_598082, JString, required = true,
+  var valid_602082 = path.getOrDefault("DomainName")
+  valid_602082 = validateParameter(valid_602082, JString, required = true,
                                  default = nil)
-  if valid_598082 != nil:
-    section.add "DomainName", valid_598082
+  if valid_602082 != nil:
+    section.add "DomainName", valid_602082
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -863,41 +863,41 @@ proc validate_UpdateElasticsearchDomainConfig_598080(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598083 = header.getOrDefault("X-Amz-Signature")
-  valid_598083 = validateParameter(valid_598083, JString, required = false,
+  var valid_602083 = header.getOrDefault("X-Amz-Signature")
+  valid_602083 = validateParameter(valid_602083, JString, required = false,
                                  default = nil)
-  if valid_598083 != nil:
-    section.add "X-Amz-Signature", valid_598083
-  var valid_598084 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598084 = validateParameter(valid_598084, JString, required = false,
+  if valid_602083 != nil:
+    section.add "X-Amz-Signature", valid_602083
+  var valid_602084 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602084 = validateParameter(valid_602084, JString, required = false,
                                  default = nil)
-  if valid_598084 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598084
-  var valid_598085 = header.getOrDefault("X-Amz-Date")
-  valid_598085 = validateParameter(valid_598085, JString, required = false,
+  if valid_602084 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602084
+  var valid_602085 = header.getOrDefault("X-Amz-Date")
+  valid_602085 = validateParameter(valid_602085, JString, required = false,
                                  default = nil)
-  if valid_598085 != nil:
-    section.add "X-Amz-Date", valid_598085
-  var valid_598086 = header.getOrDefault("X-Amz-Credential")
-  valid_598086 = validateParameter(valid_598086, JString, required = false,
+  if valid_602085 != nil:
+    section.add "X-Amz-Date", valid_602085
+  var valid_602086 = header.getOrDefault("X-Amz-Credential")
+  valid_602086 = validateParameter(valid_602086, JString, required = false,
                                  default = nil)
-  if valid_598086 != nil:
-    section.add "X-Amz-Credential", valid_598086
-  var valid_598087 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598087 = validateParameter(valid_598087, JString, required = false,
+  if valid_602086 != nil:
+    section.add "X-Amz-Credential", valid_602086
+  var valid_602087 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602087 = validateParameter(valid_602087, JString, required = false,
                                  default = nil)
-  if valid_598087 != nil:
-    section.add "X-Amz-Security-Token", valid_598087
-  var valid_598088 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598088 = validateParameter(valid_598088, JString, required = false,
+  if valid_602087 != nil:
+    section.add "X-Amz-Security-Token", valid_602087
+  var valid_602088 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602088 = validateParameter(valid_602088, JString, required = false,
                                  default = nil)
-  if valid_598088 != nil:
-    section.add "X-Amz-Algorithm", valid_598088
-  var valid_598089 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598089 = validateParameter(valid_598089, JString, required = false,
+  if valid_602088 != nil:
+    section.add "X-Amz-Algorithm", valid_602088
+  var valid_602089 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602089 = validateParameter(valid_602089, JString, required = false,
                                  default = nil)
-  if valid_598089 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598089
+  if valid_602089 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602089
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -908,43 +908,43 @@ proc validate_UpdateElasticsearchDomainConfig_598080(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_598091: Call_UpdateElasticsearchDomainConfig_598079;
+proc call*(call_602091: Call_UpdateElasticsearchDomainConfig_602079;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Modifies the cluster configuration of the specified Elasticsearch domain, setting as setting the instance type and the number of instances. 
   ## 
-  let valid = call_598091.validator(path, query, header, formData, body)
-  let scheme = call_598091.pickScheme
+  let valid = call_602091.validator(path, query, header, formData, body)
+  let scheme = call_602091.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598091.url(scheme.get, call_598091.host, call_598091.base,
-                         call_598091.route, valid.getOrDefault("path"),
+  let url = call_602091.url(scheme.get, call_602091.host, call_602091.base,
+                         call_602091.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598091, url, valid)
+  result = atozHook(call_602091, url, valid)
 
-proc call*(call_598092: Call_UpdateElasticsearchDomainConfig_598079;
+proc call*(call_602092: Call_UpdateElasticsearchDomainConfig_602079;
           DomainName: string; body: JsonNode): Recallable =
   ## updateElasticsearchDomainConfig
   ## Modifies the cluster configuration of the specified Elasticsearch domain, setting as setting the instance type and the number of instances. 
   ##   DomainName: string (required)
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
   ##   body: JObject (required)
-  var path_598093 = newJObject()
-  var body_598094 = newJObject()
-  add(path_598093, "DomainName", newJString(DomainName))
+  var path_602093 = newJObject()
+  var body_602094 = newJObject()
+  add(path_602093, "DomainName", newJString(DomainName))
   if body != nil:
-    body_598094 = body
-  result = call_598092.call(path_598093, nil, nil, nil, body_598094)
+    body_602094 = body
+  result = call_602092.call(path_602093, nil, nil, nil, body_602094)
 
-var updateElasticsearchDomainConfig* = Call_UpdateElasticsearchDomainConfig_598079(
+var updateElasticsearchDomainConfig* = Call_UpdateElasticsearchDomainConfig_602079(
     name: "updateElasticsearchDomainConfig", meth: HttpMethod.HttpPost,
     host: "es.amazonaws.com", route: "/2015-01-01/es/domain/{DomainName}/config",
-    validator: validate_UpdateElasticsearchDomainConfig_598080, base: "/",
-    url: url_UpdateElasticsearchDomainConfig_598081,
+    validator: validate_UpdateElasticsearchDomainConfig_602080, base: "/",
+    url: url_UpdateElasticsearchDomainConfig_602081,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeElasticsearchDomainConfig_598065 = ref object of OpenApiRestCall_597389
-proc url_DescribeElasticsearchDomainConfig_598067(protocol: Scheme; host: string;
+  Call_DescribeElasticsearchDomainConfig_602065 = ref object of OpenApiRestCall_601389
+proc url_DescribeElasticsearchDomainConfig_602067(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -965,7 +965,7 @@ proc url_DescribeElasticsearchDomainConfig_598067(protocol: Scheme; host: string
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeElasticsearchDomainConfig_598066(path: JsonNode;
+proc validate_DescribeElasticsearchDomainConfig_602066(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Provides cluster configuration information about the specified Elasticsearch domain, such as the state, creation date, update version, and update date for cluster options.
   ## 
@@ -977,11 +977,11 @@ proc validate_DescribeElasticsearchDomainConfig_598066(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `DomainName` field"
-  var valid_598068 = path.getOrDefault("DomainName")
-  valid_598068 = validateParameter(valid_598068, JString, required = true,
+  var valid_602068 = path.getOrDefault("DomainName")
+  valid_602068 = validateParameter(valid_602068, JString, required = true,
                                  default = nil)
-  if valid_598068 != nil:
-    section.add "DomainName", valid_598068
+  if valid_602068 != nil:
+    section.add "DomainName", valid_602068
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -994,80 +994,80 @@ proc validate_DescribeElasticsearchDomainConfig_598066(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598069 = header.getOrDefault("X-Amz-Signature")
-  valid_598069 = validateParameter(valid_598069, JString, required = false,
+  var valid_602069 = header.getOrDefault("X-Amz-Signature")
+  valid_602069 = validateParameter(valid_602069, JString, required = false,
                                  default = nil)
-  if valid_598069 != nil:
-    section.add "X-Amz-Signature", valid_598069
-  var valid_598070 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598070 = validateParameter(valid_598070, JString, required = false,
+  if valid_602069 != nil:
+    section.add "X-Amz-Signature", valid_602069
+  var valid_602070 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602070 = validateParameter(valid_602070, JString, required = false,
                                  default = nil)
-  if valid_598070 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598070
-  var valid_598071 = header.getOrDefault("X-Amz-Date")
-  valid_598071 = validateParameter(valid_598071, JString, required = false,
+  if valid_602070 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602070
+  var valid_602071 = header.getOrDefault("X-Amz-Date")
+  valid_602071 = validateParameter(valid_602071, JString, required = false,
                                  default = nil)
-  if valid_598071 != nil:
-    section.add "X-Amz-Date", valid_598071
-  var valid_598072 = header.getOrDefault("X-Amz-Credential")
-  valid_598072 = validateParameter(valid_598072, JString, required = false,
+  if valid_602071 != nil:
+    section.add "X-Amz-Date", valid_602071
+  var valid_602072 = header.getOrDefault("X-Amz-Credential")
+  valid_602072 = validateParameter(valid_602072, JString, required = false,
                                  default = nil)
-  if valid_598072 != nil:
-    section.add "X-Amz-Credential", valid_598072
-  var valid_598073 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598073 = validateParameter(valid_598073, JString, required = false,
+  if valid_602072 != nil:
+    section.add "X-Amz-Credential", valid_602072
+  var valid_602073 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602073 = validateParameter(valid_602073, JString, required = false,
                                  default = nil)
-  if valid_598073 != nil:
-    section.add "X-Amz-Security-Token", valid_598073
-  var valid_598074 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598074 = validateParameter(valid_598074, JString, required = false,
+  if valid_602073 != nil:
+    section.add "X-Amz-Security-Token", valid_602073
+  var valid_602074 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602074 = validateParameter(valid_602074, JString, required = false,
                                  default = nil)
-  if valid_598074 != nil:
-    section.add "X-Amz-Algorithm", valid_598074
-  var valid_598075 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598075 = validateParameter(valid_598075, JString, required = false,
+  if valid_602074 != nil:
+    section.add "X-Amz-Algorithm", valid_602074
+  var valid_602075 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602075 = validateParameter(valid_602075, JString, required = false,
                                  default = nil)
-  if valid_598075 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598075
+  if valid_602075 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602075
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598076: Call_DescribeElasticsearchDomainConfig_598065;
+proc call*(call_602076: Call_DescribeElasticsearchDomainConfig_602065;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Provides cluster configuration information about the specified Elasticsearch domain, such as the state, creation date, update version, and update date for cluster options.
   ## 
-  let valid = call_598076.validator(path, query, header, formData, body)
-  let scheme = call_598076.pickScheme
+  let valid = call_602076.validator(path, query, header, formData, body)
+  let scheme = call_602076.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598076.url(scheme.get, call_598076.host, call_598076.base,
-                         call_598076.route, valid.getOrDefault("path"),
+  let url = call_602076.url(scheme.get, call_602076.host, call_602076.base,
+                         call_602076.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598076, url, valid)
+  result = atozHook(call_602076, url, valid)
 
-proc call*(call_598077: Call_DescribeElasticsearchDomainConfig_598065;
+proc call*(call_602077: Call_DescribeElasticsearchDomainConfig_602065;
           DomainName: string): Recallable =
   ## describeElasticsearchDomainConfig
   ## Provides cluster configuration information about the specified Elasticsearch domain, such as the state, creation date, update version, and update date for cluster options.
   ##   DomainName: string (required)
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
-  var path_598078 = newJObject()
-  add(path_598078, "DomainName", newJString(DomainName))
-  result = call_598077.call(path_598078, nil, nil, nil, nil)
+  var path_602078 = newJObject()
+  add(path_602078, "DomainName", newJString(DomainName))
+  result = call_602077.call(path_602078, nil, nil, nil, nil)
 
-var describeElasticsearchDomainConfig* = Call_DescribeElasticsearchDomainConfig_598065(
+var describeElasticsearchDomainConfig* = Call_DescribeElasticsearchDomainConfig_602065(
     name: "describeElasticsearchDomainConfig", meth: HttpMethod.HttpGet,
     host: "es.amazonaws.com", route: "/2015-01-01/es/domain/{DomainName}/config",
-    validator: validate_DescribeElasticsearchDomainConfig_598066, base: "/",
-    url: url_DescribeElasticsearchDomainConfig_598067,
+    validator: validate_DescribeElasticsearchDomainConfig_602066, base: "/",
+    url: url_DescribeElasticsearchDomainConfig_602067,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeElasticsearchDomains_598095 = ref object of OpenApiRestCall_597389
-proc url_DescribeElasticsearchDomains_598097(protocol: Scheme; host: string;
+  Call_DescribeElasticsearchDomains_602095 = ref object of OpenApiRestCall_601389
+proc url_DescribeElasticsearchDomains_602097(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1079,7 +1079,7 @@ proc url_DescribeElasticsearchDomains_598097(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeElasticsearchDomains_598096(path: JsonNode; query: JsonNode;
+proc validate_DescribeElasticsearchDomains_602096(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns domain configuration information about the specified Elasticsearch domains, including the domain ID, domain endpoint, and domain ARN.
   ## 
@@ -1098,41 +1098,41 @@ proc validate_DescribeElasticsearchDomains_598096(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598098 = header.getOrDefault("X-Amz-Signature")
-  valid_598098 = validateParameter(valid_598098, JString, required = false,
+  var valid_602098 = header.getOrDefault("X-Amz-Signature")
+  valid_602098 = validateParameter(valid_602098, JString, required = false,
                                  default = nil)
-  if valid_598098 != nil:
-    section.add "X-Amz-Signature", valid_598098
-  var valid_598099 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598099 = validateParameter(valid_598099, JString, required = false,
+  if valid_602098 != nil:
+    section.add "X-Amz-Signature", valid_602098
+  var valid_602099 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602099 = validateParameter(valid_602099, JString, required = false,
                                  default = nil)
-  if valid_598099 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598099
-  var valid_598100 = header.getOrDefault("X-Amz-Date")
-  valid_598100 = validateParameter(valid_598100, JString, required = false,
+  if valid_602099 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602099
+  var valid_602100 = header.getOrDefault("X-Amz-Date")
+  valid_602100 = validateParameter(valid_602100, JString, required = false,
                                  default = nil)
-  if valid_598100 != nil:
-    section.add "X-Amz-Date", valid_598100
-  var valid_598101 = header.getOrDefault("X-Amz-Credential")
-  valid_598101 = validateParameter(valid_598101, JString, required = false,
+  if valid_602100 != nil:
+    section.add "X-Amz-Date", valid_602100
+  var valid_602101 = header.getOrDefault("X-Amz-Credential")
+  valid_602101 = validateParameter(valid_602101, JString, required = false,
                                  default = nil)
-  if valid_598101 != nil:
-    section.add "X-Amz-Credential", valid_598101
-  var valid_598102 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598102 = validateParameter(valid_598102, JString, required = false,
+  if valid_602101 != nil:
+    section.add "X-Amz-Credential", valid_602101
+  var valid_602102 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602102 = validateParameter(valid_602102, JString, required = false,
                                  default = nil)
-  if valid_598102 != nil:
-    section.add "X-Amz-Security-Token", valid_598102
-  var valid_598103 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598103 = validateParameter(valid_598103, JString, required = false,
+  if valid_602102 != nil:
+    section.add "X-Amz-Security-Token", valid_602102
+  var valid_602103 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602103 = validateParameter(valid_602103, JString, required = false,
                                  default = nil)
-  if valid_598103 != nil:
-    section.add "X-Amz-Algorithm", valid_598103
-  var valid_598104 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598104 = validateParameter(valid_598104, JString, required = false,
+  if valid_602103 != nil:
+    section.add "X-Amz-Algorithm", valid_602103
+  var valid_602104 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602104 = validateParameter(valid_602104, JString, required = false,
                                  default = nil)
-  if valid_598104 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598104
+  if valid_602104 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602104
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1143,37 +1143,37 @@ proc validate_DescribeElasticsearchDomains_598096(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_598106: Call_DescribeElasticsearchDomains_598095; path: JsonNode;
+proc call*(call_602106: Call_DescribeElasticsearchDomains_602095; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns domain configuration information about the specified Elasticsearch domains, including the domain ID, domain endpoint, and domain ARN.
   ## 
-  let valid = call_598106.validator(path, query, header, formData, body)
-  let scheme = call_598106.pickScheme
+  let valid = call_602106.validator(path, query, header, formData, body)
+  let scheme = call_602106.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598106.url(scheme.get, call_598106.host, call_598106.base,
-                         call_598106.route, valid.getOrDefault("path"),
+  let url = call_602106.url(scheme.get, call_602106.host, call_602106.base,
+                         call_602106.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598106, url, valid)
+  result = atozHook(call_602106, url, valid)
 
-proc call*(call_598107: Call_DescribeElasticsearchDomains_598095; body: JsonNode): Recallable =
+proc call*(call_602107: Call_DescribeElasticsearchDomains_602095; body: JsonNode): Recallable =
   ## describeElasticsearchDomains
   ## Returns domain configuration information about the specified Elasticsearch domains, including the domain ID, domain endpoint, and domain ARN.
   ##   body: JObject (required)
-  var body_598108 = newJObject()
+  var body_602108 = newJObject()
   if body != nil:
-    body_598108 = body
-  result = call_598107.call(nil, nil, nil, nil, body_598108)
+    body_602108 = body
+  result = call_602107.call(nil, nil, nil, nil, body_602108)
 
-var describeElasticsearchDomains* = Call_DescribeElasticsearchDomains_598095(
+var describeElasticsearchDomains* = Call_DescribeElasticsearchDomains_602095(
     name: "describeElasticsearchDomains", meth: HttpMethod.HttpPost,
     host: "es.amazonaws.com", route: "/2015-01-01/es/domain-info",
-    validator: validate_DescribeElasticsearchDomains_598096, base: "/",
-    url: url_DescribeElasticsearchDomains_598097,
+    validator: validate_DescribeElasticsearchDomains_602096, base: "/",
+    url: url_DescribeElasticsearchDomains_602097,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeElasticsearchInstanceTypeLimits_598109 = ref object of OpenApiRestCall_597389
-proc url_DescribeElasticsearchInstanceTypeLimits_598111(protocol: Scheme;
+  Call_DescribeElasticsearchInstanceTypeLimits_602109 = ref object of OpenApiRestCall_601389
+proc url_DescribeElasticsearchInstanceTypeLimits_602111(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1197,7 +1197,7 @@ proc url_DescribeElasticsearchInstanceTypeLimits_598111(protocol: Scheme;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeElasticsearchInstanceTypeLimits_598110(path: JsonNode;
+proc validate_DescribeElasticsearchInstanceTypeLimits_602110(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ##  Describe Elasticsearch Limits for a given InstanceType and ElasticsearchVersion. When modifying existing Domain, specify the <code> <a>DomainName</a> </code> to know what Limits are supported for modifying. 
   ## 
@@ -1211,26 +1211,26 @@ proc validate_DescribeElasticsearchInstanceTypeLimits_598110(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `InstanceType` field"
-  var valid_598125 = path.getOrDefault("InstanceType")
-  valid_598125 = validateParameter(valid_598125, JString, required = true, default = newJString(
+  var valid_602125 = path.getOrDefault("InstanceType")
+  valid_602125 = validateParameter(valid_602125, JString, required = true, default = newJString(
       "m3.medium.elasticsearch"))
-  if valid_598125 != nil:
-    section.add "InstanceType", valid_598125
-  var valid_598126 = path.getOrDefault("ElasticsearchVersion")
-  valid_598126 = validateParameter(valid_598126, JString, required = true,
+  if valid_602125 != nil:
+    section.add "InstanceType", valid_602125
+  var valid_602126 = path.getOrDefault("ElasticsearchVersion")
+  valid_602126 = validateParameter(valid_602126, JString, required = true,
                                  default = nil)
-  if valid_598126 != nil:
-    section.add "ElasticsearchVersion", valid_598126
+  if valid_602126 != nil:
+    section.add "ElasticsearchVersion", valid_602126
   result.add "path", section
   ## parameters in `query` object:
   ##   domainName: JString
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
   section = newJObject()
-  var valid_598127 = query.getOrDefault("domainName")
-  valid_598127 = validateParameter(valid_598127, JString, required = false,
+  var valid_602127 = query.getOrDefault("domainName")
+  valid_602127 = validateParameter(valid_602127, JString, required = false,
                                  default = nil)
-  if valid_598127 != nil:
-    section.add "domainName", valid_598127
+  if valid_602127 != nil:
+    section.add "domainName", valid_602127
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1241,62 +1241,62 @@ proc validate_DescribeElasticsearchInstanceTypeLimits_598110(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598128 = header.getOrDefault("X-Amz-Signature")
-  valid_598128 = validateParameter(valid_598128, JString, required = false,
+  var valid_602128 = header.getOrDefault("X-Amz-Signature")
+  valid_602128 = validateParameter(valid_602128, JString, required = false,
                                  default = nil)
-  if valid_598128 != nil:
-    section.add "X-Amz-Signature", valid_598128
-  var valid_598129 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598129 = validateParameter(valid_598129, JString, required = false,
+  if valid_602128 != nil:
+    section.add "X-Amz-Signature", valid_602128
+  var valid_602129 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602129 = validateParameter(valid_602129, JString, required = false,
                                  default = nil)
-  if valid_598129 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598129
-  var valid_598130 = header.getOrDefault("X-Amz-Date")
-  valid_598130 = validateParameter(valid_598130, JString, required = false,
+  if valid_602129 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602129
+  var valid_602130 = header.getOrDefault("X-Amz-Date")
+  valid_602130 = validateParameter(valid_602130, JString, required = false,
                                  default = nil)
-  if valid_598130 != nil:
-    section.add "X-Amz-Date", valid_598130
-  var valid_598131 = header.getOrDefault("X-Amz-Credential")
-  valid_598131 = validateParameter(valid_598131, JString, required = false,
+  if valid_602130 != nil:
+    section.add "X-Amz-Date", valid_602130
+  var valid_602131 = header.getOrDefault("X-Amz-Credential")
+  valid_602131 = validateParameter(valid_602131, JString, required = false,
                                  default = nil)
-  if valid_598131 != nil:
-    section.add "X-Amz-Credential", valid_598131
-  var valid_598132 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598132 = validateParameter(valid_598132, JString, required = false,
+  if valid_602131 != nil:
+    section.add "X-Amz-Credential", valid_602131
+  var valid_602132 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602132 = validateParameter(valid_602132, JString, required = false,
                                  default = nil)
-  if valid_598132 != nil:
-    section.add "X-Amz-Security-Token", valid_598132
-  var valid_598133 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598133 = validateParameter(valid_598133, JString, required = false,
+  if valid_602132 != nil:
+    section.add "X-Amz-Security-Token", valid_602132
+  var valid_602133 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602133 = validateParameter(valid_602133, JString, required = false,
                                  default = nil)
-  if valid_598133 != nil:
-    section.add "X-Amz-Algorithm", valid_598133
-  var valid_598134 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598134 = validateParameter(valid_598134, JString, required = false,
+  if valid_602133 != nil:
+    section.add "X-Amz-Algorithm", valid_602133
+  var valid_602134 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602134 = validateParameter(valid_602134, JString, required = false,
                                  default = nil)
-  if valid_598134 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598134
+  if valid_602134 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602134
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598135: Call_DescribeElasticsearchInstanceTypeLimits_598109;
+proc call*(call_602135: Call_DescribeElasticsearchInstanceTypeLimits_602109;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ##  Describe Elasticsearch Limits for a given InstanceType and ElasticsearchVersion. When modifying existing Domain, specify the <code> <a>DomainName</a> </code> to know what Limits are supported for modifying. 
   ## 
-  let valid = call_598135.validator(path, query, header, formData, body)
-  let scheme = call_598135.pickScheme
+  let valid = call_602135.validator(path, query, header, formData, body)
+  let scheme = call_602135.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598135.url(scheme.get, call_598135.host, call_598135.base,
-                         call_598135.route, valid.getOrDefault("path"),
+  let url = call_602135.url(scheme.get, call_602135.host, call_602135.base,
+                         call_602135.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598135, url, valid)
+  result = atozHook(call_602135, url, valid)
 
-proc call*(call_598136: Call_DescribeElasticsearchInstanceTypeLimits_598109;
+proc call*(call_602136: Call_DescribeElasticsearchInstanceTypeLimits_602109;
           ElasticsearchVersion: string;
           InstanceType: string = "m3.medium.elasticsearch"; domainName: string = ""): Recallable =
   ## describeElasticsearchInstanceTypeLimits
@@ -1307,22 +1307,22 @@ proc call*(call_598136: Call_DescribeElasticsearchInstanceTypeLimits_598109;
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
   ##   ElasticsearchVersion: string (required)
   ##                       :  Version of Elasticsearch for which <code> <a>Limits</a> </code> are needed. 
-  var path_598137 = newJObject()
-  var query_598138 = newJObject()
-  add(path_598137, "InstanceType", newJString(InstanceType))
-  add(query_598138, "domainName", newJString(domainName))
-  add(path_598137, "ElasticsearchVersion", newJString(ElasticsearchVersion))
-  result = call_598136.call(path_598137, query_598138, nil, nil, nil)
+  var path_602137 = newJObject()
+  var query_602138 = newJObject()
+  add(path_602137, "InstanceType", newJString(InstanceType))
+  add(query_602138, "domainName", newJString(domainName))
+  add(path_602137, "ElasticsearchVersion", newJString(ElasticsearchVersion))
+  result = call_602136.call(path_602137, query_602138, nil, nil, nil)
 
-var describeElasticsearchInstanceTypeLimits* = Call_DescribeElasticsearchInstanceTypeLimits_598109(
+var describeElasticsearchInstanceTypeLimits* = Call_DescribeElasticsearchInstanceTypeLimits_602109(
     name: "describeElasticsearchInstanceTypeLimits", meth: HttpMethod.HttpGet,
     host: "es.amazonaws.com", route: "/2015-01-01/es/instanceTypeLimits/{ElasticsearchVersion}/{InstanceType}",
-    validator: validate_DescribeElasticsearchInstanceTypeLimits_598110, base: "/",
-    url: url_DescribeElasticsearchInstanceTypeLimits_598111,
+    validator: validate_DescribeElasticsearchInstanceTypeLimits_602110, base: "/",
+    url: url_DescribeElasticsearchInstanceTypeLimits_602111,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeReservedElasticsearchInstanceOfferings_598139 = ref object of OpenApiRestCall_597389
-proc url_DescribeReservedElasticsearchInstanceOfferings_598141(protocol: Scheme;
+  Call_DescribeReservedElasticsearchInstanceOfferings_602139 = ref object of OpenApiRestCall_601389
+proc url_DescribeReservedElasticsearchInstanceOfferings_602141(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1334,7 +1334,7 @@ proc url_DescribeReservedElasticsearchInstanceOfferings_598141(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_DescribeReservedElasticsearchInstanceOfferings_598140(
+proc validate_DescribeReservedElasticsearchInstanceOfferings_602140(
     path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
     body: JsonNode): JsonNode =
   ## Lists available reserved Elasticsearch instance offerings.
@@ -1355,30 +1355,30 @@ proc validate_DescribeReservedElasticsearchInstanceOfferings_598140(
   ##   maxResults: JInt
   ##             :  Set this value to limit the number of results returned. 
   section = newJObject()
-  var valid_598142 = query.getOrDefault("nextToken")
-  valid_598142 = validateParameter(valid_598142, JString, required = false,
+  var valid_602142 = query.getOrDefault("nextToken")
+  valid_602142 = validateParameter(valid_602142, JString, required = false,
                                  default = nil)
-  if valid_598142 != nil:
-    section.add "nextToken", valid_598142
-  var valid_598143 = query.getOrDefault("MaxResults")
-  valid_598143 = validateParameter(valid_598143, JString, required = false,
+  if valid_602142 != nil:
+    section.add "nextToken", valid_602142
+  var valid_602143 = query.getOrDefault("MaxResults")
+  valid_602143 = validateParameter(valid_602143, JString, required = false,
                                  default = nil)
-  if valid_598143 != nil:
-    section.add "MaxResults", valid_598143
-  var valid_598144 = query.getOrDefault("NextToken")
-  valid_598144 = validateParameter(valid_598144, JString, required = false,
+  if valid_602143 != nil:
+    section.add "MaxResults", valid_602143
+  var valid_602144 = query.getOrDefault("NextToken")
+  valid_602144 = validateParameter(valid_602144, JString, required = false,
                                  default = nil)
-  if valid_598144 != nil:
-    section.add "NextToken", valid_598144
-  var valid_598145 = query.getOrDefault("offeringId")
-  valid_598145 = validateParameter(valid_598145, JString, required = false,
+  if valid_602144 != nil:
+    section.add "NextToken", valid_602144
+  var valid_602145 = query.getOrDefault("offeringId")
+  valid_602145 = validateParameter(valid_602145, JString, required = false,
                                  default = nil)
-  if valid_598145 != nil:
-    section.add "offeringId", valid_598145
-  var valid_598146 = query.getOrDefault("maxResults")
-  valid_598146 = validateParameter(valid_598146, JInt, required = false, default = nil)
-  if valid_598146 != nil:
-    section.add "maxResults", valid_598146
+  if valid_602145 != nil:
+    section.add "offeringId", valid_602145
+  var valid_602146 = query.getOrDefault("maxResults")
+  valid_602146 = validateParameter(valid_602146, JInt, required = false, default = nil)
+  if valid_602146 != nil:
+    section.add "maxResults", valid_602146
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1389,62 +1389,62 @@ proc validate_DescribeReservedElasticsearchInstanceOfferings_598140(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598147 = header.getOrDefault("X-Amz-Signature")
-  valid_598147 = validateParameter(valid_598147, JString, required = false,
+  var valid_602147 = header.getOrDefault("X-Amz-Signature")
+  valid_602147 = validateParameter(valid_602147, JString, required = false,
                                  default = nil)
-  if valid_598147 != nil:
-    section.add "X-Amz-Signature", valid_598147
-  var valid_598148 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598148 = validateParameter(valid_598148, JString, required = false,
+  if valid_602147 != nil:
+    section.add "X-Amz-Signature", valid_602147
+  var valid_602148 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602148 = validateParameter(valid_602148, JString, required = false,
                                  default = nil)
-  if valid_598148 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598148
-  var valid_598149 = header.getOrDefault("X-Amz-Date")
-  valid_598149 = validateParameter(valid_598149, JString, required = false,
+  if valid_602148 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602148
+  var valid_602149 = header.getOrDefault("X-Amz-Date")
+  valid_602149 = validateParameter(valid_602149, JString, required = false,
                                  default = nil)
-  if valid_598149 != nil:
-    section.add "X-Amz-Date", valid_598149
-  var valid_598150 = header.getOrDefault("X-Amz-Credential")
-  valid_598150 = validateParameter(valid_598150, JString, required = false,
+  if valid_602149 != nil:
+    section.add "X-Amz-Date", valid_602149
+  var valid_602150 = header.getOrDefault("X-Amz-Credential")
+  valid_602150 = validateParameter(valid_602150, JString, required = false,
                                  default = nil)
-  if valid_598150 != nil:
-    section.add "X-Amz-Credential", valid_598150
-  var valid_598151 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598151 = validateParameter(valid_598151, JString, required = false,
+  if valid_602150 != nil:
+    section.add "X-Amz-Credential", valid_602150
+  var valid_602151 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602151 = validateParameter(valid_602151, JString, required = false,
                                  default = nil)
-  if valid_598151 != nil:
-    section.add "X-Amz-Security-Token", valid_598151
-  var valid_598152 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598152 = validateParameter(valid_598152, JString, required = false,
+  if valid_602151 != nil:
+    section.add "X-Amz-Security-Token", valid_602151
+  var valid_602152 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602152 = validateParameter(valid_602152, JString, required = false,
                                  default = nil)
-  if valid_598152 != nil:
-    section.add "X-Amz-Algorithm", valid_598152
-  var valid_598153 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598153 = validateParameter(valid_598153, JString, required = false,
+  if valid_602152 != nil:
+    section.add "X-Amz-Algorithm", valid_602152
+  var valid_602153 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602153 = validateParameter(valid_602153, JString, required = false,
                                  default = nil)
-  if valid_598153 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598153
+  if valid_602153 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602153
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598154: Call_DescribeReservedElasticsearchInstanceOfferings_598139;
+proc call*(call_602154: Call_DescribeReservedElasticsearchInstanceOfferings_602139;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Lists available reserved Elasticsearch instance offerings.
   ## 
-  let valid = call_598154.validator(path, query, header, formData, body)
-  let scheme = call_598154.pickScheme
+  let valid = call_602154.validator(path, query, header, formData, body)
+  let scheme = call_602154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598154.url(scheme.get, call_598154.host, call_598154.base,
-                         call_598154.route, valid.getOrDefault("path"),
+  let url = call_602154.url(scheme.get, call_602154.host, call_602154.base,
+                         call_602154.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598154, url, valid)
+  result = atozHook(call_602154, url, valid)
 
-proc call*(call_598155: Call_DescribeReservedElasticsearchInstanceOfferings_598139;
+proc call*(call_602155: Call_DescribeReservedElasticsearchInstanceOfferings_602139;
           nextToken: string = ""; MaxResults: string = ""; NextToken: string = "";
           offeringId: string = ""; maxResults: int = 0): Recallable =
   ## describeReservedElasticsearchInstanceOfferings
@@ -1459,24 +1459,24 @@ proc call*(call_598155: Call_DescribeReservedElasticsearchInstanceOfferings_5981
   ##             : The offering identifier filter value. Use this parameter to show only the available offering that matches the specified reservation identifier.
   ##   maxResults: int
   ##             :  Set this value to limit the number of results returned. 
-  var query_598156 = newJObject()
-  add(query_598156, "nextToken", newJString(nextToken))
-  add(query_598156, "MaxResults", newJString(MaxResults))
-  add(query_598156, "NextToken", newJString(NextToken))
-  add(query_598156, "offeringId", newJString(offeringId))
-  add(query_598156, "maxResults", newJInt(maxResults))
-  result = call_598155.call(nil, query_598156, nil, nil, nil)
+  var query_602156 = newJObject()
+  add(query_602156, "nextToken", newJString(nextToken))
+  add(query_602156, "MaxResults", newJString(MaxResults))
+  add(query_602156, "NextToken", newJString(NextToken))
+  add(query_602156, "offeringId", newJString(offeringId))
+  add(query_602156, "maxResults", newJInt(maxResults))
+  result = call_602155.call(nil, query_602156, nil, nil, nil)
 
-var describeReservedElasticsearchInstanceOfferings* = Call_DescribeReservedElasticsearchInstanceOfferings_598139(
+var describeReservedElasticsearchInstanceOfferings* = Call_DescribeReservedElasticsearchInstanceOfferings_602139(
     name: "describeReservedElasticsearchInstanceOfferings",
     meth: HttpMethod.HttpGet, host: "es.amazonaws.com",
     route: "/2015-01-01/es/reservedInstanceOfferings",
-    validator: validate_DescribeReservedElasticsearchInstanceOfferings_598140,
-    base: "/", url: url_DescribeReservedElasticsearchInstanceOfferings_598141,
+    validator: validate_DescribeReservedElasticsearchInstanceOfferings_602140,
+    base: "/", url: url_DescribeReservedElasticsearchInstanceOfferings_602141,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeReservedElasticsearchInstances_598157 = ref object of OpenApiRestCall_597389
-proc url_DescribeReservedElasticsearchInstances_598159(protocol: Scheme;
+  Call_DescribeReservedElasticsearchInstances_602157 = ref object of OpenApiRestCall_601389
+proc url_DescribeReservedElasticsearchInstances_602159(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1488,7 +1488,7 @@ proc url_DescribeReservedElasticsearchInstances_598159(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_DescribeReservedElasticsearchInstances_598158(path: JsonNode;
+proc validate_DescribeReservedElasticsearchInstances_602158(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns information about reserved Elasticsearch instances for this account.
   ## 
@@ -1508,30 +1508,30 @@ proc validate_DescribeReservedElasticsearchInstances_598158(path: JsonNode;
   ##   maxResults: JInt
   ##             :  Set this value to limit the number of results returned. 
   section = newJObject()
-  var valid_598160 = query.getOrDefault("nextToken")
-  valid_598160 = validateParameter(valid_598160, JString, required = false,
+  var valid_602160 = query.getOrDefault("nextToken")
+  valid_602160 = validateParameter(valid_602160, JString, required = false,
                                  default = nil)
-  if valid_598160 != nil:
-    section.add "nextToken", valid_598160
-  var valid_598161 = query.getOrDefault("MaxResults")
-  valid_598161 = validateParameter(valid_598161, JString, required = false,
+  if valid_602160 != nil:
+    section.add "nextToken", valid_602160
+  var valid_602161 = query.getOrDefault("MaxResults")
+  valid_602161 = validateParameter(valid_602161, JString, required = false,
                                  default = nil)
-  if valid_598161 != nil:
-    section.add "MaxResults", valid_598161
-  var valid_598162 = query.getOrDefault("reservationId")
-  valid_598162 = validateParameter(valid_598162, JString, required = false,
+  if valid_602161 != nil:
+    section.add "MaxResults", valid_602161
+  var valid_602162 = query.getOrDefault("reservationId")
+  valid_602162 = validateParameter(valid_602162, JString, required = false,
                                  default = nil)
-  if valid_598162 != nil:
-    section.add "reservationId", valid_598162
-  var valid_598163 = query.getOrDefault("NextToken")
-  valid_598163 = validateParameter(valid_598163, JString, required = false,
+  if valid_602162 != nil:
+    section.add "reservationId", valid_602162
+  var valid_602163 = query.getOrDefault("NextToken")
+  valid_602163 = validateParameter(valid_602163, JString, required = false,
                                  default = nil)
-  if valid_598163 != nil:
-    section.add "NextToken", valid_598163
-  var valid_598164 = query.getOrDefault("maxResults")
-  valid_598164 = validateParameter(valid_598164, JInt, required = false, default = nil)
-  if valid_598164 != nil:
-    section.add "maxResults", valid_598164
+  if valid_602163 != nil:
+    section.add "NextToken", valid_602163
+  var valid_602164 = query.getOrDefault("maxResults")
+  valid_602164 = validateParameter(valid_602164, JInt, required = false, default = nil)
+  if valid_602164 != nil:
+    section.add "maxResults", valid_602164
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1542,62 +1542,62 @@ proc validate_DescribeReservedElasticsearchInstances_598158(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598165 = header.getOrDefault("X-Amz-Signature")
-  valid_598165 = validateParameter(valid_598165, JString, required = false,
+  var valid_602165 = header.getOrDefault("X-Amz-Signature")
+  valid_602165 = validateParameter(valid_602165, JString, required = false,
                                  default = nil)
-  if valid_598165 != nil:
-    section.add "X-Amz-Signature", valid_598165
-  var valid_598166 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598166 = validateParameter(valid_598166, JString, required = false,
+  if valid_602165 != nil:
+    section.add "X-Amz-Signature", valid_602165
+  var valid_602166 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602166 = validateParameter(valid_602166, JString, required = false,
                                  default = nil)
-  if valid_598166 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598166
-  var valid_598167 = header.getOrDefault("X-Amz-Date")
-  valid_598167 = validateParameter(valid_598167, JString, required = false,
+  if valid_602166 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602166
+  var valid_602167 = header.getOrDefault("X-Amz-Date")
+  valid_602167 = validateParameter(valid_602167, JString, required = false,
                                  default = nil)
-  if valid_598167 != nil:
-    section.add "X-Amz-Date", valid_598167
-  var valid_598168 = header.getOrDefault("X-Amz-Credential")
-  valid_598168 = validateParameter(valid_598168, JString, required = false,
+  if valid_602167 != nil:
+    section.add "X-Amz-Date", valid_602167
+  var valid_602168 = header.getOrDefault("X-Amz-Credential")
+  valid_602168 = validateParameter(valid_602168, JString, required = false,
                                  default = nil)
-  if valid_598168 != nil:
-    section.add "X-Amz-Credential", valid_598168
-  var valid_598169 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598169 = validateParameter(valid_598169, JString, required = false,
+  if valid_602168 != nil:
+    section.add "X-Amz-Credential", valid_602168
+  var valid_602169 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602169 = validateParameter(valid_602169, JString, required = false,
                                  default = nil)
-  if valid_598169 != nil:
-    section.add "X-Amz-Security-Token", valid_598169
-  var valid_598170 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598170 = validateParameter(valid_598170, JString, required = false,
+  if valid_602169 != nil:
+    section.add "X-Amz-Security-Token", valid_602169
+  var valid_602170 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602170 = validateParameter(valid_602170, JString, required = false,
                                  default = nil)
-  if valid_598170 != nil:
-    section.add "X-Amz-Algorithm", valid_598170
-  var valid_598171 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598171 = validateParameter(valid_598171, JString, required = false,
+  if valid_602170 != nil:
+    section.add "X-Amz-Algorithm", valid_602170
+  var valid_602171 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602171 = validateParameter(valid_602171, JString, required = false,
                                  default = nil)
-  if valid_598171 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598171
+  if valid_602171 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602171
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598172: Call_DescribeReservedElasticsearchInstances_598157;
+proc call*(call_602172: Call_DescribeReservedElasticsearchInstances_602157;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns information about reserved Elasticsearch instances for this account.
   ## 
-  let valid = call_598172.validator(path, query, header, formData, body)
-  let scheme = call_598172.pickScheme
+  let valid = call_602172.validator(path, query, header, formData, body)
+  let scheme = call_602172.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598172.url(scheme.get, call_598172.host, call_598172.base,
-                         call_598172.route, valid.getOrDefault("path"),
+  let url = call_602172.url(scheme.get, call_602172.host, call_602172.base,
+                         call_602172.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598172, url, valid)
+  result = atozHook(call_602172, url, valid)
 
-proc call*(call_598173: Call_DescribeReservedElasticsearchInstances_598157;
+proc call*(call_602173: Call_DescribeReservedElasticsearchInstances_602157;
           nextToken: string = ""; MaxResults: string = ""; reservationId: string = "";
           NextToken: string = ""; maxResults: int = 0): Recallable =
   ## describeReservedElasticsearchInstances
@@ -1612,23 +1612,23 @@ proc call*(call_598173: Call_DescribeReservedElasticsearchInstances_598157;
   ##            : Pagination token
   ##   maxResults: int
   ##             :  Set this value to limit the number of results returned. 
-  var query_598174 = newJObject()
-  add(query_598174, "nextToken", newJString(nextToken))
-  add(query_598174, "MaxResults", newJString(MaxResults))
-  add(query_598174, "reservationId", newJString(reservationId))
-  add(query_598174, "NextToken", newJString(NextToken))
-  add(query_598174, "maxResults", newJInt(maxResults))
-  result = call_598173.call(nil, query_598174, nil, nil, nil)
+  var query_602174 = newJObject()
+  add(query_602174, "nextToken", newJString(nextToken))
+  add(query_602174, "MaxResults", newJString(MaxResults))
+  add(query_602174, "reservationId", newJString(reservationId))
+  add(query_602174, "NextToken", newJString(NextToken))
+  add(query_602174, "maxResults", newJInt(maxResults))
+  result = call_602173.call(nil, query_602174, nil, nil, nil)
 
-var describeReservedElasticsearchInstances* = Call_DescribeReservedElasticsearchInstances_598157(
+var describeReservedElasticsearchInstances* = Call_DescribeReservedElasticsearchInstances_602157(
     name: "describeReservedElasticsearchInstances", meth: HttpMethod.HttpGet,
     host: "es.amazonaws.com", route: "/2015-01-01/es/reservedInstances",
-    validator: validate_DescribeReservedElasticsearchInstances_598158, base: "/",
-    url: url_DescribeReservedElasticsearchInstances_598159,
+    validator: validate_DescribeReservedElasticsearchInstances_602158, base: "/",
+    url: url_DescribeReservedElasticsearchInstances_602159,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCompatibleElasticsearchVersions_598175 = ref object of OpenApiRestCall_597389
-proc url_GetCompatibleElasticsearchVersions_598177(protocol: Scheme; host: string;
+  Call_GetCompatibleElasticsearchVersions_602175 = ref object of OpenApiRestCall_601389
+proc url_GetCompatibleElasticsearchVersions_602177(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1640,7 +1640,7 @@ proc url_GetCompatibleElasticsearchVersions_598177(protocol: Scheme; host: strin
   else:
     result.path = base & route
 
-proc validate_GetCompatibleElasticsearchVersions_598176(path: JsonNode;
+proc validate_GetCompatibleElasticsearchVersions_602176(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ##  Returns a list of upgrade compatible Elastisearch versions. You can optionally pass a <code> <a>DomainName</a> </code> to get all upgrade compatible Elasticsearch versions for that specific domain. 
   ## 
@@ -1652,11 +1652,11 @@ proc validate_GetCompatibleElasticsearchVersions_598176(path: JsonNode;
   ##   domainName: JString
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
   section = newJObject()
-  var valid_598178 = query.getOrDefault("domainName")
-  valid_598178 = validateParameter(valid_598178, JString, required = false,
+  var valid_602178 = query.getOrDefault("domainName")
+  valid_602178 = validateParameter(valid_602178, JString, required = false,
                                  default = nil)
-  if valid_598178 != nil:
-    section.add "domainName", valid_598178
+  if valid_602178 != nil:
+    section.add "domainName", valid_602178
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1667,80 +1667,80 @@ proc validate_GetCompatibleElasticsearchVersions_598176(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598179 = header.getOrDefault("X-Amz-Signature")
-  valid_598179 = validateParameter(valid_598179, JString, required = false,
+  var valid_602179 = header.getOrDefault("X-Amz-Signature")
+  valid_602179 = validateParameter(valid_602179, JString, required = false,
                                  default = nil)
-  if valid_598179 != nil:
-    section.add "X-Amz-Signature", valid_598179
-  var valid_598180 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598180 = validateParameter(valid_598180, JString, required = false,
+  if valid_602179 != nil:
+    section.add "X-Amz-Signature", valid_602179
+  var valid_602180 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602180 = validateParameter(valid_602180, JString, required = false,
                                  default = nil)
-  if valid_598180 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598180
-  var valid_598181 = header.getOrDefault("X-Amz-Date")
-  valid_598181 = validateParameter(valid_598181, JString, required = false,
+  if valid_602180 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602180
+  var valid_602181 = header.getOrDefault("X-Amz-Date")
+  valid_602181 = validateParameter(valid_602181, JString, required = false,
                                  default = nil)
-  if valid_598181 != nil:
-    section.add "X-Amz-Date", valid_598181
-  var valid_598182 = header.getOrDefault("X-Amz-Credential")
-  valid_598182 = validateParameter(valid_598182, JString, required = false,
+  if valid_602181 != nil:
+    section.add "X-Amz-Date", valid_602181
+  var valid_602182 = header.getOrDefault("X-Amz-Credential")
+  valid_602182 = validateParameter(valid_602182, JString, required = false,
                                  default = nil)
-  if valid_598182 != nil:
-    section.add "X-Amz-Credential", valid_598182
-  var valid_598183 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598183 = validateParameter(valid_598183, JString, required = false,
+  if valid_602182 != nil:
+    section.add "X-Amz-Credential", valid_602182
+  var valid_602183 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602183 = validateParameter(valid_602183, JString, required = false,
                                  default = nil)
-  if valid_598183 != nil:
-    section.add "X-Amz-Security-Token", valid_598183
-  var valid_598184 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598184 = validateParameter(valid_598184, JString, required = false,
+  if valid_602183 != nil:
+    section.add "X-Amz-Security-Token", valid_602183
+  var valid_602184 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602184 = validateParameter(valid_602184, JString, required = false,
                                  default = nil)
-  if valid_598184 != nil:
-    section.add "X-Amz-Algorithm", valid_598184
-  var valid_598185 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598185 = validateParameter(valid_598185, JString, required = false,
+  if valid_602184 != nil:
+    section.add "X-Amz-Algorithm", valid_602184
+  var valid_602185 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602185 = validateParameter(valid_602185, JString, required = false,
                                  default = nil)
-  if valid_598185 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598185
+  if valid_602185 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602185
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598186: Call_GetCompatibleElasticsearchVersions_598175;
+proc call*(call_602186: Call_GetCompatibleElasticsearchVersions_602175;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ##  Returns a list of upgrade compatible Elastisearch versions. You can optionally pass a <code> <a>DomainName</a> </code> to get all upgrade compatible Elasticsearch versions for that specific domain. 
   ## 
-  let valid = call_598186.validator(path, query, header, formData, body)
-  let scheme = call_598186.pickScheme
+  let valid = call_602186.validator(path, query, header, formData, body)
+  let scheme = call_602186.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598186.url(scheme.get, call_598186.host, call_598186.base,
-                         call_598186.route, valid.getOrDefault("path"),
+  let url = call_602186.url(scheme.get, call_602186.host, call_602186.base,
+                         call_602186.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598186, url, valid)
+  result = atozHook(call_602186, url, valid)
 
-proc call*(call_598187: Call_GetCompatibleElasticsearchVersions_598175;
+proc call*(call_602187: Call_GetCompatibleElasticsearchVersions_602175;
           domainName: string = ""): Recallable =
   ## getCompatibleElasticsearchVersions
   ##  Returns a list of upgrade compatible Elastisearch versions. You can optionally pass a <code> <a>DomainName</a> </code> to get all upgrade compatible Elasticsearch versions for that specific domain. 
   ##   domainName: string
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
-  var query_598188 = newJObject()
-  add(query_598188, "domainName", newJString(domainName))
-  result = call_598187.call(nil, query_598188, nil, nil, nil)
+  var query_602188 = newJObject()
+  add(query_602188, "domainName", newJString(domainName))
+  result = call_602187.call(nil, query_602188, nil, nil, nil)
 
-var getCompatibleElasticsearchVersions* = Call_GetCompatibleElasticsearchVersions_598175(
+var getCompatibleElasticsearchVersions* = Call_GetCompatibleElasticsearchVersions_602175(
     name: "getCompatibleElasticsearchVersions", meth: HttpMethod.HttpGet,
     host: "es.amazonaws.com", route: "/2015-01-01/es/compatibleVersions",
-    validator: validate_GetCompatibleElasticsearchVersions_598176, base: "/",
-    url: url_GetCompatibleElasticsearchVersions_598177,
+    validator: validate_GetCompatibleElasticsearchVersions_602176, base: "/",
+    url: url_GetCompatibleElasticsearchVersions_602177,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetUpgradeHistory_598189 = ref object of OpenApiRestCall_597389
-proc url_GetUpgradeHistory_598191(protocol: Scheme; host: string; base: string;
+  Call_GetUpgradeHistory_602189 = ref object of OpenApiRestCall_601389
+proc url_GetUpgradeHistory_602191(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1761,7 +1761,7 @@ proc url_GetUpgradeHistory_598191(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetUpgradeHistory_598190(path: JsonNode; query: JsonNode;
+proc validate_GetUpgradeHistory_602190(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Retrieves the complete history of the last 10 upgrades that were performed on the domain.
@@ -1774,11 +1774,11 @@ proc validate_GetUpgradeHistory_598190(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `DomainName` field"
-  var valid_598192 = path.getOrDefault("DomainName")
-  valid_598192 = validateParameter(valid_598192, JString, required = true,
+  var valid_602192 = path.getOrDefault("DomainName")
+  valid_602192 = validateParameter(valid_602192, JString, required = true,
                                  default = nil)
-  if valid_598192 != nil:
-    section.add "DomainName", valid_598192
+  if valid_602192 != nil:
+    section.add "DomainName", valid_602192
   result.add "path", section
   ## parameters in `query` object:
   ##   nextToken: JString
@@ -1790,25 +1790,25 @@ proc validate_GetUpgradeHistory_598190(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             :  Set this value to limit the number of results returned. 
   section = newJObject()
-  var valid_598193 = query.getOrDefault("nextToken")
-  valid_598193 = validateParameter(valid_598193, JString, required = false,
+  var valid_602193 = query.getOrDefault("nextToken")
+  valid_602193 = validateParameter(valid_602193, JString, required = false,
                                  default = nil)
-  if valid_598193 != nil:
-    section.add "nextToken", valid_598193
-  var valid_598194 = query.getOrDefault("MaxResults")
-  valid_598194 = validateParameter(valid_598194, JString, required = false,
+  if valid_602193 != nil:
+    section.add "nextToken", valid_602193
+  var valid_602194 = query.getOrDefault("MaxResults")
+  valid_602194 = validateParameter(valid_602194, JString, required = false,
                                  default = nil)
-  if valid_598194 != nil:
-    section.add "MaxResults", valid_598194
-  var valid_598195 = query.getOrDefault("NextToken")
-  valid_598195 = validateParameter(valid_598195, JString, required = false,
+  if valid_602194 != nil:
+    section.add "MaxResults", valid_602194
+  var valid_602195 = query.getOrDefault("NextToken")
+  valid_602195 = validateParameter(valid_602195, JString, required = false,
                                  default = nil)
-  if valid_598195 != nil:
-    section.add "NextToken", valid_598195
-  var valid_598196 = query.getOrDefault("maxResults")
-  valid_598196 = validateParameter(valid_598196, JInt, required = false, default = nil)
-  if valid_598196 != nil:
-    section.add "maxResults", valid_598196
+  if valid_602195 != nil:
+    section.add "NextToken", valid_602195
+  var valid_602196 = query.getOrDefault("maxResults")
+  valid_602196 = validateParameter(valid_602196, JInt, required = false, default = nil)
+  if valid_602196 != nil:
+    section.add "maxResults", valid_602196
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1819,61 +1819,61 @@ proc validate_GetUpgradeHistory_598190(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598197 = header.getOrDefault("X-Amz-Signature")
-  valid_598197 = validateParameter(valid_598197, JString, required = false,
+  var valid_602197 = header.getOrDefault("X-Amz-Signature")
+  valid_602197 = validateParameter(valid_602197, JString, required = false,
                                  default = nil)
-  if valid_598197 != nil:
-    section.add "X-Amz-Signature", valid_598197
-  var valid_598198 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598198 = validateParameter(valid_598198, JString, required = false,
+  if valid_602197 != nil:
+    section.add "X-Amz-Signature", valid_602197
+  var valid_602198 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602198 = validateParameter(valid_602198, JString, required = false,
                                  default = nil)
-  if valid_598198 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598198
-  var valid_598199 = header.getOrDefault("X-Amz-Date")
-  valid_598199 = validateParameter(valid_598199, JString, required = false,
+  if valid_602198 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602198
+  var valid_602199 = header.getOrDefault("X-Amz-Date")
+  valid_602199 = validateParameter(valid_602199, JString, required = false,
                                  default = nil)
-  if valid_598199 != nil:
-    section.add "X-Amz-Date", valid_598199
-  var valid_598200 = header.getOrDefault("X-Amz-Credential")
-  valid_598200 = validateParameter(valid_598200, JString, required = false,
+  if valid_602199 != nil:
+    section.add "X-Amz-Date", valid_602199
+  var valid_602200 = header.getOrDefault("X-Amz-Credential")
+  valid_602200 = validateParameter(valid_602200, JString, required = false,
                                  default = nil)
-  if valid_598200 != nil:
-    section.add "X-Amz-Credential", valid_598200
-  var valid_598201 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598201 = validateParameter(valid_598201, JString, required = false,
+  if valid_602200 != nil:
+    section.add "X-Amz-Credential", valid_602200
+  var valid_602201 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602201 = validateParameter(valid_602201, JString, required = false,
                                  default = nil)
-  if valid_598201 != nil:
-    section.add "X-Amz-Security-Token", valid_598201
-  var valid_598202 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598202 = validateParameter(valid_598202, JString, required = false,
+  if valid_602201 != nil:
+    section.add "X-Amz-Security-Token", valid_602201
+  var valid_602202 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602202 = validateParameter(valid_602202, JString, required = false,
                                  default = nil)
-  if valid_598202 != nil:
-    section.add "X-Amz-Algorithm", valid_598202
-  var valid_598203 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598203 = validateParameter(valid_598203, JString, required = false,
+  if valid_602202 != nil:
+    section.add "X-Amz-Algorithm", valid_602202
+  var valid_602203 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602203 = validateParameter(valid_602203, JString, required = false,
                                  default = nil)
-  if valid_598203 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598203
+  if valid_602203 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602203
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598204: Call_GetUpgradeHistory_598189; path: JsonNode;
+proc call*(call_602204: Call_GetUpgradeHistory_602189; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the complete history of the last 10 upgrades that were performed on the domain.
   ## 
-  let valid = call_598204.validator(path, query, header, formData, body)
-  let scheme = call_598204.pickScheme
+  let valid = call_602204.validator(path, query, header, formData, body)
+  let scheme = call_602204.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598204.url(scheme.get, call_598204.host, call_598204.base,
-                         call_598204.route, valid.getOrDefault("path"),
+  let url = call_602204.url(scheme.get, call_602204.host, call_602204.base,
+                         call_602204.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598204, url, valid)
+  result = atozHook(call_602204, url, valid)
 
-proc call*(call_598205: Call_GetUpgradeHistory_598189; DomainName: string;
+proc call*(call_602205: Call_GetUpgradeHistory_602189; DomainName: string;
           nextToken: string = ""; MaxResults: string = ""; NextToken: string = "";
           maxResults: int = 0): Recallable =
   ## getUpgradeHistory
@@ -1888,23 +1888,23 @@ proc call*(call_598205: Call_GetUpgradeHistory_598189; DomainName: string;
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
   ##   maxResults: int
   ##             :  Set this value to limit the number of results returned. 
-  var path_598206 = newJObject()
-  var query_598207 = newJObject()
-  add(query_598207, "nextToken", newJString(nextToken))
-  add(query_598207, "MaxResults", newJString(MaxResults))
-  add(query_598207, "NextToken", newJString(NextToken))
-  add(path_598206, "DomainName", newJString(DomainName))
-  add(query_598207, "maxResults", newJInt(maxResults))
-  result = call_598205.call(path_598206, query_598207, nil, nil, nil)
+  var path_602206 = newJObject()
+  var query_602207 = newJObject()
+  add(query_602207, "nextToken", newJString(nextToken))
+  add(query_602207, "MaxResults", newJString(MaxResults))
+  add(query_602207, "NextToken", newJString(NextToken))
+  add(path_602206, "DomainName", newJString(DomainName))
+  add(query_602207, "maxResults", newJInt(maxResults))
+  result = call_602205.call(path_602206, query_602207, nil, nil, nil)
 
-var getUpgradeHistory* = Call_GetUpgradeHistory_598189(name: "getUpgradeHistory",
+var getUpgradeHistory* = Call_GetUpgradeHistory_602189(name: "getUpgradeHistory",
     meth: HttpMethod.HttpGet, host: "es.amazonaws.com",
     route: "/2015-01-01/es/upgradeDomain/{DomainName}/history",
-    validator: validate_GetUpgradeHistory_598190, base: "/",
-    url: url_GetUpgradeHistory_598191, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetUpgradeHistory_602190, base: "/",
+    url: url_GetUpgradeHistory_602191, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetUpgradeStatus_598208 = ref object of OpenApiRestCall_597389
-proc url_GetUpgradeStatus_598210(protocol: Scheme; host: string; base: string;
+  Call_GetUpgradeStatus_602208 = ref object of OpenApiRestCall_601389
+proc url_GetUpgradeStatus_602210(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1925,7 +1925,7 @@ proc url_GetUpgradeStatus_598210(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetUpgradeStatus_598209(path: JsonNode; query: JsonNode;
+proc validate_GetUpgradeStatus_602209(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Retrieves the latest status of the last upgrade or upgrade eligibility check that was performed on the domain.
@@ -1938,11 +1938,11 @@ proc validate_GetUpgradeStatus_598209(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `DomainName` field"
-  var valid_598211 = path.getOrDefault("DomainName")
-  valid_598211 = validateParameter(valid_598211, JString, required = true,
+  var valid_602211 = path.getOrDefault("DomainName")
+  valid_602211 = validateParameter(valid_602211, JString, required = true,
                                  default = nil)
-  if valid_598211 != nil:
-    section.add "DomainName", valid_598211
+  if valid_602211 != nil:
+    section.add "DomainName", valid_602211
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1955,77 +1955,77 @@ proc validate_GetUpgradeStatus_598209(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598212 = header.getOrDefault("X-Amz-Signature")
-  valid_598212 = validateParameter(valid_598212, JString, required = false,
+  var valid_602212 = header.getOrDefault("X-Amz-Signature")
+  valid_602212 = validateParameter(valid_602212, JString, required = false,
                                  default = nil)
-  if valid_598212 != nil:
-    section.add "X-Amz-Signature", valid_598212
-  var valid_598213 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598213 = validateParameter(valid_598213, JString, required = false,
+  if valid_602212 != nil:
+    section.add "X-Amz-Signature", valid_602212
+  var valid_602213 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602213 = validateParameter(valid_602213, JString, required = false,
                                  default = nil)
-  if valid_598213 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598213
-  var valid_598214 = header.getOrDefault("X-Amz-Date")
-  valid_598214 = validateParameter(valid_598214, JString, required = false,
+  if valid_602213 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602213
+  var valid_602214 = header.getOrDefault("X-Amz-Date")
+  valid_602214 = validateParameter(valid_602214, JString, required = false,
                                  default = nil)
-  if valid_598214 != nil:
-    section.add "X-Amz-Date", valid_598214
-  var valid_598215 = header.getOrDefault("X-Amz-Credential")
-  valid_598215 = validateParameter(valid_598215, JString, required = false,
+  if valid_602214 != nil:
+    section.add "X-Amz-Date", valid_602214
+  var valid_602215 = header.getOrDefault("X-Amz-Credential")
+  valid_602215 = validateParameter(valid_602215, JString, required = false,
                                  default = nil)
-  if valid_598215 != nil:
-    section.add "X-Amz-Credential", valid_598215
-  var valid_598216 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598216 = validateParameter(valid_598216, JString, required = false,
+  if valid_602215 != nil:
+    section.add "X-Amz-Credential", valid_602215
+  var valid_602216 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602216 = validateParameter(valid_602216, JString, required = false,
                                  default = nil)
-  if valid_598216 != nil:
-    section.add "X-Amz-Security-Token", valid_598216
-  var valid_598217 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598217 = validateParameter(valid_598217, JString, required = false,
+  if valid_602216 != nil:
+    section.add "X-Amz-Security-Token", valid_602216
+  var valid_602217 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602217 = validateParameter(valid_602217, JString, required = false,
                                  default = nil)
-  if valid_598217 != nil:
-    section.add "X-Amz-Algorithm", valid_598217
-  var valid_598218 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598218 = validateParameter(valid_598218, JString, required = false,
+  if valid_602217 != nil:
+    section.add "X-Amz-Algorithm", valid_602217
+  var valid_602218 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602218 = validateParameter(valid_602218, JString, required = false,
                                  default = nil)
-  if valid_598218 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598218
+  if valid_602218 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602218
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598219: Call_GetUpgradeStatus_598208; path: JsonNode;
+proc call*(call_602219: Call_GetUpgradeStatus_602208; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the latest status of the last upgrade or upgrade eligibility check that was performed on the domain.
   ## 
-  let valid = call_598219.validator(path, query, header, formData, body)
-  let scheme = call_598219.pickScheme
+  let valid = call_602219.validator(path, query, header, formData, body)
+  let scheme = call_602219.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598219.url(scheme.get, call_598219.host, call_598219.base,
-                         call_598219.route, valid.getOrDefault("path"),
+  let url = call_602219.url(scheme.get, call_602219.host, call_602219.base,
+                         call_602219.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598219, url, valid)
+  result = atozHook(call_602219, url, valid)
 
-proc call*(call_598220: Call_GetUpgradeStatus_598208; DomainName: string): Recallable =
+proc call*(call_602220: Call_GetUpgradeStatus_602208; DomainName: string): Recallable =
   ## getUpgradeStatus
   ## Retrieves the latest status of the last upgrade or upgrade eligibility check that was performed on the domain.
   ##   DomainName: string (required)
   ##             : The name of an Elasticsearch domain. Domain names are unique across the domains owned by an account within an AWS region. Domain names start with a letter or number and can contain the following characters: a-z (lowercase), 0-9, and - (hyphen).
-  var path_598221 = newJObject()
-  add(path_598221, "DomainName", newJString(DomainName))
-  result = call_598220.call(path_598221, nil, nil, nil, nil)
+  var path_602221 = newJObject()
+  add(path_602221, "DomainName", newJString(DomainName))
+  result = call_602220.call(path_602221, nil, nil, nil, nil)
 
-var getUpgradeStatus* = Call_GetUpgradeStatus_598208(name: "getUpgradeStatus",
+var getUpgradeStatus* = Call_GetUpgradeStatus_602208(name: "getUpgradeStatus",
     meth: HttpMethod.HttpGet, host: "es.amazonaws.com",
     route: "/2015-01-01/es/upgradeDomain/{DomainName}/status",
-    validator: validate_GetUpgradeStatus_598209, base: "/",
-    url: url_GetUpgradeStatus_598210, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetUpgradeStatus_602209, base: "/",
+    url: url_GetUpgradeStatus_602210, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDomainNames_598222 = ref object of OpenApiRestCall_597389
-proc url_ListDomainNames_598224(protocol: Scheme; host: string; base: string;
+  Call_ListDomainNames_602222 = ref object of OpenApiRestCall_601389
+proc url_ListDomainNames_602224(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2037,7 +2037,7 @@ proc url_ListDomainNames_598224(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListDomainNames_598223(path: JsonNode; query: JsonNode;
+proc validate_ListDomainNames_602223(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Returns the name of all Elasticsearch domains owned by the current user's account. 
@@ -2057,72 +2057,72 @@ proc validate_ListDomainNames_598223(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598225 = header.getOrDefault("X-Amz-Signature")
-  valid_598225 = validateParameter(valid_598225, JString, required = false,
+  var valid_602225 = header.getOrDefault("X-Amz-Signature")
+  valid_602225 = validateParameter(valid_602225, JString, required = false,
                                  default = nil)
-  if valid_598225 != nil:
-    section.add "X-Amz-Signature", valid_598225
-  var valid_598226 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598226 = validateParameter(valid_598226, JString, required = false,
+  if valid_602225 != nil:
+    section.add "X-Amz-Signature", valid_602225
+  var valid_602226 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602226 = validateParameter(valid_602226, JString, required = false,
                                  default = nil)
-  if valid_598226 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598226
-  var valid_598227 = header.getOrDefault("X-Amz-Date")
-  valid_598227 = validateParameter(valid_598227, JString, required = false,
+  if valid_602226 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602226
+  var valid_602227 = header.getOrDefault("X-Amz-Date")
+  valid_602227 = validateParameter(valid_602227, JString, required = false,
                                  default = nil)
-  if valid_598227 != nil:
-    section.add "X-Amz-Date", valid_598227
-  var valid_598228 = header.getOrDefault("X-Amz-Credential")
-  valid_598228 = validateParameter(valid_598228, JString, required = false,
+  if valid_602227 != nil:
+    section.add "X-Amz-Date", valid_602227
+  var valid_602228 = header.getOrDefault("X-Amz-Credential")
+  valid_602228 = validateParameter(valid_602228, JString, required = false,
                                  default = nil)
-  if valid_598228 != nil:
-    section.add "X-Amz-Credential", valid_598228
-  var valid_598229 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598229 = validateParameter(valid_598229, JString, required = false,
+  if valid_602228 != nil:
+    section.add "X-Amz-Credential", valid_602228
+  var valid_602229 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602229 = validateParameter(valid_602229, JString, required = false,
                                  default = nil)
-  if valid_598229 != nil:
-    section.add "X-Amz-Security-Token", valid_598229
-  var valid_598230 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598230 = validateParameter(valid_598230, JString, required = false,
+  if valid_602229 != nil:
+    section.add "X-Amz-Security-Token", valid_602229
+  var valid_602230 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602230 = validateParameter(valid_602230, JString, required = false,
                                  default = nil)
-  if valid_598230 != nil:
-    section.add "X-Amz-Algorithm", valid_598230
-  var valid_598231 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598231 = validateParameter(valid_598231, JString, required = false,
+  if valid_602230 != nil:
+    section.add "X-Amz-Algorithm", valid_602230
+  var valid_602231 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602231 = validateParameter(valid_602231, JString, required = false,
                                  default = nil)
-  if valid_598231 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598231
+  if valid_602231 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602231
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598232: Call_ListDomainNames_598222; path: JsonNode; query: JsonNode;
+proc call*(call_602232: Call_ListDomainNames_602222; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the name of all Elasticsearch domains owned by the current user's account. 
   ## 
-  let valid = call_598232.validator(path, query, header, formData, body)
-  let scheme = call_598232.pickScheme
+  let valid = call_602232.validator(path, query, header, formData, body)
+  let scheme = call_602232.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598232.url(scheme.get, call_598232.host, call_598232.base,
-                         call_598232.route, valid.getOrDefault("path"),
+  let url = call_602232.url(scheme.get, call_602232.host, call_602232.base,
+                         call_602232.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598232, url, valid)
+  result = atozHook(call_602232, url, valid)
 
-proc call*(call_598233: Call_ListDomainNames_598222): Recallable =
+proc call*(call_602233: Call_ListDomainNames_602222): Recallable =
   ## listDomainNames
   ## Returns the name of all Elasticsearch domains owned by the current user's account. 
-  result = call_598233.call(nil, nil, nil, nil, nil)
+  result = call_602233.call(nil, nil, nil, nil, nil)
 
-var listDomainNames* = Call_ListDomainNames_598222(name: "listDomainNames",
+var listDomainNames* = Call_ListDomainNames_602222(name: "listDomainNames",
     meth: HttpMethod.HttpGet, host: "es.amazonaws.com", route: "/2015-01-01/domain",
-    validator: validate_ListDomainNames_598223, base: "/", url: url_ListDomainNames_598224,
+    validator: validate_ListDomainNames_602223, base: "/", url: url_ListDomainNames_602224,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListElasticsearchInstanceTypes_598234 = ref object of OpenApiRestCall_597389
-proc url_ListElasticsearchInstanceTypes_598236(protocol: Scheme; host: string;
+  Call_ListElasticsearchInstanceTypes_602234 = ref object of OpenApiRestCall_601389
+proc url_ListElasticsearchInstanceTypes_602236(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2143,7 +2143,7 @@ proc url_ListElasticsearchInstanceTypes_598236(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListElasticsearchInstanceTypes_598235(path: JsonNode;
+proc validate_ListElasticsearchInstanceTypes_602235(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## List all Elasticsearch instance types that are supported for given ElasticsearchVersion
   ## 
@@ -2154,11 +2154,11 @@ proc validate_ListElasticsearchInstanceTypes_598235(path: JsonNode;
   ##                       : Version of Elasticsearch for which list of supported elasticsearch instance types are needed. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `ElasticsearchVersion` field"
-  var valid_598237 = path.getOrDefault("ElasticsearchVersion")
-  valid_598237 = validateParameter(valid_598237, JString, required = true,
+  var valid_602237 = path.getOrDefault("ElasticsearchVersion")
+  valid_602237 = validateParameter(valid_602237, JString, required = true,
                                  default = nil)
-  if valid_598237 != nil:
-    section.add "ElasticsearchVersion", valid_598237
+  if valid_602237 != nil:
+    section.add "ElasticsearchVersion", valid_602237
   result.add "path", section
   ## parameters in `query` object:
   ##   nextToken: JString
@@ -2172,30 +2172,30 @@ proc validate_ListElasticsearchInstanceTypes_598235(path: JsonNode;
   ##   maxResults: JInt
   ##             :  Set this value to limit the number of results returned. 
   section = newJObject()
-  var valid_598238 = query.getOrDefault("nextToken")
-  valid_598238 = validateParameter(valid_598238, JString, required = false,
+  var valid_602238 = query.getOrDefault("nextToken")
+  valid_602238 = validateParameter(valid_602238, JString, required = false,
                                  default = nil)
-  if valid_598238 != nil:
-    section.add "nextToken", valid_598238
-  var valid_598239 = query.getOrDefault("MaxResults")
-  valid_598239 = validateParameter(valid_598239, JString, required = false,
+  if valid_602238 != nil:
+    section.add "nextToken", valid_602238
+  var valid_602239 = query.getOrDefault("MaxResults")
+  valid_602239 = validateParameter(valid_602239, JString, required = false,
                                  default = nil)
-  if valid_598239 != nil:
-    section.add "MaxResults", valid_598239
-  var valid_598240 = query.getOrDefault("domainName")
-  valid_598240 = validateParameter(valid_598240, JString, required = false,
+  if valid_602239 != nil:
+    section.add "MaxResults", valid_602239
+  var valid_602240 = query.getOrDefault("domainName")
+  valid_602240 = validateParameter(valid_602240, JString, required = false,
                                  default = nil)
-  if valid_598240 != nil:
-    section.add "domainName", valid_598240
-  var valid_598241 = query.getOrDefault("NextToken")
-  valid_598241 = validateParameter(valid_598241, JString, required = false,
+  if valid_602240 != nil:
+    section.add "domainName", valid_602240
+  var valid_602241 = query.getOrDefault("NextToken")
+  valid_602241 = validateParameter(valid_602241, JString, required = false,
                                  default = nil)
-  if valid_598241 != nil:
-    section.add "NextToken", valid_598241
-  var valid_598242 = query.getOrDefault("maxResults")
-  valid_598242 = validateParameter(valid_598242, JInt, required = false, default = nil)
-  if valid_598242 != nil:
-    section.add "maxResults", valid_598242
+  if valid_602241 != nil:
+    section.add "NextToken", valid_602241
+  var valid_602242 = query.getOrDefault("maxResults")
+  valid_602242 = validateParameter(valid_602242, JInt, required = false, default = nil)
+  if valid_602242 != nil:
+    section.add "maxResults", valid_602242
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2206,61 +2206,61 @@ proc validate_ListElasticsearchInstanceTypes_598235(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598243 = header.getOrDefault("X-Amz-Signature")
-  valid_598243 = validateParameter(valid_598243, JString, required = false,
+  var valid_602243 = header.getOrDefault("X-Amz-Signature")
+  valid_602243 = validateParameter(valid_602243, JString, required = false,
                                  default = nil)
-  if valid_598243 != nil:
-    section.add "X-Amz-Signature", valid_598243
-  var valid_598244 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598244 = validateParameter(valid_598244, JString, required = false,
+  if valid_602243 != nil:
+    section.add "X-Amz-Signature", valid_602243
+  var valid_602244 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602244 = validateParameter(valid_602244, JString, required = false,
                                  default = nil)
-  if valid_598244 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598244
-  var valid_598245 = header.getOrDefault("X-Amz-Date")
-  valid_598245 = validateParameter(valid_598245, JString, required = false,
+  if valid_602244 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602244
+  var valid_602245 = header.getOrDefault("X-Amz-Date")
+  valid_602245 = validateParameter(valid_602245, JString, required = false,
                                  default = nil)
-  if valid_598245 != nil:
-    section.add "X-Amz-Date", valid_598245
-  var valid_598246 = header.getOrDefault("X-Amz-Credential")
-  valid_598246 = validateParameter(valid_598246, JString, required = false,
+  if valid_602245 != nil:
+    section.add "X-Amz-Date", valid_602245
+  var valid_602246 = header.getOrDefault("X-Amz-Credential")
+  valid_602246 = validateParameter(valid_602246, JString, required = false,
                                  default = nil)
-  if valid_598246 != nil:
-    section.add "X-Amz-Credential", valid_598246
-  var valid_598247 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598247 = validateParameter(valid_598247, JString, required = false,
+  if valid_602246 != nil:
+    section.add "X-Amz-Credential", valid_602246
+  var valid_602247 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602247 = validateParameter(valid_602247, JString, required = false,
                                  default = nil)
-  if valid_598247 != nil:
-    section.add "X-Amz-Security-Token", valid_598247
-  var valid_598248 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598248 = validateParameter(valid_598248, JString, required = false,
+  if valid_602247 != nil:
+    section.add "X-Amz-Security-Token", valid_602247
+  var valid_602248 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602248 = validateParameter(valid_602248, JString, required = false,
                                  default = nil)
-  if valid_598248 != nil:
-    section.add "X-Amz-Algorithm", valid_598248
-  var valid_598249 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598249 = validateParameter(valid_598249, JString, required = false,
+  if valid_602248 != nil:
+    section.add "X-Amz-Algorithm", valid_602248
+  var valid_602249 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602249 = validateParameter(valid_602249, JString, required = false,
                                  default = nil)
-  if valid_598249 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598249
+  if valid_602249 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602249
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598250: Call_ListElasticsearchInstanceTypes_598234; path: JsonNode;
+proc call*(call_602250: Call_ListElasticsearchInstanceTypes_602234; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List all Elasticsearch instance types that are supported for given ElasticsearchVersion
   ## 
-  let valid = call_598250.validator(path, query, header, formData, body)
-  let scheme = call_598250.pickScheme
+  let valid = call_602250.validator(path, query, header, formData, body)
+  let scheme = call_602250.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598250.url(scheme.get, call_598250.host, call_598250.base,
-                         call_598250.route, valid.getOrDefault("path"),
+  let url = call_602250.url(scheme.get, call_602250.host, call_602250.base,
+                         call_602250.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598250, url, valid)
+  result = atozHook(call_602250, url, valid)
 
-proc call*(call_598251: Call_ListElasticsearchInstanceTypes_598234;
+proc call*(call_602251: Call_ListElasticsearchInstanceTypes_602234;
           ElasticsearchVersion: string; nextToken: string = "";
           MaxResults: string = ""; domainName: string = ""; NextToken: string = "";
           maxResults: int = 0): Recallable =
@@ -2278,26 +2278,26 @@ proc call*(call_598251: Call_ListElasticsearchInstanceTypes_598234;
   ##                       : Version of Elasticsearch for which list of supported elasticsearch instance types are needed. 
   ##   maxResults: int
   ##             :  Set this value to limit the number of results returned. 
-  var path_598252 = newJObject()
-  var query_598253 = newJObject()
-  add(query_598253, "nextToken", newJString(nextToken))
-  add(query_598253, "MaxResults", newJString(MaxResults))
-  add(query_598253, "domainName", newJString(domainName))
-  add(query_598253, "NextToken", newJString(NextToken))
-  add(path_598252, "ElasticsearchVersion", newJString(ElasticsearchVersion))
-  add(query_598253, "maxResults", newJInt(maxResults))
-  result = call_598251.call(path_598252, query_598253, nil, nil, nil)
+  var path_602252 = newJObject()
+  var query_602253 = newJObject()
+  add(query_602253, "nextToken", newJString(nextToken))
+  add(query_602253, "MaxResults", newJString(MaxResults))
+  add(query_602253, "domainName", newJString(domainName))
+  add(query_602253, "NextToken", newJString(NextToken))
+  add(path_602252, "ElasticsearchVersion", newJString(ElasticsearchVersion))
+  add(query_602253, "maxResults", newJInt(maxResults))
+  result = call_602251.call(path_602252, query_602253, nil, nil, nil)
 
-var listElasticsearchInstanceTypes* = Call_ListElasticsearchInstanceTypes_598234(
+var listElasticsearchInstanceTypes* = Call_ListElasticsearchInstanceTypes_602234(
     name: "listElasticsearchInstanceTypes", meth: HttpMethod.HttpGet,
     host: "es.amazonaws.com",
     route: "/2015-01-01/es/instanceTypes/{ElasticsearchVersion}",
-    validator: validate_ListElasticsearchInstanceTypes_598235, base: "/",
-    url: url_ListElasticsearchInstanceTypes_598236,
+    validator: validate_ListElasticsearchInstanceTypes_602235, base: "/",
+    url: url_ListElasticsearchInstanceTypes_602236,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListElasticsearchVersions_598254 = ref object of OpenApiRestCall_597389
-proc url_ListElasticsearchVersions_598256(protocol: Scheme; host: string;
+  Call_ListElasticsearchVersions_602254 = ref object of OpenApiRestCall_601389
+proc url_ListElasticsearchVersions_602256(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2309,7 +2309,7 @@ proc url_ListElasticsearchVersions_598256(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListElasticsearchVersions_598255(path: JsonNode; query: JsonNode;
+proc validate_ListElasticsearchVersions_602255(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## List all supported Elasticsearch versions
   ## 
@@ -2327,25 +2327,25 @@ proc validate_ListElasticsearchVersions_598255(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             :  Set this value to limit the number of results returned. 
   section = newJObject()
-  var valid_598257 = query.getOrDefault("nextToken")
-  valid_598257 = validateParameter(valid_598257, JString, required = false,
+  var valid_602257 = query.getOrDefault("nextToken")
+  valid_602257 = validateParameter(valid_602257, JString, required = false,
                                  default = nil)
-  if valid_598257 != nil:
-    section.add "nextToken", valid_598257
-  var valid_598258 = query.getOrDefault("MaxResults")
-  valid_598258 = validateParameter(valid_598258, JString, required = false,
+  if valid_602257 != nil:
+    section.add "nextToken", valid_602257
+  var valid_602258 = query.getOrDefault("MaxResults")
+  valid_602258 = validateParameter(valid_602258, JString, required = false,
                                  default = nil)
-  if valid_598258 != nil:
-    section.add "MaxResults", valid_598258
-  var valid_598259 = query.getOrDefault("NextToken")
-  valid_598259 = validateParameter(valid_598259, JString, required = false,
+  if valid_602258 != nil:
+    section.add "MaxResults", valid_602258
+  var valid_602259 = query.getOrDefault("NextToken")
+  valid_602259 = validateParameter(valid_602259, JString, required = false,
                                  default = nil)
-  if valid_598259 != nil:
-    section.add "NextToken", valid_598259
-  var valid_598260 = query.getOrDefault("maxResults")
-  valid_598260 = validateParameter(valid_598260, JInt, required = false, default = nil)
-  if valid_598260 != nil:
-    section.add "maxResults", valid_598260
+  if valid_602259 != nil:
+    section.add "NextToken", valid_602259
+  var valid_602260 = query.getOrDefault("maxResults")
+  valid_602260 = validateParameter(valid_602260, JInt, required = false, default = nil)
+  if valid_602260 != nil:
+    section.add "maxResults", valid_602260
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2356,61 +2356,61 @@ proc validate_ListElasticsearchVersions_598255(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598261 = header.getOrDefault("X-Amz-Signature")
-  valid_598261 = validateParameter(valid_598261, JString, required = false,
+  var valid_602261 = header.getOrDefault("X-Amz-Signature")
+  valid_602261 = validateParameter(valid_602261, JString, required = false,
                                  default = nil)
-  if valid_598261 != nil:
-    section.add "X-Amz-Signature", valid_598261
-  var valid_598262 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598262 = validateParameter(valid_598262, JString, required = false,
+  if valid_602261 != nil:
+    section.add "X-Amz-Signature", valid_602261
+  var valid_602262 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602262 = validateParameter(valid_602262, JString, required = false,
                                  default = nil)
-  if valid_598262 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598262
-  var valid_598263 = header.getOrDefault("X-Amz-Date")
-  valid_598263 = validateParameter(valid_598263, JString, required = false,
+  if valid_602262 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602262
+  var valid_602263 = header.getOrDefault("X-Amz-Date")
+  valid_602263 = validateParameter(valid_602263, JString, required = false,
                                  default = nil)
-  if valid_598263 != nil:
-    section.add "X-Amz-Date", valid_598263
-  var valid_598264 = header.getOrDefault("X-Amz-Credential")
-  valid_598264 = validateParameter(valid_598264, JString, required = false,
+  if valid_602263 != nil:
+    section.add "X-Amz-Date", valid_602263
+  var valid_602264 = header.getOrDefault("X-Amz-Credential")
+  valid_602264 = validateParameter(valid_602264, JString, required = false,
                                  default = nil)
-  if valid_598264 != nil:
-    section.add "X-Amz-Credential", valid_598264
-  var valid_598265 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598265 = validateParameter(valid_598265, JString, required = false,
+  if valid_602264 != nil:
+    section.add "X-Amz-Credential", valid_602264
+  var valid_602265 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602265 = validateParameter(valid_602265, JString, required = false,
                                  default = nil)
-  if valid_598265 != nil:
-    section.add "X-Amz-Security-Token", valid_598265
-  var valid_598266 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598266 = validateParameter(valid_598266, JString, required = false,
+  if valid_602265 != nil:
+    section.add "X-Amz-Security-Token", valid_602265
+  var valid_602266 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602266 = validateParameter(valid_602266, JString, required = false,
                                  default = nil)
-  if valid_598266 != nil:
-    section.add "X-Amz-Algorithm", valid_598266
-  var valid_598267 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598267 = validateParameter(valid_598267, JString, required = false,
+  if valid_602266 != nil:
+    section.add "X-Amz-Algorithm", valid_602266
+  var valid_602267 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602267 = validateParameter(valid_602267, JString, required = false,
                                  default = nil)
-  if valid_598267 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598267
+  if valid_602267 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602267
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598268: Call_ListElasticsearchVersions_598254; path: JsonNode;
+proc call*(call_602268: Call_ListElasticsearchVersions_602254; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List all supported Elasticsearch versions
   ## 
-  let valid = call_598268.validator(path, query, header, formData, body)
-  let scheme = call_598268.pickScheme
+  let valid = call_602268.validator(path, query, header, formData, body)
+  let scheme = call_602268.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598268.url(scheme.get, call_598268.host, call_598268.base,
-                         call_598268.route, valid.getOrDefault("path"),
+  let url = call_602268.url(scheme.get, call_602268.host, call_602268.base,
+                         call_602268.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598268, url, valid)
+  result = atozHook(call_602268, url, valid)
 
-proc call*(call_598269: Call_ListElasticsearchVersions_598254;
+proc call*(call_602269: Call_ListElasticsearchVersions_602254;
           nextToken: string = ""; MaxResults: string = ""; NextToken: string = "";
           maxResults: int = 0): Recallable =
   ## listElasticsearchVersions
@@ -2423,22 +2423,22 @@ proc call*(call_598269: Call_ListElasticsearchVersions_598254;
   ##            : Pagination token
   ##   maxResults: int
   ##             :  Set this value to limit the number of results returned. 
-  var query_598270 = newJObject()
-  add(query_598270, "nextToken", newJString(nextToken))
-  add(query_598270, "MaxResults", newJString(MaxResults))
-  add(query_598270, "NextToken", newJString(NextToken))
-  add(query_598270, "maxResults", newJInt(maxResults))
-  result = call_598269.call(nil, query_598270, nil, nil, nil)
+  var query_602270 = newJObject()
+  add(query_602270, "nextToken", newJString(nextToken))
+  add(query_602270, "MaxResults", newJString(MaxResults))
+  add(query_602270, "NextToken", newJString(NextToken))
+  add(query_602270, "maxResults", newJInt(maxResults))
+  result = call_602269.call(nil, query_602270, nil, nil, nil)
 
-var listElasticsearchVersions* = Call_ListElasticsearchVersions_598254(
+var listElasticsearchVersions* = Call_ListElasticsearchVersions_602254(
     name: "listElasticsearchVersions", meth: HttpMethod.HttpGet,
     host: "es.amazonaws.com", route: "/2015-01-01/es/versions",
-    validator: validate_ListElasticsearchVersions_598255, base: "/",
-    url: url_ListElasticsearchVersions_598256,
+    validator: validate_ListElasticsearchVersions_602255, base: "/",
+    url: url_ListElasticsearchVersions_602256,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTags_598271 = ref object of OpenApiRestCall_597389
-proc url_ListTags_598273(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTags_602271 = ref object of OpenApiRestCall_601389
+proc url_ListTags_602273(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2450,7 +2450,7 @@ proc url_ListTags_598273(protocol: Scheme; host: string; base: string; route: st
   else:
     result.path = base & route
 
-proc validate_ListTags_598272(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTags_602272(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns all tags for the given Elasticsearch domain.
   ## 
@@ -2464,11 +2464,11 @@ proc validate_ListTags_598272(path: JsonNode; query: JsonNode; header: JsonNode;
   ## href="http://docs.aws.amazon.com/IAM/latest/UserGuide/index.html?Using_Identifiers.html" target="_blank">Identifiers for IAM Entities</a> in <i>Using AWS Identity and Access Management</i> for more information.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `arn` field"
-  var valid_598274 = query.getOrDefault("arn")
-  valid_598274 = validateParameter(valid_598274, JString, required = true,
+  var valid_602274 = query.getOrDefault("arn")
+  valid_602274 = validateParameter(valid_602274, JString, required = true,
                                  default = nil)
-  if valid_598274 != nil:
-    section.add "arn", valid_598274
+  if valid_602274 != nil:
+    section.add "arn", valid_602274
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2479,79 +2479,79 @@ proc validate_ListTags_598272(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598275 = header.getOrDefault("X-Amz-Signature")
-  valid_598275 = validateParameter(valid_598275, JString, required = false,
+  var valid_602275 = header.getOrDefault("X-Amz-Signature")
+  valid_602275 = validateParameter(valid_602275, JString, required = false,
                                  default = nil)
-  if valid_598275 != nil:
-    section.add "X-Amz-Signature", valid_598275
-  var valid_598276 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598276 = validateParameter(valid_598276, JString, required = false,
+  if valid_602275 != nil:
+    section.add "X-Amz-Signature", valid_602275
+  var valid_602276 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602276 = validateParameter(valid_602276, JString, required = false,
                                  default = nil)
-  if valid_598276 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598276
-  var valid_598277 = header.getOrDefault("X-Amz-Date")
-  valid_598277 = validateParameter(valid_598277, JString, required = false,
+  if valid_602276 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602276
+  var valid_602277 = header.getOrDefault("X-Amz-Date")
+  valid_602277 = validateParameter(valid_602277, JString, required = false,
                                  default = nil)
-  if valid_598277 != nil:
-    section.add "X-Amz-Date", valid_598277
-  var valid_598278 = header.getOrDefault("X-Amz-Credential")
-  valid_598278 = validateParameter(valid_598278, JString, required = false,
+  if valid_602277 != nil:
+    section.add "X-Amz-Date", valid_602277
+  var valid_602278 = header.getOrDefault("X-Amz-Credential")
+  valid_602278 = validateParameter(valid_602278, JString, required = false,
                                  default = nil)
-  if valid_598278 != nil:
-    section.add "X-Amz-Credential", valid_598278
-  var valid_598279 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598279 = validateParameter(valid_598279, JString, required = false,
+  if valid_602278 != nil:
+    section.add "X-Amz-Credential", valid_602278
+  var valid_602279 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602279 = validateParameter(valid_602279, JString, required = false,
                                  default = nil)
-  if valid_598279 != nil:
-    section.add "X-Amz-Security-Token", valid_598279
-  var valid_598280 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598280 = validateParameter(valid_598280, JString, required = false,
+  if valid_602279 != nil:
+    section.add "X-Amz-Security-Token", valid_602279
+  var valid_602280 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602280 = validateParameter(valid_602280, JString, required = false,
                                  default = nil)
-  if valid_598280 != nil:
-    section.add "X-Amz-Algorithm", valid_598280
-  var valid_598281 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598281 = validateParameter(valid_598281, JString, required = false,
+  if valid_602280 != nil:
+    section.add "X-Amz-Algorithm", valid_602280
+  var valid_602281 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602281 = validateParameter(valid_602281, JString, required = false,
                                  default = nil)
-  if valid_598281 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598281
+  if valid_602281 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602281
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_598282: Call_ListTags_598271; path: JsonNode; query: JsonNode;
+proc call*(call_602282: Call_ListTags_602271; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns all tags for the given Elasticsearch domain.
   ## 
-  let valid = call_598282.validator(path, query, header, formData, body)
-  let scheme = call_598282.pickScheme
+  let valid = call_602282.validator(path, query, header, formData, body)
+  let scheme = call_602282.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598282.url(scheme.get, call_598282.host, call_598282.base,
-                         call_598282.route, valid.getOrDefault("path"),
+  let url = call_602282.url(scheme.get, call_602282.host, call_602282.base,
+                         call_602282.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598282, url, valid)
+  result = atozHook(call_602282, url, valid)
 
-proc call*(call_598283: Call_ListTags_598271; arn: string): Recallable =
+proc call*(call_602283: Call_ListTags_602271; arn: string): Recallable =
   ## listTags
   ## Returns all tags for the given Elasticsearch domain.
   ##   arn: string (required)
   ##      : The Amazon Resource Name (ARN) of the Elasticsearch domain. See <a 
   ## href="http://docs.aws.amazon.com/IAM/latest/UserGuide/index.html?Using_Identifiers.html" target="_blank">Identifiers for IAM Entities</a> in <i>Using AWS Identity and Access Management</i> for more information.
-  var query_598284 = newJObject()
-  add(query_598284, "arn", newJString(arn))
-  result = call_598283.call(nil, query_598284, nil, nil, nil)
+  var query_602284 = newJObject()
+  add(query_602284, "arn", newJString(arn))
+  result = call_602283.call(nil, query_602284, nil, nil, nil)
 
-var listTags* = Call_ListTags_598271(name: "listTags", meth: HttpMethod.HttpGet,
+var listTags* = Call_ListTags_602271(name: "listTags", meth: HttpMethod.HttpGet,
                                   host: "es.amazonaws.com",
                                   route: "/2015-01-01/tags/#arn",
-                                  validator: validate_ListTags_598272, base: "/",
-                                  url: url_ListTags_598273,
+                                  validator: validate_ListTags_602272, base: "/",
+                                  url: url_ListTags_602273,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PurchaseReservedElasticsearchInstanceOffering_598285 = ref object of OpenApiRestCall_597389
-proc url_PurchaseReservedElasticsearchInstanceOffering_598287(protocol: Scheme;
+  Call_PurchaseReservedElasticsearchInstanceOffering_602285 = ref object of OpenApiRestCall_601389
+proc url_PurchaseReservedElasticsearchInstanceOffering_602287(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2563,7 +2563,7 @@ proc url_PurchaseReservedElasticsearchInstanceOffering_598287(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_PurchaseReservedElasticsearchInstanceOffering_598286(
+proc validate_PurchaseReservedElasticsearchInstanceOffering_602286(
     path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
     body: JsonNode): JsonNode =
   ## Allows you to purchase reserved Elasticsearch instances.
@@ -2583,41 +2583,41 @@ proc validate_PurchaseReservedElasticsearchInstanceOffering_598286(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598288 = header.getOrDefault("X-Amz-Signature")
-  valid_598288 = validateParameter(valid_598288, JString, required = false,
+  var valid_602288 = header.getOrDefault("X-Amz-Signature")
+  valid_602288 = validateParameter(valid_602288, JString, required = false,
                                  default = nil)
-  if valid_598288 != nil:
-    section.add "X-Amz-Signature", valid_598288
-  var valid_598289 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598289 = validateParameter(valid_598289, JString, required = false,
+  if valid_602288 != nil:
+    section.add "X-Amz-Signature", valid_602288
+  var valid_602289 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602289 = validateParameter(valid_602289, JString, required = false,
                                  default = nil)
-  if valid_598289 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598289
-  var valid_598290 = header.getOrDefault("X-Amz-Date")
-  valid_598290 = validateParameter(valid_598290, JString, required = false,
+  if valid_602289 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602289
+  var valid_602290 = header.getOrDefault("X-Amz-Date")
+  valid_602290 = validateParameter(valid_602290, JString, required = false,
                                  default = nil)
-  if valid_598290 != nil:
-    section.add "X-Amz-Date", valid_598290
-  var valid_598291 = header.getOrDefault("X-Amz-Credential")
-  valid_598291 = validateParameter(valid_598291, JString, required = false,
+  if valid_602290 != nil:
+    section.add "X-Amz-Date", valid_602290
+  var valid_602291 = header.getOrDefault("X-Amz-Credential")
+  valid_602291 = validateParameter(valid_602291, JString, required = false,
                                  default = nil)
-  if valid_598291 != nil:
-    section.add "X-Amz-Credential", valid_598291
-  var valid_598292 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598292 = validateParameter(valid_598292, JString, required = false,
+  if valid_602291 != nil:
+    section.add "X-Amz-Credential", valid_602291
+  var valid_602292 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602292 = validateParameter(valid_602292, JString, required = false,
                                  default = nil)
-  if valid_598292 != nil:
-    section.add "X-Amz-Security-Token", valid_598292
-  var valid_598293 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598293 = validateParameter(valid_598293, JString, required = false,
+  if valid_602292 != nil:
+    section.add "X-Amz-Security-Token", valid_602292
+  var valid_602293 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602293 = validateParameter(valid_602293, JString, required = false,
                                  default = nil)
-  if valid_598293 != nil:
-    section.add "X-Amz-Algorithm", valid_598293
-  var valid_598294 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598294 = validateParameter(valid_598294, JString, required = false,
+  if valid_602293 != nil:
+    section.add "X-Amz-Algorithm", valid_602293
+  var valid_602294 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602294 = validateParameter(valid_602294, JString, required = false,
                                  default = nil)
-  if valid_598294 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598294
+  if valid_602294 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602294
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2628,40 +2628,40 @@ proc validate_PurchaseReservedElasticsearchInstanceOffering_598286(
   if body != nil:
     result.add "body", body
 
-proc call*(call_598296: Call_PurchaseReservedElasticsearchInstanceOffering_598285;
+proc call*(call_602296: Call_PurchaseReservedElasticsearchInstanceOffering_602285;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Allows you to purchase reserved Elasticsearch instances.
   ## 
-  let valid = call_598296.validator(path, query, header, formData, body)
-  let scheme = call_598296.pickScheme
+  let valid = call_602296.validator(path, query, header, formData, body)
+  let scheme = call_602296.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598296.url(scheme.get, call_598296.host, call_598296.base,
-                         call_598296.route, valid.getOrDefault("path"),
+  let url = call_602296.url(scheme.get, call_602296.host, call_602296.base,
+                         call_602296.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598296, url, valid)
+  result = atozHook(call_602296, url, valid)
 
-proc call*(call_598297: Call_PurchaseReservedElasticsearchInstanceOffering_598285;
+proc call*(call_602297: Call_PurchaseReservedElasticsearchInstanceOffering_602285;
           body: JsonNode): Recallable =
   ## purchaseReservedElasticsearchInstanceOffering
   ## Allows you to purchase reserved Elasticsearch instances.
   ##   body: JObject (required)
-  var body_598298 = newJObject()
+  var body_602298 = newJObject()
   if body != nil:
-    body_598298 = body
-  result = call_598297.call(nil, nil, nil, nil, body_598298)
+    body_602298 = body
+  result = call_602297.call(nil, nil, nil, nil, body_602298)
 
-var purchaseReservedElasticsearchInstanceOffering* = Call_PurchaseReservedElasticsearchInstanceOffering_598285(
+var purchaseReservedElasticsearchInstanceOffering* = Call_PurchaseReservedElasticsearchInstanceOffering_602285(
     name: "purchaseReservedElasticsearchInstanceOffering",
     meth: HttpMethod.HttpPost, host: "es.amazonaws.com",
     route: "/2015-01-01/es/purchaseReservedInstanceOffering",
-    validator: validate_PurchaseReservedElasticsearchInstanceOffering_598286,
-    base: "/", url: url_PurchaseReservedElasticsearchInstanceOffering_598287,
+    validator: validate_PurchaseReservedElasticsearchInstanceOffering_602286,
+    base: "/", url: url_PurchaseReservedElasticsearchInstanceOffering_602287,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RemoveTags_598299 = ref object of OpenApiRestCall_597389
-proc url_RemoveTags_598301(protocol: Scheme; host: string; base: string; route: string;
+  Call_RemoveTags_602299 = ref object of OpenApiRestCall_601389
+proc url_RemoveTags_602301(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2673,7 +2673,7 @@ proc url_RemoveTags_598301(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_RemoveTags_598300(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RemoveTags_602300(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes the specified set of tags from the specified Elasticsearch domain.
   ## 
@@ -2692,41 +2692,41 @@ proc validate_RemoveTags_598300(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598302 = header.getOrDefault("X-Amz-Signature")
-  valid_598302 = validateParameter(valid_598302, JString, required = false,
+  var valid_602302 = header.getOrDefault("X-Amz-Signature")
+  valid_602302 = validateParameter(valid_602302, JString, required = false,
                                  default = nil)
-  if valid_598302 != nil:
-    section.add "X-Amz-Signature", valid_598302
-  var valid_598303 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598303 = validateParameter(valid_598303, JString, required = false,
+  if valid_602302 != nil:
+    section.add "X-Amz-Signature", valid_602302
+  var valid_602303 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602303 = validateParameter(valid_602303, JString, required = false,
                                  default = nil)
-  if valid_598303 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598303
-  var valid_598304 = header.getOrDefault("X-Amz-Date")
-  valid_598304 = validateParameter(valid_598304, JString, required = false,
+  if valid_602303 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602303
+  var valid_602304 = header.getOrDefault("X-Amz-Date")
+  valid_602304 = validateParameter(valid_602304, JString, required = false,
                                  default = nil)
-  if valid_598304 != nil:
-    section.add "X-Amz-Date", valid_598304
-  var valid_598305 = header.getOrDefault("X-Amz-Credential")
-  valid_598305 = validateParameter(valid_598305, JString, required = false,
+  if valid_602304 != nil:
+    section.add "X-Amz-Date", valid_602304
+  var valid_602305 = header.getOrDefault("X-Amz-Credential")
+  valid_602305 = validateParameter(valid_602305, JString, required = false,
                                  default = nil)
-  if valid_598305 != nil:
-    section.add "X-Amz-Credential", valid_598305
-  var valid_598306 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598306 = validateParameter(valid_598306, JString, required = false,
+  if valid_602305 != nil:
+    section.add "X-Amz-Credential", valid_602305
+  var valid_602306 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602306 = validateParameter(valid_602306, JString, required = false,
                                  default = nil)
-  if valid_598306 != nil:
-    section.add "X-Amz-Security-Token", valid_598306
-  var valid_598307 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598307 = validateParameter(valid_598307, JString, required = false,
+  if valid_602306 != nil:
+    section.add "X-Amz-Security-Token", valid_602306
+  var valid_602307 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602307 = validateParameter(valid_602307, JString, required = false,
                                  default = nil)
-  if valid_598307 != nil:
-    section.add "X-Amz-Algorithm", valid_598307
-  var valid_598308 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598308 = validateParameter(valid_598308, JString, required = false,
+  if valid_602307 != nil:
+    section.add "X-Amz-Algorithm", valid_602307
+  var valid_602308 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602308 = validateParameter(valid_602308, JString, required = false,
                                  default = nil)
-  if valid_598308 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598308
+  if valid_602308 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602308
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2737,38 +2737,38 @@ proc validate_RemoveTags_598300(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_598310: Call_RemoveTags_598299; path: JsonNode; query: JsonNode;
+proc call*(call_602310: Call_RemoveTags_602299; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes the specified set of tags from the specified Elasticsearch domain.
   ## 
-  let valid = call_598310.validator(path, query, header, formData, body)
-  let scheme = call_598310.pickScheme
+  let valid = call_602310.validator(path, query, header, formData, body)
+  let scheme = call_602310.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598310.url(scheme.get, call_598310.host, call_598310.base,
-                         call_598310.route, valid.getOrDefault("path"),
+  let url = call_602310.url(scheme.get, call_602310.host, call_602310.base,
+                         call_602310.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598310, url, valid)
+  result = atozHook(call_602310, url, valid)
 
-proc call*(call_598311: Call_RemoveTags_598299; body: JsonNode): Recallable =
+proc call*(call_602311: Call_RemoveTags_602299; body: JsonNode): Recallable =
   ## removeTags
   ## Removes the specified set of tags from the specified Elasticsearch domain.
   ##   body: JObject (required)
-  var body_598312 = newJObject()
+  var body_602312 = newJObject()
   if body != nil:
-    body_598312 = body
-  result = call_598311.call(nil, nil, nil, nil, body_598312)
+    body_602312 = body
+  result = call_602311.call(nil, nil, nil, nil, body_602312)
 
-var removeTags* = Call_RemoveTags_598299(name: "removeTags",
+var removeTags* = Call_RemoveTags_602299(name: "removeTags",
                                       meth: HttpMethod.HttpPost,
                                       host: "es.amazonaws.com",
                                       route: "/2015-01-01/tags-removal",
-                                      validator: validate_RemoveTags_598300,
-                                      base: "/", url: url_RemoveTags_598301,
+                                      validator: validate_RemoveTags_602300,
+                                      base: "/", url: url_RemoveTags_602301,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartElasticsearchServiceSoftwareUpdate_598313 = ref object of OpenApiRestCall_597389
-proc url_StartElasticsearchServiceSoftwareUpdate_598315(protocol: Scheme;
+  Call_StartElasticsearchServiceSoftwareUpdate_602313 = ref object of OpenApiRestCall_601389
+proc url_StartElasticsearchServiceSoftwareUpdate_602315(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2780,7 +2780,7 @@ proc url_StartElasticsearchServiceSoftwareUpdate_598315(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_StartElasticsearchServiceSoftwareUpdate_598314(path: JsonNode;
+proc validate_StartElasticsearchServiceSoftwareUpdate_602314(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Schedules a service software update for an Amazon ES domain.
   ## 
@@ -2799,41 +2799,41 @@ proc validate_StartElasticsearchServiceSoftwareUpdate_598314(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598316 = header.getOrDefault("X-Amz-Signature")
-  valid_598316 = validateParameter(valid_598316, JString, required = false,
+  var valid_602316 = header.getOrDefault("X-Amz-Signature")
+  valid_602316 = validateParameter(valid_602316, JString, required = false,
                                  default = nil)
-  if valid_598316 != nil:
-    section.add "X-Amz-Signature", valid_598316
-  var valid_598317 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598317 = validateParameter(valid_598317, JString, required = false,
+  if valid_602316 != nil:
+    section.add "X-Amz-Signature", valid_602316
+  var valid_602317 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602317 = validateParameter(valid_602317, JString, required = false,
                                  default = nil)
-  if valid_598317 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598317
-  var valid_598318 = header.getOrDefault("X-Amz-Date")
-  valid_598318 = validateParameter(valid_598318, JString, required = false,
+  if valid_602317 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602317
+  var valid_602318 = header.getOrDefault("X-Amz-Date")
+  valid_602318 = validateParameter(valid_602318, JString, required = false,
                                  default = nil)
-  if valid_598318 != nil:
-    section.add "X-Amz-Date", valid_598318
-  var valid_598319 = header.getOrDefault("X-Amz-Credential")
-  valid_598319 = validateParameter(valid_598319, JString, required = false,
+  if valid_602318 != nil:
+    section.add "X-Amz-Date", valid_602318
+  var valid_602319 = header.getOrDefault("X-Amz-Credential")
+  valid_602319 = validateParameter(valid_602319, JString, required = false,
                                  default = nil)
-  if valid_598319 != nil:
-    section.add "X-Amz-Credential", valid_598319
-  var valid_598320 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598320 = validateParameter(valid_598320, JString, required = false,
+  if valid_602319 != nil:
+    section.add "X-Amz-Credential", valid_602319
+  var valid_602320 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602320 = validateParameter(valid_602320, JString, required = false,
                                  default = nil)
-  if valid_598320 != nil:
-    section.add "X-Amz-Security-Token", valid_598320
-  var valid_598321 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598321 = validateParameter(valid_598321, JString, required = false,
+  if valid_602320 != nil:
+    section.add "X-Amz-Security-Token", valid_602320
+  var valid_602321 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602321 = validateParameter(valid_602321, JString, required = false,
                                  default = nil)
-  if valid_598321 != nil:
-    section.add "X-Amz-Algorithm", valid_598321
-  var valid_598322 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598322 = validateParameter(valid_598322, JString, required = false,
+  if valid_602321 != nil:
+    section.add "X-Amz-Algorithm", valid_602321
+  var valid_602322 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602322 = validateParameter(valid_602322, JString, required = false,
                                  default = nil)
-  if valid_598322 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598322
+  if valid_602322 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602322
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2844,39 +2844,39 @@ proc validate_StartElasticsearchServiceSoftwareUpdate_598314(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_598324: Call_StartElasticsearchServiceSoftwareUpdate_598313;
+proc call*(call_602324: Call_StartElasticsearchServiceSoftwareUpdate_602313;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Schedules a service software update for an Amazon ES domain.
   ## 
-  let valid = call_598324.validator(path, query, header, formData, body)
-  let scheme = call_598324.pickScheme
+  let valid = call_602324.validator(path, query, header, formData, body)
+  let scheme = call_602324.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598324.url(scheme.get, call_598324.host, call_598324.base,
-                         call_598324.route, valid.getOrDefault("path"),
+  let url = call_602324.url(scheme.get, call_602324.host, call_602324.base,
+                         call_602324.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598324, url, valid)
+  result = atozHook(call_602324, url, valid)
 
-proc call*(call_598325: Call_StartElasticsearchServiceSoftwareUpdate_598313;
+proc call*(call_602325: Call_StartElasticsearchServiceSoftwareUpdate_602313;
           body: JsonNode): Recallable =
   ## startElasticsearchServiceSoftwareUpdate
   ## Schedules a service software update for an Amazon ES domain.
   ##   body: JObject (required)
-  var body_598326 = newJObject()
+  var body_602326 = newJObject()
   if body != nil:
-    body_598326 = body
-  result = call_598325.call(nil, nil, nil, nil, body_598326)
+    body_602326 = body
+  result = call_602325.call(nil, nil, nil, nil, body_602326)
 
-var startElasticsearchServiceSoftwareUpdate* = Call_StartElasticsearchServiceSoftwareUpdate_598313(
+var startElasticsearchServiceSoftwareUpdate* = Call_StartElasticsearchServiceSoftwareUpdate_602313(
     name: "startElasticsearchServiceSoftwareUpdate", meth: HttpMethod.HttpPost,
     host: "es.amazonaws.com", route: "/2015-01-01/es/serviceSoftwareUpdate/start",
-    validator: validate_StartElasticsearchServiceSoftwareUpdate_598314, base: "/",
-    url: url_StartElasticsearchServiceSoftwareUpdate_598315,
+    validator: validate_StartElasticsearchServiceSoftwareUpdate_602314, base: "/",
+    url: url_StartElasticsearchServiceSoftwareUpdate_602315,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpgradeElasticsearchDomain_598327 = ref object of OpenApiRestCall_597389
-proc url_UpgradeElasticsearchDomain_598329(protocol: Scheme; host: string;
+  Call_UpgradeElasticsearchDomain_602327 = ref object of OpenApiRestCall_601389
+proc url_UpgradeElasticsearchDomain_602329(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2888,7 +2888,7 @@ proc url_UpgradeElasticsearchDomain_598329(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpgradeElasticsearchDomain_598328(path: JsonNode; query: JsonNode;
+proc validate_UpgradeElasticsearchDomain_602328(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Allows you to either upgrade your domain or perform an Upgrade eligibility check to a compatible Elasticsearch version.
   ## 
@@ -2907,41 +2907,41 @@ proc validate_UpgradeElasticsearchDomain_598328(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_598330 = header.getOrDefault("X-Amz-Signature")
-  valid_598330 = validateParameter(valid_598330, JString, required = false,
+  var valid_602330 = header.getOrDefault("X-Amz-Signature")
+  valid_602330 = validateParameter(valid_602330, JString, required = false,
                                  default = nil)
-  if valid_598330 != nil:
-    section.add "X-Amz-Signature", valid_598330
-  var valid_598331 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_598331 = validateParameter(valid_598331, JString, required = false,
+  if valid_602330 != nil:
+    section.add "X-Amz-Signature", valid_602330
+  var valid_602331 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602331 = validateParameter(valid_602331, JString, required = false,
                                  default = nil)
-  if valid_598331 != nil:
-    section.add "X-Amz-Content-Sha256", valid_598331
-  var valid_598332 = header.getOrDefault("X-Amz-Date")
-  valid_598332 = validateParameter(valid_598332, JString, required = false,
+  if valid_602331 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602331
+  var valid_602332 = header.getOrDefault("X-Amz-Date")
+  valid_602332 = validateParameter(valid_602332, JString, required = false,
                                  default = nil)
-  if valid_598332 != nil:
-    section.add "X-Amz-Date", valid_598332
-  var valid_598333 = header.getOrDefault("X-Amz-Credential")
-  valid_598333 = validateParameter(valid_598333, JString, required = false,
+  if valid_602332 != nil:
+    section.add "X-Amz-Date", valid_602332
+  var valid_602333 = header.getOrDefault("X-Amz-Credential")
+  valid_602333 = validateParameter(valid_602333, JString, required = false,
                                  default = nil)
-  if valid_598333 != nil:
-    section.add "X-Amz-Credential", valid_598333
-  var valid_598334 = header.getOrDefault("X-Amz-Security-Token")
-  valid_598334 = validateParameter(valid_598334, JString, required = false,
+  if valid_602333 != nil:
+    section.add "X-Amz-Credential", valid_602333
+  var valid_602334 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602334 = validateParameter(valid_602334, JString, required = false,
                                  default = nil)
-  if valid_598334 != nil:
-    section.add "X-Amz-Security-Token", valid_598334
-  var valid_598335 = header.getOrDefault("X-Amz-Algorithm")
-  valid_598335 = validateParameter(valid_598335, JString, required = false,
+  if valid_602334 != nil:
+    section.add "X-Amz-Security-Token", valid_602334
+  var valid_602335 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602335 = validateParameter(valid_602335, JString, required = false,
                                  default = nil)
-  if valid_598335 != nil:
-    section.add "X-Amz-Algorithm", valid_598335
-  var valid_598336 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_598336 = validateParameter(valid_598336, JString, required = false,
+  if valid_602335 != nil:
+    section.add "X-Amz-Algorithm", valid_602335
+  var valid_602336 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602336 = validateParameter(valid_602336, JString, required = false,
                                  default = nil)
-  if valid_598336 != nil:
-    section.add "X-Amz-SignedHeaders", valid_598336
+  if valid_602336 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602336
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2952,33 +2952,33 @@ proc validate_UpgradeElasticsearchDomain_598328(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_598338: Call_UpgradeElasticsearchDomain_598327; path: JsonNode;
+proc call*(call_602338: Call_UpgradeElasticsearchDomain_602327; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Allows you to either upgrade your domain or perform an Upgrade eligibility check to a compatible Elasticsearch version.
   ## 
-  let valid = call_598338.validator(path, query, header, formData, body)
-  let scheme = call_598338.pickScheme
+  let valid = call_602338.validator(path, query, header, formData, body)
+  let scheme = call_602338.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_598338.url(scheme.get, call_598338.host, call_598338.base,
-                         call_598338.route, valid.getOrDefault("path"),
+  let url = call_602338.url(scheme.get, call_602338.host, call_602338.base,
+                         call_602338.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_598338, url, valid)
+  result = atozHook(call_602338, url, valid)
 
-proc call*(call_598339: Call_UpgradeElasticsearchDomain_598327; body: JsonNode): Recallable =
+proc call*(call_602339: Call_UpgradeElasticsearchDomain_602327; body: JsonNode): Recallable =
   ## upgradeElasticsearchDomain
   ## Allows you to either upgrade your domain or perform an Upgrade eligibility check to a compatible Elasticsearch version.
   ##   body: JObject (required)
-  var body_598340 = newJObject()
+  var body_602340 = newJObject()
   if body != nil:
-    body_598340 = body
-  result = call_598339.call(nil, nil, nil, nil, body_598340)
+    body_602340 = body
+  result = call_602339.call(nil, nil, nil, nil, body_602340)
 
-var upgradeElasticsearchDomain* = Call_UpgradeElasticsearchDomain_598327(
+var upgradeElasticsearchDomain* = Call_UpgradeElasticsearchDomain_602327(
     name: "upgradeElasticsearchDomain", meth: HttpMethod.HttpPost,
     host: "es.amazonaws.com", route: "/2015-01-01/es/upgradeDomain",
-    validator: validate_UpgradeElasticsearchDomain_598328, base: "/",
-    url: url_UpgradeElasticsearchDomain_598329,
+    validator: validate_UpgradeElasticsearchDomain_602328, base: "/",
+    url: url_UpgradeElasticsearchDomain_602329,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

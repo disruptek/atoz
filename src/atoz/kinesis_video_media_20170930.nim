@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599359 = ref object of OpenApiRestCall
+  OpenApiRestCall_601380 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599359](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601380](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599359): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601380): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -142,19 +142,20 @@ const
   awsServiceName = "kinesis-video-media"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GetMedia_599696 = ref object of OpenApiRestCall_599359
-proc url_GetMedia_599698(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetMedia_601718 = ref object of OpenApiRestCall_601380
+proc url_GetMedia_601720(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetMedia_599697(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetMedia_601719(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> Use this API to retrieve media content from a Kinesis video stream. In the request, you identify the stream name or stream Amazon Resource Name (ARN), and the starting chunk. Kinesis Video Streams then returns a stream of chunks in order by fragment number.</p> <note> <p>You must first call the <code>GetDataEndpoint</code> API to get an endpoint. Then send the <code>GetMedia</code> requests to this endpoint using the <a href="https://docs.aws.amazon.com/cli/latest/reference/">--endpoint-url parameter</a>. </p> </note> <p>When you put media data (fragments) on a stream, Kinesis Video Streams stores each incoming fragment and related metadata in what is called a "chunk." For more information, see <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_dataplane_PutMedia.html">PutMedia</a>. The <code>GetMedia</code> API returns a stream of these chunks starting from the chunk that you specify in the request. </p> <p>The following limits apply when using the <code>GetMedia</code> API:</p> <ul> <li> <p>A client can call <code>GetMedia</code> up to five times per second per stream. </p> </li> <li> <p>Kinesis Video Streams sends media data at a rate of up to 25 megabytes per second (or 200 megabits per second) during a <code>GetMedia</code> session. </p> </li> </ul> <note> <p>If an error is thrown after invoking a Kinesis Video Streams media API, in addition to the HTTP status code and the response body, it includes the following pieces of information: </p> <ul> <li> <p> <code>x-amz-ErrorType</code> HTTP header – contains a more specific error type in addition to what the HTTP status code provides. </p> </li> <li> <p> <code>x-amz-RequestId</code> HTTP header – if you want to report an issue to AWS, the support team can better diagnose the problem if given the Request Id.</p> </li> </ul> <p>Both the HTTP status code and the ErrorType header can be utilized to make programmatic decisions about whether errors are retry-able and under what conditions, as well as provide information on what actions the client programmer might need to take in order to successfully try again.</p> <p>For more information, see the <b>Errors</b> section at the bottom of this topic, as well as <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/CommonErrors.html">Common Errors</a>. </p> </note>
   ## 
@@ -165,49 +166,49 @@ proc validate_GetMedia_599697(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599810 = header.getOrDefault("X-Amz-Date")
-  valid_599810 = validateParameter(valid_599810, JString, required = false,
+  var valid_601832 = header.getOrDefault("X-Amz-Signature")
+  valid_601832 = validateParameter(valid_601832, JString, required = false,
                                  default = nil)
-  if valid_599810 != nil:
-    section.add "X-Amz-Date", valid_599810
-  var valid_599811 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599811 = validateParameter(valid_599811, JString, required = false,
+  if valid_601832 != nil:
+    section.add "X-Amz-Signature", valid_601832
+  var valid_601833 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601833 = validateParameter(valid_601833, JString, required = false,
                                  default = nil)
-  if valid_599811 != nil:
-    section.add "X-Amz-Security-Token", valid_599811
-  var valid_599812 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599812 = validateParameter(valid_599812, JString, required = false,
+  if valid_601833 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601833
+  var valid_601834 = header.getOrDefault("X-Amz-Date")
+  valid_601834 = validateParameter(valid_601834, JString, required = false,
                                  default = nil)
-  if valid_599812 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599812
-  var valid_599813 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599813 = validateParameter(valid_599813, JString, required = false,
+  if valid_601834 != nil:
+    section.add "X-Amz-Date", valid_601834
+  var valid_601835 = header.getOrDefault("X-Amz-Credential")
+  valid_601835 = validateParameter(valid_601835, JString, required = false,
                                  default = nil)
-  if valid_599813 != nil:
-    section.add "X-Amz-Algorithm", valid_599813
-  var valid_599814 = header.getOrDefault("X-Amz-Signature")
-  valid_599814 = validateParameter(valid_599814, JString, required = false,
+  if valid_601835 != nil:
+    section.add "X-Amz-Credential", valid_601835
+  var valid_601836 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601836 = validateParameter(valid_601836, JString, required = false,
                                  default = nil)
-  if valid_599814 != nil:
-    section.add "X-Amz-Signature", valid_599814
-  var valid_599815 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599815 = validateParameter(valid_599815, JString, required = false,
+  if valid_601836 != nil:
+    section.add "X-Amz-Security-Token", valid_601836
+  var valid_601837 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601837 = validateParameter(valid_601837, JString, required = false,
                                  default = nil)
-  if valid_599815 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599815
-  var valid_599816 = header.getOrDefault("X-Amz-Credential")
-  valid_599816 = validateParameter(valid_599816, JString, required = false,
+  if valid_601837 != nil:
+    section.add "X-Amz-Algorithm", valid_601837
+  var valid_601838 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601838 = validateParameter(valid_601838, JString, required = false,
                                  default = nil)
-  if valid_599816 != nil:
-    section.add "X-Amz-Credential", valid_599816
+  if valid_601838 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601838
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -218,33 +219,33 @@ proc validate_GetMedia_599697(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599840: Call_GetMedia_599696; path: JsonNode; query: JsonNode;
+proc call*(call_601862: Call_GetMedia_601718; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Use this API to retrieve media content from a Kinesis video stream. In the request, you identify the stream name or stream Amazon Resource Name (ARN), and the starting chunk. Kinesis Video Streams then returns a stream of chunks in order by fragment number.</p> <note> <p>You must first call the <code>GetDataEndpoint</code> API to get an endpoint. Then send the <code>GetMedia</code> requests to this endpoint using the <a href="https://docs.aws.amazon.com/cli/latest/reference/">--endpoint-url parameter</a>. </p> </note> <p>When you put media data (fragments) on a stream, Kinesis Video Streams stores each incoming fragment and related metadata in what is called a "chunk." For more information, see <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_dataplane_PutMedia.html">PutMedia</a>. The <code>GetMedia</code> API returns a stream of these chunks starting from the chunk that you specify in the request. </p> <p>The following limits apply when using the <code>GetMedia</code> API:</p> <ul> <li> <p>A client can call <code>GetMedia</code> up to five times per second per stream. </p> </li> <li> <p>Kinesis Video Streams sends media data at a rate of up to 25 megabytes per second (or 200 megabits per second) during a <code>GetMedia</code> session. </p> </li> </ul> <note> <p>If an error is thrown after invoking a Kinesis Video Streams media API, in addition to the HTTP status code and the response body, it includes the following pieces of information: </p> <ul> <li> <p> <code>x-amz-ErrorType</code> HTTP header – contains a more specific error type in addition to what the HTTP status code provides. </p> </li> <li> <p> <code>x-amz-RequestId</code> HTTP header – if you want to report an issue to AWS, the support team can better diagnose the problem if given the Request Id.</p> </li> </ul> <p>Both the HTTP status code and the ErrorType header can be utilized to make programmatic decisions about whether errors are retry-able and under what conditions, as well as provide information on what actions the client programmer might need to take in order to successfully try again.</p> <p>For more information, see the <b>Errors</b> section at the bottom of this topic, as well as <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/CommonErrors.html">Common Errors</a>. </p> </note>
   ## 
-  let valid = call_599840.validator(path, query, header, formData, body)
-  let scheme = call_599840.pickScheme
+  let valid = call_601862.validator(path, query, header, formData, body)
+  let scheme = call_601862.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599840.url(scheme.get, call_599840.host, call_599840.base,
-                         call_599840.route, valid.getOrDefault("path"),
+  let url = call_601862.url(scheme.get, call_601862.host, call_601862.base,
+                         call_601862.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599840, url, valid)
+  result = atozHook(call_601862, url, valid)
 
-proc call*(call_599911: Call_GetMedia_599696; body: JsonNode): Recallable =
+proc call*(call_601933: Call_GetMedia_601718; body: JsonNode): Recallable =
   ## getMedia
   ## <p> Use this API to retrieve media content from a Kinesis video stream. In the request, you identify the stream name or stream Amazon Resource Name (ARN), and the starting chunk. Kinesis Video Streams then returns a stream of chunks in order by fragment number.</p> <note> <p>You must first call the <code>GetDataEndpoint</code> API to get an endpoint. Then send the <code>GetMedia</code> requests to this endpoint using the <a href="https://docs.aws.amazon.com/cli/latest/reference/">--endpoint-url parameter</a>. </p> </note> <p>When you put media data (fragments) on a stream, Kinesis Video Streams stores each incoming fragment and related metadata in what is called a "chunk." For more information, see <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/API_dataplane_PutMedia.html">PutMedia</a>. The <code>GetMedia</code> API returns a stream of these chunks starting from the chunk that you specify in the request. </p> <p>The following limits apply when using the <code>GetMedia</code> API:</p> <ul> <li> <p>A client can call <code>GetMedia</code> up to five times per second per stream. </p> </li> <li> <p>Kinesis Video Streams sends media data at a rate of up to 25 megabytes per second (or 200 megabits per second) during a <code>GetMedia</code> session. </p> </li> </ul> <note> <p>If an error is thrown after invoking a Kinesis Video Streams media API, in addition to the HTTP status code and the response body, it includes the following pieces of information: </p> <ul> <li> <p> <code>x-amz-ErrorType</code> HTTP header – contains a more specific error type in addition to what the HTTP status code provides. </p> </li> <li> <p> <code>x-amz-RequestId</code> HTTP header – if you want to report an issue to AWS, the support team can better diagnose the problem if given the Request Id.</p> </li> </ul> <p>Both the HTTP status code and the ErrorType header can be utilized to make programmatic decisions about whether errors are retry-able and under what conditions, as well as provide information on what actions the client programmer might need to take in order to successfully try again.</p> <p>For more information, see the <b>Errors</b> section at the bottom of this topic, as well as <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/CommonErrors.html">Common Errors</a>. </p> </note>
   ##   body: JObject (required)
-  var body_599912 = newJObject()
+  var body_601934 = newJObject()
   if body != nil:
-    body_599912 = body
-  result = call_599911.call(nil, nil, nil, nil, body_599912)
+    body_601934 = body
+  result = call_601933.call(nil, nil, nil, nil, body_601934)
 
-var getMedia* = Call_GetMedia_599696(name: "getMedia", meth: HttpMethod.HttpPost,
+var getMedia* = Call_GetMedia_601718(name: "getMedia", meth: HttpMethod.HttpPost,
                                   host: "kinesisvideo.amazonaws.com",
                                   route: "/getMedia",
-                                  validator: validate_GetMedia_599697, base: "/",
-                                  url: url_GetMedia_599698,
+                                  validator: validate_GetMedia_601719, base: "/",
+                                  url: url_GetMedia_601720,
                                   schemes: {Scheme.Https, Scheme.Http})
 export
   rest

@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599368 = ref object of OpenApiRestCall
+  OpenApiRestCall_601389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,19 +134,20 @@ const
   awsServiceName = "lakeformation"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_BatchGrantPermissions_599705 = ref object of OpenApiRestCall_599368
-proc url_BatchGrantPermissions_599707(protocol: Scheme; host: string; base: string;
+  Call_BatchGrantPermissions_601727 = ref object of OpenApiRestCall_601389
+proc url_BatchGrantPermissions_601729(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_BatchGrantPermissions_599706(path: JsonNode; query: JsonNode;
+proc validate_BatchGrantPermissions_601728(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Batch operation to grant permissions to the principal.
   ## 
@@ -157,57 +158,57 @@ proc validate_BatchGrantPermissions_599706(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599819 = header.getOrDefault("X-Amz-Date")
-  valid_599819 = validateParameter(valid_599819, JString, required = false,
-                                 default = nil)
-  if valid_599819 != nil:
-    section.add "X-Amz-Date", valid_599819
-  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599820 = validateParameter(valid_599820, JString, required = false,
-                                 default = nil)
-  if valid_599820 != nil:
-    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599834 = header.getOrDefault("X-Amz-Target")
-  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
+  var valid_601854 = header.getOrDefault("X-Amz-Target")
+  valid_601854 = validateParameter(valid_601854, JString, required = true, default = newJString(
       "AWSLakeFormation.BatchGrantPermissions"))
-  if valid_599834 != nil:
-    section.add "X-Amz-Target", valid_599834
-  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599835 = validateParameter(valid_599835, JString, required = false,
+  if valid_601854 != nil:
+    section.add "X-Amz-Target", valid_601854
+  var valid_601855 = header.getOrDefault("X-Amz-Signature")
+  valid_601855 = validateParameter(valid_601855, JString, required = false,
                                  default = nil)
-  if valid_599835 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599835
-  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599836 = validateParameter(valid_599836, JString, required = false,
+  if valid_601855 != nil:
+    section.add "X-Amz-Signature", valid_601855
+  var valid_601856 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601856 = validateParameter(valid_601856, JString, required = false,
                                  default = nil)
-  if valid_599836 != nil:
-    section.add "X-Amz-Algorithm", valid_599836
-  var valid_599837 = header.getOrDefault("X-Amz-Signature")
-  valid_599837 = validateParameter(valid_599837, JString, required = false,
+  if valid_601856 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601856
+  var valid_601857 = header.getOrDefault("X-Amz-Date")
+  valid_601857 = validateParameter(valid_601857, JString, required = false,
                                  default = nil)
-  if valid_599837 != nil:
-    section.add "X-Amz-Signature", valid_599837
-  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599838 = validateParameter(valid_599838, JString, required = false,
+  if valid_601857 != nil:
+    section.add "X-Amz-Date", valid_601857
+  var valid_601858 = header.getOrDefault("X-Amz-Credential")
+  valid_601858 = validateParameter(valid_601858, JString, required = false,
                                  default = nil)
-  if valid_599838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599838
-  var valid_599839 = header.getOrDefault("X-Amz-Credential")
-  valid_599839 = validateParameter(valid_599839, JString, required = false,
+  if valid_601858 != nil:
+    section.add "X-Amz-Credential", valid_601858
+  var valid_601859 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601859 = validateParameter(valid_601859, JString, required = false,
                                  default = nil)
-  if valid_599839 != nil:
-    section.add "X-Amz-Credential", valid_599839
+  if valid_601859 != nil:
+    section.add "X-Amz-Security-Token", valid_601859
+  var valid_601860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601860 = validateParameter(valid_601860, JString, required = false,
+                                 default = nil)
+  if valid_601860 != nil:
+    section.add "X-Amz-Algorithm", valid_601860
+  var valid_601861 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601861 = validateParameter(valid_601861, JString, required = false,
+                                 default = nil)
+  if valid_601861 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601861
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -218,48 +219,49 @@ proc validate_BatchGrantPermissions_599706(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599863: Call_BatchGrantPermissions_599705; path: JsonNode;
+proc call*(call_601885: Call_BatchGrantPermissions_601727; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Batch operation to grant permissions to the principal.
   ## 
-  let valid = call_599863.validator(path, query, header, formData, body)
-  let scheme = call_599863.pickScheme
+  let valid = call_601885.validator(path, query, header, formData, body)
+  let scheme = call_601885.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
-                         call_599863.route, valid.getOrDefault("path"),
+  let url = call_601885.url(scheme.get, call_601885.host, call_601885.base,
+                         call_601885.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599863, url, valid)
+  result = atozHook(call_601885, url, valid)
 
-proc call*(call_599934: Call_BatchGrantPermissions_599705; body: JsonNode): Recallable =
+proc call*(call_601956: Call_BatchGrantPermissions_601727; body: JsonNode): Recallable =
   ## batchGrantPermissions
   ## Batch operation to grant permissions to the principal.
   ##   body: JObject (required)
-  var body_599935 = newJObject()
+  var body_601957 = newJObject()
   if body != nil:
-    body_599935 = body
-  result = call_599934.call(nil, nil, nil, nil, body_599935)
+    body_601957 = body
+  result = call_601956.call(nil, nil, nil, nil, body_601957)
 
-var batchGrantPermissions* = Call_BatchGrantPermissions_599705(
+var batchGrantPermissions* = Call_BatchGrantPermissions_601727(
     name: "batchGrantPermissions", meth: HttpMethod.HttpPost,
     host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.BatchGrantPermissions",
-    validator: validate_BatchGrantPermissions_599706, base: "/",
-    url: url_BatchGrantPermissions_599707, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_BatchGrantPermissions_601728, base: "/",
+    url: url_BatchGrantPermissions_601729, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_BatchRevokePermissions_599974 = ref object of OpenApiRestCall_599368
-proc url_BatchRevokePermissions_599976(protocol: Scheme; host: string; base: string;
+  Call_BatchRevokePermissions_601996 = ref object of OpenApiRestCall_601389
+proc url_BatchRevokePermissions_601998(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_BatchRevokePermissions_599975(path: JsonNode; query: JsonNode;
+proc validate_BatchRevokePermissions_601997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Batch operation to revoke permissions from the principal.
   ## 
@@ -270,57 +272,57 @@ proc validate_BatchRevokePermissions_599975(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599977 = header.getOrDefault("X-Amz-Date")
-  valid_599977 = validateParameter(valid_599977, JString, required = false,
-                                 default = nil)
-  if valid_599977 != nil:
-    section.add "X-Amz-Date", valid_599977
-  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599978 = validateParameter(valid_599978, JString, required = false,
-                                 default = nil)
-  if valid_599978 != nil:
-    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599979 = header.getOrDefault("X-Amz-Target")
-  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
+  var valid_601999 = header.getOrDefault("X-Amz-Target")
+  valid_601999 = validateParameter(valid_601999, JString, required = true, default = newJString(
       "AWSLakeFormation.BatchRevokePermissions"))
-  if valid_599979 != nil:
-    section.add "X-Amz-Target", valid_599979
-  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599980 = validateParameter(valid_599980, JString, required = false,
+  if valid_601999 != nil:
+    section.add "X-Amz-Target", valid_601999
+  var valid_602000 = header.getOrDefault("X-Amz-Signature")
+  valid_602000 = validateParameter(valid_602000, JString, required = false,
                                  default = nil)
-  if valid_599980 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599980
-  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599981 = validateParameter(valid_599981, JString, required = false,
+  if valid_602000 != nil:
+    section.add "X-Amz-Signature", valid_602000
+  var valid_602001 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602001 = validateParameter(valid_602001, JString, required = false,
                                  default = nil)
-  if valid_599981 != nil:
-    section.add "X-Amz-Algorithm", valid_599981
-  var valid_599982 = header.getOrDefault("X-Amz-Signature")
-  valid_599982 = validateParameter(valid_599982, JString, required = false,
+  if valid_602001 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602001
+  var valid_602002 = header.getOrDefault("X-Amz-Date")
+  valid_602002 = validateParameter(valid_602002, JString, required = false,
                                  default = nil)
-  if valid_599982 != nil:
-    section.add "X-Amz-Signature", valid_599982
-  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599983 = validateParameter(valid_599983, JString, required = false,
+  if valid_602002 != nil:
+    section.add "X-Amz-Date", valid_602002
+  var valid_602003 = header.getOrDefault("X-Amz-Credential")
+  valid_602003 = validateParameter(valid_602003, JString, required = false,
                                  default = nil)
-  if valid_599983 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599983
-  var valid_599984 = header.getOrDefault("X-Amz-Credential")
-  valid_599984 = validateParameter(valid_599984, JString, required = false,
+  if valid_602003 != nil:
+    section.add "X-Amz-Credential", valid_602003
+  var valid_602004 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602004 = validateParameter(valid_602004, JString, required = false,
                                  default = nil)
-  if valid_599984 != nil:
-    section.add "X-Amz-Credential", valid_599984
+  if valid_602004 != nil:
+    section.add "X-Amz-Security-Token", valid_602004
+  var valid_602005 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602005 = validateParameter(valid_602005, JString, required = false,
+                                 default = nil)
+  if valid_602005 != nil:
+    section.add "X-Amz-Algorithm", valid_602005
+  var valid_602006 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602006 = validateParameter(valid_602006, JString, required = false,
+                                 default = nil)
+  if valid_602006 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602006
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -331,48 +333,49 @@ proc validate_BatchRevokePermissions_599975(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_599986: Call_BatchRevokePermissions_599974; path: JsonNode;
+proc call*(call_602008: Call_BatchRevokePermissions_601996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Batch operation to revoke permissions from the principal.
   ## 
-  let valid = call_599986.validator(path, query, header, formData, body)
-  let scheme = call_599986.pickScheme
+  let valid = call_602008.validator(path, query, header, formData, body)
+  let scheme = call_602008.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
-                         call_599986.route, valid.getOrDefault("path"),
+  let url = call_602008.url(scheme.get, call_602008.host, call_602008.base,
+                         call_602008.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599986, url, valid)
+  result = atozHook(call_602008, url, valid)
 
-proc call*(call_599987: Call_BatchRevokePermissions_599974; body: JsonNode): Recallable =
+proc call*(call_602009: Call_BatchRevokePermissions_601996; body: JsonNode): Recallable =
   ## batchRevokePermissions
   ## Batch operation to revoke permissions from the principal.
   ##   body: JObject (required)
-  var body_599988 = newJObject()
+  var body_602010 = newJObject()
   if body != nil:
-    body_599988 = body
-  result = call_599987.call(nil, nil, nil, nil, body_599988)
+    body_602010 = body
+  result = call_602009.call(nil, nil, nil, nil, body_602010)
 
-var batchRevokePermissions* = Call_BatchRevokePermissions_599974(
+var batchRevokePermissions* = Call_BatchRevokePermissions_601996(
     name: "batchRevokePermissions", meth: HttpMethod.HttpPost,
     host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.BatchRevokePermissions",
-    validator: validate_BatchRevokePermissions_599975, base: "/",
-    url: url_BatchRevokePermissions_599976, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_BatchRevokePermissions_601997, base: "/",
+    url: url_BatchRevokePermissions_601998, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterResource_599989 = ref object of OpenApiRestCall_599368
-proc url_DeregisterResource_599991(protocol: Scheme; host: string; base: string;
+  Call_DeregisterResource_602011 = ref object of OpenApiRestCall_601389
+proc url_DeregisterResource_602013(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterResource_599990(path: JsonNode; query: JsonNode;
+proc validate_DeregisterResource_602012(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Deregisters the resource as managed by the Data Catalog.</p> <p>When you deregister a path, Lake Formation removes the path from the inline policy attached to your service-linked role.</p>
@@ -384,57 +387,57 @@ proc validate_DeregisterResource_599990(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599992 = header.getOrDefault("X-Amz-Date")
-  valid_599992 = validateParameter(valid_599992, JString, required = false,
-                                 default = nil)
-  if valid_599992 != nil:
-    section.add "X-Amz-Date", valid_599992
-  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599993 = validateParameter(valid_599993, JString, required = false,
-                                 default = nil)
-  if valid_599993 != nil:
-    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599994 = header.getOrDefault("X-Amz-Target")
-  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
+  var valid_602014 = header.getOrDefault("X-Amz-Target")
+  valid_602014 = validateParameter(valid_602014, JString, required = true, default = newJString(
       "AWSLakeFormation.DeregisterResource"))
-  if valid_599994 != nil:
-    section.add "X-Amz-Target", valid_599994
-  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599995 = validateParameter(valid_599995, JString, required = false,
+  if valid_602014 != nil:
+    section.add "X-Amz-Target", valid_602014
+  var valid_602015 = header.getOrDefault("X-Amz-Signature")
+  valid_602015 = validateParameter(valid_602015, JString, required = false,
                                  default = nil)
-  if valid_599995 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599995
-  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599996 = validateParameter(valid_599996, JString, required = false,
+  if valid_602015 != nil:
+    section.add "X-Amz-Signature", valid_602015
+  var valid_602016 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602016 = validateParameter(valid_602016, JString, required = false,
                                  default = nil)
-  if valid_599996 != nil:
-    section.add "X-Amz-Algorithm", valid_599996
-  var valid_599997 = header.getOrDefault("X-Amz-Signature")
-  valid_599997 = validateParameter(valid_599997, JString, required = false,
+  if valid_602016 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602016
+  var valid_602017 = header.getOrDefault("X-Amz-Date")
+  valid_602017 = validateParameter(valid_602017, JString, required = false,
                                  default = nil)
-  if valid_599997 != nil:
-    section.add "X-Amz-Signature", valid_599997
-  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599998 = validateParameter(valid_599998, JString, required = false,
+  if valid_602017 != nil:
+    section.add "X-Amz-Date", valid_602017
+  var valid_602018 = header.getOrDefault("X-Amz-Credential")
+  valid_602018 = validateParameter(valid_602018, JString, required = false,
                                  default = nil)
-  if valid_599998 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599998
-  var valid_599999 = header.getOrDefault("X-Amz-Credential")
-  valid_599999 = validateParameter(valid_599999, JString, required = false,
+  if valid_602018 != nil:
+    section.add "X-Amz-Credential", valid_602018
+  var valid_602019 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602019 = validateParameter(valid_602019, JString, required = false,
                                  default = nil)
-  if valid_599999 != nil:
-    section.add "X-Amz-Credential", valid_599999
+  if valid_602019 != nil:
+    section.add "X-Amz-Security-Token", valid_602019
+  var valid_602020 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602020 = validateParameter(valid_602020, JString, required = false,
+                                 default = nil)
+  if valid_602020 != nil:
+    section.add "X-Amz-Algorithm", valid_602020
+  var valid_602021 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602021 = validateParameter(valid_602021, JString, required = false,
+                                 default = nil)
+  if valid_602021 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602021
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -445,48 +448,49 @@ proc validate_DeregisterResource_599990(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600001: Call_DeregisterResource_599989; path: JsonNode;
+proc call*(call_602023: Call_DeregisterResource_602011; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregisters the resource as managed by the Data Catalog.</p> <p>When you deregister a path, Lake Formation removes the path from the inline policy attached to your service-linked role.</p>
   ## 
-  let valid = call_600001.validator(path, query, header, formData, body)
-  let scheme = call_600001.pickScheme
+  let valid = call_602023.validator(path, query, header, formData, body)
+  let scheme = call_602023.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
-                         call_600001.route, valid.getOrDefault("path"),
+  let url = call_602023.url(scheme.get, call_602023.host, call_602023.base,
+                         call_602023.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600001, url, valid)
+  result = atozHook(call_602023, url, valid)
 
-proc call*(call_600002: Call_DeregisterResource_599989; body: JsonNode): Recallable =
+proc call*(call_602024: Call_DeregisterResource_602011; body: JsonNode): Recallable =
   ## deregisterResource
   ## <p>Deregisters the resource as managed by the Data Catalog.</p> <p>When you deregister a path, Lake Formation removes the path from the inline policy attached to your service-linked role.</p>
   ##   body: JObject (required)
-  var body_600003 = newJObject()
+  var body_602025 = newJObject()
   if body != nil:
-    body_600003 = body
-  result = call_600002.call(nil, nil, nil, nil, body_600003)
+    body_602025 = body
+  result = call_602024.call(nil, nil, nil, nil, body_602025)
 
-var deregisterResource* = Call_DeregisterResource_599989(
+var deregisterResource* = Call_DeregisterResource_602011(
     name: "deregisterResource", meth: HttpMethod.HttpPost,
     host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.DeregisterResource",
-    validator: validate_DeregisterResource_599990, base: "/",
-    url: url_DeregisterResource_599991, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterResource_602012, base: "/",
+    url: url_DeregisterResource_602013, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeResource_600004 = ref object of OpenApiRestCall_599368
-proc url_DescribeResource_600006(protocol: Scheme; host: string; base: string;
+  Call_DescribeResource_602026 = ref object of OpenApiRestCall_601389
+proc url_DescribeResource_602028(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeResource_600005(path: JsonNode; query: JsonNode;
+proc validate_DescribeResource_602027(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Retrieves the current data access role for the given resource registered in AWS Lake Formation.
@@ -498,57 +502,57 @@ proc validate_DescribeResource_600005(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600007 = header.getOrDefault("X-Amz-Date")
-  valid_600007 = validateParameter(valid_600007, JString, required = false,
-                                 default = nil)
-  if valid_600007 != nil:
-    section.add "X-Amz-Date", valid_600007
-  var valid_600008 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600008 = validateParameter(valid_600008, JString, required = false,
-                                 default = nil)
-  if valid_600008 != nil:
-    section.add "X-Amz-Security-Token", valid_600008
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600009 = header.getOrDefault("X-Amz-Target")
-  valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
+  var valid_602029 = header.getOrDefault("X-Amz-Target")
+  valid_602029 = validateParameter(valid_602029, JString, required = true, default = newJString(
       "AWSLakeFormation.DescribeResource"))
-  if valid_600009 != nil:
-    section.add "X-Amz-Target", valid_600009
-  var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600010 = validateParameter(valid_600010, JString, required = false,
+  if valid_602029 != nil:
+    section.add "X-Amz-Target", valid_602029
+  var valid_602030 = header.getOrDefault("X-Amz-Signature")
+  valid_602030 = validateParameter(valid_602030, JString, required = false,
                                  default = nil)
-  if valid_600010 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600010
-  var valid_600011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600011 = validateParameter(valid_600011, JString, required = false,
+  if valid_602030 != nil:
+    section.add "X-Amz-Signature", valid_602030
+  var valid_602031 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602031 = validateParameter(valid_602031, JString, required = false,
                                  default = nil)
-  if valid_600011 != nil:
-    section.add "X-Amz-Algorithm", valid_600011
-  var valid_600012 = header.getOrDefault("X-Amz-Signature")
-  valid_600012 = validateParameter(valid_600012, JString, required = false,
+  if valid_602031 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602031
+  var valid_602032 = header.getOrDefault("X-Amz-Date")
+  valid_602032 = validateParameter(valid_602032, JString, required = false,
                                  default = nil)
-  if valid_600012 != nil:
-    section.add "X-Amz-Signature", valid_600012
-  var valid_600013 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600013 = validateParameter(valid_600013, JString, required = false,
+  if valid_602032 != nil:
+    section.add "X-Amz-Date", valid_602032
+  var valid_602033 = header.getOrDefault("X-Amz-Credential")
+  valid_602033 = validateParameter(valid_602033, JString, required = false,
                                  default = nil)
-  if valid_600013 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600013
-  var valid_600014 = header.getOrDefault("X-Amz-Credential")
-  valid_600014 = validateParameter(valid_600014, JString, required = false,
+  if valid_602033 != nil:
+    section.add "X-Amz-Credential", valid_602033
+  var valid_602034 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602034 = validateParameter(valid_602034, JString, required = false,
                                  default = nil)
-  if valid_600014 != nil:
-    section.add "X-Amz-Credential", valid_600014
+  if valid_602034 != nil:
+    section.add "X-Amz-Security-Token", valid_602034
+  var valid_602035 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602035 = validateParameter(valid_602035, JString, required = false,
+                                 default = nil)
+  if valid_602035 != nil:
+    section.add "X-Amz-Algorithm", valid_602035
+  var valid_602036 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602036 = validateParameter(valid_602036, JString, required = false,
+                                 default = nil)
+  if valid_602036 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602036
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -559,47 +563,48 @@ proc validate_DescribeResource_600005(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600016: Call_DescribeResource_600004; path: JsonNode;
+proc call*(call_602038: Call_DescribeResource_602026; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the current data access role for the given resource registered in AWS Lake Formation.
   ## 
-  let valid = call_600016.validator(path, query, header, formData, body)
-  let scheme = call_600016.pickScheme
+  let valid = call_602038.validator(path, query, header, formData, body)
+  let scheme = call_602038.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600016.url(scheme.get, call_600016.host, call_600016.base,
-                         call_600016.route, valid.getOrDefault("path"),
+  let url = call_602038.url(scheme.get, call_602038.host, call_602038.base,
+                         call_602038.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600016, url, valid)
+  result = atozHook(call_602038, url, valid)
 
-proc call*(call_600017: Call_DescribeResource_600004; body: JsonNode): Recallable =
+proc call*(call_602039: Call_DescribeResource_602026; body: JsonNode): Recallable =
   ## describeResource
   ## Retrieves the current data access role for the given resource registered in AWS Lake Formation.
   ##   body: JObject (required)
-  var body_600018 = newJObject()
+  var body_602040 = newJObject()
   if body != nil:
-    body_600018 = body
-  result = call_600017.call(nil, nil, nil, nil, body_600018)
+    body_602040 = body
+  result = call_602039.call(nil, nil, nil, nil, body_602040)
 
-var describeResource* = Call_DescribeResource_600004(name: "describeResource",
+var describeResource* = Call_DescribeResource_602026(name: "describeResource",
     meth: HttpMethod.HttpPost, host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.DescribeResource",
-    validator: validate_DescribeResource_600005, base: "/",
-    url: url_DescribeResource_600006, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeResource_602027, base: "/",
+    url: url_DescribeResource_602028, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDataLakeSettings_600019 = ref object of OpenApiRestCall_599368
-proc url_GetDataLakeSettings_600021(protocol: Scheme; host: string; base: string;
+  Call_GetDataLakeSettings_602041 = ref object of OpenApiRestCall_601389
+proc url_GetDataLakeSettings_602043(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDataLakeSettings_600020(path: JsonNode; query: JsonNode;
+proc validate_GetDataLakeSettings_602042(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## The AWS Lake Formation principal.
@@ -611,57 +616,57 @@ proc validate_GetDataLakeSettings_600020(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600022 = header.getOrDefault("X-Amz-Date")
-  valid_600022 = validateParameter(valid_600022, JString, required = false,
-                                 default = nil)
-  if valid_600022 != nil:
-    section.add "X-Amz-Date", valid_600022
-  var valid_600023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600023 = validateParameter(valid_600023, JString, required = false,
-                                 default = nil)
-  if valid_600023 != nil:
-    section.add "X-Amz-Security-Token", valid_600023
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600024 = header.getOrDefault("X-Amz-Target")
-  valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
+  var valid_602044 = header.getOrDefault("X-Amz-Target")
+  valid_602044 = validateParameter(valid_602044, JString, required = true, default = newJString(
       "AWSLakeFormation.GetDataLakeSettings"))
-  if valid_600024 != nil:
-    section.add "X-Amz-Target", valid_600024
-  var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600025 = validateParameter(valid_600025, JString, required = false,
+  if valid_602044 != nil:
+    section.add "X-Amz-Target", valid_602044
+  var valid_602045 = header.getOrDefault("X-Amz-Signature")
+  valid_602045 = validateParameter(valid_602045, JString, required = false,
                                  default = nil)
-  if valid_600025 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600025
-  var valid_600026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600026 = validateParameter(valid_600026, JString, required = false,
+  if valid_602045 != nil:
+    section.add "X-Amz-Signature", valid_602045
+  var valid_602046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602046 = validateParameter(valid_602046, JString, required = false,
                                  default = nil)
-  if valid_600026 != nil:
-    section.add "X-Amz-Algorithm", valid_600026
-  var valid_600027 = header.getOrDefault("X-Amz-Signature")
-  valid_600027 = validateParameter(valid_600027, JString, required = false,
+  if valid_602046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602046
+  var valid_602047 = header.getOrDefault("X-Amz-Date")
+  valid_602047 = validateParameter(valid_602047, JString, required = false,
                                  default = nil)
-  if valid_600027 != nil:
-    section.add "X-Amz-Signature", valid_600027
-  var valid_600028 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600028 = validateParameter(valid_600028, JString, required = false,
+  if valid_602047 != nil:
+    section.add "X-Amz-Date", valid_602047
+  var valid_602048 = header.getOrDefault("X-Amz-Credential")
+  valid_602048 = validateParameter(valid_602048, JString, required = false,
                                  default = nil)
-  if valid_600028 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600028
-  var valid_600029 = header.getOrDefault("X-Amz-Credential")
-  valid_600029 = validateParameter(valid_600029, JString, required = false,
+  if valid_602048 != nil:
+    section.add "X-Amz-Credential", valid_602048
+  var valid_602049 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602049 = validateParameter(valid_602049, JString, required = false,
                                  default = nil)
-  if valid_600029 != nil:
-    section.add "X-Amz-Credential", valid_600029
+  if valid_602049 != nil:
+    section.add "X-Amz-Security-Token", valid_602049
+  var valid_602050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602050 = validateParameter(valid_602050, JString, required = false,
+                                 default = nil)
+  if valid_602050 != nil:
+    section.add "X-Amz-Algorithm", valid_602050
+  var valid_602051 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602051 = validateParameter(valid_602051, JString, required = false,
+                                 default = nil)
+  if valid_602051 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602051
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -672,48 +677,49 @@ proc validate_GetDataLakeSettings_600020(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600031: Call_GetDataLakeSettings_600019; path: JsonNode;
+proc call*(call_602053: Call_GetDataLakeSettings_602041; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## The AWS Lake Formation principal.
   ## 
-  let valid = call_600031.validator(path, query, header, formData, body)
-  let scheme = call_600031.pickScheme
+  let valid = call_602053.validator(path, query, header, formData, body)
+  let scheme = call_602053.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600031.url(scheme.get, call_600031.host, call_600031.base,
-                         call_600031.route, valid.getOrDefault("path"),
+  let url = call_602053.url(scheme.get, call_602053.host, call_602053.base,
+                         call_602053.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600031, url, valid)
+  result = atozHook(call_602053, url, valid)
 
-proc call*(call_600032: Call_GetDataLakeSettings_600019; body: JsonNode): Recallable =
+proc call*(call_602054: Call_GetDataLakeSettings_602041; body: JsonNode): Recallable =
   ## getDataLakeSettings
   ## The AWS Lake Formation principal.
   ##   body: JObject (required)
-  var body_600033 = newJObject()
+  var body_602055 = newJObject()
   if body != nil:
-    body_600033 = body
-  result = call_600032.call(nil, nil, nil, nil, body_600033)
+    body_602055 = body
+  result = call_602054.call(nil, nil, nil, nil, body_602055)
 
-var getDataLakeSettings* = Call_GetDataLakeSettings_600019(
+var getDataLakeSettings* = Call_GetDataLakeSettings_602041(
     name: "getDataLakeSettings", meth: HttpMethod.HttpPost,
     host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.GetDataLakeSettings",
-    validator: validate_GetDataLakeSettings_600020, base: "/",
-    url: url_GetDataLakeSettings_600021, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDataLakeSettings_602042, base: "/",
+    url: url_GetDataLakeSettings_602043, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetEffectivePermissionsForPath_600034 = ref object of OpenApiRestCall_599368
-proc url_GetEffectivePermissionsForPath_600036(protocol: Scheme; host: string;
+  Call_GetEffectivePermissionsForPath_602056 = ref object of OpenApiRestCall_601389
+proc url_GetEffectivePermissionsForPath_602058(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetEffectivePermissionsForPath_600035(path: JsonNode;
+proc validate_GetEffectivePermissionsForPath_602057(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the permissions for a specified table or database resource located at a path in Amazon S3.
   ## 
@@ -722,74 +728,74 @@ proc validate_GetEffectivePermissionsForPath_600035(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600037 = query.getOrDefault("NextToken")
-  valid_600037 = validateParameter(valid_600037, JString, required = false,
+  var valid_602059 = query.getOrDefault("MaxResults")
+  valid_602059 = validateParameter(valid_602059, JString, required = false,
                                  default = nil)
-  if valid_600037 != nil:
-    section.add "NextToken", valid_600037
-  var valid_600038 = query.getOrDefault("MaxResults")
-  valid_600038 = validateParameter(valid_600038, JString, required = false,
+  if valid_602059 != nil:
+    section.add "MaxResults", valid_602059
+  var valid_602060 = query.getOrDefault("NextToken")
+  valid_602060 = validateParameter(valid_602060, JString, required = false,
                                  default = nil)
-  if valid_600038 != nil:
-    section.add "MaxResults", valid_600038
+  if valid_602060 != nil:
+    section.add "NextToken", valid_602060
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600039 = header.getOrDefault("X-Amz-Date")
-  valid_600039 = validateParameter(valid_600039, JString, required = false,
-                                 default = nil)
-  if valid_600039 != nil:
-    section.add "X-Amz-Date", valid_600039
-  var valid_600040 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600040 = validateParameter(valid_600040, JString, required = false,
-                                 default = nil)
-  if valid_600040 != nil:
-    section.add "X-Amz-Security-Token", valid_600040
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600041 = header.getOrDefault("X-Amz-Target")
-  valid_600041 = validateParameter(valid_600041, JString, required = true, default = newJString(
+  var valid_602061 = header.getOrDefault("X-Amz-Target")
+  valid_602061 = validateParameter(valid_602061, JString, required = true, default = newJString(
       "AWSLakeFormation.GetEffectivePermissionsForPath"))
-  if valid_600041 != nil:
-    section.add "X-Amz-Target", valid_600041
-  var valid_600042 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600042 = validateParameter(valid_600042, JString, required = false,
+  if valid_602061 != nil:
+    section.add "X-Amz-Target", valid_602061
+  var valid_602062 = header.getOrDefault("X-Amz-Signature")
+  valid_602062 = validateParameter(valid_602062, JString, required = false,
                                  default = nil)
-  if valid_600042 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600042
-  var valid_600043 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600043 = validateParameter(valid_600043, JString, required = false,
+  if valid_602062 != nil:
+    section.add "X-Amz-Signature", valid_602062
+  var valid_602063 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602063 = validateParameter(valid_602063, JString, required = false,
                                  default = nil)
-  if valid_600043 != nil:
-    section.add "X-Amz-Algorithm", valid_600043
-  var valid_600044 = header.getOrDefault("X-Amz-Signature")
-  valid_600044 = validateParameter(valid_600044, JString, required = false,
+  if valid_602063 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602063
+  var valid_602064 = header.getOrDefault("X-Amz-Date")
+  valid_602064 = validateParameter(valid_602064, JString, required = false,
                                  default = nil)
-  if valid_600044 != nil:
-    section.add "X-Amz-Signature", valid_600044
-  var valid_600045 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600045 = validateParameter(valid_600045, JString, required = false,
+  if valid_602064 != nil:
+    section.add "X-Amz-Date", valid_602064
+  var valid_602065 = header.getOrDefault("X-Amz-Credential")
+  valid_602065 = validateParameter(valid_602065, JString, required = false,
                                  default = nil)
-  if valid_600045 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600045
-  var valid_600046 = header.getOrDefault("X-Amz-Credential")
-  valid_600046 = validateParameter(valid_600046, JString, required = false,
+  if valid_602065 != nil:
+    section.add "X-Amz-Credential", valid_602065
+  var valid_602066 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602066 = validateParameter(valid_602066, JString, required = false,
                                  default = nil)
-  if valid_600046 != nil:
-    section.add "X-Amz-Credential", valid_600046
+  if valid_602066 != nil:
+    section.add "X-Amz-Security-Token", valid_602066
+  var valid_602067 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602067 = validateParameter(valid_602067, JString, required = false,
+                                 default = nil)
+  if valid_602067 != nil:
+    section.add "X-Amz-Algorithm", valid_602067
+  var valid_602068 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602068 = validateParameter(valid_602068, JString, required = false,
+                                 default = nil)
+  if valid_602068 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602068
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -800,57 +806,58 @@ proc validate_GetEffectivePermissionsForPath_600035(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600048: Call_GetEffectivePermissionsForPath_600034; path: JsonNode;
+proc call*(call_602070: Call_GetEffectivePermissionsForPath_602056; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the permissions for a specified table or database resource located at a path in Amazon S3.
   ## 
-  let valid = call_600048.validator(path, query, header, formData, body)
-  let scheme = call_600048.pickScheme
+  let valid = call_602070.validator(path, query, header, formData, body)
+  let scheme = call_602070.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600048.url(scheme.get, call_600048.host, call_600048.base,
-                         call_600048.route, valid.getOrDefault("path"),
+  let url = call_602070.url(scheme.get, call_602070.host, call_602070.base,
+                         call_602070.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600048, url, valid)
+  result = atozHook(call_602070, url, valid)
 
-proc call*(call_600049: Call_GetEffectivePermissionsForPath_600034; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602071: Call_GetEffectivePermissionsForPath_602056; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## getEffectivePermissionsForPath
   ## Returns the permissions for a specified table or database resource located at a path in Amazon S3.
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600050 = newJObject()
-  var body_600051 = newJObject()
-  add(query_600050, "NextToken", newJString(NextToken))
+  var query_602072 = newJObject()
+  var body_602073 = newJObject()
+  add(query_602072, "MaxResults", newJString(MaxResults))
+  add(query_602072, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600051 = body
-  add(query_600050, "MaxResults", newJString(MaxResults))
-  result = call_600049.call(nil, query_600050, nil, nil, body_600051)
+    body_602073 = body
+  result = call_602071.call(nil, query_602072, nil, nil, body_602073)
 
-var getEffectivePermissionsForPath* = Call_GetEffectivePermissionsForPath_600034(
+var getEffectivePermissionsForPath* = Call_GetEffectivePermissionsForPath_602056(
     name: "getEffectivePermissionsForPath", meth: HttpMethod.HttpPost,
     host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.GetEffectivePermissionsForPath",
-    validator: validate_GetEffectivePermissionsForPath_600035, base: "/",
-    url: url_GetEffectivePermissionsForPath_600036,
+    validator: validate_GetEffectivePermissionsForPath_602057, base: "/",
+    url: url_GetEffectivePermissionsForPath_602058,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GrantPermissions_600053 = ref object of OpenApiRestCall_599368
-proc url_GrantPermissions_600055(protocol: Scheme; host: string; base: string;
+  Call_GrantPermissions_602075 = ref object of OpenApiRestCall_601389
+proc url_GrantPermissions_602077(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GrantPermissions_600054(path: JsonNode; query: JsonNode;
+proc validate_GrantPermissions_602076(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Grants permissions to the principal to access metadata in the Data Catalog and data organized in underlying data storage such as Amazon S3.</p> <p>For information about permissions, see <a href="https://docs-aws.amazon.com/michigan/latest/dg/security-data-access.html">Security and Access Control to Metadata and Data</a>.</p>
@@ -862,57 +869,57 @@ proc validate_GrantPermissions_600054(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600056 = header.getOrDefault("X-Amz-Date")
-  valid_600056 = validateParameter(valid_600056, JString, required = false,
-                                 default = nil)
-  if valid_600056 != nil:
-    section.add "X-Amz-Date", valid_600056
-  var valid_600057 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600057 = validateParameter(valid_600057, JString, required = false,
-                                 default = nil)
-  if valid_600057 != nil:
-    section.add "X-Amz-Security-Token", valid_600057
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600058 = header.getOrDefault("X-Amz-Target")
-  valid_600058 = validateParameter(valid_600058, JString, required = true, default = newJString(
+  var valid_602078 = header.getOrDefault("X-Amz-Target")
+  valid_602078 = validateParameter(valid_602078, JString, required = true, default = newJString(
       "AWSLakeFormation.GrantPermissions"))
-  if valid_600058 != nil:
-    section.add "X-Amz-Target", valid_600058
-  var valid_600059 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600059 = validateParameter(valid_600059, JString, required = false,
+  if valid_602078 != nil:
+    section.add "X-Amz-Target", valid_602078
+  var valid_602079 = header.getOrDefault("X-Amz-Signature")
+  valid_602079 = validateParameter(valid_602079, JString, required = false,
                                  default = nil)
-  if valid_600059 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600059
-  var valid_600060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600060 = validateParameter(valid_600060, JString, required = false,
+  if valid_602079 != nil:
+    section.add "X-Amz-Signature", valid_602079
+  var valid_602080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602080 = validateParameter(valid_602080, JString, required = false,
                                  default = nil)
-  if valid_600060 != nil:
-    section.add "X-Amz-Algorithm", valid_600060
-  var valid_600061 = header.getOrDefault("X-Amz-Signature")
-  valid_600061 = validateParameter(valid_600061, JString, required = false,
+  if valid_602080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602080
+  var valid_602081 = header.getOrDefault("X-Amz-Date")
+  valid_602081 = validateParameter(valid_602081, JString, required = false,
                                  default = nil)
-  if valid_600061 != nil:
-    section.add "X-Amz-Signature", valid_600061
-  var valid_600062 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600062 = validateParameter(valid_600062, JString, required = false,
+  if valid_602081 != nil:
+    section.add "X-Amz-Date", valid_602081
+  var valid_602082 = header.getOrDefault("X-Amz-Credential")
+  valid_602082 = validateParameter(valid_602082, JString, required = false,
                                  default = nil)
-  if valid_600062 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600062
-  var valid_600063 = header.getOrDefault("X-Amz-Credential")
-  valid_600063 = validateParameter(valid_600063, JString, required = false,
+  if valid_602082 != nil:
+    section.add "X-Amz-Credential", valid_602082
+  var valid_602083 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602083 = validateParameter(valid_602083, JString, required = false,
                                  default = nil)
-  if valid_600063 != nil:
-    section.add "X-Amz-Credential", valid_600063
+  if valid_602083 != nil:
+    section.add "X-Amz-Security-Token", valid_602083
+  var valid_602084 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602084 = validateParameter(valid_602084, JString, required = false,
+                                 default = nil)
+  if valid_602084 != nil:
+    section.add "X-Amz-Algorithm", valid_602084
+  var valid_602085 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602085 = validateParameter(valid_602085, JString, required = false,
+                                 default = nil)
+  if valid_602085 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602085
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -923,47 +930,48 @@ proc validate_GrantPermissions_600054(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600065: Call_GrantPermissions_600053; path: JsonNode;
+proc call*(call_602087: Call_GrantPermissions_602075; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Grants permissions to the principal to access metadata in the Data Catalog and data organized in underlying data storage such as Amazon S3.</p> <p>For information about permissions, see <a href="https://docs-aws.amazon.com/michigan/latest/dg/security-data-access.html">Security and Access Control to Metadata and Data</a>.</p>
   ## 
-  let valid = call_600065.validator(path, query, header, formData, body)
-  let scheme = call_600065.pickScheme
+  let valid = call_602087.validator(path, query, header, formData, body)
+  let scheme = call_602087.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600065.url(scheme.get, call_600065.host, call_600065.base,
-                         call_600065.route, valid.getOrDefault("path"),
+  let url = call_602087.url(scheme.get, call_602087.host, call_602087.base,
+                         call_602087.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600065, url, valid)
+  result = atozHook(call_602087, url, valid)
 
-proc call*(call_600066: Call_GrantPermissions_600053; body: JsonNode): Recallable =
+proc call*(call_602088: Call_GrantPermissions_602075; body: JsonNode): Recallable =
   ## grantPermissions
   ## <p>Grants permissions to the principal to access metadata in the Data Catalog and data organized in underlying data storage such as Amazon S3.</p> <p>For information about permissions, see <a href="https://docs-aws.amazon.com/michigan/latest/dg/security-data-access.html">Security and Access Control to Metadata and Data</a>.</p>
   ##   body: JObject (required)
-  var body_600067 = newJObject()
+  var body_602089 = newJObject()
   if body != nil:
-    body_600067 = body
-  result = call_600066.call(nil, nil, nil, nil, body_600067)
+    body_602089 = body
+  result = call_602088.call(nil, nil, nil, nil, body_602089)
 
-var grantPermissions* = Call_GrantPermissions_600053(name: "grantPermissions",
+var grantPermissions* = Call_GrantPermissions_602075(name: "grantPermissions",
     meth: HttpMethod.HttpPost, host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.GrantPermissions",
-    validator: validate_GrantPermissions_600054, base: "/",
-    url: url_GrantPermissions_600055, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GrantPermissions_602076, base: "/",
+    url: url_GrantPermissions_602077, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPermissions_600068 = ref object of OpenApiRestCall_599368
-proc url_ListPermissions_600070(protocol: Scheme; host: string; base: string;
+  Call_ListPermissions_602090 = ref object of OpenApiRestCall_601389
+proc url_ListPermissions_602092(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListPermissions_600069(path: JsonNode; query: JsonNode;
+proc validate_ListPermissions_602091(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Returns a list of the principal permissions on the resource, filtered by the permissions of the caller. For example, if you are granted an ALTER permission, you are able to see only the principal permissions for ALTER.</p> <p>This operation returns only those permissions that have been explicitly granted.</p> <p>For information about permissions, see <a href="https://docs-aws.amazon.com/michigan/latest/dg/security-data-access.html">Security and Access Control to Metadata and Data</a>.</p>
@@ -973,74 +981,74 @@ proc validate_ListPermissions_600069(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600071 = query.getOrDefault("NextToken")
-  valid_600071 = validateParameter(valid_600071, JString, required = false,
+  var valid_602093 = query.getOrDefault("MaxResults")
+  valid_602093 = validateParameter(valid_602093, JString, required = false,
                                  default = nil)
-  if valid_600071 != nil:
-    section.add "NextToken", valid_600071
-  var valid_600072 = query.getOrDefault("MaxResults")
-  valid_600072 = validateParameter(valid_600072, JString, required = false,
+  if valid_602093 != nil:
+    section.add "MaxResults", valid_602093
+  var valid_602094 = query.getOrDefault("NextToken")
+  valid_602094 = validateParameter(valid_602094, JString, required = false,
                                  default = nil)
-  if valid_600072 != nil:
-    section.add "MaxResults", valid_600072
+  if valid_602094 != nil:
+    section.add "NextToken", valid_602094
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600073 = header.getOrDefault("X-Amz-Date")
-  valid_600073 = validateParameter(valid_600073, JString, required = false,
-                                 default = nil)
-  if valid_600073 != nil:
-    section.add "X-Amz-Date", valid_600073
-  var valid_600074 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600074 = validateParameter(valid_600074, JString, required = false,
-                                 default = nil)
-  if valid_600074 != nil:
-    section.add "X-Amz-Security-Token", valid_600074
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600075 = header.getOrDefault("X-Amz-Target")
-  valid_600075 = validateParameter(valid_600075, JString, required = true, default = newJString(
+  var valid_602095 = header.getOrDefault("X-Amz-Target")
+  valid_602095 = validateParameter(valid_602095, JString, required = true, default = newJString(
       "AWSLakeFormation.ListPermissions"))
-  if valid_600075 != nil:
-    section.add "X-Amz-Target", valid_600075
-  var valid_600076 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600076 = validateParameter(valid_600076, JString, required = false,
+  if valid_602095 != nil:
+    section.add "X-Amz-Target", valid_602095
+  var valid_602096 = header.getOrDefault("X-Amz-Signature")
+  valid_602096 = validateParameter(valid_602096, JString, required = false,
                                  default = nil)
-  if valid_600076 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600076
-  var valid_600077 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600077 = validateParameter(valid_600077, JString, required = false,
+  if valid_602096 != nil:
+    section.add "X-Amz-Signature", valid_602096
+  var valid_602097 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602097 = validateParameter(valid_602097, JString, required = false,
                                  default = nil)
-  if valid_600077 != nil:
-    section.add "X-Amz-Algorithm", valid_600077
-  var valid_600078 = header.getOrDefault("X-Amz-Signature")
-  valid_600078 = validateParameter(valid_600078, JString, required = false,
+  if valid_602097 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602097
+  var valid_602098 = header.getOrDefault("X-Amz-Date")
+  valid_602098 = validateParameter(valid_602098, JString, required = false,
                                  default = nil)
-  if valid_600078 != nil:
-    section.add "X-Amz-Signature", valid_600078
-  var valid_600079 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600079 = validateParameter(valid_600079, JString, required = false,
+  if valid_602098 != nil:
+    section.add "X-Amz-Date", valid_602098
+  var valid_602099 = header.getOrDefault("X-Amz-Credential")
+  valid_602099 = validateParameter(valid_602099, JString, required = false,
                                  default = nil)
-  if valid_600079 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600079
-  var valid_600080 = header.getOrDefault("X-Amz-Credential")
-  valid_600080 = validateParameter(valid_600080, JString, required = false,
+  if valid_602099 != nil:
+    section.add "X-Amz-Credential", valid_602099
+  var valid_602100 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602100 = validateParameter(valid_602100, JString, required = false,
                                  default = nil)
-  if valid_600080 != nil:
-    section.add "X-Amz-Credential", valid_600080
+  if valid_602100 != nil:
+    section.add "X-Amz-Security-Token", valid_602100
+  var valid_602101 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602101 = validateParameter(valid_602101, JString, required = false,
+                                 default = nil)
+  if valid_602101 != nil:
+    section.add "X-Amz-Algorithm", valid_602101
+  var valid_602102 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602102 = validateParameter(valid_602102, JString, required = false,
+                                 default = nil)
+  if valid_602102 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602102
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1051,55 +1059,56 @@ proc validate_ListPermissions_600069(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600082: Call_ListPermissions_600068; path: JsonNode; query: JsonNode;
+proc call*(call_602104: Call_ListPermissions_602090; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of the principal permissions on the resource, filtered by the permissions of the caller. For example, if you are granted an ALTER permission, you are able to see only the principal permissions for ALTER.</p> <p>This operation returns only those permissions that have been explicitly granted.</p> <p>For information about permissions, see <a href="https://docs-aws.amazon.com/michigan/latest/dg/security-data-access.html">Security and Access Control to Metadata and Data</a>.</p>
   ## 
-  let valid = call_600082.validator(path, query, header, formData, body)
-  let scheme = call_600082.pickScheme
+  let valid = call_602104.validator(path, query, header, formData, body)
+  let scheme = call_602104.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600082.url(scheme.get, call_600082.host, call_600082.base,
-                         call_600082.route, valid.getOrDefault("path"),
+  let url = call_602104.url(scheme.get, call_602104.host, call_602104.base,
+                         call_602104.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600082, url, valid)
+  result = atozHook(call_602104, url, valid)
 
-proc call*(call_600083: Call_ListPermissions_600068; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602105: Call_ListPermissions_602090; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listPermissions
   ## <p>Returns a list of the principal permissions on the resource, filtered by the permissions of the caller. For example, if you are granted an ALTER permission, you are able to see only the principal permissions for ALTER.</p> <p>This operation returns only those permissions that have been explicitly granted.</p> <p>For information about permissions, see <a href="https://docs-aws.amazon.com/michigan/latest/dg/security-data-access.html">Security and Access Control to Metadata and Data</a>.</p>
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600084 = newJObject()
-  var body_600085 = newJObject()
-  add(query_600084, "NextToken", newJString(NextToken))
+  var query_602106 = newJObject()
+  var body_602107 = newJObject()
+  add(query_602106, "MaxResults", newJString(MaxResults))
+  add(query_602106, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600085 = body
-  add(query_600084, "MaxResults", newJString(MaxResults))
-  result = call_600083.call(nil, query_600084, nil, nil, body_600085)
+    body_602107 = body
+  result = call_602105.call(nil, query_602106, nil, nil, body_602107)
 
-var listPermissions* = Call_ListPermissions_600068(name: "listPermissions",
+var listPermissions* = Call_ListPermissions_602090(name: "listPermissions",
     meth: HttpMethod.HttpPost, host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.ListPermissions",
-    validator: validate_ListPermissions_600069, base: "/", url: url_ListPermissions_600070,
+    validator: validate_ListPermissions_602091, base: "/", url: url_ListPermissions_602092,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListResources_600086 = ref object of OpenApiRestCall_599368
-proc url_ListResources_600088(protocol: Scheme; host: string; base: string;
+  Call_ListResources_602108 = ref object of OpenApiRestCall_601389
+proc url_ListResources_602110(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListResources_600087(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListResources_602109(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the resources registered to be managed by the Data Catalog.
   ## 
@@ -1108,74 +1117,74 @@ proc validate_ListResources_600087(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600089 = query.getOrDefault("NextToken")
-  valid_600089 = validateParameter(valid_600089, JString, required = false,
+  var valid_602111 = query.getOrDefault("MaxResults")
+  valid_602111 = validateParameter(valid_602111, JString, required = false,
                                  default = nil)
-  if valid_600089 != nil:
-    section.add "NextToken", valid_600089
-  var valid_600090 = query.getOrDefault("MaxResults")
-  valid_600090 = validateParameter(valid_600090, JString, required = false,
+  if valid_602111 != nil:
+    section.add "MaxResults", valid_602111
+  var valid_602112 = query.getOrDefault("NextToken")
+  valid_602112 = validateParameter(valid_602112, JString, required = false,
                                  default = nil)
-  if valid_600090 != nil:
-    section.add "MaxResults", valid_600090
+  if valid_602112 != nil:
+    section.add "NextToken", valid_602112
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600091 = header.getOrDefault("X-Amz-Date")
-  valid_600091 = validateParameter(valid_600091, JString, required = false,
-                                 default = nil)
-  if valid_600091 != nil:
-    section.add "X-Amz-Date", valid_600091
-  var valid_600092 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600092 = validateParameter(valid_600092, JString, required = false,
-                                 default = nil)
-  if valid_600092 != nil:
-    section.add "X-Amz-Security-Token", valid_600092
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600093 = header.getOrDefault("X-Amz-Target")
-  valid_600093 = validateParameter(valid_600093, JString, required = true, default = newJString(
+  var valid_602113 = header.getOrDefault("X-Amz-Target")
+  valid_602113 = validateParameter(valid_602113, JString, required = true, default = newJString(
       "AWSLakeFormation.ListResources"))
-  if valid_600093 != nil:
-    section.add "X-Amz-Target", valid_600093
-  var valid_600094 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600094 = validateParameter(valid_600094, JString, required = false,
+  if valid_602113 != nil:
+    section.add "X-Amz-Target", valid_602113
+  var valid_602114 = header.getOrDefault("X-Amz-Signature")
+  valid_602114 = validateParameter(valid_602114, JString, required = false,
                                  default = nil)
-  if valid_600094 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600094
-  var valid_600095 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600095 = validateParameter(valid_600095, JString, required = false,
+  if valid_602114 != nil:
+    section.add "X-Amz-Signature", valid_602114
+  var valid_602115 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602115 = validateParameter(valid_602115, JString, required = false,
                                  default = nil)
-  if valid_600095 != nil:
-    section.add "X-Amz-Algorithm", valid_600095
-  var valid_600096 = header.getOrDefault("X-Amz-Signature")
-  valid_600096 = validateParameter(valid_600096, JString, required = false,
+  if valid_602115 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602115
+  var valid_602116 = header.getOrDefault("X-Amz-Date")
+  valid_602116 = validateParameter(valid_602116, JString, required = false,
                                  default = nil)
-  if valid_600096 != nil:
-    section.add "X-Amz-Signature", valid_600096
-  var valid_600097 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600097 = validateParameter(valid_600097, JString, required = false,
+  if valid_602116 != nil:
+    section.add "X-Amz-Date", valid_602116
+  var valid_602117 = header.getOrDefault("X-Amz-Credential")
+  valid_602117 = validateParameter(valid_602117, JString, required = false,
                                  default = nil)
-  if valid_600097 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600097
-  var valid_600098 = header.getOrDefault("X-Amz-Credential")
-  valid_600098 = validateParameter(valid_600098, JString, required = false,
+  if valid_602117 != nil:
+    section.add "X-Amz-Credential", valid_602117
+  var valid_602118 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602118 = validateParameter(valid_602118, JString, required = false,
                                  default = nil)
-  if valid_600098 != nil:
-    section.add "X-Amz-Credential", valid_600098
+  if valid_602118 != nil:
+    section.add "X-Amz-Security-Token", valid_602118
+  var valid_602119 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602119 = validateParameter(valid_602119, JString, required = false,
+                                 default = nil)
+  if valid_602119 != nil:
+    section.add "X-Amz-Algorithm", valid_602119
+  var valid_602120 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602120 = validateParameter(valid_602120, JString, required = false,
+                                 default = nil)
+  if valid_602120 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602120
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1186,55 +1195,56 @@ proc validate_ListResources_600087(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_600100: Call_ListResources_600086; path: JsonNode; query: JsonNode;
+proc call*(call_602122: Call_ListResources_602108; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the resources registered to be managed by the Data Catalog.
   ## 
-  let valid = call_600100.validator(path, query, header, formData, body)
-  let scheme = call_600100.pickScheme
+  let valid = call_602122.validator(path, query, header, formData, body)
+  let scheme = call_602122.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600100.url(scheme.get, call_600100.host, call_600100.base,
-                         call_600100.route, valid.getOrDefault("path"),
+  let url = call_602122.url(scheme.get, call_602122.host, call_602122.base,
+                         call_602122.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600100, url, valid)
+  result = atozHook(call_602122, url, valid)
 
-proc call*(call_600101: Call_ListResources_600086; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602123: Call_ListResources_602108; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listResources
   ## Lists the resources registered to be managed by the Data Catalog.
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600102 = newJObject()
-  var body_600103 = newJObject()
-  add(query_600102, "NextToken", newJString(NextToken))
+  var query_602124 = newJObject()
+  var body_602125 = newJObject()
+  add(query_602124, "MaxResults", newJString(MaxResults))
+  add(query_602124, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600103 = body
-  add(query_600102, "MaxResults", newJString(MaxResults))
-  result = call_600101.call(nil, query_600102, nil, nil, body_600103)
+    body_602125 = body
+  result = call_602123.call(nil, query_602124, nil, nil, body_602125)
 
-var listResources* = Call_ListResources_600086(name: "listResources",
+var listResources* = Call_ListResources_602108(name: "listResources",
     meth: HttpMethod.HttpPost, host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.ListResources",
-    validator: validate_ListResources_600087, base: "/", url: url_ListResources_600088,
+    validator: validate_ListResources_602109, base: "/", url: url_ListResources_602110,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutDataLakeSettings_600104 = ref object of OpenApiRestCall_599368
-proc url_PutDataLakeSettings_600106(protocol: Scheme; host: string; base: string;
+  Call_PutDataLakeSettings_602126 = ref object of OpenApiRestCall_601389
+proc url_PutDataLakeSettings_602128(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PutDataLakeSettings_600105(path: JsonNode; query: JsonNode;
+proc validate_PutDataLakeSettings_602127(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## The AWS Lake Formation principal.
@@ -1246,57 +1256,57 @@ proc validate_PutDataLakeSettings_600105(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600107 = header.getOrDefault("X-Amz-Date")
-  valid_600107 = validateParameter(valid_600107, JString, required = false,
-                                 default = nil)
-  if valid_600107 != nil:
-    section.add "X-Amz-Date", valid_600107
-  var valid_600108 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600108 = validateParameter(valid_600108, JString, required = false,
-                                 default = nil)
-  if valid_600108 != nil:
-    section.add "X-Amz-Security-Token", valid_600108
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600109 = header.getOrDefault("X-Amz-Target")
-  valid_600109 = validateParameter(valid_600109, JString, required = true, default = newJString(
+  var valid_602129 = header.getOrDefault("X-Amz-Target")
+  valid_602129 = validateParameter(valid_602129, JString, required = true, default = newJString(
       "AWSLakeFormation.PutDataLakeSettings"))
-  if valid_600109 != nil:
-    section.add "X-Amz-Target", valid_600109
-  var valid_600110 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600110 = validateParameter(valid_600110, JString, required = false,
+  if valid_602129 != nil:
+    section.add "X-Amz-Target", valid_602129
+  var valid_602130 = header.getOrDefault("X-Amz-Signature")
+  valid_602130 = validateParameter(valid_602130, JString, required = false,
                                  default = nil)
-  if valid_600110 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600110
-  var valid_600111 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600111 = validateParameter(valid_600111, JString, required = false,
+  if valid_602130 != nil:
+    section.add "X-Amz-Signature", valid_602130
+  var valid_602131 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602131 = validateParameter(valid_602131, JString, required = false,
                                  default = nil)
-  if valid_600111 != nil:
-    section.add "X-Amz-Algorithm", valid_600111
-  var valid_600112 = header.getOrDefault("X-Amz-Signature")
-  valid_600112 = validateParameter(valid_600112, JString, required = false,
+  if valid_602131 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602131
+  var valid_602132 = header.getOrDefault("X-Amz-Date")
+  valid_602132 = validateParameter(valid_602132, JString, required = false,
                                  default = nil)
-  if valid_600112 != nil:
-    section.add "X-Amz-Signature", valid_600112
-  var valid_600113 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600113 = validateParameter(valid_600113, JString, required = false,
+  if valid_602132 != nil:
+    section.add "X-Amz-Date", valid_602132
+  var valid_602133 = header.getOrDefault("X-Amz-Credential")
+  valid_602133 = validateParameter(valid_602133, JString, required = false,
                                  default = nil)
-  if valid_600113 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600113
-  var valid_600114 = header.getOrDefault("X-Amz-Credential")
-  valid_600114 = validateParameter(valid_600114, JString, required = false,
+  if valid_602133 != nil:
+    section.add "X-Amz-Credential", valid_602133
+  var valid_602134 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602134 = validateParameter(valid_602134, JString, required = false,
                                  default = nil)
-  if valid_600114 != nil:
-    section.add "X-Amz-Credential", valid_600114
+  if valid_602134 != nil:
+    section.add "X-Amz-Security-Token", valid_602134
+  var valid_602135 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602135 = validateParameter(valid_602135, JString, required = false,
+                                 default = nil)
+  if valid_602135 != nil:
+    section.add "X-Amz-Algorithm", valid_602135
+  var valid_602136 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602136 = validateParameter(valid_602136, JString, required = false,
+                                 default = nil)
+  if valid_602136 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602136
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1307,48 +1317,49 @@ proc validate_PutDataLakeSettings_600105(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600116: Call_PutDataLakeSettings_600104; path: JsonNode;
+proc call*(call_602138: Call_PutDataLakeSettings_602126; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## The AWS Lake Formation principal.
   ## 
-  let valid = call_600116.validator(path, query, header, formData, body)
-  let scheme = call_600116.pickScheme
+  let valid = call_602138.validator(path, query, header, formData, body)
+  let scheme = call_602138.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600116.url(scheme.get, call_600116.host, call_600116.base,
-                         call_600116.route, valid.getOrDefault("path"),
+  let url = call_602138.url(scheme.get, call_602138.host, call_602138.base,
+                         call_602138.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600116, url, valid)
+  result = atozHook(call_602138, url, valid)
 
-proc call*(call_600117: Call_PutDataLakeSettings_600104; body: JsonNode): Recallable =
+proc call*(call_602139: Call_PutDataLakeSettings_602126; body: JsonNode): Recallable =
   ## putDataLakeSettings
   ## The AWS Lake Formation principal.
   ##   body: JObject (required)
-  var body_600118 = newJObject()
+  var body_602140 = newJObject()
   if body != nil:
-    body_600118 = body
-  result = call_600117.call(nil, nil, nil, nil, body_600118)
+    body_602140 = body
+  result = call_602139.call(nil, nil, nil, nil, body_602140)
 
-var putDataLakeSettings* = Call_PutDataLakeSettings_600104(
+var putDataLakeSettings* = Call_PutDataLakeSettings_602126(
     name: "putDataLakeSettings", meth: HttpMethod.HttpPost,
     host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.PutDataLakeSettings",
-    validator: validate_PutDataLakeSettings_600105, base: "/",
-    url: url_PutDataLakeSettings_600106, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutDataLakeSettings_602127, base: "/",
+    url: url_PutDataLakeSettings_602128, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterResource_600119 = ref object of OpenApiRestCall_599368
-proc url_RegisterResource_600121(protocol: Scheme; host: string; base: string;
+  Call_RegisterResource_602141 = ref object of OpenApiRestCall_601389
+proc url_RegisterResource_602143(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterResource_600120(path: JsonNode; query: JsonNode;
+proc validate_RegisterResource_602142(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Registers the resource as managed by the Data Catalog.</p> <p>To add or update data, Lake Formation needs read/write access to the chosen Amazon S3 path. Choose a role that you know has permission to do this, or choose the AWSServiceRoleForLakeFormationDataAccess service-linked role. When you register the first Amazon S3 path, the service-linked role and a new inline policy are created on your behalf. Lake Formation adds the first path to the inline policy and attaches it to the service-linked role. When you register subsequent paths, Lake Formation adds the path to the existing policy.</p>
@@ -1360,57 +1371,57 @@ proc validate_RegisterResource_600120(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600122 = header.getOrDefault("X-Amz-Date")
-  valid_600122 = validateParameter(valid_600122, JString, required = false,
-                                 default = nil)
-  if valid_600122 != nil:
-    section.add "X-Amz-Date", valid_600122
-  var valid_600123 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600123 = validateParameter(valid_600123, JString, required = false,
-                                 default = nil)
-  if valid_600123 != nil:
-    section.add "X-Amz-Security-Token", valid_600123
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600124 = header.getOrDefault("X-Amz-Target")
-  valid_600124 = validateParameter(valid_600124, JString, required = true, default = newJString(
+  var valid_602144 = header.getOrDefault("X-Amz-Target")
+  valid_602144 = validateParameter(valid_602144, JString, required = true, default = newJString(
       "AWSLakeFormation.RegisterResource"))
-  if valid_600124 != nil:
-    section.add "X-Amz-Target", valid_600124
-  var valid_600125 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600125 = validateParameter(valid_600125, JString, required = false,
+  if valid_602144 != nil:
+    section.add "X-Amz-Target", valid_602144
+  var valid_602145 = header.getOrDefault("X-Amz-Signature")
+  valid_602145 = validateParameter(valid_602145, JString, required = false,
                                  default = nil)
-  if valid_600125 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600125
-  var valid_600126 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600126 = validateParameter(valid_600126, JString, required = false,
+  if valid_602145 != nil:
+    section.add "X-Amz-Signature", valid_602145
+  var valid_602146 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602146 = validateParameter(valid_602146, JString, required = false,
                                  default = nil)
-  if valid_600126 != nil:
-    section.add "X-Amz-Algorithm", valid_600126
-  var valid_600127 = header.getOrDefault("X-Amz-Signature")
-  valid_600127 = validateParameter(valid_600127, JString, required = false,
+  if valid_602146 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602146
+  var valid_602147 = header.getOrDefault("X-Amz-Date")
+  valid_602147 = validateParameter(valid_602147, JString, required = false,
                                  default = nil)
-  if valid_600127 != nil:
-    section.add "X-Amz-Signature", valid_600127
-  var valid_600128 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600128 = validateParameter(valid_600128, JString, required = false,
+  if valid_602147 != nil:
+    section.add "X-Amz-Date", valid_602147
+  var valid_602148 = header.getOrDefault("X-Amz-Credential")
+  valid_602148 = validateParameter(valid_602148, JString, required = false,
                                  default = nil)
-  if valid_600128 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600128
-  var valid_600129 = header.getOrDefault("X-Amz-Credential")
-  valid_600129 = validateParameter(valid_600129, JString, required = false,
+  if valid_602148 != nil:
+    section.add "X-Amz-Credential", valid_602148
+  var valid_602149 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602149 = validateParameter(valid_602149, JString, required = false,
                                  default = nil)
-  if valid_600129 != nil:
-    section.add "X-Amz-Credential", valid_600129
+  if valid_602149 != nil:
+    section.add "X-Amz-Security-Token", valid_602149
+  var valid_602150 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602150 = validateParameter(valid_602150, JString, required = false,
+                                 default = nil)
+  if valid_602150 != nil:
+    section.add "X-Amz-Algorithm", valid_602150
+  var valid_602151 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602151 = validateParameter(valid_602151, JString, required = false,
+                                 default = nil)
+  if valid_602151 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602151
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1421,47 +1432,48 @@ proc validate_RegisterResource_600120(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600131: Call_RegisterResource_600119; path: JsonNode;
+proc call*(call_602153: Call_RegisterResource_602141; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers the resource as managed by the Data Catalog.</p> <p>To add or update data, Lake Formation needs read/write access to the chosen Amazon S3 path. Choose a role that you know has permission to do this, or choose the AWSServiceRoleForLakeFormationDataAccess service-linked role. When you register the first Amazon S3 path, the service-linked role and a new inline policy are created on your behalf. Lake Formation adds the first path to the inline policy and attaches it to the service-linked role. When you register subsequent paths, Lake Formation adds the path to the existing policy.</p>
   ## 
-  let valid = call_600131.validator(path, query, header, formData, body)
-  let scheme = call_600131.pickScheme
+  let valid = call_602153.validator(path, query, header, formData, body)
+  let scheme = call_602153.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600131.url(scheme.get, call_600131.host, call_600131.base,
-                         call_600131.route, valid.getOrDefault("path"),
+  let url = call_602153.url(scheme.get, call_602153.host, call_602153.base,
+                         call_602153.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600131, url, valid)
+  result = atozHook(call_602153, url, valid)
 
-proc call*(call_600132: Call_RegisterResource_600119; body: JsonNode): Recallable =
+proc call*(call_602154: Call_RegisterResource_602141; body: JsonNode): Recallable =
   ## registerResource
   ## <p>Registers the resource as managed by the Data Catalog.</p> <p>To add or update data, Lake Formation needs read/write access to the chosen Amazon S3 path. Choose a role that you know has permission to do this, or choose the AWSServiceRoleForLakeFormationDataAccess service-linked role. When you register the first Amazon S3 path, the service-linked role and a new inline policy are created on your behalf. Lake Formation adds the first path to the inline policy and attaches it to the service-linked role. When you register subsequent paths, Lake Formation adds the path to the existing policy.</p>
   ##   body: JObject (required)
-  var body_600133 = newJObject()
+  var body_602155 = newJObject()
   if body != nil:
-    body_600133 = body
-  result = call_600132.call(nil, nil, nil, nil, body_600133)
+    body_602155 = body
+  result = call_602154.call(nil, nil, nil, nil, body_602155)
 
-var registerResource* = Call_RegisterResource_600119(name: "registerResource",
+var registerResource* = Call_RegisterResource_602141(name: "registerResource",
     meth: HttpMethod.HttpPost, host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.RegisterResource",
-    validator: validate_RegisterResource_600120, base: "/",
-    url: url_RegisterResource_600121, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterResource_602142, base: "/",
+    url: url_RegisterResource_602143, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RevokePermissions_600134 = ref object of OpenApiRestCall_599368
-proc url_RevokePermissions_600136(protocol: Scheme; host: string; base: string;
+  Call_RevokePermissions_602156 = ref object of OpenApiRestCall_601389
+proc url_RevokePermissions_602158(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RevokePermissions_600135(path: JsonNode; query: JsonNode;
+proc validate_RevokePermissions_602157(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Revokes permissions to the principal to access metadata in the Data Catalog and data organized in underlying data storage such as Amazon S3.
@@ -1473,57 +1485,57 @@ proc validate_RevokePermissions_600135(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600137 = header.getOrDefault("X-Amz-Date")
-  valid_600137 = validateParameter(valid_600137, JString, required = false,
-                                 default = nil)
-  if valid_600137 != nil:
-    section.add "X-Amz-Date", valid_600137
-  var valid_600138 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600138 = validateParameter(valid_600138, JString, required = false,
-                                 default = nil)
-  if valid_600138 != nil:
-    section.add "X-Amz-Security-Token", valid_600138
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600139 = header.getOrDefault("X-Amz-Target")
-  valid_600139 = validateParameter(valid_600139, JString, required = true, default = newJString(
+  var valid_602159 = header.getOrDefault("X-Amz-Target")
+  valid_602159 = validateParameter(valid_602159, JString, required = true, default = newJString(
       "AWSLakeFormation.RevokePermissions"))
-  if valid_600139 != nil:
-    section.add "X-Amz-Target", valid_600139
-  var valid_600140 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600140 = validateParameter(valid_600140, JString, required = false,
+  if valid_602159 != nil:
+    section.add "X-Amz-Target", valid_602159
+  var valid_602160 = header.getOrDefault("X-Amz-Signature")
+  valid_602160 = validateParameter(valid_602160, JString, required = false,
                                  default = nil)
-  if valid_600140 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600140
-  var valid_600141 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600141 = validateParameter(valid_600141, JString, required = false,
+  if valid_602160 != nil:
+    section.add "X-Amz-Signature", valid_602160
+  var valid_602161 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602161 = validateParameter(valid_602161, JString, required = false,
                                  default = nil)
-  if valid_600141 != nil:
-    section.add "X-Amz-Algorithm", valid_600141
-  var valid_600142 = header.getOrDefault("X-Amz-Signature")
-  valid_600142 = validateParameter(valid_600142, JString, required = false,
+  if valid_602161 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602161
+  var valid_602162 = header.getOrDefault("X-Amz-Date")
+  valid_602162 = validateParameter(valid_602162, JString, required = false,
                                  default = nil)
-  if valid_600142 != nil:
-    section.add "X-Amz-Signature", valid_600142
-  var valid_600143 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600143 = validateParameter(valid_600143, JString, required = false,
+  if valid_602162 != nil:
+    section.add "X-Amz-Date", valid_602162
+  var valid_602163 = header.getOrDefault("X-Amz-Credential")
+  valid_602163 = validateParameter(valid_602163, JString, required = false,
                                  default = nil)
-  if valid_600143 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600143
-  var valid_600144 = header.getOrDefault("X-Amz-Credential")
-  valid_600144 = validateParameter(valid_600144, JString, required = false,
+  if valid_602163 != nil:
+    section.add "X-Amz-Credential", valid_602163
+  var valid_602164 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602164 = validateParameter(valid_602164, JString, required = false,
                                  default = nil)
-  if valid_600144 != nil:
-    section.add "X-Amz-Credential", valid_600144
+  if valid_602164 != nil:
+    section.add "X-Amz-Security-Token", valid_602164
+  var valid_602165 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602165 = validateParameter(valid_602165, JString, required = false,
+                                 default = nil)
+  if valid_602165 != nil:
+    section.add "X-Amz-Algorithm", valid_602165
+  var valid_602166 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602166 = validateParameter(valid_602166, JString, required = false,
+                                 default = nil)
+  if valid_602166 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602166
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1534,47 +1546,48 @@ proc validate_RevokePermissions_600135(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600146: Call_RevokePermissions_600134; path: JsonNode;
+proc call*(call_602168: Call_RevokePermissions_602156; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Revokes permissions to the principal to access metadata in the Data Catalog and data organized in underlying data storage such as Amazon S3.
   ## 
-  let valid = call_600146.validator(path, query, header, formData, body)
-  let scheme = call_600146.pickScheme
+  let valid = call_602168.validator(path, query, header, formData, body)
+  let scheme = call_602168.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600146.url(scheme.get, call_600146.host, call_600146.base,
-                         call_600146.route, valid.getOrDefault("path"),
+  let url = call_602168.url(scheme.get, call_602168.host, call_602168.base,
+                         call_602168.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600146, url, valid)
+  result = atozHook(call_602168, url, valid)
 
-proc call*(call_600147: Call_RevokePermissions_600134; body: JsonNode): Recallable =
+proc call*(call_602169: Call_RevokePermissions_602156; body: JsonNode): Recallable =
   ## revokePermissions
   ## Revokes permissions to the principal to access metadata in the Data Catalog and data organized in underlying data storage such as Amazon S3.
   ##   body: JObject (required)
-  var body_600148 = newJObject()
+  var body_602170 = newJObject()
   if body != nil:
-    body_600148 = body
-  result = call_600147.call(nil, nil, nil, nil, body_600148)
+    body_602170 = body
+  result = call_602169.call(nil, nil, nil, nil, body_602170)
 
-var revokePermissions* = Call_RevokePermissions_600134(name: "revokePermissions",
+var revokePermissions* = Call_RevokePermissions_602156(name: "revokePermissions",
     meth: HttpMethod.HttpPost, host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.RevokePermissions",
-    validator: validate_RevokePermissions_600135, base: "/",
-    url: url_RevokePermissions_600136, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RevokePermissions_602157, base: "/",
+    url: url_RevokePermissions_602158, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateResource_600149 = ref object of OpenApiRestCall_599368
-proc url_UpdateResource_600151(protocol: Scheme; host: string; base: string;
+  Call_UpdateResource_602171 = ref object of OpenApiRestCall_601389
+proc url_UpdateResource_602173(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateResource_600150(path: JsonNode; query: JsonNode;
+proc validate_UpdateResource_602172(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Updates the data access role used for vending access to the given (registered) resource in AWS Lake Formation. 
@@ -1586,57 +1599,57 @@ proc validate_UpdateResource_600150(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600152 = header.getOrDefault("X-Amz-Date")
-  valid_600152 = validateParameter(valid_600152, JString, required = false,
-                                 default = nil)
-  if valid_600152 != nil:
-    section.add "X-Amz-Date", valid_600152
-  var valid_600153 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600153 = validateParameter(valid_600153, JString, required = false,
-                                 default = nil)
-  if valid_600153 != nil:
-    section.add "X-Amz-Security-Token", valid_600153
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600154 = header.getOrDefault("X-Amz-Target")
-  valid_600154 = validateParameter(valid_600154, JString, required = true, default = newJString(
+  var valid_602174 = header.getOrDefault("X-Amz-Target")
+  valid_602174 = validateParameter(valid_602174, JString, required = true, default = newJString(
       "AWSLakeFormation.UpdateResource"))
-  if valid_600154 != nil:
-    section.add "X-Amz-Target", valid_600154
-  var valid_600155 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600155 = validateParameter(valid_600155, JString, required = false,
+  if valid_602174 != nil:
+    section.add "X-Amz-Target", valid_602174
+  var valid_602175 = header.getOrDefault("X-Amz-Signature")
+  valid_602175 = validateParameter(valid_602175, JString, required = false,
                                  default = nil)
-  if valid_600155 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600155
-  var valid_600156 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600156 = validateParameter(valid_600156, JString, required = false,
+  if valid_602175 != nil:
+    section.add "X-Amz-Signature", valid_602175
+  var valid_602176 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602176 = validateParameter(valid_602176, JString, required = false,
                                  default = nil)
-  if valid_600156 != nil:
-    section.add "X-Amz-Algorithm", valid_600156
-  var valid_600157 = header.getOrDefault("X-Amz-Signature")
-  valid_600157 = validateParameter(valid_600157, JString, required = false,
+  if valid_602176 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602176
+  var valid_602177 = header.getOrDefault("X-Amz-Date")
+  valid_602177 = validateParameter(valid_602177, JString, required = false,
                                  default = nil)
-  if valid_600157 != nil:
-    section.add "X-Amz-Signature", valid_600157
-  var valid_600158 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600158 = validateParameter(valid_600158, JString, required = false,
+  if valid_602177 != nil:
+    section.add "X-Amz-Date", valid_602177
+  var valid_602178 = header.getOrDefault("X-Amz-Credential")
+  valid_602178 = validateParameter(valid_602178, JString, required = false,
                                  default = nil)
-  if valid_600158 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600158
-  var valid_600159 = header.getOrDefault("X-Amz-Credential")
-  valid_600159 = validateParameter(valid_600159, JString, required = false,
+  if valid_602178 != nil:
+    section.add "X-Amz-Credential", valid_602178
+  var valid_602179 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602179 = validateParameter(valid_602179, JString, required = false,
                                  default = nil)
-  if valid_600159 != nil:
-    section.add "X-Amz-Credential", valid_600159
+  if valid_602179 != nil:
+    section.add "X-Amz-Security-Token", valid_602179
+  var valid_602180 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602180 = validateParameter(valid_602180, JString, required = false,
+                                 default = nil)
+  if valid_602180 != nil:
+    section.add "X-Amz-Algorithm", valid_602180
+  var valid_602181 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602181 = validateParameter(valid_602181, JString, required = false,
+                                 default = nil)
+  if valid_602181 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602181
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1647,32 +1660,32 @@ proc validate_UpdateResource_600150(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600161: Call_UpdateResource_600149; path: JsonNode; query: JsonNode;
+proc call*(call_602183: Call_UpdateResource_602171; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the data access role used for vending access to the given (registered) resource in AWS Lake Formation. 
   ## 
-  let valid = call_600161.validator(path, query, header, formData, body)
-  let scheme = call_600161.pickScheme
+  let valid = call_602183.validator(path, query, header, formData, body)
+  let scheme = call_602183.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600161.url(scheme.get, call_600161.host, call_600161.base,
-                         call_600161.route, valid.getOrDefault("path"),
+  let url = call_602183.url(scheme.get, call_602183.host, call_602183.base,
+                         call_602183.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600161, url, valid)
+  result = atozHook(call_602183, url, valid)
 
-proc call*(call_600162: Call_UpdateResource_600149; body: JsonNode): Recallable =
+proc call*(call_602184: Call_UpdateResource_602171; body: JsonNode): Recallable =
   ## updateResource
   ## Updates the data access role used for vending access to the given (registered) resource in AWS Lake Formation. 
   ##   body: JObject (required)
-  var body_600163 = newJObject()
+  var body_602185 = newJObject()
   if body != nil:
-    body_600163 = body
-  result = call_600162.call(nil, nil, nil, nil, body_600163)
+    body_602185 = body
+  result = call_602184.call(nil, nil, nil, nil, body_602185)
 
-var updateResource* = Call_UpdateResource_600149(name: "updateResource",
+var updateResource* = Call_UpdateResource_602171(name: "updateResource",
     meth: HttpMethod.HttpPost, host: "lakeformation.amazonaws.com",
     route: "/#X-Amz-Target=AWSLakeFormation.UpdateResource",
-    validator: validate_UpdateResource_600150, base: "/", url: url_UpdateResource_600151,
+    validator: validate_UpdateResource_602172, base: "/", url: url_UpdateResource_602173,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

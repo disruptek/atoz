@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599368 = ref object of OpenApiRestCall
+  OpenApiRestCall_601389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,19 +134,20 @@ const
   awsServiceName = "elasticloadbalancing"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_PostAddTags_599977 = ref object of OpenApiRestCall_599368
-proc url_PostAddTags_599979(protocol: Scheme; host: string; base: string;
+  Call_PostAddTags_601999 = ref object of OpenApiRestCall_601389
+proc url_PostAddTags_602001(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostAddTags_599978(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostAddTags_602000(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds the specified tags to the specified load balancer. Each load balancer can have a maximum of 10 tags.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the load balancer, <code>AddTags</code> updates its value.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -159,136 +160,135 @@ proc validate_PostAddTags_599978(path: JsonNode; query: JsonNode; header: JsonNo
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_599980 = query.getOrDefault("Action")
-  valid_599980 = validateParameter(valid_599980, JString, required = true,
+  var valid_602002 = query.getOrDefault("Action")
+  valid_602002 = validateParameter(valid_602002, JString, required = true,
                                  default = newJString("AddTags"))
-  if valid_599980 != nil:
-    section.add "Action", valid_599980
-  var valid_599981 = query.getOrDefault("Version")
-  valid_599981 = validateParameter(valid_599981, JString, required = true,
+  if valid_602002 != nil:
+    section.add "Action", valid_602002
+  var valid_602003 = query.getOrDefault("Version")
+  valid_602003 = validateParameter(valid_602003, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_599981 != nil:
-    section.add "Version", valid_599981
+  if valid_602003 != nil:
+    section.add "Version", valid_602003
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599982 = header.getOrDefault("X-Amz-Date")
-  valid_599982 = validateParameter(valid_599982, JString, required = false,
+  var valid_602004 = header.getOrDefault("X-Amz-Signature")
+  valid_602004 = validateParameter(valid_602004, JString, required = false,
                                  default = nil)
-  if valid_599982 != nil:
-    section.add "X-Amz-Date", valid_599982
-  var valid_599983 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599983 = validateParameter(valid_599983, JString, required = false,
+  if valid_602004 != nil:
+    section.add "X-Amz-Signature", valid_602004
+  var valid_602005 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602005 = validateParameter(valid_602005, JString, required = false,
                                  default = nil)
-  if valid_599983 != nil:
-    section.add "X-Amz-Security-Token", valid_599983
-  var valid_599984 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599984 = validateParameter(valid_599984, JString, required = false,
+  if valid_602005 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602005
+  var valid_602006 = header.getOrDefault("X-Amz-Date")
+  valid_602006 = validateParameter(valid_602006, JString, required = false,
                                  default = nil)
-  if valid_599984 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599984
-  var valid_599985 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599985 = validateParameter(valid_599985, JString, required = false,
+  if valid_602006 != nil:
+    section.add "X-Amz-Date", valid_602006
+  var valid_602007 = header.getOrDefault("X-Amz-Credential")
+  valid_602007 = validateParameter(valid_602007, JString, required = false,
                                  default = nil)
-  if valid_599985 != nil:
-    section.add "X-Amz-Algorithm", valid_599985
-  var valid_599986 = header.getOrDefault("X-Amz-Signature")
-  valid_599986 = validateParameter(valid_599986, JString, required = false,
+  if valid_602007 != nil:
+    section.add "X-Amz-Credential", valid_602007
+  var valid_602008 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602008 = validateParameter(valid_602008, JString, required = false,
                                  default = nil)
-  if valid_599986 != nil:
-    section.add "X-Amz-Signature", valid_599986
-  var valid_599987 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599987 = validateParameter(valid_599987, JString, required = false,
+  if valid_602008 != nil:
+    section.add "X-Amz-Security-Token", valid_602008
+  var valid_602009 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602009 = validateParameter(valid_602009, JString, required = false,
                                  default = nil)
-  if valid_599987 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599987
-  var valid_599988 = header.getOrDefault("X-Amz-Credential")
-  valid_599988 = validateParameter(valid_599988, JString, required = false,
+  if valid_602009 != nil:
+    section.add "X-Amz-Algorithm", valid_602009
+  var valid_602010 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602010 = validateParameter(valid_602010, JString, required = false,
                                  default = nil)
-  if valid_599988 != nil:
-    section.add "X-Amz-Credential", valid_599988
+  if valid_602010 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602010
   result.add "header", section
   ## parameters in `formData` object:
-  ##   Tags: JArray (required)
-  ##       : The tags.
   ##   LoadBalancerNames: JArray (required)
   ##                    : The name of the load balancer. You can specify one load balancer only.
+  ##   Tags: JArray (required)
+  ##       : The tags.
   section = newJObject()
-  assert formData != nil,
-        "formData argument is necessary due to required `Tags` field"
-  var valid_599989 = formData.getOrDefault("Tags")
-  valid_599989 = validateParameter(valid_599989, JArray, required = true, default = nil)
-  if valid_599989 != nil:
-    section.add "Tags", valid_599989
-  var valid_599990 = formData.getOrDefault("LoadBalancerNames")
-  valid_599990 = validateParameter(valid_599990, JArray, required = true, default = nil)
-  if valid_599990 != nil:
-    section.add "LoadBalancerNames", valid_599990
+  assert formData != nil, "formData argument is necessary due to required `LoadBalancerNames` field"
+  var valid_602011 = formData.getOrDefault("LoadBalancerNames")
+  valid_602011 = validateParameter(valid_602011, JArray, required = true, default = nil)
+  if valid_602011 != nil:
+    section.add "LoadBalancerNames", valid_602011
+  var valid_602012 = formData.getOrDefault("Tags")
+  valid_602012 = validateParameter(valid_602012, JArray, required = true, default = nil)
+  if valid_602012 != nil:
+    section.add "Tags", valid_602012
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_599991: Call_PostAddTags_599977; path: JsonNode; query: JsonNode;
+proc call*(call_602013: Call_PostAddTags_601999; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds the specified tags to the specified load balancer. Each load balancer can have a maximum of 10 tags.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the load balancer, <code>AddTags</code> updates its value.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_599991.validator(path, query, header, formData, body)
-  let scheme = call_599991.pickScheme
+  let valid = call_602013.validator(path, query, header, formData, body)
+  let scheme = call_602013.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599991.url(scheme.get, call_599991.host, call_599991.base,
-                         call_599991.route, valid.getOrDefault("path"),
+  let url = call_602013.url(scheme.get, call_602013.host, call_602013.base,
+                         call_602013.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599991, url, valid)
+  result = atozHook(call_602013, url, valid)
 
-proc call*(call_599992: Call_PostAddTags_599977; Tags: JsonNode;
-          LoadBalancerNames: JsonNode; Action: string = "AddTags";
-          Version: string = "2012-06-01"): Recallable =
+proc call*(call_602014: Call_PostAddTags_601999; LoadBalancerNames: JsonNode;
+          Tags: JsonNode; Action: string = "AddTags"; Version: string = "2012-06-01"): Recallable =
   ## postAddTags
   ## <p>Adds the specified tags to the specified load balancer. Each load balancer can have a maximum of 10 tags.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the load balancer, <code>AddTags</code> updates its value.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Tags: JArray (required)
-  ##       : The tags.
-  ##   Action: string (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The name of the load balancer. You can specify one load balancer only.
+  ##   Action: string (required)
+  ##   Tags: JArray (required)
+  ##       : The tags.
   ##   Version: string (required)
-  var query_599993 = newJObject()
-  var formData_599994 = newJObject()
-  if Tags != nil:
-    formData_599994.add "Tags", Tags
-  add(query_599993, "Action", newJString(Action))
+  var query_602015 = newJObject()
+  var formData_602016 = newJObject()
   if LoadBalancerNames != nil:
-    formData_599994.add "LoadBalancerNames", LoadBalancerNames
-  add(query_599993, "Version", newJString(Version))
-  result = call_599992.call(nil, query_599993, nil, formData_599994, nil)
+    formData_602016.add "LoadBalancerNames", LoadBalancerNames
+  add(query_602015, "Action", newJString(Action))
+  if Tags != nil:
+    formData_602016.add "Tags", Tags
+  add(query_602015, "Version", newJString(Version))
+  result = call_602014.call(nil, query_602015, nil, formData_602016, nil)
 
-var postAddTags* = Call_PostAddTags_599977(name: "postAddTags",
+var postAddTags* = Call_PostAddTags_601999(name: "postAddTags",
                                         meth: HttpMethod.HttpPost, host: "elasticloadbalancing.amazonaws.com",
                                         route: "/#Action=AddTags",
-                                        validator: validate_PostAddTags_599978,
-                                        base: "/", url: url_PostAddTags_599979,
+                                        validator: validate_PostAddTags_602000,
+                                        base: "/", url: url_PostAddTags_602001,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAddTags_599705 = ref object of OpenApiRestCall_599368
-proc url_GetAddTags_599707(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetAddTags_601727 = ref object of OpenApiRestCall_601389
+proc url_GetAddTags_601729(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetAddTags_599706(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetAddTags_601728(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds the specified tags to the specified load balancer. Each load balancer can have a maximum of 10 tags.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the load balancer, <code>AddTags</code> updates its value.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -300,94 +300,94 @@ proc validate_GetAddTags_599706(path: JsonNode; query: JsonNode; header: JsonNod
   ##   Tags: JArray (required)
   ##       : The tags.
   ##   Action: JString (required)
+  ##   Version: JString (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The name of the load balancer. You can specify one load balancer only.
-  ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Tags` field"
-  var valid_599819 = query.getOrDefault("Tags")
-  valid_599819 = validateParameter(valid_599819, JArray, required = true, default = nil)
-  if valid_599819 != nil:
-    section.add "Tags", valid_599819
-  var valid_599833 = query.getOrDefault("Action")
-  valid_599833 = validateParameter(valid_599833, JString, required = true,
+  var valid_601841 = query.getOrDefault("Tags")
+  valid_601841 = validateParameter(valid_601841, JArray, required = true, default = nil)
+  if valid_601841 != nil:
+    section.add "Tags", valid_601841
+  var valid_601855 = query.getOrDefault("Action")
+  valid_601855 = validateParameter(valid_601855, JString, required = true,
                                  default = newJString("AddTags"))
-  if valid_599833 != nil:
-    section.add "Action", valid_599833
-  var valid_599834 = query.getOrDefault("LoadBalancerNames")
-  valid_599834 = validateParameter(valid_599834, JArray, required = true, default = nil)
-  if valid_599834 != nil:
-    section.add "LoadBalancerNames", valid_599834
-  var valid_599835 = query.getOrDefault("Version")
-  valid_599835 = validateParameter(valid_599835, JString, required = true,
+  if valid_601855 != nil:
+    section.add "Action", valid_601855
+  var valid_601856 = query.getOrDefault("Version")
+  valid_601856 = validateParameter(valid_601856, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_599835 != nil:
-    section.add "Version", valid_599835
+  if valid_601856 != nil:
+    section.add "Version", valid_601856
+  var valid_601857 = query.getOrDefault("LoadBalancerNames")
+  valid_601857 = validateParameter(valid_601857, JArray, required = true, default = nil)
+  if valid_601857 != nil:
+    section.add "LoadBalancerNames", valid_601857
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599836 = header.getOrDefault("X-Amz-Date")
-  valid_599836 = validateParameter(valid_599836, JString, required = false,
+  var valid_601858 = header.getOrDefault("X-Amz-Signature")
+  valid_601858 = validateParameter(valid_601858, JString, required = false,
                                  default = nil)
-  if valid_599836 != nil:
-    section.add "X-Amz-Date", valid_599836
-  var valid_599837 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599837 = validateParameter(valid_599837, JString, required = false,
+  if valid_601858 != nil:
+    section.add "X-Amz-Signature", valid_601858
+  var valid_601859 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601859 = validateParameter(valid_601859, JString, required = false,
                                  default = nil)
-  if valid_599837 != nil:
-    section.add "X-Amz-Security-Token", valid_599837
-  var valid_599838 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599838 = validateParameter(valid_599838, JString, required = false,
+  if valid_601859 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601859
+  var valid_601860 = header.getOrDefault("X-Amz-Date")
+  valid_601860 = validateParameter(valid_601860, JString, required = false,
                                  default = nil)
-  if valid_599838 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599838
-  var valid_599839 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599839 = validateParameter(valid_599839, JString, required = false,
+  if valid_601860 != nil:
+    section.add "X-Amz-Date", valid_601860
+  var valid_601861 = header.getOrDefault("X-Amz-Credential")
+  valid_601861 = validateParameter(valid_601861, JString, required = false,
                                  default = nil)
-  if valid_599839 != nil:
-    section.add "X-Amz-Algorithm", valid_599839
-  var valid_599840 = header.getOrDefault("X-Amz-Signature")
-  valid_599840 = validateParameter(valid_599840, JString, required = false,
+  if valid_601861 != nil:
+    section.add "X-Amz-Credential", valid_601861
+  var valid_601862 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601862 = validateParameter(valid_601862, JString, required = false,
                                  default = nil)
-  if valid_599840 != nil:
-    section.add "X-Amz-Signature", valid_599840
-  var valid_599841 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599841 = validateParameter(valid_599841, JString, required = false,
+  if valid_601862 != nil:
+    section.add "X-Amz-Security-Token", valid_601862
+  var valid_601863 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601863 = validateParameter(valid_601863, JString, required = false,
                                  default = nil)
-  if valid_599841 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599841
-  var valid_599842 = header.getOrDefault("X-Amz-Credential")
-  valid_599842 = validateParameter(valid_599842, JString, required = false,
+  if valid_601863 != nil:
+    section.add "X-Amz-Algorithm", valid_601863
+  var valid_601864 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601864 = validateParameter(valid_601864, JString, required = false,
                                  default = nil)
-  if valid_599842 != nil:
-    section.add "X-Amz-Credential", valid_599842
+  if valid_601864 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601864
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_599865: Call_GetAddTags_599705; path: JsonNode; query: JsonNode;
+proc call*(call_601887: Call_GetAddTags_601727; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds the specified tags to the specified load balancer. Each load balancer can have a maximum of 10 tags.</p> <p>Each tag consists of a key and an optional value. If a tag with the same key is already associated with the load balancer, <code>AddTags</code> updates its value.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_599865.validator(path, query, header, formData, body)
-  let scheme = call_599865.pickScheme
+  let valid = call_601887.validator(path, query, header, formData, body)
+  let scheme = call_601887.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599865.url(scheme.get, call_599865.host, call_599865.base,
-                         call_599865.route, valid.getOrDefault("path"),
+  let url = call_601887.url(scheme.get, call_601887.host, call_601887.base,
+                         call_601887.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599865, url, valid)
+  result = atozHook(call_601887, url, valid)
 
-proc call*(call_599936: Call_GetAddTags_599705; Tags: JsonNode;
+proc call*(call_601958: Call_GetAddTags_601727; Tags: JsonNode;
           LoadBalancerNames: JsonNode; Action: string = "AddTags";
           Version: string = "2012-06-01"): Recallable =
   ## getAddTags
@@ -395,38 +395,39 @@ proc call*(call_599936: Call_GetAddTags_599705; Tags: JsonNode;
   ##   Tags: JArray (required)
   ##       : The tags.
   ##   Action: string (required)
+  ##   Version: string (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The name of the load balancer. You can specify one load balancer only.
-  ##   Version: string (required)
-  var query_599937 = newJObject()
+  var query_601959 = newJObject()
   if Tags != nil:
-    query_599937.add "Tags", Tags
-  add(query_599937, "Action", newJString(Action))
+    query_601959.add "Tags", Tags
+  add(query_601959, "Action", newJString(Action))
+  add(query_601959, "Version", newJString(Version))
   if LoadBalancerNames != nil:
-    query_599937.add "LoadBalancerNames", LoadBalancerNames
-  add(query_599937, "Version", newJString(Version))
-  result = call_599936.call(nil, query_599937, nil, nil, nil)
+    query_601959.add "LoadBalancerNames", LoadBalancerNames
+  result = call_601958.call(nil, query_601959, nil, nil, nil)
 
-var getAddTags* = Call_GetAddTags_599705(name: "getAddTags",
+var getAddTags* = Call_GetAddTags_601727(name: "getAddTags",
                                       meth: HttpMethod.HttpGet, host: "elasticloadbalancing.amazonaws.com",
                                       route: "/#Action=AddTags",
-                                      validator: validate_GetAddTags_599706,
-                                      base: "/", url: url_GetAddTags_599707,
+                                      validator: validate_GetAddTags_601728,
+                                      base: "/", url: url_GetAddTags_601729,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostApplySecurityGroupsToLoadBalancer_600012 = ref object of OpenApiRestCall_599368
-proc url_PostApplySecurityGroupsToLoadBalancer_600014(protocol: Scheme;
+  Call_PostApplySecurityGroupsToLoadBalancer_602034 = ref object of OpenApiRestCall_601389
+proc url_PostApplySecurityGroupsToLoadBalancer_602036(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostApplySecurityGroupsToLoadBalancer_600013(path: JsonNode;
+proc validate_PostApplySecurityGroupsToLoadBalancer_602035(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Associates one or more security groups with your load balancer in a virtual private cloud (VPC). The specified security groups override the previously associated security groups.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-groups.html#elb-vpc-security-groups">Security Groups for Load Balancers in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -439,61 +440,61 @@ proc validate_PostApplySecurityGroupsToLoadBalancer_600013(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600015 = query.getOrDefault("Action")
-  valid_600015 = validateParameter(valid_600015, JString, required = true, default = newJString(
+  var valid_602037 = query.getOrDefault("Action")
+  valid_602037 = validateParameter(valid_602037, JString, required = true, default = newJString(
       "ApplySecurityGroupsToLoadBalancer"))
-  if valid_600015 != nil:
-    section.add "Action", valid_600015
-  var valid_600016 = query.getOrDefault("Version")
-  valid_600016 = validateParameter(valid_600016, JString, required = true,
+  if valid_602037 != nil:
+    section.add "Action", valid_602037
+  var valid_602038 = query.getOrDefault("Version")
+  valid_602038 = validateParameter(valid_602038, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600016 != nil:
-    section.add "Version", valid_600016
+  if valid_602038 != nil:
+    section.add "Version", valid_602038
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600017 = header.getOrDefault("X-Amz-Date")
-  valid_600017 = validateParameter(valid_600017, JString, required = false,
+  var valid_602039 = header.getOrDefault("X-Amz-Signature")
+  valid_602039 = validateParameter(valid_602039, JString, required = false,
                                  default = nil)
-  if valid_600017 != nil:
-    section.add "X-Amz-Date", valid_600017
-  var valid_600018 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600018 = validateParameter(valid_600018, JString, required = false,
+  if valid_602039 != nil:
+    section.add "X-Amz-Signature", valid_602039
+  var valid_602040 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602040 = validateParameter(valid_602040, JString, required = false,
                                  default = nil)
-  if valid_600018 != nil:
-    section.add "X-Amz-Security-Token", valid_600018
-  var valid_600019 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600019 = validateParameter(valid_600019, JString, required = false,
+  if valid_602040 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602040
+  var valid_602041 = header.getOrDefault("X-Amz-Date")
+  valid_602041 = validateParameter(valid_602041, JString, required = false,
                                  default = nil)
-  if valid_600019 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600019
-  var valid_600020 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600020 = validateParameter(valid_600020, JString, required = false,
+  if valid_602041 != nil:
+    section.add "X-Amz-Date", valid_602041
+  var valid_602042 = header.getOrDefault("X-Amz-Credential")
+  valid_602042 = validateParameter(valid_602042, JString, required = false,
                                  default = nil)
-  if valid_600020 != nil:
-    section.add "X-Amz-Algorithm", valid_600020
-  var valid_600021 = header.getOrDefault("X-Amz-Signature")
-  valid_600021 = validateParameter(valid_600021, JString, required = false,
+  if valid_602042 != nil:
+    section.add "X-Amz-Credential", valid_602042
+  var valid_602043 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602043 = validateParameter(valid_602043, JString, required = false,
                                  default = nil)
-  if valid_600021 != nil:
-    section.add "X-Amz-Signature", valid_600021
-  var valid_600022 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600022 = validateParameter(valid_600022, JString, required = false,
+  if valid_602043 != nil:
+    section.add "X-Amz-Security-Token", valid_602043
+  var valid_602044 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602044 = validateParameter(valid_602044, JString, required = false,
                                  default = nil)
-  if valid_600022 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600022
-  var valid_600023 = header.getOrDefault("X-Amz-Credential")
-  valid_600023 = validateParameter(valid_600023, JString, required = false,
+  if valid_602044 != nil:
+    section.add "X-Amz-Algorithm", valid_602044
+  var valid_602045 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602045 = validateParameter(valid_602045, JString, required = false,
                                  default = nil)
-  if valid_600023 != nil:
-    section.add "X-Amz-Credential", valid_600023
+  if valid_602045 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602045
   result.add "header", section
   ## parameters in `formData` object:
   ##   SecurityGroups: JArray (required)
@@ -503,75 +504,76 @@ proc validate_PostApplySecurityGroupsToLoadBalancer_600013(path: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `SecurityGroups` field"
-  var valid_600024 = formData.getOrDefault("SecurityGroups")
-  valid_600024 = validateParameter(valid_600024, JArray, required = true, default = nil)
-  if valid_600024 != nil:
-    section.add "SecurityGroups", valid_600024
-  var valid_600025 = formData.getOrDefault("LoadBalancerName")
-  valid_600025 = validateParameter(valid_600025, JString, required = true,
+  var valid_602046 = formData.getOrDefault("SecurityGroups")
+  valid_602046 = validateParameter(valid_602046, JArray, required = true, default = nil)
+  if valid_602046 != nil:
+    section.add "SecurityGroups", valid_602046
+  var valid_602047 = formData.getOrDefault("LoadBalancerName")
+  valid_602047 = validateParameter(valid_602047, JString, required = true,
                                  default = nil)
-  if valid_600025 != nil:
-    section.add "LoadBalancerName", valid_600025
+  if valid_602047 != nil:
+    section.add "LoadBalancerName", valid_602047
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600026: Call_PostApplySecurityGroupsToLoadBalancer_600012;
+proc call*(call_602048: Call_PostApplySecurityGroupsToLoadBalancer_602034;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Associates one or more security groups with your load balancer in a virtual private cloud (VPC). The specified security groups override the previously associated security groups.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-groups.html#elb-vpc-security-groups">Security Groups for Load Balancers in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600026.validator(path, query, header, formData, body)
-  let scheme = call_600026.pickScheme
+  let valid = call_602048.validator(path, query, header, formData, body)
+  let scheme = call_602048.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600026.url(scheme.get, call_600026.host, call_600026.base,
-                         call_600026.route, valid.getOrDefault("path"),
+  let url = call_602048.url(scheme.get, call_602048.host, call_602048.base,
+                         call_602048.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600026, url, valid)
+  result = atozHook(call_602048, url, valid)
 
-proc call*(call_600027: Call_PostApplySecurityGroupsToLoadBalancer_600012;
+proc call*(call_602049: Call_PostApplySecurityGroupsToLoadBalancer_602034;
           SecurityGroups: JsonNode; LoadBalancerName: string;
           Action: string = "ApplySecurityGroupsToLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
   ## postApplySecurityGroupsToLoadBalancer
   ## <p>Associates one or more security groups with your load balancer in a virtual private cloud (VPC). The specified security groups override the previously associated security groups.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-groups.html#elb-vpc-security-groups">Security Groups for Load Balancers in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: string (required)
   ##   SecurityGroups: JArray (required)
   ##                 : The IDs of the security groups to associate with the load balancer. Note that you cannot specify the name of the security group.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600028 = newJObject()
-  var formData_600029 = newJObject()
-  add(query_600028, "Action", newJString(Action))
+  var query_602050 = newJObject()
+  var formData_602051 = newJObject()
   if SecurityGroups != nil:
-    formData_600029.add "SecurityGroups", SecurityGroups
-  add(formData_600029, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600028, "Version", newJString(Version))
-  result = call_600027.call(nil, query_600028, nil, formData_600029, nil)
+    formData_602051.add "SecurityGroups", SecurityGroups
+  add(formData_602051, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602050, "Action", newJString(Action))
+  add(query_602050, "Version", newJString(Version))
+  result = call_602049.call(nil, query_602050, nil, formData_602051, nil)
 
-var postApplySecurityGroupsToLoadBalancer* = Call_PostApplySecurityGroupsToLoadBalancer_600012(
+var postApplySecurityGroupsToLoadBalancer* = Call_PostApplySecurityGroupsToLoadBalancer_602034(
     name: "postApplySecurityGroupsToLoadBalancer", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=ApplySecurityGroupsToLoadBalancer",
-    validator: validate_PostApplySecurityGroupsToLoadBalancer_600013, base: "/",
-    url: url_PostApplySecurityGroupsToLoadBalancer_600014,
+    validator: validate_PostApplySecurityGroupsToLoadBalancer_602035, base: "/",
+    url: url_PostApplySecurityGroupsToLoadBalancer_602036,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetApplySecurityGroupsToLoadBalancer_599995 = ref object of OpenApiRestCall_599368
-proc url_GetApplySecurityGroupsToLoadBalancer_599997(protocol: Scheme;
+  Call_GetApplySecurityGroupsToLoadBalancer_602017 = ref object of OpenApiRestCall_601389
+proc url_GetApplySecurityGroupsToLoadBalancer_602019(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetApplySecurityGroupsToLoadBalancer_599996(path: JsonNode;
+proc validate_GetApplySecurityGroupsToLoadBalancer_602018(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Associates one or more security groups with your load balancer in a virtual private cloud (VPC). The specified security groups override the previously associated security groups.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-groups.html#elb-vpc-security-groups">Security Groups for Load Balancers in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -580,140 +582,141 @@ proc validate_GetApplySecurityGroupsToLoadBalancer_599996(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   SecurityGroups: JArray (required)
+  ##                 : The IDs of the security groups to associate with the load balancer. Note that you cannot specify the name of the security group.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   ##   Action: JString (required)
   ##   Version: JString (required)
-  ##   SecurityGroups: JArray (required)
-  ##                 : The IDs of the security groups to associate with the load balancer. Note that you cannot specify the name of the security group.
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_599998 = query.getOrDefault("LoadBalancerName")
-  valid_599998 = validateParameter(valid_599998, JString, required = true,
+        "query argument is necessary due to required `SecurityGroups` field"
+  var valid_602020 = query.getOrDefault("SecurityGroups")
+  valid_602020 = validateParameter(valid_602020, JArray, required = true, default = nil)
+  if valid_602020 != nil:
+    section.add "SecurityGroups", valid_602020
+  var valid_602021 = query.getOrDefault("LoadBalancerName")
+  valid_602021 = validateParameter(valid_602021, JString, required = true,
                                  default = nil)
-  if valid_599998 != nil:
-    section.add "LoadBalancerName", valid_599998
-  var valid_599999 = query.getOrDefault("Action")
-  valid_599999 = validateParameter(valid_599999, JString, required = true, default = newJString(
+  if valid_602021 != nil:
+    section.add "LoadBalancerName", valid_602021
+  var valid_602022 = query.getOrDefault("Action")
+  valid_602022 = validateParameter(valid_602022, JString, required = true, default = newJString(
       "ApplySecurityGroupsToLoadBalancer"))
-  if valid_599999 != nil:
-    section.add "Action", valid_599999
-  var valid_600000 = query.getOrDefault("Version")
-  valid_600000 = validateParameter(valid_600000, JString, required = true,
+  if valid_602022 != nil:
+    section.add "Action", valid_602022
+  var valid_602023 = query.getOrDefault("Version")
+  valid_602023 = validateParameter(valid_602023, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600000 != nil:
-    section.add "Version", valid_600000
-  var valid_600001 = query.getOrDefault("SecurityGroups")
-  valid_600001 = validateParameter(valid_600001, JArray, required = true, default = nil)
-  if valid_600001 != nil:
-    section.add "SecurityGroups", valid_600001
+  if valid_602023 != nil:
+    section.add "Version", valid_602023
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600002 = header.getOrDefault("X-Amz-Date")
-  valid_600002 = validateParameter(valid_600002, JString, required = false,
+  var valid_602024 = header.getOrDefault("X-Amz-Signature")
+  valid_602024 = validateParameter(valid_602024, JString, required = false,
                                  default = nil)
-  if valid_600002 != nil:
-    section.add "X-Amz-Date", valid_600002
-  var valid_600003 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600003 = validateParameter(valid_600003, JString, required = false,
+  if valid_602024 != nil:
+    section.add "X-Amz-Signature", valid_602024
+  var valid_602025 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602025 = validateParameter(valid_602025, JString, required = false,
                                  default = nil)
-  if valid_600003 != nil:
-    section.add "X-Amz-Security-Token", valid_600003
-  var valid_600004 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600004 = validateParameter(valid_600004, JString, required = false,
+  if valid_602025 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602025
+  var valid_602026 = header.getOrDefault("X-Amz-Date")
+  valid_602026 = validateParameter(valid_602026, JString, required = false,
                                  default = nil)
-  if valid_600004 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600004
-  var valid_600005 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600005 = validateParameter(valid_600005, JString, required = false,
+  if valid_602026 != nil:
+    section.add "X-Amz-Date", valid_602026
+  var valid_602027 = header.getOrDefault("X-Amz-Credential")
+  valid_602027 = validateParameter(valid_602027, JString, required = false,
                                  default = nil)
-  if valid_600005 != nil:
-    section.add "X-Amz-Algorithm", valid_600005
-  var valid_600006 = header.getOrDefault("X-Amz-Signature")
-  valid_600006 = validateParameter(valid_600006, JString, required = false,
+  if valid_602027 != nil:
+    section.add "X-Amz-Credential", valid_602027
+  var valid_602028 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602028 = validateParameter(valid_602028, JString, required = false,
                                  default = nil)
-  if valid_600006 != nil:
-    section.add "X-Amz-Signature", valid_600006
-  var valid_600007 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600007 = validateParameter(valid_600007, JString, required = false,
+  if valid_602028 != nil:
+    section.add "X-Amz-Security-Token", valid_602028
+  var valid_602029 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602029 = validateParameter(valid_602029, JString, required = false,
                                  default = nil)
-  if valid_600007 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600007
-  var valid_600008 = header.getOrDefault("X-Amz-Credential")
-  valid_600008 = validateParameter(valid_600008, JString, required = false,
+  if valid_602029 != nil:
+    section.add "X-Amz-Algorithm", valid_602029
+  var valid_602030 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602030 = validateParameter(valid_602030, JString, required = false,
                                  default = nil)
-  if valid_600008 != nil:
-    section.add "X-Amz-Credential", valid_600008
+  if valid_602030 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602030
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600009: Call_GetApplySecurityGroupsToLoadBalancer_599995;
+proc call*(call_602031: Call_GetApplySecurityGroupsToLoadBalancer_602017;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Associates one or more security groups with your load balancer in a virtual private cloud (VPC). The specified security groups override the previously associated security groups.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-groups.html#elb-vpc-security-groups">Security Groups for Load Balancers in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600009.validator(path, query, header, formData, body)
-  let scheme = call_600009.pickScheme
+  let valid = call_602031.validator(path, query, header, formData, body)
+  let scheme = call_602031.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600009.url(scheme.get, call_600009.host, call_600009.base,
-                         call_600009.route, valid.getOrDefault("path"),
+  let url = call_602031.url(scheme.get, call_602031.host, call_602031.base,
+                         call_602031.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600009, url, valid)
+  result = atozHook(call_602031, url, valid)
 
-proc call*(call_600010: Call_GetApplySecurityGroupsToLoadBalancer_599995;
-          LoadBalancerName: string; SecurityGroups: JsonNode;
+proc call*(call_602032: Call_GetApplySecurityGroupsToLoadBalancer_602017;
+          SecurityGroups: JsonNode; LoadBalancerName: string;
           Action: string = "ApplySecurityGroupsToLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
   ## getApplySecurityGroupsToLoadBalancer
   ## <p>Associates one or more security groups with your load balancer in a virtual private cloud (VPC). The specified security groups override the previously associated security groups.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-security-groups.html#elb-vpc-security-groups">Security Groups for Load Balancers in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   SecurityGroups: JArray (required)
+  ##                 : The IDs of the security groups to associate with the load balancer. Note that you cannot specify the name of the security group.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  ##   SecurityGroups: JArray (required)
-  ##                 : The IDs of the security groups to associate with the load balancer. Note that you cannot specify the name of the security group.
-  var query_600011 = newJObject()
-  add(query_600011, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600011, "Action", newJString(Action))
-  add(query_600011, "Version", newJString(Version))
+  var query_602033 = newJObject()
   if SecurityGroups != nil:
-    query_600011.add "SecurityGroups", SecurityGroups
-  result = call_600010.call(nil, query_600011, nil, nil, nil)
+    query_602033.add "SecurityGroups", SecurityGroups
+  add(query_602033, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602033, "Action", newJString(Action))
+  add(query_602033, "Version", newJString(Version))
+  result = call_602032.call(nil, query_602033, nil, nil, nil)
 
-var getApplySecurityGroupsToLoadBalancer* = Call_GetApplySecurityGroupsToLoadBalancer_599995(
+var getApplySecurityGroupsToLoadBalancer* = Call_GetApplySecurityGroupsToLoadBalancer_602017(
     name: "getApplySecurityGroupsToLoadBalancer", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=ApplySecurityGroupsToLoadBalancer",
-    validator: validate_GetApplySecurityGroupsToLoadBalancer_599996, base: "/",
-    url: url_GetApplySecurityGroupsToLoadBalancer_599997,
+    validator: validate_GetApplySecurityGroupsToLoadBalancer_602018, base: "/",
+    url: url_GetApplySecurityGroupsToLoadBalancer_602019,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostAttachLoadBalancerToSubnets_600047 = ref object of OpenApiRestCall_599368
-proc url_PostAttachLoadBalancerToSubnets_600049(protocol: Scheme; host: string;
+  Call_PostAttachLoadBalancerToSubnets_602069 = ref object of OpenApiRestCall_601389
+proc url_PostAttachLoadBalancerToSubnets_602071(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostAttachLoadBalancerToSubnets_600048(path: JsonNode;
+proc validate_PostAttachLoadBalancerToSubnets_602070(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds one or more subnets to the set of configured subnets for the specified load balancer.</p> <p>The load balancer evenly distributes requests across all registered subnets. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-manage-subnets.html">Add or Remove Subnets for Your Load Balancer in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -726,61 +729,61 @@ proc validate_PostAttachLoadBalancerToSubnets_600048(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600050 = query.getOrDefault("Action")
-  valid_600050 = validateParameter(valid_600050, JString, required = true, default = newJString(
+  var valid_602072 = query.getOrDefault("Action")
+  valid_602072 = validateParameter(valid_602072, JString, required = true, default = newJString(
       "AttachLoadBalancerToSubnets"))
-  if valid_600050 != nil:
-    section.add "Action", valid_600050
-  var valid_600051 = query.getOrDefault("Version")
-  valid_600051 = validateParameter(valid_600051, JString, required = true,
+  if valid_602072 != nil:
+    section.add "Action", valid_602072
+  var valid_602073 = query.getOrDefault("Version")
+  valid_602073 = validateParameter(valid_602073, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600051 != nil:
-    section.add "Version", valid_600051
+  if valid_602073 != nil:
+    section.add "Version", valid_602073
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600052 = header.getOrDefault("X-Amz-Date")
-  valid_600052 = validateParameter(valid_600052, JString, required = false,
+  var valid_602074 = header.getOrDefault("X-Amz-Signature")
+  valid_602074 = validateParameter(valid_602074, JString, required = false,
                                  default = nil)
-  if valid_600052 != nil:
-    section.add "X-Amz-Date", valid_600052
-  var valid_600053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600053 = validateParameter(valid_600053, JString, required = false,
+  if valid_602074 != nil:
+    section.add "X-Amz-Signature", valid_602074
+  var valid_602075 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602075 = validateParameter(valid_602075, JString, required = false,
                                  default = nil)
-  if valid_600053 != nil:
-    section.add "X-Amz-Security-Token", valid_600053
-  var valid_600054 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600054 = validateParameter(valid_600054, JString, required = false,
+  if valid_602075 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602075
+  var valid_602076 = header.getOrDefault("X-Amz-Date")
+  valid_602076 = validateParameter(valid_602076, JString, required = false,
                                  default = nil)
-  if valid_600054 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600054
-  var valid_600055 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600055 = validateParameter(valid_600055, JString, required = false,
+  if valid_602076 != nil:
+    section.add "X-Amz-Date", valid_602076
+  var valid_602077 = header.getOrDefault("X-Amz-Credential")
+  valid_602077 = validateParameter(valid_602077, JString, required = false,
                                  default = nil)
-  if valid_600055 != nil:
-    section.add "X-Amz-Algorithm", valid_600055
-  var valid_600056 = header.getOrDefault("X-Amz-Signature")
-  valid_600056 = validateParameter(valid_600056, JString, required = false,
+  if valid_602077 != nil:
+    section.add "X-Amz-Credential", valid_602077
+  var valid_602078 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602078 = validateParameter(valid_602078, JString, required = false,
                                  default = nil)
-  if valid_600056 != nil:
-    section.add "X-Amz-Signature", valid_600056
-  var valid_600057 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600057 = validateParameter(valid_600057, JString, required = false,
+  if valid_602078 != nil:
+    section.add "X-Amz-Security-Token", valid_602078
+  var valid_602079 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602079 = validateParameter(valid_602079, JString, required = false,
                                  default = nil)
-  if valid_600057 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600057
-  var valid_600058 = header.getOrDefault("X-Amz-Credential")
-  valid_600058 = validateParameter(valid_600058, JString, required = false,
+  if valid_602079 != nil:
+    section.add "X-Amz-Algorithm", valid_602079
+  var valid_602080 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602080 = validateParameter(valid_602080, JString, required = false,
                                  default = nil)
-  if valid_600058 != nil:
-    section.add "X-Amz-Credential", valid_600058
+  if valid_602080 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602080
   result.add "header", section
   ## parameters in `formData` object:
   ##   Subnets: JArray (required)
@@ -790,75 +793,76 @@ proc validate_PostAttachLoadBalancerToSubnets_600048(path: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Subnets` field"
-  var valid_600059 = formData.getOrDefault("Subnets")
-  valid_600059 = validateParameter(valid_600059, JArray, required = true, default = nil)
-  if valid_600059 != nil:
-    section.add "Subnets", valid_600059
-  var valid_600060 = formData.getOrDefault("LoadBalancerName")
-  valid_600060 = validateParameter(valid_600060, JString, required = true,
+  var valid_602081 = formData.getOrDefault("Subnets")
+  valid_602081 = validateParameter(valid_602081, JArray, required = true, default = nil)
+  if valid_602081 != nil:
+    section.add "Subnets", valid_602081
+  var valid_602082 = formData.getOrDefault("LoadBalancerName")
+  valid_602082 = validateParameter(valid_602082, JString, required = true,
                                  default = nil)
-  if valid_600060 != nil:
-    section.add "LoadBalancerName", valid_600060
+  if valid_602082 != nil:
+    section.add "LoadBalancerName", valid_602082
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600061: Call_PostAttachLoadBalancerToSubnets_600047;
+proc call*(call_602083: Call_PostAttachLoadBalancerToSubnets_602069;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Adds one or more subnets to the set of configured subnets for the specified load balancer.</p> <p>The load balancer evenly distributes requests across all registered subnets. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-manage-subnets.html">Add or Remove Subnets for Your Load Balancer in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600061.validator(path, query, header, formData, body)
-  let scheme = call_600061.pickScheme
+  let valid = call_602083.validator(path, query, header, formData, body)
+  let scheme = call_602083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600061.url(scheme.get, call_600061.host, call_600061.base,
-                         call_600061.route, valid.getOrDefault("path"),
+  let url = call_602083.url(scheme.get, call_602083.host, call_602083.base,
+                         call_602083.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600061, url, valid)
+  result = atozHook(call_602083, url, valid)
 
-proc call*(call_600062: Call_PostAttachLoadBalancerToSubnets_600047;
+proc call*(call_602084: Call_PostAttachLoadBalancerToSubnets_602069;
           Subnets: JsonNode; LoadBalancerName: string;
           Action: string = "AttachLoadBalancerToSubnets";
           Version: string = "2012-06-01"): Recallable =
   ## postAttachLoadBalancerToSubnets
   ## <p>Adds one or more subnets to the set of configured subnets for the specified load balancer.</p> <p>The load balancer evenly distributes requests across all registered subnets. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-manage-subnets.html">Add or Remove Subnets for Your Load Balancer in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: string (required)
   ##   Subnets: JArray (required)
   ##          : The IDs of the subnets to add. You can add only one subnet per Availability Zone.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600063 = newJObject()
-  var formData_600064 = newJObject()
-  add(query_600063, "Action", newJString(Action))
+  var query_602085 = newJObject()
+  var formData_602086 = newJObject()
   if Subnets != nil:
-    formData_600064.add "Subnets", Subnets
-  add(formData_600064, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600063, "Version", newJString(Version))
-  result = call_600062.call(nil, query_600063, nil, formData_600064, nil)
+    formData_602086.add "Subnets", Subnets
+  add(formData_602086, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602085, "Action", newJString(Action))
+  add(query_602085, "Version", newJString(Version))
+  result = call_602084.call(nil, query_602085, nil, formData_602086, nil)
 
-var postAttachLoadBalancerToSubnets* = Call_PostAttachLoadBalancerToSubnets_600047(
+var postAttachLoadBalancerToSubnets* = Call_PostAttachLoadBalancerToSubnets_602069(
     name: "postAttachLoadBalancerToSubnets", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=AttachLoadBalancerToSubnets",
-    validator: validate_PostAttachLoadBalancerToSubnets_600048, base: "/",
-    url: url_PostAttachLoadBalancerToSubnets_600049,
+    validator: validate_PostAttachLoadBalancerToSubnets_602070, base: "/",
+    url: url_PostAttachLoadBalancerToSubnets_602071,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAttachLoadBalancerToSubnets_600030 = ref object of OpenApiRestCall_599368
-proc url_GetAttachLoadBalancerToSubnets_600032(protocol: Scheme; host: string;
+  Call_GetAttachLoadBalancerToSubnets_602052 = ref object of OpenApiRestCall_601389
+proc url_GetAttachLoadBalancerToSubnets_602054(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetAttachLoadBalancerToSubnets_600031(path: JsonNode;
+proc validate_GetAttachLoadBalancerToSubnets_602053(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds one or more subnets to the set of configured subnets for the specified load balancer.</p> <p>The load balancer evenly distributes requests across all registered subnets. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-manage-subnets.html">Add or Remove Subnets for Your Load Balancer in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -876,90 +880,90 @@ proc validate_GetAttachLoadBalancerToSubnets_600031(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600033 = query.getOrDefault("LoadBalancerName")
-  valid_600033 = validateParameter(valid_600033, JString, required = true,
+  var valid_602055 = query.getOrDefault("LoadBalancerName")
+  valid_602055 = validateParameter(valid_602055, JString, required = true,
                                  default = nil)
-  if valid_600033 != nil:
-    section.add "LoadBalancerName", valid_600033
-  var valid_600034 = query.getOrDefault("Action")
-  valid_600034 = validateParameter(valid_600034, JString, required = true, default = newJString(
+  if valid_602055 != nil:
+    section.add "LoadBalancerName", valid_602055
+  var valid_602056 = query.getOrDefault("Action")
+  valid_602056 = validateParameter(valid_602056, JString, required = true, default = newJString(
       "AttachLoadBalancerToSubnets"))
-  if valid_600034 != nil:
-    section.add "Action", valid_600034
-  var valid_600035 = query.getOrDefault("Subnets")
-  valid_600035 = validateParameter(valid_600035, JArray, required = true, default = nil)
-  if valid_600035 != nil:
-    section.add "Subnets", valid_600035
-  var valid_600036 = query.getOrDefault("Version")
-  valid_600036 = validateParameter(valid_600036, JString, required = true,
+  if valid_602056 != nil:
+    section.add "Action", valid_602056
+  var valid_602057 = query.getOrDefault("Subnets")
+  valid_602057 = validateParameter(valid_602057, JArray, required = true, default = nil)
+  if valid_602057 != nil:
+    section.add "Subnets", valid_602057
+  var valid_602058 = query.getOrDefault("Version")
+  valid_602058 = validateParameter(valid_602058, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600036 != nil:
-    section.add "Version", valid_600036
+  if valid_602058 != nil:
+    section.add "Version", valid_602058
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600037 = header.getOrDefault("X-Amz-Date")
-  valid_600037 = validateParameter(valid_600037, JString, required = false,
+  var valid_602059 = header.getOrDefault("X-Amz-Signature")
+  valid_602059 = validateParameter(valid_602059, JString, required = false,
                                  default = nil)
-  if valid_600037 != nil:
-    section.add "X-Amz-Date", valid_600037
-  var valid_600038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600038 = validateParameter(valid_600038, JString, required = false,
+  if valid_602059 != nil:
+    section.add "X-Amz-Signature", valid_602059
+  var valid_602060 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602060 = validateParameter(valid_602060, JString, required = false,
                                  default = nil)
-  if valid_600038 != nil:
-    section.add "X-Amz-Security-Token", valid_600038
-  var valid_600039 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600039 = validateParameter(valid_600039, JString, required = false,
+  if valid_602060 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602060
+  var valid_602061 = header.getOrDefault("X-Amz-Date")
+  valid_602061 = validateParameter(valid_602061, JString, required = false,
                                  default = nil)
-  if valid_600039 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600039
-  var valid_600040 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600040 = validateParameter(valid_600040, JString, required = false,
+  if valid_602061 != nil:
+    section.add "X-Amz-Date", valid_602061
+  var valid_602062 = header.getOrDefault("X-Amz-Credential")
+  valid_602062 = validateParameter(valid_602062, JString, required = false,
                                  default = nil)
-  if valid_600040 != nil:
-    section.add "X-Amz-Algorithm", valid_600040
-  var valid_600041 = header.getOrDefault("X-Amz-Signature")
-  valid_600041 = validateParameter(valid_600041, JString, required = false,
+  if valid_602062 != nil:
+    section.add "X-Amz-Credential", valid_602062
+  var valid_602063 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602063 = validateParameter(valid_602063, JString, required = false,
                                  default = nil)
-  if valid_600041 != nil:
-    section.add "X-Amz-Signature", valid_600041
-  var valid_600042 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600042 = validateParameter(valid_600042, JString, required = false,
+  if valid_602063 != nil:
+    section.add "X-Amz-Security-Token", valid_602063
+  var valid_602064 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602064 = validateParameter(valid_602064, JString, required = false,
                                  default = nil)
-  if valid_600042 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600042
-  var valid_600043 = header.getOrDefault("X-Amz-Credential")
-  valid_600043 = validateParameter(valid_600043, JString, required = false,
+  if valid_602064 != nil:
+    section.add "X-Amz-Algorithm", valid_602064
+  var valid_602065 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602065 = validateParameter(valid_602065, JString, required = false,
                                  default = nil)
-  if valid_600043 != nil:
-    section.add "X-Amz-Credential", valid_600043
+  if valid_602065 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602065
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600044: Call_GetAttachLoadBalancerToSubnets_600030; path: JsonNode;
+proc call*(call_602066: Call_GetAttachLoadBalancerToSubnets_602052; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds one or more subnets to the set of configured subnets for the specified load balancer.</p> <p>The load balancer evenly distributes requests across all registered subnets. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-manage-subnets.html">Add or Remove Subnets for Your Load Balancer in a VPC</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600044.validator(path, query, header, formData, body)
-  let scheme = call_600044.pickScheme
+  let valid = call_602066.validator(path, query, header, formData, body)
+  let scheme = call_602066.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600044.url(scheme.get, call_600044.host, call_600044.base,
-                         call_600044.route, valid.getOrDefault("path"),
+  let url = call_602066.url(scheme.get, call_602066.host, call_602066.base,
+                         call_602066.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600044, url, valid)
+  result = atozHook(call_602066, url, valid)
 
-proc call*(call_600045: Call_GetAttachLoadBalancerToSubnets_600030;
+proc call*(call_602067: Call_GetAttachLoadBalancerToSubnets_602052;
           LoadBalancerName: string; Subnets: JsonNode;
           Action: string = "AttachLoadBalancerToSubnets";
           Version: string = "2012-06-01"): Recallable =
@@ -971,36 +975,37 @@ proc call*(call_600045: Call_GetAttachLoadBalancerToSubnets_600030;
   ##   Subnets: JArray (required)
   ##          : The IDs of the subnets to add. You can add only one subnet per Availability Zone.
   ##   Version: string (required)
-  var query_600046 = newJObject()
-  add(query_600046, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600046, "Action", newJString(Action))
+  var query_602068 = newJObject()
+  add(query_602068, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602068, "Action", newJString(Action))
   if Subnets != nil:
-    query_600046.add "Subnets", Subnets
-  add(query_600046, "Version", newJString(Version))
-  result = call_600045.call(nil, query_600046, nil, nil, nil)
+    query_602068.add "Subnets", Subnets
+  add(query_602068, "Version", newJString(Version))
+  result = call_602067.call(nil, query_602068, nil, nil, nil)
 
-var getAttachLoadBalancerToSubnets* = Call_GetAttachLoadBalancerToSubnets_600030(
+var getAttachLoadBalancerToSubnets* = Call_GetAttachLoadBalancerToSubnets_602052(
     name: "getAttachLoadBalancerToSubnets", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=AttachLoadBalancerToSubnets",
-    validator: validate_GetAttachLoadBalancerToSubnets_600031, base: "/",
-    url: url_GetAttachLoadBalancerToSubnets_600032,
+    validator: validate_GetAttachLoadBalancerToSubnets_602053, base: "/",
+    url: url_GetAttachLoadBalancerToSubnets_602054,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostConfigureHealthCheck_600086 = ref object of OpenApiRestCall_599368
-proc url_PostConfigureHealthCheck_600088(protocol: Scheme; host: string;
+  Call_PostConfigureHealthCheck_602108 = ref object of OpenApiRestCall_601389
+proc url_PostConfigureHealthCheck_602110(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostConfigureHealthCheck_600087(path: JsonNode; query: JsonNode;
+proc validate_PostConfigureHealthCheck_602109(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Specifies the health check settings to use when evaluating the health state of your EC2 instances.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-healthchecks.html">Configure Health Checks for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -1013,191 +1018,191 @@ proc validate_PostConfigureHealthCheck_600087(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600089 = query.getOrDefault("Action")
-  valid_600089 = validateParameter(valid_600089, JString, required = true,
+  var valid_602111 = query.getOrDefault("Action")
+  valid_602111 = validateParameter(valid_602111, JString, required = true,
                                  default = newJString("ConfigureHealthCheck"))
-  if valid_600089 != nil:
-    section.add "Action", valid_600089
-  var valid_600090 = query.getOrDefault("Version")
-  valid_600090 = validateParameter(valid_600090, JString, required = true,
+  if valid_602111 != nil:
+    section.add "Action", valid_602111
+  var valid_602112 = query.getOrDefault("Version")
+  valid_602112 = validateParameter(valid_602112, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600090 != nil:
-    section.add "Version", valid_600090
+  if valid_602112 != nil:
+    section.add "Version", valid_602112
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600091 = header.getOrDefault("X-Amz-Date")
-  valid_600091 = validateParameter(valid_600091, JString, required = false,
+  var valid_602113 = header.getOrDefault("X-Amz-Signature")
+  valid_602113 = validateParameter(valid_602113, JString, required = false,
                                  default = nil)
-  if valid_600091 != nil:
-    section.add "X-Amz-Date", valid_600091
-  var valid_600092 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600092 = validateParameter(valid_600092, JString, required = false,
+  if valid_602113 != nil:
+    section.add "X-Amz-Signature", valid_602113
+  var valid_602114 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602114 = validateParameter(valid_602114, JString, required = false,
                                  default = nil)
-  if valid_600092 != nil:
-    section.add "X-Amz-Security-Token", valid_600092
-  var valid_600093 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600093 = validateParameter(valid_600093, JString, required = false,
+  if valid_602114 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602114
+  var valid_602115 = header.getOrDefault("X-Amz-Date")
+  valid_602115 = validateParameter(valid_602115, JString, required = false,
                                  default = nil)
-  if valid_600093 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600093
-  var valid_600094 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600094 = validateParameter(valid_600094, JString, required = false,
+  if valid_602115 != nil:
+    section.add "X-Amz-Date", valid_602115
+  var valid_602116 = header.getOrDefault("X-Amz-Credential")
+  valid_602116 = validateParameter(valid_602116, JString, required = false,
                                  default = nil)
-  if valid_600094 != nil:
-    section.add "X-Amz-Algorithm", valid_600094
-  var valid_600095 = header.getOrDefault("X-Amz-Signature")
-  valid_600095 = validateParameter(valid_600095, JString, required = false,
+  if valid_602116 != nil:
+    section.add "X-Amz-Credential", valid_602116
+  var valid_602117 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602117 = validateParameter(valid_602117, JString, required = false,
                                  default = nil)
-  if valid_600095 != nil:
-    section.add "X-Amz-Signature", valid_600095
-  var valid_600096 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600096 = validateParameter(valid_600096, JString, required = false,
+  if valid_602117 != nil:
+    section.add "X-Amz-Security-Token", valid_602117
+  var valid_602118 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602118 = validateParameter(valid_602118, JString, required = false,
                                  default = nil)
-  if valid_600096 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600096
-  var valid_600097 = header.getOrDefault("X-Amz-Credential")
-  valid_600097 = validateParameter(valid_600097, JString, required = false,
+  if valid_602118 != nil:
+    section.add "X-Amz-Algorithm", valid_602118
+  var valid_602119 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602119 = validateParameter(valid_602119, JString, required = false,
                                  default = nil)
-  if valid_600097 != nil:
-    section.add "X-Amz-Credential", valid_600097
+  if valid_602119 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602119
   result.add "header", section
   ## parameters in `formData` object:
-  ##   HealthCheck.HealthyThreshold: JString
-  ##                               : Information about a health check.
-  ## The number of consecutive health checks successes required before moving the instance to the <code>Healthy</code> state.
   ##   HealthCheck.Interval: JString
   ##                       : Information about a health check.
   ## The approximate interval, in seconds, between health checks of an individual instance.
+  ##   HealthCheck.HealthyThreshold: JString
+  ##                               : Information about a health check.
+  ## The number of consecutive health checks successes required before moving the instance to the <code>Healthy</code> state.
   ##   HealthCheck.Timeout: JString
   ##                      : Information about a health check.
   ## <p>The amount of time, in seconds, during which no response means a failed health check.</p> <p>This value must be less than the <code>Interval</code> value.</p>
-  ##   HealthCheck.UnhealthyThreshold: JString
-  ##                                 : Information about a health check.
-  ## The number of consecutive health check failures required before moving the instance to the <code>Unhealthy</code> state.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   ##   HealthCheck.Target: JString
   ##                     : Information about a health check.
   ## <p>The instance being checked. The protocol is either TCP, HTTP, HTTPS, or SSL. The range of valid ports is one (1) through 65535.</p> <p>TCP is the default, specified as a TCP: port pair, for example "TCP:5000". In this case, a health check simply attempts to open a TCP connection to the instance on the specified port. Failure to connect within the configured timeout is considered unhealthy.</p> <p>SSL is also specified as SSL: port pair, for example, SSL:5000.</p> <p>For HTTP/HTTPS, you must include a ping path in the string. HTTP is specified as a HTTP:port;/;PathToPing; grouping, for example "HTTP:80/weather/us/wa/seattle". In this case, a HTTP GET request is issued to the instance on the given port and path. Any answer other than "200 OK" within the timeout period is considered unhealthy.</p> <p>The total length of the HTTP ping target must be 1024 16-bit Unicode characters or less.</p>
+  ##   HealthCheck.UnhealthyThreshold: JString
+  ##                                 : Information about a health check.
+  ## The number of consecutive health check failures required before moving the instance to the <code>Unhealthy</code> state.
   section = newJObject()
-  var valid_600098 = formData.getOrDefault("HealthCheck.HealthyThreshold")
-  valid_600098 = validateParameter(valid_600098, JString, required = false,
+  var valid_602120 = formData.getOrDefault("HealthCheck.Interval")
+  valid_602120 = validateParameter(valid_602120, JString, required = false,
                                  default = nil)
-  if valid_600098 != nil:
-    section.add "HealthCheck.HealthyThreshold", valid_600098
-  var valid_600099 = formData.getOrDefault("HealthCheck.Interval")
-  valid_600099 = validateParameter(valid_600099, JString, required = false,
+  if valid_602120 != nil:
+    section.add "HealthCheck.Interval", valid_602120
+  var valid_602121 = formData.getOrDefault("HealthCheck.HealthyThreshold")
+  valid_602121 = validateParameter(valid_602121, JString, required = false,
                                  default = nil)
-  if valid_600099 != nil:
-    section.add "HealthCheck.Interval", valid_600099
-  var valid_600100 = formData.getOrDefault("HealthCheck.Timeout")
-  valid_600100 = validateParameter(valid_600100, JString, required = false,
+  if valid_602121 != nil:
+    section.add "HealthCheck.HealthyThreshold", valid_602121
+  var valid_602122 = formData.getOrDefault("HealthCheck.Timeout")
+  valid_602122 = validateParameter(valid_602122, JString, required = false,
                                  default = nil)
-  if valid_600100 != nil:
-    section.add "HealthCheck.Timeout", valid_600100
-  var valid_600101 = formData.getOrDefault("HealthCheck.UnhealthyThreshold")
-  valid_600101 = validateParameter(valid_600101, JString, required = false,
-                                 default = nil)
-  if valid_600101 != nil:
-    section.add "HealthCheck.UnhealthyThreshold", valid_600101
+  if valid_602122 != nil:
+    section.add "HealthCheck.Timeout", valid_602122
   assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
-  var valid_600102 = formData.getOrDefault("LoadBalancerName")
-  valid_600102 = validateParameter(valid_600102, JString, required = true,
+  var valid_602123 = formData.getOrDefault("LoadBalancerName")
+  valid_602123 = validateParameter(valid_602123, JString, required = true,
                                  default = nil)
-  if valid_600102 != nil:
-    section.add "LoadBalancerName", valid_600102
-  var valid_600103 = formData.getOrDefault("HealthCheck.Target")
-  valid_600103 = validateParameter(valid_600103, JString, required = false,
+  if valid_602123 != nil:
+    section.add "LoadBalancerName", valid_602123
+  var valid_602124 = formData.getOrDefault("HealthCheck.Target")
+  valid_602124 = validateParameter(valid_602124, JString, required = false,
                                  default = nil)
-  if valid_600103 != nil:
-    section.add "HealthCheck.Target", valid_600103
+  if valid_602124 != nil:
+    section.add "HealthCheck.Target", valid_602124
+  var valid_602125 = formData.getOrDefault("HealthCheck.UnhealthyThreshold")
+  valid_602125 = validateParameter(valid_602125, JString, required = false,
+                                 default = nil)
+  if valid_602125 != nil:
+    section.add "HealthCheck.UnhealthyThreshold", valid_602125
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600104: Call_PostConfigureHealthCheck_600086; path: JsonNode;
+proc call*(call_602126: Call_PostConfigureHealthCheck_602108; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Specifies the health check settings to use when evaluating the health state of your EC2 instances.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-healthchecks.html">Configure Health Checks for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600104.validator(path, query, header, formData, body)
-  let scheme = call_600104.pickScheme
+  let valid = call_602126.validator(path, query, header, formData, body)
+  let scheme = call_602126.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600104.url(scheme.get, call_600104.host, call_600104.base,
-                         call_600104.route, valid.getOrDefault("path"),
+  let url = call_602126.url(scheme.get, call_602126.host, call_602126.base,
+                         call_602126.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600104, url, valid)
+  result = atozHook(call_602126, url, valid)
 
-proc call*(call_600105: Call_PostConfigureHealthCheck_600086;
-          LoadBalancerName: string; HealthCheckHealthyThreshold: string = "";
-          HealthCheckInterval: string = ""; HealthCheckTimeout: string = "";
-          Action: string = "ConfigureHealthCheck";
-          HealthCheckUnhealthyThreshold: string = "";
-          HealthCheckTarget: string = ""; Version: string = "2012-06-01"): Recallable =
+proc call*(call_602127: Call_PostConfigureHealthCheck_602108;
+          LoadBalancerName: string; HealthCheckInterval: string = "";
+          HealthCheckHealthyThreshold: string = ""; HealthCheckTimeout: string = "";
+          Action: string = "ConfigureHealthCheck"; HealthCheckTarget: string = "";
+          Version: string = "2012-06-01"; HealthCheckUnhealthyThreshold: string = ""): Recallable =
   ## postConfigureHealthCheck
   ## <p>Specifies the health check settings to use when evaluating the health state of your EC2 instances.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-healthchecks.html">Configure Health Checks for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   HealthCheckHealthyThreshold: string
-  ##                              : Information about a health check.
-  ## The number of consecutive health checks successes required before moving the instance to the <code>Healthy</code> state.
   ##   HealthCheckInterval: string
   ##                      : Information about a health check.
   ## The approximate interval, in seconds, between health checks of an individual instance.
+  ##   HealthCheckHealthyThreshold: string
+  ##                              : Information about a health check.
+  ## The number of consecutive health checks successes required before moving the instance to the <code>Healthy</code> state.
   ##   HealthCheckTimeout: string
   ##                     : Information about a health check.
   ## <p>The amount of time, in seconds, during which no response means a failed health check.</p> <p>This value must be less than the <code>Interval</code> value.</p>
-  ##   Action: string (required)
-  ##   HealthCheckUnhealthyThreshold: string
-  ##                                : Information about a health check.
-  ## The number of consecutive health check failures required before moving the instance to the <code>Unhealthy</code> state.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   HealthCheckTarget: string
   ##                    : Information about a health check.
   ## <p>The instance being checked. The protocol is either TCP, HTTP, HTTPS, or SSL. The range of valid ports is one (1) through 65535.</p> <p>TCP is the default, specified as a TCP: port pair, for example "TCP:5000". In this case, a health check simply attempts to open a TCP connection to the instance on the specified port. Failure to connect within the configured timeout is considered unhealthy.</p> <p>SSL is also specified as SSL: port pair, for example, SSL:5000.</p> <p>For HTTP/HTTPS, you must include a ping path in the string. HTTP is specified as a HTTP:port;/;PathToPing; grouping, for example "HTTP:80/weather/us/wa/seattle". In this case, a HTTP GET request is issued to the instance on the given port and path. Any answer other than "200 OK" within the timeout period is considered unhealthy.</p> <p>The total length of the HTTP ping target must be 1024 16-bit Unicode characters or less.</p>
   ##   Version: string (required)
-  var query_600106 = newJObject()
-  var formData_600107 = newJObject()
-  add(formData_600107, "HealthCheck.HealthyThreshold",
+  ##   HealthCheckUnhealthyThreshold: string
+  ##                                : Information about a health check.
+  ## The number of consecutive health check failures required before moving the instance to the <code>Unhealthy</code> state.
+  var query_602128 = newJObject()
+  var formData_602129 = newJObject()
+  add(formData_602129, "HealthCheck.Interval", newJString(HealthCheckInterval))
+  add(formData_602129, "HealthCheck.HealthyThreshold",
       newJString(HealthCheckHealthyThreshold))
-  add(formData_600107, "HealthCheck.Interval", newJString(HealthCheckInterval))
-  add(formData_600107, "HealthCheck.Timeout", newJString(HealthCheckTimeout))
-  add(query_600106, "Action", newJString(Action))
-  add(formData_600107, "HealthCheck.UnhealthyThreshold",
+  add(formData_602129, "HealthCheck.Timeout", newJString(HealthCheckTimeout))
+  add(formData_602129, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602128, "Action", newJString(Action))
+  add(formData_602129, "HealthCheck.Target", newJString(HealthCheckTarget))
+  add(query_602128, "Version", newJString(Version))
+  add(formData_602129, "HealthCheck.UnhealthyThreshold",
       newJString(HealthCheckUnhealthyThreshold))
-  add(formData_600107, "LoadBalancerName", newJString(LoadBalancerName))
-  add(formData_600107, "HealthCheck.Target", newJString(HealthCheckTarget))
-  add(query_600106, "Version", newJString(Version))
-  result = call_600105.call(nil, query_600106, nil, formData_600107, nil)
+  result = call_602127.call(nil, query_602128, nil, formData_602129, nil)
 
-var postConfigureHealthCheck* = Call_PostConfigureHealthCheck_600086(
+var postConfigureHealthCheck* = Call_PostConfigureHealthCheck_602108(
     name: "postConfigureHealthCheck", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=ConfigureHealthCheck",
-    validator: validate_PostConfigureHealthCheck_600087, base: "/",
-    url: url_PostConfigureHealthCheck_600088, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostConfigureHealthCheck_602109, base: "/",
+    url: url_PostConfigureHealthCheck_602110, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetConfigureHealthCheck_600065 = ref object of OpenApiRestCall_599368
-proc url_GetConfigureHealthCheck_600067(protocol: Scheme; host: string; base: string;
+  Call_GetConfigureHealthCheck_602087 = ref object of OpenApiRestCall_601389
+proc url_GetConfigureHealthCheck_602089(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetConfigureHealthCheck_600066(path: JsonNode; query: JsonNode;
+proc validate_GetConfigureHealthCheck_602088(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Specifies the health check settings to use when evaluating the health state of your EC2 instances.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-healthchecks.html">Configure Health Checks for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -1206,192 +1211,193 @@ proc validate_GetConfigureHealthCheck_600066(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   HealthCheck.HealthyThreshold: JString
-  ##                               : Information about a health check.
-  ## The number of consecutive health checks successes required before moving the instance to the <code>Healthy</code> state.
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
+  ##   HealthCheck.Interval: JString
+  ##                       : Information about a health check.
+  ## The approximate interval, in seconds, between health checks of an individual instance.
   ##   HealthCheck.UnhealthyThreshold: JString
   ##                                 : Information about a health check.
   ## The number of consecutive health check failures required before moving the instance to the <code>Unhealthy</code> state.
   ##   HealthCheck.Timeout: JString
   ##                      : Information about a health check.
   ## <p>The amount of time, in seconds, during which no response means a failed health check.</p> <p>This value must be less than the <code>Interval</code> value.</p>
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
+  ##   Action: JString (required)
   ##   HealthCheck.Target: JString
   ##                     : Information about a health check.
   ## <p>The instance being checked. The protocol is either TCP, HTTP, HTTPS, or SSL. The range of valid ports is one (1) through 65535.</p> <p>TCP is the default, specified as a TCP: port pair, for example "TCP:5000". In this case, a health check simply attempts to open a TCP connection to the instance on the specified port. Failure to connect within the configured timeout is considered unhealthy.</p> <p>SSL is also specified as SSL: port pair, for example, SSL:5000.</p> <p>For HTTP/HTTPS, you must include a ping path in the string. HTTP is specified as a HTTP:port;/;PathToPing; grouping, for example "HTTP:80/weather/us/wa/seattle". In this case, a HTTP GET request is issued to the instance on the given port and path. Any answer other than "200 OK" within the timeout period is considered unhealthy.</p> <p>The total length of the HTTP ping target must be 1024 16-bit Unicode characters or less.</p>
-  ##   Action: JString (required)
-  ##   HealthCheck.Interval: JString
-  ##                       : Information about a health check.
-  ## The approximate interval, in seconds, between health checks of an individual instance.
+  ##   HealthCheck.HealthyThreshold: JString
+  ##                               : Information about a health check.
+  ## The number of consecutive health checks successes required before moving the instance to the <code>Healthy</code> state.
   ##   Version: JString (required)
   section = newJObject()
-  var valid_600068 = query.getOrDefault("HealthCheck.HealthyThreshold")
-  valid_600068 = validateParameter(valid_600068, JString, required = false,
+  var valid_602090 = query.getOrDefault("HealthCheck.Interval")
+  valid_602090 = validateParameter(valid_602090, JString, required = false,
                                  default = nil)
-  if valid_600068 != nil:
-    section.add "HealthCheck.HealthyThreshold", valid_600068
+  if valid_602090 != nil:
+    section.add "HealthCheck.Interval", valid_602090
+  var valid_602091 = query.getOrDefault("HealthCheck.UnhealthyThreshold")
+  valid_602091 = validateParameter(valid_602091, JString, required = false,
+                                 default = nil)
+  if valid_602091 != nil:
+    section.add "HealthCheck.UnhealthyThreshold", valid_602091
+  var valid_602092 = query.getOrDefault("HealthCheck.Timeout")
+  valid_602092 = validateParameter(valid_602092, JString, required = false,
+                                 default = nil)
+  if valid_602092 != nil:
+    section.add "HealthCheck.Timeout", valid_602092
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600069 = query.getOrDefault("LoadBalancerName")
-  valid_600069 = validateParameter(valid_600069, JString, required = true,
+  var valid_602093 = query.getOrDefault("LoadBalancerName")
+  valid_602093 = validateParameter(valid_602093, JString, required = true,
                                  default = nil)
-  if valid_600069 != nil:
-    section.add "LoadBalancerName", valid_600069
-  var valid_600070 = query.getOrDefault("HealthCheck.UnhealthyThreshold")
-  valid_600070 = validateParameter(valid_600070, JString, required = false,
-                                 default = nil)
-  if valid_600070 != nil:
-    section.add "HealthCheck.UnhealthyThreshold", valid_600070
-  var valid_600071 = query.getOrDefault("HealthCheck.Timeout")
-  valid_600071 = validateParameter(valid_600071, JString, required = false,
-                                 default = nil)
-  if valid_600071 != nil:
-    section.add "HealthCheck.Timeout", valid_600071
-  var valid_600072 = query.getOrDefault("HealthCheck.Target")
-  valid_600072 = validateParameter(valid_600072, JString, required = false,
-                                 default = nil)
-  if valid_600072 != nil:
-    section.add "HealthCheck.Target", valid_600072
-  var valid_600073 = query.getOrDefault("Action")
-  valid_600073 = validateParameter(valid_600073, JString, required = true,
+  if valid_602093 != nil:
+    section.add "LoadBalancerName", valid_602093
+  var valid_602094 = query.getOrDefault("Action")
+  valid_602094 = validateParameter(valid_602094, JString, required = true,
                                  default = newJString("ConfigureHealthCheck"))
-  if valid_600073 != nil:
-    section.add "Action", valid_600073
-  var valid_600074 = query.getOrDefault("HealthCheck.Interval")
-  valid_600074 = validateParameter(valid_600074, JString, required = false,
+  if valid_602094 != nil:
+    section.add "Action", valid_602094
+  var valid_602095 = query.getOrDefault("HealthCheck.Target")
+  valid_602095 = validateParameter(valid_602095, JString, required = false,
                                  default = nil)
-  if valid_600074 != nil:
-    section.add "HealthCheck.Interval", valid_600074
-  var valid_600075 = query.getOrDefault("Version")
-  valid_600075 = validateParameter(valid_600075, JString, required = true,
+  if valid_602095 != nil:
+    section.add "HealthCheck.Target", valid_602095
+  var valid_602096 = query.getOrDefault("HealthCheck.HealthyThreshold")
+  valid_602096 = validateParameter(valid_602096, JString, required = false,
+                                 default = nil)
+  if valid_602096 != nil:
+    section.add "HealthCheck.HealthyThreshold", valid_602096
+  var valid_602097 = query.getOrDefault("Version")
+  valid_602097 = validateParameter(valid_602097, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600075 != nil:
-    section.add "Version", valid_600075
+  if valid_602097 != nil:
+    section.add "Version", valid_602097
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600076 = header.getOrDefault("X-Amz-Date")
-  valid_600076 = validateParameter(valid_600076, JString, required = false,
+  var valid_602098 = header.getOrDefault("X-Amz-Signature")
+  valid_602098 = validateParameter(valid_602098, JString, required = false,
                                  default = nil)
-  if valid_600076 != nil:
-    section.add "X-Amz-Date", valid_600076
-  var valid_600077 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600077 = validateParameter(valid_600077, JString, required = false,
+  if valid_602098 != nil:
+    section.add "X-Amz-Signature", valid_602098
+  var valid_602099 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602099 = validateParameter(valid_602099, JString, required = false,
                                  default = nil)
-  if valid_600077 != nil:
-    section.add "X-Amz-Security-Token", valid_600077
-  var valid_600078 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600078 = validateParameter(valid_600078, JString, required = false,
+  if valid_602099 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602099
+  var valid_602100 = header.getOrDefault("X-Amz-Date")
+  valid_602100 = validateParameter(valid_602100, JString, required = false,
                                  default = nil)
-  if valid_600078 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600078
-  var valid_600079 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600079 = validateParameter(valid_600079, JString, required = false,
+  if valid_602100 != nil:
+    section.add "X-Amz-Date", valid_602100
+  var valid_602101 = header.getOrDefault("X-Amz-Credential")
+  valid_602101 = validateParameter(valid_602101, JString, required = false,
                                  default = nil)
-  if valid_600079 != nil:
-    section.add "X-Amz-Algorithm", valid_600079
-  var valid_600080 = header.getOrDefault("X-Amz-Signature")
-  valid_600080 = validateParameter(valid_600080, JString, required = false,
+  if valid_602101 != nil:
+    section.add "X-Amz-Credential", valid_602101
+  var valid_602102 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602102 = validateParameter(valid_602102, JString, required = false,
                                  default = nil)
-  if valid_600080 != nil:
-    section.add "X-Amz-Signature", valid_600080
-  var valid_600081 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600081 = validateParameter(valid_600081, JString, required = false,
+  if valid_602102 != nil:
+    section.add "X-Amz-Security-Token", valid_602102
+  var valid_602103 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602103 = validateParameter(valid_602103, JString, required = false,
                                  default = nil)
-  if valid_600081 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600081
-  var valid_600082 = header.getOrDefault("X-Amz-Credential")
-  valid_600082 = validateParameter(valid_600082, JString, required = false,
+  if valid_602103 != nil:
+    section.add "X-Amz-Algorithm", valid_602103
+  var valid_602104 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602104 = validateParameter(valid_602104, JString, required = false,
                                  default = nil)
-  if valid_600082 != nil:
-    section.add "X-Amz-Credential", valid_600082
+  if valid_602104 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602104
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600083: Call_GetConfigureHealthCheck_600065; path: JsonNode;
+proc call*(call_602105: Call_GetConfigureHealthCheck_602087; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Specifies the health check settings to use when evaluating the health state of your EC2 instances.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-healthchecks.html">Configure Health Checks for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600083.validator(path, query, header, formData, body)
-  let scheme = call_600083.pickScheme
+  let valid = call_602105.validator(path, query, header, formData, body)
+  let scheme = call_602105.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600083.url(scheme.get, call_600083.host, call_600083.base,
-                         call_600083.route, valid.getOrDefault("path"),
+  let url = call_602105.url(scheme.get, call_602105.host, call_602105.base,
+                         call_602105.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600083, url, valid)
+  result = atozHook(call_602105, url, valid)
 
-proc call*(call_600084: Call_GetConfigureHealthCheck_600065;
-          LoadBalancerName: string; HealthCheckHealthyThreshold: string = "";
+proc call*(call_602106: Call_GetConfigureHealthCheck_602087;
+          LoadBalancerName: string; HealthCheckInterval: string = "";
           HealthCheckUnhealthyThreshold: string = "";
-          HealthCheckTimeout: string = ""; HealthCheckTarget: string = "";
-          Action: string = "ConfigureHealthCheck"; HealthCheckInterval: string = "";
+          HealthCheckTimeout: string = ""; Action: string = "ConfigureHealthCheck";
+          HealthCheckTarget: string = ""; HealthCheckHealthyThreshold: string = "";
           Version: string = "2012-06-01"): Recallable =
   ## getConfigureHealthCheck
   ## <p>Specifies the health check settings to use when evaluating the health state of your EC2 instances.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-healthchecks.html">Configure Health Checks for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   HealthCheckHealthyThreshold: string
-  ##                              : Information about a health check.
-  ## The number of consecutive health checks successes required before moving the instance to the <code>Healthy</code> state.
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
+  ##   HealthCheckInterval: string
+  ##                      : Information about a health check.
+  ## The approximate interval, in seconds, between health checks of an individual instance.
   ##   HealthCheckUnhealthyThreshold: string
   ##                                : Information about a health check.
   ## The number of consecutive health check failures required before moving the instance to the <code>Unhealthy</code> state.
   ##   HealthCheckTimeout: string
   ##                     : Information about a health check.
   ## <p>The amount of time, in seconds, during which no response means a failed health check.</p> <p>This value must be less than the <code>Interval</code> value.</p>
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   HealthCheckTarget: string
   ##                    : Information about a health check.
   ## <p>The instance being checked. The protocol is either TCP, HTTP, HTTPS, or SSL. The range of valid ports is one (1) through 65535.</p> <p>TCP is the default, specified as a TCP: port pair, for example "TCP:5000". In this case, a health check simply attempts to open a TCP connection to the instance on the specified port. Failure to connect within the configured timeout is considered unhealthy.</p> <p>SSL is also specified as SSL: port pair, for example, SSL:5000.</p> <p>For HTTP/HTTPS, you must include a ping path in the string. HTTP is specified as a HTTP:port;/;PathToPing; grouping, for example "HTTP:80/weather/us/wa/seattle". In this case, a HTTP GET request is issued to the instance on the given port and path. Any answer other than "200 OK" within the timeout period is considered unhealthy.</p> <p>The total length of the HTTP ping target must be 1024 16-bit Unicode characters or less.</p>
-  ##   Action: string (required)
-  ##   HealthCheckInterval: string
-  ##                      : Information about a health check.
-  ## The approximate interval, in seconds, between health checks of an individual instance.
+  ##   HealthCheckHealthyThreshold: string
+  ##                              : Information about a health check.
+  ## The number of consecutive health checks successes required before moving the instance to the <code>Healthy</code> state.
   ##   Version: string (required)
-  var query_600085 = newJObject()
-  add(query_600085, "HealthCheck.HealthyThreshold",
-      newJString(HealthCheckHealthyThreshold))
-  add(query_600085, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600085, "HealthCheck.UnhealthyThreshold",
+  var query_602107 = newJObject()
+  add(query_602107, "HealthCheck.Interval", newJString(HealthCheckInterval))
+  add(query_602107, "HealthCheck.UnhealthyThreshold",
       newJString(HealthCheckUnhealthyThreshold))
-  add(query_600085, "HealthCheck.Timeout", newJString(HealthCheckTimeout))
-  add(query_600085, "HealthCheck.Target", newJString(HealthCheckTarget))
-  add(query_600085, "Action", newJString(Action))
-  add(query_600085, "HealthCheck.Interval", newJString(HealthCheckInterval))
-  add(query_600085, "Version", newJString(Version))
-  result = call_600084.call(nil, query_600085, nil, nil, nil)
+  add(query_602107, "HealthCheck.Timeout", newJString(HealthCheckTimeout))
+  add(query_602107, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602107, "Action", newJString(Action))
+  add(query_602107, "HealthCheck.Target", newJString(HealthCheckTarget))
+  add(query_602107, "HealthCheck.HealthyThreshold",
+      newJString(HealthCheckHealthyThreshold))
+  add(query_602107, "Version", newJString(Version))
+  result = call_602106.call(nil, query_602107, nil, nil, nil)
 
-var getConfigureHealthCheck* = Call_GetConfigureHealthCheck_600065(
+var getConfigureHealthCheck* = Call_GetConfigureHealthCheck_602087(
     name: "getConfigureHealthCheck", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=ConfigureHealthCheck",
-    validator: validate_GetConfigureHealthCheck_600066, base: "/",
-    url: url_GetConfigureHealthCheck_600067, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetConfigureHealthCheck_602088, base: "/",
+    url: url_GetConfigureHealthCheck_602089, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateAppCookieStickinessPolicy_600126 = ref object of OpenApiRestCall_599368
-proc url_PostCreateAppCookieStickinessPolicy_600128(protocol: Scheme; host: string;
+  Call_PostCreateAppCookieStickinessPolicy_602148 = ref object of OpenApiRestCall_601389
+proc url_PostCreateAppCookieStickinessPolicy_602150(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostCreateAppCookieStickinessPolicy_600127(path: JsonNode;
+proc validate_PostCreateAppCookieStickinessPolicy_602149(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Generates a stickiness policy with sticky session lifetimes that follow that of an application-generated cookie. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>This policy is similar to the policy created by <a>CreateLBCookieStickinessPolicy</a>, except that the lifetime of the special Elastic Load Balancing cookie, <code>AWSELB</code>, follows the lifetime of the application-generated cookie specified in the policy configuration. The load balancer only inserts a new stickiness cookie when the application response includes a new application cookie.</p> <p>If the application cookie is explicitly removed or expires, the session stops being sticky until a new application cookie is issued.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -1404,149 +1410,150 @@ proc validate_PostCreateAppCookieStickinessPolicy_600127(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600129 = query.getOrDefault("Action")
-  valid_600129 = validateParameter(valid_600129, JString, required = true, default = newJString(
+  var valid_602151 = query.getOrDefault("Action")
+  valid_602151 = validateParameter(valid_602151, JString, required = true, default = newJString(
       "CreateAppCookieStickinessPolicy"))
-  if valid_600129 != nil:
-    section.add "Action", valid_600129
-  var valid_600130 = query.getOrDefault("Version")
-  valid_600130 = validateParameter(valid_600130, JString, required = true,
+  if valid_602151 != nil:
+    section.add "Action", valid_602151
+  var valid_602152 = query.getOrDefault("Version")
+  valid_602152 = validateParameter(valid_602152, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600130 != nil:
-    section.add "Version", valid_600130
+  if valid_602152 != nil:
+    section.add "Version", valid_602152
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600131 = header.getOrDefault("X-Amz-Date")
-  valid_600131 = validateParameter(valid_600131, JString, required = false,
+  var valid_602153 = header.getOrDefault("X-Amz-Signature")
+  valid_602153 = validateParameter(valid_602153, JString, required = false,
                                  default = nil)
-  if valid_600131 != nil:
-    section.add "X-Amz-Date", valid_600131
-  var valid_600132 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600132 = validateParameter(valid_600132, JString, required = false,
+  if valid_602153 != nil:
+    section.add "X-Amz-Signature", valid_602153
+  var valid_602154 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602154 = validateParameter(valid_602154, JString, required = false,
                                  default = nil)
-  if valid_600132 != nil:
-    section.add "X-Amz-Security-Token", valid_600132
-  var valid_600133 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600133 = validateParameter(valid_600133, JString, required = false,
+  if valid_602154 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602154
+  var valid_602155 = header.getOrDefault("X-Amz-Date")
+  valid_602155 = validateParameter(valid_602155, JString, required = false,
                                  default = nil)
-  if valid_600133 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600133
-  var valid_600134 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600134 = validateParameter(valid_600134, JString, required = false,
+  if valid_602155 != nil:
+    section.add "X-Amz-Date", valid_602155
+  var valid_602156 = header.getOrDefault("X-Amz-Credential")
+  valid_602156 = validateParameter(valid_602156, JString, required = false,
                                  default = nil)
-  if valid_600134 != nil:
-    section.add "X-Amz-Algorithm", valid_600134
-  var valid_600135 = header.getOrDefault("X-Amz-Signature")
-  valid_600135 = validateParameter(valid_600135, JString, required = false,
+  if valid_602156 != nil:
+    section.add "X-Amz-Credential", valid_602156
+  var valid_602157 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602157 = validateParameter(valid_602157, JString, required = false,
                                  default = nil)
-  if valid_600135 != nil:
-    section.add "X-Amz-Signature", valid_600135
-  var valid_600136 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600136 = validateParameter(valid_600136, JString, required = false,
+  if valid_602157 != nil:
+    section.add "X-Amz-Security-Token", valid_602157
+  var valid_602158 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602158 = validateParameter(valid_602158, JString, required = false,
                                  default = nil)
-  if valid_600136 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600136
-  var valid_600137 = header.getOrDefault("X-Amz-Credential")
-  valid_600137 = validateParameter(valid_600137, JString, required = false,
+  if valid_602158 != nil:
+    section.add "X-Amz-Algorithm", valid_602158
+  var valid_602159 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602159 = validateParameter(valid_602159, JString, required = false,
                                  default = nil)
-  if valid_600137 != nil:
-    section.add "X-Amz-Credential", valid_600137
+  if valid_602159 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602159
   result.add "header", section
   ## parameters in `formData` object:
-  ##   PolicyName: JString (required)
-  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
   ##   CookieName: JString (required)
   ##             : The name of the application cookie used for stickiness.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
+  ##   PolicyName: JString (required)
+  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
   section = newJObject()
   assert formData != nil,
-        "formData argument is necessary due to required `PolicyName` field"
-  var valid_600138 = formData.getOrDefault("PolicyName")
-  valid_600138 = validateParameter(valid_600138, JString, required = true,
+        "formData argument is necessary due to required `CookieName` field"
+  var valid_602160 = formData.getOrDefault("CookieName")
+  valid_602160 = validateParameter(valid_602160, JString, required = true,
                                  default = nil)
-  if valid_600138 != nil:
-    section.add "PolicyName", valid_600138
-  var valid_600139 = formData.getOrDefault("CookieName")
-  valid_600139 = validateParameter(valid_600139, JString, required = true,
+  if valid_602160 != nil:
+    section.add "CookieName", valid_602160
+  var valid_602161 = formData.getOrDefault("LoadBalancerName")
+  valid_602161 = validateParameter(valid_602161, JString, required = true,
                                  default = nil)
-  if valid_600139 != nil:
-    section.add "CookieName", valid_600139
-  var valid_600140 = formData.getOrDefault("LoadBalancerName")
-  valid_600140 = validateParameter(valid_600140, JString, required = true,
+  if valid_602161 != nil:
+    section.add "LoadBalancerName", valid_602161
+  var valid_602162 = formData.getOrDefault("PolicyName")
+  valid_602162 = validateParameter(valid_602162, JString, required = true,
                                  default = nil)
-  if valid_600140 != nil:
-    section.add "LoadBalancerName", valid_600140
+  if valid_602162 != nil:
+    section.add "PolicyName", valid_602162
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600141: Call_PostCreateAppCookieStickinessPolicy_600126;
+proc call*(call_602163: Call_PostCreateAppCookieStickinessPolicy_602148;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Generates a stickiness policy with sticky session lifetimes that follow that of an application-generated cookie. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>This policy is similar to the policy created by <a>CreateLBCookieStickinessPolicy</a>, except that the lifetime of the special Elastic Load Balancing cookie, <code>AWSELB</code>, follows the lifetime of the application-generated cookie specified in the policy configuration. The load balancer only inserts a new stickiness cookie when the application response includes a new application cookie.</p> <p>If the application cookie is explicitly removed or expires, the session stops being sticky until a new application cookie is issued.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600141.validator(path, query, header, formData, body)
-  let scheme = call_600141.pickScheme
+  let valid = call_602163.validator(path, query, header, formData, body)
+  let scheme = call_602163.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600141.url(scheme.get, call_600141.host, call_600141.base,
-                         call_600141.route, valid.getOrDefault("path"),
+  let url = call_602163.url(scheme.get, call_602163.host, call_602163.base,
+                         call_602163.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600141, url, valid)
+  result = atozHook(call_602163, url, valid)
 
-proc call*(call_600142: Call_PostCreateAppCookieStickinessPolicy_600126;
-          PolicyName: string; CookieName: string; LoadBalancerName: string;
+proc call*(call_602164: Call_PostCreateAppCookieStickinessPolicy_602148;
+          CookieName: string; LoadBalancerName: string; PolicyName: string;
           Action: string = "CreateAppCookieStickinessPolicy";
           Version: string = "2012-06-01"): Recallable =
   ## postCreateAppCookieStickinessPolicy
   ## <p>Generates a stickiness policy with sticky session lifetimes that follow that of an application-generated cookie. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>This policy is similar to the policy created by <a>CreateLBCookieStickinessPolicy</a>, except that the lifetime of the special Elastic Load Balancing cookie, <code>AWSELB</code>, follows the lifetime of the application-generated cookie specified in the policy configuration. The load balancer only inserts a new stickiness cookie when the application response includes a new application cookie.</p> <p>If the application cookie is explicitly removed or expires, the session stops being sticky until a new application cookie is issued.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   PolicyName: string (required)
-  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
   ##   CookieName: string (required)
   ##             : The name of the application cookie used for stickiness.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600143 = newJObject()
-  var formData_600144 = newJObject()
-  add(formData_600144, "PolicyName", newJString(PolicyName))
-  add(formData_600144, "CookieName", newJString(CookieName))
-  add(query_600143, "Action", newJString(Action))
-  add(formData_600144, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600143, "Version", newJString(Version))
-  result = call_600142.call(nil, query_600143, nil, formData_600144, nil)
+  ##   PolicyName: string (required)
+  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
+  var query_602165 = newJObject()
+  var formData_602166 = newJObject()
+  add(formData_602166, "CookieName", newJString(CookieName))
+  add(formData_602166, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602165, "Action", newJString(Action))
+  add(query_602165, "Version", newJString(Version))
+  add(formData_602166, "PolicyName", newJString(PolicyName))
+  result = call_602164.call(nil, query_602165, nil, formData_602166, nil)
 
-var postCreateAppCookieStickinessPolicy* = Call_PostCreateAppCookieStickinessPolicy_600126(
+var postCreateAppCookieStickinessPolicy* = Call_PostCreateAppCookieStickinessPolicy_602148(
     name: "postCreateAppCookieStickinessPolicy", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateAppCookieStickinessPolicy",
-    validator: validate_PostCreateAppCookieStickinessPolicy_600127, base: "/",
-    url: url_PostCreateAppCookieStickinessPolicy_600128,
+    validator: validate_PostCreateAppCookieStickinessPolicy_602149, base: "/",
+    url: url_PostCreateAppCookieStickinessPolicy_602150,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateAppCookieStickinessPolicy_600108 = ref object of OpenApiRestCall_599368
-proc url_GetCreateAppCookieStickinessPolicy_600110(protocol: Scheme; host: string;
+  Call_GetCreateAppCookieStickinessPolicy_602130 = ref object of OpenApiRestCall_601389
+proc url_GetCreateAppCookieStickinessPolicy_602132(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCreateAppCookieStickinessPolicy_600109(path: JsonNode;
+proc validate_GetCreateAppCookieStickinessPolicy_602131(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Generates a stickiness policy with sticky session lifetimes that follow that of an application-generated cookie. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>This policy is similar to the policy created by <a>CreateLBCookieStickinessPolicy</a>, except that the lifetime of the special Elastic Load Balancing cookie, <code>AWSELB</code>, follows the lifetime of the application-generated cookie specified in the policy configuration. The load balancer only inserts a new stickiness cookie when the application response includes a new application cookie.</p> <p>If the application cookie is explicitly removed or expires, the session stops being sticky until a new application cookie is issued.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -1555,150 +1562,151 @@ proc validate_GetCreateAppCookieStickinessPolicy_600109(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   PolicyName: JString (required)
+  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
+  ##   CookieName: JString (required)
+  ##             : The name of the application cookie used for stickiness.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   ##   Action: JString (required)
-  ##   CookieName: JString (required)
-  ##             : The name of the application cookie used for stickiness.
   ##   Version: JString (required)
-  ##   PolicyName: JString (required)
-  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600111 = query.getOrDefault("LoadBalancerName")
-  valid_600111 = validateParameter(valid_600111, JString, required = true,
+        "query argument is necessary due to required `PolicyName` field"
+  var valid_602133 = query.getOrDefault("PolicyName")
+  valid_602133 = validateParameter(valid_602133, JString, required = true,
                                  default = nil)
-  if valid_600111 != nil:
-    section.add "LoadBalancerName", valid_600111
-  var valid_600112 = query.getOrDefault("Action")
-  valid_600112 = validateParameter(valid_600112, JString, required = true, default = newJString(
+  if valid_602133 != nil:
+    section.add "PolicyName", valid_602133
+  var valid_602134 = query.getOrDefault("CookieName")
+  valid_602134 = validateParameter(valid_602134, JString, required = true,
+                                 default = nil)
+  if valid_602134 != nil:
+    section.add "CookieName", valid_602134
+  var valid_602135 = query.getOrDefault("LoadBalancerName")
+  valid_602135 = validateParameter(valid_602135, JString, required = true,
+                                 default = nil)
+  if valid_602135 != nil:
+    section.add "LoadBalancerName", valid_602135
+  var valid_602136 = query.getOrDefault("Action")
+  valid_602136 = validateParameter(valid_602136, JString, required = true, default = newJString(
       "CreateAppCookieStickinessPolicy"))
-  if valid_600112 != nil:
-    section.add "Action", valid_600112
-  var valid_600113 = query.getOrDefault("CookieName")
-  valid_600113 = validateParameter(valid_600113, JString, required = true,
-                                 default = nil)
-  if valid_600113 != nil:
-    section.add "CookieName", valid_600113
-  var valid_600114 = query.getOrDefault("Version")
-  valid_600114 = validateParameter(valid_600114, JString, required = true,
+  if valid_602136 != nil:
+    section.add "Action", valid_602136
+  var valid_602137 = query.getOrDefault("Version")
+  valid_602137 = validateParameter(valid_602137, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600114 != nil:
-    section.add "Version", valid_600114
-  var valid_600115 = query.getOrDefault("PolicyName")
-  valid_600115 = validateParameter(valid_600115, JString, required = true,
-                                 default = nil)
-  if valid_600115 != nil:
-    section.add "PolicyName", valid_600115
+  if valid_602137 != nil:
+    section.add "Version", valid_602137
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600116 = header.getOrDefault("X-Amz-Date")
-  valid_600116 = validateParameter(valid_600116, JString, required = false,
+  var valid_602138 = header.getOrDefault("X-Amz-Signature")
+  valid_602138 = validateParameter(valid_602138, JString, required = false,
                                  default = nil)
-  if valid_600116 != nil:
-    section.add "X-Amz-Date", valid_600116
-  var valid_600117 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600117 = validateParameter(valid_600117, JString, required = false,
+  if valid_602138 != nil:
+    section.add "X-Amz-Signature", valid_602138
+  var valid_602139 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602139 = validateParameter(valid_602139, JString, required = false,
                                  default = nil)
-  if valid_600117 != nil:
-    section.add "X-Amz-Security-Token", valid_600117
-  var valid_600118 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600118 = validateParameter(valid_600118, JString, required = false,
+  if valid_602139 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602139
+  var valid_602140 = header.getOrDefault("X-Amz-Date")
+  valid_602140 = validateParameter(valid_602140, JString, required = false,
                                  default = nil)
-  if valid_600118 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600118
-  var valid_600119 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600119 = validateParameter(valid_600119, JString, required = false,
+  if valid_602140 != nil:
+    section.add "X-Amz-Date", valid_602140
+  var valid_602141 = header.getOrDefault("X-Amz-Credential")
+  valid_602141 = validateParameter(valid_602141, JString, required = false,
                                  default = nil)
-  if valid_600119 != nil:
-    section.add "X-Amz-Algorithm", valid_600119
-  var valid_600120 = header.getOrDefault("X-Amz-Signature")
-  valid_600120 = validateParameter(valid_600120, JString, required = false,
+  if valid_602141 != nil:
+    section.add "X-Amz-Credential", valid_602141
+  var valid_602142 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602142 = validateParameter(valid_602142, JString, required = false,
                                  default = nil)
-  if valid_600120 != nil:
-    section.add "X-Amz-Signature", valid_600120
-  var valid_600121 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600121 = validateParameter(valid_600121, JString, required = false,
+  if valid_602142 != nil:
+    section.add "X-Amz-Security-Token", valid_602142
+  var valid_602143 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602143 = validateParameter(valid_602143, JString, required = false,
                                  default = nil)
-  if valid_600121 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600121
-  var valid_600122 = header.getOrDefault("X-Amz-Credential")
-  valid_600122 = validateParameter(valid_600122, JString, required = false,
+  if valid_602143 != nil:
+    section.add "X-Amz-Algorithm", valid_602143
+  var valid_602144 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602144 = validateParameter(valid_602144, JString, required = false,
                                  default = nil)
-  if valid_600122 != nil:
-    section.add "X-Amz-Credential", valid_600122
+  if valid_602144 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602144
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600123: Call_GetCreateAppCookieStickinessPolicy_600108;
+proc call*(call_602145: Call_GetCreateAppCookieStickinessPolicy_602130;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Generates a stickiness policy with sticky session lifetimes that follow that of an application-generated cookie. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>This policy is similar to the policy created by <a>CreateLBCookieStickinessPolicy</a>, except that the lifetime of the special Elastic Load Balancing cookie, <code>AWSELB</code>, follows the lifetime of the application-generated cookie specified in the policy configuration. The load balancer only inserts a new stickiness cookie when the application response includes a new application cookie.</p> <p>If the application cookie is explicitly removed or expires, the session stops being sticky until a new application cookie is issued.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600123.validator(path, query, header, formData, body)
-  let scheme = call_600123.pickScheme
+  let valid = call_602145.validator(path, query, header, formData, body)
+  let scheme = call_602145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600123.url(scheme.get, call_600123.host, call_600123.base,
-                         call_600123.route, valid.getOrDefault("path"),
+  let url = call_602145.url(scheme.get, call_602145.host, call_602145.base,
+                         call_602145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600123, url, valid)
+  result = atozHook(call_602145, url, valid)
 
-proc call*(call_600124: Call_GetCreateAppCookieStickinessPolicy_600108;
-          LoadBalancerName: string; CookieName: string; PolicyName: string;
+proc call*(call_602146: Call_GetCreateAppCookieStickinessPolicy_602130;
+          PolicyName: string; CookieName: string; LoadBalancerName: string;
           Action: string = "CreateAppCookieStickinessPolicy";
           Version: string = "2012-06-01"): Recallable =
   ## getCreateAppCookieStickinessPolicy
   ## <p>Generates a stickiness policy with sticky session lifetimes that follow that of an application-generated cookie. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>This policy is similar to the policy created by <a>CreateLBCookieStickinessPolicy</a>, except that the lifetime of the special Elastic Load Balancing cookie, <code>AWSELB</code>, follows the lifetime of the application-generated cookie specified in the policy configuration. The load balancer only inserts a new stickiness cookie when the application response includes a new application cookie.</p> <p>If the application cookie is explicitly removed or expires, the session stops being sticky until a new application cookie is issued.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   PolicyName: string (required)
+  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
+  ##   CookieName: string (required)
+  ##             : The name of the application cookie used for stickiness.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
   ##   Action: string (required)
-  ##   CookieName: string (required)
-  ##             : The name of the application cookie used for stickiness.
   ##   Version: string (required)
-  ##   PolicyName: string (required)
-  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
-  var query_600125 = newJObject()
-  add(query_600125, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600125, "Action", newJString(Action))
-  add(query_600125, "CookieName", newJString(CookieName))
-  add(query_600125, "Version", newJString(Version))
-  add(query_600125, "PolicyName", newJString(PolicyName))
-  result = call_600124.call(nil, query_600125, nil, nil, nil)
+  var query_602147 = newJObject()
+  add(query_602147, "PolicyName", newJString(PolicyName))
+  add(query_602147, "CookieName", newJString(CookieName))
+  add(query_602147, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602147, "Action", newJString(Action))
+  add(query_602147, "Version", newJString(Version))
+  result = call_602146.call(nil, query_602147, nil, nil, nil)
 
-var getCreateAppCookieStickinessPolicy* = Call_GetCreateAppCookieStickinessPolicy_600108(
+var getCreateAppCookieStickinessPolicy* = Call_GetCreateAppCookieStickinessPolicy_602130(
     name: "getCreateAppCookieStickinessPolicy", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateAppCookieStickinessPolicy",
-    validator: validate_GetCreateAppCookieStickinessPolicy_600109, base: "/",
-    url: url_GetCreateAppCookieStickinessPolicy_600110,
+    validator: validate_GetCreateAppCookieStickinessPolicy_602131, base: "/",
+    url: url_GetCreateAppCookieStickinessPolicy_602132,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateLBCookieStickinessPolicy_600163 = ref object of OpenApiRestCall_599368
-proc url_PostCreateLBCookieStickinessPolicy_600165(protocol: Scheme; host: string;
+  Call_PostCreateLBCookieStickinessPolicy_602185 = ref object of OpenApiRestCall_601389
+proc url_PostCreateLBCookieStickinessPolicy_602187(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostCreateLBCookieStickinessPolicy_600164(path: JsonNode;
+proc validate_PostCreateLBCookieStickinessPolicy_602186(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Generates a stickiness policy with sticky session lifetimes controlled by the lifetime of the browser (user-agent) or a specified expiration period. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>When a load balancer implements this policy, the load balancer uses a special cookie to track the instance for each request. When the load balancer receives a request, it first checks to see if this cookie is present in the request. If so, the load balancer sends the request to the application server specified in the cookie. If not, the load balancer sends the request to a server that is chosen based on the existing load-balancing algorithm.</p> <p>A cookie is inserted into the response for binding subsequent requests from the same user to that server. The validity of the cookie is based on the cookie expiration time, which is specified in the policy configuration.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -1711,148 +1719,149 @@ proc validate_PostCreateLBCookieStickinessPolicy_600164(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600166 = query.getOrDefault("Action")
-  valid_600166 = validateParameter(valid_600166, JString, required = true, default = newJString(
+  var valid_602188 = query.getOrDefault("Action")
+  valid_602188 = validateParameter(valid_602188, JString, required = true, default = newJString(
       "CreateLBCookieStickinessPolicy"))
-  if valid_600166 != nil:
-    section.add "Action", valid_600166
-  var valid_600167 = query.getOrDefault("Version")
-  valid_600167 = validateParameter(valid_600167, JString, required = true,
+  if valid_602188 != nil:
+    section.add "Action", valid_602188
+  var valid_602189 = query.getOrDefault("Version")
+  valid_602189 = validateParameter(valid_602189, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600167 != nil:
-    section.add "Version", valid_600167
+  if valid_602189 != nil:
+    section.add "Version", valid_602189
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600168 = header.getOrDefault("X-Amz-Date")
-  valid_600168 = validateParameter(valid_600168, JString, required = false,
+  var valid_602190 = header.getOrDefault("X-Amz-Signature")
+  valid_602190 = validateParameter(valid_602190, JString, required = false,
                                  default = nil)
-  if valid_600168 != nil:
-    section.add "X-Amz-Date", valid_600168
-  var valid_600169 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600169 = validateParameter(valid_600169, JString, required = false,
+  if valid_602190 != nil:
+    section.add "X-Amz-Signature", valid_602190
+  var valid_602191 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602191 = validateParameter(valid_602191, JString, required = false,
                                  default = nil)
-  if valid_600169 != nil:
-    section.add "X-Amz-Security-Token", valid_600169
-  var valid_600170 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600170 = validateParameter(valid_600170, JString, required = false,
+  if valid_602191 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602191
+  var valid_602192 = header.getOrDefault("X-Amz-Date")
+  valid_602192 = validateParameter(valid_602192, JString, required = false,
                                  default = nil)
-  if valid_600170 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600170
-  var valid_600171 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600171 = validateParameter(valid_600171, JString, required = false,
+  if valid_602192 != nil:
+    section.add "X-Amz-Date", valid_602192
+  var valid_602193 = header.getOrDefault("X-Amz-Credential")
+  valid_602193 = validateParameter(valid_602193, JString, required = false,
                                  default = nil)
-  if valid_600171 != nil:
-    section.add "X-Amz-Algorithm", valid_600171
-  var valid_600172 = header.getOrDefault("X-Amz-Signature")
-  valid_600172 = validateParameter(valid_600172, JString, required = false,
+  if valid_602193 != nil:
+    section.add "X-Amz-Credential", valid_602193
+  var valid_602194 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602194 = validateParameter(valid_602194, JString, required = false,
                                  default = nil)
-  if valid_600172 != nil:
-    section.add "X-Amz-Signature", valid_600172
-  var valid_600173 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600173 = validateParameter(valid_600173, JString, required = false,
+  if valid_602194 != nil:
+    section.add "X-Amz-Security-Token", valid_602194
+  var valid_602195 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602195 = validateParameter(valid_602195, JString, required = false,
                                  default = nil)
-  if valid_600173 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600173
-  var valid_600174 = header.getOrDefault("X-Amz-Credential")
-  valid_600174 = validateParameter(valid_600174, JString, required = false,
+  if valid_602195 != nil:
+    section.add "X-Amz-Algorithm", valid_602195
+  var valid_602196 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602196 = validateParameter(valid_602196, JString, required = false,
                                  default = nil)
-  if valid_600174 != nil:
-    section.add "X-Amz-Credential", valid_600174
+  if valid_602196 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602196
   result.add "header", section
   ## parameters in `formData` object:
-  ##   PolicyName: JString (required)
-  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
   ##   CookieExpirationPeriod: JInt
   ##                         : The time period, in seconds, after which the cookie should be considered stale. If you do not specify this parameter, the default value is 0, which indicates that the sticky session should last for the duration of the browser session.
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
+  ##   PolicyName: JString (required)
+  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
   section = newJObject()
-  assert formData != nil,
-        "formData argument is necessary due to required `PolicyName` field"
-  var valid_600175 = formData.getOrDefault("PolicyName")
-  valid_600175 = validateParameter(valid_600175, JString, required = true,
+  var valid_602197 = formData.getOrDefault("CookieExpirationPeriod")
+  valid_602197 = validateParameter(valid_602197, JInt, required = false, default = nil)
+  if valid_602197 != nil:
+    section.add "CookieExpirationPeriod", valid_602197
+  assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
+  var valid_602198 = formData.getOrDefault("LoadBalancerName")
+  valid_602198 = validateParameter(valid_602198, JString, required = true,
                                  default = nil)
-  if valid_600175 != nil:
-    section.add "PolicyName", valid_600175
-  var valid_600176 = formData.getOrDefault("LoadBalancerName")
-  valid_600176 = validateParameter(valid_600176, JString, required = true,
+  if valid_602198 != nil:
+    section.add "LoadBalancerName", valid_602198
+  var valid_602199 = formData.getOrDefault("PolicyName")
+  valid_602199 = validateParameter(valid_602199, JString, required = true,
                                  default = nil)
-  if valid_600176 != nil:
-    section.add "LoadBalancerName", valid_600176
-  var valid_600177 = formData.getOrDefault("CookieExpirationPeriod")
-  valid_600177 = validateParameter(valid_600177, JInt, required = false, default = nil)
-  if valid_600177 != nil:
-    section.add "CookieExpirationPeriod", valid_600177
+  if valid_602199 != nil:
+    section.add "PolicyName", valid_602199
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600178: Call_PostCreateLBCookieStickinessPolicy_600163;
+proc call*(call_602200: Call_PostCreateLBCookieStickinessPolicy_602185;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Generates a stickiness policy with sticky session lifetimes controlled by the lifetime of the browser (user-agent) or a specified expiration period. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>When a load balancer implements this policy, the load balancer uses a special cookie to track the instance for each request. When the load balancer receives a request, it first checks to see if this cookie is present in the request. If so, the load balancer sends the request to the application server specified in the cookie. If not, the load balancer sends the request to a server that is chosen based on the existing load-balancing algorithm.</p> <p>A cookie is inserted into the response for binding subsequent requests from the same user to that server. The validity of the cookie is based on the cookie expiration time, which is specified in the policy configuration.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600178.validator(path, query, header, formData, body)
-  let scheme = call_600178.pickScheme
+  let valid = call_602200.validator(path, query, header, formData, body)
+  let scheme = call_602200.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600178.url(scheme.get, call_600178.host, call_600178.base,
-                         call_600178.route, valid.getOrDefault("path"),
+  let url = call_602200.url(scheme.get, call_602200.host, call_602200.base,
+                         call_602200.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600178, url, valid)
+  result = atozHook(call_602200, url, valid)
 
-proc call*(call_600179: Call_PostCreateLBCookieStickinessPolicy_600163;
-          PolicyName: string; LoadBalancerName: string;
+proc call*(call_602201: Call_PostCreateLBCookieStickinessPolicy_602185;
+          LoadBalancerName: string; PolicyName: string;
+          CookieExpirationPeriod: int = 0;
           Action: string = "CreateLBCookieStickinessPolicy";
-          Version: string = "2012-06-01"; CookieExpirationPeriod: int = 0): Recallable =
+          Version: string = "2012-06-01"): Recallable =
   ## postCreateLBCookieStickinessPolicy
   ## <p>Generates a stickiness policy with sticky session lifetimes controlled by the lifetime of the browser (user-agent) or a specified expiration period. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>When a load balancer implements this policy, the load balancer uses a special cookie to track the instance for each request. When the load balancer receives a request, it first checks to see if this cookie is present in the request. If so, the load balancer sends the request to the application server specified in the cookie. If not, the load balancer sends the request to a server that is chosen based on the existing load-balancing algorithm.</p> <p>A cookie is inserted into the response for binding subsequent requests from the same user to that server. The validity of the cookie is based on the cookie expiration time, which is specified in the policy configuration.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   PolicyName: string (required)
-  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
-  ##   Action: string (required)
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
-  ##   Version: string (required)
   ##   CookieExpirationPeriod: int
   ##                         : The time period, in seconds, after which the cookie should be considered stale. If you do not specify this parameter, the default value is 0, which indicates that the sticky session should last for the duration of the browser session.
-  var query_600180 = newJObject()
-  var formData_600181 = newJObject()
-  add(formData_600181, "PolicyName", newJString(PolicyName))
-  add(query_600180, "Action", newJString(Action))
-  add(formData_600181, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600180, "Version", newJString(Version))
-  add(formData_600181, "CookieExpirationPeriod", newJInt(CookieExpirationPeriod))
-  result = call_600179.call(nil, query_600180, nil, formData_600181, nil)
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
+  ##   Action: string (required)
+  ##   Version: string (required)
+  ##   PolicyName: string (required)
+  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
+  var query_602202 = newJObject()
+  var formData_602203 = newJObject()
+  add(formData_602203, "CookieExpirationPeriod", newJInt(CookieExpirationPeriod))
+  add(formData_602203, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602202, "Action", newJString(Action))
+  add(query_602202, "Version", newJString(Version))
+  add(formData_602203, "PolicyName", newJString(PolicyName))
+  result = call_602201.call(nil, query_602202, nil, formData_602203, nil)
 
-var postCreateLBCookieStickinessPolicy* = Call_PostCreateLBCookieStickinessPolicy_600163(
+var postCreateLBCookieStickinessPolicy* = Call_PostCreateLBCookieStickinessPolicy_602185(
     name: "postCreateLBCookieStickinessPolicy", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateLBCookieStickinessPolicy",
-    validator: validate_PostCreateLBCookieStickinessPolicy_600164, base: "/",
-    url: url_PostCreateLBCookieStickinessPolicy_600165,
+    validator: validate_PostCreateLBCookieStickinessPolicy_602186, base: "/",
+    url: url_PostCreateLBCookieStickinessPolicy_602187,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateLBCookieStickinessPolicy_600145 = ref object of OpenApiRestCall_599368
-proc url_GetCreateLBCookieStickinessPolicy_600147(protocol: Scheme; host: string;
+  Call_GetCreateLBCookieStickinessPolicy_602167 = ref object of OpenApiRestCall_601389
+proc url_GetCreateLBCookieStickinessPolicy_602169(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCreateLBCookieStickinessPolicy_600146(path: JsonNode;
+proc validate_GetCreateLBCookieStickinessPolicy_602168(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Generates a stickiness policy with sticky session lifetimes controlled by the lifetime of the browser (user-agent) or a specified expiration period. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>When a load balancer implements this policy, the load balancer uses a special cookie to track the instance for each request. When the load balancer receives a request, it first checks to see if this cookie is present in the request. If so, the load balancer sends the request to the application server specified in the cookie. If not, the load balancer sends the request to a server that is chosen based on the existing load-balancing algorithm.</p> <p>A cookie is inserted into the response for binding subsequent requests from the same user to that server. The validity of the cookie is based on the cookie expiration time, which is specified in the policy configuration.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -1863,106 +1872,106 @@ proc validate_GetCreateLBCookieStickinessPolicy_600146(path: JsonNode;
   ## parameters in `query` object:
   ##   CookieExpirationPeriod: JInt
   ##                         : The time period, in seconds, after which the cookie should be considered stale. If you do not specify this parameter, the default value is 0, which indicates that the sticky session should last for the duration of the browser session.
+  ##   PolicyName: JString (required)
+  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   ##   Action: JString (required)
   ##   Version: JString (required)
-  ##   PolicyName: JString (required)
-  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
   section = newJObject()
-  var valid_600148 = query.getOrDefault("CookieExpirationPeriod")
-  valid_600148 = validateParameter(valid_600148, JInt, required = false, default = nil)
-  if valid_600148 != nil:
-    section.add "CookieExpirationPeriod", valid_600148
+  var valid_602170 = query.getOrDefault("CookieExpirationPeriod")
+  valid_602170 = validateParameter(valid_602170, JInt, required = false, default = nil)
+  if valid_602170 != nil:
+    section.add "CookieExpirationPeriod", valid_602170
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600149 = query.getOrDefault("LoadBalancerName")
-  valid_600149 = validateParameter(valid_600149, JString, required = true,
+        "query argument is necessary due to required `PolicyName` field"
+  var valid_602171 = query.getOrDefault("PolicyName")
+  valid_602171 = validateParameter(valid_602171, JString, required = true,
                                  default = nil)
-  if valid_600149 != nil:
-    section.add "LoadBalancerName", valid_600149
-  var valid_600150 = query.getOrDefault("Action")
-  valid_600150 = validateParameter(valid_600150, JString, required = true, default = newJString(
+  if valid_602171 != nil:
+    section.add "PolicyName", valid_602171
+  var valid_602172 = query.getOrDefault("LoadBalancerName")
+  valid_602172 = validateParameter(valid_602172, JString, required = true,
+                                 default = nil)
+  if valid_602172 != nil:
+    section.add "LoadBalancerName", valid_602172
+  var valid_602173 = query.getOrDefault("Action")
+  valid_602173 = validateParameter(valid_602173, JString, required = true, default = newJString(
       "CreateLBCookieStickinessPolicy"))
-  if valid_600150 != nil:
-    section.add "Action", valid_600150
-  var valid_600151 = query.getOrDefault("Version")
-  valid_600151 = validateParameter(valid_600151, JString, required = true,
+  if valid_602173 != nil:
+    section.add "Action", valid_602173
+  var valid_602174 = query.getOrDefault("Version")
+  valid_602174 = validateParameter(valid_602174, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600151 != nil:
-    section.add "Version", valid_600151
-  var valid_600152 = query.getOrDefault("PolicyName")
-  valid_600152 = validateParameter(valid_600152, JString, required = true,
-                                 default = nil)
-  if valid_600152 != nil:
-    section.add "PolicyName", valid_600152
+  if valid_602174 != nil:
+    section.add "Version", valid_602174
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600153 = header.getOrDefault("X-Amz-Date")
-  valid_600153 = validateParameter(valid_600153, JString, required = false,
+  var valid_602175 = header.getOrDefault("X-Amz-Signature")
+  valid_602175 = validateParameter(valid_602175, JString, required = false,
                                  default = nil)
-  if valid_600153 != nil:
-    section.add "X-Amz-Date", valid_600153
-  var valid_600154 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600154 = validateParameter(valid_600154, JString, required = false,
+  if valid_602175 != nil:
+    section.add "X-Amz-Signature", valid_602175
+  var valid_602176 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602176 = validateParameter(valid_602176, JString, required = false,
                                  default = nil)
-  if valid_600154 != nil:
-    section.add "X-Amz-Security-Token", valid_600154
-  var valid_600155 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600155 = validateParameter(valid_600155, JString, required = false,
+  if valid_602176 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602176
+  var valid_602177 = header.getOrDefault("X-Amz-Date")
+  valid_602177 = validateParameter(valid_602177, JString, required = false,
                                  default = nil)
-  if valid_600155 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600155
-  var valid_600156 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600156 = validateParameter(valid_600156, JString, required = false,
+  if valid_602177 != nil:
+    section.add "X-Amz-Date", valid_602177
+  var valid_602178 = header.getOrDefault("X-Amz-Credential")
+  valid_602178 = validateParameter(valid_602178, JString, required = false,
                                  default = nil)
-  if valid_600156 != nil:
-    section.add "X-Amz-Algorithm", valid_600156
-  var valid_600157 = header.getOrDefault("X-Amz-Signature")
-  valid_600157 = validateParameter(valid_600157, JString, required = false,
+  if valid_602178 != nil:
+    section.add "X-Amz-Credential", valid_602178
+  var valid_602179 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602179 = validateParameter(valid_602179, JString, required = false,
                                  default = nil)
-  if valid_600157 != nil:
-    section.add "X-Amz-Signature", valid_600157
-  var valid_600158 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600158 = validateParameter(valid_600158, JString, required = false,
+  if valid_602179 != nil:
+    section.add "X-Amz-Security-Token", valid_602179
+  var valid_602180 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602180 = validateParameter(valid_602180, JString, required = false,
                                  default = nil)
-  if valid_600158 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600158
-  var valid_600159 = header.getOrDefault("X-Amz-Credential")
-  valid_600159 = validateParameter(valid_600159, JString, required = false,
+  if valid_602180 != nil:
+    section.add "X-Amz-Algorithm", valid_602180
+  var valid_602181 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602181 = validateParameter(valid_602181, JString, required = false,
                                  default = nil)
-  if valid_600159 != nil:
-    section.add "X-Amz-Credential", valid_600159
+  if valid_602181 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602181
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600160: Call_GetCreateLBCookieStickinessPolicy_600145;
+proc call*(call_602182: Call_GetCreateLBCookieStickinessPolicy_602167;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Generates a stickiness policy with sticky session lifetimes controlled by the lifetime of the browser (user-agent) or a specified expiration period. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>When a load balancer implements this policy, the load balancer uses a special cookie to track the instance for each request. When the load balancer receives a request, it first checks to see if this cookie is present in the request. If so, the load balancer sends the request to the application server specified in the cookie. If not, the load balancer sends the request to a server that is chosen based on the existing load-balancing algorithm.</p> <p>A cookie is inserted into the response for binding subsequent requests from the same user to that server. The validity of the cookie is based on the cookie expiration time, which is specified in the policy configuration.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600160.validator(path, query, header, formData, body)
-  let scheme = call_600160.pickScheme
+  let valid = call_602182.validator(path, query, header, formData, body)
+  let scheme = call_602182.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600160.url(scheme.get, call_600160.host, call_600160.base,
-                         call_600160.route, valid.getOrDefault("path"),
+  let url = call_602182.url(scheme.get, call_602182.host, call_602182.base,
+                         call_602182.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600160, url, valid)
+  result = atozHook(call_602182, url, valid)
 
-proc call*(call_600161: Call_GetCreateLBCookieStickinessPolicy_600145;
-          LoadBalancerName: string; PolicyName: string;
+proc call*(call_602183: Call_GetCreateLBCookieStickinessPolicy_602167;
+          PolicyName: string; LoadBalancerName: string;
           CookieExpirationPeriod: int = 0;
           Action: string = "CreateLBCookieStickinessPolicy";
           Version: string = "2012-06-01"): Recallable =
@@ -1970,41 +1979,42 @@ proc call*(call_600161: Call_GetCreateLBCookieStickinessPolicy_600145;
   ## <p>Generates a stickiness policy with sticky session lifetimes controlled by the lifetime of the browser (user-agent) or a specified expiration period. This policy can be associated only with HTTP/HTTPS listeners.</p> <p>When a load balancer implements this policy, the load balancer uses a special cookie to track the instance for each request. When the load balancer receives a request, it first checks to see if this cookie is present in the request. If so, the load balancer sends the request to the application server specified in the cookie. If not, the load balancer sends the request to a server that is chosen based on the existing load-balancing algorithm.</p> <p>A cookie is inserted into the response for binding subsequent requests from the same user to that server. The validity of the cookie is based on the cookie expiration time, which is specified in the policy configuration.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   CookieExpirationPeriod: int
   ##                         : The time period, in seconds, after which the cookie should be considered stale. If you do not specify this parameter, the default value is 0, which indicates that the sticky session should last for the duration of the browser session.
+  ##   PolicyName: string (required)
+  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  ##   PolicyName: string (required)
-  ##             : The name of the policy being created. Policy names must consist of alphanumeric characters and dashes (-). This name must be unique within the set of policies for this load balancer.
-  var query_600162 = newJObject()
-  add(query_600162, "CookieExpirationPeriod", newJInt(CookieExpirationPeriod))
-  add(query_600162, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600162, "Action", newJString(Action))
-  add(query_600162, "Version", newJString(Version))
-  add(query_600162, "PolicyName", newJString(PolicyName))
-  result = call_600161.call(nil, query_600162, nil, nil, nil)
+  var query_602184 = newJObject()
+  add(query_602184, "CookieExpirationPeriod", newJInt(CookieExpirationPeriod))
+  add(query_602184, "PolicyName", newJString(PolicyName))
+  add(query_602184, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602184, "Action", newJString(Action))
+  add(query_602184, "Version", newJString(Version))
+  result = call_602183.call(nil, query_602184, nil, nil, nil)
 
-var getCreateLBCookieStickinessPolicy* = Call_GetCreateLBCookieStickinessPolicy_600145(
+var getCreateLBCookieStickinessPolicy* = Call_GetCreateLBCookieStickinessPolicy_602167(
     name: "getCreateLBCookieStickinessPolicy", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateLBCookieStickinessPolicy",
-    validator: validate_GetCreateLBCookieStickinessPolicy_600146, base: "/",
-    url: url_GetCreateLBCookieStickinessPolicy_600147,
+    validator: validate_GetCreateLBCookieStickinessPolicy_602168, base: "/",
+    url: url_GetCreateLBCookieStickinessPolicy_602169,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateLoadBalancer_600204 = ref object of OpenApiRestCall_599368
-proc url_PostCreateLoadBalancer_600206(protocol: Scheme; host: string; base: string;
+  Call_PostCreateLoadBalancer_602226 = ref object of OpenApiRestCall_601389
+proc url_PostCreateLoadBalancer_602228(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostCreateLoadBalancer_600205(path: JsonNode; query: JsonNode;
+proc validate_PostCreateLoadBalancer_602227(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a Classic Load Balancer.</p> <p>You can add listeners, security groups, subnets, and tags when you create your load balancer, or you can add them later using <a>CreateLoadBalancerListeners</a>, <a>ApplySecurityGroupsToLoadBalancer</a>, <a>AttachLoadBalancerToSubnets</a>, and <a>AddTags</a>.</p> <p>To describe your current load balancers, see <a>DescribeLoadBalancers</a>. When you are finished with a load balancer, you can delete it using <a>DeleteLoadBalancer</a>.</p> <p>You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -2017,197 +2027,198 @@ proc validate_PostCreateLoadBalancer_600205(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600207 = query.getOrDefault("Action")
-  valid_600207 = validateParameter(valid_600207, JString, required = true,
+  var valid_602229 = query.getOrDefault("Action")
+  valid_602229 = validateParameter(valid_602229, JString, required = true,
                                  default = newJString("CreateLoadBalancer"))
-  if valid_600207 != nil:
-    section.add "Action", valid_600207
-  var valid_600208 = query.getOrDefault("Version")
-  valid_600208 = validateParameter(valid_600208, JString, required = true,
+  if valid_602229 != nil:
+    section.add "Action", valid_602229
+  var valid_602230 = query.getOrDefault("Version")
+  valid_602230 = validateParameter(valid_602230, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600208 != nil:
-    section.add "Version", valid_600208
+  if valid_602230 != nil:
+    section.add "Version", valid_602230
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600209 = header.getOrDefault("X-Amz-Date")
-  valid_600209 = validateParameter(valid_600209, JString, required = false,
+  var valid_602231 = header.getOrDefault("X-Amz-Signature")
+  valid_602231 = validateParameter(valid_602231, JString, required = false,
                                  default = nil)
-  if valid_600209 != nil:
-    section.add "X-Amz-Date", valid_600209
-  var valid_600210 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600210 = validateParameter(valid_600210, JString, required = false,
+  if valid_602231 != nil:
+    section.add "X-Amz-Signature", valid_602231
+  var valid_602232 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602232 = validateParameter(valid_602232, JString, required = false,
                                  default = nil)
-  if valid_600210 != nil:
-    section.add "X-Amz-Security-Token", valid_600210
-  var valid_600211 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600211 = validateParameter(valid_600211, JString, required = false,
+  if valid_602232 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602232
+  var valid_602233 = header.getOrDefault("X-Amz-Date")
+  valid_602233 = validateParameter(valid_602233, JString, required = false,
                                  default = nil)
-  if valid_600211 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600211
-  var valid_600212 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600212 = validateParameter(valid_600212, JString, required = false,
+  if valid_602233 != nil:
+    section.add "X-Amz-Date", valid_602233
+  var valid_602234 = header.getOrDefault("X-Amz-Credential")
+  valid_602234 = validateParameter(valid_602234, JString, required = false,
                                  default = nil)
-  if valid_600212 != nil:
-    section.add "X-Amz-Algorithm", valid_600212
-  var valid_600213 = header.getOrDefault("X-Amz-Signature")
-  valid_600213 = validateParameter(valid_600213, JString, required = false,
+  if valid_602234 != nil:
+    section.add "X-Amz-Credential", valid_602234
+  var valid_602235 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602235 = validateParameter(valid_602235, JString, required = false,
                                  default = nil)
-  if valid_600213 != nil:
-    section.add "X-Amz-Signature", valid_600213
-  var valid_600214 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600214 = validateParameter(valid_600214, JString, required = false,
+  if valid_602235 != nil:
+    section.add "X-Amz-Security-Token", valid_602235
+  var valid_602236 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602236 = validateParameter(valid_602236, JString, required = false,
                                  default = nil)
-  if valid_600214 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600214
-  var valid_600215 = header.getOrDefault("X-Amz-Credential")
-  valid_600215 = validateParameter(valid_600215, JString, required = false,
+  if valid_602236 != nil:
+    section.add "X-Amz-Algorithm", valid_602236
+  var valid_602237 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602237 = validateParameter(valid_602237, JString, required = false,
                                  default = nil)
-  if valid_600215 != nil:
-    section.add "X-Amz-Credential", valid_600215
+  if valid_602237 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602237
   result.add "header", section
   ## parameters in `formData` object:
-  ##   Tags: JArray
-  ##       : <p>A list of tags to assign to the load balancer.</p> <p>For more information about tagging your load balancer, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   Scheme: JString
+  ##         : <p>The type of a load balancer. Valid only for load balancers in a VPC.</p> <p>By default, Elastic Load Balancing creates an Internet-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet-facing and Internal load balancers, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html#load-balancer-scheme">Load Balancer Scheme</a> in the <i>Elastic Load Balancing User Guide</i>.</p> <p>Specify <code>internal</code> to create a load balancer with a DNS name that resolves to private IP addresses.</p>
+  ##   SecurityGroups: JArray
+  ##                 : The IDs of the security groups to assign to the load balancer.
   ##   AvailabilityZones: JArray
   ##                    : <p>One or more Availability Zones from the same region as the load balancer.</p> <p>You must specify at least one Availability Zone.</p> <p>You can add more Availability Zones after you create the load balancer using <a>EnableAvailabilityZonesForLoadBalancer</a>.</p>
   ##   Subnets: JArray
   ##          : The IDs of the subnets in your VPC to attach to the load balancer. Specify one subnet per Availability Zone specified in <code>AvailabilityZones</code>.
-  ##   SecurityGroups: JArray
-  ##                 : The IDs of the security groups to assign to the load balancer.
   ##   LoadBalancerName: JString (required)
   ##                   : <p>The name of the load balancer.</p> <p>This name must be unique within your set of load balancers for the region, must have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and cannot begin or end with a hyphen.</p>
-  ##   Scheme: JString
-  ##         : <p>The type of a load balancer. Valid only for load balancers in a VPC.</p> <p>By default, Elastic Load Balancing creates an Internet-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet-facing and Internal load balancers, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html#load-balancer-scheme">Load Balancer Scheme</a> in the <i>Elastic Load Balancing User Guide</i>.</p> <p>Specify <code>internal</code> to create a load balancer with a DNS name that resolves to private IP addresses.</p>
   ##   Listeners: JArray (required)
   ##            : <p>The listeners.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   Tags: JArray
+  ##       : <p>A list of tags to assign to the load balancer.</p> <p>For more information about tagging your load balancer, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   section = newJObject()
-  var valid_600216 = formData.getOrDefault("Tags")
-  valid_600216 = validateParameter(valid_600216, JArray, required = false,
+  var valid_602238 = formData.getOrDefault("Scheme")
+  valid_602238 = validateParameter(valid_602238, JString, required = false,
                                  default = nil)
-  if valid_600216 != nil:
-    section.add "Tags", valid_600216
-  var valid_600217 = formData.getOrDefault("AvailabilityZones")
-  valid_600217 = validateParameter(valid_600217, JArray, required = false,
+  if valid_602238 != nil:
+    section.add "Scheme", valid_602238
+  var valid_602239 = formData.getOrDefault("SecurityGroups")
+  valid_602239 = validateParameter(valid_602239, JArray, required = false,
                                  default = nil)
-  if valid_600217 != nil:
-    section.add "AvailabilityZones", valid_600217
-  var valid_600218 = formData.getOrDefault("Subnets")
-  valid_600218 = validateParameter(valid_600218, JArray, required = false,
+  if valid_602239 != nil:
+    section.add "SecurityGroups", valid_602239
+  var valid_602240 = formData.getOrDefault("AvailabilityZones")
+  valid_602240 = validateParameter(valid_602240, JArray, required = false,
                                  default = nil)
-  if valid_600218 != nil:
-    section.add "Subnets", valid_600218
-  var valid_600219 = formData.getOrDefault("SecurityGroups")
-  valid_600219 = validateParameter(valid_600219, JArray, required = false,
+  if valid_602240 != nil:
+    section.add "AvailabilityZones", valid_602240
+  var valid_602241 = formData.getOrDefault("Subnets")
+  valid_602241 = validateParameter(valid_602241, JArray, required = false,
                                  default = nil)
-  if valid_600219 != nil:
-    section.add "SecurityGroups", valid_600219
+  if valid_602241 != nil:
+    section.add "Subnets", valid_602241
   assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
-  var valid_600220 = formData.getOrDefault("LoadBalancerName")
-  valid_600220 = validateParameter(valid_600220, JString, required = true,
+  var valid_602242 = formData.getOrDefault("LoadBalancerName")
+  valid_602242 = validateParameter(valid_602242, JString, required = true,
                                  default = nil)
-  if valid_600220 != nil:
-    section.add "LoadBalancerName", valid_600220
-  var valid_600221 = formData.getOrDefault("Scheme")
-  valid_600221 = validateParameter(valid_600221, JString, required = false,
+  if valid_602242 != nil:
+    section.add "LoadBalancerName", valid_602242
+  var valid_602243 = formData.getOrDefault("Listeners")
+  valid_602243 = validateParameter(valid_602243, JArray, required = true, default = nil)
+  if valid_602243 != nil:
+    section.add "Listeners", valid_602243
+  var valid_602244 = formData.getOrDefault("Tags")
+  valid_602244 = validateParameter(valid_602244, JArray, required = false,
                                  default = nil)
-  if valid_600221 != nil:
-    section.add "Scheme", valid_600221
-  var valid_600222 = formData.getOrDefault("Listeners")
-  valid_600222 = validateParameter(valid_600222, JArray, required = true, default = nil)
-  if valid_600222 != nil:
-    section.add "Listeners", valid_600222
+  if valid_602244 != nil:
+    section.add "Tags", valid_602244
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600223: Call_PostCreateLoadBalancer_600204; path: JsonNode;
+proc call*(call_602245: Call_PostCreateLoadBalancer_602226; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a Classic Load Balancer.</p> <p>You can add listeners, security groups, subnets, and tags when you create your load balancer, or you can add them later using <a>CreateLoadBalancerListeners</a>, <a>ApplySecurityGroupsToLoadBalancer</a>, <a>AttachLoadBalancerToSubnets</a>, and <a>AddTags</a>.</p> <p>To describe your current load balancers, see <a>DescribeLoadBalancers</a>. When you are finished with a load balancer, you can delete it using <a>DeleteLoadBalancer</a>.</p> <p>You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600223.validator(path, query, header, formData, body)
-  let scheme = call_600223.pickScheme
+  let valid = call_602245.validator(path, query, header, formData, body)
+  let scheme = call_602245.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600223.url(scheme.get, call_600223.host, call_600223.base,
-                         call_600223.route, valid.getOrDefault("path"),
+  let url = call_602245.url(scheme.get, call_602245.host, call_602245.base,
+                         call_602245.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600223, url, valid)
+  result = atozHook(call_602245, url, valid)
 
-proc call*(call_600224: Call_PostCreateLoadBalancer_600204;
-          LoadBalancerName: string; Listeners: JsonNode; Tags: JsonNode = nil;
-          Action: string = "CreateLoadBalancer"; AvailabilityZones: JsonNode = nil;
-          Subnets: JsonNode = nil; SecurityGroups: JsonNode = nil; Scheme: string = "";
-          Version: string = "2012-06-01"): Recallable =
+proc call*(call_602246: Call_PostCreateLoadBalancer_602226;
+          LoadBalancerName: string; Listeners: JsonNode; Scheme: string = "";
+          SecurityGroups: JsonNode = nil; AvailabilityZones: JsonNode = nil;
+          Subnets: JsonNode = nil; Action: string = "CreateLoadBalancer";
+          Tags: JsonNode = nil; Version: string = "2012-06-01"): Recallable =
   ## postCreateLoadBalancer
   ## <p>Creates a Classic Load Balancer.</p> <p>You can add listeners, security groups, subnets, and tags when you create your load balancer, or you can add them later using <a>CreateLoadBalancerListeners</a>, <a>ApplySecurityGroupsToLoadBalancer</a>, <a>AttachLoadBalancerToSubnets</a>, and <a>AddTags</a>.</p> <p>To describe your current load balancers, see <a>DescribeLoadBalancers</a>. When you are finished with a load balancer, you can delete it using <a>DeleteLoadBalancer</a>.</p> <p>You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Tags: JArray
-  ##       : <p>A list of tags to assign to the load balancer.</p> <p>For more information about tagging your load balancer, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: string (required)
+  ##   Scheme: string
+  ##         : <p>The type of a load balancer. Valid only for load balancers in a VPC.</p> <p>By default, Elastic Load Balancing creates an Internet-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet-facing and Internal load balancers, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html#load-balancer-scheme">Load Balancer Scheme</a> in the <i>Elastic Load Balancing User Guide</i>.</p> <p>Specify <code>internal</code> to create a load balancer with a DNS name that resolves to private IP addresses.</p>
+  ##   SecurityGroups: JArray
+  ##                 : The IDs of the security groups to assign to the load balancer.
   ##   AvailabilityZones: JArray
   ##                    : <p>One or more Availability Zones from the same region as the load balancer.</p> <p>You must specify at least one Availability Zone.</p> <p>You can add more Availability Zones after you create the load balancer using <a>EnableAvailabilityZonesForLoadBalancer</a>.</p>
   ##   Subnets: JArray
   ##          : The IDs of the subnets in your VPC to attach to the load balancer. Specify one subnet per Availability Zone specified in <code>AvailabilityZones</code>.
-  ##   SecurityGroups: JArray
-  ##                 : The IDs of the security groups to assign to the load balancer.
   ##   LoadBalancerName: string (required)
   ##                   : <p>The name of the load balancer.</p> <p>This name must be unique within your set of load balancers for the region, must have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and cannot begin or end with a hyphen.</p>
-  ##   Scheme: string
-  ##         : <p>The type of a load balancer. Valid only for load balancers in a VPC.</p> <p>By default, Elastic Load Balancing creates an Internet-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet-facing and Internal load balancers, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html#load-balancer-scheme">Load Balancer Scheme</a> in the <i>Elastic Load Balancing User Guide</i>.</p> <p>Specify <code>internal</code> to create a load balancer with a DNS name that resolves to private IP addresses.</p>
   ##   Listeners: JArray (required)
   ##            : <p>The listeners.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   Action: string (required)
+  ##   Tags: JArray
+  ##       : <p>A list of tags to assign to the load balancer.</p> <p>For more information about tagging your load balancer, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   Version: string (required)
-  var query_600225 = newJObject()
-  var formData_600226 = newJObject()
-  if Tags != nil:
-    formData_600226.add "Tags", Tags
-  add(query_600225, "Action", newJString(Action))
-  if AvailabilityZones != nil:
-    formData_600226.add "AvailabilityZones", AvailabilityZones
-  if Subnets != nil:
-    formData_600226.add "Subnets", Subnets
+  var query_602247 = newJObject()
+  var formData_602248 = newJObject()
+  add(formData_602248, "Scheme", newJString(Scheme))
   if SecurityGroups != nil:
-    formData_600226.add "SecurityGroups", SecurityGroups
-  add(formData_600226, "LoadBalancerName", newJString(LoadBalancerName))
-  add(formData_600226, "Scheme", newJString(Scheme))
+    formData_602248.add "SecurityGroups", SecurityGroups
+  if AvailabilityZones != nil:
+    formData_602248.add "AvailabilityZones", AvailabilityZones
+  if Subnets != nil:
+    formData_602248.add "Subnets", Subnets
+  add(formData_602248, "LoadBalancerName", newJString(LoadBalancerName))
   if Listeners != nil:
-    formData_600226.add "Listeners", Listeners
-  add(query_600225, "Version", newJString(Version))
-  result = call_600224.call(nil, query_600225, nil, formData_600226, nil)
+    formData_602248.add "Listeners", Listeners
+  add(query_602247, "Action", newJString(Action))
+  if Tags != nil:
+    formData_602248.add "Tags", Tags
+  add(query_602247, "Version", newJString(Version))
+  result = call_602246.call(nil, query_602247, nil, formData_602248, nil)
 
-var postCreateLoadBalancer* = Call_PostCreateLoadBalancer_600204(
+var postCreateLoadBalancer* = Call_PostCreateLoadBalancer_602226(
     name: "postCreateLoadBalancer", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateLoadBalancer",
-    validator: validate_PostCreateLoadBalancer_600205, base: "/",
-    url: url_PostCreateLoadBalancer_600206, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostCreateLoadBalancer_602227, base: "/",
+    url: url_PostCreateLoadBalancer_602228, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateLoadBalancer_600182 = ref object of OpenApiRestCall_599368
-proc url_GetCreateLoadBalancer_600184(protocol: Scheme; host: string; base: string;
+  Call_GetCreateLoadBalancer_602204 = ref object of OpenApiRestCall_601389
+proc url_GetCreateLoadBalancer_602206(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCreateLoadBalancer_600183(path: JsonNode; query: JsonNode;
+proc validate_GetCreateLoadBalancer_602205(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a Classic Load Balancer.</p> <p>You can add listeners, security groups, subnets, and tags when you create your load balancer, or you can add them later using <a>CreateLoadBalancerListeners</a>, <a>ApplySecurityGroupsToLoadBalancer</a>, <a>AttachLoadBalancerToSubnets</a>, and <a>AddTags</a>.</p> <p>To describe your current load balancers, see <a>DescribeLoadBalancers</a>. When you are finished with a load balancer, you can delete it using <a>DeleteLoadBalancer</a>.</p> <p>You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -2216,199 +2227,200 @@ proc validate_GetCreateLoadBalancer_600183(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   LoadBalancerName: JString (required)
-  ##                   : <p>The name of the load balancer.</p> <p>This name must be unique within your set of load balancers for the region, must have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and cannot begin or end with a hyphen.</p>
-  ##   AvailabilityZones: JArray
-  ##                    : <p>One or more Availability Zones from the same region as the load balancer.</p> <p>You must specify at least one Availability Zone.</p> <p>You can add more Availability Zones after you create the load balancer using <a>EnableAvailabilityZonesForLoadBalancer</a>.</p>
-  ##   Scheme: JString
-  ##         : <p>The type of a load balancer. Valid only for load balancers in a VPC.</p> <p>By default, Elastic Load Balancing creates an Internet-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet-facing and Internal load balancers, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html#load-balancer-scheme">Load Balancer Scheme</a> in the <i>Elastic Load Balancing User Guide</i>.</p> <p>Specify <code>internal</code> to create a load balancer with a DNS name that resolves to private IP addresses.</p>
   ##   Tags: JArray
   ##       : <p>A list of tags to assign to the load balancer.</p> <p>For more information about tagging your load balancer, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: JString (required)
-  ##   Subnets: JArray
-  ##          : The IDs of the subnets in your VPC to attach to the load balancer. Specify one subnet per Availability Zone specified in <code>AvailabilityZones</code>.
-  ##   Version: JString (required)
+  ##   Scheme: JString
+  ##         : <p>The type of a load balancer. Valid only for load balancers in a VPC.</p> <p>By default, Elastic Load Balancing creates an Internet-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet-facing and Internal load balancers, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html#load-balancer-scheme">Load Balancer Scheme</a> in the <i>Elastic Load Balancing User Guide</i>.</p> <p>Specify <code>internal</code> to create a load balancer with a DNS name that resolves to private IP addresses.</p>
+  ##   AvailabilityZones: JArray
+  ##                    : <p>One or more Availability Zones from the same region as the load balancer.</p> <p>You must specify at least one Availability Zone.</p> <p>You can add more Availability Zones after you create the load balancer using <a>EnableAvailabilityZonesForLoadBalancer</a>.</p>
   ##   Listeners: JArray (required)
   ##            : <p>The listeners.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   SecurityGroups: JArray
   ##                 : The IDs of the security groups to assign to the load balancer.
+  ##   LoadBalancerName: JString (required)
+  ##                   : <p>The name of the load balancer.</p> <p>This name must be unique within your set of load balancers for the region, must have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and cannot begin or end with a hyphen.</p>
+  ##   Action: JString (required)
+  ##   Subnets: JArray
+  ##          : The IDs of the subnets in your VPC to attach to the load balancer. Specify one subnet per Availability Zone specified in <code>AvailabilityZones</code>.
+  ##   Version: JString (required)
   section = newJObject()
+  var valid_602207 = query.getOrDefault("Tags")
+  valid_602207 = validateParameter(valid_602207, JArray, required = false,
+                                 default = nil)
+  if valid_602207 != nil:
+    section.add "Tags", valid_602207
+  var valid_602208 = query.getOrDefault("Scheme")
+  valid_602208 = validateParameter(valid_602208, JString, required = false,
+                                 default = nil)
+  if valid_602208 != nil:
+    section.add "Scheme", valid_602208
+  var valid_602209 = query.getOrDefault("AvailabilityZones")
+  valid_602209 = validateParameter(valid_602209, JArray, required = false,
+                                 default = nil)
+  if valid_602209 != nil:
+    section.add "AvailabilityZones", valid_602209
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600185 = query.getOrDefault("LoadBalancerName")
-  valid_600185 = validateParameter(valid_600185, JString, required = true,
+        "query argument is necessary due to required `Listeners` field"
+  var valid_602210 = query.getOrDefault("Listeners")
+  valid_602210 = validateParameter(valid_602210, JArray, required = true, default = nil)
+  if valid_602210 != nil:
+    section.add "Listeners", valid_602210
+  var valid_602211 = query.getOrDefault("SecurityGroups")
+  valid_602211 = validateParameter(valid_602211, JArray, required = false,
                                  default = nil)
-  if valid_600185 != nil:
-    section.add "LoadBalancerName", valid_600185
-  var valid_600186 = query.getOrDefault("AvailabilityZones")
-  valid_600186 = validateParameter(valid_600186, JArray, required = false,
+  if valid_602211 != nil:
+    section.add "SecurityGroups", valid_602211
+  var valid_602212 = query.getOrDefault("LoadBalancerName")
+  valid_602212 = validateParameter(valid_602212, JString, required = true,
                                  default = nil)
-  if valid_600186 != nil:
-    section.add "AvailabilityZones", valid_600186
-  var valid_600187 = query.getOrDefault("Scheme")
-  valid_600187 = validateParameter(valid_600187, JString, required = false,
-                                 default = nil)
-  if valid_600187 != nil:
-    section.add "Scheme", valid_600187
-  var valid_600188 = query.getOrDefault("Tags")
-  valid_600188 = validateParameter(valid_600188, JArray, required = false,
-                                 default = nil)
-  if valid_600188 != nil:
-    section.add "Tags", valid_600188
-  var valid_600189 = query.getOrDefault("Action")
-  valid_600189 = validateParameter(valid_600189, JString, required = true,
+  if valid_602212 != nil:
+    section.add "LoadBalancerName", valid_602212
+  var valid_602213 = query.getOrDefault("Action")
+  valid_602213 = validateParameter(valid_602213, JString, required = true,
                                  default = newJString("CreateLoadBalancer"))
-  if valid_600189 != nil:
-    section.add "Action", valid_600189
-  var valid_600190 = query.getOrDefault("Subnets")
-  valid_600190 = validateParameter(valid_600190, JArray, required = false,
+  if valid_602213 != nil:
+    section.add "Action", valid_602213
+  var valid_602214 = query.getOrDefault("Subnets")
+  valid_602214 = validateParameter(valid_602214, JArray, required = false,
                                  default = nil)
-  if valid_600190 != nil:
-    section.add "Subnets", valid_600190
-  var valid_600191 = query.getOrDefault("Version")
-  valid_600191 = validateParameter(valid_600191, JString, required = true,
+  if valid_602214 != nil:
+    section.add "Subnets", valid_602214
+  var valid_602215 = query.getOrDefault("Version")
+  valid_602215 = validateParameter(valid_602215, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600191 != nil:
-    section.add "Version", valid_600191
-  var valid_600192 = query.getOrDefault("Listeners")
-  valid_600192 = validateParameter(valid_600192, JArray, required = true, default = nil)
-  if valid_600192 != nil:
-    section.add "Listeners", valid_600192
-  var valid_600193 = query.getOrDefault("SecurityGroups")
-  valid_600193 = validateParameter(valid_600193, JArray, required = false,
-                                 default = nil)
-  if valid_600193 != nil:
-    section.add "SecurityGroups", valid_600193
+  if valid_602215 != nil:
+    section.add "Version", valid_602215
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600194 = header.getOrDefault("X-Amz-Date")
-  valid_600194 = validateParameter(valid_600194, JString, required = false,
+  var valid_602216 = header.getOrDefault("X-Amz-Signature")
+  valid_602216 = validateParameter(valid_602216, JString, required = false,
                                  default = nil)
-  if valid_600194 != nil:
-    section.add "X-Amz-Date", valid_600194
-  var valid_600195 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600195 = validateParameter(valid_600195, JString, required = false,
+  if valid_602216 != nil:
+    section.add "X-Amz-Signature", valid_602216
+  var valid_602217 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602217 = validateParameter(valid_602217, JString, required = false,
                                  default = nil)
-  if valid_600195 != nil:
-    section.add "X-Amz-Security-Token", valid_600195
-  var valid_600196 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600196 = validateParameter(valid_600196, JString, required = false,
+  if valid_602217 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602217
+  var valid_602218 = header.getOrDefault("X-Amz-Date")
+  valid_602218 = validateParameter(valid_602218, JString, required = false,
                                  default = nil)
-  if valid_600196 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600196
-  var valid_600197 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600197 = validateParameter(valid_600197, JString, required = false,
+  if valid_602218 != nil:
+    section.add "X-Amz-Date", valid_602218
+  var valid_602219 = header.getOrDefault("X-Amz-Credential")
+  valid_602219 = validateParameter(valid_602219, JString, required = false,
                                  default = nil)
-  if valid_600197 != nil:
-    section.add "X-Amz-Algorithm", valid_600197
-  var valid_600198 = header.getOrDefault("X-Amz-Signature")
-  valid_600198 = validateParameter(valid_600198, JString, required = false,
+  if valid_602219 != nil:
+    section.add "X-Amz-Credential", valid_602219
+  var valid_602220 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602220 = validateParameter(valid_602220, JString, required = false,
                                  default = nil)
-  if valid_600198 != nil:
-    section.add "X-Amz-Signature", valid_600198
-  var valid_600199 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600199 = validateParameter(valid_600199, JString, required = false,
+  if valid_602220 != nil:
+    section.add "X-Amz-Security-Token", valid_602220
+  var valid_602221 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602221 = validateParameter(valid_602221, JString, required = false,
                                  default = nil)
-  if valid_600199 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600199
-  var valid_600200 = header.getOrDefault("X-Amz-Credential")
-  valid_600200 = validateParameter(valid_600200, JString, required = false,
+  if valid_602221 != nil:
+    section.add "X-Amz-Algorithm", valid_602221
+  var valid_602222 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602222 = validateParameter(valid_602222, JString, required = false,
                                  default = nil)
-  if valid_600200 != nil:
-    section.add "X-Amz-Credential", valid_600200
+  if valid_602222 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602222
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600201: Call_GetCreateLoadBalancer_600182; path: JsonNode;
+proc call*(call_602223: Call_GetCreateLoadBalancer_602204; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a Classic Load Balancer.</p> <p>You can add listeners, security groups, subnets, and tags when you create your load balancer, or you can add them later using <a>CreateLoadBalancerListeners</a>, <a>ApplySecurityGroupsToLoadBalancer</a>, <a>AttachLoadBalancerToSubnets</a>, and <a>AddTags</a>.</p> <p>To describe your current load balancers, see <a>DescribeLoadBalancers</a>. When you are finished with a load balancer, you can delete it using <a>DeleteLoadBalancer</a>.</p> <p>You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600201.validator(path, query, header, formData, body)
-  let scheme = call_600201.pickScheme
+  let valid = call_602223.validator(path, query, header, formData, body)
+  let scheme = call_602223.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600201.url(scheme.get, call_600201.host, call_600201.base,
-                         call_600201.route, valid.getOrDefault("path"),
+  let url = call_602223.url(scheme.get, call_602223.host, call_602223.base,
+                         call_602223.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600201, url, valid)
+  result = atozHook(call_602223, url, valid)
 
-proc call*(call_600202: Call_GetCreateLoadBalancer_600182;
-          LoadBalancerName: string; Listeners: JsonNode;
-          AvailabilityZones: JsonNode = nil; Scheme: string = ""; Tags: JsonNode = nil;
+proc call*(call_602224: Call_GetCreateLoadBalancer_602204; Listeners: JsonNode;
+          LoadBalancerName: string; Tags: JsonNode = nil; Scheme: string = "";
+          AvailabilityZones: JsonNode = nil; SecurityGroups: JsonNode = nil;
           Action: string = "CreateLoadBalancer"; Subnets: JsonNode = nil;
-          Version: string = "2012-06-01"; SecurityGroups: JsonNode = nil): Recallable =
+          Version: string = "2012-06-01"): Recallable =
   ## getCreateLoadBalancer
   ## <p>Creates a Classic Load Balancer.</p> <p>You can add listeners, security groups, subnets, and tags when you create your load balancer, or you can add them later using <a>CreateLoadBalancerListeners</a>, <a>ApplySecurityGroupsToLoadBalancer</a>, <a>AttachLoadBalancerToSubnets</a>, and <a>AddTags</a>.</p> <p>To describe your current load balancers, see <a>DescribeLoadBalancers</a>. When you are finished with a load balancer, you can delete it using <a>DeleteLoadBalancer</a>.</p> <p>You can create up to 20 load balancers per region per account. You can request an increase for the number of load balancers for your account. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerName: string (required)
-  ##                   : <p>The name of the load balancer.</p> <p>This name must be unique within your set of load balancers for the region, must have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and cannot begin or end with a hyphen.</p>
-  ##   AvailabilityZones: JArray
-  ##                    : <p>One or more Availability Zones from the same region as the load balancer.</p> <p>You must specify at least one Availability Zone.</p> <p>You can add more Availability Zones after you create the load balancer using <a>EnableAvailabilityZonesForLoadBalancer</a>.</p>
-  ##   Scheme: string
-  ##         : <p>The type of a load balancer. Valid only for load balancers in a VPC.</p> <p>By default, Elastic Load Balancing creates an Internet-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet-facing and Internal load balancers, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html#load-balancer-scheme">Load Balancer Scheme</a> in the <i>Elastic Load Balancing User Guide</i>.</p> <p>Specify <code>internal</code> to create a load balancer with a DNS name that resolves to private IP addresses.</p>
   ##   Tags: JArray
   ##       : <p>A list of tags to assign to the load balancer.</p> <p>For more information about tagging your load balancer, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/add-remove-tags.html">Tag Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: string (required)
-  ##   Subnets: JArray
-  ##          : The IDs of the subnets in your VPC to attach to the load balancer. Specify one subnet per Availability Zone specified in <code>AvailabilityZones</code>.
-  ##   Version: string (required)
+  ##   Scheme: string
+  ##         : <p>The type of a load balancer. Valid only for load balancers in a VPC.</p> <p>By default, Elastic Load Balancing creates an Internet-facing load balancer with a DNS name that resolves to public IP addresses. For more information about Internet-facing and Internal load balancers, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/userguide/how-elastic-load-balancing-works.html#load-balancer-scheme">Load Balancer Scheme</a> in the <i>Elastic Load Balancing User Guide</i>.</p> <p>Specify <code>internal</code> to create a load balancer with a DNS name that resolves to private IP addresses.</p>
+  ##   AvailabilityZones: JArray
+  ##                    : <p>One or more Availability Zones from the same region as the load balancer.</p> <p>You must specify at least one Availability Zone.</p> <p>You can add more Availability Zones after you create the load balancer using <a>EnableAvailabilityZonesForLoadBalancer</a>.</p>
   ##   Listeners: JArray (required)
   ##            : <p>The listeners.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   SecurityGroups: JArray
   ##                 : The IDs of the security groups to assign to the load balancer.
-  var query_600203 = newJObject()
-  add(query_600203, "LoadBalancerName", newJString(LoadBalancerName))
-  if AvailabilityZones != nil:
-    query_600203.add "AvailabilityZones", AvailabilityZones
-  add(query_600203, "Scheme", newJString(Scheme))
+  ##   LoadBalancerName: string (required)
+  ##                   : <p>The name of the load balancer.</p> <p>This name must be unique within your set of load balancers for the region, must have a maximum of 32 characters, must contain only alphanumeric characters or hyphens, and cannot begin or end with a hyphen.</p>
+  ##   Action: string (required)
+  ##   Subnets: JArray
+  ##          : The IDs of the subnets in your VPC to attach to the load balancer. Specify one subnet per Availability Zone specified in <code>AvailabilityZones</code>.
+  ##   Version: string (required)
+  var query_602225 = newJObject()
   if Tags != nil:
-    query_600203.add "Tags", Tags
-  add(query_600203, "Action", newJString(Action))
-  if Subnets != nil:
-    query_600203.add "Subnets", Subnets
-  add(query_600203, "Version", newJString(Version))
+    query_602225.add "Tags", Tags
+  add(query_602225, "Scheme", newJString(Scheme))
+  if AvailabilityZones != nil:
+    query_602225.add "AvailabilityZones", AvailabilityZones
   if Listeners != nil:
-    query_600203.add "Listeners", Listeners
+    query_602225.add "Listeners", Listeners
   if SecurityGroups != nil:
-    query_600203.add "SecurityGroups", SecurityGroups
-  result = call_600202.call(nil, query_600203, nil, nil, nil)
+    query_602225.add "SecurityGroups", SecurityGroups
+  add(query_602225, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602225, "Action", newJString(Action))
+  if Subnets != nil:
+    query_602225.add "Subnets", Subnets
+  add(query_602225, "Version", newJString(Version))
+  result = call_602224.call(nil, query_602225, nil, nil, nil)
 
-var getCreateLoadBalancer* = Call_GetCreateLoadBalancer_600182(
+var getCreateLoadBalancer* = Call_GetCreateLoadBalancer_602204(
     name: "getCreateLoadBalancer", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateLoadBalancer",
-    validator: validate_GetCreateLoadBalancer_600183, base: "/",
-    url: url_GetCreateLoadBalancer_600184, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetCreateLoadBalancer_602205, base: "/",
+    url: url_GetCreateLoadBalancer_602206, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateLoadBalancerListeners_600244 = ref object of OpenApiRestCall_599368
-proc url_PostCreateLoadBalancerListeners_600246(protocol: Scheme; host: string;
+  Call_PostCreateLoadBalancerListeners_602266 = ref object of OpenApiRestCall_601389
+proc url_PostCreateLoadBalancerListeners_602268(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostCreateLoadBalancerListeners_600245(path: JsonNode;
+proc validate_PostCreateLoadBalancerListeners_602267(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates one or more listeners for the specified load balancer. If a listener with the specified port does not already exist, it is created; otherwise, the properties of the new listener must match the properties of the existing listener.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -2421,61 +2433,61 @@ proc validate_PostCreateLoadBalancerListeners_600245(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600247 = query.getOrDefault("Action")
-  valid_600247 = validateParameter(valid_600247, JString, required = true, default = newJString(
+  var valid_602269 = query.getOrDefault("Action")
+  valid_602269 = validateParameter(valid_602269, JString, required = true, default = newJString(
       "CreateLoadBalancerListeners"))
-  if valid_600247 != nil:
-    section.add "Action", valid_600247
-  var valid_600248 = query.getOrDefault("Version")
-  valid_600248 = validateParameter(valid_600248, JString, required = true,
+  if valid_602269 != nil:
+    section.add "Action", valid_602269
+  var valid_602270 = query.getOrDefault("Version")
+  valid_602270 = validateParameter(valid_602270, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600248 != nil:
-    section.add "Version", valid_600248
+  if valid_602270 != nil:
+    section.add "Version", valid_602270
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600249 = header.getOrDefault("X-Amz-Date")
-  valid_600249 = validateParameter(valid_600249, JString, required = false,
+  var valid_602271 = header.getOrDefault("X-Amz-Signature")
+  valid_602271 = validateParameter(valid_602271, JString, required = false,
                                  default = nil)
-  if valid_600249 != nil:
-    section.add "X-Amz-Date", valid_600249
-  var valid_600250 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600250 = validateParameter(valid_600250, JString, required = false,
+  if valid_602271 != nil:
+    section.add "X-Amz-Signature", valid_602271
+  var valid_602272 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602272 = validateParameter(valid_602272, JString, required = false,
                                  default = nil)
-  if valid_600250 != nil:
-    section.add "X-Amz-Security-Token", valid_600250
-  var valid_600251 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600251 = validateParameter(valid_600251, JString, required = false,
+  if valid_602272 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602272
+  var valid_602273 = header.getOrDefault("X-Amz-Date")
+  valid_602273 = validateParameter(valid_602273, JString, required = false,
                                  default = nil)
-  if valid_600251 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600251
-  var valid_600252 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600252 = validateParameter(valid_600252, JString, required = false,
+  if valid_602273 != nil:
+    section.add "X-Amz-Date", valid_602273
+  var valid_602274 = header.getOrDefault("X-Amz-Credential")
+  valid_602274 = validateParameter(valid_602274, JString, required = false,
                                  default = nil)
-  if valid_600252 != nil:
-    section.add "X-Amz-Algorithm", valid_600252
-  var valid_600253 = header.getOrDefault("X-Amz-Signature")
-  valid_600253 = validateParameter(valid_600253, JString, required = false,
+  if valid_602274 != nil:
+    section.add "X-Amz-Credential", valid_602274
+  var valid_602275 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602275 = validateParameter(valid_602275, JString, required = false,
                                  default = nil)
-  if valid_600253 != nil:
-    section.add "X-Amz-Signature", valid_600253
-  var valid_600254 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600254 = validateParameter(valid_600254, JString, required = false,
+  if valid_602275 != nil:
+    section.add "X-Amz-Security-Token", valid_602275
+  var valid_602276 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602276 = validateParameter(valid_602276, JString, required = false,
                                  default = nil)
-  if valid_600254 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600254
-  var valid_600255 = header.getOrDefault("X-Amz-Credential")
-  valid_600255 = validateParameter(valid_600255, JString, required = false,
+  if valid_602276 != nil:
+    section.add "X-Amz-Algorithm", valid_602276
+  var valid_602277 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602277 = validateParameter(valid_602277, JString, required = false,
                                  default = nil)
-  if valid_600255 != nil:
-    section.add "X-Amz-Credential", valid_600255
+  if valid_602277 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602277
   result.add "header", section
   ## parameters in `formData` object:
   ##   LoadBalancerName: JString (required)
@@ -2484,75 +2496,76 @@ proc validate_PostCreateLoadBalancerListeners_600245(path: JsonNode;
   ##            : The listeners.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
-  var valid_600256 = formData.getOrDefault("LoadBalancerName")
-  valid_600256 = validateParameter(valid_600256, JString, required = true,
+  var valid_602278 = formData.getOrDefault("LoadBalancerName")
+  valid_602278 = validateParameter(valid_602278, JString, required = true,
                                  default = nil)
-  if valid_600256 != nil:
-    section.add "LoadBalancerName", valid_600256
-  var valid_600257 = formData.getOrDefault("Listeners")
-  valid_600257 = validateParameter(valid_600257, JArray, required = true, default = nil)
-  if valid_600257 != nil:
-    section.add "Listeners", valid_600257
+  if valid_602278 != nil:
+    section.add "LoadBalancerName", valid_602278
+  var valid_602279 = formData.getOrDefault("Listeners")
+  valid_602279 = validateParameter(valid_602279, JArray, required = true, default = nil)
+  if valid_602279 != nil:
+    section.add "Listeners", valid_602279
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600258: Call_PostCreateLoadBalancerListeners_600244;
+proc call*(call_602280: Call_PostCreateLoadBalancerListeners_602266;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Creates one or more listeners for the specified load balancer. If a listener with the specified port does not already exist, it is created; otherwise, the properties of the new listener must match the properties of the existing listener.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600258.validator(path, query, header, formData, body)
-  let scheme = call_600258.pickScheme
+  let valid = call_602280.validator(path, query, header, formData, body)
+  let scheme = call_602280.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600258.url(scheme.get, call_600258.host, call_600258.base,
-                         call_600258.route, valid.getOrDefault("path"),
+  let url = call_602280.url(scheme.get, call_602280.host, call_602280.base,
+                         call_602280.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600258, url, valid)
+  result = atozHook(call_602280, url, valid)
 
-proc call*(call_600259: Call_PostCreateLoadBalancerListeners_600244;
+proc call*(call_602281: Call_PostCreateLoadBalancerListeners_602266;
           LoadBalancerName: string; Listeners: JsonNode;
           Action: string = "CreateLoadBalancerListeners";
           Version: string = "2012-06-01"): Recallable =
   ## postCreateLoadBalancerListeners
   ## <p>Creates one or more listeners for the specified load balancer. If a listener with the specified port does not already exist, it is created; otherwise, the properties of the new listener must match the properties of the existing listener.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
   ##   Listeners: JArray (required)
   ##            : The listeners.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600260 = newJObject()
-  var formData_600261 = newJObject()
-  add(query_600260, "Action", newJString(Action))
-  add(formData_600261, "LoadBalancerName", newJString(LoadBalancerName))
+  var query_602282 = newJObject()
+  var formData_602283 = newJObject()
+  add(formData_602283, "LoadBalancerName", newJString(LoadBalancerName))
   if Listeners != nil:
-    formData_600261.add "Listeners", Listeners
-  add(query_600260, "Version", newJString(Version))
-  result = call_600259.call(nil, query_600260, nil, formData_600261, nil)
+    formData_602283.add "Listeners", Listeners
+  add(query_602282, "Action", newJString(Action))
+  add(query_602282, "Version", newJString(Version))
+  result = call_602281.call(nil, query_602282, nil, formData_602283, nil)
 
-var postCreateLoadBalancerListeners* = Call_PostCreateLoadBalancerListeners_600244(
+var postCreateLoadBalancerListeners* = Call_PostCreateLoadBalancerListeners_602266(
     name: "postCreateLoadBalancerListeners", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateLoadBalancerListeners",
-    validator: validate_PostCreateLoadBalancerListeners_600245, base: "/",
-    url: url_PostCreateLoadBalancerListeners_600246,
+    validator: validate_PostCreateLoadBalancerListeners_602267, base: "/",
+    url: url_PostCreateLoadBalancerListeners_602268,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateLoadBalancerListeners_600227 = ref object of OpenApiRestCall_599368
-proc url_GetCreateLoadBalancerListeners_600229(protocol: Scheme; host: string;
+  Call_GetCreateLoadBalancerListeners_602249 = ref object of OpenApiRestCall_601389
+proc url_GetCreateLoadBalancerListeners_602251(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCreateLoadBalancerListeners_600228(path: JsonNode;
+proc validate_GetCreateLoadBalancerListeners_602250(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates one or more listeners for the specified load balancer. If a listener with the specified port does not already exist, it is created; otherwise, the properties of the new listener must match the properties of the existing listener.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -2561,139 +2574,140 @@ proc validate_GetCreateLoadBalancerListeners_600228(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   Listeners: JArray (required)
+  ##            : The listeners.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   ##   Action: JString (required)
   ##   Version: JString (required)
-  ##   Listeners: JArray (required)
-  ##            : The listeners.
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600230 = query.getOrDefault("LoadBalancerName")
-  valid_600230 = validateParameter(valid_600230, JString, required = true,
+        "query argument is necessary due to required `Listeners` field"
+  var valid_602252 = query.getOrDefault("Listeners")
+  valid_602252 = validateParameter(valid_602252, JArray, required = true, default = nil)
+  if valid_602252 != nil:
+    section.add "Listeners", valid_602252
+  var valid_602253 = query.getOrDefault("LoadBalancerName")
+  valid_602253 = validateParameter(valid_602253, JString, required = true,
                                  default = nil)
-  if valid_600230 != nil:
-    section.add "LoadBalancerName", valid_600230
-  var valid_600231 = query.getOrDefault("Action")
-  valid_600231 = validateParameter(valid_600231, JString, required = true, default = newJString(
+  if valid_602253 != nil:
+    section.add "LoadBalancerName", valid_602253
+  var valid_602254 = query.getOrDefault("Action")
+  valid_602254 = validateParameter(valid_602254, JString, required = true, default = newJString(
       "CreateLoadBalancerListeners"))
-  if valid_600231 != nil:
-    section.add "Action", valid_600231
-  var valid_600232 = query.getOrDefault("Version")
-  valid_600232 = validateParameter(valid_600232, JString, required = true,
+  if valid_602254 != nil:
+    section.add "Action", valid_602254
+  var valid_602255 = query.getOrDefault("Version")
+  valid_602255 = validateParameter(valid_602255, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600232 != nil:
-    section.add "Version", valid_600232
-  var valid_600233 = query.getOrDefault("Listeners")
-  valid_600233 = validateParameter(valid_600233, JArray, required = true, default = nil)
-  if valid_600233 != nil:
-    section.add "Listeners", valid_600233
+  if valid_602255 != nil:
+    section.add "Version", valid_602255
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600234 = header.getOrDefault("X-Amz-Date")
-  valid_600234 = validateParameter(valid_600234, JString, required = false,
+  var valid_602256 = header.getOrDefault("X-Amz-Signature")
+  valid_602256 = validateParameter(valid_602256, JString, required = false,
                                  default = nil)
-  if valid_600234 != nil:
-    section.add "X-Amz-Date", valid_600234
-  var valid_600235 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600235 = validateParameter(valid_600235, JString, required = false,
+  if valid_602256 != nil:
+    section.add "X-Amz-Signature", valid_602256
+  var valid_602257 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602257 = validateParameter(valid_602257, JString, required = false,
                                  default = nil)
-  if valid_600235 != nil:
-    section.add "X-Amz-Security-Token", valid_600235
-  var valid_600236 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600236 = validateParameter(valid_600236, JString, required = false,
+  if valid_602257 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602257
+  var valid_602258 = header.getOrDefault("X-Amz-Date")
+  valid_602258 = validateParameter(valid_602258, JString, required = false,
                                  default = nil)
-  if valid_600236 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600236
-  var valid_600237 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600237 = validateParameter(valid_600237, JString, required = false,
+  if valid_602258 != nil:
+    section.add "X-Amz-Date", valid_602258
+  var valid_602259 = header.getOrDefault("X-Amz-Credential")
+  valid_602259 = validateParameter(valid_602259, JString, required = false,
                                  default = nil)
-  if valid_600237 != nil:
-    section.add "X-Amz-Algorithm", valid_600237
-  var valid_600238 = header.getOrDefault("X-Amz-Signature")
-  valid_600238 = validateParameter(valid_600238, JString, required = false,
+  if valid_602259 != nil:
+    section.add "X-Amz-Credential", valid_602259
+  var valid_602260 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602260 = validateParameter(valid_602260, JString, required = false,
                                  default = nil)
-  if valid_600238 != nil:
-    section.add "X-Amz-Signature", valid_600238
-  var valid_600239 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600239 = validateParameter(valid_600239, JString, required = false,
+  if valid_602260 != nil:
+    section.add "X-Amz-Security-Token", valid_602260
+  var valid_602261 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602261 = validateParameter(valid_602261, JString, required = false,
                                  default = nil)
-  if valid_600239 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600239
-  var valid_600240 = header.getOrDefault("X-Amz-Credential")
-  valid_600240 = validateParameter(valid_600240, JString, required = false,
+  if valid_602261 != nil:
+    section.add "X-Amz-Algorithm", valid_602261
+  var valid_602262 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602262 = validateParameter(valid_602262, JString, required = false,
                                  default = nil)
-  if valid_600240 != nil:
-    section.add "X-Amz-Credential", valid_600240
+  if valid_602262 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602262
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600241: Call_GetCreateLoadBalancerListeners_600227; path: JsonNode;
+proc call*(call_602263: Call_GetCreateLoadBalancerListeners_602249; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates one or more listeners for the specified load balancer. If a listener with the specified port does not already exist, it is created; otherwise, the properties of the new listener must match the properties of the existing listener.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600241.validator(path, query, header, formData, body)
-  let scheme = call_600241.pickScheme
+  let valid = call_602263.validator(path, query, header, formData, body)
+  let scheme = call_602263.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600241.url(scheme.get, call_600241.host, call_600241.base,
-                         call_600241.route, valid.getOrDefault("path"),
+  let url = call_602263.url(scheme.get, call_602263.host, call_602263.base,
+                         call_602263.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600241, url, valid)
+  result = atozHook(call_602263, url, valid)
 
-proc call*(call_600242: Call_GetCreateLoadBalancerListeners_600227;
-          LoadBalancerName: string; Listeners: JsonNode;
+proc call*(call_602264: Call_GetCreateLoadBalancerListeners_602249;
+          Listeners: JsonNode; LoadBalancerName: string;
           Action: string = "CreateLoadBalancerListeners";
           Version: string = "2012-06-01"): Recallable =
   ## getCreateLoadBalancerListeners
   ## <p>Creates one or more listeners for the specified load balancer. If a listener with the specified port does not already exist, it is created; otherwise, the properties of the new listener must match the properties of the existing listener.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-listener-config.html">Listeners for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   Listeners: JArray (required)
+  ##            : The listeners.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  ##   Listeners: JArray (required)
-  ##            : The listeners.
-  var query_600243 = newJObject()
-  add(query_600243, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600243, "Action", newJString(Action))
-  add(query_600243, "Version", newJString(Version))
+  var query_602265 = newJObject()
   if Listeners != nil:
-    query_600243.add "Listeners", Listeners
-  result = call_600242.call(nil, query_600243, nil, nil, nil)
+    query_602265.add "Listeners", Listeners
+  add(query_602265, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602265, "Action", newJString(Action))
+  add(query_602265, "Version", newJString(Version))
+  result = call_602264.call(nil, query_602265, nil, nil, nil)
 
-var getCreateLoadBalancerListeners* = Call_GetCreateLoadBalancerListeners_600227(
+var getCreateLoadBalancerListeners* = Call_GetCreateLoadBalancerListeners_602249(
     name: "getCreateLoadBalancerListeners", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateLoadBalancerListeners",
-    validator: validate_GetCreateLoadBalancerListeners_600228, base: "/",
-    url: url_GetCreateLoadBalancerListeners_600229,
+    validator: validate_GetCreateLoadBalancerListeners_602250, base: "/",
+    url: url_GetCreateLoadBalancerListeners_602251,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateLoadBalancerPolicy_600281 = ref object of OpenApiRestCall_599368
-proc url_PostCreateLoadBalancerPolicy_600283(protocol: Scheme; host: string;
+  Call_PostCreateLoadBalancerPolicy_602303 = ref object of OpenApiRestCall_601389
+proc url_PostCreateLoadBalancerPolicy_602305(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostCreateLoadBalancerPolicy_600282(path: JsonNode; query: JsonNode;
+proc validate_PostCreateLoadBalancerPolicy_602304(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a policy with the specified attributes for the specified load balancer.</p> <p>Policies are settings that are saved for your load balancer and that can be applied to the listener or the application server, depending on the policy type.</p>
   ## 
@@ -2706,160 +2720,161 @@ proc validate_PostCreateLoadBalancerPolicy_600282(path: JsonNode; query: JsonNod
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600284 = query.getOrDefault("Action")
-  valid_600284 = validateParameter(valid_600284, JString, required = true, default = newJString(
+  var valid_602306 = query.getOrDefault("Action")
+  valid_602306 = validateParameter(valid_602306, JString, required = true, default = newJString(
       "CreateLoadBalancerPolicy"))
-  if valid_600284 != nil:
-    section.add "Action", valid_600284
-  var valid_600285 = query.getOrDefault("Version")
-  valid_600285 = validateParameter(valid_600285, JString, required = true,
+  if valid_602306 != nil:
+    section.add "Action", valid_602306
+  var valid_602307 = query.getOrDefault("Version")
+  valid_602307 = validateParameter(valid_602307, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600285 != nil:
-    section.add "Version", valid_600285
+  if valid_602307 != nil:
+    section.add "Version", valid_602307
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600286 = header.getOrDefault("X-Amz-Date")
-  valid_600286 = validateParameter(valid_600286, JString, required = false,
+  var valid_602308 = header.getOrDefault("X-Amz-Signature")
+  valid_602308 = validateParameter(valid_602308, JString, required = false,
                                  default = nil)
-  if valid_600286 != nil:
-    section.add "X-Amz-Date", valid_600286
-  var valid_600287 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600287 = validateParameter(valid_600287, JString, required = false,
+  if valid_602308 != nil:
+    section.add "X-Amz-Signature", valid_602308
+  var valid_602309 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602309 = validateParameter(valid_602309, JString, required = false,
                                  default = nil)
-  if valid_600287 != nil:
-    section.add "X-Amz-Security-Token", valid_600287
-  var valid_600288 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600288 = validateParameter(valid_600288, JString, required = false,
+  if valid_602309 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602309
+  var valid_602310 = header.getOrDefault("X-Amz-Date")
+  valid_602310 = validateParameter(valid_602310, JString, required = false,
                                  default = nil)
-  if valid_600288 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600288
-  var valid_600289 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600289 = validateParameter(valid_600289, JString, required = false,
+  if valid_602310 != nil:
+    section.add "X-Amz-Date", valid_602310
+  var valid_602311 = header.getOrDefault("X-Amz-Credential")
+  valid_602311 = validateParameter(valid_602311, JString, required = false,
                                  default = nil)
-  if valid_600289 != nil:
-    section.add "X-Amz-Algorithm", valid_600289
-  var valid_600290 = header.getOrDefault("X-Amz-Signature")
-  valid_600290 = validateParameter(valid_600290, JString, required = false,
+  if valid_602311 != nil:
+    section.add "X-Amz-Credential", valid_602311
+  var valid_602312 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602312 = validateParameter(valid_602312, JString, required = false,
                                  default = nil)
-  if valid_600290 != nil:
-    section.add "X-Amz-Signature", valid_600290
-  var valid_600291 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600291 = validateParameter(valid_600291, JString, required = false,
+  if valid_602312 != nil:
+    section.add "X-Amz-Security-Token", valid_602312
+  var valid_602313 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602313 = validateParameter(valid_602313, JString, required = false,
                                  default = nil)
-  if valid_600291 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600291
-  var valid_600292 = header.getOrDefault("X-Amz-Credential")
-  valid_600292 = validateParameter(valid_600292, JString, required = false,
+  if valid_602313 != nil:
+    section.add "X-Amz-Algorithm", valid_602313
+  var valid_602314 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602314 = validateParameter(valid_602314, JString, required = false,
                                  default = nil)
-  if valid_600292 != nil:
-    section.add "X-Amz-Credential", valid_600292
+  if valid_602314 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602314
   result.add "header", section
   ## parameters in `formData` object:
-  ##   PolicyName: JString (required)
-  ##             : The name of the load balancer policy to be created. This name must be unique within the set of policies for this load balancer.
-  ##   PolicyTypeName: JString (required)
-  ##                 : The name of the base policy type. To get the list of policy types, use <a>DescribeLoadBalancerPolicyTypes</a>.
   ##   PolicyAttributes: JArray
   ##                   : The policy attributes.
+  ##   PolicyTypeName: JString (required)
+  ##                 : The name of the base policy type. To get the list of policy types, use <a>DescribeLoadBalancerPolicyTypes</a>.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
+  ##   PolicyName: JString (required)
+  ##             : The name of the load balancer policy to be created. This name must be unique within the set of policies for this load balancer.
   section = newJObject()
+  var valid_602315 = formData.getOrDefault("PolicyAttributes")
+  valid_602315 = validateParameter(valid_602315, JArray, required = false,
+                                 default = nil)
+  if valid_602315 != nil:
+    section.add "PolicyAttributes", valid_602315
   assert formData != nil,
-        "formData argument is necessary due to required `PolicyName` field"
-  var valid_600293 = formData.getOrDefault("PolicyName")
-  valid_600293 = validateParameter(valid_600293, JString, required = true,
+        "formData argument is necessary due to required `PolicyTypeName` field"
+  var valid_602316 = formData.getOrDefault("PolicyTypeName")
+  valid_602316 = validateParameter(valid_602316, JString, required = true,
                                  default = nil)
-  if valid_600293 != nil:
-    section.add "PolicyName", valid_600293
-  var valid_600294 = formData.getOrDefault("PolicyTypeName")
-  valid_600294 = validateParameter(valid_600294, JString, required = true,
+  if valid_602316 != nil:
+    section.add "PolicyTypeName", valid_602316
+  var valid_602317 = formData.getOrDefault("LoadBalancerName")
+  valid_602317 = validateParameter(valid_602317, JString, required = true,
                                  default = nil)
-  if valid_600294 != nil:
-    section.add "PolicyTypeName", valid_600294
-  var valid_600295 = formData.getOrDefault("PolicyAttributes")
-  valid_600295 = validateParameter(valid_600295, JArray, required = false,
+  if valid_602317 != nil:
+    section.add "LoadBalancerName", valid_602317
+  var valid_602318 = formData.getOrDefault("PolicyName")
+  valid_602318 = validateParameter(valid_602318, JString, required = true,
                                  default = nil)
-  if valid_600295 != nil:
-    section.add "PolicyAttributes", valid_600295
-  var valid_600296 = formData.getOrDefault("LoadBalancerName")
-  valid_600296 = validateParameter(valid_600296, JString, required = true,
-                                 default = nil)
-  if valid_600296 != nil:
-    section.add "LoadBalancerName", valid_600296
+  if valid_602318 != nil:
+    section.add "PolicyName", valid_602318
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600297: Call_PostCreateLoadBalancerPolicy_600281; path: JsonNode;
+proc call*(call_602319: Call_PostCreateLoadBalancerPolicy_602303; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a policy with the specified attributes for the specified load balancer.</p> <p>Policies are settings that are saved for your load balancer and that can be applied to the listener or the application server, depending on the policy type.</p>
   ## 
-  let valid = call_600297.validator(path, query, header, formData, body)
-  let scheme = call_600297.pickScheme
+  let valid = call_602319.validator(path, query, header, formData, body)
+  let scheme = call_602319.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600297.url(scheme.get, call_600297.host, call_600297.base,
-                         call_600297.route, valid.getOrDefault("path"),
+  let url = call_602319.url(scheme.get, call_602319.host, call_602319.base,
+                         call_602319.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600297, url, valid)
+  result = atozHook(call_602319, url, valid)
 
-proc call*(call_600298: Call_PostCreateLoadBalancerPolicy_600281;
-          PolicyName: string; PolicyTypeName: string; LoadBalancerName: string;
+proc call*(call_602320: Call_PostCreateLoadBalancerPolicy_602303;
+          PolicyTypeName: string; LoadBalancerName: string; PolicyName: string;
           PolicyAttributes: JsonNode = nil;
           Action: string = "CreateLoadBalancerPolicy";
           Version: string = "2012-06-01"): Recallable =
   ## postCreateLoadBalancerPolicy
   ## <p>Creates a policy with the specified attributes for the specified load balancer.</p> <p>Policies are settings that are saved for your load balancer and that can be applied to the listener or the application server, depending on the policy type.</p>
-  ##   PolicyName: string (required)
-  ##             : The name of the load balancer policy to be created. This name must be unique within the set of policies for this load balancer.
-  ##   PolicyTypeName: string (required)
-  ##                 : The name of the base policy type. To get the list of policy types, use <a>DescribeLoadBalancerPolicyTypes</a>.
   ##   PolicyAttributes: JArray
   ##                   : The policy attributes.
-  ##   Action: string (required)
+  ##   PolicyTypeName: string (required)
+  ##                 : The name of the base policy type. To get the list of policy types, use <a>DescribeLoadBalancerPolicyTypes</a>.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600299 = newJObject()
-  var formData_600300 = newJObject()
-  add(formData_600300, "PolicyName", newJString(PolicyName))
-  add(formData_600300, "PolicyTypeName", newJString(PolicyTypeName))
+  ##   PolicyName: string (required)
+  ##             : The name of the load balancer policy to be created. This name must be unique within the set of policies for this load balancer.
+  var query_602321 = newJObject()
+  var formData_602322 = newJObject()
   if PolicyAttributes != nil:
-    formData_600300.add "PolicyAttributes", PolicyAttributes
-  add(query_600299, "Action", newJString(Action))
-  add(formData_600300, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600299, "Version", newJString(Version))
-  result = call_600298.call(nil, query_600299, nil, formData_600300, nil)
+    formData_602322.add "PolicyAttributes", PolicyAttributes
+  add(formData_602322, "PolicyTypeName", newJString(PolicyTypeName))
+  add(formData_602322, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602321, "Action", newJString(Action))
+  add(query_602321, "Version", newJString(Version))
+  add(formData_602322, "PolicyName", newJString(PolicyName))
+  result = call_602320.call(nil, query_602321, nil, formData_602322, nil)
 
-var postCreateLoadBalancerPolicy* = Call_PostCreateLoadBalancerPolicy_600281(
+var postCreateLoadBalancerPolicy* = Call_PostCreateLoadBalancerPolicy_602303(
     name: "postCreateLoadBalancerPolicy", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateLoadBalancerPolicy",
-    validator: validate_PostCreateLoadBalancerPolicy_600282, base: "/",
-    url: url_PostCreateLoadBalancerPolicy_600283,
+    validator: validate_PostCreateLoadBalancerPolicy_602304, base: "/",
+    url: url_PostCreateLoadBalancerPolicy_602305,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateLoadBalancerPolicy_600262 = ref object of OpenApiRestCall_599368
-proc url_GetCreateLoadBalancerPolicy_600264(protocol: Scheme; host: string;
+  Call_GetCreateLoadBalancerPolicy_602284 = ref object of OpenApiRestCall_601389
+proc url_GetCreateLoadBalancerPolicy_602286(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetCreateLoadBalancerPolicy_600263(path: JsonNode; query: JsonNode;
+proc validate_GetCreateLoadBalancerPolicy_602285(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a policy with the specified attributes for the specified load balancer.</p> <p>Policies are settings that are saved for your load balancer and that can be applied to the listener or the application server, depending on the policy type.</p>
   ## 
@@ -2868,161 +2883,162 @@ proc validate_GetCreateLoadBalancerPolicy_600263(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
   ##   PolicyAttributes: JArray
   ##                   : The policy attributes.
-  ##   Action: JString (required)
-  ##   PolicyTypeName: JString (required)
-  ##                 : The name of the base policy type. To get the list of policy types, use <a>DescribeLoadBalancerPolicyTypes</a>.
-  ##   Version: JString (required)
   ##   PolicyName: JString (required)
   ##             : The name of the load balancer policy to be created. This name must be unique within the set of policies for this load balancer.
+  ##   PolicyTypeName: JString (required)
+  ##                 : The name of the base policy type. To get the list of policy types, use <a>DescribeLoadBalancerPolicyTypes</a>.
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
+  ##   Action: JString (required)
+  ##   Version: JString (required)
   section = newJObject()
+  var valid_602287 = query.getOrDefault("PolicyAttributes")
+  valid_602287 = validateParameter(valid_602287, JArray, required = false,
+                                 default = nil)
+  if valid_602287 != nil:
+    section.add "PolicyAttributes", valid_602287
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600265 = query.getOrDefault("LoadBalancerName")
-  valid_600265 = validateParameter(valid_600265, JString, required = true,
+        "query argument is necessary due to required `PolicyName` field"
+  var valid_602288 = query.getOrDefault("PolicyName")
+  valid_602288 = validateParameter(valid_602288, JString, required = true,
                                  default = nil)
-  if valid_600265 != nil:
-    section.add "LoadBalancerName", valid_600265
-  var valid_600266 = query.getOrDefault("PolicyAttributes")
-  valid_600266 = validateParameter(valid_600266, JArray, required = false,
+  if valid_602288 != nil:
+    section.add "PolicyName", valid_602288
+  var valid_602289 = query.getOrDefault("PolicyTypeName")
+  valid_602289 = validateParameter(valid_602289, JString, required = true,
                                  default = nil)
-  if valid_600266 != nil:
-    section.add "PolicyAttributes", valid_600266
-  var valid_600267 = query.getOrDefault("Action")
-  valid_600267 = validateParameter(valid_600267, JString, required = true, default = newJString(
+  if valid_602289 != nil:
+    section.add "PolicyTypeName", valid_602289
+  var valid_602290 = query.getOrDefault("LoadBalancerName")
+  valid_602290 = validateParameter(valid_602290, JString, required = true,
+                                 default = nil)
+  if valid_602290 != nil:
+    section.add "LoadBalancerName", valid_602290
+  var valid_602291 = query.getOrDefault("Action")
+  valid_602291 = validateParameter(valid_602291, JString, required = true, default = newJString(
       "CreateLoadBalancerPolicy"))
-  if valid_600267 != nil:
-    section.add "Action", valid_600267
-  var valid_600268 = query.getOrDefault("PolicyTypeName")
-  valid_600268 = validateParameter(valid_600268, JString, required = true,
-                                 default = nil)
-  if valid_600268 != nil:
-    section.add "PolicyTypeName", valid_600268
-  var valid_600269 = query.getOrDefault("Version")
-  valid_600269 = validateParameter(valid_600269, JString, required = true,
+  if valid_602291 != nil:
+    section.add "Action", valid_602291
+  var valid_602292 = query.getOrDefault("Version")
+  valid_602292 = validateParameter(valid_602292, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600269 != nil:
-    section.add "Version", valid_600269
-  var valid_600270 = query.getOrDefault("PolicyName")
-  valid_600270 = validateParameter(valid_600270, JString, required = true,
-                                 default = nil)
-  if valid_600270 != nil:
-    section.add "PolicyName", valid_600270
+  if valid_602292 != nil:
+    section.add "Version", valid_602292
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600271 = header.getOrDefault("X-Amz-Date")
-  valid_600271 = validateParameter(valid_600271, JString, required = false,
+  var valid_602293 = header.getOrDefault("X-Amz-Signature")
+  valid_602293 = validateParameter(valid_602293, JString, required = false,
                                  default = nil)
-  if valid_600271 != nil:
-    section.add "X-Amz-Date", valid_600271
-  var valid_600272 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600272 = validateParameter(valid_600272, JString, required = false,
+  if valid_602293 != nil:
+    section.add "X-Amz-Signature", valid_602293
+  var valid_602294 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602294 = validateParameter(valid_602294, JString, required = false,
                                  default = nil)
-  if valid_600272 != nil:
-    section.add "X-Amz-Security-Token", valid_600272
-  var valid_600273 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600273 = validateParameter(valid_600273, JString, required = false,
+  if valid_602294 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602294
+  var valid_602295 = header.getOrDefault("X-Amz-Date")
+  valid_602295 = validateParameter(valid_602295, JString, required = false,
                                  default = nil)
-  if valid_600273 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600273
-  var valid_600274 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600274 = validateParameter(valid_600274, JString, required = false,
+  if valid_602295 != nil:
+    section.add "X-Amz-Date", valid_602295
+  var valid_602296 = header.getOrDefault("X-Amz-Credential")
+  valid_602296 = validateParameter(valid_602296, JString, required = false,
                                  default = nil)
-  if valid_600274 != nil:
-    section.add "X-Amz-Algorithm", valid_600274
-  var valid_600275 = header.getOrDefault("X-Amz-Signature")
-  valid_600275 = validateParameter(valid_600275, JString, required = false,
+  if valid_602296 != nil:
+    section.add "X-Amz-Credential", valid_602296
+  var valid_602297 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602297 = validateParameter(valid_602297, JString, required = false,
                                  default = nil)
-  if valid_600275 != nil:
-    section.add "X-Amz-Signature", valid_600275
-  var valid_600276 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600276 = validateParameter(valid_600276, JString, required = false,
+  if valid_602297 != nil:
+    section.add "X-Amz-Security-Token", valid_602297
+  var valid_602298 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602298 = validateParameter(valid_602298, JString, required = false,
                                  default = nil)
-  if valid_600276 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600276
-  var valid_600277 = header.getOrDefault("X-Amz-Credential")
-  valid_600277 = validateParameter(valid_600277, JString, required = false,
+  if valid_602298 != nil:
+    section.add "X-Amz-Algorithm", valid_602298
+  var valid_602299 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602299 = validateParameter(valid_602299, JString, required = false,
                                  default = nil)
-  if valid_600277 != nil:
-    section.add "X-Amz-Credential", valid_600277
+  if valid_602299 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602299
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600278: Call_GetCreateLoadBalancerPolicy_600262; path: JsonNode;
+proc call*(call_602300: Call_GetCreateLoadBalancerPolicy_602284; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a policy with the specified attributes for the specified load balancer.</p> <p>Policies are settings that are saved for your load balancer and that can be applied to the listener or the application server, depending on the policy type.</p>
   ## 
-  let valid = call_600278.validator(path, query, header, formData, body)
-  let scheme = call_600278.pickScheme
+  let valid = call_602300.validator(path, query, header, formData, body)
+  let scheme = call_602300.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600278.url(scheme.get, call_600278.host, call_600278.base,
-                         call_600278.route, valid.getOrDefault("path"),
+  let url = call_602300.url(scheme.get, call_602300.host, call_602300.base,
+                         call_602300.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600278, url, valid)
+  result = atozHook(call_602300, url, valid)
 
-proc call*(call_600279: Call_GetCreateLoadBalancerPolicy_600262;
-          LoadBalancerName: string; PolicyTypeName: string; PolicyName: string;
+proc call*(call_602301: Call_GetCreateLoadBalancerPolicy_602284;
+          PolicyName: string; PolicyTypeName: string; LoadBalancerName: string;
           PolicyAttributes: JsonNode = nil;
           Action: string = "CreateLoadBalancerPolicy";
           Version: string = "2012-06-01"): Recallable =
   ## getCreateLoadBalancerPolicy
   ## <p>Creates a policy with the specified attributes for the specified load balancer.</p> <p>Policies are settings that are saved for your load balancer and that can be applied to the listener or the application server, depending on the policy type.</p>
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
   ##   PolicyAttributes: JArray
   ##                   : The policy attributes.
-  ##   Action: string (required)
-  ##   PolicyTypeName: string (required)
-  ##                 : The name of the base policy type. To get the list of policy types, use <a>DescribeLoadBalancerPolicyTypes</a>.
-  ##   Version: string (required)
   ##   PolicyName: string (required)
   ##             : The name of the load balancer policy to be created. This name must be unique within the set of policies for this load balancer.
-  var query_600280 = newJObject()
-  add(query_600280, "LoadBalancerName", newJString(LoadBalancerName))
+  ##   PolicyTypeName: string (required)
+  ##                 : The name of the base policy type. To get the list of policy types, use <a>DescribeLoadBalancerPolicyTypes</a>.
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
+  ##   Action: string (required)
+  ##   Version: string (required)
+  var query_602302 = newJObject()
   if PolicyAttributes != nil:
-    query_600280.add "PolicyAttributes", PolicyAttributes
-  add(query_600280, "Action", newJString(Action))
-  add(query_600280, "PolicyTypeName", newJString(PolicyTypeName))
-  add(query_600280, "Version", newJString(Version))
-  add(query_600280, "PolicyName", newJString(PolicyName))
-  result = call_600279.call(nil, query_600280, nil, nil, nil)
+    query_602302.add "PolicyAttributes", PolicyAttributes
+  add(query_602302, "PolicyName", newJString(PolicyName))
+  add(query_602302, "PolicyTypeName", newJString(PolicyTypeName))
+  add(query_602302, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602302, "Action", newJString(Action))
+  add(query_602302, "Version", newJString(Version))
+  result = call_602301.call(nil, query_602302, nil, nil, nil)
 
-var getCreateLoadBalancerPolicy* = Call_GetCreateLoadBalancerPolicy_600262(
+var getCreateLoadBalancerPolicy* = Call_GetCreateLoadBalancerPolicy_602284(
     name: "getCreateLoadBalancerPolicy", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=CreateLoadBalancerPolicy",
-    validator: validate_GetCreateLoadBalancerPolicy_600263, base: "/",
-    url: url_GetCreateLoadBalancerPolicy_600264,
+    validator: validate_GetCreateLoadBalancerPolicy_602285, base: "/",
+    url: url_GetCreateLoadBalancerPolicy_602286,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeleteLoadBalancer_600317 = ref object of OpenApiRestCall_599368
-proc url_PostDeleteLoadBalancer_600319(protocol: Scheme; host: string; base: string;
+  Call_PostDeleteLoadBalancer_602339 = ref object of OpenApiRestCall_601389
+proc url_PostDeleteLoadBalancer_602341(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDeleteLoadBalancer_600318(path: JsonNode; query: JsonNode;
+proc validate_PostDeleteLoadBalancer_602340(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified load balancer.</p> <p>If you are attempting to recreate a load balancer, you must reconfigure all settings. The DNS name associated with a deleted load balancer are no longer usable. The name and associated DNS record of the deleted load balancer no longer exist and traffic sent to any of its IP addresses is no longer delivered to your instances.</p> <p>If the load balancer does not exist or has already been deleted, the call to <code>DeleteLoadBalancer</code> still succeeds.</p>
   ## 
@@ -3035,125 +3051,126 @@ proc validate_PostDeleteLoadBalancer_600318(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600320 = query.getOrDefault("Action")
-  valid_600320 = validateParameter(valid_600320, JString, required = true,
+  var valid_602342 = query.getOrDefault("Action")
+  valid_602342 = validateParameter(valid_602342, JString, required = true,
                                  default = newJString("DeleteLoadBalancer"))
-  if valid_600320 != nil:
-    section.add "Action", valid_600320
-  var valid_600321 = query.getOrDefault("Version")
-  valid_600321 = validateParameter(valid_600321, JString, required = true,
+  if valid_602342 != nil:
+    section.add "Action", valid_602342
+  var valid_602343 = query.getOrDefault("Version")
+  valid_602343 = validateParameter(valid_602343, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600321 != nil:
-    section.add "Version", valid_600321
+  if valid_602343 != nil:
+    section.add "Version", valid_602343
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600322 = header.getOrDefault("X-Amz-Date")
-  valid_600322 = validateParameter(valid_600322, JString, required = false,
+  var valid_602344 = header.getOrDefault("X-Amz-Signature")
+  valid_602344 = validateParameter(valid_602344, JString, required = false,
                                  default = nil)
-  if valid_600322 != nil:
-    section.add "X-Amz-Date", valid_600322
-  var valid_600323 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600323 = validateParameter(valid_600323, JString, required = false,
+  if valid_602344 != nil:
+    section.add "X-Amz-Signature", valid_602344
+  var valid_602345 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602345 = validateParameter(valid_602345, JString, required = false,
                                  default = nil)
-  if valid_600323 != nil:
-    section.add "X-Amz-Security-Token", valid_600323
-  var valid_600324 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600324 = validateParameter(valid_600324, JString, required = false,
+  if valid_602345 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602345
+  var valid_602346 = header.getOrDefault("X-Amz-Date")
+  valid_602346 = validateParameter(valid_602346, JString, required = false,
                                  default = nil)
-  if valid_600324 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600324
-  var valid_600325 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600325 = validateParameter(valid_600325, JString, required = false,
+  if valid_602346 != nil:
+    section.add "X-Amz-Date", valid_602346
+  var valid_602347 = header.getOrDefault("X-Amz-Credential")
+  valid_602347 = validateParameter(valid_602347, JString, required = false,
                                  default = nil)
-  if valid_600325 != nil:
-    section.add "X-Amz-Algorithm", valid_600325
-  var valid_600326 = header.getOrDefault("X-Amz-Signature")
-  valid_600326 = validateParameter(valid_600326, JString, required = false,
+  if valid_602347 != nil:
+    section.add "X-Amz-Credential", valid_602347
+  var valid_602348 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602348 = validateParameter(valid_602348, JString, required = false,
                                  default = nil)
-  if valid_600326 != nil:
-    section.add "X-Amz-Signature", valid_600326
-  var valid_600327 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600327 = validateParameter(valid_600327, JString, required = false,
+  if valid_602348 != nil:
+    section.add "X-Amz-Security-Token", valid_602348
+  var valid_602349 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602349 = validateParameter(valid_602349, JString, required = false,
                                  default = nil)
-  if valid_600327 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600327
-  var valid_600328 = header.getOrDefault("X-Amz-Credential")
-  valid_600328 = validateParameter(valid_600328, JString, required = false,
+  if valid_602349 != nil:
+    section.add "X-Amz-Algorithm", valid_602349
+  var valid_602350 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602350 = validateParameter(valid_602350, JString, required = false,
                                  default = nil)
-  if valid_600328 != nil:
-    section.add "X-Amz-Credential", valid_600328
+  if valid_602350 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602350
   result.add "header", section
   ## parameters in `formData` object:
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
-  var valid_600329 = formData.getOrDefault("LoadBalancerName")
-  valid_600329 = validateParameter(valid_600329, JString, required = true,
+  var valid_602351 = formData.getOrDefault("LoadBalancerName")
+  valid_602351 = validateParameter(valid_602351, JString, required = true,
                                  default = nil)
-  if valid_600329 != nil:
-    section.add "LoadBalancerName", valid_600329
+  if valid_602351 != nil:
+    section.add "LoadBalancerName", valid_602351
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600330: Call_PostDeleteLoadBalancer_600317; path: JsonNode;
+proc call*(call_602352: Call_PostDeleteLoadBalancer_602339; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified load balancer.</p> <p>If you are attempting to recreate a load balancer, you must reconfigure all settings. The DNS name associated with a deleted load balancer are no longer usable. The name and associated DNS record of the deleted load balancer no longer exist and traffic sent to any of its IP addresses is no longer delivered to your instances.</p> <p>If the load balancer does not exist or has already been deleted, the call to <code>DeleteLoadBalancer</code> still succeeds.</p>
   ## 
-  let valid = call_600330.validator(path, query, header, formData, body)
-  let scheme = call_600330.pickScheme
+  let valid = call_602352.validator(path, query, header, formData, body)
+  let scheme = call_602352.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600330.url(scheme.get, call_600330.host, call_600330.base,
-                         call_600330.route, valid.getOrDefault("path"),
+  let url = call_602352.url(scheme.get, call_602352.host, call_602352.base,
+                         call_602352.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600330, url, valid)
+  result = atozHook(call_602352, url, valid)
 
-proc call*(call_600331: Call_PostDeleteLoadBalancer_600317;
+proc call*(call_602353: Call_PostDeleteLoadBalancer_602339;
           LoadBalancerName: string; Action: string = "DeleteLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
   ## postDeleteLoadBalancer
   ## <p>Deletes the specified load balancer.</p> <p>If you are attempting to recreate a load balancer, you must reconfigure all settings. The DNS name associated with a deleted load balancer are no longer usable. The name and associated DNS record of the deleted load balancer no longer exist and traffic sent to any of its IP addresses is no longer delivered to your instances.</p> <p>If the load balancer does not exist or has already been deleted, the call to <code>DeleteLoadBalancer</code> still succeeds.</p>
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600332 = newJObject()
-  var formData_600333 = newJObject()
-  add(query_600332, "Action", newJString(Action))
-  add(formData_600333, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600332, "Version", newJString(Version))
-  result = call_600331.call(nil, query_600332, nil, formData_600333, nil)
+  var query_602354 = newJObject()
+  var formData_602355 = newJObject()
+  add(formData_602355, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602354, "Action", newJString(Action))
+  add(query_602354, "Version", newJString(Version))
+  result = call_602353.call(nil, query_602354, nil, formData_602355, nil)
 
-var postDeleteLoadBalancer* = Call_PostDeleteLoadBalancer_600317(
+var postDeleteLoadBalancer* = Call_PostDeleteLoadBalancer_602339(
     name: "postDeleteLoadBalancer", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DeleteLoadBalancer",
-    validator: validate_PostDeleteLoadBalancer_600318, base: "/",
-    url: url_PostDeleteLoadBalancer_600319, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostDeleteLoadBalancer_602340, base: "/",
+    url: url_PostDeleteLoadBalancer_602341, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeleteLoadBalancer_600301 = ref object of OpenApiRestCall_599368
-proc url_GetDeleteLoadBalancer_600303(protocol: Scheme; host: string; base: string;
+  Call_GetDeleteLoadBalancer_602323 = ref object of OpenApiRestCall_601389
+proc url_GetDeleteLoadBalancer_602325(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDeleteLoadBalancer_600302(path: JsonNode; query: JsonNode;
+proc validate_GetDeleteLoadBalancer_602324(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified load balancer.</p> <p>If you are attempting to recreate a load balancer, you must reconfigure all settings. The DNS name associated with a deleted load balancer are no longer usable. The name and associated DNS record of the deleted load balancer no longer exist and traffic sent to any of its IP addresses is no longer delivered to your instances.</p> <p>If the load balancer does not exist or has already been deleted, the call to <code>DeleteLoadBalancer</code> still succeeds.</p>
   ## 
@@ -3169,86 +3186,86 @@ proc validate_GetDeleteLoadBalancer_600302(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600304 = query.getOrDefault("LoadBalancerName")
-  valid_600304 = validateParameter(valid_600304, JString, required = true,
+  var valid_602326 = query.getOrDefault("LoadBalancerName")
+  valid_602326 = validateParameter(valid_602326, JString, required = true,
                                  default = nil)
-  if valid_600304 != nil:
-    section.add "LoadBalancerName", valid_600304
-  var valid_600305 = query.getOrDefault("Action")
-  valid_600305 = validateParameter(valid_600305, JString, required = true,
+  if valid_602326 != nil:
+    section.add "LoadBalancerName", valid_602326
+  var valid_602327 = query.getOrDefault("Action")
+  valid_602327 = validateParameter(valid_602327, JString, required = true,
                                  default = newJString("DeleteLoadBalancer"))
-  if valid_600305 != nil:
-    section.add "Action", valid_600305
-  var valid_600306 = query.getOrDefault("Version")
-  valid_600306 = validateParameter(valid_600306, JString, required = true,
+  if valid_602327 != nil:
+    section.add "Action", valid_602327
+  var valid_602328 = query.getOrDefault("Version")
+  valid_602328 = validateParameter(valid_602328, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600306 != nil:
-    section.add "Version", valid_600306
+  if valid_602328 != nil:
+    section.add "Version", valid_602328
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600307 = header.getOrDefault("X-Amz-Date")
-  valid_600307 = validateParameter(valid_600307, JString, required = false,
+  var valid_602329 = header.getOrDefault("X-Amz-Signature")
+  valid_602329 = validateParameter(valid_602329, JString, required = false,
                                  default = nil)
-  if valid_600307 != nil:
-    section.add "X-Amz-Date", valid_600307
-  var valid_600308 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600308 = validateParameter(valid_600308, JString, required = false,
+  if valid_602329 != nil:
+    section.add "X-Amz-Signature", valid_602329
+  var valid_602330 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602330 = validateParameter(valid_602330, JString, required = false,
                                  default = nil)
-  if valid_600308 != nil:
-    section.add "X-Amz-Security-Token", valid_600308
-  var valid_600309 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600309 = validateParameter(valid_600309, JString, required = false,
+  if valid_602330 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602330
+  var valid_602331 = header.getOrDefault("X-Amz-Date")
+  valid_602331 = validateParameter(valid_602331, JString, required = false,
                                  default = nil)
-  if valid_600309 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600309
-  var valid_600310 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600310 = validateParameter(valid_600310, JString, required = false,
+  if valid_602331 != nil:
+    section.add "X-Amz-Date", valid_602331
+  var valid_602332 = header.getOrDefault("X-Amz-Credential")
+  valid_602332 = validateParameter(valid_602332, JString, required = false,
                                  default = nil)
-  if valid_600310 != nil:
-    section.add "X-Amz-Algorithm", valid_600310
-  var valid_600311 = header.getOrDefault("X-Amz-Signature")
-  valid_600311 = validateParameter(valid_600311, JString, required = false,
+  if valid_602332 != nil:
+    section.add "X-Amz-Credential", valid_602332
+  var valid_602333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602333 = validateParameter(valid_602333, JString, required = false,
                                  default = nil)
-  if valid_600311 != nil:
-    section.add "X-Amz-Signature", valid_600311
-  var valid_600312 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600312 = validateParameter(valid_600312, JString, required = false,
+  if valid_602333 != nil:
+    section.add "X-Amz-Security-Token", valid_602333
+  var valid_602334 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602334 = validateParameter(valid_602334, JString, required = false,
                                  default = nil)
-  if valid_600312 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600312
-  var valid_600313 = header.getOrDefault("X-Amz-Credential")
-  valid_600313 = validateParameter(valid_600313, JString, required = false,
+  if valid_602334 != nil:
+    section.add "X-Amz-Algorithm", valid_602334
+  var valid_602335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602335 = validateParameter(valid_602335, JString, required = false,
                                  default = nil)
-  if valid_600313 != nil:
-    section.add "X-Amz-Credential", valid_600313
+  if valid_602335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602335
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600314: Call_GetDeleteLoadBalancer_600301; path: JsonNode;
+proc call*(call_602336: Call_GetDeleteLoadBalancer_602323; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified load balancer.</p> <p>If you are attempting to recreate a load balancer, you must reconfigure all settings. The DNS name associated with a deleted load balancer are no longer usable. The name and associated DNS record of the deleted load balancer no longer exist and traffic sent to any of its IP addresses is no longer delivered to your instances.</p> <p>If the load balancer does not exist or has already been deleted, the call to <code>DeleteLoadBalancer</code> still succeeds.</p>
   ## 
-  let valid = call_600314.validator(path, query, header, formData, body)
-  let scheme = call_600314.pickScheme
+  let valid = call_602336.validator(path, query, header, formData, body)
+  let scheme = call_602336.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600314.url(scheme.get, call_600314.host, call_600314.base,
-                         call_600314.route, valid.getOrDefault("path"),
+  let url = call_602336.url(scheme.get, call_602336.host, call_602336.base,
+                         call_602336.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600314, url, valid)
+  result = atozHook(call_602336, url, valid)
 
-proc call*(call_600315: Call_GetDeleteLoadBalancer_600301;
+proc call*(call_602337: Call_GetDeleteLoadBalancer_602323;
           LoadBalancerName: string; Action: string = "DeleteLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
   ## getDeleteLoadBalancer
@@ -3257,32 +3274,33 @@ proc call*(call_600315: Call_GetDeleteLoadBalancer_600301;
   ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_600316 = newJObject()
-  add(query_600316, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600316, "Action", newJString(Action))
-  add(query_600316, "Version", newJString(Version))
-  result = call_600315.call(nil, query_600316, nil, nil, nil)
+  var query_602338 = newJObject()
+  add(query_602338, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602338, "Action", newJString(Action))
+  add(query_602338, "Version", newJString(Version))
+  result = call_602337.call(nil, query_602338, nil, nil, nil)
 
-var getDeleteLoadBalancer* = Call_GetDeleteLoadBalancer_600301(
+var getDeleteLoadBalancer* = Call_GetDeleteLoadBalancer_602323(
     name: "getDeleteLoadBalancer", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DeleteLoadBalancer",
-    validator: validate_GetDeleteLoadBalancer_600302, base: "/",
-    url: url_GetDeleteLoadBalancer_600303, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDeleteLoadBalancer_602324, base: "/",
+    url: url_GetDeleteLoadBalancer_602325, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeleteLoadBalancerListeners_600351 = ref object of OpenApiRestCall_599368
-proc url_PostDeleteLoadBalancerListeners_600353(protocol: Scheme; host: string;
+  Call_PostDeleteLoadBalancerListeners_602373 = ref object of OpenApiRestCall_601389
+proc url_PostDeleteLoadBalancerListeners_602375(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDeleteLoadBalancerListeners_600352(path: JsonNode;
+proc validate_PostDeleteLoadBalancerListeners_602374(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified listeners from the specified load balancer.
   ## 
@@ -3295,138 +3313,139 @@ proc validate_PostDeleteLoadBalancerListeners_600352(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600354 = query.getOrDefault("Action")
-  valid_600354 = validateParameter(valid_600354, JString, required = true, default = newJString(
+  var valid_602376 = query.getOrDefault("Action")
+  valid_602376 = validateParameter(valid_602376, JString, required = true, default = newJString(
       "DeleteLoadBalancerListeners"))
-  if valid_600354 != nil:
-    section.add "Action", valid_600354
-  var valid_600355 = query.getOrDefault("Version")
-  valid_600355 = validateParameter(valid_600355, JString, required = true,
+  if valid_602376 != nil:
+    section.add "Action", valid_602376
+  var valid_602377 = query.getOrDefault("Version")
+  valid_602377 = validateParameter(valid_602377, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600355 != nil:
-    section.add "Version", valid_600355
+  if valid_602377 != nil:
+    section.add "Version", valid_602377
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600356 = header.getOrDefault("X-Amz-Date")
-  valid_600356 = validateParameter(valid_600356, JString, required = false,
+  var valid_602378 = header.getOrDefault("X-Amz-Signature")
+  valid_602378 = validateParameter(valid_602378, JString, required = false,
                                  default = nil)
-  if valid_600356 != nil:
-    section.add "X-Amz-Date", valid_600356
-  var valid_600357 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600357 = validateParameter(valid_600357, JString, required = false,
+  if valid_602378 != nil:
+    section.add "X-Amz-Signature", valid_602378
+  var valid_602379 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602379 = validateParameter(valid_602379, JString, required = false,
                                  default = nil)
-  if valid_600357 != nil:
-    section.add "X-Amz-Security-Token", valid_600357
-  var valid_600358 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600358 = validateParameter(valid_600358, JString, required = false,
+  if valid_602379 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602379
+  var valid_602380 = header.getOrDefault("X-Amz-Date")
+  valid_602380 = validateParameter(valid_602380, JString, required = false,
                                  default = nil)
-  if valid_600358 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600358
-  var valid_600359 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600359 = validateParameter(valid_600359, JString, required = false,
+  if valid_602380 != nil:
+    section.add "X-Amz-Date", valid_602380
+  var valid_602381 = header.getOrDefault("X-Amz-Credential")
+  valid_602381 = validateParameter(valid_602381, JString, required = false,
                                  default = nil)
-  if valid_600359 != nil:
-    section.add "X-Amz-Algorithm", valid_600359
-  var valid_600360 = header.getOrDefault("X-Amz-Signature")
-  valid_600360 = validateParameter(valid_600360, JString, required = false,
+  if valid_602381 != nil:
+    section.add "X-Amz-Credential", valid_602381
+  var valid_602382 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602382 = validateParameter(valid_602382, JString, required = false,
                                  default = nil)
-  if valid_600360 != nil:
-    section.add "X-Amz-Signature", valid_600360
-  var valid_600361 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600361 = validateParameter(valid_600361, JString, required = false,
+  if valid_602382 != nil:
+    section.add "X-Amz-Security-Token", valid_602382
+  var valid_602383 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602383 = validateParameter(valid_602383, JString, required = false,
                                  default = nil)
-  if valid_600361 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600361
-  var valid_600362 = header.getOrDefault("X-Amz-Credential")
-  valid_600362 = validateParameter(valid_600362, JString, required = false,
+  if valid_602383 != nil:
+    section.add "X-Amz-Algorithm", valid_602383
+  var valid_602384 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602384 = validateParameter(valid_602384, JString, required = false,
                                  default = nil)
-  if valid_600362 != nil:
-    section.add "X-Amz-Credential", valid_600362
+  if valid_602384 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602384
   result.add "header", section
   ## parameters in `formData` object:
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
   ##   LoadBalancerPorts: JArray (required)
   ##                    : The client port numbers of the listeners.
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
   section = newJObject()
-  assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
-  var valid_600363 = formData.getOrDefault("LoadBalancerName")
-  valid_600363 = validateParameter(valid_600363, JString, required = true,
+  assert formData != nil, "formData argument is necessary due to required `LoadBalancerPorts` field"
+  var valid_602385 = formData.getOrDefault("LoadBalancerPorts")
+  valid_602385 = validateParameter(valid_602385, JArray, required = true, default = nil)
+  if valid_602385 != nil:
+    section.add "LoadBalancerPorts", valid_602385
+  var valid_602386 = formData.getOrDefault("LoadBalancerName")
+  valid_602386 = validateParameter(valid_602386, JString, required = true,
                                  default = nil)
-  if valid_600363 != nil:
-    section.add "LoadBalancerName", valid_600363
-  var valid_600364 = formData.getOrDefault("LoadBalancerPorts")
-  valid_600364 = validateParameter(valid_600364, JArray, required = true, default = nil)
-  if valid_600364 != nil:
-    section.add "LoadBalancerPorts", valid_600364
+  if valid_602386 != nil:
+    section.add "LoadBalancerName", valid_602386
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600365: Call_PostDeleteLoadBalancerListeners_600351;
+proc call*(call_602387: Call_PostDeleteLoadBalancerListeners_602373;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Deletes the specified listeners from the specified load balancer.
   ## 
-  let valid = call_600365.validator(path, query, header, formData, body)
-  let scheme = call_600365.pickScheme
+  let valid = call_602387.validator(path, query, header, formData, body)
+  let scheme = call_602387.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600365.url(scheme.get, call_600365.host, call_600365.base,
-                         call_600365.route, valid.getOrDefault("path"),
+  let url = call_602387.url(scheme.get, call_602387.host, call_602387.base,
+                         call_602387.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600365, url, valid)
+  result = atozHook(call_602387, url, valid)
 
-proc call*(call_600366: Call_PostDeleteLoadBalancerListeners_600351;
-          LoadBalancerName: string; LoadBalancerPorts: JsonNode;
+proc call*(call_602388: Call_PostDeleteLoadBalancerListeners_602373;
+          LoadBalancerPorts: JsonNode; LoadBalancerName: string;
           Action: string = "DeleteLoadBalancerListeners";
           Version: string = "2012-06-01"): Recallable =
   ## postDeleteLoadBalancerListeners
   ## Deletes the specified listeners from the specified load balancer.
-  ##   Action: string (required)
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
   ##   LoadBalancerPorts: JArray (required)
   ##                    : The client port numbers of the listeners.
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600367 = newJObject()
-  var formData_600368 = newJObject()
-  add(query_600367, "Action", newJString(Action))
-  add(formData_600368, "LoadBalancerName", newJString(LoadBalancerName))
+  var query_602389 = newJObject()
+  var formData_602390 = newJObject()
   if LoadBalancerPorts != nil:
-    formData_600368.add "LoadBalancerPorts", LoadBalancerPorts
-  add(query_600367, "Version", newJString(Version))
-  result = call_600366.call(nil, query_600367, nil, formData_600368, nil)
+    formData_602390.add "LoadBalancerPorts", LoadBalancerPorts
+  add(formData_602390, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602389, "Action", newJString(Action))
+  add(query_602389, "Version", newJString(Version))
+  result = call_602388.call(nil, query_602389, nil, formData_602390, nil)
 
-var postDeleteLoadBalancerListeners* = Call_PostDeleteLoadBalancerListeners_600351(
+var postDeleteLoadBalancerListeners* = Call_PostDeleteLoadBalancerListeners_602373(
     name: "postDeleteLoadBalancerListeners", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DeleteLoadBalancerListeners",
-    validator: validate_PostDeleteLoadBalancerListeners_600352, base: "/",
-    url: url_PostDeleteLoadBalancerListeners_600353,
+    validator: validate_PostDeleteLoadBalancerListeners_602374, base: "/",
+    url: url_PostDeleteLoadBalancerListeners_602375,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeleteLoadBalancerListeners_600334 = ref object of OpenApiRestCall_599368
-proc url_GetDeleteLoadBalancerListeners_600336(protocol: Scheme; host: string;
+  Call_GetDeleteLoadBalancerListeners_602356 = ref object of OpenApiRestCall_601389
+proc url_GetDeleteLoadBalancerListeners_602358(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDeleteLoadBalancerListeners_600335(path: JsonNode;
+proc validate_GetDeleteLoadBalancerListeners_602357(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified listeners from the specified load balancer.
   ## 
@@ -3435,139 +3454,140 @@ proc validate_GetDeleteLoadBalancerListeners_600335(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   LoadBalancerPorts: JArray (required)
+  ##                    : The client port numbers of the listeners.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   ##   Action: JString (required)
-  ##   LoadBalancerPorts: JArray (required)
-  ##                    : The client port numbers of the listeners.
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600337 = query.getOrDefault("LoadBalancerName")
-  valid_600337 = validateParameter(valid_600337, JString, required = true,
+        "query argument is necessary due to required `LoadBalancerPorts` field"
+  var valid_602359 = query.getOrDefault("LoadBalancerPorts")
+  valid_602359 = validateParameter(valid_602359, JArray, required = true, default = nil)
+  if valid_602359 != nil:
+    section.add "LoadBalancerPorts", valid_602359
+  var valid_602360 = query.getOrDefault("LoadBalancerName")
+  valid_602360 = validateParameter(valid_602360, JString, required = true,
                                  default = nil)
-  if valid_600337 != nil:
-    section.add "LoadBalancerName", valid_600337
-  var valid_600338 = query.getOrDefault("Action")
-  valid_600338 = validateParameter(valid_600338, JString, required = true, default = newJString(
+  if valid_602360 != nil:
+    section.add "LoadBalancerName", valid_602360
+  var valid_602361 = query.getOrDefault("Action")
+  valid_602361 = validateParameter(valid_602361, JString, required = true, default = newJString(
       "DeleteLoadBalancerListeners"))
-  if valid_600338 != nil:
-    section.add "Action", valid_600338
-  var valid_600339 = query.getOrDefault("LoadBalancerPorts")
-  valid_600339 = validateParameter(valid_600339, JArray, required = true, default = nil)
-  if valid_600339 != nil:
-    section.add "LoadBalancerPorts", valid_600339
-  var valid_600340 = query.getOrDefault("Version")
-  valid_600340 = validateParameter(valid_600340, JString, required = true,
+  if valid_602361 != nil:
+    section.add "Action", valid_602361
+  var valid_602362 = query.getOrDefault("Version")
+  valid_602362 = validateParameter(valid_602362, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600340 != nil:
-    section.add "Version", valid_600340
+  if valid_602362 != nil:
+    section.add "Version", valid_602362
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600341 = header.getOrDefault("X-Amz-Date")
-  valid_600341 = validateParameter(valid_600341, JString, required = false,
+  var valid_602363 = header.getOrDefault("X-Amz-Signature")
+  valid_602363 = validateParameter(valid_602363, JString, required = false,
                                  default = nil)
-  if valid_600341 != nil:
-    section.add "X-Amz-Date", valid_600341
-  var valid_600342 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600342 = validateParameter(valid_600342, JString, required = false,
+  if valid_602363 != nil:
+    section.add "X-Amz-Signature", valid_602363
+  var valid_602364 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602364 = validateParameter(valid_602364, JString, required = false,
                                  default = nil)
-  if valid_600342 != nil:
-    section.add "X-Amz-Security-Token", valid_600342
-  var valid_600343 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600343 = validateParameter(valid_600343, JString, required = false,
+  if valid_602364 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602364
+  var valid_602365 = header.getOrDefault("X-Amz-Date")
+  valid_602365 = validateParameter(valid_602365, JString, required = false,
                                  default = nil)
-  if valid_600343 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600343
-  var valid_600344 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600344 = validateParameter(valid_600344, JString, required = false,
+  if valid_602365 != nil:
+    section.add "X-Amz-Date", valid_602365
+  var valid_602366 = header.getOrDefault("X-Amz-Credential")
+  valid_602366 = validateParameter(valid_602366, JString, required = false,
                                  default = nil)
-  if valid_600344 != nil:
-    section.add "X-Amz-Algorithm", valid_600344
-  var valid_600345 = header.getOrDefault("X-Amz-Signature")
-  valid_600345 = validateParameter(valid_600345, JString, required = false,
+  if valid_602366 != nil:
+    section.add "X-Amz-Credential", valid_602366
+  var valid_602367 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602367 = validateParameter(valid_602367, JString, required = false,
                                  default = nil)
-  if valid_600345 != nil:
-    section.add "X-Amz-Signature", valid_600345
-  var valid_600346 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600346 = validateParameter(valid_600346, JString, required = false,
+  if valid_602367 != nil:
+    section.add "X-Amz-Security-Token", valid_602367
+  var valid_602368 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602368 = validateParameter(valid_602368, JString, required = false,
                                  default = nil)
-  if valid_600346 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600346
-  var valid_600347 = header.getOrDefault("X-Amz-Credential")
-  valid_600347 = validateParameter(valid_600347, JString, required = false,
+  if valid_602368 != nil:
+    section.add "X-Amz-Algorithm", valid_602368
+  var valid_602369 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602369 = validateParameter(valid_602369, JString, required = false,
                                  default = nil)
-  if valid_600347 != nil:
-    section.add "X-Amz-Credential", valid_600347
+  if valid_602369 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602369
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600348: Call_GetDeleteLoadBalancerListeners_600334; path: JsonNode;
+proc call*(call_602370: Call_GetDeleteLoadBalancerListeners_602356; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified listeners from the specified load balancer.
   ## 
-  let valid = call_600348.validator(path, query, header, formData, body)
-  let scheme = call_600348.pickScheme
+  let valid = call_602370.validator(path, query, header, formData, body)
+  let scheme = call_602370.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600348.url(scheme.get, call_600348.host, call_600348.base,
-                         call_600348.route, valid.getOrDefault("path"),
+  let url = call_602370.url(scheme.get, call_602370.host, call_602370.base,
+                         call_602370.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600348, url, valid)
+  result = atozHook(call_602370, url, valid)
 
-proc call*(call_600349: Call_GetDeleteLoadBalancerListeners_600334;
-          LoadBalancerName: string; LoadBalancerPorts: JsonNode;
+proc call*(call_602371: Call_GetDeleteLoadBalancerListeners_602356;
+          LoadBalancerPorts: JsonNode; LoadBalancerName: string;
           Action: string = "DeleteLoadBalancerListeners";
           Version: string = "2012-06-01"): Recallable =
   ## getDeleteLoadBalancerListeners
   ## Deletes the specified listeners from the specified load balancer.
+  ##   LoadBalancerPorts: JArray (required)
+  ##                    : The client port numbers of the listeners.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
   ##   Action: string (required)
-  ##   LoadBalancerPorts: JArray (required)
-  ##                    : The client port numbers of the listeners.
   ##   Version: string (required)
-  var query_600350 = newJObject()
-  add(query_600350, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600350, "Action", newJString(Action))
+  var query_602372 = newJObject()
   if LoadBalancerPorts != nil:
-    query_600350.add "LoadBalancerPorts", LoadBalancerPorts
-  add(query_600350, "Version", newJString(Version))
-  result = call_600349.call(nil, query_600350, nil, nil, nil)
+    query_602372.add "LoadBalancerPorts", LoadBalancerPorts
+  add(query_602372, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602372, "Action", newJString(Action))
+  add(query_602372, "Version", newJString(Version))
+  result = call_602371.call(nil, query_602372, nil, nil, nil)
 
-var getDeleteLoadBalancerListeners* = Call_GetDeleteLoadBalancerListeners_600334(
+var getDeleteLoadBalancerListeners* = Call_GetDeleteLoadBalancerListeners_602356(
     name: "getDeleteLoadBalancerListeners", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DeleteLoadBalancerListeners",
-    validator: validate_GetDeleteLoadBalancerListeners_600335, base: "/",
-    url: url_GetDeleteLoadBalancerListeners_600336,
+    validator: validate_GetDeleteLoadBalancerListeners_602357, base: "/",
+    url: url_GetDeleteLoadBalancerListeners_602358,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeleteLoadBalancerPolicy_600386 = ref object of OpenApiRestCall_599368
-proc url_PostDeleteLoadBalancerPolicy_600388(protocol: Scheme; host: string;
+  Call_PostDeleteLoadBalancerPolicy_602408 = ref object of OpenApiRestCall_601389
+proc url_PostDeleteLoadBalancerPolicy_602410(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDeleteLoadBalancerPolicy_600387(path: JsonNode; query: JsonNode;
+proc validate_PostDeleteLoadBalancerPolicy_602409(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified policy from the specified load balancer. This policy must not be enabled for any listeners.
   ## 
@@ -3580,138 +3600,138 @@ proc validate_PostDeleteLoadBalancerPolicy_600387(path: JsonNode; query: JsonNod
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600389 = query.getOrDefault("Action")
-  valid_600389 = validateParameter(valid_600389, JString, required = true, default = newJString(
+  var valid_602411 = query.getOrDefault("Action")
+  valid_602411 = validateParameter(valid_602411, JString, required = true, default = newJString(
       "DeleteLoadBalancerPolicy"))
-  if valid_600389 != nil:
-    section.add "Action", valid_600389
-  var valid_600390 = query.getOrDefault("Version")
-  valid_600390 = validateParameter(valid_600390, JString, required = true,
+  if valid_602411 != nil:
+    section.add "Action", valid_602411
+  var valid_602412 = query.getOrDefault("Version")
+  valid_602412 = validateParameter(valid_602412, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600390 != nil:
-    section.add "Version", valid_600390
+  if valid_602412 != nil:
+    section.add "Version", valid_602412
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600391 = header.getOrDefault("X-Amz-Date")
-  valid_600391 = validateParameter(valid_600391, JString, required = false,
+  var valid_602413 = header.getOrDefault("X-Amz-Signature")
+  valid_602413 = validateParameter(valid_602413, JString, required = false,
                                  default = nil)
-  if valid_600391 != nil:
-    section.add "X-Amz-Date", valid_600391
-  var valid_600392 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600392 = validateParameter(valid_600392, JString, required = false,
+  if valid_602413 != nil:
+    section.add "X-Amz-Signature", valid_602413
+  var valid_602414 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602414 = validateParameter(valid_602414, JString, required = false,
                                  default = nil)
-  if valid_600392 != nil:
-    section.add "X-Amz-Security-Token", valid_600392
-  var valid_600393 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600393 = validateParameter(valid_600393, JString, required = false,
+  if valid_602414 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602414
+  var valid_602415 = header.getOrDefault("X-Amz-Date")
+  valid_602415 = validateParameter(valid_602415, JString, required = false,
                                  default = nil)
-  if valid_600393 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600393
-  var valid_600394 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600394 = validateParameter(valid_600394, JString, required = false,
+  if valid_602415 != nil:
+    section.add "X-Amz-Date", valid_602415
+  var valid_602416 = header.getOrDefault("X-Amz-Credential")
+  valid_602416 = validateParameter(valid_602416, JString, required = false,
                                  default = nil)
-  if valid_600394 != nil:
-    section.add "X-Amz-Algorithm", valid_600394
-  var valid_600395 = header.getOrDefault("X-Amz-Signature")
-  valid_600395 = validateParameter(valid_600395, JString, required = false,
+  if valid_602416 != nil:
+    section.add "X-Amz-Credential", valid_602416
+  var valid_602417 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602417 = validateParameter(valid_602417, JString, required = false,
                                  default = nil)
-  if valid_600395 != nil:
-    section.add "X-Amz-Signature", valid_600395
-  var valid_600396 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600396 = validateParameter(valid_600396, JString, required = false,
+  if valid_602417 != nil:
+    section.add "X-Amz-Security-Token", valid_602417
+  var valid_602418 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602418 = validateParameter(valid_602418, JString, required = false,
                                  default = nil)
-  if valid_600396 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600396
-  var valid_600397 = header.getOrDefault("X-Amz-Credential")
-  valid_600397 = validateParameter(valid_600397, JString, required = false,
+  if valid_602418 != nil:
+    section.add "X-Amz-Algorithm", valid_602418
+  var valid_602419 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602419 = validateParameter(valid_602419, JString, required = false,
                                  default = nil)
-  if valid_600397 != nil:
-    section.add "X-Amz-Credential", valid_600397
+  if valid_602419 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602419
   result.add "header", section
   ## parameters in `formData` object:
-  ##   PolicyName: JString (required)
-  ##             : The name of the policy.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
+  ##   PolicyName: JString (required)
+  ##             : The name of the policy.
   section = newJObject()
-  assert formData != nil,
-        "formData argument is necessary due to required `PolicyName` field"
-  var valid_600398 = formData.getOrDefault("PolicyName")
-  valid_600398 = validateParameter(valid_600398, JString, required = true,
+  assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
+  var valid_602420 = formData.getOrDefault("LoadBalancerName")
+  valid_602420 = validateParameter(valid_602420, JString, required = true,
                                  default = nil)
-  if valid_600398 != nil:
-    section.add "PolicyName", valid_600398
-  var valid_600399 = formData.getOrDefault("LoadBalancerName")
-  valid_600399 = validateParameter(valid_600399, JString, required = true,
+  if valid_602420 != nil:
+    section.add "LoadBalancerName", valid_602420
+  var valid_602421 = formData.getOrDefault("PolicyName")
+  valid_602421 = validateParameter(valid_602421, JString, required = true,
                                  default = nil)
-  if valid_600399 != nil:
-    section.add "LoadBalancerName", valid_600399
+  if valid_602421 != nil:
+    section.add "PolicyName", valid_602421
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600400: Call_PostDeleteLoadBalancerPolicy_600386; path: JsonNode;
+proc call*(call_602422: Call_PostDeleteLoadBalancerPolicy_602408; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified policy from the specified load balancer. This policy must not be enabled for any listeners.
   ## 
-  let valid = call_600400.validator(path, query, header, formData, body)
-  let scheme = call_600400.pickScheme
+  let valid = call_602422.validator(path, query, header, formData, body)
+  let scheme = call_602422.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600400.url(scheme.get, call_600400.host, call_600400.base,
-                         call_600400.route, valid.getOrDefault("path"),
+  let url = call_602422.url(scheme.get, call_602422.host, call_602422.base,
+                         call_602422.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600400, url, valid)
+  result = atozHook(call_602422, url, valid)
 
-proc call*(call_600401: Call_PostDeleteLoadBalancerPolicy_600386;
-          PolicyName: string; LoadBalancerName: string;
+proc call*(call_602423: Call_PostDeleteLoadBalancerPolicy_602408;
+          LoadBalancerName: string; PolicyName: string;
           Action: string = "DeleteLoadBalancerPolicy";
           Version: string = "2012-06-01"): Recallable =
   ## postDeleteLoadBalancerPolicy
   ## Deletes the specified policy from the specified load balancer. This policy must not be enabled for any listeners.
-  ##   PolicyName: string (required)
-  ##             : The name of the policy.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600402 = newJObject()
-  var formData_600403 = newJObject()
-  add(formData_600403, "PolicyName", newJString(PolicyName))
-  add(query_600402, "Action", newJString(Action))
-  add(formData_600403, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600402, "Version", newJString(Version))
-  result = call_600401.call(nil, query_600402, nil, formData_600403, nil)
+  ##   PolicyName: string (required)
+  ##             : The name of the policy.
+  var query_602424 = newJObject()
+  var formData_602425 = newJObject()
+  add(formData_602425, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602424, "Action", newJString(Action))
+  add(query_602424, "Version", newJString(Version))
+  add(formData_602425, "PolicyName", newJString(PolicyName))
+  result = call_602423.call(nil, query_602424, nil, formData_602425, nil)
 
-var postDeleteLoadBalancerPolicy* = Call_PostDeleteLoadBalancerPolicy_600386(
+var postDeleteLoadBalancerPolicy* = Call_PostDeleteLoadBalancerPolicy_602408(
     name: "postDeleteLoadBalancerPolicy", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DeleteLoadBalancerPolicy",
-    validator: validate_PostDeleteLoadBalancerPolicy_600387, base: "/",
-    url: url_PostDeleteLoadBalancerPolicy_600388,
+    validator: validate_PostDeleteLoadBalancerPolicy_602409, base: "/",
+    url: url_PostDeleteLoadBalancerPolicy_602410,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeleteLoadBalancerPolicy_600369 = ref object of OpenApiRestCall_599368
-proc url_GetDeleteLoadBalancerPolicy_600371(protocol: Scheme; host: string;
+  Call_GetDeleteLoadBalancerPolicy_602391 = ref object of OpenApiRestCall_601389
+proc url_GetDeleteLoadBalancerPolicy_602393(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDeleteLoadBalancerPolicy_600370(path: JsonNode; query: JsonNode;
+proc validate_GetDeleteLoadBalancerPolicy_602392(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified policy from the specified load balancer. This policy must not be enabled for any listeners.
   ## 
@@ -3720,139 +3740,140 @@ proc validate_GetDeleteLoadBalancerPolicy_600370(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   PolicyName: JString (required)
+  ##             : The name of the policy.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   ##   Action: JString (required)
   ##   Version: JString (required)
-  ##   PolicyName: JString (required)
-  ##             : The name of the policy.
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600372 = query.getOrDefault("LoadBalancerName")
-  valid_600372 = validateParameter(valid_600372, JString, required = true,
+        "query argument is necessary due to required `PolicyName` field"
+  var valid_602394 = query.getOrDefault("PolicyName")
+  valid_602394 = validateParameter(valid_602394, JString, required = true,
                                  default = nil)
-  if valid_600372 != nil:
-    section.add "LoadBalancerName", valid_600372
-  var valid_600373 = query.getOrDefault("Action")
-  valid_600373 = validateParameter(valid_600373, JString, required = true, default = newJString(
+  if valid_602394 != nil:
+    section.add "PolicyName", valid_602394
+  var valid_602395 = query.getOrDefault("LoadBalancerName")
+  valid_602395 = validateParameter(valid_602395, JString, required = true,
+                                 default = nil)
+  if valid_602395 != nil:
+    section.add "LoadBalancerName", valid_602395
+  var valid_602396 = query.getOrDefault("Action")
+  valid_602396 = validateParameter(valid_602396, JString, required = true, default = newJString(
       "DeleteLoadBalancerPolicy"))
-  if valid_600373 != nil:
-    section.add "Action", valid_600373
-  var valid_600374 = query.getOrDefault("Version")
-  valid_600374 = validateParameter(valid_600374, JString, required = true,
+  if valid_602396 != nil:
+    section.add "Action", valid_602396
+  var valid_602397 = query.getOrDefault("Version")
+  valid_602397 = validateParameter(valid_602397, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600374 != nil:
-    section.add "Version", valid_600374
-  var valid_600375 = query.getOrDefault("PolicyName")
-  valid_600375 = validateParameter(valid_600375, JString, required = true,
-                                 default = nil)
-  if valid_600375 != nil:
-    section.add "PolicyName", valid_600375
+  if valid_602397 != nil:
+    section.add "Version", valid_602397
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600376 = header.getOrDefault("X-Amz-Date")
-  valid_600376 = validateParameter(valid_600376, JString, required = false,
+  var valid_602398 = header.getOrDefault("X-Amz-Signature")
+  valid_602398 = validateParameter(valid_602398, JString, required = false,
                                  default = nil)
-  if valid_600376 != nil:
-    section.add "X-Amz-Date", valid_600376
-  var valid_600377 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600377 = validateParameter(valid_600377, JString, required = false,
+  if valid_602398 != nil:
+    section.add "X-Amz-Signature", valid_602398
+  var valid_602399 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602399 = validateParameter(valid_602399, JString, required = false,
                                  default = nil)
-  if valid_600377 != nil:
-    section.add "X-Amz-Security-Token", valid_600377
-  var valid_600378 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600378 = validateParameter(valid_600378, JString, required = false,
+  if valid_602399 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602399
+  var valid_602400 = header.getOrDefault("X-Amz-Date")
+  valid_602400 = validateParameter(valid_602400, JString, required = false,
                                  default = nil)
-  if valid_600378 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600378
-  var valid_600379 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600379 = validateParameter(valid_600379, JString, required = false,
+  if valid_602400 != nil:
+    section.add "X-Amz-Date", valid_602400
+  var valid_602401 = header.getOrDefault("X-Amz-Credential")
+  valid_602401 = validateParameter(valid_602401, JString, required = false,
                                  default = nil)
-  if valid_600379 != nil:
-    section.add "X-Amz-Algorithm", valid_600379
-  var valid_600380 = header.getOrDefault("X-Amz-Signature")
-  valid_600380 = validateParameter(valid_600380, JString, required = false,
+  if valid_602401 != nil:
+    section.add "X-Amz-Credential", valid_602401
+  var valid_602402 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602402 = validateParameter(valid_602402, JString, required = false,
                                  default = nil)
-  if valid_600380 != nil:
-    section.add "X-Amz-Signature", valid_600380
-  var valid_600381 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600381 = validateParameter(valid_600381, JString, required = false,
+  if valid_602402 != nil:
+    section.add "X-Amz-Security-Token", valid_602402
+  var valid_602403 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602403 = validateParameter(valid_602403, JString, required = false,
                                  default = nil)
-  if valid_600381 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600381
-  var valid_600382 = header.getOrDefault("X-Amz-Credential")
-  valid_600382 = validateParameter(valid_600382, JString, required = false,
+  if valid_602403 != nil:
+    section.add "X-Amz-Algorithm", valid_602403
+  var valid_602404 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602404 = validateParameter(valid_602404, JString, required = false,
                                  default = nil)
-  if valid_600382 != nil:
-    section.add "X-Amz-Credential", valid_600382
+  if valid_602404 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602404
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600383: Call_GetDeleteLoadBalancerPolicy_600369; path: JsonNode;
+proc call*(call_602405: Call_GetDeleteLoadBalancerPolicy_602391; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified policy from the specified load balancer. This policy must not be enabled for any listeners.
   ## 
-  let valid = call_600383.validator(path, query, header, formData, body)
-  let scheme = call_600383.pickScheme
+  let valid = call_602405.validator(path, query, header, formData, body)
+  let scheme = call_602405.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600383.url(scheme.get, call_600383.host, call_600383.base,
-                         call_600383.route, valid.getOrDefault("path"),
+  let url = call_602405.url(scheme.get, call_602405.host, call_602405.base,
+                         call_602405.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600383, url, valid)
+  result = atozHook(call_602405, url, valid)
 
-proc call*(call_600384: Call_GetDeleteLoadBalancerPolicy_600369;
-          LoadBalancerName: string; PolicyName: string;
+proc call*(call_602406: Call_GetDeleteLoadBalancerPolicy_602391;
+          PolicyName: string; LoadBalancerName: string;
           Action: string = "DeleteLoadBalancerPolicy";
           Version: string = "2012-06-01"): Recallable =
   ## getDeleteLoadBalancerPolicy
   ## Deletes the specified policy from the specified load balancer. This policy must not be enabled for any listeners.
+  ##   PolicyName: string (required)
+  ##             : The name of the policy.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  ##   PolicyName: string (required)
-  ##             : The name of the policy.
-  var query_600385 = newJObject()
-  add(query_600385, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600385, "Action", newJString(Action))
-  add(query_600385, "Version", newJString(Version))
-  add(query_600385, "PolicyName", newJString(PolicyName))
-  result = call_600384.call(nil, query_600385, nil, nil, nil)
+  var query_602407 = newJObject()
+  add(query_602407, "PolicyName", newJString(PolicyName))
+  add(query_602407, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602407, "Action", newJString(Action))
+  add(query_602407, "Version", newJString(Version))
+  result = call_602406.call(nil, query_602407, nil, nil, nil)
 
-var getDeleteLoadBalancerPolicy* = Call_GetDeleteLoadBalancerPolicy_600369(
+var getDeleteLoadBalancerPolicy* = Call_GetDeleteLoadBalancerPolicy_602391(
     name: "getDeleteLoadBalancerPolicy", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DeleteLoadBalancerPolicy",
-    validator: validate_GetDeleteLoadBalancerPolicy_600370, base: "/",
-    url: url_GetDeleteLoadBalancerPolicy_600371,
+    validator: validate_GetDeleteLoadBalancerPolicy_602392, base: "/",
+    url: url_GetDeleteLoadBalancerPolicy_602393,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDeregisterInstancesFromLoadBalancer_600421 = ref object of OpenApiRestCall_599368
-proc url_PostDeregisterInstancesFromLoadBalancer_600423(protocol: Scheme;
+  Call_PostDeregisterInstancesFromLoadBalancer_602443 = ref object of OpenApiRestCall_601389
+proc url_PostDeregisterInstancesFromLoadBalancer_602445(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDeregisterInstancesFromLoadBalancer_600422(path: JsonNode;
+proc validate_PostDeregisterInstancesFromLoadBalancer_602444(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deregisters the specified instances from the specified load balancer. After the instance is deregistered, it no longer receives traffic from the load balancer.</p> <p>You can use <a>DescribeLoadBalancers</a> to verify that the instance is deregistered from the load balancer.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -3865,61 +3886,61 @@ proc validate_PostDeregisterInstancesFromLoadBalancer_600422(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600424 = query.getOrDefault("Action")
-  valid_600424 = validateParameter(valid_600424, JString, required = true, default = newJString(
+  var valid_602446 = query.getOrDefault("Action")
+  valid_602446 = validateParameter(valid_602446, JString, required = true, default = newJString(
       "DeregisterInstancesFromLoadBalancer"))
-  if valid_600424 != nil:
-    section.add "Action", valid_600424
-  var valid_600425 = query.getOrDefault("Version")
-  valid_600425 = validateParameter(valid_600425, JString, required = true,
+  if valid_602446 != nil:
+    section.add "Action", valid_602446
+  var valid_602447 = query.getOrDefault("Version")
+  valid_602447 = validateParameter(valid_602447, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600425 != nil:
-    section.add "Version", valid_600425
+  if valid_602447 != nil:
+    section.add "Version", valid_602447
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600426 = header.getOrDefault("X-Amz-Date")
-  valid_600426 = validateParameter(valid_600426, JString, required = false,
+  var valid_602448 = header.getOrDefault("X-Amz-Signature")
+  valid_602448 = validateParameter(valid_602448, JString, required = false,
                                  default = nil)
-  if valid_600426 != nil:
-    section.add "X-Amz-Date", valid_600426
-  var valid_600427 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600427 = validateParameter(valid_600427, JString, required = false,
+  if valid_602448 != nil:
+    section.add "X-Amz-Signature", valid_602448
+  var valid_602449 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602449 = validateParameter(valid_602449, JString, required = false,
                                  default = nil)
-  if valid_600427 != nil:
-    section.add "X-Amz-Security-Token", valid_600427
-  var valid_600428 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600428 = validateParameter(valid_600428, JString, required = false,
+  if valid_602449 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602449
+  var valid_602450 = header.getOrDefault("X-Amz-Date")
+  valid_602450 = validateParameter(valid_602450, JString, required = false,
                                  default = nil)
-  if valid_600428 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600428
-  var valid_600429 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600429 = validateParameter(valid_600429, JString, required = false,
+  if valid_602450 != nil:
+    section.add "X-Amz-Date", valid_602450
+  var valid_602451 = header.getOrDefault("X-Amz-Credential")
+  valid_602451 = validateParameter(valid_602451, JString, required = false,
                                  default = nil)
-  if valid_600429 != nil:
-    section.add "X-Amz-Algorithm", valid_600429
-  var valid_600430 = header.getOrDefault("X-Amz-Signature")
-  valid_600430 = validateParameter(valid_600430, JString, required = false,
+  if valid_602451 != nil:
+    section.add "X-Amz-Credential", valid_602451
+  var valid_602452 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602452 = validateParameter(valid_602452, JString, required = false,
                                  default = nil)
-  if valid_600430 != nil:
-    section.add "X-Amz-Signature", valid_600430
-  var valid_600431 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600431 = validateParameter(valid_600431, JString, required = false,
+  if valid_602452 != nil:
+    section.add "X-Amz-Security-Token", valid_602452
+  var valid_602453 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602453 = validateParameter(valid_602453, JString, required = false,
                                  default = nil)
-  if valid_600431 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600431
-  var valid_600432 = header.getOrDefault("X-Amz-Credential")
-  valid_600432 = validateParameter(valid_600432, JString, required = false,
+  if valid_602453 != nil:
+    section.add "X-Amz-Algorithm", valid_602453
+  var valid_602454 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602454 = validateParameter(valid_602454, JString, required = false,
                                  default = nil)
-  if valid_600432 != nil:
-    section.add "X-Amz-Credential", valid_600432
+  if valid_602454 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602454
   result.add "header", section
   ## parameters in `formData` object:
   ##   Instances: JArray (required)
@@ -3929,34 +3950,34 @@ proc validate_PostDeregisterInstancesFromLoadBalancer_600422(path: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Instances` field"
-  var valid_600433 = formData.getOrDefault("Instances")
-  valid_600433 = validateParameter(valid_600433, JArray, required = true, default = nil)
-  if valid_600433 != nil:
-    section.add "Instances", valid_600433
-  var valid_600434 = formData.getOrDefault("LoadBalancerName")
-  valid_600434 = validateParameter(valid_600434, JString, required = true,
+  var valid_602455 = formData.getOrDefault("Instances")
+  valid_602455 = validateParameter(valid_602455, JArray, required = true, default = nil)
+  if valid_602455 != nil:
+    section.add "Instances", valid_602455
+  var valid_602456 = formData.getOrDefault("LoadBalancerName")
+  valid_602456 = validateParameter(valid_602456, JString, required = true,
                                  default = nil)
-  if valid_600434 != nil:
-    section.add "LoadBalancerName", valid_600434
+  if valid_602456 != nil:
+    section.add "LoadBalancerName", valid_602456
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600435: Call_PostDeregisterInstancesFromLoadBalancer_600421;
+proc call*(call_602457: Call_PostDeregisterInstancesFromLoadBalancer_602443;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Deregisters the specified instances from the specified load balancer. After the instance is deregistered, it no longer receives traffic from the load balancer.</p> <p>You can use <a>DescribeLoadBalancers</a> to verify that the instance is deregistered from the load balancer.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600435.validator(path, query, header, formData, body)
-  let scheme = call_600435.pickScheme
+  let valid = call_602457.validator(path, query, header, formData, body)
+  let scheme = call_602457.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600435.url(scheme.get, call_600435.host, call_600435.base,
-                         call_600435.route, valid.getOrDefault("path"),
+  let url = call_602457.url(scheme.get, call_602457.host, call_602457.base,
+                         call_602457.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600435, url, valid)
+  result = atozHook(call_602457, url, valid)
 
-proc call*(call_600436: Call_PostDeregisterInstancesFromLoadBalancer_600421;
+proc call*(call_602458: Call_PostDeregisterInstancesFromLoadBalancer_602443;
           Instances: JsonNode; LoadBalancerName: string;
           Action: string = "DeregisterInstancesFromLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
@@ -3964,40 +3985,41 @@ proc call*(call_600436: Call_PostDeregisterInstancesFromLoadBalancer_600421;
   ## <p>Deregisters the specified instances from the specified load balancer. After the instance is deregistered, it no longer receives traffic from the load balancer.</p> <p>You can use <a>DescribeLoadBalancers</a> to verify that the instance is deregistered from the load balancer.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   Instances: JArray (required)
   ##            : The IDs of the instances.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600437 = newJObject()
-  var formData_600438 = newJObject()
+  var query_602459 = newJObject()
+  var formData_602460 = newJObject()
   if Instances != nil:
-    formData_600438.add "Instances", Instances
-  add(query_600437, "Action", newJString(Action))
-  add(formData_600438, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600437, "Version", newJString(Version))
-  result = call_600436.call(nil, query_600437, nil, formData_600438, nil)
+    formData_602460.add "Instances", Instances
+  add(formData_602460, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602459, "Action", newJString(Action))
+  add(query_602459, "Version", newJString(Version))
+  result = call_602458.call(nil, query_602459, nil, formData_602460, nil)
 
-var postDeregisterInstancesFromLoadBalancer* = Call_PostDeregisterInstancesFromLoadBalancer_600421(
+var postDeregisterInstancesFromLoadBalancer* = Call_PostDeregisterInstancesFromLoadBalancer_602443(
     name: "postDeregisterInstancesFromLoadBalancer", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DeregisterInstancesFromLoadBalancer",
-    validator: validate_PostDeregisterInstancesFromLoadBalancer_600422, base: "/",
-    url: url_PostDeregisterInstancesFromLoadBalancer_600423,
+    validator: validate_PostDeregisterInstancesFromLoadBalancer_602444, base: "/",
+    url: url_PostDeregisterInstancesFromLoadBalancer_602445,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDeregisterInstancesFromLoadBalancer_600404 = ref object of OpenApiRestCall_599368
-proc url_GetDeregisterInstancesFromLoadBalancer_600406(protocol: Scheme;
+  Call_GetDeregisterInstancesFromLoadBalancer_602426 = ref object of OpenApiRestCall_601389
+proc url_GetDeregisterInstancesFromLoadBalancer_602428(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDeregisterInstancesFromLoadBalancer_600405(path: JsonNode;
+proc validate_GetDeregisterInstancesFromLoadBalancer_602427(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deregisters the specified instances from the specified load balancer. After the instance is deregistered, it no longer receives traffic from the load balancer.</p> <p>You can use <a>DescribeLoadBalancers</a> to verify that the instance is deregistered from the load balancer.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -4015,91 +4037,91 @@ proc validate_GetDeregisterInstancesFromLoadBalancer_600405(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600407 = query.getOrDefault("LoadBalancerName")
-  valid_600407 = validateParameter(valid_600407, JString, required = true,
+  var valid_602429 = query.getOrDefault("LoadBalancerName")
+  valid_602429 = validateParameter(valid_602429, JString, required = true,
                                  default = nil)
-  if valid_600407 != nil:
-    section.add "LoadBalancerName", valid_600407
-  var valid_600408 = query.getOrDefault("Action")
-  valid_600408 = validateParameter(valid_600408, JString, required = true, default = newJString(
+  if valid_602429 != nil:
+    section.add "LoadBalancerName", valid_602429
+  var valid_602430 = query.getOrDefault("Action")
+  valid_602430 = validateParameter(valid_602430, JString, required = true, default = newJString(
       "DeregisterInstancesFromLoadBalancer"))
-  if valid_600408 != nil:
-    section.add "Action", valid_600408
-  var valid_600409 = query.getOrDefault("Instances")
-  valid_600409 = validateParameter(valid_600409, JArray, required = true, default = nil)
-  if valid_600409 != nil:
-    section.add "Instances", valid_600409
-  var valid_600410 = query.getOrDefault("Version")
-  valid_600410 = validateParameter(valid_600410, JString, required = true,
+  if valid_602430 != nil:
+    section.add "Action", valid_602430
+  var valid_602431 = query.getOrDefault("Instances")
+  valid_602431 = validateParameter(valid_602431, JArray, required = true, default = nil)
+  if valid_602431 != nil:
+    section.add "Instances", valid_602431
+  var valid_602432 = query.getOrDefault("Version")
+  valid_602432 = validateParameter(valid_602432, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600410 != nil:
-    section.add "Version", valid_600410
+  if valid_602432 != nil:
+    section.add "Version", valid_602432
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600411 = header.getOrDefault("X-Amz-Date")
-  valid_600411 = validateParameter(valid_600411, JString, required = false,
+  var valid_602433 = header.getOrDefault("X-Amz-Signature")
+  valid_602433 = validateParameter(valid_602433, JString, required = false,
                                  default = nil)
-  if valid_600411 != nil:
-    section.add "X-Amz-Date", valid_600411
-  var valid_600412 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600412 = validateParameter(valid_600412, JString, required = false,
+  if valid_602433 != nil:
+    section.add "X-Amz-Signature", valid_602433
+  var valid_602434 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602434 = validateParameter(valid_602434, JString, required = false,
                                  default = nil)
-  if valid_600412 != nil:
-    section.add "X-Amz-Security-Token", valid_600412
-  var valid_600413 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600413 = validateParameter(valid_600413, JString, required = false,
+  if valid_602434 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602434
+  var valid_602435 = header.getOrDefault("X-Amz-Date")
+  valid_602435 = validateParameter(valid_602435, JString, required = false,
                                  default = nil)
-  if valid_600413 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600413
-  var valid_600414 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600414 = validateParameter(valid_600414, JString, required = false,
+  if valid_602435 != nil:
+    section.add "X-Amz-Date", valid_602435
+  var valid_602436 = header.getOrDefault("X-Amz-Credential")
+  valid_602436 = validateParameter(valid_602436, JString, required = false,
                                  default = nil)
-  if valid_600414 != nil:
-    section.add "X-Amz-Algorithm", valid_600414
-  var valid_600415 = header.getOrDefault("X-Amz-Signature")
-  valid_600415 = validateParameter(valid_600415, JString, required = false,
+  if valid_602436 != nil:
+    section.add "X-Amz-Credential", valid_602436
+  var valid_602437 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602437 = validateParameter(valid_602437, JString, required = false,
                                  default = nil)
-  if valid_600415 != nil:
-    section.add "X-Amz-Signature", valid_600415
-  var valid_600416 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600416 = validateParameter(valid_600416, JString, required = false,
+  if valid_602437 != nil:
+    section.add "X-Amz-Security-Token", valid_602437
+  var valid_602438 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602438 = validateParameter(valid_602438, JString, required = false,
                                  default = nil)
-  if valid_600416 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600416
-  var valid_600417 = header.getOrDefault("X-Amz-Credential")
-  valid_600417 = validateParameter(valid_600417, JString, required = false,
+  if valid_602438 != nil:
+    section.add "X-Amz-Algorithm", valid_602438
+  var valid_602439 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602439 = validateParameter(valid_602439, JString, required = false,
                                  default = nil)
-  if valid_600417 != nil:
-    section.add "X-Amz-Credential", valid_600417
+  if valid_602439 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602439
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600418: Call_GetDeregisterInstancesFromLoadBalancer_600404;
+proc call*(call_602440: Call_GetDeregisterInstancesFromLoadBalancer_602426;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Deregisters the specified instances from the specified load balancer. After the instance is deregistered, it no longer receives traffic from the load balancer.</p> <p>You can use <a>DescribeLoadBalancers</a> to verify that the instance is deregistered from the load balancer.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600418.validator(path, query, header, formData, body)
-  let scheme = call_600418.pickScheme
+  let valid = call_602440.validator(path, query, header, formData, body)
+  let scheme = call_602440.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600418.url(scheme.get, call_600418.host, call_600418.base,
-                         call_600418.route, valid.getOrDefault("path"),
+  let url = call_602440.url(scheme.get, call_602440.host, call_602440.base,
+                         call_602440.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600418, url, valid)
+  result = atozHook(call_602440, url, valid)
 
-proc call*(call_600419: Call_GetDeregisterInstancesFromLoadBalancer_600404;
+proc call*(call_602441: Call_GetDeregisterInstancesFromLoadBalancer_602426;
           LoadBalancerName: string; Instances: JsonNode;
           Action: string = "DeregisterInstancesFromLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
@@ -4111,35 +4133,36 @@ proc call*(call_600419: Call_GetDeregisterInstancesFromLoadBalancer_600404;
   ##   Instances: JArray (required)
   ##            : The IDs of the instances.
   ##   Version: string (required)
-  var query_600420 = newJObject()
-  add(query_600420, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600420, "Action", newJString(Action))
+  var query_602442 = newJObject()
+  add(query_602442, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602442, "Action", newJString(Action))
   if Instances != nil:
-    query_600420.add "Instances", Instances
-  add(query_600420, "Version", newJString(Version))
-  result = call_600419.call(nil, query_600420, nil, nil, nil)
+    query_602442.add "Instances", Instances
+  add(query_602442, "Version", newJString(Version))
+  result = call_602441.call(nil, query_602442, nil, nil, nil)
 
-var getDeregisterInstancesFromLoadBalancer* = Call_GetDeregisterInstancesFromLoadBalancer_600404(
+var getDeregisterInstancesFromLoadBalancer* = Call_GetDeregisterInstancesFromLoadBalancer_602426(
     name: "getDeregisterInstancesFromLoadBalancer", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DeregisterInstancesFromLoadBalancer",
-    validator: validate_GetDeregisterInstancesFromLoadBalancer_600405, base: "/",
-    url: url_GetDeregisterInstancesFromLoadBalancer_600406,
+    validator: validate_GetDeregisterInstancesFromLoadBalancer_602427, base: "/",
+    url: url_GetDeregisterInstancesFromLoadBalancer_602428,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDescribeAccountLimits_600456 = ref object of OpenApiRestCall_599368
-proc url_PostDescribeAccountLimits_600458(protocol: Scheme; host: string;
+  Call_PostDescribeAccountLimits_602478 = ref object of OpenApiRestCall_601389
+proc url_PostDescribeAccountLimits_602480(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDescribeAccountLimits_600457(path: JsonNode; query: JsonNode;
+proc validate_PostDescribeAccountLimits_602479(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the current Elastic Load Balancing resource limits for your AWS account.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -4152,61 +4175,61 @@ proc validate_PostDescribeAccountLimits_600457(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600459 = query.getOrDefault("Action")
-  valid_600459 = validateParameter(valid_600459, JString, required = true,
+  var valid_602481 = query.getOrDefault("Action")
+  valid_602481 = validateParameter(valid_602481, JString, required = true,
                                  default = newJString("DescribeAccountLimits"))
-  if valid_600459 != nil:
-    section.add "Action", valid_600459
-  var valid_600460 = query.getOrDefault("Version")
-  valid_600460 = validateParameter(valid_600460, JString, required = true,
+  if valid_602481 != nil:
+    section.add "Action", valid_602481
+  var valid_602482 = query.getOrDefault("Version")
+  valid_602482 = validateParameter(valid_602482, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600460 != nil:
-    section.add "Version", valid_600460
+  if valid_602482 != nil:
+    section.add "Version", valid_602482
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600461 = header.getOrDefault("X-Amz-Date")
-  valid_600461 = validateParameter(valid_600461, JString, required = false,
+  var valid_602483 = header.getOrDefault("X-Amz-Signature")
+  valid_602483 = validateParameter(valid_602483, JString, required = false,
                                  default = nil)
-  if valid_600461 != nil:
-    section.add "X-Amz-Date", valid_600461
-  var valid_600462 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600462 = validateParameter(valid_600462, JString, required = false,
+  if valid_602483 != nil:
+    section.add "X-Amz-Signature", valid_602483
+  var valid_602484 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602484 = validateParameter(valid_602484, JString, required = false,
                                  default = nil)
-  if valid_600462 != nil:
-    section.add "X-Amz-Security-Token", valid_600462
-  var valid_600463 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600463 = validateParameter(valid_600463, JString, required = false,
+  if valid_602484 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602484
+  var valid_602485 = header.getOrDefault("X-Amz-Date")
+  valid_602485 = validateParameter(valid_602485, JString, required = false,
                                  default = nil)
-  if valid_600463 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600463
-  var valid_600464 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600464 = validateParameter(valid_600464, JString, required = false,
+  if valid_602485 != nil:
+    section.add "X-Amz-Date", valid_602485
+  var valid_602486 = header.getOrDefault("X-Amz-Credential")
+  valid_602486 = validateParameter(valid_602486, JString, required = false,
                                  default = nil)
-  if valid_600464 != nil:
-    section.add "X-Amz-Algorithm", valid_600464
-  var valid_600465 = header.getOrDefault("X-Amz-Signature")
-  valid_600465 = validateParameter(valid_600465, JString, required = false,
+  if valid_602486 != nil:
+    section.add "X-Amz-Credential", valid_602486
+  var valid_602487 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602487 = validateParameter(valid_602487, JString, required = false,
                                  default = nil)
-  if valid_600465 != nil:
-    section.add "X-Amz-Signature", valid_600465
-  var valid_600466 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600466 = validateParameter(valid_600466, JString, required = false,
+  if valid_602487 != nil:
+    section.add "X-Amz-Security-Token", valid_602487
+  var valid_602488 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602488 = validateParameter(valid_602488, JString, required = false,
                                  default = nil)
-  if valid_600466 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600466
-  var valid_600467 = header.getOrDefault("X-Amz-Credential")
-  valid_600467 = validateParameter(valid_600467, JString, required = false,
+  if valid_602488 != nil:
+    section.add "X-Amz-Algorithm", valid_602488
+  var valid_602489 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602489 = validateParameter(valid_602489, JString, required = false,
                                  default = nil)
-  if valid_600467 != nil:
-    section.add "X-Amz-Credential", valid_600467
+  if valid_602489 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602489
   result.add "header", section
   ## parameters in `formData` object:
   ##   Marker: JString
@@ -4214,33 +4237,33 @@ proc validate_PostDescribeAccountLimits_600457(path: JsonNode; query: JsonNode;
   ##   PageSize: JInt
   ##           : The maximum number of results to return with this call.
   section = newJObject()
-  var valid_600468 = formData.getOrDefault("Marker")
-  valid_600468 = validateParameter(valid_600468, JString, required = false,
+  var valid_602490 = formData.getOrDefault("Marker")
+  valid_602490 = validateParameter(valid_602490, JString, required = false,
                                  default = nil)
-  if valid_600468 != nil:
-    section.add "Marker", valid_600468
-  var valid_600469 = formData.getOrDefault("PageSize")
-  valid_600469 = validateParameter(valid_600469, JInt, required = false, default = nil)
-  if valid_600469 != nil:
-    section.add "PageSize", valid_600469
+  if valid_602490 != nil:
+    section.add "Marker", valid_602490
+  var valid_602491 = formData.getOrDefault("PageSize")
+  valid_602491 = validateParameter(valid_602491, JInt, required = false, default = nil)
+  if valid_602491 != nil:
+    section.add "PageSize", valid_602491
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600470: Call_PostDescribeAccountLimits_600456; path: JsonNode;
+proc call*(call_602492: Call_PostDescribeAccountLimits_602478; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the current Elastic Load Balancing resource limits for your AWS account.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600470.validator(path, query, header, formData, body)
-  let scheme = call_600470.pickScheme
+  let valid = call_602492.validator(path, query, header, formData, body)
+  let scheme = call_602492.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600470.url(scheme.get, call_600470.host, call_600470.base,
-                         call_600470.route, valid.getOrDefault("path"),
+  let url = call_602492.url(scheme.get, call_602492.host, call_602492.base,
+                         call_602492.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600470, url, valid)
+  result = atozHook(call_602492, url, valid)
 
-proc call*(call_600471: Call_PostDescribeAccountLimits_600456; Marker: string = "";
+proc call*(call_602493: Call_PostDescribeAccountLimits_602478; Marker: string = "";
           Action: string = "DescribeAccountLimits"; PageSize: int = 0;
           Version: string = "2012-06-01"): Recallable =
   ## postDescribeAccountLimits
@@ -4251,36 +4274,37 @@ proc call*(call_600471: Call_PostDescribeAccountLimits_600456; Marker: string = 
   ##   PageSize: int
   ##           : The maximum number of results to return with this call.
   ##   Version: string (required)
-  var query_600472 = newJObject()
-  var formData_600473 = newJObject()
-  add(formData_600473, "Marker", newJString(Marker))
-  add(query_600472, "Action", newJString(Action))
-  add(formData_600473, "PageSize", newJInt(PageSize))
-  add(query_600472, "Version", newJString(Version))
-  result = call_600471.call(nil, query_600472, nil, formData_600473, nil)
+  var query_602494 = newJObject()
+  var formData_602495 = newJObject()
+  add(formData_602495, "Marker", newJString(Marker))
+  add(query_602494, "Action", newJString(Action))
+  add(formData_602495, "PageSize", newJInt(PageSize))
+  add(query_602494, "Version", newJString(Version))
+  result = call_602493.call(nil, query_602494, nil, formData_602495, nil)
 
-var postDescribeAccountLimits* = Call_PostDescribeAccountLimits_600456(
+var postDescribeAccountLimits* = Call_PostDescribeAccountLimits_602478(
     name: "postDescribeAccountLimits", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeAccountLimits",
-    validator: validate_PostDescribeAccountLimits_600457, base: "/",
-    url: url_PostDescribeAccountLimits_600458,
+    validator: validate_PostDescribeAccountLimits_602479, base: "/",
+    url: url_PostDescribeAccountLimits_602480,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDescribeAccountLimits_600439 = ref object of OpenApiRestCall_599368
-proc url_GetDescribeAccountLimits_600441(protocol: Scheme; host: string;
+  Call_GetDescribeAccountLimits_602461 = ref object of OpenApiRestCall_601389
+proc url_GetDescribeAccountLimits_602463(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDescribeAccountLimits_600440(path: JsonNode; query: JsonNode;
+proc validate_GetDescribeAccountLimits_602462(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the current Elastic Load Balancing resource limits for your AWS account.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -4289,135 +4313,136 @@ proc validate_GetDescribeAccountLimits_600440(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   Marker: JString
+  ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   PageSize: JInt
   ##           : The maximum number of results to return with this call.
   ##   Action: JString (required)
-  ##   Marker: JString
-  ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_600442 = query.getOrDefault("PageSize")
-  valid_600442 = validateParameter(valid_600442, JInt, required = false, default = nil)
-  if valid_600442 != nil:
-    section.add "PageSize", valid_600442
-  assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600443 = query.getOrDefault("Action")
-  valid_600443 = validateParameter(valid_600443, JString, required = true,
-                                 default = newJString("DescribeAccountLimits"))
-  if valid_600443 != nil:
-    section.add "Action", valid_600443
-  var valid_600444 = query.getOrDefault("Marker")
-  valid_600444 = validateParameter(valid_600444, JString, required = false,
+  var valid_602464 = query.getOrDefault("Marker")
+  valid_602464 = validateParameter(valid_602464, JString, required = false,
                                  default = nil)
-  if valid_600444 != nil:
-    section.add "Marker", valid_600444
-  var valid_600445 = query.getOrDefault("Version")
-  valid_600445 = validateParameter(valid_600445, JString, required = true,
+  if valid_602464 != nil:
+    section.add "Marker", valid_602464
+  var valid_602465 = query.getOrDefault("PageSize")
+  valid_602465 = validateParameter(valid_602465, JInt, required = false, default = nil)
+  if valid_602465 != nil:
+    section.add "PageSize", valid_602465
+  assert query != nil, "query argument is necessary due to required `Action` field"
+  var valid_602466 = query.getOrDefault("Action")
+  valid_602466 = validateParameter(valid_602466, JString, required = true,
+                                 default = newJString("DescribeAccountLimits"))
+  if valid_602466 != nil:
+    section.add "Action", valid_602466
+  var valid_602467 = query.getOrDefault("Version")
+  valid_602467 = validateParameter(valid_602467, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600445 != nil:
-    section.add "Version", valid_600445
+  if valid_602467 != nil:
+    section.add "Version", valid_602467
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600446 = header.getOrDefault("X-Amz-Date")
-  valid_600446 = validateParameter(valid_600446, JString, required = false,
+  var valid_602468 = header.getOrDefault("X-Amz-Signature")
+  valid_602468 = validateParameter(valid_602468, JString, required = false,
                                  default = nil)
-  if valid_600446 != nil:
-    section.add "X-Amz-Date", valid_600446
-  var valid_600447 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600447 = validateParameter(valid_600447, JString, required = false,
+  if valid_602468 != nil:
+    section.add "X-Amz-Signature", valid_602468
+  var valid_602469 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602469 = validateParameter(valid_602469, JString, required = false,
                                  default = nil)
-  if valid_600447 != nil:
-    section.add "X-Amz-Security-Token", valid_600447
-  var valid_600448 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600448 = validateParameter(valid_600448, JString, required = false,
+  if valid_602469 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602469
+  var valid_602470 = header.getOrDefault("X-Amz-Date")
+  valid_602470 = validateParameter(valid_602470, JString, required = false,
                                  default = nil)
-  if valid_600448 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600448
-  var valid_600449 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600449 = validateParameter(valid_600449, JString, required = false,
+  if valid_602470 != nil:
+    section.add "X-Amz-Date", valid_602470
+  var valid_602471 = header.getOrDefault("X-Amz-Credential")
+  valid_602471 = validateParameter(valid_602471, JString, required = false,
                                  default = nil)
-  if valid_600449 != nil:
-    section.add "X-Amz-Algorithm", valid_600449
-  var valid_600450 = header.getOrDefault("X-Amz-Signature")
-  valid_600450 = validateParameter(valid_600450, JString, required = false,
+  if valid_602471 != nil:
+    section.add "X-Amz-Credential", valid_602471
+  var valid_602472 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602472 = validateParameter(valid_602472, JString, required = false,
                                  default = nil)
-  if valid_600450 != nil:
-    section.add "X-Amz-Signature", valid_600450
-  var valid_600451 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600451 = validateParameter(valid_600451, JString, required = false,
+  if valid_602472 != nil:
+    section.add "X-Amz-Security-Token", valid_602472
+  var valid_602473 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602473 = validateParameter(valid_602473, JString, required = false,
                                  default = nil)
-  if valid_600451 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600451
-  var valid_600452 = header.getOrDefault("X-Amz-Credential")
-  valid_600452 = validateParameter(valid_600452, JString, required = false,
+  if valid_602473 != nil:
+    section.add "X-Amz-Algorithm", valid_602473
+  var valid_602474 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602474 = validateParameter(valid_602474, JString, required = false,
                                  default = nil)
-  if valid_600452 != nil:
-    section.add "X-Amz-Credential", valid_600452
+  if valid_602474 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602474
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600453: Call_GetDescribeAccountLimits_600439; path: JsonNode;
+proc call*(call_602475: Call_GetDescribeAccountLimits_602461; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the current Elastic Load Balancing resource limits for your AWS account.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600453.validator(path, query, header, formData, body)
-  let scheme = call_600453.pickScheme
+  let valid = call_602475.validator(path, query, header, formData, body)
+  let scheme = call_602475.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600453.url(scheme.get, call_600453.host, call_600453.base,
-                         call_600453.route, valid.getOrDefault("path"),
+  let url = call_602475.url(scheme.get, call_602475.host, call_602475.base,
+                         call_602475.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600453, url, valid)
+  result = atozHook(call_602475, url, valid)
 
-proc call*(call_600454: Call_GetDescribeAccountLimits_600439; PageSize: int = 0;
-          Action: string = "DescribeAccountLimits"; Marker: string = "";
+proc call*(call_602476: Call_GetDescribeAccountLimits_602461; Marker: string = "";
+          PageSize: int = 0; Action: string = "DescribeAccountLimits";
           Version: string = "2012-06-01"): Recallable =
   ## getDescribeAccountLimits
   ## <p>Describes the current Elastic Load Balancing resource limits for your AWS account.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-limits.html">Limits for Your Classic Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   Marker: string
+  ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   PageSize: int
   ##           : The maximum number of results to return with this call.
   ##   Action: string (required)
-  ##   Marker: string
-  ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   Version: string (required)
-  var query_600455 = newJObject()
-  add(query_600455, "PageSize", newJInt(PageSize))
-  add(query_600455, "Action", newJString(Action))
-  add(query_600455, "Marker", newJString(Marker))
-  add(query_600455, "Version", newJString(Version))
-  result = call_600454.call(nil, query_600455, nil, nil, nil)
+  var query_602477 = newJObject()
+  add(query_602477, "Marker", newJString(Marker))
+  add(query_602477, "PageSize", newJInt(PageSize))
+  add(query_602477, "Action", newJString(Action))
+  add(query_602477, "Version", newJString(Version))
+  result = call_602476.call(nil, query_602477, nil, nil, nil)
 
-var getDescribeAccountLimits* = Call_GetDescribeAccountLimits_600439(
+var getDescribeAccountLimits* = Call_GetDescribeAccountLimits_602461(
     name: "getDescribeAccountLimits", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeAccountLimits",
-    validator: validate_GetDescribeAccountLimits_600440, base: "/",
-    url: url_GetDescribeAccountLimits_600441, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDescribeAccountLimits_602462, base: "/",
+    url: url_GetDescribeAccountLimits_602463, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDescribeInstanceHealth_600491 = ref object of OpenApiRestCall_599368
-proc url_PostDescribeInstanceHealth_600493(protocol: Scheme; host: string;
+  Call_PostDescribeInstanceHealth_602513 = ref object of OpenApiRestCall_601389
+proc url_PostDescribeInstanceHealth_602515(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDescribeInstanceHealth_600492(path: JsonNode; query: JsonNode;
+proc validate_PostDescribeInstanceHealth_602514(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the state of the specified instances with respect to the specified load balancer. If no instances are specified, the call describes the state of all instances that are currently registered with the load balancer. If instances are specified, their state is returned even if they are no longer registered with the load balancer. The state of terminated instances is not returned.
   ## 
@@ -4430,61 +4455,61 @@ proc validate_PostDescribeInstanceHealth_600492(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600494 = query.getOrDefault("Action")
-  valid_600494 = validateParameter(valid_600494, JString, required = true,
+  var valid_602516 = query.getOrDefault("Action")
+  valid_602516 = validateParameter(valid_602516, JString, required = true,
                                  default = newJString("DescribeInstanceHealth"))
-  if valid_600494 != nil:
-    section.add "Action", valid_600494
-  var valid_600495 = query.getOrDefault("Version")
-  valid_600495 = validateParameter(valid_600495, JString, required = true,
+  if valid_602516 != nil:
+    section.add "Action", valid_602516
+  var valid_602517 = query.getOrDefault("Version")
+  valid_602517 = validateParameter(valid_602517, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600495 != nil:
-    section.add "Version", valid_600495
+  if valid_602517 != nil:
+    section.add "Version", valid_602517
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600496 = header.getOrDefault("X-Amz-Date")
-  valid_600496 = validateParameter(valid_600496, JString, required = false,
+  var valid_602518 = header.getOrDefault("X-Amz-Signature")
+  valid_602518 = validateParameter(valid_602518, JString, required = false,
                                  default = nil)
-  if valid_600496 != nil:
-    section.add "X-Amz-Date", valid_600496
-  var valid_600497 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600497 = validateParameter(valid_600497, JString, required = false,
+  if valid_602518 != nil:
+    section.add "X-Amz-Signature", valid_602518
+  var valid_602519 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602519 = validateParameter(valid_602519, JString, required = false,
                                  default = nil)
-  if valid_600497 != nil:
-    section.add "X-Amz-Security-Token", valid_600497
-  var valid_600498 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600498 = validateParameter(valid_600498, JString, required = false,
+  if valid_602519 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602519
+  var valid_602520 = header.getOrDefault("X-Amz-Date")
+  valid_602520 = validateParameter(valid_602520, JString, required = false,
                                  default = nil)
-  if valid_600498 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600498
-  var valid_600499 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600499 = validateParameter(valid_600499, JString, required = false,
+  if valid_602520 != nil:
+    section.add "X-Amz-Date", valid_602520
+  var valid_602521 = header.getOrDefault("X-Amz-Credential")
+  valid_602521 = validateParameter(valid_602521, JString, required = false,
                                  default = nil)
-  if valid_600499 != nil:
-    section.add "X-Amz-Algorithm", valid_600499
-  var valid_600500 = header.getOrDefault("X-Amz-Signature")
-  valid_600500 = validateParameter(valid_600500, JString, required = false,
+  if valid_602521 != nil:
+    section.add "X-Amz-Credential", valid_602521
+  var valid_602522 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602522 = validateParameter(valid_602522, JString, required = false,
                                  default = nil)
-  if valid_600500 != nil:
-    section.add "X-Amz-Signature", valid_600500
-  var valid_600501 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600501 = validateParameter(valid_600501, JString, required = false,
+  if valid_602522 != nil:
+    section.add "X-Amz-Security-Token", valid_602522
+  var valid_602523 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602523 = validateParameter(valid_602523, JString, required = false,
                                  default = nil)
-  if valid_600501 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600501
-  var valid_600502 = header.getOrDefault("X-Amz-Credential")
-  valid_600502 = validateParameter(valid_600502, JString, required = false,
+  if valid_602523 != nil:
+    section.add "X-Amz-Algorithm", valid_602523
+  var valid_602524 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602524 = validateParameter(valid_602524, JString, required = false,
                                  default = nil)
-  if valid_600502 != nil:
-    section.add "X-Amz-Credential", valid_600502
+  if valid_602524 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602524
   result.add "header", section
   ## parameters in `formData` object:
   ##   Instances: JArray
@@ -4492,75 +4517,76 @@ proc validate_PostDescribeInstanceHealth_600492(path: JsonNode; query: JsonNode;
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   section = newJObject()
-  var valid_600503 = formData.getOrDefault("Instances")
-  valid_600503 = validateParameter(valid_600503, JArray, required = false,
+  var valid_602525 = formData.getOrDefault("Instances")
+  valid_602525 = validateParameter(valid_602525, JArray, required = false,
                                  default = nil)
-  if valid_600503 != nil:
-    section.add "Instances", valid_600503
+  if valid_602525 != nil:
+    section.add "Instances", valid_602525
   assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
-  var valid_600504 = formData.getOrDefault("LoadBalancerName")
-  valid_600504 = validateParameter(valid_600504, JString, required = true,
+  var valid_602526 = formData.getOrDefault("LoadBalancerName")
+  valid_602526 = validateParameter(valid_602526, JString, required = true,
                                  default = nil)
-  if valid_600504 != nil:
-    section.add "LoadBalancerName", valid_600504
+  if valid_602526 != nil:
+    section.add "LoadBalancerName", valid_602526
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600505: Call_PostDescribeInstanceHealth_600491; path: JsonNode;
+proc call*(call_602527: Call_PostDescribeInstanceHealth_602513; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the state of the specified instances with respect to the specified load balancer. If no instances are specified, the call describes the state of all instances that are currently registered with the load balancer. If instances are specified, their state is returned even if they are no longer registered with the load balancer. The state of terminated instances is not returned.
   ## 
-  let valid = call_600505.validator(path, query, header, formData, body)
-  let scheme = call_600505.pickScheme
+  let valid = call_602527.validator(path, query, header, formData, body)
+  let scheme = call_602527.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600505.url(scheme.get, call_600505.host, call_600505.base,
-                         call_600505.route, valid.getOrDefault("path"),
+  let url = call_602527.url(scheme.get, call_602527.host, call_602527.base,
+                         call_602527.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600505, url, valid)
+  result = atozHook(call_602527, url, valid)
 
-proc call*(call_600506: Call_PostDescribeInstanceHealth_600491;
+proc call*(call_602528: Call_PostDescribeInstanceHealth_602513;
           LoadBalancerName: string; Instances: JsonNode = nil;
           Action: string = "DescribeInstanceHealth"; Version: string = "2012-06-01"): Recallable =
   ## postDescribeInstanceHealth
   ## Describes the state of the specified instances with respect to the specified load balancer. If no instances are specified, the call describes the state of all instances that are currently registered with the load balancer. If instances are specified, their state is returned even if they are no longer registered with the load balancer. The state of terminated instances is not returned.
   ##   Instances: JArray
   ##            : The IDs of the instances.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600507 = newJObject()
-  var formData_600508 = newJObject()
+  var query_602529 = newJObject()
+  var formData_602530 = newJObject()
   if Instances != nil:
-    formData_600508.add "Instances", Instances
-  add(query_600507, "Action", newJString(Action))
-  add(formData_600508, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600507, "Version", newJString(Version))
-  result = call_600506.call(nil, query_600507, nil, formData_600508, nil)
+    formData_602530.add "Instances", Instances
+  add(formData_602530, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602529, "Action", newJString(Action))
+  add(query_602529, "Version", newJString(Version))
+  result = call_602528.call(nil, query_602529, nil, formData_602530, nil)
 
-var postDescribeInstanceHealth* = Call_PostDescribeInstanceHealth_600491(
+var postDescribeInstanceHealth* = Call_PostDescribeInstanceHealth_602513(
     name: "postDescribeInstanceHealth", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeInstanceHealth",
-    validator: validate_PostDescribeInstanceHealth_600492, base: "/",
-    url: url_PostDescribeInstanceHealth_600493,
+    validator: validate_PostDescribeInstanceHealth_602514, base: "/",
+    url: url_PostDescribeInstanceHealth_602515,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDescribeInstanceHealth_600474 = ref object of OpenApiRestCall_599368
-proc url_GetDescribeInstanceHealth_600476(protocol: Scheme; host: string;
+  Call_GetDescribeInstanceHealth_602496 = ref object of OpenApiRestCall_601389
+proc url_GetDescribeInstanceHealth_602498(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDescribeInstanceHealth_600475(path: JsonNode; query: JsonNode;
+proc validate_GetDescribeInstanceHealth_602497(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the state of the specified instances with respect to the specified load balancer. If no instances are specified, the call describes the state of all instances that are currently registered with the load balancer. If instances are specified, their state is returned even if they are no longer registered with the load balancer. The state of terminated instances is not returned.
   ## 
@@ -4578,91 +4604,91 @@ proc validate_GetDescribeInstanceHealth_600475(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600477 = query.getOrDefault("LoadBalancerName")
-  valid_600477 = validateParameter(valid_600477, JString, required = true,
+  var valid_602499 = query.getOrDefault("LoadBalancerName")
+  valid_602499 = validateParameter(valid_602499, JString, required = true,
                                  default = nil)
-  if valid_600477 != nil:
-    section.add "LoadBalancerName", valid_600477
-  var valid_600478 = query.getOrDefault("Action")
-  valid_600478 = validateParameter(valid_600478, JString, required = true,
+  if valid_602499 != nil:
+    section.add "LoadBalancerName", valid_602499
+  var valid_602500 = query.getOrDefault("Action")
+  valid_602500 = validateParameter(valid_602500, JString, required = true,
                                  default = newJString("DescribeInstanceHealth"))
-  if valid_600478 != nil:
-    section.add "Action", valid_600478
-  var valid_600479 = query.getOrDefault("Instances")
-  valid_600479 = validateParameter(valid_600479, JArray, required = false,
+  if valid_602500 != nil:
+    section.add "Action", valid_602500
+  var valid_602501 = query.getOrDefault("Instances")
+  valid_602501 = validateParameter(valid_602501, JArray, required = false,
                                  default = nil)
-  if valid_600479 != nil:
-    section.add "Instances", valid_600479
-  var valid_600480 = query.getOrDefault("Version")
-  valid_600480 = validateParameter(valid_600480, JString, required = true,
+  if valid_602501 != nil:
+    section.add "Instances", valid_602501
+  var valid_602502 = query.getOrDefault("Version")
+  valid_602502 = validateParameter(valid_602502, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600480 != nil:
-    section.add "Version", valid_600480
+  if valid_602502 != nil:
+    section.add "Version", valid_602502
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600481 = header.getOrDefault("X-Amz-Date")
-  valid_600481 = validateParameter(valid_600481, JString, required = false,
+  var valid_602503 = header.getOrDefault("X-Amz-Signature")
+  valid_602503 = validateParameter(valid_602503, JString, required = false,
                                  default = nil)
-  if valid_600481 != nil:
-    section.add "X-Amz-Date", valid_600481
-  var valid_600482 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600482 = validateParameter(valid_600482, JString, required = false,
+  if valid_602503 != nil:
+    section.add "X-Amz-Signature", valid_602503
+  var valid_602504 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602504 = validateParameter(valid_602504, JString, required = false,
                                  default = nil)
-  if valid_600482 != nil:
-    section.add "X-Amz-Security-Token", valid_600482
-  var valid_600483 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600483 = validateParameter(valid_600483, JString, required = false,
+  if valid_602504 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602504
+  var valid_602505 = header.getOrDefault("X-Amz-Date")
+  valid_602505 = validateParameter(valid_602505, JString, required = false,
                                  default = nil)
-  if valid_600483 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600483
-  var valid_600484 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600484 = validateParameter(valid_600484, JString, required = false,
+  if valid_602505 != nil:
+    section.add "X-Amz-Date", valid_602505
+  var valid_602506 = header.getOrDefault("X-Amz-Credential")
+  valid_602506 = validateParameter(valid_602506, JString, required = false,
                                  default = nil)
-  if valid_600484 != nil:
-    section.add "X-Amz-Algorithm", valid_600484
-  var valid_600485 = header.getOrDefault("X-Amz-Signature")
-  valid_600485 = validateParameter(valid_600485, JString, required = false,
+  if valid_602506 != nil:
+    section.add "X-Amz-Credential", valid_602506
+  var valid_602507 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602507 = validateParameter(valid_602507, JString, required = false,
                                  default = nil)
-  if valid_600485 != nil:
-    section.add "X-Amz-Signature", valid_600485
-  var valid_600486 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600486 = validateParameter(valid_600486, JString, required = false,
+  if valid_602507 != nil:
+    section.add "X-Amz-Security-Token", valid_602507
+  var valid_602508 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602508 = validateParameter(valid_602508, JString, required = false,
                                  default = nil)
-  if valid_600486 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600486
-  var valid_600487 = header.getOrDefault("X-Amz-Credential")
-  valid_600487 = validateParameter(valid_600487, JString, required = false,
+  if valid_602508 != nil:
+    section.add "X-Amz-Algorithm", valid_602508
+  var valid_602509 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602509 = validateParameter(valid_602509, JString, required = false,
                                  default = nil)
-  if valid_600487 != nil:
-    section.add "X-Amz-Credential", valid_600487
+  if valid_602509 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602509
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600488: Call_GetDescribeInstanceHealth_600474; path: JsonNode;
+proc call*(call_602510: Call_GetDescribeInstanceHealth_602496; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the state of the specified instances with respect to the specified load balancer. If no instances are specified, the call describes the state of all instances that are currently registered with the load balancer. If instances are specified, their state is returned even if they are no longer registered with the load balancer. The state of terminated instances is not returned.
   ## 
-  let valid = call_600488.validator(path, query, header, formData, body)
-  let scheme = call_600488.pickScheme
+  let valid = call_602510.validator(path, query, header, formData, body)
+  let scheme = call_602510.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600488.url(scheme.get, call_600488.host, call_600488.base,
-                         call_600488.route, valid.getOrDefault("path"),
+  let url = call_602510.url(scheme.get, call_602510.host, call_602510.base,
+                         call_602510.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600488, url, valid)
+  result = atozHook(call_602510, url, valid)
 
-proc call*(call_600489: Call_GetDescribeInstanceHealth_600474;
+proc call*(call_602511: Call_GetDescribeInstanceHealth_602496;
           LoadBalancerName: string; Action: string = "DescribeInstanceHealth";
           Instances: JsonNode = nil; Version: string = "2012-06-01"): Recallable =
   ## getDescribeInstanceHealth
@@ -4673,35 +4699,36 @@ proc call*(call_600489: Call_GetDescribeInstanceHealth_600474;
   ##   Instances: JArray
   ##            : The IDs of the instances.
   ##   Version: string (required)
-  var query_600490 = newJObject()
-  add(query_600490, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600490, "Action", newJString(Action))
+  var query_602512 = newJObject()
+  add(query_602512, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602512, "Action", newJString(Action))
   if Instances != nil:
-    query_600490.add "Instances", Instances
-  add(query_600490, "Version", newJString(Version))
-  result = call_600489.call(nil, query_600490, nil, nil, nil)
+    query_602512.add "Instances", Instances
+  add(query_602512, "Version", newJString(Version))
+  result = call_602511.call(nil, query_602512, nil, nil, nil)
 
-var getDescribeInstanceHealth* = Call_GetDescribeInstanceHealth_600474(
+var getDescribeInstanceHealth* = Call_GetDescribeInstanceHealth_602496(
     name: "getDescribeInstanceHealth", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeInstanceHealth",
-    validator: validate_GetDescribeInstanceHealth_600475, base: "/",
-    url: url_GetDescribeInstanceHealth_600476,
+    validator: validate_GetDescribeInstanceHealth_602497, base: "/",
+    url: url_GetDescribeInstanceHealth_602498,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDescribeLoadBalancerAttributes_600525 = ref object of OpenApiRestCall_599368
-proc url_PostDescribeLoadBalancerAttributes_600527(protocol: Scheme; host: string;
+  Call_PostDescribeLoadBalancerAttributes_602547 = ref object of OpenApiRestCall_601389
+proc url_PostDescribeLoadBalancerAttributes_602549(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDescribeLoadBalancerAttributes_600526(path: JsonNode;
+proc validate_PostDescribeLoadBalancerAttributes_602548(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the attributes for the specified load balancer.
   ## 
@@ -4714,128 +4741,129 @@ proc validate_PostDescribeLoadBalancerAttributes_600526(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600528 = query.getOrDefault("Action")
-  valid_600528 = validateParameter(valid_600528, JString, required = true, default = newJString(
+  var valid_602550 = query.getOrDefault("Action")
+  valid_602550 = validateParameter(valid_602550, JString, required = true, default = newJString(
       "DescribeLoadBalancerAttributes"))
-  if valid_600528 != nil:
-    section.add "Action", valid_600528
-  var valid_600529 = query.getOrDefault("Version")
-  valid_600529 = validateParameter(valid_600529, JString, required = true,
+  if valid_602550 != nil:
+    section.add "Action", valid_602550
+  var valid_602551 = query.getOrDefault("Version")
+  valid_602551 = validateParameter(valid_602551, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600529 != nil:
-    section.add "Version", valid_600529
+  if valid_602551 != nil:
+    section.add "Version", valid_602551
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600530 = header.getOrDefault("X-Amz-Date")
-  valid_600530 = validateParameter(valid_600530, JString, required = false,
+  var valid_602552 = header.getOrDefault("X-Amz-Signature")
+  valid_602552 = validateParameter(valid_602552, JString, required = false,
                                  default = nil)
-  if valid_600530 != nil:
-    section.add "X-Amz-Date", valid_600530
-  var valid_600531 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600531 = validateParameter(valid_600531, JString, required = false,
+  if valid_602552 != nil:
+    section.add "X-Amz-Signature", valid_602552
+  var valid_602553 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602553 = validateParameter(valid_602553, JString, required = false,
                                  default = nil)
-  if valid_600531 != nil:
-    section.add "X-Amz-Security-Token", valid_600531
-  var valid_600532 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600532 = validateParameter(valid_600532, JString, required = false,
+  if valid_602553 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602553
+  var valid_602554 = header.getOrDefault("X-Amz-Date")
+  valid_602554 = validateParameter(valid_602554, JString, required = false,
                                  default = nil)
-  if valid_600532 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600532
-  var valid_600533 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600533 = validateParameter(valid_600533, JString, required = false,
+  if valid_602554 != nil:
+    section.add "X-Amz-Date", valid_602554
+  var valid_602555 = header.getOrDefault("X-Amz-Credential")
+  valid_602555 = validateParameter(valid_602555, JString, required = false,
                                  default = nil)
-  if valid_600533 != nil:
-    section.add "X-Amz-Algorithm", valid_600533
-  var valid_600534 = header.getOrDefault("X-Amz-Signature")
-  valid_600534 = validateParameter(valid_600534, JString, required = false,
+  if valid_602555 != nil:
+    section.add "X-Amz-Credential", valid_602555
+  var valid_602556 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602556 = validateParameter(valid_602556, JString, required = false,
                                  default = nil)
-  if valid_600534 != nil:
-    section.add "X-Amz-Signature", valid_600534
-  var valid_600535 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600535 = validateParameter(valid_600535, JString, required = false,
+  if valid_602556 != nil:
+    section.add "X-Amz-Security-Token", valid_602556
+  var valid_602557 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602557 = validateParameter(valid_602557, JString, required = false,
                                  default = nil)
-  if valid_600535 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600535
-  var valid_600536 = header.getOrDefault("X-Amz-Credential")
-  valid_600536 = validateParameter(valid_600536, JString, required = false,
+  if valid_602557 != nil:
+    section.add "X-Amz-Algorithm", valid_602557
+  var valid_602558 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602558 = validateParameter(valid_602558, JString, required = false,
                                  default = nil)
-  if valid_600536 != nil:
-    section.add "X-Amz-Credential", valid_600536
+  if valid_602558 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602558
   result.add "header", section
   ## parameters in `formData` object:
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
-  var valid_600537 = formData.getOrDefault("LoadBalancerName")
-  valid_600537 = validateParameter(valid_600537, JString, required = true,
+  var valid_602559 = formData.getOrDefault("LoadBalancerName")
+  valid_602559 = validateParameter(valid_602559, JString, required = true,
                                  default = nil)
-  if valid_600537 != nil:
-    section.add "LoadBalancerName", valid_600537
+  if valid_602559 != nil:
+    section.add "LoadBalancerName", valid_602559
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600538: Call_PostDescribeLoadBalancerAttributes_600525;
+proc call*(call_602560: Call_PostDescribeLoadBalancerAttributes_602547;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Describes the attributes for the specified load balancer.
   ## 
-  let valid = call_600538.validator(path, query, header, formData, body)
-  let scheme = call_600538.pickScheme
+  let valid = call_602560.validator(path, query, header, formData, body)
+  let scheme = call_602560.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600538.url(scheme.get, call_600538.host, call_600538.base,
-                         call_600538.route, valid.getOrDefault("path"),
+  let url = call_602560.url(scheme.get, call_602560.host, call_602560.base,
+                         call_602560.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600538, url, valid)
+  result = atozHook(call_602560, url, valid)
 
-proc call*(call_600539: Call_PostDescribeLoadBalancerAttributes_600525;
+proc call*(call_602561: Call_PostDescribeLoadBalancerAttributes_602547;
           LoadBalancerName: string;
           Action: string = "DescribeLoadBalancerAttributes";
           Version: string = "2012-06-01"): Recallable =
   ## postDescribeLoadBalancerAttributes
   ## Describes the attributes for the specified load balancer.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600540 = newJObject()
-  var formData_600541 = newJObject()
-  add(query_600540, "Action", newJString(Action))
-  add(formData_600541, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600540, "Version", newJString(Version))
-  result = call_600539.call(nil, query_600540, nil, formData_600541, nil)
+  var query_602562 = newJObject()
+  var formData_602563 = newJObject()
+  add(formData_602563, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602562, "Action", newJString(Action))
+  add(query_602562, "Version", newJString(Version))
+  result = call_602561.call(nil, query_602562, nil, formData_602563, nil)
 
-var postDescribeLoadBalancerAttributes* = Call_PostDescribeLoadBalancerAttributes_600525(
+var postDescribeLoadBalancerAttributes* = Call_PostDescribeLoadBalancerAttributes_602547(
     name: "postDescribeLoadBalancerAttributes", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeLoadBalancerAttributes",
-    validator: validate_PostDescribeLoadBalancerAttributes_600526, base: "/",
-    url: url_PostDescribeLoadBalancerAttributes_600527,
+    validator: validate_PostDescribeLoadBalancerAttributes_602548, base: "/",
+    url: url_PostDescribeLoadBalancerAttributes_602549,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDescribeLoadBalancerAttributes_600509 = ref object of OpenApiRestCall_599368
-proc url_GetDescribeLoadBalancerAttributes_600511(protocol: Scheme; host: string;
+  Call_GetDescribeLoadBalancerAttributes_602531 = ref object of OpenApiRestCall_601389
+proc url_GetDescribeLoadBalancerAttributes_602533(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDescribeLoadBalancerAttributes_600510(path: JsonNode;
+proc validate_GetDescribeLoadBalancerAttributes_602532(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the attributes for the specified load balancer.
   ## 
@@ -4851,87 +4879,87 @@ proc validate_GetDescribeLoadBalancerAttributes_600510(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600512 = query.getOrDefault("LoadBalancerName")
-  valid_600512 = validateParameter(valid_600512, JString, required = true,
+  var valid_602534 = query.getOrDefault("LoadBalancerName")
+  valid_602534 = validateParameter(valid_602534, JString, required = true,
                                  default = nil)
-  if valid_600512 != nil:
-    section.add "LoadBalancerName", valid_600512
-  var valid_600513 = query.getOrDefault("Action")
-  valid_600513 = validateParameter(valid_600513, JString, required = true, default = newJString(
+  if valid_602534 != nil:
+    section.add "LoadBalancerName", valid_602534
+  var valid_602535 = query.getOrDefault("Action")
+  valid_602535 = validateParameter(valid_602535, JString, required = true, default = newJString(
       "DescribeLoadBalancerAttributes"))
-  if valid_600513 != nil:
-    section.add "Action", valid_600513
-  var valid_600514 = query.getOrDefault("Version")
-  valid_600514 = validateParameter(valid_600514, JString, required = true,
+  if valid_602535 != nil:
+    section.add "Action", valid_602535
+  var valid_602536 = query.getOrDefault("Version")
+  valid_602536 = validateParameter(valid_602536, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600514 != nil:
-    section.add "Version", valid_600514
+  if valid_602536 != nil:
+    section.add "Version", valid_602536
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600515 = header.getOrDefault("X-Amz-Date")
-  valid_600515 = validateParameter(valid_600515, JString, required = false,
+  var valid_602537 = header.getOrDefault("X-Amz-Signature")
+  valid_602537 = validateParameter(valid_602537, JString, required = false,
                                  default = nil)
-  if valid_600515 != nil:
-    section.add "X-Amz-Date", valid_600515
-  var valid_600516 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600516 = validateParameter(valid_600516, JString, required = false,
+  if valid_602537 != nil:
+    section.add "X-Amz-Signature", valid_602537
+  var valid_602538 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602538 = validateParameter(valid_602538, JString, required = false,
                                  default = nil)
-  if valid_600516 != nil:
-    section.add "X-Amz-Security-Token", valid_600516
-  var valid_600517 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600517 = validateParameter(valid_600517, JString, required = false,
+  if valid_602538 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602538
+  var valid_602539 = header.getOrDefault("X-Amz-Date")
+  valid_602539 = validateParameter(valid_602539, JString, required = false,
                                  default = nil)
-  if valid_600517 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600517
-  var valid_600518 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600518 = validateParameter(valid_600518, JString, required = false,
+  if valid_602539 != nil:
+    section.add "X-Amz-Date", valid_602539
+  var valid_602540 = header.getOrDefault("X-Amz-Credential")
+  valid_602540 = validateParameter(valid_602540, JString, required = false,
                                  default = nil)
-  if valid_600518 != nil:
-    section.add "X-Amz-Algorithm", valid_600518
-  var valid_600519 = header.getOrDefault("X-Amz-Signature")
-  valid_600519 = validateParameter(valid_600519, JString, required = false,
+  if valid_602540 != nil:
+    section.add "X-Amz-Credential", valid_602540
+  var valid_602541 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602541 = validateParameter(valid_602541, JString, required = false,
                                  default = nil)
-  if valid_600519 != nil:
-    section.add "X-Amz-Signature", valid_600519
-  var valid_600520 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600520 = validateParameter(valid_600520, JString, required = false,
+  if valid_602541 != nil:
+    section.add "X-Amz-Security-Token", valid_602541
+  var valid_602542 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602542 = validateParameter(valid_602542, JString, required = false,
                                  default = nil)
-  if valid_600520 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600520
-  var valid_600521 = header.getOrDefault("X-Amz-Credential")
-  valid_600521 = validateParameter(valid_600521, JString, required = false,
+  if valid_602542 != nil:
+    section.add "X-Amz-Algorithm", valid_602542
+  var valid_602543 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602543 = validateParameter(valid_602543, JString, required = false,
                                  default = nil)
-  if valid_600521 != nil:
-    section.add "X-Amz-Credential", valid_600521
+  if valid_602543 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602543
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600522: Call_GetDescribeLoadBalancerAttributes_600509;
+proc call*(call_602544: Call_GetDescribeLoadBalancerAttributes_602531;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Describes the attributes for the specified load balancer.
   ## 
-  let valid = call_600522.validator(path, query, header, formData, body)
-  let scheme = call_600522.pickScheme
+  let valid = call_602544.validator(path, query, header, formData, body)
+  let scheme = call_602544.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600522.url(scheme.get, call_600522.host, call_600522.base,
-                         call_600522.route, valid.getOrDefault("path"),
+  let url = call_602544.url(scheme.get, call_602544.host, call_602544.base,
+                         call_602544.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600522, url, valid)
+  result = atozHook(call_602544, url, valid)
 
-proc call*(call_600523: Call_GetDescribeLoadBalancerAttributes_600509;
+proc call*(call_602545: Call_GetDescribeLoadBalancerAttributes_602531;
           LoadBalancerName: string;
           Action: string = "DescribeLoadBalancerAttributes";
           Version: string = "2012-06-01"): Recallable =
@@ -4941,33 +4969,34 @@ proc call*(call_600523: Call_GetDescribeLoadBalancerAttributes_600509;
   ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_600524 = newJObject()
-  add(query_600524, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600524, "Action", newJString(Action))
-  add(query_600524, "Version", newJString(Version))
-  result = call_600523.call(nil, query_600524, nil, nil, nil)
+  var query_602546 = newJObject()
+  add(query_602546, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602546, "Action", newJString(Action))
+  add(query_602546, "Version", newJString(Version))
+  result = call_602545.call(nil, query_602546, nil, nil, nil)
 
-var getDescribeLoadBalancerAttributes* = Call_GetDescribeLoadBalancerAttributes_600509(
+var getDescribeLoadBalancerAttributes* = Call_GetDescribeLoadBalancerAttributes_602531(
     name: "getDescribeLoadBalancerAttributes", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeLoadBalancerAttributes",
-    validator: validate_GetDescribeLoadBalancerAttributes_600510, base: "/",
-    url: url_GetDescribeLoadBalancerAttributes_600511,
+    validator: validate_GetDescribeLoadBalancerAttributes_602532, base: "/",
+    url: url_GetDescribeLoadBalancerAttributes_602533,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDescribeLoadBalancerPolicies_600559 = ref object of OpenApiRestCall_599368
-proc url_PostDescribeLoadBalancerPolicies_600561(protocol: Scheme; host: string;
+  Call_PostDescribeLoadBalancerPolicies_602581 = ref object of OpenApiRestCall_601389
+proc url_PostDescribeLoadBalancerPolicies_602583(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDescribeLoadBalancerPolicies_600560(path: JsonNode;
+proc validate_PostDescribeLoadBalancerPolicies_602582(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the specified policies.</p> <p>If you specify a load balancer name, the action returns the descriptions of all policies created for the load balancer. If you specify a policy name associated with your load balancer, the action returns the description of that policy. If you don't specify a load balancer name, the action returns descriptions of the specified sample policies, or descriptions of all sample policies. The names of the sample policies have the <code>ELBSample-</code> prefix.</p>
   ## 
@@ -4980,61 +5009,61 @@ proc validate_PostDescribeLoadBalancerPolicies_600560(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600562 = query.getOrDefault("Action")
-  valid_600562 = validateParameter(valid_600562, JString, required = true, default = newJString(
+  var valid_602584 = query.getOrDefault("Action")
+  valid_602584 = validateParameter(valid_602584, JString, required = true, default = newJString(
       "DescribeLoadBalancerPolicies"))
-  if valid_600562 != nil:
-    section.add "Action", valid_600562
-  var valid_600563 = query.getOrDefault("Version")
-  valid_600563 = validateParameter(valid_600563, JString, required = true,
+  if valid_602584 != nil:
+    section.add "Action", valid_602584
+  var valid_602585 = query.getOrDefault("Version")
+  valid_602585 = validateParameter(valid_602585, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600563 != nil:
-    section.add "Version", valid_600563
+  if valid_602585 != nil:
+    section.add "Version", valid_602585
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600564 = header.getOrDefault("X-Amz-Date")
-  valid_600564 = validateParameter(valid_600564, JString, required = false,
+  var valid_602586 = header.getOrDefault("X-Amz-Signature")
+  valid_602586 = validateParameter(valid_602586, JString, required = false,
                                  default = nil)
-  if valid_600564 != nil:
-    section.add "X-Amz-Date", valid_600564
-  var valid_600565 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600565 = validateParameter(valid_600565, JString, required = false,
+  if valid_602586 != nil:
+    section.add "X-Amz-Signature", valid_602586
+  var valid_602587 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602587 = validateParameter(valid_602587, JString, required = false,
                                  default = nil)
-  if valid_600565 != nil:
-    section.add "X-Amz-Security-Token", valid_600565
-  var valid_600566 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600566 = validateParameter(valid_600566, JString, required = false,
+  if valid_602587 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602587
+  var valid_602588 = header.getOrDefault("X-Amz-Date")
+  valid_602588 = validateParameter(valid_602588, JString, required = false,
                                  default = nil)
-  if valid_600566 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600566
-  var valid_600567 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600567 = validateParameter(valid_600567, JString, required = false,
+  if valid_602588 != nil:
+    section.add "X-Amz-Date", valid_602588
+  var valid_602589 = header.getOrDefault("X-Amz-Credential")
+  valid_602589 = validateParameter(valid_602589, JString, required = false,
                                  default = nil)
-  if valid_600567 != nil:
-    section.add "X-Amz-Algorithm", valid_600567
-  var valid_600568 = header.getOrDefault("X-Amz-Signature")
-  valid_600568 = validateParameter(valid_600568, JString, required = false,
+  if valid_602589 != nil:
+    section.add "X-Amz-Credential", valid_602589
+  var valid_602590 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602590 = validateParameter(valid_602590, JString, required = false,
                                  default = nil)
-  if valid_600568 != nil:
-    section.add "X-Amz-Signature", valid_600568
-  var valid_600569 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600569 = validateParameter(valid_600569, JString, required = false,
+  if valid_602590 != nil:
+    section.add "X-Amz-Security-Token", valid_602590
+  var valid_602591 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602591 = validateParameter(valid_602591, JString, required = false,
                                  default = nil)
-  if valid_600569 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600569
-  var valid_600570 = header.getOrDefault("X-Amz-Credential")
-  valid_600570 = validateParameter(valid_600570, JString, required = false,
+  if valid_602591 != nil:
+    section.add "X-Amz-Algorithm", valid_602591
+  var valid_602592 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602592 = validateParameter(valid_602592, JString, required = false,
                                  default = nil)
-  if valid_600570 != nil:
-    section.add "X-Amz-Credential", valid_600570
+  if valid_602592 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602592
   result.add "header", section
   ## parameters in `formData` object:
   ##   PolicyNames: JArray
@@ -5042,76 +5071,77 @@ proc validate_PostDescribeLoadBalancerPolicies_600560(path: JsonNode;
   ##   LoadBalancerName: JString
   ##                   : The name of the load balancer.
   section = newJObject()
-  var valid_600571 = formData.getOrDefault("PolicyNames")
-  valid_600571 = validateParameter(valid_600571, JArray, required = false,
+  var valid_602593 = formData.getOrDefault("PolicyNames")
+  valid_602593 = validateParameter(valid_602593, JArray, required = false,
                                  default = nil)
-  if valid_600571 != nil:
-    section.add "PolicyNames", valid_600571
-  var valid_600572 = formData.getOrDefault("LoadBalancerName")
-  valid_600572 = validateParameter(valid_600572, JString, required = false,
+  if valid_602593 != nil:
+    section.add "PolicyNames", valid_602593
+  var valid_602594 = formData.getOrDefault("LoadBalancerName")
+  valid_602594 = validateParameter(valid_602594, JString, required = false,
                                  default = nil)
-  if valid_600572 != nil:
-    section.add "LoadBalancerName", valid_600572
+  if valid_602594 != nil:
+    section.add "LoadBalancerName", valid_602594
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600573: Call_PostDescribeLoadBalancerPolicies_600559;
+proc call*(call_602595: Call_PostDescribeLoadBalancerPolicies_602581;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Describes the specified policies.</p> <p>If you specify a load balancer name, the action returns the descriptions of all policies created for the load balancer. If you specify a policy name associated with your load balancer, the action returns the description of that policy. If you don't specify a load balancer name, the action returns descriptions of the specified sample policies, or descriptions of all sample policies. The names of the sample policies have the <code>ELBSample-</code> prefix.</p>
   ## 
-  let valid = call_600573.validator(path, query, header, formData, body)
-  let scheme = call_600573.pickScheme
+  let valid = call_602595.validator(path, query, header, formData, body)
+  let scheme = call_602595.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600573.url(scheme.get, call_600573.host, call_600573.base,
-                         call_600573.route, valid.getOrDefault("path"),
+  let url = call_602595.url(scheme.get, call_602595.host, call_602595.base,
+                         call_602595.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600573, url, valid)
+  result = atozHook(call_602595, url, valid)
 
-proc call*(call_600574: Call_PostDescribeLoadBalancerPolicies_600559;
-          PolicyNames: JsonNode = nil;
+proc call*(call_602596: Call_PostDescribeLoadBalancerPolicies_602581;
+          PolicyNames: JsonNode = nil; LoadBalancerName: string = "";
           Action: string = "DescribeLoadBalancerPolicies";
-          LoadBalancerName: string = ""; Version: string = "2012-06-01"): Recallable =
+          Version: string = "2012-06-01"): Recallable =
   ## postDescribeLoadBalancerPolicies
   ## <p>Describes the specified policies.</p> <p>If you specify a load balancer name, the action returns the descriptions of all policies created for the load balancer. If you specify a policy name associated with your load balancer, the action returns the description of that policy. If you don't specify a load balancer name, the action returns descriptions of the specified sample policies, or descriptions of all sample policies. The names of the sample policies have the <code>ELBSample-</code> prefix.</p>
   ##   PolicyNames: JArray
   ##              : The names of the policies.
-  ##   Action: string (required)
   ##   LoadBalancerName: string
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600575 = newJObject()
-  var formData_600576 = newJObject()
+  var query_602597 = newJObject()
+  var formData_602598 = newJObject()
   if PolicyNames != nil:
-    formData_600576.add "PolicyNames", PolicyNames
-  add(query_600575, "Action", newJString(Action))
-  add(formData_600576, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600575, "Version", newJString(Version))
-  result = call_600574.call(nil, query_600575, nil, formData_600576, nil)
+    formData_602598.add "PolicyNames", PolicyNames
+  add(formData_602598, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602597, "Action", newJString(Action))
+  add(query_602597, "Version", newJString(Version))
+  result = call_602596.call(nil, query_602597, nil, formData_602598, nil)
 
-var postDescribeLoadBalancerPolicies* = Call_PostDescribeLoadBalancerPolicies_600559(
+var postDescribeLoadBalancerPolicies* = Call_PostDescribeLoadBalancerPolicies_602581(
     name: "postDescribeLoadBalancerPolicies", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeLoadBalancerPolicies",
-    validator: validate_PostDescribeLoadBalancerPolicies_600560, base: "/",
-    url: url_PostDescribeLoadBalancerPolicies_600561,
+    validator: validate_PostDescribeLoadBalancerPolicies_602582, base: "/",
+    url: url_PostDescribeLoadBalancerPolicies_602583,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDescribeLoadBalancerPolicies_600542 = ref object of OpenApiRestCall_599368
-proc url_GetDescribeLoadBalancerPolicies_600544(protocol: Scheme; host: string;
+  Call_GetDescribeLoadBalancerPolicies_602564 = ref object of OpenApiRestCall_601389
+proc url_GetDescribeLoadBalancerPolicies_602566(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDescribeLoadBalancerPolicies_600543(path: JsonNode;
+proc validate_GetDescribeLoadBalancerPolicies_602565(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the specified policies.</p> <p>If you specify a load balancer name, the action returns the descriptions of all policies created for the load balancer. If you specify a policy name associated with your load balancer, the action returns the description of that policy. If you don't specify a load balancer name, the action returns descriptions of the specified sample policies, or descriptions of all sample policies. The names of the sample policies have the <code>ELBSample-</code> prefix.</p>
   ## 
@@ -5123,137 +5153,138 @@ proc validate_GetDescribeLoadBalancerPolicies_600543(path: JsonNode;
   ##   LoadBalancerName: JString
   ##                   : The name of the load balancer.
   ##   Action: JString (required)
+  ##   Version: JString (required)
   ##   PolicyNames: JArray
   ##              : The names of the policies.
-  ##   Version: JString (required)
   section = newJObject()
-  var valid_600545 = query.getOrDefault("LoadBalancerName")
-  valid_600545 = validateParameter(valid_600545, JString, required = false,
+  var valid_602567 = query.getOrDefault("LoadBalancerName")
+  valid_602567 = validateParameter(valid_602567, JString, required = false,
                                  default = nil)
-  if valid_600545 != nil:
-    section.add "LoadBalancerName", valid_600545
+  if valid_602567 != nil:
+    section.add "LoadBalancerName", valid_602567
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600546 = query.getOrDefault("Action")
-  valid_600546 = validateParameter(valid_600546, JString, required = true, default = newJString(
+  var valid_602568 = query.getOrDefault("Action")
+  valid_602568 = validateParameter(valid_602568, JString, required = true, default = newJString(
       "DescribeLoadBalancerPolicies"))
-  if valid_600546 != nil:
-    section.add "Action", valid_600546
-  var valid_600547 = query.getOrDefault("PolicyNames")
-  valid_600547 = validateParameter(valid_600547, JArray, required = false,
-                                 default = nil)
-  if valid_600547 != nil:
-    section.add "PolicyNames", valid_600547
-  var valid_600548 = query.getOrDefault("Version")
-  valid_600548 = validateParameter(valid_600548, JString, required = true,
+  if valid_602568 != nil:
+    section.add "Action", valid_602568
+  var valid_602569 = query.getOrDefault("Version")
+  valid_602569 = validateParameter(valid_602569, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600548 != nil:
-    section.add "Version", valid_600548
+  if valid_602569 != nil:
+    section.add "Version", valid_602569
+  var valid_602570 = query.getOrDefault("PolicyNames")
+  valid_602570 = validateParameter(valid_602570, JArray, required = false,
+                                 default = nil)
+  if valid_602570 != nil:
+    section.add "PolicyNames", valid_602570
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600549 = header.getOrDefault("X-Amz-Date")
-  valid_600549 = validateParameter(valid_600549, JString, required = false,
+  var valid_602571 = header.getOrDefault("X-Amz-Signature")
+  valid_602571 = validateParameter(valid_602571, JString, required = false,
                                  default = nil)
-  if valid_600549 != nil:
-    section.add "X-Amz-Date", valid_600549
-  var valid_600550 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600550 = validateParameter(valid_600550, JString, required = false,
+  if valid_602571 != nil:
+    section.add "X-Amz-Signature", valid_602571
+  var valid_602572 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602572 = validateParameter(valid_602572, JString, required = false,
                                  default = nil)
-  if valid_600550 != nil:
-    section.add "X-Amz-Security-Token", valid_600550
-  var valid_600551 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600551 = validateParameter(valid_600551, JString, required = false,
+  if valid_602572 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602572
+  var valid_602573 = header.getOrDefault("X-Amz-Date")
+  valid_602573 = validateParameter(valid_602573, JString, required = false,
                                  default = nil)
-  if valid_600551 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600551
-  var valid_600552 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600552 = validateParameter(valid_600552, JString, required = false,
+  if valid_602573 != nil:
+    section.add "X-Amz-Date", valid_602573
+  var valid_602574 = header.getOrDefault("X-Amz-Credential")
+  valid_602574 = validateParameter(valid_602574, JString, required = false,
                                  default = nil)
-  if valid_600552 != nil:
-    section.add "X-Amz-Algorithm", valid_600552
-  var valid_600553 = header.getOrDefault("X-Amz-Signature")
-  valid_600553 = validateParameter(valid_600553, JString, required = false,
+  if valid_602574 != nil:
+    section.add "X-Amz-Credential", valid_602574
+  var valid_602575 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602575 = validateParameter(valid_602575, JString, required = false,
                                  default = nil)
-  if valid_600553 != nil:
-    section.add "X-Amz-Signature", valid_600553
-  var valid_600554 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600554 = validateParameter(valid_600554, JString, required = false,
+  if valid_602575 != nil:
+    section.add "X-Amz-Security-Token", valid_602575
+  var valid_602576 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602576 = validateParameter(valid_602576, JString, required = false,
                                  default = nil)
-  if valid_600554 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600554
-  var valid_600555 = header.getOrDefault("X-Amz-Credential")
-  valid_600555 = validateParameter(valid_600555, JString, required = false,
+  if valid_602576 != nil:
+    section.add "X-Amz-Algorithm", valid_602576
+  var valid_602577 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602577 = validateParameter(valid_602577, JString, required = false,
                                  default = nil)
-  if valid_600555 != nil:
-    section.add "X-Amz-Credential", valid_600555
+  if valid_602577 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602577
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600556: Call_GetDescribeLoadBalancerPolicies_600542;
+proc call*(call_602578: Call_GetDescribeLoadBalancerPolicies_602564;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Describes the specified policies.</p> <p>If you specify a load balancer name, the action returns the descriptions of all policies created for the load balancer. If you specify a policy name associated with your load balancer, the action returns the description of that policy. If you don't specify a load balancer name, the action returns descriptions of the specified sample policies, or descriptions of all sample policies. The names of the sample policies have the <code>ELBSample-</code> prefix.</p>
   ## 
-  let valid = call_600556.validator(path, query, header, formData, body)
-  let scheme = call_600556.pickScheme
+  let valid = call_602578.validator(path, query, header, formData, body)
+  let scheme = call_602578.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600556.url(scheme.get, call_600556.host, call_600556.base,
-                         call_600556.route, valid.getOrDefault("path"),
+  let url = call_602578.url(scheme.get, call_602578.host, call_602578.base,
+                         call_602578.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600556, url, valid)
+  result = atozHook(call_602578, url, valid)
 
-proc call*(call_600557: Call_GetDescribeLoadBalancerPolicies_600542;
+proc call*(call_602579: Call_GetDescribeLoadBalancerPolicies_602564;
           LoadBalancerName: string = "";
           Action: string = "DescribeLoadBalancerPolicies";
-          PolicyNames: JsonNode = nil; Version: string = "2012-06-01"): Recallable =
+          Version: string = "2012-06-01"; PolicyNames: JsonNode = nil): Recallable =
   ## getDescribeLoadBalancerPolicies
   ## <p>Describes the specified policies.</p> <p>If you specify a load balancer name, the action returns the descriptions of all policies created for the load balancer. If you specify a policy name associated with your load balancer, the action returns the description of that policy. If you don't specify a load balancer name, the action returns descriptions of the specified sample policies, or descriptions of all sample policies. The names of the sample policies have the <code>ELBSample-</code> prefix.</p>
   ##   LoadBalancerName: string
   ##                   : The name of the load balancer.
   ##   Action: string (required)
+  ##   Version: string (required)
   ##   PolicyNames: JArray
   ##              : The names of the policies.
-  ##   Version: string (required)
-  var query_600558 = newJObject()
-  add(query_600558, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600558, "Action", newJString(Action))
+  var query_602580 = newJObject()
+  add(query_602580, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602580, "Action", newJString(Action))
+  add(query_602580, "Version", newJString(Version))
   if PolicyNames != nil:
-    query_600558.add "PolicyNames", PolicyNames
-  add(query_600558, "Version", newJString(Version))
-  result = call_600557.call(nil, query_600558, nil, nil, nil)
+    query_602580.add "PolicyNames", PolicyNames
+  result = call_602579.call(nil, query_602580, nil, nil, nil)
 
-var getDescribeLoadBalancerPolicies* = Call_GetDescribeLoadBalancerPolicies_600542(
+var getDescribeLoadBalancerPolicies* = Call_GetDescribeLoadBalancerPolicies_602564(
     name: "getDescribeLoadBalancerPolicies", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeLoadBalancerPolicies",
-    validator: validate_GetDescribeLoadBalancerPolicies_600543, base: "/",
-    url: url_GetDescribeLoadBalancerPolicies_600544,
+    validator: validate_GetDescribeLoadBalancerPolicies_602565, base: "/",
+    url: url_GetDescribeLoadBalancerPolicies_602566,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDescribeLoadBalancerPolicyTypes_600593 = ref object of OpenApiRestCall_599368
-proc url_PostDescribeLoadBalancerPolicyTypes_600595(protocol: Scheme; host: string;
+  Call_PostDescribeLoadBalancerPolicyTypes_602615 = ref object of OpenApiRestCall_601389
+proc url_PostDescribeLoadBalancerPolicyTypes_602617(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDescribeLoadBalancerPolicyTypes_600594(path: JsonNode;
+proc validate_PostDescribeLoadBalancerPolicyTypes_602616(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the specified load balancer policy types or all load balancer policy types.</p> <p>The description of each type indicates how it can be used. For example, some policies can be used only with layer 7 listeners, some policies can be used only with layer 4 listeners, and some policies can be used only with your EC2 instances.</p> <p>You can use <a>CreateLoadBalancerPolicy</a> to create a policy configuration for any of these policy types. Then, depending on the policy type, use either <a>SetLoadBalancerPoliciesOfListener</a> or <a>SetLoadBalancerPoliciesForBackendServer</a> to set the policy.</p>
   ## 
@@ -5266,90 +5297,90 @@ proc validate_PostDescribeLoadBalancerPolicyTypes_600594(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600596 = query.getOrDefault("Action")
-  valid_600596 = validateParameter(valid_600596, JString, required = true, default = newJString(
+  var valid_602618 = query.getOrDefault("Action")
+  valid_602618 = validateParameter(valid_602618, JString, required = true, default = newJString(
       "DescribeLoadBalancerPolicyTypes"))
-  if valid_600596 != nil:
-    section.add "Action", valid_600596
-  var valid_600597 = query.getOrDefault("Version")
-  valid_600597 = validateParameter(valid_600597, JString, required = true,
+  if valid_602618 != nil:
+    section.add "Action", valid_602618
+  var valid_602619 = query.getOrDefault("Version")
+  valid_602619 = validateParameter(valid_602619, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600597 != nil:
-    section.add "Version", valid_600597
+  if valid_602619 != nil:
+    section.add "Version", valid_602619
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600598 = header.getOrDefault("X-Amz-Date")
-  valid_600598 = validateParameter(valid_600598, JString, required = false,
+  var valid_602620 = header.getOrDefault("X-Amz-Signature")
+  valid_602620 = validateParameter(valid_602620, JString, required = false,
                                  default = nil)
-  if valid_600598 != nil:
-    section.add "X-Amz-Date", valid_600598
-  var valid_600599 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600599 = validateParameter(valid_600599, JString, required = false,
+  if valid_602620 != nil:
+    section.add "X-Amz-Signature", valid_602620
+  var valid_602621 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602621 = validateParameter(valid_602621, JString, required = false,
                                  default = nil)
-  if valid_600599 != nil:
-    section.add "X-Amz-Security-Token", valid_600599
-  var valid_600600 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600600 = validateParameter(valid_600600, JString, required = false,
+  if valid_602621 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602621
+  var valid_602622 = header.getOrDefault("X-Amz-Date")
+  valid_602622 = validateParameter(valid_602622, JString, required = false,
                                  default = nil)
-  if valid_600600 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600600
-  var valid_600601 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600601 = validateParameter(valid_600601, JString, required = false,
+  if valid_602622 != nil:
+    section.add "X-Amz-Date", valid_602622
+  var valid_602623 = header.getOrDefault("X-Amz-Credential")
+  valid_602623 = validateParameter(valid_602623, JString, required = false,
                                  default = nil)
-  if valid_600601 != nil:
-    section.add "X-Amz-Algorithm", valid_600601
-  var valid_600602 = header.getOrDefault("X-Amz-Signature")
-  valid_600602 = validateParameter(valid_600602, JString, required = false,
+  if valid_602623 != nil:
+    section.add "X-Amz-Credential", valid_602623
+  var valid_602624 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602624 = validateParameter(valid_602624, JString, required = false,
                                  default = nil)
-  if valid_600602 != nil:
-    section.add "X-Amz-Signature", valid_600602
-  var valid_600603 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600603 = validateParameter(valid_600603, JString, required = false,
+  if valid_602624 != nil:
+    section.add "X-Amz-Security-Token", valid_602624
+  var valid_602625 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602625 = validateParameter(valid_602625, JString, required = false,
                                  default = nil)
-  if valid_600603 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600603
-  var valid_600604 = header.getOrDefault("X-Amz-Credential")
-  valid_600604 = validateParameter(valid_600604, JString, required = false,
+  if valid_602625 != nil:
+    section.add "X-Amz-Algorithm", valid_602625
+  var valid_602626 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602626 = validateParameter(valid_602626, JString, required = false,
                                  default = nil)
-  if valid_600604 != nil:
-    section.add "X-Amz-Credential", valid_600604
+  if valid_602626 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602626
   result.add "header", section
   ## parameters in `formData` object:
   ##   PolicyTypeNames: JArray
   ##                  : The names of the policy types. If no names are specified, describes all policy types defined by Elastic Load Balancing.
   section = newJObject()
-  var valid_600605 = formData.getOrDefault("PolicyTypeNames")
-  valid_600605 = validateParameter(valid_600605, JArray, required = false,
+  var valid_602627 = formData.getOrDefault("PolicyTypeNames")
+  valid_602627 = validateParameter(valid_602627, JArray, required = false,
                                  default = nil)
-  if valid_600605 != nil:
-    section.add "PolicyTypeNames", valid_600605
+  if valid_602627 != nil:
+    section.add "PolicyTypeNames", valid_602627
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600606: Call_PostDescribeLoadBalancerPolicyTypes_600593;
+proc call*(call_602628: Call_PostDescribeLoadBalancerPolicyTypes_602615;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Describes the specified load balancer policy types or all load balancer policy types.</p> <p>The description of each type indicates how it can be used. For example, some policies can be used only with layer 7 listeners, some policies can be used only with layer 4 listeners, and some policies can be used only with your EC2 instances.</p> <p>You can use <a>CreateLoadBalancerPolicy</a> to create a policy configuration for any of these policy types. Then, depending on the policy type, use either <a>SetLoadBalancerPoliciesOfListener</a> or <a>SetLoadBalancerPoliciesForBackendServer</a> to set the policy.</p>
   ## 
-  let valid = call_600606.validator(path, query, header, formData, body)
-  let scheme = call_600606.pickScheme
+  let valid = call_602628.validator(path, query, header, formData, body)
+  let scheme = call_602628.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600606.url(scheme.get, call_600606.host, call_600606.base,
-                         call_600606.route, valid.getOrDefault("path"),
+  let url = call_602628.url(scheme.get, call_602628.host, call_602628.base,
+                         call_602628.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600606, url, valid)
+  result = atozHook(call_602628, url, valid)
 
-proc call*(call_600607: Call_PostDescribeLoadBalancerPolicyTypes_600593;
+proc call*(call_602629: Call_PostDescribeLoadBalancerPolicyTypes_602615;
           PolicyTypeNames: JsonNode = nil;
           Action: string = "DescribeLoadBalancerPolicyTypes";
           Version: string = "2012-06-01"): Recallable =
@@ -5359,35 +5390,36 @@ proc call*(call_600607: Call_PostDescribeLoadBalancerPolicyTypes_600593;
   ##                  : The names of the policy types. If no names are specified, describes all policy types defined by Elastic Load Balancing.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_600608 = newJObject()
-  var formData_600609 = newJObject()
+  var query_602630 = newJObject()
+  var formData_602631 = newJObject()
   if PolicyTypeNames != nil:
-    formData_600609.add "PolicyTypeNames", PolicyTypeNames
-  add(query_600608, "Action", newJString(Action))
-  add(query_600608, "Version", newJString(Version))
-  result = call_600607.call(nil, query_600608, nil, formData_600609, nil)
+    formData_602631.add "PolicyTypeNames", PolicyTypeNames
+  add(query_602630, "Action", newJString(Action))
+  add(query_602630, "Version", newJString(Version))
+  result = call_602629.call(nil, query_602630, nil, formData_602631, nil)
 
-var postDescribeLoadBalancerPolicyTypes* = Call_PostDescribeLoadBalancerPolicyTypes_600593(
+var postDescribeLoadBalancerPolicyTypes* = Call_PostDescribeLoadBalancerPolicyTypes_602615(
     name: "postDescribeLoadBalancerPolicyTypes", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeLoadBalancerPolicyTypes",
-    validator: validate_PostDescribeLoadBalancerPolicyTypes_600594, base: "/",
-    url: url_PostDescribeLoadBalancerPolicyTypes_600595,
+    validator: validate_PostDescribeLoadBalancerPolicyTypes_602616, base: "/",
+    url: url_PostDescribeLoadBalancerPolicyTypes_602617,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDescribeLoadBalancerPolicyTypes_600577 = ref object of OpenApiRestCall_599368
-proc url_GetDescribeLoadBalancerPolicyTypes_600579(protocol: Scheme; host: string;
+  Call_GetDescribeLoadBalancerPolicyTypes_602599 = ref object of OpenApiRestCall_601389
+proc url_GetDescribeLoadBalancerPolicyTypes_602601(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDescribeLoadBalancerPolicyTypes_600578(path: JsonNode;
+proc validate_GetDescribeLoadBalancerPolicyTypes_602600(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the specified load balancer policy types or all load balancer policy types.</p> <p>The description of each type indicates how it can be used. For example, some policies can be used only with layer 7 listeners, some policies can be used only with layer 4 listeners, and some policies can be used only with your EC2 instances.</p> <p>You can use <a>CreateLoadBalancerPolicy</a> to create a policy configuration for any of these policy types. Then, depending on the policy type, use either <a>SetLoadBalancerPoliciesOfListener</a> or <a>SetLoadBalancerPoliciesForBackendServer</a> to set the policy.</p>
   ## 
@@ -5396,129 +5428,131 @@ proc validate_GetDescribeLoadBalancerPolicyTypes_600578(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   Action: JString (required)
   ##   PolicyTypeNames: JArray
   ##                  : The names of the policy types. If no names are specified, describes all policy types defined by Elastic Load Balancing.
+  ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600580 = query.getOrDefault("Action")
-  valid_600580 = validateParameter(valid_600580, JString, required = true, default = newJString(
-      "DescribeLoadBalancerPolicyTypes"))
-  if valid_600580 != nil:
-    section.add "Action", valid_600580
-  var valid_600581 = query.getOrDefault("PolicyTypeNames")
-  valid_600581 = validateParameter(valid_600581, JArray, required = false,
+  var valid_602602 = query.getOrDefault("PolicyTypeNames")
+  valid_602602 = validateParameter(valid_602602, JArray, required = false,
                                  default = nil)
-  if valid_600581 != nil:
-    section.add "PolicyTypeNames", valid_600581
-  var valid_600582 = query.getOrDefault("Version")
-  valid_600582 = validateParameter(valid_600582, JString, required = true,
+  if valid_602602 != nil:
+    section.add "PolicyTypeNames", valid_602602
+  assert query != nil, "query argument is necessary due to required `Action` field"
+  var valid_602603 = query.getOrDefault("Action")
+  valid_602603 = validateParameter(valid_602603, JString, required = true, default = newJString(
+      "DescribeLoadBalancerPolicyTypes"))
+  if valid_602603 != nil:
+    section.add "Action", valid_602603
+  var valid_602604 = query.getOrDefault("Version")
+  valid_602604 = validateParameter(valid_602604, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600582 != nil:
-    section.add "Version", valid_600582
+  if valid_602604 != nil:
+    section.add "Version", valid_602604
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600583 = header.getOrDefault("X-Amz-Date")
-  valid_600583 = validateParameter(valid_600583, JString, required = false,
+  var valid_602605 = header.getOrDefault("X-Amz-Signature")
+  valid_602605 = validateParameter(valid_602605, JString, required = false,
                                  default = nil)
-  if valid_600583 != nil:
-    section.add "X-Amz-Date", valid_600583
-  var valid_600584 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600584 = validateParameter(valid_600584, JString, required = false,
+  if valid_602605 != nil:
+    section.add "X-Amz-Signature", valid_602605
+  var valid_602606 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602606 = validateParameter(valid_602606, JString, required = false,
                                  default = nil)
-  if valid_600584 != nil:
-    section.add "X-Amz-Security-Token", valid_600584
-  var valid_600585 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600585 = validateParameter(valid_600585, JString, required = false,
+  if valid_602606 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602606
+  var valid_602607 = header.getOrDefault("X-Amz-Date")
+  valid_602607 = validateParameter(valid_602607, JString, required = false,
                                  default = nil)
-  if valid_600585 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600585
-  var valid_600586 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600586 = validateParameter(valid_600586, JString, required = false,
+  if valid_602607 != nil:
+    section.add "X-Amz-Date", valid_602607
+  var valid_602608 = header.getOrDefault("X-Amz-Credential")
+  valid_602608 = validateParameter(valid_602608, JString, required = false,
                                  default = nil)
-  if valid_600586 != nil:
-    section.add "X-Amz-Algorithm", valid_600586
-  var valid_600587 = header.getOrDefault("X-Amz-Signature")
-  valid_600587 = validateParameter(valid_600587, JString, required = false,
+  if valid_602608 != nil:
+    section.add "X-Amz-Credential", valid_602608
+  var valid_602609 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602609 = validateParameter(valid_602609, JString, required = false,
                                  default = nil)
-  if valid_600587 != nil:
-    section.add "X-Amz-Signature", valid_600587
-  var valid_600588 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600588 = validateParameter(valid_600588, JString, required = false,
+  if valid_602609 != nil:
+    section.add "X-Amz-Security-Token", valid_602609
+  var valid_602610 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602610 = validateParameter(valid_602610, JString, required = false,
                                  default = nil)
-  if valid_600588 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600588
-  var valid_600589 = header.getOrDefault("X-Amz-Credential")
-  valid_600589 = validateParameter(valid_600589, JString, required = false,
+  if valid_602610 != nil:
+    section.add "X-Amz-Algorithm", valid_602610
+  var valid_602611 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602611 = validateParameter(valid_602611, JString, required = false,
                                  default = nil)
-  if valid_600589 != nil:
-    section.add "X-Amz-Credential", valid_600589
+  if valid_602611 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602611
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600590: Call_GetDescribeLoadBalancerPolicyTypes_600577;
+proc call*(call_602612: Call_GetDescribeLoadBalancerPolicyTypes_602599;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Describes the specified load balancer policy types or all load balancer policy types.</p> <p>The description of each type indicates how it can be used. For example, some policies can be used only with layer 7 listeners, some policies can be used only with layer 4 listeners, and some policies can be used only with your EC2 instances.</p> <p>You can use <a>CreateLoadBalancerPolicy</a> to create a policy configuration for any of these policy types. Then, depending on the policy type, use either <a>SetLoadBalancerPoliciesOfListener</a> or <a>SetLoadBalancerPoliciesForBackendServer</a> to set the policy.</p>
   ## 
-  let valid = call_600590.validator(path, query, header, formData, body)
-  let scheme = call_600590.pickScheme
+  let valid = call_602612.validator(path, query, header, formData, body)
+  let scheme = call_602612.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600590.url(scheme.get, call_600590.host, call_600590.base,
-                         call_600590.route, valid.getOrDefault("path"),
+  let url = call_602612.url(scheme.get, call_602612.host, call_602612.base,
+                         call_602612.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600590, url, valid)
+  result = atozHook(call_602612, url, valid)
 
-proc call*(call_600591: Call_GetDescribeLoadBalancerPolicyTypes_600577;
+proc call*(call_602613: Call_GetDescribeLoadBalancerPolicyTypes_602599;
+          PolicyTypeNames: JsonNode = nil;
           Action: string = "DescribeLoadBalancerPolicyTypes";
-          PolicyTypeNames: JsonNode = nil; Version: string = "2012-06-01"): Recallable =
+          Version: string = "2012-06-01"): Recallable =
   ## getDescribeLoadBalancerPolicyTypes
   ## <p>Describes the specified load balancer policy types or all load balancer policy types.</p> <p>The description of each type indicates how it can be used. For example, some policies can be used only with layer 7 listeners, some policies can be used only with layer 4 listeners, and some policies can be used only with your EC2 instances.</p> <p>You can use <a>CreateLoadBalancerPolicy</a> to create a policy configuration for any of these policy types. Then, depending on the policy type, use either <a>SetLoadBalancerPoliciesOfListener</a> or <a>SetLoadBalancerPoliciesForBackendServer</a> to set the policy.</p>
-  ##   Action: string (required)
   ##   PolicyTypeNames: JArray
   ##                  : The names of the policy types. If no names are specified, describes all policy types defined by Elastic Load Balancing.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600592 = newJObject()
-  add(query_600592, "Action", newJString(Action))
+  var query_602614 = newJObject()
   if PolicyTypeNames != nil:
-    query_600592.add "PolicyTypeNames", PolicyTypeNames
-  add(query_600592, "Version", newJString(Version))
-  result = call_600591.call(nil, query_600592, nil, nil, nil)
+    query_602614.add "PolicyTypeNames", PolicyTypeNames
+  add(query_602614, "Action", newJString(Action))
+  add(query_602614, "Version", newJString(Version))
+  result = call_602613.call(nil, query_602614, nil, nil, nil)
 
-var getDescribeLoadBalancerPolicyTypes* = Call_GetDescribeLoadBalancerPolicyTypes_600577(
+var getDescribeLoadBalancerPolicyTypes* = Call_GetDescribeLoadBalancerPolicyTypes_602599(
     name: "getDescribeLoadBalancerPolicyTypes", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeLoadBalancerPolicyTypes",
-    validator: validate_GetDescribeLoadBalancerPolicyTypes_600578, base: "/",
-    url: url_GetDescribeLoadBalancerPolicyTypes_600579,
+    validator: validate_GetDescribeLoadBalancerPolicyTypes_602600, base: "/",
+    url: url_GetDescribeLoadBalancerPolicyTypes_602601,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDescribeLoadBalancers_600628 = ref object of OpenApiRestCall_599368
-proc url_PostDescribeLoadBalancers_600630(protocol: Scheme; host: string;
+  Call_PostDescribeLoadBalancers_602650 = ref object of OpenApiRestCall_601389
+proc url_PostDescribeLoadBalancers_602652(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDescribeLoadBalancers_600629(path: JsonNode; query: JsonNode;
+proc validate_PostDescribeLoadBalancers_602651(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the specified the load balancers. If no load balancers are specified, the call describes all of your load balancers.
   ## 
@@ -5531,147 +5565,148 @@ proc validate_PostDescribeLoadBalancers_600629(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600631 = query.getOrDefault("Action")
-  valid_600631 = validateParameter(valid_600631, JString, required = true,
+  var valid_602653 = query.getOrDefault("Action")
+  valid_602653 = validateParameter(valid_602653, JString, required = true,
                                  default = newJString("DescribeLoadBalancers"))
-  if valid_600631 != nil:
-    section.add "Action", valid_600631
-  var valid_600632 = query.getOrDefault("Version")
-  valid_600632 = validateParameter(valid_600632, JString, required = true,
+  if valid_602653 != nil:
+    section.add "Action", valid_602653
+  var valid_602654 = query.getOrDefault("Version")
+  valid_602654 = validateParameter(valid_602654, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600632 != nil:
-    section.add "Version", valid_600632
+  if valid_602654 != nil:
+    section.add "Version", valid_602654
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600633 = header.getOrDefault("X-Amz-Date")
-  valid_600633 = validateParameter(valid_600633, JString, required = false,
+  var valid_602655 = header.getOrDefault("X-Amz-Signature")
+  valid_602655 = validateParameter(valid_602655, JString, required = false,
                                  default = nil)
-  if valid_600633 != nil:
-    section.add "X-Amz-Date", valid_600633
-  var valid_600634 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600634 = validateParameter(valid_600634, JString, required = false,
+  if valid_602655 != nil:
+    section.add "X-Amz-Signature", valid_602655
+  var valid_602656 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602656 = validateParameter(valid_602656, JString, required = false,
                                  default = nil)
-  if valid_600634 != nil:
-    section.add "X-Amz-Security-Token", valid_600634
-  var valid_600635 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600635 = validateParameter(valid_600635, JString, required = false,
+  if valid_602656 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602656
+  var valid_602657 = header.getOrDefault("X-Amz-Date")
+  valid_602657 = validateParameter(valid_602657, JString, required = false,
                                  default = nil)
-  if valid_600635 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600635
-  var valid_600636 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600636 = validateParameter(valid_600636, JString, required = false,
+  if valid_602657 != nil:
+    section.add "X-Amz-Date", valid_602657
+  var valid_602658 = header.getOrDefault("X-Amz-Credential")
+  valid_602658 = validateParameter(valid_602658, JString, required = false,
                                  default = nil)
-  if valid_600636 != nil:
-    section.add "X-Amz-Algorithm", valid_600636
-  var valid_600637 = header.getOrDefault("X-Amz-Signature")
-  valid_600637 = validateParameter(valid_600637, JString, required = false,
+  if valid_602658 != nil:
+    section.add "X-Amz-Credential", valid_602658
+  var valid_602659 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602659 = validateParameter(valid_602659, JString, required = false,
                                  default = nil)
-  if valid_600637 != nil:
-    section.add "X-Amz-Signature", valid_600637
-  var valid_600638 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600638 = validateParameter(valid_600638, JString, required = false,
+  if valid_602659 != nil:
+    section.add "X-Amz-Security-Token", valid_602659
+  var valid_602660 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602660 = validateParameter(valid_602660, JString, required = false,
                                  default = nil)
-  if valid_600638 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600638
-  var valid_600639 = header.getOrDefault("X-Amz-Credential")
-  valid_600639 = validateParameter(valid_600639, JString, required = false,
+  if valid_602660 != nil:
+    section.add "X-Amz-Algorithm", valid_602660
+  var valid_602661 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602661 = validateParameter(valid_602661, JString, required = false,
                                  default = nil)
-  if valid_600639 != nil:
-    section.add "X-Amz-Credential", valid_600639
+  if valid_602661 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602661
   result.add "header", section
   ## parameters in `formData` object:
-  ##   Marker: JString
-  ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   LoadBalancerNames: JArray
   ##                    : The names of the load balancers.
+  ##   Marker: JString
+  ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   PageSize: JInt
   ##           : The maximum number of results to return with this call (a number from 1 to 400). The default is 400.
   section = newJObject()
-  var valid_600640 = formData.getOrDefault("Marker")
-  valid_600640 = validateParameter(valid_600640, JString, required = false,
+  var valid_602662 = formData.getOrDefault("LoadBalancerNames")
+  valid_602662 = validateParameter(valid_602662, JArray, required = false,
                                  default = nil)
-  if valid_600640 != nil:
-    section.add "Marker", valid_600640
-  var valid_600641 = formData.getOrDefault("LoadBalancerNames")
-  valid_600641 = validateParameter(valid_600641, JArray, required = false,
+  if valid_602662 != nil:
+    section.add "LoadBalancerNames", valid_602662
+  var valid_602663 = formData.getOrDefault("Marker")
+  valid_602663 = validateParameter(valid_602663, JString, required = false,
                                  default = nil)
-  if valid_600641 != nil:
-    section.add "LoadBalancerNames", valid_600641
-  var valid_600642 = formData.getOrDefault("PageSize")
-  valid_600642 = validateParameter(valid_600642, JInt, required = false, default = nil)
-  if valid_600642 != nil:
-    section.add "PageSize", valid_600642
+  if valid_602663 != nil:
+    section.add "Marker", valid_602663
+  var valid_602664 = formData.getOrDefault("PageSize")
+  valid_602664 = validateParameter(valid_602664, JInt, required = false, default = nil)
+  if valid_602664 != nil:
+    section.add "PageSize", valid_602664
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600643: Call_PostDescribeLoadBalancers_600628; path: JsonNode;
+proc call*(call_602665: Call_PostDescribeLoadBalancers_602650; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the specified the load balancers. If no load balancers are specified, the call describes all of your load balancers.
   ## 
-  let valid = call_600643.validator(path, query, header, formData, body)
-  let scheme = call_600643.pickScheme
+  let valid = call_602665.validator(path, query, header, formData, body)
+  let scheme = call_602665.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600643.url(scheme.get, call_600643.host, call_600643.base,
-                         call_600643.route, valid.getOrDefault("path"),
+  let url = call_602665.url(scheme.get, call_602665.host, call_602665.base,
+                         call_602665.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600643, url, valid)
+  result = atozHook(call_602665, url, valid)
 
-proc call*(call_600644: Call_PostDescribeLoadBalancers_600628; Marker: string = "";
-          Action: string = "DescribeLoadBalancers";
-          LoadBalancerNames: JsonNode = nil; PageSize: int = 0;
+proc call*(call_602666: Call_PostDescribeLoadBalancers_602650;
+          LoadBalancerNames: JsonNode = nil; Marker: string = "";
+          Action: string = "DescribeLoadBalancers"; PageSize: int = 0;
           Version: string = "2012-06-01"): Recallable =
   ## postDescribeLoadBalancers
   ## Describes the specified the load balancers. If no load balancers are specified, the call describes all of your load balancers.
+  ##   LoadBalancerNames: JArray
+  ##                    : The names of the load balancers.
   ##   Marker: string
   ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   Action: string (required)
-  ##   LoadBalancerNames: JArray
-  ##                    : The names of the load balancers.
   ##   PageSize: int
   ##           : The maximum number of results to return with this call (a number from 1 to 400). The default is 400.
   ##   Version: string (required)
-  var query_600645 = newJObject()
-  var formData_600646 = newJObject()
-  add(formData_600646, "Marker", newJString(Marker))
-  add(query_600645, "Action", newJString(Action))
+  var query_602667 = newJObject()
+  var formData_602668 = newJObject()
   if LoadBalancerNames != nil:
-    formData_600646.add "LoadBalancerNames", LoadBalancerNames
-  add(formData_600646, "PageSize", newJInt(PageSize))
-  add(query_600645, "Version", newJString(Version))
-  result = call_600644.call(nil, query_600645, nil, formData_600646, nil)
+    formData_602668.add "LoadBalancerNames", LoadBalancerNames
+  add(formData_602668, "Marker", newJString(Marker))
+  add(query_602667, "Action", newJString(Action))
+  add(formData_602668, "PageSize", newJInt(PageSize))
+  add(query_602667, "Version", newJString(Version))
+  result = call_602666.call(nil, query_602667, nil, formData_602668, nil)
 
-var postDescribeLoadBalancers* = Call_PostDescribeLoadBalancers_600628(
+var postDescribeLoadBalancers* = Call_PostDescribeLoadBalancers_602650(
     name: "postDescribeLoadBalancers", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeLoadBalancers",
-    validator: validate_PostDescribeLoadBalancers_600629, base: "/",
-    url: url_PostDescribeLoadBalancers_600630,
+    validator: validate_PostDescribeLoadBalancers_602651, base: "/",
+    url: url_PostDescribeLoadBalancers_602652,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDescribeLoadBalancers_600610 = ref object of OpenApiRestCall_599368
-proc url_GetDescribeLoadBalancers_600612(protocol: Scheme; host: string;
+  Call_GetDescribeLoadBalancers_602632 = ref object of OpenApiRestCall_601389
+proc url_GetDescribeLoadBalancers_602634(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDescribeLoadBalancers_600611(path: JsonNode; query: JsonNode;
+proc validate_GetDescribeLoadBalancers_602633(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the specified the load balancers. If no load balancers are specified, the call describes all of your load balancers.
   ## 
@@ -5680,146 +5715,147 @@ proc validate_GetDescribeLoadBalancers_600611(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   Marker: JString
+  ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   PageSize: JInt
   ##           : The maximum number of results to return with this call (a number from 1 to 400). The default is 400.
   ##   Action: JString (required)
-  ##   Marker: JString
-  ##         : The marker for the next set of results. (You received this marker from a previous call.)
+  ##   Version: JString (required)
   ##   LoadBalancerNames: JArray
   ##                    : The names of the load balancers.
-  ##   Version: JString (required)
   section = newJObject()
-  var valid_600613 = query.getOrDefault("PageSize")
-  valid_600613 = validateParameter(valid_600613, JInt, required = false, default = nil)
-  if valid_600613 != nil:
-    section.add "PageSize", valid_600613
+  var valid_602635 = query.getOrDefault("Marker")
+  valid_602635 = validateParameter(valid_602635, JString, required = false,
+                                 default = nil)
+  if valid_602635 != nil:
+    section.add "Marker", valid_602635
+  var valid_602636 = query.getOrDefault("PageSize")
+  valid_602636 = validateParameter(valid_602636, JInt, required = false, default = nil)
+  if valid_602636 != nil:
+    section.add "PageSize", valid_602636
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600614 = query.getOrDefault("Action")
-  valid_600614 = validateParameter(valid_600614, JString, required = true,
+  var valid_602637 = query.getOrDefault("Action")
+  valid_602637 = validateParameter(valid_602637, JString, required = true,
                                  default = newJString("DescribeLoadBalancers"))
-  if valid_600614 != nil:
-    section.add "Action", valid_600614
-  var valid_600615 = query.getOrDefault("Marker")
-  valid_600615 = validateParameter(valid_600615, JString, required = false,
-                                 default = nil)
-  if valid_600615 != nil:
-    section.add "Marker", valid_600615
-  var valid_600616 = query.getOrDefault("LoadBalancerNames")
-  valid_600616 = validateParameter(valid_600616, JArray, required = false,
-                                 default = nil)
-  if valid_600616 != nil:
-    section.add "LoadBalancerNames", valid_600616
-  var valid_600617 = query.getOrDefault("Version")
-  valid_600617 = validateParameter(valid_600617, JString, required = true,
+  if valid_602637 != nil:
+    section.add "Action", valid_602637
+  var valid_602638 = query.getOrDefault("Version")
+  valid_602638 = validateParameter(valid_602638, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600617 != nil:
-    section.add "Version", valid_600617
+  if valid_602638 != nil:
+    section.add "Version", valid_602638
+  var valid_602639 = query.getOrDefault("LoadBalancerNames")
+  valid_602639 = validateParameter(valid_602639, JArray, required = false,
+                                 default = nil)
+  if valid_602639 != nil:
+    section.add "LoadBalancerNames", valid_602639
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600618 = header.getOrDefault("X-Amz-Date")
-  valid_600618 = validateParameter(valid_600618, JString, required = false,
+  var valid_602640 = header.getOrDefault("X-Amz-Signature")
+  valid_602640 = validateParameter(valid_602640, JString, required = false,
                                  default = nil)
-  if valid_600618 != nil:
-    section.add "X-Amz-Date", valid_600618
-  var valid_600619 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600619 = validateParameter(valid_600619, JString, required = false,
+  if valid_602640 != nil:
+    section.add "X-Amz-Signature", valid_602640
+  var valid_602641 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602641 = validateParameter(valid_602641, JString, required = false,
                                  default = nil)
-  if valid_600619 != nil:
-    section.add "X-Amz-Security-Token", valid_600619
-  var valid_600620 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600620 = validateParameter(valid_600620, JString, required = false,
+  if valid_602641 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602641
+  var valid_602642 = header.getOrDefault("X-Amz-Date")
+  valid_602642 = validateParameter(valid_602642, JString, required = false,
                                  default = nil)
-  if valid_600620 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600620
-  var valid_600621 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600621 = validateParameter(valid_600621, JString, required = false,
+  if valid_602642 != nil:
+    section.add "X-Amz-Date", valid_602642
+  var valid_602643 = header.getOrDefault("X-Amz-Credential")
+  valid_602643 = validateParameter(valid_602643, JString, required = false,
                                  default = nil)
-  if valid_600621 != nil:
-    section.add "X-Amz-Algorithm", valid_600621
-  var valid_600622 = header.getOrDefault("X-Amz-Signature")
-  valid_600622 = validateParameter(valid_600622, JString, required = false,
+  if valid_602643 != nil:
+    section.add "X-Amz-Credential", valid_602643
+  var valid_602644 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602644 = validateParameter(valid_602644, JString, required = false,
                                  default = nil)
-  if valid_600622 != nil:
-    section.add "X-Amz-Signature", valid_600622
-  var valid_600623 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600623 = validateParameter(valid_600623, JString, required = false,
+  if valid_602644 != nil:
+    section.add "X-Amz-Security-Token", valid_602644
+  var valid_602645 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602645 = validateParameter(valid_602645, JString, required = false,
                                  default = nil)
-  if valid_600623 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600623
-  var valid_600624 = header.getOrDefault("X-Amz-Credential")
-  valid_600624 = validateParameter(valid_600624, JString, required = false,
+  if valid_602645 != nil:
+    section.add "X-Amz-Algorithm", valid_602645
+  var valid_602646 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602646 = validateParameter(valid_602646, JString, required = false,
                                  default = nil)
-  if valid_600624 != nil:
-    section.add "X-Amz-Credential", valid_600624
+  if valid_602646 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602646
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600625: Call_GetDescribeLoadBalancers_600610; path: JsonNode;
+proc call*(call_602647: Call_GetDescribeLoadBalancers_602632; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the specified the load balancers. If no load balancers are specified, the call describes all of your load balancers.
   ## 
-  let valid = call_600625.validator(path, query, header, formData, body)
-  let scheme = call_600625.pickScheme
+  let valid = call_602647.validator(path, query, header, formData, body)
+  let scheme = call_602647.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600625.url(scheme.get, call_600625.host, call_600625.base,
-                         call_600625.route, valid.getOrDefault("path"),
+  let url = call_602647.url(scheme.get, call_602647.host, call_602647.base,
+                         call_602647.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600625, url, valid)
+  result = atozHook(call_602647, url, valid)
 
-proc call*(call_600626: Call_GetDescribeLoadBalancers_600610; PageSize: int = 0;
-          Action: string = "DescribeLoadBalancers"; Marker: string = "";
-          LoadBalancerNames: JsonNode = nil; Version: string = "2012-06-01"): Recallable =
+proc call*(call_602648: Call_GetDescribeLoadBalancers_602632; Marker: string = "";
+          PageSize: int = 0; Action: string = "DescribeLoadBalancers";
+          Version: string = "2012-06-01"; LoadBalancerNames: JsonNode = nil): Recallable =
   ## getDescribeLoadBalancers
   ## Describes the specified the load balancers. If no load balancers are specified, the call describes all of your load balancers.
+  ##   Marker: string
+  ##         : The marker for the next set of results. (You received this marker from a previous call.)
   ##   PageSize: int
   ##           : The maximum number of results to return with this call (a number from 1 to 400). The default is 400.
   ##   Action: string (required)
-  ##   Marker: string
-  ##         : The marker for the next set of results. (You received this marker from a previous call.)
+  ##   Version: string (required)
   ##   LoadBalancerNames: JArray
   ##                    : The names of the load balancers.
-  ##   Version: string (required)
-  var query_600627 = newJObject()
-  add(query_600627, "PageSize", newJInt(PageSize))
-  add(query_600627, "Action", newJString(Action))
-  add(query_600627, "Marker", newJString(Marker))
+  var query_602649 = newJObject()
+  add(query_602649, "Marker", newJString(Marker))
+  add(query_602649, "PageSize", newJInt(PageSize))
+  add(query_602649, "Action", newJString(Action))
+  add(query_602649, "Version", newJString(Version))
   if LoadBalancerNames != nil:
-    query_600627.add "LoadBalancerNames", LoadBalancerNames
-  add(query_600627, "Version", newJString(Version))
-  result = call_600626.call(nil, query_600627, nil, nil, nil)
+    query_602649.add "LoadBalancerNames", LoadBalancerNames
+  result = call_602648.call(nil, query_602649, nil, nil, nil)
 
-var getDescribeLoadBalancers* = Call_GetDescribeLoadBalancers_600610(
+var getDescribeLoadBalancers* = Call_GetDescribeLoadBalancers_602632(
     name: "getDescribeLoadBalancers", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DescribeLoadBalancers",
-    validator: validate_GetDescribeLoadBalancers_600611, base: "/",
-    url: url_GetDescribeLoadBalancers_600612, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDescribeLoadBalancers_602633, base: "/",
+    url: url_GetDescribeLoadBalancers_602634, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDescribeTags_600663 = ref object of OpenApiRestCall_599368
-proc url_PostDescribeTags_600665(protocol: Scheme; host: string; base: string;
+  Call_PostDescribeTags_602685 = ref object of OpenApiRestCall_601389
+proc url_PostDescribeTags_602687(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDescribeTags_600664(path: JsonNode; query: JsonNode;
+proc validate_PostDescribeTags_602686(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Describes the tags associated with the specified load balancers.
@@ -5833,123 +5869,124 @@ proc validate_PostDescribeTags_600664(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600666 = query.getOrDefault("Action")
-  valid_600666 = validateParameter(valid_600666, JString, required = true,
+  var valid_602688 = query.getOrDefault("Action")
+  valid_602688 = validateParameter(valid_602688, JString, required = true,
                                  default = newJString("DescribeTags"))
-  if valid_600666 != nil:
-    section.add "Action", valid_600666
-  var valid_600667 = query.getOrDefault("Version")
-  valid_600667 = validateParameter(valid_600667, JString, required = true,
+  if valid_602688 != nil:
+    section.add "Action", valid_602688
+  var valid_602689 = query.getOrDefault("Version")
+  valid_602689 = validateParameter(valid_602689, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600667 != nil:
-    section.add "Version", valid_600667
+  if valid_602689 != nil:
+    section.add "Version", valid_602689
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600668 = header.getOrDefault("X-Amz-Date")
-  valid_600668 = validateParameter(valid_600668, JString, required = false,
+  var valid_602690 = header.getOrDefault("X-Amz-Signature")
+  valid_602690 = validateParameter(valid_602690, JString, required = false,
                                  default = nil)
-  if valid_600668 != nil:
-    section.add "X-Amz-Date", valid_600668
-  var valid_600669 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600669 = validateParameter(valid_600669, JString, required = false,
+  if valid_602690 != nil:
+    section.add "X-Amz-Signature", valid_602690
+  var valid_602691 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602691 = validateParameter(valid_602691, JString, required = false,
                                  default = nil)
-  if valid_600669 != nil:
-    section.add "X-Amz-Security-Token", valid_600669
-  var valid_600670 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600670 = validateParameter(valid_600670, JString, required = false,
+  if valid_602691 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602691
+  var valid_602692 = header.getOrDefault("X-Amz-Date")
+  valid_602692 = validateParameter(valid_602692, JString, required = false,
                                  default = nil)
-  if valid_600670 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600670
-  var valid_600671 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600671 = validateParameter(valid_600671, JString, required = false,
+  if valid_602692 != nil:
+    section.add "X-Amz-Date", valid_602692
+  var valid_602693 = header.getOrDefault("X-Amz-Credential")
+  valid_602693 = validateParameter(valid_602693, JString, required = false,
                                  default = nil)
-  if valid_600671 != nil:
-    section.add "X-Amz-Algorithm", valid_600671
-  var valid_600672 = header.getOrDefault("X-Amz-Signature")
-  valid_600672 = validateParameter(valid_600672, JString, required = false,
+  if valid_602693 != nil:
+    section.add "X-Amz-Credential", valid_602693
+  var valid_602694 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602694 = validateParameter(valid_602694, JString, required = false,
                                  default = nil)
-  if valid_600672 != nil:
-    section.add "X-Amz-Signature", valid_600672
-  var valid_600673 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600673 = validateParameter(valid_600673, JString, required = false,
+  if valid_602694 != nil:
+    section.add "X-Amz-Security-Token", valid_602694
+  var valid_602695 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602695 = validateParameter(valid_602695, JString, required = false,
                                  default = nil)
-  if valid_600673 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600673
-  var valid_600674 = header.getOrDefault("X-Amz-Credential")
-  valid_600674 = validateParameter(valid_600674, JString, required = false,
+  if valid_602695 != nil:
+    section.add "X-Amz-Algorithm", valid_602695
+  var valid_602696 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602696 = validateParameter(valid_602696, JString, required = false,
                                  default = nil)
-  if valid_600674 != nil:
-    section.add "X-Amz-Credential", valid_600674
+  if valid_602696 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602696
   result.add "header", section
   ## parameters in `formData` object:
   ##   LoadBalancerNames: JArray (required)
   ##                    : The names of the load balancers.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `LoadBalancerNames` field"
-  var valid_600675 = formData.getOrDefault("LoadBalancerNames")
-  valid_600675 = validateParameter(valid_600675, JArray, required = true, default = nil)
-  if valid_600675 != nil:
-    section.add "LoadBalancerNames", valid_600675
+  var valid_602697 = formData.getOrDefault("LoadBalancerNames")
+  valid_602697 = validateParameter(valid_602697, JArray, required = true, default = nil)
+  if valid_602697 != nil:
+    section.add "LoadBalancerNames", valid_602697
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600676: Call_PostDescribeTags_600663; path: JsonNode;
+proc call*(call_602698: Call_PostDescribeTags_602685; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the tags associated with the specified load balancers.
   ## 
-  let valid = call_600676.validator(path, query, header, formData, body)
-  let scheme = call_600676.pickScheme
+  let valid = call_602698.validator(path, query, header, formData, body)
+  let scheme = call_602698.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600676.url(scheme.get, call_600676.host, call_600676.base,
-                         call_600676.route, valid.getOrDefault("path"),
+  let url = call_602698.url(scheme.get, call_602698.host, call_602698.base,
+                         call_602698.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600676, url, valid)
+  result = atozHook(call_602698, url, valid)
 
-proc call*(call_600677: Call_PostDescribeTags_600663; LoadBalancerNames: JsonNode;
+proc call*(call_602699: Call_PostDescribeTags_602685; LoadBalancerNames: JsonNode;
           Action: string = "DescribeTags"; Version: string = "2012-06-01"): Recallable =
   ## postDescribeTags
   ## Describes the tags associated with the specified load balancers.
-  ##   Action: string (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The names of the load balancers.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600678 = newJObject()
-  var formData_600679 = newJObject()
-  add(query_600678, "Action", newJString(Action))
+  var query_602700 = newJObject()
+  var formData_602701 = newJObject()
   if LoadBalancerNames != nil:
-    formData_600679.add "LoadBalancerNames", LoadBalancerNames
-  add(query_600678, "Version", newJString(Version))
-  result = call_600677.call(nil, query_600678, nil, formData_600679, nil)
+    formData_602701.add "LoadBalancerNames", LoadBalancerNames
+  add(query_602700, "Action", newJString(Action))
+  add(query_602700, "Version", newJString(Version))
+  result = call_602699.call(nil, query_602700, nil, formData_602701, nil)
 
-var postDescribeTags* = Call_PostDescribeTags_600663(name: "postDescribeTags",
+var postDescribeTags* = Call_PostDescribeTags_602685(name: "postDescribeTags",
     meth: HttpMethod.HttpPost, host: "elasticloadbalancing.amazonaws.com",
-    route: "/#Action=DescribeTags", validator: validate_PostDescribeTags_600664,
-    base: "/", url: url_PostDescribeTags_600665,
+    route: "/#Action=DescribeTags", validator: validate_PostDescribeTags_602686,
+    base: "/", url: url_PostDescribeTags_602687,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDescribeTags_600647 = ref object of OpenApiRestCall_599368
-proc url_GetDescribeTags_600649(protocol: Scheme; host: string; base: string;
+  Call_GetDescribeTags_602669 = ref object of OpenApiRestCall_601389
+proc url_GetDescribeTags_602671(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDescribeTags_600648(path: JsonNode; query: JsonNode;
+proc validate_GetDescribeTags_602670(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Describes the tags associated with the specified load balancers.
@@ -5960,122 +5997,123 @@ proc validate_GetDescribeTags_600648(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   Action: JString (required)
+  ##   Version: JString (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The names of the load balancers.
-  ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600650 = query.getOrDefault("Action")
-  valid_600650 = validateParameter(valid_600650, JString, required = true,
+  var valid_602672 = query.getOrDefault("Action")
+  valid_602672 = validateParameter(valid_602672, JString, required = true,
                                  default = newJString("DescribeTags"))
-  if valid_600650 != nil:
-    section.add "Action", valid_600650
-  var valid_600651 = query.getOrDefault("LoadBalancerNames")
-  valid_600651 = validateParameter(valid_600651, JArray, required = true, default = nil)
-  if valid_600651 != nil:
-    section.add "LoadBalancerNames", valid_600651
-  var valid_600652 = query.getOrDefault("Version")
-  valid_600652 = validateParameter(valid_600652, JString, required = true,
+  if valid_602672 != nil:
+    section.add "Action", valid_602672
+  var valid_602673 = query.getOrDefault("Version")
+  valid_602673 = validateParameter(valid_602673, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600652 != nil:
-    section.add "Version", valid_600652
+  if valid_602673 != nil:
+    section.add "Version", valid_602673
+  var valid_602674 = query.getOrDefault("LoadBalancerNames")
+  valid_602674 = validateParameter(valid_602674, JArray, required = true, default = nil)
+  if valid_602674 != nil:
+    section.add "LoadBalancerNames", valid_602674
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600653 = header.getOrDefault("X-Amz-Date")
-  valid_600653 = validateParameter(valid_600653, JString, required = false,
+  var valid_602675 = header.getOrDefault("X-Amz-Signature")
+  valid_602675 = validateParameter(valid_602675, JString, required = false,
                                  default = nil)
-  if valid_600653 != nil:
-    section.add "X-Amz-Date", valid_600653
-  var valid_600654 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600654 = validateParameter(valid_600654, JString, required = false,
+  if valid_602675 != nil:
+    section.add "X-Amz-Signature", valid_602675
+  var valid_602676 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602676 = validateParameter(valid_602676, JString, required = false,
                                  default = nil)
-  if valid_600654 != nil:
-    section.add "X-Amz-Security-Token", valid_600654
-  var valid_600655 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600655 = validateParameter(valid_600655, JString, required = false,
+  if valid_602676 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602676
+  var valid_602677 = header.getOrDefault("X-Amz-Date")
+  valid_602677 = validateParameter(valid_602677, JString, required = false,
                                  default = nil)
-  if valid_600655 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600655
-  var valid_600656 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600656 = validateParameter(valid_600656, JString, required = false,
+  if valid_602677 != nil:
+    section.add "X-Amz-Date", valid_602677
+  var valid_602678 = header.getOrDefault("X-Amz-Credential")
+  valid_602678 = validateParameter(valid_602678, JString, required = false,
                                  default = nil)
-  if valid_600656 != nil:
-    section.add "X-Amz-Algorithm", valid_600656
-  var valid_600657 = header.getOrDefault("X-Amz-Signature")
-  valid_600657 = validateParameter(valid_600657, JString, required = false,
+  if valid_602678 != nil:
+    section.add "X-Amz-Credential", valid_602678
+  var valid_602679 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602679 = validateParameter(valid_602679, JString, required = false,
                                  default = nil)
-  if valid_600657 != nil:
-    section.add "X-Amz-Signature", valid_600657
-  var valid_600658 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600658 = validateParameter(valid_600658, JString, required = false,
+  if valid_602679 != nil:
+    section.add "X-Amz-Security-Token", valid_602679
+  var valid_602680 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602680 = validateParameter(valid_602680, JString, required = false,
                                  default = nil)
-  if valid_600658 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600658
-  var valid_600659 = header.getOrDefault("X-Amz-Credential")
-  valid_600659 = validateParameter(valid_600659, JString, required = false,
+  if valid_602680 != nil:
+    section.add "X-Amz-Algorithm", valid_602680
+  var valid_602681 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602681 = validateParameter(valid_602681, JString, required = false,
                                  default = nil)
-  if valid_600659 != nil:
-    section.add "X-Amz-Credential", valid_600659
+  if valid_602681 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602681
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600660: Call_GetDescribeTags_600647; path: JsonNode; query: JsonNode;
+proc call*(call_602682: Call_GetDescribeTags_602669; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the tags associated with the specified load balancers.
   ## 
-  let valid = call_600660.validator(path, query, header, formData, body)
-  let scheme = call_600660.pickScheme
+  let valid = call_602682.validator(path, query, header, formData, body)
+  let scheme = call_602682.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600660.url(scheme.get, call_600660.host, call_600660.base,
-                         call_600660.route, valid.getOrDefault("path"),
+  let url = call_602682.url(scheme.get, call_602682.host, call_602682.base,
+                         call_602682.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600660, url, valid)
+  result = atozHook(call_602682, url, valid)
 
-proc call*(call_600661: Call_GetDescribeTags_600647; LoadBalancerNames: JsonNode;
+proc call*(call_602683: Call_GetDescribeTags_602669; LoadBalancerNames: JsonNode;
           Action: string = "DescribeTags"; Version: string = "2012-06-01"): Recallable =
   ## getDescribeTags
   ## Describes the tags associated with the specified load balancers.
   ##   Action: string (required)
+  ##   Version: string (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The names of the load balancers.
-  ##   Version: string (required)
-  var query_600662 = newJObject()
-  add(query_600662, "Action", newJString(Action))
+  var query_602684 = newJObject()
+  add(query_602684, "Action", newJString(Action))
+  add(query_602684, "Version", newJString(Version))
   if LoadBalancerNames != nil:
-    query_600662.add "LoadBalancerNames", LoadBalancerNames
-  add(query_600662, "Version", newJString(Version))
-  result = call_600661.call(nil, query_600662, nil, nil, nil)
+    query_602684.add "LoadBalancerNames", LoadBalancerNames
+  result = call_602683.call(nil, query_602684, nil, nil, nil)
 
-var getDescribeTags* = Call_GetDescribeTags_600647(name: "getDescribeTags",
+var getDescribeTags* = Call_GetDescribeTags_602669(name: "getDescribeTags",
     meth: HttpMethod.HttpGet, host: "elasticloadbalancing.amazonaws.com",
-    route: "/#Action=DescribeTags", validator: validate_GetDescribeTags_600648,
-    base: "/", url: url_GetDescribeTags_600649, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=DescribeTags", validator: validate_GetDescribeTags_602670,
+    base: "/", url: url_GetDescribeTags_602671, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDetachLoadBalancerFromSubnets_600697 = ref object of OpenApiRestCall_599368
-proc url_PostDetachLoadBalancerFromSubnets_600699(protocol: Scheme; host: string;
+  Call_PostDetachLoadBalancerFromSubnets_602719 = ref object of OpenApiRestCall_601389
+proc url_PostDetachLoadBalancerFromSubnets_602721(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDetachLoadBalancerFromSubnets_600698(path: JsonNode;
+proc validate_PostDetachLoadBalancerFromSubnets_602720(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes the specified subnets from the set of configured subnets for the load balancer.</p> <p>After a subnet is removed, all EC2 instances registered with the load balancer in the removed subnet go into the <code>OutOfService</code> state. Then, the load balancer balances the traffic among the remaining routable subnets.</p>
   ## 
@@ -6088,61 +6126,61 @@ proc validate_PostDetachLoadBalancerFromSubnets_600698(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600700 = query.getOrDefault("Action")
-  valid_600700 = validateParameter(valid_600700, JString, required = true, default = newJString(
+  var valid_602722 = query.getOrDefault("Action")
+  valid_602722 = validateParameter(valid_602722, JString, required = true, default = newJString(
       "DetachLoadBalancerFromSubnets"))
-  if valid_600700 != nil:
-    section.add "Action", valid_600700
-  var valid_600701 = query.getOrDefault("Version")
-  valid_600701 = validateParameter(valid_600701, JString, required = true,
+  if valid_602722 != nil:
+    section.add "Action", valid_602722
+  var valid_602723 = query.getOrDefault("Version")
+  valid_602723 = validateParameter(valid_602723, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600701 != nil:
-    section.add "Version", valid_600701
+  if valid_602723 != nil:
+    section.add "Version", valid_602723
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600702 = header.getOrDefault("X-Amz-Date")
-  valid_600702 = validateParameter(valid_600702, JString, required = false,
+  var valid_602724 = header.getOrDefault("X-Amz-Signature")
+  valid_602724 = validateParameter(valid_602724, JString, required = false,
                                  default = nil)
-  if valid_600702 != nil:
-    section.add "X-Amz-Date", valid_600702
-  var valid_600703 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600703 = validateParameter(valid_600703, JString, required = false,
+  if valid_602724 != nil:
+    section.add "X-Amz-Signature", valid_602724
+  var valid_602725 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602725 = validateParameter(valid_602725, JString, required = false,
                                  default = nil)
-  if valid_600703 != nil:
-    section.add "X-Amz-Security-Token", valid_600703
-  var valid_600704 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600704 = validateParameter(valid_600704, JString, required = false,
+  if valid_602725 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602725
+  var valid_602726 = header.getOrDefault("X-Amz-Date")
+  valid_602726 = validateParameter(valid_602726, JString, required = false,
                                  default = nil)
-  if valid_600704 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600704
-  var valid_600705 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600705 = validateParameter(valid_600705, JString, required = false,
+  if valid_602726 != nil:
+    section.add "X-Amz-Date", valid_602726
+  var valid_602727 = header.getOrDefault("X-Amz-Credential")
+  valid_602727 = validateParameter(valid_602727, JString, required = false,
                                  default = nil)
-  if valid_600705 != nil:
-    section.add "X-Amz-Algorithm", valid_600705
-  var valid_600706 = header.getOrDefault("X-Amz-Signature")
-  valid_600706 = validateParameter(valid_600706, JString, required = false,
+  if valid_602727 != nil:
+    section.add "X-Amz-Credential", valid_602727
+  var valid_602728 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602728 = validateParameter(valid_602728, JString, required = false,
                                  default = nil)
-  if valid_600706 != nil:
-    section.add "X-Amz-Signature", valid_600706
-  var valid_600707 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600707 = validateParameter(valid_600707, JString, required = false,
+  if valid_602728 != nil:
+    section.add "X-Amz-Security-Token", valid_602728
+  var valid_602729 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602729 = validateParameter(valid_602729, JString, required = false,
                                  default = nil)
-  if valid_600707 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600707
-  var valid_600708 = header.getOrDefault("X-Amz-Credential")
-  valid_600708 = validateParameter(valid_600708, JString, required = false,
+  if valid_602729 != nil:
+    section.add "X-Amz-Algorithm", valid_602729
+  var valid_602730 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602730 = validateParameter(valid_602730, JString, required = false,
                                  default = nil)
-  if valid_600708 != nil:
-    section.add "X-Amz-Credential", valid_600708
+  if valid_602730 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602730
   result.add "header", section
   ## parameters in `formData` object:
   ##   Subnets: JArray (required)
@@ -6152,75 +6190,76 @@ proc validate_PostDetachLoadBalancerFromSubnets_600698(path: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Subnets` field"
-  var valid_600709 = formData.getOrDefault("Subnets")
-  valid_600709 = validateParameter(valid_600709, JArray, required = true, default = nil)
-  if valid_600709 != nil:
-    section.add "Subnets", valid_600709
-  var valid_600710 = formData.getOrDefault("LoadBalancerName")
-  valid_600710 = validateParameter(valid_600710, JString, required = true,
+  var valid_602731 = formData.getOrDefault("Subnets")
+  valid_602731 = validateParameter(valid_602731, JArray, required = true, default = nil)
+  if valid_602731 != nil:
+    section.add "Subnets", valid_602731
+  var valid_602732 = formData.getOrDefault("LoadBalancerName")
+  valid_602732 = validateParameter(valid_602732, JString, required = true,
                                  default = nil)
-  if valid_600710 != nil:
-    section.add "LoadBalancerName", valid_600710
+  if valid_602732 != nil:
+    section.add "LoadBalancerName", valid_602732
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600711: Call_PostDetachLoadBalancerFromSubnets_600697;
+proc call*(call_602733: Call_PostDetachLoadBalancerFromSubnets_602719;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Removes the specified subnets from the set of configured subnets for the load balancer.</p> <p>After a subnet is removed, all EC2 instances registered with the load balancer in the removed subnet go into the <code>OutOfService</code> state. Then, the load balancer balances the traffic among the remaining routable subnets.</p>
   ## 
-  let valid = call_600711.validator(path, query, header, formData, body)
-  let scheme = call_600711.pickScheme
+  let valid = call_602733.validator(path, query, header, formData, body)
+  let scheme = call_602733.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600711.url(scheme.get, call_600711.host, call_600711.base,
-                         call_600711.route, valid.getOrDefault("path"),
+  let url = call_602733.url(scheme.get, call_602733.host, call_602733.base,
+                         call_602733.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600711, url, valid)
+  result = atozHook(call_602733, url, valid)
 
-proc call*(call_600712: Call_PostDetachLoadBalancerFromSubnets_600697;
+proc call*(call_602734: Call_PostDetachLoadBalancerFromSubnets_602719;
           Subnets: JsonNode; LoadBalancerName: string;
           Action: string = "DetachLoadBalancerFromSubnets";
           Version: string = "2012-06-01"): Recallable =
   ## postDetachLoadBalancerFromSubnets
   ## <p>Removes the specified subnets from the set of configured subnets for the load balancer.</p> <p>After a subnet is removed, all EC2 instances registered with the load balancer in the removed subnet go into the <code>OutOfService</code> state. Then, the load balancer balances the traffic among the remaining routable subnets.</p>
-  ##   Action: string (required)
   ##   Subnets: JArray (required)
   ##          : The IDs of the subnets.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600713 = newJObject()
-  var formData_600714 = newJObject()
-  add(query_600713, "Action", newJString(Action))
+  var query_602735 = newJObject()
+  var formData_602736 = newJObject()
   if Subnets != nil:
-    formData_600714.add "Subnets", Subnets
-  add(formData_600714, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600713, "Version", newJString(Version))
-  result = call_600712.call(nil, query_600713, nil, formData_600714, nil)
+    formData_602736.add "Subnets", Subnets
+  add(formData_602736, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602735, "Action", newJString(Action))
+  add(query_602735, "Version", newJString(Version))
+  result = call_602734.call(nil, query_602735, nil, formData_602736, nil)
 
-var postDetachLoadBalancerFromSubnets* = Call_PostDetachLoadBalancerFromSubnets_600697(
+var postDetachLoadBalancerFromSubnets* = Call_PostDetachLoadBalancerFromSubnets_602719(
     name: "postDetachLoadBalancerFromSubnets", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DetachLoadBalancerFromSubnets",
-    validator: validate_PostDetachLoadBalancerFromSubnets_600698, base: "/",
-    url: url_PostDetachLoadBalancerFromSubnets_600699,
+    validator: validate_PostDetachLoadBalancerFromSubnets_602720, base: "/",
+    url: url_PostDetachLoadBalancerFromSubnets_602721,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDetachLoadBalancerFromSubnets_600680 = ref object of OpenApiRestCall_599368
-proc url_GetDetachLoadBalancerFromSubnets_600682(protocol: Scheme; host: string;
+  Call_GetDetachLoadBalancerFromSubnets_602702 = ref object of OpenApiRestCall_601389
+proc url_GetDetachLoadBalancerFromSubnets_602704(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDetachLoadBalancerFromSubnets_600681(path: JsonNode;
+proc validate_GetDetachLoadBalancerFromSubnets_602703(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes the specified subnets from the set of configured subnets for the load balancer.</p> <p>After a subnet is removed, all EC2 instances registered with the load balancer in the removed subnet go into the <code>OutOfService</code> state. Then, the load balancer balances the traffic among the remaining routable subnets.</p>
   ## 
@@ -6238,91 +6277,91 @@ proc validate_GetDetachLoadBalancerFromSubnets_600681(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600683 = query.getOrDefault("LoadBalancerName")
-  valid_600683 = validateParameter(valid_600683, JString, required = true,
+  var valid_602705 = query.getOrDefault("LoadBalancerName")
+  valid_602705 = validateParameter(valid_602705, JString, required = true,
                                  default = nil)
-  if valid_600683 != nil:
-    section.add "LoadBalancerName", valid_600683
-  var valid_600684 = query.getOrDefault("Action")
-  valid_600684 = validateParameter(valid_600684, JString, required = true, default = newJString(
+  if valid_602705 != nil:
+    section.add "LoadBalancerName", valid_602705
+  var valid_602706 = query.getOrDefault("Action")
+  valid_602706 = validateParameter(valid_602706, JString, required = true, default = newJString(
       "DetachLoadBalancerFromSubnets"))
-  if valid_600684 != nil:
-    section.add "Action", valid_600684
-  var valid_600685 = query.getOrDefault("Subnets")
-  valid_600685 = validateParameter(valid_600685, JArray, required = true, default = nil)
-  if valid_600685 != nil:
-    section.add "Subnets", valid_600685
-  var valid_600686 = query.getOrDefault("Version")
-  valid_600686 = validateParameter(valid_600686, JString, required = true,
+  if valid_602706 != nil:
+    section.add "Action", valid_602706
+  var valid_602707 = query.getOrDefault("Subnets")
+  valid_602707 = validateParameter(valid_602707, JArray, required = true, default = nil)
+  if valid_602707 != nil:
+    section.add "Subnets", valid_602707
+  var valid_602708 = query.getOrDefault("Version")
+  valid_602708 = validateParameter(valid_602708, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600686 != nil:
-    section.add "Version", valid_600686
+  if valid_602708 != nil:
+    section.add "Version", valid_602708
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600687 = header.getOrDefault("X-Amz-Date")
-  valid_600687 = validateParameter(valid_600687, JString, required = false,
+  var valid_602709 = header.getOrDefault("X-Amz-Signature")
+  valid_602709 = validateParameter(valid_602709, JString, required = false,
                                  default = nil)
-  if valid_600687 != nil:
-    section.add "X-Amz-Date", valid_600687
-  var valid_600688 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600688 = validateParameter(valid_600688, JString, required = false,
+  if valid_602709 != nil:
+    section.add "X-Amz-Signature", valid_602709
+  var valid_602710 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602710 = validateParameter(valid_602710, JString, required = false,
                                  default = nil)
-  if valid_600688 != nil:
-    section.add "X-Amz-Security-Token", valid_600688
-  var valid_600689 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600689 = validateParameter(valid_600689, JString, required = false,
+  if valid_602710 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602710
+  var valid_602711 = header.getOrDefault("X-Amz-Date")
+  valid_602711 = validateParameter(valid_602711, JString, required = false,
                                  default = nil)
-  if valid_600689 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600689
-  var valid_600690 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600690 = validateParameter(valid_600690, JString, required = false,
+  if valid_602711 != nil:
+    section.add "X-Amz-Date", valid_602711
+  var valid_602712 = header.getOrDefault("X-Amz-Credential")
+  valid_602712 = validateParameter(valid_602712, JString, required = false,
                                  default = nil)
-  if valid_600690 != nil:
-    section.add "X-Amz-Algorithm", valid_600690
-  var valid_600691 = header.getOrDefault("X-Amz-Signature")
-  valid_600691 = validateParameter(valid_600691, JString, required = false,
+  if valid_602712 != nil:
+    section.add "X-Amz-Credential", valid_602712
+  var valid_602713 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602713 = validateParameter(valid_602713, JString, required = false,
                                  default = nil)
-  if valid_600691 != nil:
-    section.add "X-Amz-Signature", valid_600691
-  var valid_600692 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600692 = validateParameter(valid_600692, JString, required = false,
+  if valid_602713 != nil:
+    section.add "X-Amz-Security-Token", valid_602713
+  var valid_602714 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602714 = validateParameter(valid_602714, JString, required = false,
                                  default = nil)
-  if valid_600692 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600692
-  var valid_600693 = header.getOrDefault("X-Amz-Credential")
-  valid_600693 = validateParameter(valid_600693, JString, required = false,
+  if valid_602714 != nil:
+    section.add "X-Amz-Algorithm", valid_602714
+  var valid_602715 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602715 = validateParameter(valid_602715, JString, required = false,
                                  default = nil)
-  if valid_600693 != nil:
-    section.add "X-Amz-Credential", valid_600693
+  if valid_602715 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602715
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600694: Call_GetDetachLoadBalancerFromSubnets_600680;
+proc call*(call_602716: Call_GetDetachLoadBalancerFromSubnets_602702;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Removes the specified subnets from the set of configured subnets for the load balancer.</p> <p>After a subnet is removed, all EC2 instances registered with the load balancer in the removed subnet go into the <code>OutOfService</code> state. Then, the load balancer balances the traffic among the remaining routable subnets.</p>
   ## 
-  let valid = call_600694.validator(path, query, header, formData, body)
-  let scheme = call_600694.pickScheme
+  let valid = call_602716.validator(path, query, header, formData, body)
+  let scheme = call_602716.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600694.url(scheme.get, call_600694.host, call_600694.base,
-                         call_600694.route, valid.getOrDefault("path"),
+  let url = call_602716.url(scheme.get, call_602716.host, call_602716.base,
+                         call_602716.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600694, url, valid)
+  result = atozHook(call_602716, url, valid)
 
-proc call*(call_600695: Call_GetDetachLoadBalancerFromSubnets_600680;
+proc call*(call_602717: Call_GetDetachLoadBalancerFromSubnets_602702;
           LoadBalancerName: string; Subnets: JsonNode;
           Action: string = "DetachLoadBalancerFromSubnets";
           Version: string = "2012-06-01"): Recallable =
@@ -6334,35 +6373,36 @@ proc call*(call_600695: Call_GetDetachLoadBalancerFromSubnets_600680;
   ##   Subnets: JArray (required)
   ##          : The IDs of the subnets.
   ##   Version: string (required)
-  var query_600696 = newJObject()
-  add(query_600696, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600696, "Action", newJString(Action))
+  var query_602718 = newJObject()
+  add(query_602718, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602718, "Action", newJString(Action))
   if Subnets != nil:
-    query_600696.add "Subnets", Subnets
-  add(query_600696, "Version", newJString(Version))
-  result = call_600695.call(nil, query_600696, nil, nil, nil)
+    query_602718.add "Subnets", Subnets
+  add(query_602718, "Version", newJString(Version))
+  result = call_602717.call(nil, query_602718, nil, nil, nil)
 
-var getDetachLoadBalancerFromSubnets* = Call_GetDetachLoadBalancerFromSubnets_600680(
+var getDetachLoadBalancerFromSubnets* = Call_GetDetachLoadBalancerFromSubnets_602702(
     name: "getDetachLoadBalancerFromSubnets", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DetachLoadBalancerFromSubnets",
-    validator: validate_GetDetachLoadBalancerFromSubnets_600681, base: "/",
-    url: url_GetDetachLoadBalancerFromSubnets_600682,
+    validator: validate_GetDetachLoadBalancerFromSubnets_602703, base: "/",
+    url: url_GetDetachLoadBalancerFromSubnets_602704,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostDisableAvailabilityZonesForLoadBalancer_600732 = ref object of OpenApiRestCall_599368
-proc url_PostDisableAvailabilityZonesForLoadBalancer_600734(protocol: Scheme;
+  Call_PostDisableAvailabilityZonesForLoadBalancer_602754 = ref object of OpenApiRestCall_601389
+proc url_PostDisableAvailabilityZonesForLoadBalancer_602756(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostDisableAvailabilityZonesForLoadBalancer_600733(path: JsonNode;
+proc validate_PostDisableAvailabilityZonesForLoadBalancer_602755(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes the specified Availability Zones from the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>DetachLoadBalancerFromSubnets</a>.</p> <p>There must be at least one Availability Zone registered with a load balancer at all times. After an Availability Zone is removed, all instances registered with the load balancer that are in the removed Availability Zone go into the <code>OutOfService</code> state. Then, the load balancer attempts to equally balance the traffic among its remaining Availability Zones.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -6375,61 +6415,61 @@ proc validate_PostDisableAvailabilityZonesForLoadBalancer_600733(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600735 = query.getOrDefault("Action")
-  valid_600735 = validateParameter(valid_600735, JString, required = true, default = newJString(
+  var valid_602757 = query.getOrDefault("Action")
+  valid_602757 = validateParameter(valid_602757, JString, required = true, default = newJString(
       "DisableAvailabilityZonesForLoadBalancer"))
-  if valid_600735 != nil:
-    section.add "Action", valid_600735
-  var valid_600736 = query.getOrDefault("Version")
-  valid_600736 = validateParameter(valid_600736, JString, required = true,
+  if valid_602757 != nil:
+    section.add "Action", valid_602757
+  var valid_602758 = query.getOrDefault("Version")
+  valid_602758 = validateParameter(valid_602758, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600736 != nil:
-    section.add "Version", valid_600736
+  if valid_602758 != nil:
+    section.add "Version", valid_602758
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600737 = header.getOrDefault("X-Amz-Date")
-  valid_600737 = validateParameter(valid_600737, JString, required = false,
+  var valid_602759 = header.getOrDefault("X-Amz-Signature")
+  valid_602759 = validateParameter(valid_602759, JString, required = false,
                                  default = nil)
-  if valid_600737 != nil:
-    section.add "X-Amz-Date", valid_600737
-  var valid_600738 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600738 = validateParameter(valid_600738, JString, required = false,
+  if valid_602759 != nil:
+    section.add "X-Amz-Signature", valid_602759
+  var valid_602760 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602760 = validateParameter(valid_602760, JString, required = false,
                                  default = nil)
-  if valid_600738 != nil:
-    section.add "X-Amz-Security-Token", valid_600738
-  var valid_600739 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600739 = validateParameter(valid_600739, JString, required = false,
+  if valid_602760 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602760
+  var valid_602761 = header.getOrDefault("X-Amz-Date")
+  valid_602761 = validateParameter(valid_602761, JString, required = false,
                                  default = nil)
-  if valid_600739 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600739
-  var valid_600740 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600740 = validateParameter(valid_600740, JString, required = false,
+  if valid_602761 != nil:
+    section.add "X-Amz-Date", valid_602761
+  var valid_602762 = header.getOrDefault("X-Amz-Credential")
+  valid_602762 = validateParameter(valid_602762, JString, required = false,
                                  default = nil)
-  if valid_600740 != nil:
-    section.add "X-Amz-Algorithm", valid_600740
-  var valid_600741 = header.getOrDefault("X-Amz-Signature")
-  valid_600741 = validateParameter(valid_600741, JString, required = false,
+  if valid_602762 != nil:
+    section.add "X-Amz-Credential", valid_602762
+  var valid_602763 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602763 = validateParameter(valid_602763, JString, required = false,
                                  default = nil)
-  if valid_600741 != nil:
-    section.add "X-Amz-Signature", valid_600741
-  var valid_600742 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600742 = validateParameter(valid_600742, JString, required = false,
+  if valid_602763 != nil:
+    section.add "X-Amz-Security-Token", valid_602763
+  var valid_602764 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602764 = validateParameter(valid_602764, JString, required = false,
                                  default = nil)
-  if valid_600742 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600742
-  var valid_600743 = header.getOrDefault("X-Amz-Credential")
-  valid_600743 = validateParameter(valid_600743, JString, required = false,
+  if valid_602764 != nil:
+    section.add "X-Amz-Algorithm", valid_602764
+  var valid_602765 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602765 = validateParameter(valid_602765, JString, required = false,
                                  default = nil)
-  if valid_600743 != nil:
-    section.add "X-Amz-Credential", valid_600743
+  if valid_602765 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602765
   result.add "header", section
   ## parameters in `formData` object:
   ##   AvailabilityZones: JArray (required)
@@ -6438,75 +6478,76 @@ proc validate_PostDisableAvailabilityZonesForLoadBalancer_600733(path: JsonNode;
   ##                   : The name of the load balancer.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AvailabilityZones` field"
-  var valid_600744 = formData.getOrDefault("AvailabilityZones")
-  valid_600744 = validateParameter(valid_600744, JArray, required = true, default = nil)
-  if valid_600744 != nil:
-    section.add "AvailabilityZones", valid_600744
-  var valid_600745 = formData.getOrDefault("LoadBalancerName")
-  valid_600745 = validateParameter(valid_600745, JString, required = true,
+  var valid_602766 = formData.getOrDefault("AvailabilityZones")
+  valid_602766 = validateParameter(valid_602766, JArray, required = true, default = nil)
+  if valid_602766 != nil:
+    section.add "AvailabilityZones", valid_602766
+  var valid_602767 = formData.getOrDefault("LoadBalancerName")
+  valid_602767 = validateParameter(valid_602767, JString, required = true,
                                  default = nil)
-  if valid_600745 != nil:
-    section.add "LoadBalancerName", valid_600745
+  if valid_602767 != nil:
+    section.add "LoadBalancerName", valid_602767
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600746: Call_PostDisableAvailabilityZonesForLoadBalancer_600732;
+proc call*(call_602768: Call_PostDisableAvailabilityZonesForLoadBalancer_602754;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Removes the specified Availability Zones from the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>DetachLoadBalancerFromSubnets</a>.</p> <p>There must be at least one Availability Zone registered with a load balancer at all times. After an Availability Zone is removed, all instances registered with the load balancer that are in the removed Availability Zone go into the <code>OutOfService</code> state. Then, the load balancer attempts to equally balance the traffic among its remaining Availability Zones.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600746.validator(path, query, header, formData, body)
-  let scheme = call_600746.pickScheme
+  let valid = call_602768.validator(path, query, header, formData, body)
+  let scheme = call_602768.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600746.url(scheme.get, call_600746.host, call_600746.base,
-                         call_600746.route, valid.getOrDefault("path"),
+  let url = call_602768.url(scheme.get, call_602768.host, call_602768.base,
+                         call_602768.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600746, url, valid)
+  result = atozHook(call_602768, url, valid)
 
-proc call*(call_600747: Call_PostDisableAvailabilityZonesForLoadBalancer_600732;
+proc call*(call_602769: Call_PostDisableAvailabilityZonesForLoadBalancer_602754;
           AvailabilityZones: JsonNode; LoadBalancerName: string;
           Action: string = "DisableAvailabilityZonesForLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
   ## postDisableAvailabilityZonesForLoadBalancer
   ## <p>Removes the specified Availability Zones from the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>DetachLoadBalancerFromSubnets</a>.</p> <p>There must be at least one Availability Zone registered with a load balancer at all times. After an Availability Zone is removed, all instances registered with the load balancer that are in the removed Availability Zone go into the <code>OutOfService</code> state. Then, the load balancer attempts to equally balance the traffic among its remaining Availability Zones.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: string (required)
   ##   AvailabilityZones: JArray (required)
   ##                    : The Availability Zones.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600748 = newJObject()
-  var formData_600749 = newJObject()
-  add(query_600748, "Action", newJString(Action))
+  var query_602770 = newJObject()
+  var formData_602771 = newJObject()
   if AvailabilityZones != nil:
-    formData_600749.add "AvailabilityZones", AvailabilityZones
-  add(formData_600749, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600748, "Version", newJString(Version))
-  result = call_600747.call(nil, query_600748, nil, formData_600749, nil)
+    formData_602771.add "AvailabilityZones", AvailabilityZones
+  add(formData_602771, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602770, "Action", newJString(Action))
+  add(query_602770, "Version", newJString(Version))
+  result = call_602769.call(nil, query_602770, nil, formData_602771, nil)
 
-var postDisableAvailabilityZonesForLoadBalancer* = Call_PostDisableAvailabilityZonesForLoadBalancer_600732(
+var postDisableAvailabilityZonesForLoadBalancer* = Call_PostDisableAvailabilityZonesForLoadBalancer_602754(
     name: "postDisableAvailabilityZonesForLoadBalancer",
     meth: HttpMethod.HttpPost, host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DisableAvailabilityZonesForLoadBalancer",
-    validator: validate_PostDisableAvailabilityZonesForLoadBalancer_600733,
-    base: "/", url: url_PostDisableAvailabilityZonesForLoadBalancer_600734,
+    validator: validate_PostDisableAvailabilityZonesForLoadBalancer_602755,
+    base: "/", url: url_PostDisableAvailabilityZonesForLoadBalancer_602756,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDisableAvailabilityZonesForLoadBalancer_600715 = ref object of OpenApiRestCall_599368
-proc url_GetDisableAvailabilityZonesForLoadBalancer_600717(protocol: Scheme;
+  Call_GetDisableAvailabilityZonesForLoadBalancer_602737 = ref object of OpenApiRestCall_601389
+proc url_GetDisableAvailabilityZonesForLoadBalancer_602739(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDisableAvailabilityZonesForLoadBalancer_600716(path: JsonNode;
+proc validate_GetDisableAvailabilityZonesForLoadBalancer_602738(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes the specified Availability Zones from the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>DetachLoadBalancerFromSubnets</a>.</p> <p>There must be at least one Availability Zone registered with a load balancer at all times. After an Availability Zone is removed, all instances registered with the load balancer that are in the removed Availability Zone go into the <code>OutOfService</code> state. Then, the load balancer attempts to equally balance the traffic among its remaining Availability Zones.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -6515,140 +6556,141 @@ proc validate_GetDisableAvailabilityZonesForLoadBalancer_600716(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
   ##   AvailabilityZones: JArray (required)
   ##                    : The Availability Zones.
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600718 = query.getOrDefault("LoadBalancerName")
-  valid_600718 = validateParameter(valid_600718, JString, required = true,
+        "query argument is necessary due to required `AvailabilityZones` field"
+  var valid_602740 = query.getOrDefault("AvailabilityZones")
+  valid_602740 = validateParameter(valid_602740, JArray, required = true, default = nil)
+  if valid_602740 != nil:
+    section.add "AvailabilityZones", valid_602740
+  var valid_602741 = query.getOrDefault("LoadBalancerName")
+  valid_602741 = validateParameter(valid_602741, JString, required = true,
                                  default = nil)
-  if valid_600718 != nil:
-    section.add "LoadBalancerName", valid_600718
-  var valid_600719 = query.getOrDefault("AvailabilityZones")
-  valid_600719 = validateParameter(valid_600719, JArray, required = true, default = nil)
-  if valid_600719 != nil:
-    section.add "AvailabilityZones", valid_600719
-  var valid_600720 = query.getOrDefault("Action")
-  valid_600720 = validateParameter(valid_600720, JString, required = true, default = newJString(
+  if valid_602741 != nil:
+    section.add "LoadBalancerName", valid_602741
+  var valid_602742 = query.getOrDefault("Action")
+  valid_602742 = validateParameter(valid_602742, JString, required = true, default = newJString(
       "DisableAvailabilityZonesForLoadBalancer"))
-  if valid_600720 != nil:
-    section.add "Action", valid_600720
-  var valid_600721 = query.getOrDefault("Version")
-  valid_600721 = validateParameter(valid_600721, JString, required = true,
+  if valid_602742 != nil:
+    section.add "Action", valid_602742
+  var valid_602743 = query.getOrDefault("Version")
+  valid_602743 = validateParameter(valid_602743, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600721 != nil:
-    section.add "Version", valid_600721
+  if valid_602743 != nil:
+    section.add "Version", valid_602743
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600722 = header.getOrDefault("X-Amz-Date")
-  valid_600722 = validateParameter(valid_600722, JString, required = false,
+  var valid_602744 = header.getOrDefault("X-Amz-Signature")
+  valid_602744 = validateParameter(valid_602744, JString, required = false,
                                  default = nil)
-  if valid_600722 != nil:
-    section.add "X-Amz-Date", valid_600722
-  var valid_600723 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600723 = validateParameter(valid_600723, JString, required = false,
+  if valid_602744 != nil:
+    section.add "X-Amz-Signature", valid_602744
+  var valid_602745 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602745 = validateParameter(valid_602745, JString, required = false,
                                  default = nil)
-  if valid_600723 != nil:
-    section.add "X-Amz-Security-Token", valid_600723
-  var valid_600724 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600724 = validateParameter(valid_600724, JString, required = false,
+  if valid_602745 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602745
+  var valid_602746 = header.getOrDefault("X-Amz-Date")
+  valid_602746 = validateParameter(valid_602746, JString, required = false,
                                  default = nil)
-  if valid_600724 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600724
-  var valid_600725 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600725 = validateParameter(valid_600725, JString, required = false,
+  if valid_602746 != nil:
+    section.add "X-Amz-Date", valid_602746
+  var valid_602747 = header.getOrDefault("X-Amz-Credential")
+  valid_602747 = validateParameter(valid_602747, JString, required = false,
                                  default = nil)
-  if valid_600725 != nil:
-    section.add "X-Amz-Algorithm", valid_600725
-  var valid_600726 = header.getOrDefault("X-Amz-Signature")
-  valid_600726 = validateParameter(valid_600726, JString, required = false,
+  if valid_602747 != nil:
+    section.add "X-Amz-Credential", valid_602747
+  var valid_602748 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602748 = validateParameter(valid_602748, JString, required = false,
                                  default = nil)
-  if valid_600726 != nil:
-    section.add "X-Amz-Signature", valid_600726
-  var valid_600727 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600727 = validateParameter(valid_600727, JString, required = false,
+  if valid_602748 != nil:
+    section.add "X-Amz-Security-Token", valid_602748
+  var valid_602749 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602749 = validateParameter(valid_602749, JString, required = false,
                                  default = nil)
-  if valid_600727 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600727
-  var valid_600728 = header.getOrDefault("X-Amz-Credential")
-  valid_600728 = validateParameter(valid_600728, JString, required = false,
+  if valid_602749 != nil:
+    section.add "X-Amz-Algorithm", valid_602749
+  var valid_602750 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602750 = validateParameter(valid_602750, JString, required = false,
                                  default = nil)
-  if valid_600728 != nil:
-    section.add "X-Amz-Credential", valid_600728
+  if valid_602750 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602750
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600729: Call_GetDisableAvailabilityZonesForLoadBalancer_600715;
+proc call*(call_602751: Call_GetDisableAvailabilityZonesForLoadBalancer_602737;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Removes the specified Availability Zones from the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>DetachLoadBalancerFromSubnets</a>.</p> <p>There must be at least one Availability Zone registered with a load balancer at all times. After an Availability Zone is removed, all instances registered with the load balancer that are in the removed Availability Zone go into the <code>OutOfService</code> state. Then, the load balancer attempts to equally balance the traffic among its remaining Availability Zones.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600729.validator(path, query, header, formData, body)
-  let scheme = call_600729.pickScheme
+  let valid = call_602751.validator(path, query, header, formData, body)
+  let scheme = call_602751.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600729.url(scheme.get, call_600729.host, call_600729.base,
-                         call_600729.route, valid.getOrDefault("path"),
+  let url = call_602751.url(scheme.get, call_602751.host, call_602751.base,
+                         call_602751.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600729, url, valid)
+  result = atozHook(call_602751, url, valid)
 
-proc call*(call_600730: Call_GetDisableAvailabilityZonesForLoadBalancer_600715;
-          LoadBalancerName: string; AvailabilityZones: JsonNode;
+proc call*(call_602752: Call_GetDisableAvailabilityZonesForLoadBalancer_602737;
+          AvailabilityZones: JsonNode; LoadBalancerName: string;
           Action: string = "DisableAvailabilityZonesForLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
   ## getDisableAvailabilityZonesForLoadBalancer
   ## <p>Removes the specified Availability Zones from the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>DetachLoadBalancerFromSubnets</a>.</p> <p>There must be at least one Availability Zone registered with a load balancer at all times. After an Availability Zone is removed, all instances registered with the load balancer that are in the removed Availability Zone go into the <code>OutOfService</code> state. Then, the load balancer attempts to equally balance the traffic among its remaining Availability Zones.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
   ##   AvailabilityZones: JArray (required)
   ##                    : The Availability Zones.
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_600731 = newJObject()
-  add(query_600731, "LoadBalancerName", newJString(LoadBalancerName))
+  var query_602753 = newJObject()
   if AvailabilityZones != nil:
-    query_600731.add "AvailabilityZones", AvailabilityZones
-  add(query_600731, "Action", newJString(Action))
-  add(query_600731, "Version", newJString(Version))
-  result = call_600730.call(nil, query_600731, nil, nil, nil)
+    query_602753.add "AvailabilityZones", AvailabilityZones
+  add(query_602753, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602753, "Action", newJString(Action))
+  add(query_602753, "Version", newJString(Version))
+  result = call_602752.call(nil, query_602753, nil, nil, nil)
 
-var getDisableAvailabilityZonesForLoadBalancer* = Call_GetDisableAvailabilityZonesForLoadBalancer_600715(
+var getDisableAvailabilityZonesForLoadBalancer* = Call_GetDisableAvailabilityZonesForLoadBalancer_602737(
     name: "getDisableAvailabilityZonesForLoadBalancer", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=DisableAvailabilityZonesForLoadBalancer",
-    validator: validate_GetDisableAvailabilityZonesForLoadBalancer_600716,
-    base: "/", url: url_GetDisableAvailabilityZonesForLoadBalancer_600717,
+    validator: validate_GetDisableAvailabilityZonesForLoadBalancer_602738,
+    base: "/", url: url_GetDisableAvailabilityZonesForLoadBalancer_602739,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostEnableAvailabilityZonesForLoadBalancer_600767 = ref object of OpenApiRestCall_599368
-proc url_PostEnableAvailabilityZonesForLoadBalancer_600769(protocol: Scheme;
+  Call_PostEnableAvailabilityZonesForLoadBalancer_602789 = ref object of OpenApiRestCall_601389
+proc url_PostEnableAvailabilityZonesForLoadBalancer_602791(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostEnableAvailabilityZonesForLoadBalancer_600768(path: JsonNode;
+proc validate_PostEnableAvailabilityZonesForLoadBalancer_602790(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds the specified Availability Zones to the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>AttachLoadBalancerToSubnets</a>.</p> <p>The load balancer evenly distributes requests across all its registered Availability Zones that contain instances. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -6661,61 +6703,61 @@ proc validate_PostEnableAvailabilityZonesForLoadBalancer_600768(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600770 = query.getOrDefault("Action")
-  valid_600770 = validateParameter(valid_600770, JString, required = true, default = newJString(
+  var valid_602792 = query.getOrDefault("Action")
+  valid_602792 = validateParameter(valid_602792, JString, required = true, default = newJString(
       "EnableAvailabilityZonesForLoadBalancer"))
-  if valid_600770 != nil:
-    section.add "Action", valid_600770
-  var valid_600771 = query.getOrDefault("Version")
-  valid_600771 = validateParameter(valid_600771, JString, required = true,
+  if valid_602792 != nil:
+    section.add "Action", valid_602792
+  var valid_602793 = query.getOrDefault("Version")
+  valid_602793 = validateParameter(valid_602793, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600771 != nil:
-    section.add "Version", valid_600771
+  if valid_602793 != nil:
+    section.add "Version", valid_602793
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600772 = header.getOrDefault("X-Amz-Date")
-  valid_600772 = validateParameter(valid_600772, JString, required = false,
+  var valid_602794 = header.getOrDefault("X-Amz-Signature")
+  valid_602794 = validateParameter(valid_602794, JString, required = false,
                                  default = nil)
-  if valid_600772 != nil:
-    section.add "X-Amz-Date", valid_600772
-  var valid_600773 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600773 = validateParameter(valid_600773, JString, required = false,
+  if valid_602794 != nil:
+    section.add "X-Amz-Signature", valid_602794
+  var valid_602795 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602795 = validateParameter(valid_602795, JString, required = false,
                                  default = nil)
-  if valid_600773 != nil:
-    section.add "X-Amz-Security-Token", valid_600773
-  var valid_600774 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600774 = validateParameter(valid_600774, JString, required = false,
+  if valid_602795 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602795
+  var valid_602796 = header.getOrDefault("X-Amz-Date")
+  valid_602796 = validateParameter(valid_602796, JString, required = false,
                                  default = nil)
-  if valid_600774 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600774
-  var valid_600775 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600775 = validateParameter(valid_600775, JString, required = false,
+  if valid_602796 != nil:
+    section.add "X-Amz-Date", valid_602796
+  var valid_602797 = header.getOrDefault("X-Amz-Credential")
+  valid_602797 = validateParameter(valid_602797, JString, required = false,
                                  default = nil)
-  if valid_600775 != nil:
-    section.add "X-Amz-Algorithm", valid_600775
-  var valid_600776 = header.getOrDefault("X-Amz-Signature")
-  valid_600776 = validateParameter(valid_600776, JString, required = false,
+  if valid_602797 != nil:
+    section.add "X-Amz-Credential", valid_602797
+  var valid_602798 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602798 = validateParameter(valid_602798, JString, required = false,
                                  default = nil)
-  if valid_600776 != nil:
-    section.add "X-Amz-Signature", valid_600776
-  var valid_600777 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600777 = validateParameter(valid_600777, JString, required = false,
+  if valid_602798 != nil:
+    section.add "X-Amz-Security-Token", valid_602798
+  var valid_602799 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602799 = validateParameter(valid_602799, JString, required = false,
                                  default = nil)
-  if valid_600777 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600777
-  var valid_600778 = header.getOrDefault("X-Amz-Credential")
-  valid_600778 = validateParameter(valid_600778, JString, required = false,
+  if valid_602799 != nil:
+    section.add "X-Amz-Algorithm", valid_602799
+  var valid_602800 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602800 = validateParameter(valid_602800, JString, required = false,
                                  default = nil)
-  if valid_600778 != nil:
-    section.add "X-Amz-Credential", valid_600778
+  if valid_602800 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602800
   result.add "header", section
   ## parameters in `formData` object:
   ##   AvailabilityZones: JArray (required)
@@ -6724,75 +6766,76 @@ proc validate_PostEnableAvailabilityZonesForLoadBalancer_600768(path: JsonNode;
   ##                   : The name of the load balancer.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AvailabilityZones` field"
-  var valid_600779 = formData.getOrDefault("AvailabilityZones")
-  valid_600779 = validateParameter(valid_600779, JArray, required = true, default = nil)
-  if valid_600779 != nil:
-    section.add "AvailabilityZones", valid_600779
-  var valid_600780 = formData.getOrDefault("LoadBalancerName")
-  valid_600780 = validateParameter(valid_600780, JString, required = true,
+  var valid_602801 = formData.getOrDefault("AvailabilityZones")
+  valid_602801 = validateParameter(valid_602801, JArray, required = true, default = nil)
+  if valid_602801 != nil:
+    section.add "AvailabilityZones", valid_602801
+  var valid_602802 = formData.getOrDefault("LoadBalancerName")
+  valid_602802 = validateParameter(valid_602802, JString, required = true,
                                  default = nil)
-  if valid_600780 != nil:
-    section.add "LoadBalancerName", valid_600780
+  if valid_602802 != nil:
+    section.add "LoadBalancerName", valid_602802
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600781: Call_PostEnableAvailabilityZonesForLoadBalancer_600767;
+proc call*(call_602803: Call_PostEnableAvailabilityZonesForLoadBalancer_602789;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Adds the specified Availability Zones to the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>AttachLoadBalancerToSubnets</a>.</p> <p>The load balancer evenly distributes requests across all its registered Availability Zones that contain instances. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600781.validator(path, query, header, formData, body)
-  let scheme = call_600781.pickScheme
+  let valid = call_602803.validator(path, query, header, formData, body)
+  let scheme = call_602803.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600781.url(scheme.get, call_600781.host, call_600781.base,
-                         call_600781.route, valid.getOrDefault("path"),
+  let url = call_602803.url(scheme.get, call_602803.host, call_602803.base,
+                         call_602803.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600781, url, valid)
+  result = atozHook(call_602803, url, valid)
 
-proc call*(call_600782: Call_PostEnableAvailabilityZonesForLoadBalancer_600767;
+proc call*(call_602804: Call_PostEnableAvailabilityZonesForLoadBalancer_602789;
           AvailabilityZones: JsonNode; LoadBalancerName: string;
           Action: string = "EnableAvailabilityZonesForLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
   ## postEnableAvailabilityZonesForLoadBalancer
   ## <p>Adds the specified Availability Zones to the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>AttachLoadBalancerToSubnets</a>.</p> <p>The load balancer evenly distributes requests across all its registered Availability Zones that contain instances. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: string (required)
   ##   AvailabilityZones: JArray (required)
   ##                    : The Availability Zones. These must be in the same region as the load balancer.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600783 = newJObject()
-  var formData_600784 = newJObject()
-  add(query_600783, "Action", newJString(Action))
+  var query_602805 = newJObject()
+  var formData_602806 = newJObject()
   if AvailabilityZones != nil:
-    formData_600784.add "AvailabilityZones", AvailabilityZones
-  add(formData_600784, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600783, "Version", newJString(Version))
-  result = call_600782.call(nil, query_600783, nil, formData_600784, nil)
+    formData_602806.add "AvailabilityZones", AvailabilityZones
+  add(formData_602806, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602805, "Action", newJString(Action))
+  add(query_602805, "Version", newJString(Version))
+  result = call_602804.call(nil, query_602805, nil, formData_602806, nil)
 
-var postEnableAvailabilityZonesForLoadBalancer* = Call_PostEnableAvailabilityZonesForLoadBalancer_600767(
+var postEnableAvailabilityZonesForLoadBalancer* = Call_PostEnableAvailabilityZonesForLoadBalancer_602789(
     name: "postEnableAvailabilityZonesForLoadBalancer", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=EnableAvailabilityZonesForLoadBalancer",
-    validator: validate_PostEnableAvailabilityZonesForLoadBalancer_600768,
-    base: "/", url: url_PostEnableAvailabilityZonesForLoadBalancer_600769,
+    validator: validate_PostEnableAvailabilityZonesForLoadBalancer_602790,
+    base: "/", url: url_PostEnableAvailabilityZonesForLoadBalancer_602791,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetEnableAvailabilityZonesForLoadBalancer_600750 = ref object of OpenApiRestCall_599368
-proc url_GetEnableAvailabilityZonesForLoadBalancer_600752(protocol: Scheme;
+  Call_GetEnableAvailabilityZonesForLoadBalancer_602772 = ref object of OpenApiRestCall_601389
+proc url_GetEnableAvailabilityZonesForLoadBalancer_602774(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetEnableAvailabilityZonesForLoadBalancer_600751(path: JsonNode;
+proc validate_GetEnableAvailabilityZonesForLoadBalancer_602773(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds the specified Availability Zones to the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>AttachLoadBalancerToSubnets</a>.</p> <p>The load balancer evenly distributes requests across all its registered Availability Zones that contain instances. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -6801,140 +6844,141 @@ proc validate_GetEnableAvailabilityZonesForLoadBalancer_600751(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
   ##   AvailabilityZones: JArray (required)
   ##                    : The Availability Zones. These must be in the same region as the load balancer.
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600753 = query.getOrDefault("LoadBalancerName")
-  valid_600753 = validateParameter(valid_600753, JString, required = true,
+        "query argument is necessary due to required `AvailabilityZones` field"
+  var valid_602775 = query.getOrDefault("AvailabilityZones")
+  valid_602775 = validateParameter(valid_602775, JArray, required = true, default = nil)
+  if valid_602775 != nil:
+    section.add "AvailabilityZones", valid_602775
+  var valid_602776 = query.getOrDefault("LoadBalancerName")
+  valid_602776 = validateParameter(valid_602776, JString, required = true,
                                  default = nil)
-  if valid_600753 != nil:
-    section.add "LoadBalancerName", valid_600753
-  var valid_600754 = query.getOrDefault("AvailabilityZones")
-  valid_600754 = validateParameter(valid_600754, JArray, required = true, default = nil)
-  if valid_600754 != nil:
-    section.add "AvailabilityZones", valid_600754
-  var valid_600755 = query.getOrDefault("Action")
-  valid_600755 = validateParameter(valid_600755, JString, required = true, default = newJString(
+  if valid_602776 != nil:
+    section.add "LoadBalancerName", valid_602776
+  var valid_602777 = query.getOrDefault("Action")
+  valid_602777 = validateParameter(valid_602777, JString, required = true, default = newJString(
       "EnableAvailabilityZonesForLoadBalancer"))
-  if valid_600755 != nil:
-    section.add "Action", valid_600755
-  var valid_600756 = query.getOrDefault("Version")
-  valid_600756 = validateParameter(valid_600756, JString, required = true,
+  if valid_602777 != nil:
+    section.add "Action", valid_602777
+  var valid_602778 = query.getOrDefault("Version")
+  valid_602778 = validateParameter(valid_602778, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600756 != nil:
-    section.add "Version", valid_600756
+  if valid_602778 != nil:
+    section.add "Version", valid_602778
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600757 = header.getOrDefault("X-Amz-Date")
-  valid_600757 = validateParameter(valid_600757, JString, required = false,
+  var valid_602779 = header.getOrDefault("X-Amz-Signature")
+  valid_602779 = validateParameter(valid_602779, JString, required = false,
                                  default = nil)
-  if valid_600757 != nil:
-    section.add "X-Amz-Date", valid_600757
-  var valid_600758 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600758 = validateParameter(valid_600758, JString, required = false,
+  if valid_602779 != nil:
+    section.add "X-Amz-Signature", valid_602779
+  var valid_602780 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602780 = validateParameter(valid_602780, JString, required = false,
                                  default = nil)
-  if valid_600758 != nil:
-    section.add "X-Amz-Security-Token", valid_600758
-  var valid_600759 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600759 = validateParameter(valid_600759, JString, required = false,
+  if valid_602780 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602780
+  var valid_602781 = header.getOrDefault("X-Amz-Date")
+  valid_602781 = validateParameter(valid_602781, JString, required = false,
                                  default = nil)
-  if valid_600759 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600759
-  var valid_600760 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600760 = validateParameter(valid_600760, JString, required = false,
+  if valid_602781 != nil:
+    section.add "X-Amz-Date", valid_602781
+  var valid_602782 = header.getOrDefault("X-Amz-Credential")
+  valid_602782 = validateParameter(valid_602782, JString, required = false,
                                  default = nil)
-  if valid_600760 != nil:
-    section.add "X-Amz-Algorithm", valid_600760
-  var valid_600761 = header.getOrDefault("X-Amz-Signature")
-  valid_600761 = validateParameter(valid_600761, JString, required = false,
+  if valid_602782 != nil:
+    section.add "X-Amz-Credential", valid_602782
+  var valid_602783 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602783 = validateParameter(valid_602783, JString, required = false,
                                  default = nil)
-  if valid_600761 != nil:
-    section.add "X-Amz-Signature", valid_600761
-  var valid_600762 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600762 = validateParameter(valid_600762, JString, required = false,
+  if valid_602783 != nil:
+    section.add "X-Amz-Security-Token", valid_602783
+  var valid_602784 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602784 = validateParameter(valid_602784, JString, required = false,
                                  default = nil)
-  if valid_600762 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600762
-  var valid_600763 = header.getOrDefault("X-Amz-Credential")
-  valid_600763 = validateParameter(valid_600763, JString, required = false,
+  if valid_602784 != nil:
+    section.add "X-Amz-Algorithm", valid_602784
+  var valid_602785 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602785 = validateParameter(valid_602785, JString, required = false,
                                  default = nil)
-  if valid_600763 != nil:
-    section.add "X-Amz-Credential", valid_600763
+  if valid_602785 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602785
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600764: Call_GetEnableAvailabilityZonesForLoadBalancer_600750;
+proc call*(call_602786: Call_GetEnableAvailabilityZonesForLoadBalancer_602772;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Adds the specified Availability Zones to the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>AttachLoadBalancerToSubnets</a>.</p> <p>The load balancer evenly distributes requests across all its registered Availability Zones that contain instances. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600764.validator(path, query, header, formData, body)
-  let scheme = call_600764.pickScheme
+  let valid = call_602786.validator(path, query, header, formData, body)
+  let scheme = call_602786.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600764.url(scheme.get, call_600764.host, call_600764.base,
-                         call_600764.route, valid.getOrDefault("path"),
+  let url = call_602786.url(scheme.get, call_602786.host, call_602786.base,
+                         call_602786.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600764, url, valid)
+  result = atozHook(call_602786, url, valid)
 
-proc call*(call_600765: Call_GetEnableAvailabilityZonesForLoadBalancer_600750;
-          LoadBalancerName: string; AvailabilityZones: JsonNode;
+proc call*(call_602787: Call_GetEnableAvailabilityZonesForLoadBalancer_602772;
+          AvailabilityZones: JsonNode; LoadBalancerName: string;
           Action: string = "EnableAvailabilityZonesForLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
   ## getEnableAvailabilityZonesForLoadBalancer
   ## <p>Adds the specified Availability Zones to the set of Availability Zones for the specified load balancer in EC2-Classic or a default VPC.</p> <p>For load balancers in a non-default VPC, use <a>AttachLoadBalancerToSubnets</a>.</p> <p>The load balancer evenly distributes requests across all its registered Availability Zones that contain instances. For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-az.html">Add or Remove Availability Zones</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
   ##   AvailabilityZones: JArray (required)
   ##                    : The Availability Zones. These must be in the same region as the load balancer.
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_600766 = newJObject()
-  add(query_600766, "LoadBalancerName", newJString(LoadBalancerName))
+  var query_602788 = newJObject()
   if AvailabilityZones != nil:
-    query_600766.add "AvailabilityZones", AvailabilityZones
-  add(query_600766, "Action", newJString(Action))
-  add(query_600766, "Version", newJString(Version))
-  result = call_600765.call(nil, query_600766, nil, nil, nil)
+    query_602788.add "AvailabilityZones", AvailabilityZones
+  add(query_602788, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602788, "Action", newJString(Action))
+  add(query_602788, "Version", newJString(Version))
+  result = call_602787.call(nil, query_602788, nil, nil, nil)
 
-var getEnableAvailabilityZonesForLoadBalancer* = Call_GetEnableAvailabilityZonesForLoadBalancer_600750(
+var getEnableAvailabilityZonesForLoadBalancer* = Call_GetEnableAvailabilityZonesForLoadBalancer_602772(
     name: "getEnableAvailabilityZonesForLoadBalancer", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=EnableAvailabilityZonesForLoadBalancer",
-    validator: validate_GetEnableAvailabilityZonesForLoadBalancer_600751,
-    base: "/", url: url_GetEnableAvailabilityZonesForLoadBalancer_600752,
+    validator: validate_GetEnableAvailabilityZonesForLoadBalancer_602773,
+    base: "/", url: url_GetEnableAvailabilityZonesForLoadBalancer_602774,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostModifyLoadBalancerAttributes_600806 = ref object of OpenApiRestCall_599368
-proc url_PostModifyLoadBalancerAttributes_600808(protocol: Scheme; host: string;
+  Call_PostModifyLoadBalancerAttributes_602828 = ref object of OpenApiRestCall_601389
+proc url_PostModifyLoadBalancerAttributes_602830(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostModifyLoadBalancerAttributes_600807(path: JsonNode;
+proc validate_PostModifyLoadBalancerAttributes_602829(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Modifies the attributes of the specified load balancer.</p> <p>You can modify the load balancer attributes, such as <code>AccessLogs</code>, <code>ConnectionDraining</code>, and <code>CrossZoneLoadBalancing</code> by either enabling or disabling them. Or, you can modify the load balancer attribute <code>ConnectionSettings</code> by specifying an idle connection timeout value for your load balancer.</p> <p>For more information, see the following in the <i>Classic Load Balancers Guide</i>:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Cross-Zone Load Balancing</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Connection Draining</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/access-log-collection.html">Access Logs</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Idle Connection Timeout</a> </p> </li> </ul>
   ## 
@@ -6947,207 +6991,208 @@ proc validate_PostModifyLoadBalancerAttributes_600807(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600809 = query.getOrDefault("Action")
-  valid_600809 = validateParameter(valid_600809, JString, required = true, default = newJString(
+  var valid_602831 = query.getOrDefault("Action")
+  valid_602831 = validateParameter(valid_602831, JString, required = true, default = newJString(
       "ModifyLoadBalancerAttributes"))
-  if valid_600809 != nil:
-    section.add "Action", valid_600809
-  var valid_600810 = query.getOrDefault("Version")
-  valid_600810 = validateParameter(valid_600810, JString, required = true,
+  if valid_602831 != nil:
+    section.add "Action", valid_602831
+  var valid_602832 = query.getOrDefault("Version")
+  valid_602832 = validateParameter(valid_602832, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600810 != nil:
-    section.add "Version", valid_600810
+  if valid_602832 != nil:
+    section.add "Version", valid_602832
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600811 = header.getOrDefault("X-Amz-Date")
-  valid_600811 = validateParameter(valid_600811, JString, required = false,
+  var valid_602833 = header.getOrDefault("X-Amz-Signature")
+  valid_602833 = validateParameter(valid_602833, JString, required = false,
                                  default = nil)
-  if valid_600811 != nil:
-    section.add "X-Amz-Date", valid_600811
-  var valid_600812 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600812 = validateParameter(valid_600812, JString, required = false,
+  if valid_602833 != nil:
+    section.add "X-Amz-Signature", valid_602833
+  var valid_602834 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602834 = validateParameter(valid_602834, JString, required = false,
                                  default = nil)
-  if valid_600812 != nil:
-    section.add "X-Amz-Security-Token", valid_600812
-  var valid_600813 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600813 = validateParameter(valid_600813, JString, required = false,
+  if valid_602834 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602834
+  var valid_602835 = header.getOrDefault("X-Amz-Date")
+  valid_602835 = validateParameter(valid_602835, JString, required = false,
                                  default = nil)
-  if valid_600813 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600813
-  var valid_600814 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600814 = validateParameter(valid_600814, JString, required = false,
+  if valid_602835 != nil:
+    section.add "X-Amz-Date", valid_602835
+  var valid_602836 = header.getOrDefault("X-Amz-Credential")
+  valid_602836 = validateParameter(valid_602836, JString, required = false,
                                  default = nil)
-  if valid_600814 != nil:
-    section.add "X-Amz-Algorithm", valid_600814
-  var valid_600815 = header.getOrDefault("X-Amz-Signature")
-  valid_600815 = validateParameter(valid_600815, JString, required = false,
+  if valid_602836 != nil:
+    section.add "X-Amz-Credential", valid_602836
+  var valid_602837 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602837 = validateParameter(valid_602837, JString, required = false,
                                  default = nil)
-  if valid_600815 != nil:
-    section.add "X-Amz-Signature", valid_600815
-  var valid_600816 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600816 = validateParameter(valid_600816, JString, required = false,
+  if valid_602837 != nil:
+    section.add "X-Amz-Security-Token", valid_602837
+  var valid_602838 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602838 = validateParameter(valid_602838, JString, required = false,
                                  default = nil)
-  if valid_600816 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600816
-  var valid_600817 = header.getOrDefault("X-Amz-Credential")
-  valid_600817 = validateParameter(valid_600817, JString, required = false,
+  if valid_602838 != nil:
+    section.add "X-Amz-Algorithm", valid_602838
+  var valid_602839 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602839 = validateParameter(valid_602839, JString, required = false,
                                  default = nil)
-  if valid_600817 != nil:
-    section.add "X-Amz-Credential", valid_600817
+  if valid_602839 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602839
   result.add "header", section
   ## parameters in `formData` object:
-  ##   LoadBalancerAttributes.AdditionalAttributes: JArray
-  ##                                              : The attributes for a load balancer.
-  ## This parameter is reserved.
   ##   LoadBalancerAttributes.CrossZoneLoadBalancing: JString
   ##                                                : The attributes for a load balancer.
   ## <p>If enabled, the load balancer routes the request traffic evenly across all instances regardless of the Availability Zones.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Configure Cross-Zone Load Balancing</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerAttributes.AccessLog: JString
-  ##                                   : The attributes for a load balancer.
-  ## <p>If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.</p> <p>For more information, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html">Enable Access Logs</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerAttributes.ConnectionSettings: JString
-  ##                                            : The attributes for a load balancer.
-  ## <p>If enabled, the load balancer allows the connections to remain idle (no data is sent over the connection) for the specified duration.</p> <p>By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Configure Idle Connection Timeout</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
+  ##   LoadBalancerAttributes.AdditionalAttributes: JArray
+  ##                                              : The attributes for a load balancer.
+  ## This parameter is reserved.
   ##   LoadBalancerAttributes.ConnectionDraining: JString
   ##                                            : The attributes for a load balancer.
   ## <p>If enabled, the load balancer allows existing requests to complete before the load balancer shifts traffic away from a deregistered or unhealthy instance.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Configure Connection Draining</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
+  ##   LoadBalancerAttributes.ConnectionSettings: JString
+  ##                                            : The attributes for a load balancer.
+  ## <p>If enabled, the load balancer allows the connections to remain idle (no data is sent over the connection) for the specified duration.</p> <p>By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Configure Idle Connection Timeout</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   LoadBalancerAttributes.AccessLog: JString
+  ##                                   : The attributes for a load balancer.
+  ## <p>If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.</p> <p>For more information, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html">Enable Access Logs</a> in the <i>Classic Load Balancers Guide</i>.</p>
   section = newJObject()
-  var valid_600818 = formData.getOrDefault("LoadBalancerAttributes.AdditionalAttributes")
-  valid_600818 = validateParameter(valid_600818, JArray, required = false,
+  var valid_602840 = formData.getOrDefault("LoadBalancerAttributes.CrossZoneLoadBalancing")
+  valid_602840 = validateParameter(valid_602840, JString, required = false,
                                  default = nil)
-  if valid_600818 != nil:
-    section.add "LoadBalancerAttributes.AdditionalAttributes", valid_600818
-  var valid_600819 = formData.getOrDefault("LoadBalancerAttributes.CrossZoneLoadBalancing")
-  valid_600819 = validateParameter(valid_600819, JString, required = false,
+  if valid_602840 != nil:
+    section.add "LoadBalancerAttributes.CrossZoneLoadBalancing", valid_602840
+  var valid_602841 = formData.getOrDefault("LoadBalancerAttributes.AdditionalAttributes")
+  valid_602841 = validateParameter(valid_602841, JArray, required = false,
                                  default = nil)
-  if valid_600819 != nil:
-    section.add "LoadBalancerAttributes.CrossZoneLoadBalancing", valid_600819
-  var valid_600820 = formData.getOrDefault("LoadBalancerAttributes.AccessLog")
-  valid_600820 = validateParameter(valid_600820, JString, required = false,
+  if valid_602841 != nil:
+    section.add "LoadBalancerAttributes.AdditionalAttributes", valid_602841
+  var valid_602842 = formData.getOrDefault("LoadBalancerAttributes.ConnectionDraining")
+  valid_602842 = validateParameter(valid_602842, JString, required = false,
                                  default = nil)
-  if valid_600820 != nil:
-    section.add "LoadBalancerAttributes.AccessLog", valid_600820
-  var valid_600821 = formData.getOrDefault("LoadBalancerAttributes.ConnectionSettings")
-  valid_600821 = validateParameter(valid_600821, JString, required = false,
-                                 default = nil)
-  if valid_600821 != nil:
-    section.add "LoadBalancerAttributes.ConnectionSettings", valid_600821
+  if valid_602842 != nil:
+    section.add "LoadBalancerAttributes.ConnectionDraining", valid_602842
   assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
-  var valid_600822 = formData.getOrDefault("LoadBalancerName")
-  valid_600822 = validateParameter(valid_600822, JString, required = true,
+  var valid_602843 = formData.getOrDefault("LoadBalancerName")
+  valid_602843 = validateParameter(valid_602843, JString, required = true,
                                  default = nil)
-  if valid_600822 != nil:
-    section.add "LoadBalancerName", valid_600822
-  var valid_600823 = formData.getOrDefault("LoadBalancerAttributes.ConnectionDraining")
-  valid_600823 = validateParameter(valid_600823, JString, required = false,
+  if valid_602843 != nil:
+    section.add "LoadBalancerName", valid_602843
+  var valid_602844 = formData.getOrDefault("LoadBalancerAttributes.ConnectionSettings")
+  valid_602844 = validateParameter(valid_602844, JString, required = false,
                                  default = nil)
-  if valid_600823 != nil:
-    section.add "LoadBalancerAttributes.ConnectionDraining", valid_600823
+  if valid_602844 != nil:
+    section.add "LoadBalancerAttributes.ConnectionSettings", valid_602844
+  var valid_602845 = formData.getOrDefault("LoadBalancerAttributes.AccessLog")
+  valid_602845 = validateParameter(valid_602845, JString, required = false,
+                                 default = nil)
+  if valid_602845 != nil:
+    section.add "LoadBalancerAttributes.AccessLog", valid_602845
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600824: Call_PostModifyLoadBalancerAttributes_600806;
+proc call*(call_602846: Call_PostModifyLoadBalancerAttributes_602828;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Modifies the attributes of the specified load balancer.</p> <p>You can modify the load balancer attributes, such as <code>AccessLogs</code>, <code>ConnectionDraining</code>, and <code>CrossZoneLoadBalancing</code> by either enabling or disabling them. Or, you can modify the load balancer attribute <code>ConnectionSettings</code> by specifying an idle connection timeout value for your load balancer.</p> <p>For more information, see the following in the <i>Classic Load Balancers Guide</i>:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Cross-Zone Load Balancing</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Connection Draining</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/access-log-collection.html">Access Logs</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Idle Connection Timeout</a> </p> </li> </ul>
   ## 
-  let valid = call_600824.validator(path, query, header, formData, body)
-  let scheme = call_600824.pickScheme
+  let valid = call_602846.validator(path, query, header, formData, body)
+  let scheme = call_602846.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600824.url(scheme.get, call_600824.host, call_600824.base,
-                         call_600824.route, valid.getOrDefault("path"),
+  let url = call_602846.url(scheme.get, call_602846.host, call_602846.base,
+                         call_602846.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600824, url, valid)
+  result = atozHook(call_602846, url, valid)
 
-proc call*(call_600825: Call_PostModifyLoadBalancerAttributes_600806;
+proc call*(call_602847: Call_PostModifyLoadBalancerAttributes_602828;
           LoadBalancerName: string;
-          LoadBalancerAttributesAdditionalAttributes: JsonNode = nil;
           LoadBalancerAttributesCrossZoneLoadBalancing: string = "";
-          LoadBalancerAttributesAccessLog: string = "";
+          LoadBalancerAttributesAdditionalAttributes: JsonNode = nil;
+          LoadBalancerAttributesConnectionDraining: string = "";
           Action: string = "ModifyLoadBalancerAttributes";
           LoadBalancerAttributesConnectionSettings: string = "";
-          LoadBalancerAttributesConnectionDraining: string = "";
-          Version: string = "2012-06-01"): Recallable =
+          Version: string = "2012-06-01";
+          LoadBalancerAttributesAccessLog: string = ""): Recallable =
   ## postModifyLoadBalancerAttributes
   ## <p>Modifies the attributes of the specified load balancer.</p> <p>You can modify the load balancer attributes, such as <code>AccessLogs</code>, <code>ConnectionDraining</code>, and <code>CrossZoneLoadBalancing</code> by either enabling or disabling them. Or, you can modify the load balancer attribute <code>ConnectionSettings</code> by specifying an idle connection timeout value for your load balancer.</p> <p>For more information, see the following in the <i>Classic Load Balancers Guide</i>:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Cross-Zone Load Balancing</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Connection Draining</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/access-log-collection.html">Access Logs</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Idle Connection Timeout</a> </p> </li> </ul>
-  ##   LoadBalancerAttributesAdditionalAttributes: JArray
-  ##                                             : The attributes for a load balancer.
-  ## This parameter is reserved.
   ##   LoadBalancerAttributesCrossZoneLoadBalancing: string
   ##                                               : The attributes for a load balancer.
   ## <p>If enabled, the load balancer routes the request traffic evenly across all instances regardless of the Availability Zones.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Configure Cross-Zone Load Balancing</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerAttributesAccessLog: string
-  ##                                  : The attributes for a load balancer.
-  ## <p>If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.</p> <p>For more information, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html">Enable Access Logs</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   LoadBalancerAttributesAdditionalAttributes: JArray
+  ##                                             : The attributes for a load balancer.
+  ## This parameter is reserved.
+  ##   LoadBalancerAttributesConnectionDraining: string
+  ##                                           : The attributes for a load balancer.
+  ## <p>If enabled, the load balancer allows existing requests to complete before the load balancer shifts traffic away from a deregistered or unhealthy instance.</p> <p>For more information, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Configure Connection Draining</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   LoadBalancerAttributesConnectionSettings: string
   ##                                           : The attributes for a load balancer.
   ## <p>If enabled, the load balancer allows the connections to remain idle (no data is sent over the connection) for the specified duration.</p> <p>By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Configure Idle Connection Timeout</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
-  ##   LoadBalancerAttributesConnectionDraining: string
-  ##                                           : The attributes for a load balancer.
-  ## <p>If enabled, the load balancer allows existing requests to complete before the load balancer shifts traffic away from a deregistered or unhealthy instance.</p> <p>For more information, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Configure Connection Draining</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   Version: string (required)
-  var query_600826 = newJObject()
-  var formData_600827 = newJObject()
-  if LoadBalancerAttributesAdditionalAttributes != nil:
-    formData_600827.add "LoadBalancerAttributes.AdditionalAttributes",
-                       LoadBalancerAttributesAdditionalAttributes
-  add(formData_600827, "LoadBalancerAttributes.CrossZoneLoadBalancing",
+  ##   LoadBalancerAttributesAccessLog: string
+  ##                                  : The attributes for a load balancer.
+  ## <p>If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.</p> <p>For more information, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html">Enable Access Logs</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  var query_602848 = newJObject()
+  var formData_602849 = newJObject()
+  add(formData_602849, "LoadBalancerAttributes.CrossZoneLoadBalancing",
       newJString(LoadBalancerAttributesCrossZoneLoadBalancing))
-  add(formData_600827, "LoadBalancerAttributes.AccessLog",
-      newJString(LoadBalancerAttributesAccessLog))
-  add(query_600826, "Action", newJString(Action))
-  add(formData_600827, "LoadBalancerAttributes.ConnectionSettings",
-      newJString(LoadBalancerAttributesConnectionSettings))
-  add(formData_600827, "LoadBalancerName", newJString(LoadBalancerName))
-  add(formData_600827, "LoadBalancerAttributes.ConnectionDraining",
+  if LoadBalancerAttributesAdditionalAttributes != nil:
+    formData_602849.add "LoadBalancerAttributes.AdditionalAttributes",
+                       LoadBalancerAttributesAdditionalAttributes
+  add(formData_602849, "LoadBalancerAttributes.ConnectionDraining",
       newJString(LoadBalancerAttributesConnectionDraining))
-  add(query_600826, "Version", newJString(Version))
-  result = call_600825.call(nil, query_600826, nil, formData_600827, nil)
+  add(formData_602849, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602848, "Action", newJString(Action))
+  add(formData_602849, "LoadBalancerAttributes.ConnectionSettings",
+      newJString(LoadBalancerAttributesConnectionSettings))
+  add(query_602848, "Version", newJString(Version))
+  add(formData_602849, "LoadBalancerAttributes.AccessLog",
+      newJString(LoadBalancerAttributesAccessLog))
+  result = call_602847.call(nil, query_602848, nil, formData_602849, nil)
 
-var postModifyLoadBalancerAttributes* = Call_PostModifyLoadBalancerAttributes_600806(
+var postModifyLoadBalancerAttributes* = Call_PostModifyLoadBalancerAttributes_602828(
     name: "postModifyLoadBalancerAttributes", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=ModifyLoadBalancerAttributes",
-    validator: validate_PostModifyLoadBalancerAttributes_600807, base: "/",
-    url: url_PostModifyLoadBalancerAttributes_600808,
+    validator: validate_PostModifyLoadBalancerAttributes_602829, base: "/",
+    url: url_PostModifyLoadBalancerAttributes_602830,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetModifyLoadBalancerAttributes_600785 = ref object of OpenApiRestCall_599368
-proc url_GetModifyLoadBalancerAttributes_600787(protocol: Scheme; host: string;
+  Call_GetModifyLoadBalancerAttributes_602807 = ref object of OpenApiRestCall_601389
+proc url_GetModifyLoadBalancerAttributes_602809(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetModifyLoadBalancerAttributes_600786(path: JsonNode;
+proc validate_GetModifyLoadBalancerAttributes_602808(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Modifies the attributes of the specified load balancer.</p> <p>You can modify the load balancer attributes, such as <code>AccessLogs</code>, <code>ConnectionDraining</code>, and <code>CrossZoneLoadBalancing</code> by either enabling or disabling them. Or, you can modify the load balancer attribute <code>ConnectionSettings</code> by specifying an idle connection timeout value for your load balancer.</p> <p>For more information, see the following in the <i>Classic Load Balancers Guide</i>:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Cross-Zone Load Balancing</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Connection Draining</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/access-log-collection.html">Access Logs</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Idle Connection Timeout</a> </p> </li> </ul>
   ## 
@@ -7156,208 +7201,210 @@ proc validate_GetModifyLoadBalancerAttributes_600786(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
-  ##   LoadBalancerAttributes.AccessLog: JString
-  ##                                   : The attributes for a load balancer.
-  ## <p>If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.</p> <p>For more information, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html">Enable Access Logs</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerAttributes.CrossZoneLoadBalancing: JString
-  ##                                                : The attributes for a load balancer.
-  ## <p>If enabled, the load balancer routes the request traffic evenly across all instances regardless of the Availability Zones.</p> <p>For more information, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Configure Cross-Zone Load Balancing</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerAttributes.AdditionalAttributes: JArray
-  ##                                              : The attributes for a load balancer.
-  ## This parameter is reserved.
   ##   LoadBalancerAttributes.ConnectionSettings: JString
   ##                                            : The attributes for a load balancer.
   ## <p>If enabled, the load balancer allows the connections to remain idle (no data is sent over the connection) for the specified duration.</p> <p>By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Configure Idle Connection Timeout</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: JString (required)
+  ##   LoadBalancerAttributes.AccessLog: JString
+  ##                                   : The attributes for a load balancer.
+  ## <p>If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.</p> <p>For more information, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html">Enable Access Logs</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   LoadBalancerAttributes.ConnectionDraining: JString
   ##                                            : The attributes for a load balancer.
   ## <p>If enabled, the load balancer allows existing requests to complete before the load balancer shifts traffic away from a deregistered or unhealthy instance.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Configure Connection Draining</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
+  ##   LoadBalancerAttributes.CrossZoneLoadBalancing: JString
+  ##                                                : The attributes for a load balancer.
+  ## <p>If enabled, the load balancer routes the request traffic evenly across all instances regardless of the Availability Zones.</p> <p>For more information, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Configure Cross-Zone Load Balancing</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   Action: JString (required)
   ##   Version: JString (required)
+  ##   LoadBalancerAttributes.AdditionalAttributes: JArray
+  ##                                              : The attributes for a load balancer.
+  ## This parameter is reserved.
   section = newJObject()
+  var valid_602810 = query.getOrDefault("LoadBalancerAttributes.ConnectionSettings")
+  valid_602810 = validateParameter(valid_602810, JString, required = false,
+                                 default = nil)
+  if valid_602810 != nil:
+    section.add "LoadBalancerAttributes.ConnectionSettings", valid_602810
+  var valid_602811 = query.getOrDefault("LoadBalancerAttributes.AccessLog")
+  valid_602811 = validateParameter(valid_602811, JString, required = false,
+                                 default = nil)
+  if valid_602811 != nil:
+    section.add "LoadBalancerAttributes.AccessLog", valid_602811
+  var valid_602812 = query.getOrDefault("LoadBalancerAttributes.ConnectionDraining")
+  valid_602812 = validateParameter(valid_602812, JString, required = false,
+                                 default = nil)
+  if valid_602812 != nil:
+    section.add "LoadBalancerAttributes.ConnectionDraining", valid_602812
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600788 = query.getOrDefault("LoadBalancerName")
-  valid_600788 = validateParameter(valid_600788, JString, required = true,
+  var valid_602813 = query.getOrDefault("LoadBalancerName")
+  valid_602813 = validateParameter(valid_602813, JString, required = true,
                                  default = nil)
-  if valid_600788 != nil:
-    section.add "LoadBalancerName", valid_600788
-  var valid_600789 = query.getOrDefault("LoadBalancerAttributes.AccessLog")
-  valid_600789 = validateParameter(valid_600789, JString, required = false,
+  if valid_602813 != nil:
+    section.add "LoadBalancerName", valid_602813
+  var valid_602814 = query.getOrDefault("LoadBalancerAttributes.CrossZoneLoadBalancing")
+  valid_602814 = validateParameter(valid_602814, JString, required = false,
                                  default = nil)
-  if valid_600789 != nil:
-    section.add "LoadBalancerAttributes.AccessLog", valid_600789
-  var valid_600790 = query.getOrDefault("LoadBalancerAttributes.CrossZoneLoadBalancing")
-  valid_600790 = validateParameter(valid_600790, JString, required = false,
-                                 default = nil)
-  if valid_600790 != nil:
-    section.add "LoadBalancerAttributes.CrossZoneLoadBalancing", valid_600790
-  var valid_600791 = query.getOrDefault("LoadBalancerAttributes.AdditionalAttributes")
-  valid_600791 = validateParameter(valid_600791, JArray, required = false,
-                                 default = nil)
-  if valid_600791 != nil:
-    section.add "LoadBalancerAttributes.AdditionalAttributes", valid_600791
-  var valid_600792 = query.getOrDefault("LoadBalancerAttributes.ConnectionSettings")
-  valid_600792 = validateParameter(valid_600792, JString, required = false,
-                                 default = nil)
-  if valid_600792 != nil:
-    section.add "LoadBalancerAttributes.ConnectionSettings", valid_600792
-  var valid_600793 = query.getOrDefault("Action")
-  valid_600793 = validateParameter(valid_600793, JString, required = true, default = newJString(
+  if valid_602814 != nil:
+    section.add "LoadBalancerAttributes.CrossZoneLoadBalancing", valid_602814
+  var valid_602815 = query.getOrDefault("Action")
+  valid_602815 = validateParameter(valid_602815, JString, required = true, default = newJString(
       "ModifyLoadBalancerAttributes"))
-  if valid_600793 != nil:
-    section.add "Action", valid_600793
-  var valid_600794 = query.getOrDefault("LoadBalancerAttributes.ConnectionDraining")
-  valid_600794 = validateParameter(valid_600794, JString, required = false,
-                                 default = nil)
-  if valid_600794 != nil:
-    section.add "LoadBalancerAttributes.ConnectionDraining", valid_600794
-  var valid_600795 = query.getOrDefault("Version")
-  valid_600795 = validateParameter(valid_600795, JString, required = true,
+  if valid_602815 != nil:
+    section.add "Action", valid_602815
+  var valid_602816 = query.getOrDefault("Version")
+  valid_602816 = validateParameter(valid_602816, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600795 != nil:
-    section.add "Version", valid_600795
+  if valid_602816 != nil:
+    section.add "Version", valid_602816
+  var valid_602817 = query.getOrDefault("LoadBalancerAttributes.AdditionalAttributes")
+  valid_602817 = validateParameter(valid_602817, JArray, required = false,
+                                 default = nil)
+  if valid_602817 != nil:
+    section.add "LoadBalancerAttributes.AdditionalAttributes", valid_602817
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600796 = header.getOrDefault("X-Amz-Date")
-  valid_600796 = validateParameter(valid_600796, JString, required = false,
+  var valid_602818 = header.getOrDefault("X-Amz-Signature")
+  valid_602818 = validateParameter(valid_602818, JString, required = false,
                                  default = nil)
-  if valid_600796 != nil:
-    section.add "X-Amz-Date", valid_600796
-  var valid_600797 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600797 = validateParameter(valid_600797, JString, required = false,
+  if valid_602818 != nil:
+    section.add "X-Amz-Signature", valid_602818
+  var valid_602819 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602819 = validateParameter(valid_602819, JString, required = false,
                                  default = nil)
-  if valid_600797 != nil:
-    section.add "X-Amz-Security-Token", valid_600797
-  var valid_600798 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600798 = validateParameter(valid_600798, JString, required = false,
+  if valid_602819 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602819
+  var valid_602820 = header.getOrDefault("X-Amz-Date")
+  valid_602820 = validateParameter(valid_602820, JString, required = false,
                                  default = nil)
-  if valid_600798 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600798
-  var valid_600799 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600799 = validateParameter(valid_600799, JString, required = false,
+  if valid_602820 != nil:
+    section.add "X-Amz-Date", valid_602820
+  var valid_602821 = header.getOrDefault("X-Amz-Credential")
+  valid_602821 = validateParameter(valid_602821, JString, required = false,
                                  default = nil)
-  if valid_600799 != nil:
-    section.add "X-Amz-Algorithm", valid_600799
-  var valid_600800 = header.getOrDefault("X-Amz-Signature")
-  valid_600800 = validateParameter(valid_600800, JString, required = false,
+  if valid_602821 != nil:
+    section.add "X-Amz-Credential", valid_602821
+  var valid_602822 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602822 = validateParameter(valid_602822, JString, required = false,
                                  default = nil)
-  if valid_600800 != nil:
-    section.add "X-Amz-Signature", valid_600800
-  var valid_600801 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600801 = validateParameter(valid_600801, JString, required = false,
+  if valid_602822 != nil:
+    section.add "X-Amz-Security-Token", valid_602822
+  var valid_602823 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602823 = validateParameter(valid_602823, JString, required = false,
                                  default = nil)
-  if valid_600801 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600801
-  var valid_600802 = header.getOrDefault("X-Amz-Credential")
-  valid_600802 = validateParameter(valid_600802, JString, required = false,
+  if valid_602823 != nil:
+    section.add "X-Amz-Algorithm", valid_602823
+  var valid_602824 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602824 = validateParameter(valid_602824, JString, required = false,
                                  default = nil)
-  if valid_600802 != nil:
-    section.add "X-Amz-Credential", valid_600802
+  if valid_602824 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602824
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600803: Call_GetModifyLoadBalancerAttributes_600785;
+proc call*(call_602825: Call_GetModifyLoadBalancerAttributes_602807;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Modifies the attributes of the specified load balancer.</p> <p>You can modify the load balancer attributes, such as <code>AccessLogs</code>, <code>ConnectionDraining</code>, and <code>CrossZoneLoadBalancing</code> by either enabling or disabling them. Or, you can modify the load balancer attribute <code>ConnectionSettings</code> by specifying an idle connection timeout value for your load balancer.</p> <p>For more information, see the following in the <i>Classic Load Balancers Guide</i>:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Cross-Zone Load Balancing</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Connection Draining</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/access-log-collection.html">Access Logs</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Idle Connection Timeout</a> </p> </li> </ul>
   ## 
-  let valid = call_600803.validator(path, query, header, formData, body)
-  let scheme = call_600803.pickScheme
+  let valid = call_602825.validator(path, query, header, formData, body)
+  let scheme = call_602825.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600803.url(scheme.get, call_600803.host, call_600803.base,
-                         call_600803.route, valid.getOrDefault("path"),
+  let url = call_602825.url(scheme.get, call_602825.host, call_602825.base,
+                         call_602825.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600803, url, valid)
+  result = atozHook(call_602825, url, valid)
 
-proc call*(call_600804: Call_GetModifyLoadBalancerAttributes_600785;
-          LoadBalancerName: string; LoadBalancerAttributesAccessLog: string = "";
-          LoadBalancerAttributesCrossZoneLoadBalancing: string = "";
-          LoadBalancerAttributesAdditionalAttributes: JsonNode = nil;
+proc call*(call_602826: Call_GetModifyLoadBalancerAttributes_602807;
+          LoadBalancerName: string;
           LoadBalancerAttributesConnectionSettings: string = "";
-          Action: string = "ModifyLoadBalancerAttributes";
+          LoadBalancerAttributesAccessLog: string = "";
           LoadBalancerAttributesConnectionDraining: string = "";
-          Version: string = "2012-06-01"): Recallable =
+          LoadBalancerAttributesCrossZoneLoadBalancing: string = "";
+          Action: string = "ModifyLoadBalancerAttributes";
+          Version: string = "2012-06-01";
+          LoadBalancerAttributesAdditionalAttributes: JsonNode = nil): Recallable =
   ## getModifyLoadBalancerAttributes
   ## <p>Modifies the attributes of the specified load balancer.</p> <p>You can modify the load balancer attributes, such as <code>AccessLogs</code>, <code>ConnectionDraining</code>, and <code>CrossZoneLoadBalancing</code> by either enabling or disabling them. Or, you can modify the load balancer attribute <code>ConnectionSettings</code> by specifying an idle connection timeout value for your load balancer.</p> <p>For more information, see the following in the <i>Classic Load Balancers Guide</i>:</p> <ul> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Cross-Zone Load Balancing</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Connection Draining</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/access-log-collection.html">Access Logs</a> </p> </li> <li> <p> <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Idle Connection Timeout</a> </p> </li> </ul>
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
-  ##   LoadBalancerAttributesAccessLog: string
-  ##                                  : The attributes for a load balancer.
-  ## <p>If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.</p> <p>For more information, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html">Enable Access Logs</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerAttributesCrossZoneLoadBalancing: string
-  ##                                               : The attributes for a load balancer.
-  ## <p>If enabled, the load balancer routes the request traffic evenly across all instances regardless of the Availability Zones.</p> <p>For more information, see <a 
-  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Configure Cross-Zone Load Balancing</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerAttributesAdditionalAttributes: JArray
-  ##                                             : The attributes for a load balancer.
-  ## This parameter is reserved.
   ##   LoadBalancerAttributesConnectionSettings: string
   ##                                           : The attributes for a load balancer.
   ## <p>If enabled, the load balancer allows the connections to remain idle (no data is sent over the connection) for the specified duration.</p> <p>By default, Elastic Load Balancing maintains a 60-second idle connection timeout for both front-end and back-end connections of your load balancer. For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-idle-timeout.html">Configure Idle Connection Timeout</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   Action: string (required)
+  ##   LoadBalancerAttributesAccessLog: string
+  ##                                  : The attributes for a load balancer.
+  ## <p>If enabled, the load balancer captures detailed information of all requests and delivers the information to the Amazon S3 bucket that you specify.</p> <p>For more information, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-access-logs.html">Enable Access Logs</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   LoadBalancerAttributesConnectionDraining: string
   ##                                           : The attributes for a load balancer.
   ## <p>If enabled, the load balancer allows existing requests to complete before the load balancer shifts traffic away from a deregistered or unhealthy instance.</p> <p>For more information, see <a 
   ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/config-conn-drain.html">Configure Connection Draining</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
+  ##   LoadBalancerAttributesCrossZoneLoadBalancing: string
+  ##                                               : The attributes for a load balancer.
+  ## <p>If enabled, the load balancer routes the request traffic evenly across all instances regardless of the Availability Zones.</p> <p>For more information, see <a 
+  ## href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-disable-crosszone-lb.html">Configure Cross-Zone Load Balancing</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600805 = newJObject()
-  add(query_600805, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600805, "LoadBalancerAttributes.AccessLog",
-      newJString(LoadBalancerAttributesAccessLog))
-  add(query_600805, "LoadBalancerAttributes.CrossZoneLoadBalancing",
-      newJString(LoadBalancerAttributesCrossZoneLoadBalancing))
-  if LoadBalancerAttributesAdditionalAttributes != nil:
-    query_600805.add "LoadBalancerAttributes.AdditionalAttributes",
-                    LoadBalancerAttributesAdditionalAttributes
-  add(query_600805, "LoadBalancerAttributes.ConnectionSettings",
+  ##   LoadBalancerAttributesAdditionalAttributes: JArray
+  ##                                             : The attributes for a load balancer.
+  ## This parameter is reserved.
+  var query_602827 = newJObject()
+  add(query_602827, "LoadBalancerAttributes.ConnectionSettings",
       newJString(LoadBalancerAttributesConnectionSettings))
-  add(query_600805, "Action", newJString(Action))
-  add(query_600805, "LoadBalancerAttributes.ConnectionDraining",
+  add(query_602827, "LoadBalancerAttributes.AccessLog",
+      newJString(LoadBalancerAttributesAccessLog))
+  add(query_602827, "LoadBalancerAttributes.ConnectionDraining",
       newJString(LoadBalancerAttributesConnectionDraining))
-  add(query_600805, "Version", newJString(Version))
-  result = call_600804.call(nil, query_600805, nil, nil, nil)
+  add(query_602827, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602827, "LoadBalancerAttributes.CrossZoneLoadBalancing",
+      newJString(LoadBalancerAttributesCrossZoneLoadBalancing))
+  add(query_602827, "Action", newJString(Action))
+  add(query_602827, "Version", newJString(Version))
+  if LoadBalancerAttributesAdditionalAttributes != nil:
+    query_602827.add "LoadBalancerAttributes.AdditionalAttributes",
+                    LoadBalancerAttributesAdditionalAttributes
+  result = call_602826.call(nil, query_602827, nil, nil, nil)
 
-var getModifyLoadBalancerAttributes* = Call_GetModifyLoadBalancerAttributes_600785(
+var getModifyLoadBalancerAttributes* = Call_GetModifyLoadBalancerAttributes_602807(
     name: "getModifyLoadBalancerAttributes", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=ModifyLoadBalancerAttributes",
-    validator: validate_GetModifyLoadBalancerAttributes_600786, base: "/",
-    url: url_GetModifyLoadBalancerAttributes_600787,
+    validator: validate_GetModifyLoadBalancerAttributes_602808, base: "/",
+    url: url_GetModifyLoadBalancerAttributes_602809,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostRegisterInstancesWithLoadBalancer_600845 = ref object of OpenApiRestCall_599368
-proc url_PostRegisterInstancesWithLoadBalancer_600847(protocol: Scheme;
+  Call_PostRegisterInstancesWithLoadBalancer_602867 = ref object of OpenApiRestCall_601389
+proc url_PostRegisterInstancesWithLoadBalancer_602869(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostRegisterInstancesWithLoadBalancer_600846(path: JsonNode;
+proc validate_PostRegisterInstancesWithLoadBalancer_602868(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds the specified instances to the specified load balancer.</p> <p>The instance must be a running instance in the same network as the load balancer (EC2-Classic or the same VPC). If you have EC2-Classic instances and a load balancer in a VPC with ClassicLink enabled, you can link the EC2-Classic instances to that VPC and then register the linked EC2-Classic instances with the load balancer in the VPC.</p> <p>Note that <code>RegisterInstanceWithLoadBalancer</code> completes when the request has been registered. Instance registration takes a little time to complete. To check the state of the registered instances, use <a>DescribeLoadBalancers</a> or <a>DescribeInstanceHealth</a>.</p> <p>After the instance is registered, it starts receiving traffic and requests from the load balancer. Any instance that is not in one of the Availability Zones registered for the load balancer is moved to the <code>OutOfService</code> state. If an Availability Zone is added to the load balancer later, any instances registered with the load balancer move to the <code>InService</code> state.</p> <p>To deregister instances from a load balancer, use <a>DeregisterInstancesFromLoadBalancer</a>.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -7370,61 +7417,61 @@ proc validate_PostRegisterInstancesWithLoadBalancer_600846(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600848 = query.getOrDefault("Action")
-  valid_600848 = validateParameter(valid_600848, JString, required = true, default = newJString(
+  var valid_602870 = query.getOrDefault("Action")
+  valid_602870 = validateParameter(valid_602870, JString, required = true, default = newJString(
       "RegisterInstancesWithLoadBalancer"))
-  if valid_600848 != nil:
-    section.add "Action", valid_600848
-  var valid_600849 = query.getOrDefault("Version")
-  valid_600849 = validateParameter(valid_600849, JString, required = true,
+  if valid_602870 != nil:
+    section.add "Action", valid_602870
+  var valid_602871 = query.getOrDefault("Version")
+  valid_602871 = validateParameter(valid_602871, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600849 != nil:
-    section.add "Version", valid_600849
+  if valid_602871 != nil:
+    section.add "Version", valid_602871
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600850 = header.getOrDefault("X-Amz-Date")
-  valid_600850 = validateParameter(valid_600850, JString, required = false,
+  var valid_602872 = header.getOrDefault("X-Amz-Signature")
+  valid_602872 = validateParameter(valid_602872, JString, required = false,
                                  default = nil)
-  if valid_600850 != nil:
-    section.add "X-Amz-Date", valid_600850
-  var valid_600851 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600851 = validateParameter(valid_600851, JString, required = false,
+  if valid_602872 != nil:
+    section.add "X-Amz-Signature", valid_602872
+  var valid_602873 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602873 = validateParameter(valid_602873, JString, required = false,
                                  default = nil)
-  if valid_600851 != nil:
-    section.add "X-Amz-Security-Token", valid_600851
-  var valid_600852 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600852 = validateParameter(valid_600852, JString, required = false,
+  if valid_602873 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602873
+  var valid_602874 = header.getOrDefault("X-Amz-Date")
+  valid_602874 = validateParameter(valid_602874, JString, required = false,
                                  default = nil)
-  if valid_600852 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600852
-  var valid_600853 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600853 = validateParameter(valid_600853, JString, required = false,
+  if valid_602874 != nil:
+    section.add "X-Amz-Date", valid_602874
+  var valid_602875 = header.getOrDefault("X-Amz-Credential")
+  valid_602875 = validateParameter(valid_602875, JString, required = false,
                                  default = nil)
-  if valid_600853 != nil:
-    section.add "X-Amz-Algorithm", valid_600853
-  var valid_600854 = header.getOrDefault("X-Amz-Signature")
-  valid_600854 = validateParameter(valid_600854, JString, required = false,
+  if valid_602875 != nil:
+    section.add "X-Amz-Credential", valid_602875
+  var valid_602876 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602876 = validateParameter(valid_602876, JString, required = false,
                                  default = nil)
-  if valid_600854 != nil:
-    section.add "X-Amz-Signature", valid_600854
-  var valid_600855 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600855 = validateParameter(valid_600855, JString, required = false,
+  if valid_602876 != nil:
+    section.add "X-Amz-Security-Token", valid_602876
+  var valid_602877 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602877 = validateParameter(valid_602877, JString, required = false,
                                  default = nil)
-  if valid_600855 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600855
-  var valid_600856 = header.getOrDefault("X-Amz-Credential")
-  valid_600856 = validateParameter(valid_600856, JString, required = false,
+  if valid_602877 != nil:
+    section.add "X-Amz-Algorithm", valid_602877
+  var valid_602878 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602878 = validateParameter(valid_602878, JString, required = false,
                                  default = nil)
-  if valid_600856 != nil:
-    section.add "X-Amz-Credential", valid_600856
+  if valid_602878 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602878
   result.add "header", section
   ## parameters in `formData` object:
   ##   Instances: JArray (required)
@@ -7434,34 +7481,34 @@ proc validate_PostRegisterInstancesWithLoadBalancer_600846(path: JsonNode;
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Instances` field"
-  var valid_600857 = formData.getOrDefault("Instances")
-  valid_600857 = validateParameter(valid_600857, JArray, required = true, default = nil)
-  if valid_600857 != nil:
-    section.add "Instances", valid_600857
-  var valid_600858 = formData.getOrDefault("LoadBalancerName")
-  valid_600858 = validateParameter(valid_600858, JString, required = true,
+  var valid_602879 = formData.getOrDefault("Instances")
+  valid_602879 = validateParameter(valid_602879, JArray, required = true, default = nil)
+  if valid_602879 != nil:
+    section.add "Instances", valid_602879
+  var valid_602880 = formData.getOrDefault("LoadBalancerName")
+  valid_602880 = validateParameter(valid_602880, JString, required = true,
                                  default = nil)
-  if valid_600858 != nil:
-    section.add "LoadBalancerName", valid_600858
+  if valid_602880 != nil:
+    section.add "LoadBalancerName", valid_602880
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600859: Call_PostRegisterInstancesWithLoadBalancer_600845;
+proc call*(call_602881: Call_PostRegisterInstancesWithLoadBalancer_602867;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Adds the specified instances to the specified load balancer.</p> <p>The instance must be a running instance in the same network as the load balancer (EC2-Classic or the same VPC). If you have EC2-Classic instances and a load balancer in a VPC with ClassicLink enabled, you can link the EC2-Classic instances to that VPC and then register the linked EC2-Classic instances with the load balancer in the VPC.</p> <p>Note that <code>RegisterInstanceWithLoadBalancer</code> completes when the request has been registered. Instance registration takes a little time to complete. To check the state of the registered instances, use <a>DescribeLoadBalancers</a> or <a>DescribeInstanceHealth</a>.</p> <p>After the instance is registered, it starts receiving traffic and requests from the load balancer. Any instance that is not in one of the Availability Zones registered for the load balancer is moved to the <code>OutOfService</code> state. If an Availability Zone is added to the load balancer later, any instances registered with the load balancer move to the <code>InService</code> state.</p> <p>To deregister instances from a load balancer, use <a>DeregisterInstancesFromLoadBalancer</a>.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600859.validator(path, query, header, formData, body)
-  let scheme = call_600859.pickScheme
+  let valid = call_602881.validator(path, query, header, formData, body)
+  let scheme = call_602881.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600859.url(scheme.get, call_600859.host, call_600859.base,
-                         call_600859.route, valid.getOrDefault("path"),
+  let url = call_602881.url(scheme.get, call_602881.host, call_602881.base,
+                         call_602881.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600859, url, valid)
+  result = atozHook(call_602881, url, valid)
 
-proc call*(call_600860: Call_PostRegisterInstancesWithLoadBalancer_600845;
+proc call*(call_602882: Call_PostRegisterInstancesWithLoadBalancer_602867;
           Instances: JsonNode; LoadBalancerName: string;
           Action: string = "RegisterInstancesWithLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
@@ -7469,40 +7516,41 @@ proc call*(call_600860: Call_PostRegisterInstancesWithLoadBalancer_600845;
   ## <p>Adds the specified instances to the specified load balancer.</p> <p>The instance must be a running instance in the same network as the load balancer (EC2-Classic or the same VPC). If you have EC2-Classic instances and a load balancer in a VPC with ClassicLink enabled, you can link the EC2-Classic instances to that VPC and then register the linked EC2-Classic instances with the load balancer in the VPC.</p> <p>Note that <code>RegisterInstanceWithLoadBalancer</code> completes when the request has been registered. Instance registration takes a little time to complete. To check the state of the registered instances, use <a>DescribeLoadBalancers</a> or <a>DescribeInstanceHealth</a>.</p> <p>After the instance is registered, it starts receiving traffic and requests from the load balancer. Any instance that is not in one of the Availability Zones registered for the load balancer is moved to the <code>OutOfService</code> state. If an Availability Zone is added to the load balancer later, any instances registered with the load balancer move to the <code>InService</code> state.</p> <p>To deregister instances from a load balancer, use <a>DeregisterInstancesFromLoadBalancer</a>.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   Instances: JArray (required)
   ##            : The IDs of the instances.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_600861 = newJObject()
-  var formData_600862 = newJObject()
+  var query_602883 = newJObject()
+  var formData_602884 = newJObject()
   if Instances != nil:
-    formData_600862.add "Instances", Instances
-  add(query_600861, "Action", newJString(Action))
-  add(formData_600862, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600861, "Version", newJString(Version))
-  result = call_600860.call(nil, query_600861, nil, formData_600862, nil)
+    formData_602884.add "Instances", Instances
+  add(formData_602884, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602883, "Action", newJString(Action))
+  add(query_602883, "Version", newJString(Version))
+  result = call_602882.call(nil, query_602883, nil, formData_602884, nil)
 
-var postRegisterInstancesWithLoadBalancer* = Call_PostRegisterInstancesWithLoadBalancer_600845(
+var postRegisterInstancesWithLoadBalancer* = Call_PostRegisterInstancesWithLoadBalancer_602867(
     name: "postRegisterInstancesWithLoadBalancer", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=RegisterInstancesWithLoadBalancer",
-    validator: validate_PostRegisterInstancesWithLoadBalancer_600846, base: "/",
-    url: url_PostRegisterInstancesWithLoadBalancer_600847,
+    validator: validate_PostRegisterInstancesWithLoadBalancer_602868, base: "/",
+    url: url_PostRegisterInstancesWithLoadBalancer_602869,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRegisterInstancesWithLoadBalancer_600828 = ref object of OpenApiRestCall_599368
-proc url_GetRegisterInstancesWithLoadBalancer_600830(protocol: Scheme;
+  Call_GetRegisterInstancesWithLoadBalancer_602850 = ref object of OpenApiRestCall_601389
+proc url_GetRegisterInstancesWithLoadBalancer_602852(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRegisterInstancesWithLoadBalancer_600829(path: JsonNode;
+proc validate_GetRegisterInstancesWithLoadBalancer_602851(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds the specified instances to the specified load balancer.</p> <p>The instance must be a running instance in the same network as the load balancer (EC2-Classic or the same VPC). If you have EC2-Classic instances and a load balancer in a VPC with ClassicLink enabled, you can link the EC2-Classic instances to that VPC and then register the linked EC2-Classic instances with the load balancer in the VPC.</p> <p>Note that <code>RegisterInstanceWithLoadBalancer</code> completes when the request has been registered. Instance registration takes a little time to complete. To check the state of the registered instances, use <a>DescribeLoadBalancers</a> or <a>DescribeInstanceHealth</a>.</p> <p>After the instance is registered, it starts receiving traffic and requests from the load balancer. Any instance that is not in one of the Availability Zones registered for the load balancer is moved to the <code>OutOfService</code> state. If an Availability Zone is added to the load balancer later, any instances registered with the load balancer move to the <code>InService</code> state.</p> <p>To deregister instances from a load balancer, use <a>DeregisterInstancesFromLoadBalancer</a>.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -7520,91 +7568,91 @@ proc validate_GetRegisterInstancesWithLoadBalancer_600829(path: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600831 = query.getOrDefault("LoadBalancerName")
-  valid_600831 = validateParameter(valid_600831, JString, required = true,
+  var valid_602853 = query.getOrDefault("LoadBalancerName")
+  valid_602853 = validateParameter(valid_602853, JString, required = true,
                                  default = nil)
-  if valid_600831 != nil:
-    section.add "LoadBalancerName", valid_600831
-  var valid_600832 = query.getOrDefault("Action")
-  valid_600832 = validateParameter(valid_600832, JString, required = true, default = newJString(
+  if valid_602853 != nil:
+    section.add "LoadBalancerName", valid_602853
+  var valid_602854 = query.getOrDefault("Action")
+  valid_602854 = validateParameter(valid_602854, JString, required = true, default = newJString(
       "RegisterInstancesWithLoadBalancer"))
-  if valid_600832 != nil:
-    section.add "Action", valid_600832
-  var valid_600833 = query.getOrDefault("Instances")
-  valid_600833 = validateParameter(valid_600833, JArray, required = true, default = nil)
-  if valid_600833 != nil:
-    section.add "Instances", valid_600833
-  var valid_600834 = query.getOrDefault("Version")
-  valid_600834 = validateParameter(valid_600834, JString, required = true,
+  if valid_602854 != nil:
+    section.add "Action", valid_602854
+  var valid_602855 = query.getOrDefault("Instances")
+  valid_602855 = validateParameter(valid_602855, JArray, required = true, default = nil)
+  if valid_602855 != nil:
+    section.add "Instances", valid_602855
+  var valid_602856 = query.getOrDefault("Version")
+  valid_602856 = validateParameter(valid_602856, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600834 != nil:
-    section.add "Version", valid_600834
+  if valid_602856 != nil:
+    section.add "Version", valid_602856
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600835 = header.getOrDefault("X-Amz-Date")
-  valid_600835 = validateParameter(valid_600835, JString, required = false,
+  var valid_602857 = header.getOrDefault("X-Amz-Signature")
+  valid_602857 = validateParameter(valid_602857, JString, required = false,
                                  default = nil)
-  if valid_600835 != nil:
-    section.add "X-Amz-Date", valid_600835
-  var valid_600836 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600836 = validateParameter(valid_600836, JString, required = false,
+  if valid_602857 != nil:
+    section.add "X-Amz-Signature", valid_602857
+  var valid_602858 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602858 = validateParameter(valid_602858, JString, required = false,
                                  default = nil)
-  if valid_600836 != nil:
-    section.add "X-Amz-Security-Token", valid_600836
-  var valid_600837 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600837 = validateParameter(valid_600837, JString, required = false,
+  if valid_602858 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602858
+  var valid_602859 = header.getOrDefault("X-Amz-Date")
+  valid_602859 = validateParameter(valid_602859, JString, required = false,
                                  default = nil)
-  if valid_600837 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600837
-  var valid_600838 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600838 = validateParameter(valid_600838, JString, required = false,
+  if valid_602859 != nil:
+    section.add "X-Amz-Date", valid_602859
+  var valid_602860 = header.getOrDefault("X-Amz-Credential")
+  valid_602860 = validateParameter(valid_602860, JString, required = false,
                                  default = nil)
-  if valid_600838 != nil:
-    section.add "X-Amz-Algorithm", valid_600838
-  var valid_600839 = header.getOrDefault("X-Amz-Signature")
-  valid_600839 = validateParameter(valid_600839, JString, required = false,
+  if valid_602860 != nil:
+    section.add "X-Amz-Credential", valid_602860
+  var valid_602861 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602861 = validateParameter(valid_602861, JString, required = false,
                                  default = nil)
-  if valid_600839 != nil:
-    section.add "X-Amz-Signature", valid_600839
-  var valid_600840 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600840 = validateParameter(valid_600840, JString, required = false,
+  if valid_602861 != nil:
+    section.add "X-Amz-Security-Token", valid_602861
+  var valid_602862 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602862 = validateParameter(valid_602862, JString, required = false,
                                  default = nil)
-  if valid_600840 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600840
-  var valid_600841 = header.getOrDefault("X-Amz-Credential")
-  valid_600841 = validateParameter(valid_600841, JString, required = false,
+  if valid_602862 != nil:
+    section.add "X-Amz-Algorithm", valid_602862
+  var valid_602863 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602863 = validateParameter(valid_602863, JString, required = false,
                                  default = nil)
-  if valid_600841 != nil:
-    section.add "X-Amz-Credential", valid_600841
+  if valid_602863 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602863
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600842: Call_GetRegisterInstancesWithLoadBalancer_600828;
+proc call*(call_602864: Call_GetRegisterInstancesWithLoadBalancer_602850;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Adds the specified instances to the specified load balancer.</p> <p>The instance must be a running instance in the same network as the load balancer (EC2-Classic or the same VPC). If you have EC2-Classic instances and a load balancer in a VPC with ClassicLink enabled, you can link the EC2-Classic instances to that VPC and then register the linked EC2-Classic instances with the load balancer in the VPC.</p> <p>Note that <code>RegisterInstanceWithLoadBalancer</code> completes when the request has been registered. Instance registration takes a little time to complete. To check the state of the registered instances, use <a>DescribeLoadBalancers</a> or <a>DescribeInstanceHealth</a>.</p> <p>After the instance is registered, it starts receiving traffic and requests from the load balancer. Any instance that is not in one of the Availability Zones registered for the load balancer is moved to the <code>OutOfService</code> state. If an Availability Zone is added to the load balancer later, any instances registered with the load balancer move to the <code>InService</code> state.</p> <p>To deregister instances from a load balancer, use <a>DeregisterInstancesFromLoadBalancer</a>.</p> <p>For more information, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-deregister-register-instances.html">Register or De-Register EC2 Instances</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600842.validator(path, query, header, formData, body)
-  let scheme = call_600842.pickScheme
+  let valid = call_602864.validator(path, query, header, formData, body)
+  let scheme = call_602864.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600842.url(scheme.get, call_600842.host, call_600842.base,
-                         call_600842.route, valid.getOrDefault("path"),
+  let url = call_602864.url(scheme.get, call_602864.host, call_602864.base,
+                         call_602864.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600842, url, valid)
+  result = atozHook(call_602864, url, valid)
 
-proc call*(call_600843: Call_GetRegisterInstancesWithLoadBalancer_600828;
+proc call*(call_602865: Call_GetRegisterInstancesWithLoadBalancer_602850;
           LoadBalancerName: string; Instances: JsonNode;
           Action: string = "RegisterInstancesWithLoadBalancer";
           Version: string = "2012-06-01"): Recallable =
@@ -7616,35 +7664,36 @@ proc call*(call_600843: Call_GetRegisterInstancesWithLoadBalancer_600828;
   ##   Instances: JArray (required)
   ##            : The IDs of the instances.
   ##   Version: string (required)
-  var query_600844 = newJObject()
-  add(query_600844, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600844, "Action", newJString(Action))
+  var query_602866 = newJObject()
+  add(query_602866, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602866, "Action", newJString(Action))
   if Instances != nil:
-    query_600844.add "Instances", Instances
-  add(query_600844, "Version", newJString(Version))
-  result = call_600843.call(nil, query_600844, nil, nil, nil)
+    query_602866.add "Instances", Instances
+  add(query_602866, "Version", newJString(Version))
+  result = call_602865.call(nil, query_602866, nil, nil, nil)
 
-var getRegisterInstancesWithLoadBalancer* = Call_GetRegisterInstancesWithLoadBalancer_600828(
+var getRegisterInstancesWithLoadBalancer* = Call_GetRegisterInstancesWithLoadBalancer_602850(
     name: "getRegisterInstancesWithLoadBalancer", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=RegisterInstancesWithLoadBalancer",
-    validator: validate_GetRegisterInstancesWithLoadBalancer_600829, base: "/",
-    url: url_GetRegisterInstancesWithLoadBalancer_600830,
+    validator: validate_GetRegisterInstancesWithLoadBalancer_602851, base: "/",
+    url: url_GetRegisterInstancesWithLoadBalancer_602852,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostRemoveTags_600880 = ref object of OpenApiRestCall_599368
-proc url_PostRemoveTags_600882(protocol: Scheme; host: string; base: string;
+  Call_PostRemoveTags_602902 = ref object of OpenApiRestCall_601389
+proc url_PostRemoveTags_602904(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostRemoveTags_600881(path: JsonNode; query: JsonNode;
+proc validate_PostRemoveTags_602903(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Removes one or more tags from the specified load balancer.
@@ -7658,134 +7707,134 @@ proc validate_PostRemoveTags_600881(path: JsonNode; query: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600883 = query.getOrDefault("Action")
-  valid_600883 = validateParameter(valid_600883, JString, required = true,
+  var valid_602905 = query.getOrDefault("Action")
+  valid_602905 = validateParameter(valid_602905, JString, required = true,
                                  default = newJString("RemoveTags"))
-  if valid_600883 != nil:
-    section.add "Action", valid_600883
-  var valid_600884 = query.getOrDefault("Version")
-  valid_600884 = validateParameter(valid_600884, JString, required = true,
+  if valid_602905 != nil:
+    section.add "Action", valid_602905
+  var valid_602906 = query.getOrDefault("Version")
+  valid_602906 = validateParameter(valid_602906, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600884 != nil:
-    section.add "Version", valid_600884
+  if valid_602906 != nil:
+    section.add "Version", valid_602906
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600885 = header.getOrDefault("X-Amz-Date")
-  valid_600885 = validateParameter(valid_600885, JString, required = false,
+  var valid_602907 = header.getOrDefault("X-Amz-Signature")
+  valid_602907 = validateParameter(valid_602907, JString, required = false,
                                  default = nil)
-  if valid_600885 != nil:
-    section.add "X-Amz-Date", valid_600885
-  var valid_600886 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600886 = validateParameter(valid_600886, JString, required = false,
+  if valid_602907 != nil:
+    section.add "X-Amz-Signature", valid_602907
+  var valid_602908 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602908 = validateParameter(valid_602908, JString, required = false,
                                  default = nil)
-  if valid_600886 != nil:
-    section.add "X-Amz-Security-Token", valid_600886
-  var valid_600887 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600887 = validateParameter(valid_600887, JString, required = false,
+  if valid_602908 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602908
+  var valid_602909 = header.getOrDefault("X-Amz-Date")
+  valid_602909 = validateParameter(valid_602909, JString, required = false,
                                  default = nil)
-  if valid_600887 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600887
-  var valid_600888 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600888 = validateParameter(valid_600888, JString, required = false,
+  if valid_602909 != nil:
+    section.add "X-Amz-Date", valid_602909
+  var valid_602910 = header.getOrDefault("X-Amz-Credential")
+  valid_602910 = validateParameter(valid_602910, JString, required = false,
                                  default = nil)
-  if valid_600888 != nil:
-    section.add "X-Amz-Algorithm", valid_600888
-  var valid_600889 = header.getOrDefault("X-Amz-Signature")
-  valid_600889 = validateParameter(valid_600889, JString, required = false,
+  if valid_602910 != nil:
+    section.add "X-Amz-Credential", valid_602910
+  var valid_602911 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602911 = validateParameter(valid_602911, JString, required = false,
                                  default = nil)
-  if valid_600889 != nil:
-    section.add "X-Amz-Signature", valid_600889
-  var valid_600890 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600890 = validateParameter(valid_600890, JString, required = false,
+  if valid_602911 != nil:
+    section.add "X-Amz-Security-Token", valid_602911
+  var valid_602912 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602912 = validateParameter(valid_602912, JString, required = false,
                                  default = nil)
-  if valid_600890 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600890
-  var valid_600891 = header.getOrDefault("X-Amz-Credential")
-  valid_600891 = validateParameter(valid_600891, JString, required = false,
+  if valid_602912 != nil:
+    section.add "X-Amz-Algorithm", valid_602912
+  var valid_602913 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602913 = validateParameter(valid_602913, JString, required = false,
                                  default = nil)
-  if valid_600891 != nil:
-    section.add "X-Amz-Credential", valid_600891
+  if valid_602913 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602913
   result.add "header", section
   ## parameters in `formData` object:
-  ##   Tags: JArray (required)
-  ##       : The list of tag keys to remove.
   ##   LoadBalancerNames: JArray (required)
   ##                    : The name of the load balancer. You can specify a maximum of one load balancer name.
+  ##   Tags: JArray (required)
+  ##       : The list of tag keys to remove.
   section = newJObject()
-  assert formData != nil,
-        "formData argument is necessary due to required `Tags` field"
-  var valid_600892 = formData.getOrDefault("Tags")
-  valid_600892 = validateParameter(valid_600892, JArray, required = true, default = nil)
-  if valid_600892 != nil:
-    section.add "Tags", valid_600892
-  var valid_600893 = formData.getOrDefault("LoadBalancerNames")
-  valid_600893 = validateParameter(valid_600893, JArray, required = true, default = nil)
-  if valid_600893 != nil:
-    section.add "LoadBalancerNames", valid_600893
+  assert formData != nil, "formData argument is necessary due to required `LoadBalancerNames` field"
+  var valid_602914 = formData.getOrDefault("LoadBalancerNames")
+  valid_602914 = validateParameter(valid_602914, JArray, required = true, default = nil)
+  if valid_602914 != nil:
+    section.add "LoadBalancerNames", valid_602914
+  var valid_602915 = formData.getOrDefault("Tags")
+  valid_602915 = validateParameter(valid_602915, JArray, required = true, default = nil)
+  if valid_602915 != nil:
+    section.add "Tags", valid_602915
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600894: Call_PostRemoveTags_600880; path: JsonNode; query: JsonNode;
+proc call*(call_602916: Call_PostRemoveTags_602902; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes one or more tags from the specified load balancer.
   ## 
-  let valid = call_600894.validator(path, query, header, formData, body)
-  let scheme = call_600894.pickScheme
+  let valid = call_602916.validator(path, query, header, formData, body)
+  let scheme = call_602916.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600894.url(scheme.get, call_600894.host, call_600894.base,
-                         call_600894.route, valid.getOrDefault("path"),
+  let url = call_602916.url(scheme.get, call_602916.host, call_602916.base,
+                         call_602916.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600894, url, valid)
+  result = atozHook(call_602916, url, valid)
 
-proc call*(call_600895: Call_PostRemoveTags_600880; Tags: JsonNode;
-          LoadBalancerNames: JsonNode; Action: string = "RemoveTags";
+proc call*(call_602917: Call_PostRemoveTags_602902; LoadBalancerNames: JsonNode;
+          Tags: JsonNode; Action: string = "RemoveTags";
           Version: string = "2012-06-01"): Recallable =
   ## postRemoveTags
   ## Removes one or more tags from the specified load balancer.
-  ##   Tags: JArray (required)
-  ##       : The list of tag keys to remove.
-  ##   Action: string (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The name of the load balancer. You can specify a maximum of one load balancer name.
+  ##   Action: string (required)
+  ##   Tags: JArray (required)
+  ##       : The list of tag keys to remove.
   ##   Version: string (required)
-  var query_600896 = newJObject()
-  var formData_600897 = newJObject()
-  if Tags != nil:
-    formData_600897.add "Tags", Tags
-  add(query_600896, "Action", newJString(Action))
+  var query_602918 = newJObject()
+  var formData_602919 = newJObject()
   if LoadBalancerNames != nil:
-    formData_600897.add "LoadBalancerNames", LoadBalancerNames
-  add(query_600896, "Version", newJString(Version))
-  result = call_600895.call(nil, query_600896, nil, formData_600897, nil)
+    formData_602919.add "LoadBalancerNames", LoadBalancerNames
+  add(query_602918, "Action", newJString(Action))
+  if Tags != nil:
+    formData_602919.add "Tags", Tags
+  add(query_602918, "Version", newJString(Version))
+  result = call_602917.call(nil, query_602918, nil, formData_602919, nil)
 
-var postRemoveTags* = Call_PostRemoveTags_600880(name: "postRemoveTags",
+var postRemoveTags* = Call_PostRemoveTags_602902(name: "postRemoveTags",
     meth: HttpMethod.HttpPost, host: "elasticloadbalancing.amazonaws.com",
-    route: "/#Action=RemoveTags", validator: validate_PostRemoveTags_600881,
-    base: "/", url: url_PostRemoveTags_600882, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=RemoveTags", validator: validate_PostRemoveTags_602903,
+    base: "/", url: url_PostRemoveTags_602904, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRemoveTags_600863 = ref object of OpenApiRestCall_599368
-proc url_GetRemoveTags_600865(protocol: Scheme; host: string; base: string;
+  Call_GetRemoveTags_602885 = ref object of OpenApiRestCall_601389
+proc url_GetRemoveTags_602887(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRemoveTags_600864(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetRemoveTags_602886(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes one or more tags from the specified load balancer.
   ## 
@@ -7797,94 +7846,94 @@ proc validate_GetRemoveTags_600864(path: JsonNode; query: JsonNode; header: Json
   ##   Tags: JArray (required)
   ##       : The list of tag keys to remove.
   ##   Action: JString (required)
+  ##   Version: JString (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The name of the load balancer. You can specify a maximum of one load balancer name.
-  ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Tags` field"
-  var valid_600866 = query.getOrDefault("Tags")
-  valid_600866 = validateParameter(valid_600866, JArray, required = true, default = nil)
-  if valid_600866 != nil:
-    section.add "Tags", valid_600866
-  var valid_600867 = query.getOrDefault("Action")
-  valid_600867 = validateParameter(valid_600867, JString, required = true,
+  var valid_602888 = query.getOrDefault("Tags")
+  valid_602888 = validateParameter(valid_602888, JArray, required = true, default = nil)
+  if valid_602888 != nil:
+    section.add "Tags", valid_602888
+  var valid_602889 = query.getOrDefault("Action")
+  valid_602889 = validateParameter(valid_602889, JString, required = true,
                                  default = newJString("RemoveTags"))
-  if valid_600867 != nil:
-    section.add "Action", valid_600867
-  var valid_600868 = query.getOrDefault("LoadBalancerNames")
-  valid_600868 = validateParameter(valid_600868, JArray, required = true, default = nil)
-  if valid_600868 != nil:
-    section.add "LoadBalancerNames", valid_600868
-  var valid_600869 = query.getOrDefault("Version")
-  valid_600869 = validateParameter(valid_600869, JString, required = true,
+  if valid_602889 != nil:
+    section.add "Action", valid_602889
+  var valid_602890 = query.getOrDefault("Version")
+  valid_602890 = validateParameter(valid_602890, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600869 != nil:
-    section.add "Version", valid_600869
+  if valid_602890 != nil:
+    section.add "Version", valid_602890
+  var valid_602891 = query.getOrDefault("LoadBalancerNames")
+  valid_602891 = validateParameter(valid_602891, JArray, required = true, default = nil)
+  if valid_602891 != nil:
+    section.add "LoadBalancerNames", valid_602891
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600870 = header.getOrDefault("X-Amz-Date")
-  valid_600870 = validateParameter(valid_600870, JString, required = false,
+  var valid_602892 = header.getOrDefault("X-Amz-Signature")
+  valid_602892 = validateParameter(valid_602892, JString, required = false,
                                  default = nil)
-  if valid_600870 != nil:
-    section.add "X-Amz-Date", valid_600870
-  var valid_600871 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600871 = validateParameter(valid_600871, JString, required = false,
+  if valid_602892 != nil:
+    section.add "X-Amz-Signature", valid_602892
+  var valid_602893 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602893 = validateParameter(valid_602893, JString, required = false,
                                  default = nil)
-  if valid_600871 != nil:
-    section.add "X-Amz-Security-Token", valid_600871
-  var valid_600872 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600872 = validateParameter(valid_600872, JString, required = false,
+  if valid_602893 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602893
+  var valid_602894 = header.getOrDefault("X-Amz-Date")
+  valid_602894 = validateParameter(valid_602894, JString, required = false,
                                  default = nil)
-  if valid_600872 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600872
-  var valid_600873 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600873 = validateParameter(valid_600873, JString, required = false,
+  if valid_602894 != nil:
+    section.add "X-Amz-Date", valid_602894
+  var valid_602895 = header.getOrDefault("X-Amz-Credential")
+  valid_602895 = validateParameter(valid_602895, JString, required = false,
                                  default = nil)
-  if valid_600873 != nil:
-    section.add "X-Amz-Algorithm", valid_600873
-  var valid_600874 = header.getOrDefault("X-Amz-Signature")
-  valid_600874 = validateParameter(valid_600874, JString, required = false,
+  if valid_602895 != nil:
+    section.add "X-Amz-Credential", valid_602895
+  var valid_602896 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602896 = validateParameter(valid_602896, JString, required = false,
                                  default = nil)
-  if valid_600874 != nil:
-    section.add "X-Amz-Signature", valid_600874
-  var valid_600875 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600875 = validateParameter(valid_600875, JString, required = false,
+  if valid_602896 != nil:
+    section.add "X-Amz-Security-Token", valid_602896
+  var valid_602897 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602897 = validateParameter(valid_602897, JString, required = false,
                                  default = nil)
-  if valid_600875 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600875
-  var valid_600876 = header.getOrDefault("X-Amz-Credential")
-  valid_600876 = validateParameter(valid_600876, JString, required = false,
+  if valid_602897 != nil:
+    section.add "X-Amz-Algorithm", valid_602897
+  var valid_602898 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602898 = validateParameter(valid_602898, JString, required = false,
                                  default = nil)
-  if valid_600876 != nil:
-    section.add "X-Amz-Credential", valid_600876
+  if valid_602898 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602898
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600877: Call_GetRemoveTags_600863; path: JsonNode; query: JsonNode;
+proc call*(call_602899: Call_GetRemoveTags_602885; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes one or more tags from the specified load balancer.
   ## 
-  let valid = call_600877.validator(path, query, header, formData, body)
-  let scheme = call_600877.pickScheme
+  let valid = call_602899.validator(path, query, header, formData, body)
+  let scheme = call_602899.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600877.url(scheme.get, call_600877.host, call_600877.base,
-                         call_600877.route, valid.getOrDefault("path"),
+  let url = call_602899.url(scheme.get, call_602899.host, call_602899.base,
+                         call_602899.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600877, url, valid)
+  result = atozHook(call_602899, url, valid)
 
-proc call*(call_600878: Call_GetRemoveTags_600863; Tags: JsonNode;
+proc call*(call_602900: Call_GetRemoveTags_602885; Tags: JsonNode;
           LoadBalancerNames: JsonNode; Action: string = "RemoveTags";
           Version: string = "2012-06-01"): Recallable =
   ## getRemoveTags
@@ -7892,36 +7941,37 @@ proc call*(call_600878: Call_GetRemoveTags_600863; Tags: JsonNode;
   ##   Tags: JArray (required)
   ##       : The list of tag keys to remove.
   ##   Action: string (required)
+  ##   Version: string (required)
   ##   LoadBalancerNames: JArray (required)
   ##                    : The name of the load balancer. You can specify a maximum of one load balancer name.
-  ##   Version: string (required)
-  var query_600879 = newJObject()
+  var query_602901 = newJObject()
   if Tags != nil:
-    query_600879.add "Tags", Tags
-  add(query_600879, "Action", newJString(Action))
+    query_602901.add "Tags", Tags
+  add(query_602901, "Action", newJString(Action))
+  add(query_602901, "Version", newJString(Version))
   if LoadBalancerNames != nil:
-    query_600879.add "LoadBalancerNames", LoadBalancerNames
-  add(query_600879, "Version", newJString(Version))
-  result = call_600878.call(nil, query_600879, nil, nil, nil)
+    query_602901.add "LoadBalancerNames", LoadBalancerNames
+  result = call_602900.call(nil, query_602901, nil, nil, nil)
 
-var getRemoveTags* = Call_GetRemoveTags_600863(name: "getRemoveTags",
+var getRemoveTags* = Call_GetRemoveTags_602885(name: "getRemoveTags",
     meth: HttpMethod.HttpGet, host: "elasticloadbalancing.amazonaws.com",
-    route: "/#Action=RemoveTags", validator: validate_GetRemoveTags_600864,
-    base: "/", url: url_GetRemoveTags_600865, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#Action=RemoveTags", validator: validate_GetRemoveTags_602886,
+    base: "/", url: url_GetRemoveTags_602887, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSetLoadBalancerListenerSSLCertificate_600916 = ref object of OpenApiRestCall_599368
-proc url_PostSetLoadBalancerListenerSSLCertificate_600918(protocol: Scheme;
+  Call_PostSetLoadBalancerListenerSSLCertificate_602938 = ref object of OpenApiRestCall_601389
+proc url_PostSetLoadBalancerListenerSSLCertificate_602940(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostSetLoadBalancerListenerSSLCertificate_600917(path: JsonNode;
+proc validate_PostSetLoadBalancerListenerSSLCertificate_602939(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the certificate that terminates the specified listener's SSL connections. The specified certificate replaces any prior certificate that was used on the same load balancer and port.</p> <p>For more information about updating your SSL certificate, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-update-ssl-cert.html">Replace the SSL Certificate for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -7934,147 +7984,148 @@ proc validate_PostSetLoadBalancerListenerSSLCertificate_600917(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600919 = query.getOrDefault("Action")
-  valid_600919 = validateParameter(valid_600919, JString, required = true, default = newJString(
+  var valid_602941 = query.getOrDefault("Action")
+  valid_602941 = validateParameter(valid_602941, JString, required = true, default = newJString(
       "SetLoadBalancerListenerSSLCertificate"))
-  if valid_600919 != nil:
-    section.add "Action", valid_600919
-  var valid_600920 = query.getOrDefault("Version")
-  valid_600920 = validateParameter(valid_600920, JString, required = true,
+  if valid_602941 != nil:
+    section.add "Action", valid_602941
+  var valid_602942 = query.getOrDefault("Version")
+  valid_602942 = validateParameter(valid_602942, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600920 != nil:
-    section.add "Version", valid_600920
+  if valid_602942 != nil:
+    section.add "Version", valid_602942
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600921 = header.getOrDefault("X-Amz-Date")
-  valid_600921 = validateParameter(valid_600921, JString, required = false,
+  var valid_602943 = header.getOrDefault("X-Amz-Signature")
+  valid_602943 = validateParameter(valid_602943, JString, required = false,
                                  default = nil)
-  if valid_600921 != nil:
-    section.add "X-Amz-Date", valid_600921
-  var valid_600922 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600922 = validateParameter(valid_600922, JString, required = false,
+  if valid_602943 != nil:
+    section.add "X-Amz-Signature", valid_602943
+  var valid_602944 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602944 = validateParameter(valid_602944, JString, required = false,
                                  default = nil)
-  if valid_600922 != nil:
-    section.add "X-Amz-Security-Token", valid_600922
-  var valid_600923 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600923 = validateParameter(valid_600923, JString, required = false,
+  if valid_602944 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602944
+  var valid_602945 = header.getOrDefault("X-Amz-Date")
+  valid_602945 = validateParameter(valid_602945, JString, required = false,
                                  default = nil)
-  if valid_600923 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600923
-  var valid_600924 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600924 = validateParameter(valid_600924, JString, required = false,
+  if valid_602945 != nil:
+    section.add "X-Amz-Date", valid_602945
+  var valid_602946 = header.getOrDefault("X-Amz-Credential")
+  valid_602946 = validateParameter(valid_602946, JString, required = false,
                                  default = nil)
-  if valid_600924 != nil:
-    section.add "X-Amz-Algorithm", valid_600924
-  var valid_600925 = header.getOrDefault("X-Amz-Signature")
-  valid_600925 = validateParameter(valid_600925, JString, required = false,
+  if valid_602946 != nil:
+    section.add "X-Amz-Credential", valid_602946
+  var valid_602947 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602947 = validateParameter(valid_602947, JString, required = false,
                                  default = nil)
-  if valid_600925 != nil:
-    section.add "X-Amz-Signature", valid_600925
-  var valid_600926 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600926 = validateParameter(valid_600926, JString, required = false,
+  if valid_602947 != nil:
+    section.add "X-Amz-Security-Token", valid_602947
+  var valid_602948 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602948 = validateParameter(valid_602948, JString, required = false,
                                  default = nil)
-  if valid_600926 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600926
-  var valid_600927 = header.getOrDefault("X-Amz-Credential")
-  valid_600927 = validateParameter(valid_600927, JString, required = false,
+  if valid_602948 != nil:
+    section.add "X-Amz-Algorithm", valid_602948
+  var valid_602949 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602949 = validateParameter(valid_602949, JString, required = false,
                                  default = nil)
-  if valid_600927 != nil:
-    section.add "X-Amz-Credential", valid_600927
+  if valid_602949 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602949
   result.add "header", section
   ## parameters in `formData` object:
-  ##   LoadBalancerPort: JInt (required)
-  ##                   : The port that uses the specified SSL certificate.
-  ##   SSLCertificateId: JString (required)
-  ##                   : The Amazon Resource Name (ARN) of the SSL certificate.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
+  ##   SSLCertificateId: JString (required)
+  ##                   : The Amazon Resource Name (ARN) of the SSL certificate.
+  ##   LoadBalancerPort: JInt (required)
+  ##                   : The port that uses the specified SSL certificate.
   section = newJObject()
-  assert formData != nil, "formData argument is necessary due to required `LoadBalancerPort` field"
-  var valid_600928 = formData.getOrDefault("LoadBalancerPort")
-  valid_600928 = validateParameter(valid_600928, JInt, required = true, default = nil)
-  if valid_600928 != nil:
-    section.add "LoadBalancerPort", valid_600928
-  var valid_600929 = formData.getOrDefault("SSLCertificateId")
-  valid_600929 = validateParameter(valid_600929, JString, required = true,
+  assert formData != nil, "formData argument is necessary due to required `LoadBalancerName` field"
+  var valid_602950 = formData.getOrDefault("LoadBalancerName")
+  valid_602950 = validateParameter(valid_602950, JString, required = true,
                                  default = nil)
-  if valid_600929 != nil:
-    section.add "SSLCertificateId", valid_600929
-  var valid_600930 = formData.getOrDefault("LoadBalancerName")
-  valid_600930 = validateParameter(valid_600930, JString, required = true,
+  if valid_602950 != nil:
+    section.add "LoadBalancerName", valid_602950
+  var valid_602951 = formData.getOrDefault("SSLCertificateId")
+  valid_602951 = validateParameter(valid_602951, JString, required = true,
                                  default = nil)
-  if valid_600930 != nil:
-    section.add "LoadBalancerName", valid_600930
+  if valid_602951 != nil:
+    section.add "SSLCertificateId", valid_602951
+  var valid_602952 = formData.getOrDefault("LoadBalancerPort")
+  valid_602952 = validateParameter(valid_602952, JInt, required = true, default = nil)
+  if valid_602952 != nil:
+    section.add "LoadBalancerPort", valid_602952
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600931: Call_PostSetLoadBalancerListenerSSLCertificate_600916;
+proc call*(call_602953: Call_PostSetLoadBalancerListenerSSLCertificate_602938;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Sets the certificate that terminates the specified listener's SSL connections. The specified certificate replaces any prior certificate that was used on the same load balancer and port.</p> <p>For more information about updating your SSL certificate, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-update-ssl-cert.html">Replace the SSL Certificate for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600931.validator(path, query, header, formData, body)
-  let scheme = call_600931.pickScheme
+  let valid = call_602953.validator(path, query, header, formData, body)
+  let scheme = call_602953.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600931.url(scheme.get, call_600931.host, call_600931.base,
-                         call_600931.route, valid.getOrDefault("path"),
+  let url = call_602953.url(scheme.get, call_602953.host, call_602953.base,
+                         call_602953.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600931, url, valid)
+  result = atozHook(call_602953, url, valid)
 
-proc call*(call_600932: Call_PostSetLoadBalancerListenerSSLCertificate_600916;
-          LoadBalancerPort: int; SSLCertificateId: string; LoadBalancerName: string;
+proc call*(call_602954: Call_PostSetLoadBalancerListenerSSLCertificate_602938;
+          LoadBalancerName: string; SSLCertificateId: string; LoadBalancerPort: int;
           Action: string = "SetLoadBalancerListenerSSLCertificate";
           Version: string = "2012-06-01"): Recallable =
   ## postSetLoadBalancerListenerSSLCertificate
   ## <p>Sets the certificate that terminates the specified listener's SSL connections. The specified certificate replaces any prior certificate that was used on the same load balancer and port.</p> <p>For more information about updating your SSL certificate, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-update-ssl-cert.html">Replace the SSL Certificate for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerPort: int (required)
-  ##                   : The port that uses the specified SSL certificate.
-  ##   SSLCertificateId: string (required)
-  ##                   : The Amazon Resource Name (ARN) of the SSL certificate.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
+  ##   SSLCertificateId: string (required)
+  ##                   : The Amazon Resource Name (ARN) of the SSL certificate.
   ##   Version: string (required)
-  var query_600933 = newJObject()
-  var formData_600934 = newJObject()
-  add(formData_600934, "LoadBalancerPort", newJInt(LoadBalancerPort))
-  add(formData_600934, "SSLCertificateId", newJString(SSLCertificateId))
-  add(query_600933, "Action", newJString(Action))
-  add(formData_600934, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600933, "Version", newJString(Version))
-  result = call_600932.call(nil, query_600933, nil, formData_600934, nil)
+  ##   LoadBalancerPort: int (required)
+  ##                   : The port that uses the specified SSL certificate.
+  var query_602955 = newJObject()
+  var formData_602956 = newJObject()
+  add(formData_602956, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602955, "Action", newJString(Action))
+  add(formData_602956, "SSLCertificateId", newJString(SSLCertificateId))
+  add(query_602955, "Version", newJString(Version))
+  add(formData_602956, "LoadBalancerPort", newJInt(LoadBalancerPort))
+  result = call_602954.call(nil, query_602955, nil, formData_602956, nil)
 
-var postSetLoadBalancerListenerSSLCertificate* = Call_PostSetLoadBalancerListenerSSLCertificate_600916(
+var postSetLoadBalancerListenerSSLCertificate* = Call_PostSetLoadBalancerListenerSSLCertificate_602938(
     name: "postSetLoadBalancerListenerSSLCertificate", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=SetLoadBalancerListenerSSLCertificate",
-    validator: validate_PostSetLoadBalancerListenerSSLCertificate_600917,
-    base: "/", url: url_PostSetLoadBalancerListenerSSLCertificate_600918,
+    validator: validate_PostSetLoadBalancerListenerSSLCertificate_602939,
+    base: "/", url: url_PostSetLoadBalancerListenerSSLCertificate_602940,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSetLoadBalancerListenerSSLCertificate_600898 = ref object of OpenApiRestCall_599368
-proc url_GetSetLoadBalancerListenerSSLCertificate_600900(protocol: Scheme;
+  Call_GetSetLoadBalancerListenerSSLCertificate_602920 = ref object of OpenApiRestCall_601389
+proc url_GetSetLoadBalancerListenerSSLCertificate_602922(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetSetLoadBalancerListenerSSLCertificate_600899(path: JsonNode;
+proc validate_GetSetLoadBalancerListenerSSLCertificate_602921(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the certificate that terminates the specified listener's SSL connections. The specified certificate replaces any prior certificate that was used on the same load balancer and port.</p> <p>For more information about updating your SSL certificate, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-update-ssl-cert.html">Replace the SSL Certificate for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -8083,149 +8134,150 @@ proc validate_GetSetLoadBalancerListenerSSLCertificate_600899(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
-  ##   SSLCertificateId: JString (required)
-  ##                   : The Amazon Resource Name (ARN) of the SSL certificate.
   ##   LoadBalancerPort: JInt (required)
   ##                   : The port that uses the specified SSL certificate.
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
   ##   Action: JString (required)
   ##   Version: JString (required)
+  ##   SSLCertificateId: JString (required)
+  ##                   : The Amazon Resource Name (ARN) of the SSL certificate.
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600901 = query.getOrDefault("LoadBalancerName")
-  valid_600901 = validateParameter(valid_600901, JString, required = true,
+        "query argument is necessary due to required `LoadBalancerPort` field"
+  var valid_602923 = query.getOrDefault("LoadBalancerPort")
+  valid_602923 = validateParameter(valid_602923, JInt, required = true, default = nil)
+  if valid_602923 != nil:
+    section.add "LoadBalancerPort", valid_602923
+  var valid_602924 = query.getOrDefault("LoadBalancerName")
+  valid_602924 = validateParameter(valid_602924, JString, required = true,
                                  default = nil)
-  if valid_600901 != nil:
-    section.add "LoadBalancerName", valid_600901
-  var valid_600902 = query.getOrDefault("SSLCertificateId")
-  valid_600902 = validateParameter(valid_600902, JString, required = true,
-                                 default = nil)
-  if valid_600902 != nil:
-    section.add "SSLCertificateId", valid_600902
-  var valid_600903 = query.getOrDefault("LoadBalancerPort")
-  valid_600903 = validateParameter(valid_600903, JInt, required = true, default = nil)
-  if valid_600903 != nil:
-    section.add "LoadBalancerPort", valid_600903
-  var valid_600904 = query.getOrDefault("Action")
-  valid_600904 = validateParameter(valid_600904, JString, required = true, default = newJString(
+  if valid_602924 != nil:
+    section.add "LoadBalancerName", valid_602924
+  var valid_602925 = query.getOrDefault("Action")
+  valid_602925 = validateParameter(valid_602925, JString, required = true, default = newJString(
       "SetLoadBalancerListenerSSLCertificate"))
-  if valid_600904 != nil:
-    section.add "Action", valid_600904
-  var valid_600905 = query.getOrDefault("Version")
-  valid_600905 = validateParameter(valid_600905, JString, required = true,
+  if valid_602925 != nil:
+    section.add "Action", valid_602925
+  var valid_602926 = query.getOrDefault("Version")
+  valid_602926 = validateParameter(valid_602926, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600905 != nil:
-    section.add "Version", valid_600905
+  if valid_602926 != nil:
+    section.add "Version", valid_602926
+  var valid_602927 = query.getOrDefault("SSLCertificateId")
+  valid_602927 = validateParameter(valid_602927, JString, required = true,
+                                 default = nil)
+  if valid_602927 != nil:
+    section.add "SSLCertificateId", valid_602927
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600906 = header.getOrDefault("X-Amz-Date")
-  valid_600906 = validateParameter(valid_600906, JString, required = false,
+  var valid_602928 = header.getOrDefault("X-Amz-Signature")
+  valid_602928 = validateParameter(valid_602928, JString, required = false,
                                  default = nil)
-  if valid_600906 != nil:
-    section.add "X-Amz-Date", valid_600906
-  var valid_600907 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600907 = validateParameter(valid_600907, JString, required = false,
+  if valid_602928 != nil:
+    section.add "X-Amz-Signature", valid_602928
+  var valid_602929 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602929 = validateParameter(valid_602929, JString, required = false,
                                  default = nil)
-  if valid_600907 != nil:
-    section.add "X-Amz-Security-Token", valid_600907
-  var valid_600908 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600908 = validateParameter(valid_600908, JString, required = false,
+  if valid_602929 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602929
+  var valid_602930 = header.getOrDefault("X-Amz-Date")
+  valid_602930 = validateParameter(valid_602930, JString, required = false,
                                  default = nil)
-  if valid_600908 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600908
-  var valid_600909 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600909 = validateParameter(valid_600909, JString, required = false,
+  if valid_602930 != nil:
+    section.add "X-Amz-Date", valid_602930
+  var valid_602931 = header.getOrDefault("X-Amz-Credential")
+  valid_602931 = validateParameter(valid_602931, JString, required = false,
                                  default = nil)
-  if valid_600909 != nil:
-    section.add "X-Amz-Algorithm", valid_600909
-  var valid_600910 = header.getOrDefault("X-Amz-Signature")
-  valid_600910 = validateParameter(valid_600910, JString, required = false,
+  if valid_602931 != nil:
+    section.add "X-Amz-Credential", valid_602931
+  var valid_602932 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602932 = validateParameter(valid_602932, JString, required = false,
                                  default = nil)
-  if valid_600910 != nil:
-    section.add "X-Amz-Signature", valid_600910
-  var valid_600911 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600911 = validateParameter(valid_600911, JString, required = false,
+  if valid_602932 != nil:
+    section.add "X-Amz-Security-Token", valid_602932
+  var valid_602933 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602933 = validateParameter(valid_602933, JString, required = false,
                                  default = nil)
-  if valid_600911 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600911
-  var valid_600912 = header.getOrDefault("X-Amz-Credential")
-  valid_600912 = validateParameter(valid_600912, JString, required = false,
+  if valid_602933 != nil:
+    section.add "X-Amz-Algorithm", valid_602933
+  var valid_602934 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602934 = validateParameter(valid_602934, JString, required = false,
                                  default = nil)
-  if valid_600912 != nil:
-    section.add "X-Amz-Credential", valid_600912
+  if valid_602934 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602934
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600913: Call_GetSetLoadBalancerListenerSSLCertificate_600898;
+proc call*(call_602935: Call_GetSetLoadBalancerListenerSSLCertificate_602920;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Sets the certificate that terminates the specified listener's SSL connections. The specified certificate replaces any prior certificate that was used on the same load balancer and port.</p> <p>For more information about updating your SSL certificate, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-update-ssl-cert.html">Replace the SSL Certificate for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600913.validator(path, query, header, formData, body)
-  let scheme = call_600913.pickScheme
+  let valid = call_602935.validator(path, query, header, formData, body)
+  let scheme = call_602935.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600913.url(scheme.get, call_600913.host, call_600913.base,
-                         call_600913.route, valid.getOrDefault("path"),
+  let url = call_602935.url(scheme.get, call_602935.host, call_602935.base,
+                         call_602935.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600913, url, valid)
+  result = atozHook(call_602935, url, valid)
 
-proc call*(call_600914: Call_GetSetLoadBalancerListenerSSLCertificate_600898;
-          LoadBalancerName: string; SSLCertificateId: string; LoadBalancerPort: int;
+proc call*(call_602936: Call_GetSetLoadBalancerListenerSSLCertificate_602920;
+          LoadBalancerPort: int; LoadBalancerName: string; SSLCertificateId: string;
           Action: string = "SetLoadBalancerListenerSSLCertificate";
           Version: string = "2012-06-01"): Recallable =
   ## getSetLoadBalancerListenerSSLCertificate
   ## <p>Sets the certificate that terminates the specified listener's SSL connections. The specified certificate replaces any prior certificate that was used on the same load balancer and port.</p> <p>For more information about updating your SSL certificate, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-update-ssl-cert.html">Replace the SSL Certificate for Your Load Balancer</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
-  ##   SSLCertificateId: string (required)
-  ##                   : The Amazon Resource Name (ARN) of the SSL certificate.
   ##   LoadBalancerPort: int (required)
   ##                   : The port that uses the specified SSL certificate.
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_600915 = newJObject()
-  add(query_600915, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600915, "SSLCertificateId", newJString(SSLCertificateId))
-  add(query_600915, "LoadBalancerPort", newJInt(LoadBalancerPort))
-  add(query_600915, "Action", newJString(Action))
-  add(query_600915, "Version", newJString(Version))
-  result = call_600914.call(nil, query_600915, nil, nil, nil)
+  ##   SSLCertificateId: string (required)
+  ##                   : The Amazon Resource Name (ARN) of the SSL certificate.
+  var query_602937 = newJObject()
+  add(query_602937, "LoadBalancerPort", newJInt(LoadBalancerPort))
+  add(query_602937, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602937, "Action", newJString(Action))
+  add(query_602937, "Version", newJString(Version))
+  add(query_602937, "SSLCertificateId", newJString(SSLCertificateId))
+  result = call_602936.call(nil, query_602937, nil, nil, nil)
 
-var getSetLoadBalancerListenerSSLCertificate* = Call_GetSetLoadBalancerListenerSSLCertificate_600898(
+var getSetLoadBalancerListenerSSLCertificate* = Call_GetSetLoadBalancerListenerSSLCertificate_602920(
     name: "getSetLoadBalancerListenerSSLCertificate", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=SetLoadBalancerListenerSSLCertificate",
-    validator: validate_GetSetLoadBalancerListenerSSLCertificate_600899,
-    base: "/", url: url_GetSetLoadBalancerListenerSSLCertificate_600900,
+    validator: validate_GetSetLoadBalancerListenerSSLCertificate_602921,
+    base: "/", url: url_GetSetLoadBalancerListenerSSLCertificate_602922,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSetLoadBalancerPoliciesForBackendServer_600953 = ref object of OpenApiRestCall_599368
-proc url_PostSetLoadBalancerPoliciesForBackendServer_600955(protocol: Scheme;
+  Call_PostSetLoadBalancerPoliciesForBackendServer_602975 = ref object of OpenApiRestCall_601389
+proc url_PostSetLoadBalancerPoliciesForBackendServer_602977(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostSetLoadBalancerPoliciesForBackendServer_600954(path: JsonNode;
+proc validate_PostSetLoadBalancerPoliciesForBackendServer_602976(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Replaces the set of policies associated with the specified port on which the EC2 instance is listening with a new set of policies. At this time, only the back-end server authentication policy type can be applied to the instance ports; this policy type is composed of multiple public key policies.</p> <p>Each time you use <code>SetLoadBalancerPoliciesForBackendServer</code> to enable the policies, use the <code>PolicyNames</code> parameter to list the policies that you want to enable.</p> <p>You can use <a>DescribeLoadBalancers</a> or <a>DescribeLoadBalancerPolicies</a> to verify that the policy is associated with the EC2 instance.</p> <p>For more information about enabling back-end instance authentication, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-create-https-ssl-load-balancer.html#configure_backendauth_clt">Configure Back-end Instance Authentication</a> in the <i>Classic Load Balancers Guide</i>. For more information about Proxy Protocol, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-proxy-protocol.html">Configure Proxy Protocol Support</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -8238,148 +8290,149 @@ proc validate_PostSetLoadBalancerPoliciesForBackendServer_600954(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600956 = query.getOrDefault("Action")
-  valid_600956 = validateParameter(valid_600956, JString, required = true, default = newJString(
+  var valid_602978 = query.getOrDefault("Action")
+  valid_602978 = validateParameter(valid_602978, JString, required = true, default = newJString(
       "SetLoadBalancerPoliciesForBackendServer"))
-  if valid_600956 != nil:
-    section.add "Action", valid_600956
-  var valid_600957 = query.getOrDefault("Version")
-  valid_600957 = validateParameter(valid_600957, JString, required = true,
+  if valid_602978 != nil:
+    section.add "Action", valid_602978
+  var valid_602979 = query.getOrDefault("Version")
+  valid_602979 = validateParameter(valid_602979, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600957 != nil:
-    section.add "Version", valid_600957
+  if valid_602979 != nil:
+    section.add "Version", valid_602979
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600958 = header.getOrDefault("X-Amz-Date")
-  valid_600958 = validateParameter(valid_600958, JString, required = false,
+  var valid_602980 = header.getOrDefault("X-Amz-Signature")
+  valid_602980 = validateParameter(valid_602980, JString, required = false,
                                  default = nil)
-  if valid_600958 != nil:
-    section.add "X-Amz-Date", valid_600958
-  var valid_600959 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600959 = validateParameter(valid_600959, JString, required = false,
+  if valid_602980 != nil:
+    section.add "X-Amz-Signature", valid_602980
+  var valid_602981 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602981 = validateParameter(valid_602981, JString, required = false,
                                  default = nil)
-  if valid_600959 != nil:
-    section.add "X-Amz-Security-Token", valid_600959
-  var valid_600960 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600960 = validateParameter(valid_600960, JString, required = false,
+  if valid_602981 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602981
+  var valid_602982 = header.getOrDefault("X-Amz-Date")
+  valid_602982 = validateParameter(valid_602982, JString, required = false,
                                  default = nil)
-  if valid_600960 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600960
-  var valid_600961 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600961 = validateParameter(valid_600961, JString, required = false,
+  if valid_602982 != nil:
+    section.add "X-Amz-Date", valid_602982
+  var valid_602983 = header.getOrDefault("X-Amz-Credential")
+  valid_602983 = validateParameter(valid_602983, JString, required = false,
                                  default = nil)
-  if valid_600961 != nil:
-    section.add "X-Amz-Algorithm", valid_600961
-  var valid_600962 = header.getOrDefault("X-Amz-Signature")
-  valid_600962 = validateParameter(valid_600962, JString, required = false,
+  if valid_602983 != nil:
+    section.add "X-Amz-Credential", valid_602983
+  var valid_602984 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602984 = validateParameter(valid_602984, JString, required = false,
                                  default = nil)
-  if valid_600962 != nil:
-    section.add "X-Amz-Signature", valid_600962
-  var valid_600963 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600963 = validateParameter(valid_600963, JString, required = false,
+  if valid_602984 != nil:
+    section.add "X-Amz-Security-Token", valid_602984
+  var valid_602985 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602985 = validateParameter(valid_602985, JString, required = false,
                                  default = nil)
-  if valid_600963 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600963
-  var valid_600964 = header.getOrDefault("X-Amz-Credential")
-  valid_600964 = validateParameter(valid_600964, JString, required = false,
+  if valid_602985 != nil:
+    section.add "X-Amz-Algorithm", valid_602985
+  var valid_602986 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602986 = validateParameter(valid_602986, JString, required = false,
                                  default = nil)
-  if valid_600964 != nil:
-    section.add "X-Amz-Credential", valid_600964
+  if valid_602986 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602986
   result.add "header", section
   ## parameters in `formData` object:
   ##   PolicyNames: JArray (required)
   ##              : The names of the policies. If the list is empty, then all current polices are removed from the EC2 instance.
-  ##   InstancePort: JInt (required)
-  ##               : The port number associated with the EC2 instance.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
+  ##   InstancePort: JInt (required)
+  ##               : The port number associated with the EC2 instance.
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `PolicyNames` field"
-  var valid_600965 = formData.getOrDefault("PolicyNames")
-  valid_600965 = validateParameter(valid_600965, JArray, required = true, default = nil)
-  if valid_600965 != nil:
-    section.add "PolicyNames", valid_600965
-  var valid_600966 = formData.getOrDefault("InstancePort")
-  valid_600966 = validateParameter(valid_600966, JInt, required = true, default = nil)
-  if valid_600966 != nil:
-    section.add "InstancePort", valid_600966
-  var valid_600967 = formData.getOrDefault("LoadBalancerName")
-  valid_600967 = validateParameter(valid_600967, JString, required = true,
+  var valid_602987 = formData.getOrDefault("PolicyNames")
+  valid_602987 = validateParameter(valid_602987, JArray, required = true, default = nil)
+  if valid_602987 != nil:
+    section.add "PolicyNames", valid_602987
+  var valid_602988 = formData.getOrDefault("LoadBalancerName")
+  valid_602988 = validateParameter(valid_602988, JString, required = true,
                                  default = nil)
-  if valid_600967 != nil:
-    section.add "LoadBalancerName", valid_600967
+  if valid_602988 != nil:
+    section.add "LoadBalancerName", valid_602988
+  var valid_602989 = formData.getOrDefault("InstancePort")
+  valid_602989 = validateParameter(valid_602989, JInt, required = true, default = nil)
+  if valid_602989 != nil:
+    section.add "InstancePort", valid_602989
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600968: Call_PostSetLoadBalancerPoliciesForBackendServer_600953;
+proc call*(call_602990: Call_PostSetLoadBalancerPoliciesForBackendServer_602975;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Replaces the set of policies associated with the specified port on which the EC2 instance is listening with a new set of policies. At this time, only the back-end server authentication policy type can be applied to the instance ports; this policy type is composed of multiple public key policies.</p> <p>Each time you use <code>SetLoadBalancerPoliciesForBackendServer</code> to enable the policies, use the <code>PolicyNames</code> parameter to list the policies that you want to enable.</p> <p>You can use <a>DescribeLoadBalancers</a> or <a>DescribeLoadBalancerPolicies</a> to verify that the policy is associated with the EC2 instance.</p> <p>For more information about enabling back-end instance authentication, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-create-https-ssl-load-balancer.html#configure_backendauth_clt">Configure Back-end Instance Authentication</a> in the <i>Classic Load Balancers Guide</i>. For more information about Proxy Protocol, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-proxy-protocol.html">Configure Proxy Protocol Support</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600968.validator(path, query, header, formData, body)
-  let scheme = call_600968.pickScheme
+  let valid = call_602990.validator(path, query, header, formData, body)
+  let scheme = call_602990.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600968.url(scheme.get, call_600968.host, call_600968.base,
-                         call_600968.route, valid.getOrDefault("path"),
+  let url = call_602990.url(scheme.get, call_602990.host, call_602990.base,
+                         call_602990.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600968, url, valid)
+  result = atozHook(call_602990, url, valid)
 
-proc call*(call_600969: Call_PostSetLoadBalancerPoliciesForBackendServer_600953;
-          PolicyNames: JsonNode; InstancePort: int; LoadBalancerName: string;
+proc call*(call_602991: Call_PostSetLoadBalancerPoliciesForBackendServer_602975;
+          PolicyNames: JsonNode; LoadBalancerName: string; InstancePort: int;
           Action: string = "SetLoadBalancerPoliciesForBackendServer";
           Version: string = "2012-06-01"): Recallable =
   ## postSetLoadBalancerPoliciesForBackendServer
   ## <p>Replaces the set of policies associated with the specified port on which the EC2 instance is listening with a new set of policies. At this time, only the back-end server authentication policy type can be applied to the instance ports; this policy type is composed of multiple public key policies.</p> <p>Each time you use <code>SetLoadBalancerPoliciesForBackendServer</code> to enable the policies, use the <code>PolicyNames</code> parameter to list the policies that you want to enable.</p> <p>You can use <a>DescribeLoadBalancers</a> or <a>DescribeLoadBalancerPolicies</a> to verify that the policy is associated with the EC2 instance.</p> <p>For more information about enabling back-end instance authentication, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-create-https-ssl-load-balancer.html#configure_backendauth_clt">Configure Back-end Instance Authentication</a> in the <i>Classic Load Balancers Guide</i>. For more information about Proxy Protocol, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-proxy-protocol.html">Configure Proxy Protocol Support</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ##   PolicyNames: JArray (required)
   ##              : The names of the policies. If the list is empty, then all current polices are removed from the EC2 instance.
-  ##   InstancePort: int (required)
-  ##               : The port number associated with the EC2 instance.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
+  ##   InstancePort: int (required)
+  ##               : The port number associated with the EC2 instance.
   ##   Version: string (required)
-  var query_600970 = newJObject()
-  var formData_600971 = newJObject()
+  var query_602992 = newJObject()
+  var formData_602993 = newJObject()
   if PolicyNames != nil:
-    formData_600971.add "PolicyNames", PolicyNames
-  add(formData_600971, "InstancePort", newJInt(InstancePort))
-  add(query_600970, "Action", newJString(Action))
-  add(formData_600971, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600970, "Version", newJString(Version))
-  result = call_600969.call(nil, query_600970, nil, formData_600971, nil)
+    formData_602993.add "PolicyNames", PolicyNames
+  add(formData_602993, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602992, "Action", newJString(Action))
+  add(formData_602993, "InstancePort", newJInt(InstancePort))
+  add(query_602992, "Version", newJString(Version))
+  result = call_602991.call(nil, query_602992, nil, formData_602993, nil)
 
-var postSetLoadBalancerPoliciesForBackendServer* = Call_PostSetLoadBalancerPoliciesForBackendServer_600953(
+var postSetLoadBalancerPoliciesForBackendServer* = Call_PostSetLoadBalancerPoliciesForBackendServer_602975(
     name: "postSetLoadBalancerPoliciesForBackendServer",
     meth: HttpMethod.HttpPost, host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=SetLoadBalancerPoliciesForBackendServer",
-    validator: validate_PostSetLoadBalancerPoliciesForBackendServer_600954,
-    base: "/", url: url_PostSetLoadBalancerPoliciesForBackendServer_600955,
+    validator: validate_PostSetLoadBalancerPoliciesForBackendServer_602976,
+    base: "/", url: url_PostSetLoadBalancerPoliciesForBackendServer_602977,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSetLoadBalancerPoliciesForBackendServer_600935 = ref object of OpenApiRestCall_599368
-proc url_GetSetLoadBalancerPoliciesForBackendServer_600937(protocol: Scheme;
+  Call_GetSetLoadBalancerPoliciesForBackendServer_602957 = ref object of OpenApiRestCall_601389
+proc url_GetSetLoadBalancerPoliciesForBackendServer_602959(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetSetLoadBalancerPoliciesForBackendServer_600936(path: JsonNode;
+proc validate_GetSetLoadBalancerPoliciesForBackendServer_602958(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Replaces the set of policies associated with the specified port on which the EC2 instance is listening with a new set of policies. At this time, only the back-end server authentication policy type can be applied to the instance ports; this policy type is composed of multiple public key policies.</p> <p>Each time you use <code>SetLoadBalancerPoliciesForBackendServer</code> to enable the policies, use the <code>PolicyNames</code> parameter to list the policies that you want to enable.</p> <p>You can use <a>DescribeLoadBalancers</a> or <a>DescribeLoadBalancerPolicies</a> to verify that the policy is associated with the EC2 instance.</p> <p>For more information about enabling back-end instance authentication, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-create-https-ssl-load-balancer.html#configure_backendauth_clt">Configure Back-end Instance Authentication</a> in the <i>Classic Load Balancers Guide</i>. For more information about Proxy Protocol, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-proxy-protocol.html">Configure Proxy Protocol Support</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -8388,149 +8441,150 @@ proc validate_GetSetLoadBalancerPoliciesForBackendServer_600936(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
+  ##   InstancePort: JInt (required)
+  ##               : The port number associated with the EC2 instance.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
   ##   Action: JString (required)
+  ##   Version: JString (required)
   ##   PolicyNames: JArray (required)
   ##              : The names of the policies. If the list is empty, then all current polices are removed from the EC2 instance.
-  ##   Version: JString (required)
-  ##   InstancePort: JInt (required)
-  ##               : The port number associated with the EC2 instance.
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600938 = query.getOrDefault("LoadBalancerName")
-  valid_600938 = validateParameter(valid_600938, JString, required = true,
+        "query argument is necessary due to required `InstancePort` field"
+  var valid_602960 = query.getOrDefault("InstancePort")
+  valid_602960 = validateParameter(valid_602960, JInt, required = true, default = nil)
+  if valid_602960 != nil:
+    section.add "InstancePort", valid_602960
+  var valid_602961 = query.getOrDefault("LoadBalancerName")
+  valid_602961 = validateParameter(valid_602961, JString, required = true,
                                  default = nil)
-  if valid_600938 != nil:
-    section.add "LoadBalancerName", valid_600938
-  var valid_600939 = query.getOrDefault("Action")
-  valid_600939 = validateParameter(valid_600939, JString, required = true, default = newJString(
+  if valid_602961 != nil:
+    section.add "LoadBalancerName", valid_602961
+  var valid_602962 = query.getOrDefault("Action")
+  valid_602962 = validateParameter(valid_602962, JString, required = true, default = newJString(
       "SetLoadBalancerPoliciesForBackendServer"))
-  if valid_600939 != nil:
-    section.add "Action", valid_600939
-  var valid_600940 = query.getOrDefault("PolicyNames")
-  valid_600940 = validateParameter(valid_600940, JArray, required = true, default = nil)
-  if valid_600940 != nil:
-    section.add "PolicyNames", valid_600940
-  var valid_600941 = query.getOrDefault("Version")
-  valid_600941 = validateParameter(valid_600941, JString, required = true,
+  if valid_602962 != nil:
+    section.add "Action", valid_602962
+  var valid_602963 = query.getOrDefault("Version")
+  valid_602963 = validateParameter(valid_602963, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600941 != nil:
-    section.add "Version", valid_600941
-  var valid_600942 = query.getOrDefault("InstancePort")
-  valid_600942 = validateParameter(valid_600942, JInt, required = true, default = nil)
-  if valid_600942 != nil:
-    section.add "InstancePort", valid_600942
+  if valid_602963 != nil:
+    section.add "Version", valid_602963
+  var valid_602964 = query.getOrDefault("PolicyNames")
+  valid_602964 = validateParameter(valid_602964, JArray, required = true, default = nil)
+  if valid_602964 != nil:
+    section.add "PolicyNames", valid_602964
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600943 = header.getOrDefault("X-Amz-Date")
-  valid_600943 = validateParameter(valid_600943, JString, required = false,
+  var valid_602965 = header.getOrDefault("X-Amz-Signature")
+  valid_602965 = validateParameter(valid_602965, JString, required = false,
                                  default = nil)
-  if valid_600943 != nil:
-    section.add "X-Amz-Date", valid_600943
-  var valid_600944 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600944 = validateParameter(valid_600944, JString, required = false,
+  if valid_602965 != nil:
+    section.add "X-Amz-Signature", valid_602965
+  var valid_602966 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602966 = validateParameter(valid_602966, JString, required = false,
                                  default = nil)
-  if valid_600944 != nil:
-    section.add "X-Amz-Security-Token", valid_600944
-  var valid_600945 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600945 = validateParameter(valid_600945, JString, required = false,
+  if valid_602966 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602966
+  var valid_602967 = header.getOrDefault("X-Amz-Date")
+  valid_602967 = validateParameter(valid_602967, JString, required = false,
                                  default = nil)
-  if valid_600945 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600945
-  var valid_600946 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600946 = validateParameter(valid_600946, JString, required = false,
+  if valid_602967 != nil:
+    section.add "X-Amz-Date", valid_602967
+  var valid_602968 = header.getOrDefault("X-Amz-Credential")
+  valid_602968 = validateParameter(valid_602968, JString, required = false,
                                  default = nil)
-  if valid_600946 != nil:
-    section.add "X-Amz-Algorithm", valid_600946
-  var valid_600947 = header.getOrDefault("X-Amz-Signature")
-  valid_600947 = validateParameter(valid_600947, JString, required = false,
+  if valid_602968 != nil:
+    section.add "X-Amz-Credential", valid_602968
+  var valid_602969 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602969 = validateParameter(valid_602969, JString, required = false,
                                  default = nil)
-  if valid_600947 != nil:
-    section.add "X-Amz-Signature", valid_600947
-  var valid_600948 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600948 = validateParameter(valid_600948, JString, required = false,
+  if valid_602969 != nil:
+    section.add "X-Amz-Security-Token", valid_602969
+  var valid_602970 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602970 = validateParameter(valid_602970, JString, required = false,
                                  default = nil)
-  if valid_600948 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600948
-  var valid_600949 = header.getOrDefault("X-Amz-Credential")
-  valid_600949 = validateParameter(valid_600949, JString, required = false,
+  if valid_602970 != nil:
+    section.add "X-Amz-Algorithm", valid_602970
+  var valid_602971 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602971 = validateParameter(valid_602971, JString, required = false,
                                  default = nil)
-  if valid_600949 != nil:
-    section.add "X-Amz-Credential", valid_600949
+  if valid_602971 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602971
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600950: Call_GetSetLoadBalancerPoliciesForBackendServer_600935;
+proc call*(call_602972: Call_GetSetLoadBalancerPoliciesForBackendServer_602957;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Replaces the set of policies associated with the specified port on which the EC2 instance is listening with a new set of policies. At this time, only the back-end server authentication policy type can be applied to the instance ports; this policy type is composed of multiple public key policies.</p> <p>Each time you use <code>SetLoadBalancerPoliciesForBackendServer</code> to enable the policies, use the <code>PolicyNames</code> parameter to list the policies that you want to enable.</p> <p>You can use <a>DescribeLoadBalancers</a> or <a>DescribeLoadBalancerPolicies</a> to verify that the policy is associated with the EC2 instance.</p> <p>For more information about enabling back-end instance authentication, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-create-https-ssl-load-balancer.html#configure_backendauth_clt">Configure Back-end Instance Authentication</a> in the <i>Classic Load Balancers Guide</i>. For more information about Proxy Protocol, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-proxy-protocol.html">Configure Proxy Protocol Support</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600950.validator(path, query, header, formData, body)
-  let scheme = call_600950.pickScheme
+  let valid = call_602972.validator(path, query, header, formData, body)
+  let scheme = call_602972.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600950.url(scheme.get, call_600950.host, call_600950.base,
-                         call_600950.route, valid.getOrDefault("path"),
+  let url = call_602972.url(scheme.get, call_602972.host, call_602972.base,
+                         call_602972.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600950, url, valid)
+  result = atozHook(call_602972, url, valid)
 
-proc call*(call_600951: Call_GetSetLoadBalancerPoliciesForBackendServer_600935;
-          LoadBalancerName: string; PolicyNames: JsonNode; InstancePort: int;
+proc call*(call_602973: Call_GetSetLoadBalancerPoliciesForBackendServer_602957;
+          InstancePort: int; LoadBalancerName: string; PolicyNames: JsonNode;
           Action: string = "SetLoadBalancerPoliciesForBackendServer";
           Version: string = "2012-06-01"): Recallable =
   ## getSetLoadBalancerPoliciesForBackendServer
   ## <p>Replaces the set of policies associated with the specified port on which the EC2 instance is listening with a new set of policies. At this time, only the back-end server authentication policy type can be applied to the instance ports; this policy type is composed of multiple public key policies.</p> <p>Each time you use <code>SetLoadBalancerPoliciesForBackendServer</code> to enable the policies, use the <code>PolicyNames</code> parameter to list the policies that you want to enable.</p> <p>You can use <a>DescribeLoadBalancers</a> or <a>DescribeLoadBalancerPolicies</a> to verify that the policy is associated with the EC2 instance.</p> <p>For more information about enabling back-end instance authentication, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-create-https-ssl-load-balancer.html#configure_backendauth_clt">Configure Back-end Instance Authentication</a> in the <i>Classic Load Balancers Guide</i>. For more information about Proxy Protocol, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/enable-proxy-protocol.html">Configure Proxy Protocol Support</a> in the <i>Classic Load Balancers Guide</i>.</p>
+  ##   InstancePort: int (required)
+  ##               : The port number associated with the EC2 instance.
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
   ##   Action: string (required)
+  ##   Version: string (required)
   ##   PolicyNames: JArray (required)
   ##              : The names of the policies. If the list is empty, then all current polices are removed from the EC2 instance.
-  ##   Version: string (required)
-  ##   InstancePort: int (required)
-  ##               : The port number associated with the EC2 instance.
-  var query_600952 = newJObject()
-  add(query_600952, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600952, "Action", newJString(Action))
+  var query_602974 = newJObject()
+  add(query_602974, "InstancePort", newJInt(InstancePort))
+  add(query_602974, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_602974, "Action", newJString(Action))
+  add(query_602974, "Version", newJString(Version))
   if PolicyNames != nil:
-    query_600952.add "PolicyNames", PolicyNames
-  add(query_600952, "Version", newJString(Version))
-  add(query_600952, "InstancePort", newJInt(InstancePort))
-  result = call_600951.call(nil, query_600952, nil, nil, nil)
+    query_602974.add "PolicyNames", PolicyNames
+  result = call_602973.call(nil, query_602974, nil, nil, nil)
 
-var getSetLoadBalancerPoliciesForBackendServer* = Call_GetSetLoadBalancerPoliciesForBackendServer_600935(
+var getSetLoadBalancerPoliciesForBackendServer* = Call_GetSetLoadBalancerPoliciesForBackendServer_602957(
     name: "getSetLoadBalancerPoliciesForBackendServer", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=SetLoadBalancerPoliciesForBackendServer",
-    validator: validate_GetSetLoadBalancerPoliciesForBackendServer_600936,
-    base: "/", url: url_GetSetLoadBalancerPoliciesForBackendServer_600937,
+    validator: validate_GetSetLoadBalancerPoliciesForBackendServer_602958,
+    base: "/", url: url_GetSetLoadBalancerPoliciesForBackendServer_602959,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSetLoadBalancerPoliciesOfListener_600990 = ref object of OpenApiRestCall_599368
-proc url_PostSetLoadBalancerPoliciesOfListener_600992(protocol: Scheme;
+  Call_PostSetLoadBalancerPoliciesOfListener_603012 = ref object of OpenApiRestCall_601389
+proc url_PostSetLoadBalancerPoliciesOfListener_603014(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PostSetLoadBalancerPoliciesOfListener_600991(path: JsonNode;
+proc validate_PostSetLoadBalancerPoliciesOfListener_603013(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Replaces the current set of policies for the specified load balancer port with the specified set of policies.</p> <p>To enable back-end server authentication, use <a>SetLoadBalancerPoliciesForBackendServer</a>.</p> <p>For more information about setting policies, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/ssl-config-update.html">Update the SSL Negotiation Configuration</a>, <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a>, and <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -8543,147 +8597,149 @@ proc validate_PostSetLoadBalancerPoliciesOfListener_600991(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `Action` field"
-  var valid_600993 = query.getOrDefault("Action")
-  valid_600993 = validateParameter(valid_600993, JString, required = true, default = newJString(
+  var valid_603015 = query.getOrDefault("Action")
+  valid_603015 = validateParameter(valid_603015, JString, required = true, default = newJString(
       "SetLoadBalancerPoliciesOfListener"))
-  if valid_600993 != nil:
-    section.add "Action", valid_600993
-  var valid_600994 = query.getOrDefault("Version")
-  valid_600994 = validateParameter(valid_600994, JString, required = true,
+  if valid_603015 != nil:
+    section.add "Action", valid_603015
+  var valid_603016 = query.getOrDefault("Version")
+  valid_603016 = validateParameter(valid_603016, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600994 != nil:
-    section.add "Version", valid_600994
+  if valid_603016 != nil:
+    section.add "Version", valid_603016
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600995 = header.getOrDefault("X-Amz-Date")
-  valid_600995 = validateParameter(valid_600995, JString, required = false,
+  var valid_603017 = header.getOrDefault("X-Amz-Signature")
+  valid_603017 = validateParameter(valid_603017, JString, required = false,
                                  default = nil)
-  if valid_600995 != nil:
-    section.add "X-Amz-Date", valid_600995
-  var valid_600996 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600996 = validateParameter(valid_600996, JString, required = false,
+  if valid_603017 != nil:
+    section.add "X-Amz-Signature", valid_603017
+  var valid_603018 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603018 = validateParameter(valid_603018, JString, required = false,
                                  default = nil)
-  if valid_600996 != nil:
-    section.add "X-Amz-Security-Token", valid_600996
-  var valid_600997 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600997 = validateParameter(valid_600997, JString, required = false,
+  if valid_603018 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603018
+  var valid_603019 = header.getOrDefault("X-Amz-Date")
+  valid_603019 = validateParameter(valid_603019, JString, required = false,
                                  default = nil)
-  if valid_600997 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600997
-  var valid_600998 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600998 = validateParameter(valid_600998, JString, required = false,
+  if valid_603019 != nil:
+    section.add "X-Amz-Date", valid_603019
+  var valid_603020 = header.getOrDefault("X-Amz-Credential")
+  valid_603020 = validateParameter(valid_603020, JString, required = false,
                                  default = nil)
-  if valid_600998 != nil:
-    section.add "X-Amz-Algorithm", valid_600998
-  var valid_600999 = header.getOrDefault("X-Amz-Signature")
-  valid_600999 = validateParameter(valid_600999, JString, required = false,
+  if valid_603020 != nil:
+    section.add "X-Amz-Credential", valid_603020
+  var valid_603021 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603021 = validateParameter(valid_603021, JString, required = false,
                                  default = nil)
-  if valid_600999 != nil:
-    section.add "X-Amz-Signature", valid_600999
-  var valid_601000 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601000 = validateParameter(valid_601000, JString, required = false,
+  if valid_603021 != nil:
+    section.add "X-Amz-Security-Token", valid_603021
+  var valid_603022 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603022 = validateParameter(valid_603022, JString, required = false,
                                  default = nil)
-  if valid_601000 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601000
-  var valid_601001 = header.getOrDefault("X-Amz-Credential")
-  valid_601001 = validateParameter(valid_601001, JString, required = false,
+  if valid_603022 != nil:
+    section.add "X-Amz-Algorithm", valid_603022
+  var valid_603023 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603023 = validateParameter(valid_603023, JString, required = false,
                                  default = nil)
-  if valid_601001 != nil:
-    section.add "X-Amz-Credential", valid_601001
+  if valid_603023 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603023
   result.add "header", section
   ## parameters in `formData` object:
-  ##   LoadBalancerPort: JInt (required)
-  ##                   : The external port of the load balancer.
   ##   PolicyNames: JArray (required)
   ##              : The names of the policies. This list must include all policies to be enabled. If you omit a policy that is currently enabled, it is disabled. If the list is empty, all current policies are disabled.
   ##   LoadBalancerName: JString (required)
   ##                   : The name of the load balancer.
+  ##   LoadBalancerPort: JInt (required)
+  ##                   : The external port of the load balancer.
   section = newJObject()
-  assert formData != nil, "formData argument is necessary due to required `LoadBalancerPort` field"
-  var valid_601002 = formData.getOrDefault("LoadBalancerPort")
-  valid_601002 = validateParameter(valid_601002, JInt, required = true, default = nil)
-  if valid_601002 != nil:
-    section.add "LoadBalancerPort", valid_601002
-  var valid_601003 = formData.getOrDefault("PolicyNames")
-  valid_601003 = validateParameter(valid_601003, JArray, required = true, default = nil)
-  if valid_601003 != nil:
-    section.add "PolicyNames", valid_601003
-  var valid_601004 = formData.getOrDefault("LoadBalancerName")
-  valid_601004 = validateParameter(valid_601004, JString, required = true,
+  assert formData != nil,
+        "formData argument is necessary due to required `PolicyNames` field"
+  var valid_603024 = formData.getOrDefault("PolicyNames")
+  valid_603024 = validateParameter(valid_603024, JArray, required = true, default = nil)
+  if valid_603024 != nil:
+    section.add "PolicyNames", valid_603024
+  var valid_603025 = formData.getOrDefault("LoadBalancerName")
+  valid_603025 = validateParameter(valid_603025, JString, required = true,
                                  default = nil)
-  if valid_601004 != nil:
-    section.add "LoadBalancerName", valid_601004
+  if valid_603025 != nil:
+    section.add "LoadBalancerName", valid_603025
+  var valid_603026 = formData.getOrDefault("LoadBalancerPort")
+  valid_603026 = validateParameter(valid_603026, JInt, required = true, default = nil)
+  if valid_603026 != nil:
+    section.add "LoadBalancerPort", valid_603026
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601005: Call_PostSetLoadBalancerPoliciesOfListener_600990;
+proc call*(call_603027: Call_PostSetLoadBalancerPoliciesOfListener_603012;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Replaces the current set of policies for the specified load balancer port with the specified set of policies.</p> <p>To enable back-end server authentication, use <a>SetLoadBalancerPoliciesForBackendServer</a>.</p> <p>For more information about setting policies, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/ssl-config-update.html">Update the SSL Negotiation Configuration</a>, <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a>, and <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_601005.validator(path, query, header, formData, body)
-  let scheme = call_601005.pickScheme
+  let valid = call_603027.validator(path, query, header, formData, body)
+  let scheme = call_603027.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601005.url(scheme.get, call_601005.host, call_601005.base,
-                         call_601005.route, valid.getOrDefault("path"),
+  let url = call_603027.url(scheme.get, call_603027.host, call_603027.base,
+                         call_603027.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601005, url, valid)
+  result = atozHook(call_603027, url, valid)
 
-proc call*(call_601006: Call_PostSetLoadBalancerPoliciesOfListener_600990;
-          LoadBalancerPort: int; PolicyNames: JsonNode; LoadBalancerName: string;
+proc call*(call_603028: Call_PostSetLoadBalancerPoliciesOfListener_603012;
+          PolicyNames: JsonNode; LoadBalancerName: string; LoadBalancerPort: int;
           Action: string = "SetLoadBalancerPoliciesOfListener";
           Version: string = "2012-06-01"): Recallable =
   ## postSetLoadBalancerPoliciesOfListener
   ## <p>Replaces the current set of policies for the specified load balancer port with the specified set of policies.</p> <p>To enable back-end server authentication, use <a>SetLoadBalancerPoliciesForBackendServer</a>.</p> <p>For more information about setting policies, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/ssl-config-update.html">Update the SSL Negotiation Configuration</a>, <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a>, and <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerPort: int (required)
-  ##                   : The external port of the load balancer.
   ##   PolicyNames: JArray (required)
   ##              : The names of the policies. This list must include all policies to be enabled. If you omit a policy that is currently enabled, it is disabled. If the list is empty, all current policies are disabled.
-  ##   Action: string (required)
   ##   LoadBalancerName: string (required)
   ##                   : The name of the load balancer.
+  ##   Action: string (required)
   ##   Version: string (required)
-  var query_601007 = newJObject()
-  var formData_601008 = newJObject()
-  add(formData_601008, "LoadBalancerPort", newJInt(LoadBalancerPort))
+  ##   LoadBalancerPort: int (required)
+  ##                   : The external port of the load balancer.
+  var query_603029 = newJObject()
+  var formData_603030 = newJObject()
   if PolicyNames != nil:
-    formData_601008.add "PolicyNames", PolicyNames
-  add(query_601007, "Action", newJString(Action))
-  add(formData_601008, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_601007, "Version", newJString(Version))
-  result = call_601006.call(nil, query_601007, nil, formData_601008, nil)
+    formData_603030.add "PolicyNames", PolicyNames
+  add(formData_603030, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_603029, "Action", newJString(Action))
+  add(query_603029, "Version", newJString(Version))
+  add(formData_603030, "LoadBalancerPort", newJInt(LoadBalancerPort))
+  result = call_603028.call(nil, query_603029, nil, formData_603030, nil)
 
-var postSetLoadBalancerPoliciesOfListener* = Call_PostSetLoadBalancerPoliciesOfListener_600990(
+var postSetLoadBalancerPoliciesOfListener* = Call_PostSetLoadBalancerPoliciesOfListener_603012(
     name: "postSetLoadBalancerPoliciesOfListener", meth: HttpMethod.HttpPost,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=SetLoadBalancerPoliciesOfListener",
-    validator: validate_PostSetLoadBalancerPoliciesOfListener_600991, base: "/",
-    url: url_PostSetLoadBalancerPoliciesOfListener_600992,
+    validator: validate_PostSetLoadBalancerPoliciesOfListener_603013, base: "/",
+    url: url_PostSetLoadBalancerPoliciesOfListener_603014,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSetLoadBalancerPoliciesOfListener_600972 = ref object of OpenApiRestCall_599368
-proc url_GetSetLoadBalancerPoliciesOfListener_600974(protocol: Scheme;
+  Call_GetSetLoadBalancerPoliciesOfListener_602994 = ref object of OpenApiRestCall_601389
+proc url_GetSetLoadBalancerPoliciesOfListener_602996(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetSetLoadBalancerPoliciesOfListener_600973(path: JsonNode;
+proc validate_GetSetLoadBalancerPoliciesOfListener_602995(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Replaces the current set of policies for the specified load balancer port with the specified set of policies.</p> <p>To enable back-end server authentication, use <a>SetLoadBalancerPoliciesForBackendServer</a>.</p> <p>For more information about setting policies, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/ssl-config-update.html">Update the SSL Negotiation Configuration</a>, <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a>, and <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
@@ -8692,134 +8748,134 @@ proc validate_GetSetLoadBalancerPoliciesOfListener_600973(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   LoadBalancerName: JString (required)
-  ##                   : The name of the load balancer.
   ##   LoadBalancerPort: JInt (required)
   ##                   : The external port of the load balancer.
+  ##   LoadBalancerName: JString (required)
+  ##                   : The name of the load balancer.
   ##   Action: JString (required)
+  ##   Version: JString (required)
   ##   PolicyNames: JArray (required)
   ##              : The names of the policies. This list must include all policies to be enabled. If you omit a policy that is currently enabled, it is disabled. If the list is empty, all current policies are disabled.
-  ##   Version: JString (required)
   section = newJObject()
   assert query != nil,
-        "query argument is necessary due to required `LoadBalancerName` field"
-  var valid_600975 = query.getOrDefault("LoadBalancerName")
-  valid_600975 = validateParameter(valid_600975, JString, required = true,
+        "query argument is necessary due to required `LoadBalancerPort` field"
+  var valid_602997 = query.getOrDefault("LoadBalancerPort")
+  valid_602997 = validateParameter(valid_602997, JInt, required = true, default = nil)
+  if valid_602997 != nil:
+    section.add "LoadBalancerPort", valid_602997
+  var valid_602998 = query.getOrDefault("LoadBalancerName")
+  valid_602998 = validateParameter(valid_602998, JString, required = true,
                                  default = nil)
-  if valid_600975 != nil:
-    section.add "LoadBalancerName", valid_600975
-  var valid_600976 = query.getOrDefault("LoadBalancerPort")
-  valid_600976 = validateParameter(valid_600976, JInt, required = true, default = nil)
-  if valid_600976 != nil:
-    section.add "LoadBalancerPort", valid_600976
-  var valid_600977 = query.getOrDefault("Action")
-  valid_600977 = validateParameter(valid_600977, JString, required = true, default = newJString(
+  if valid_602998 != nil:
+    section.add "LoadBalancerName", valid_602998
+  var valid_602999 = query.getOrDefault("Action")
+  valid_602999 = validateParameter(valid_602999, JString, required = true, default = newJString(
       "SetLoadBalancerPoliciesOfListener"))
-  if valid_600977 != nil:
-    section.add "Action", valid_600977
-  var valid_600978 = query.getOrDefault("PolicyNames")
-  valid_600978 = validateParameter(valid_600978, JArray, required = true, default = nil)
-  if valid_600978 != nil:
-    section.add "PolicyNames", valid_600978
-  var valid_600979 = query.getOrDefault("Version")
-  valid_600979 = validateParameter(valid_600979, JString, required = true,
+  if valid_602999 != nil:
+    section.add "Action", valid_602999
+  var valid_603000 = query.getOrDefault("Version")
+  valid_603000 = validateParameter(valid_603000, JString, required = true,
                                  default = newJString("2012-06-01"))
-  if valid_600979 != nil:
-    section.add "Version", valid_600979
+  if valid_603000 != nil:
+    section.add "Version", valid_603000
+  var valid_603001 = query.getOrDefault("PolicyNames")
+  valid_603001 = validateParameter(valid_603001, JArray, required = true, default = nil)
+  if valid_603001 != nil:
+    section.add "PolicyNames", valid_603001
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600980 = header.getOrDefault("X-Amz-Date")
-  valid_600980 = validateParameter(valid_600980, JString, required = false,
+  var valid_603002 = header.getOrDefault("X-Amz-Signature")
+  valid_603002 = validateParameter(valid_603002, JString, required = false,
                                  default = nil)
-  if valid_600980 != nil:
-    section.add "X-Amz-Date", valid_600980
-  var valid_600981 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600981 = validateParameter(valid_600981, JString, required = false,
+  if valid_603002 != nil:
+    section.add "X-Amz-Signature", valid_603002
+  var valid_603003 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_603003 = validateParameter(valid_603003, JString, required = false,
                                  default = nil)
-  if valid_600981 != nil:
-    section.add "X-Amz-Security-Token", valid_600981
-  var valid_600982 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600982 = validateParameter(valid_600982, JString, required = false,
+  if valid_603003 != nil:
+    section.add "X-Amz-Content-Sha256", valid_603003
+  var valid_603004 = header.getOrDefault("X-Amz-Date")
+  valid_603004 = validateParameter(valid_603004, JString, required = false,
                                  default = nil)
-  if valid_600982 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600982
-  var valid_600983 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600983 = validateParameter(valid_600983, JString, required = false,
+  if valid_603004 != nil:
+    section.add "X-Amz-Date", valid_603004
+  var valid_603005 = header.getOrDefault("X-Amz-Credential")
+  valid_603005 = validateParameter(valid_603005, JString, required = false,
                                  default = nil)
-  if valid_600983 != nil:
-    section.add "X-Amz-Algorithm", valid_600983
-  var valid_600984 = header.getOrDefault("X-Amz-Signature")
-  valid_600984 = validateParameter(valid_600984, JString, required = false,
+  if valid_603005 != nil:
+    section.add "X-Amz-Credential", valid_603005
+  var valid_603006 = header.getOrDefault("X-Amz-Security-Token")
+  valid_603006 = validateParameter(valid_603006, JString, required = false,
                                  default = nil)
-  if valid_600984 != nil:
-    section.add "X-Amz-Signature", valid_600984
-  var valid_600985 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600985 = validateParameter(valid_600985, JString, required = false,
+  if valid_603006 != nil:
+    section.add "X-Amz-Security-Token", valid_603006
+  var valid_603007 = header.getOrDefault("X-Amz-Algorithm")
+  valid_603007 = validateParameter(valid_603007, JString, required = false,
                                  default = nil)
-  if valid_600985 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600985
-  var valid_600986 = header.getOrDefault("X-Amz-Credential")
-  valid_600986 = validateParameter(valid_600986, JString, required = false,
+  if valid_603007 != nil:
+    section.add "X-Amz-Algorithm", valid_603007
+  var valid_603008 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_603008 = validateParameter(valid_603008, JString, required = false,
                                  default = nil)
-  if valid_600986 != nil:
-    section.add "X-Amz-Credential", valid_600986
+  if valid_603008 != nil:
+    section.add "X-Amz-SignedHeaders", valid_603008
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_600987: Call_GetSetLoadBalancerPoliciesOfListener_600972;
+proc call*(call_603009: Call_GetSetLoadBalancerPoliciesOfListener_602994;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Replaces the current set of policies for the specified load balancer port with the specified set of policies.</p> <p>To enable back-end server authentication, use <a>SetLoadBalancerPoliciesForBackendServer</a>.</p> <p>For more information about setting policies, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/ssl-config-update.html">Update the SSL Negotiation Configuration</a>, <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a>, and <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
   ## 
-  let valid = call_600987.validator(path, query, header, formData, body)
-  let scheme = call_600987.pickScheme
+  let valid = call_603009.validator(path, query, header, formData, body)
+  let scheme = call_603009.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600987.url(scheme.get, call_600987.host, call_600987.base,
-                         call_600987.route, valid.getOrDefault("path"),
+  let url = call_603009.url(scheme.get, call_603009.host, call_603009.base,
+                         call_603009.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600987, url, valid)
+  result = atozHook(call_603009, url, valid)
 
-proc call*(call_600988: Call_GetSetLoadBalancerPoliciesOfListener_600972;
-          LoadBalancerName: string; LoadBalancerPort: int; PolicyNames: JsonNode;
+proc call*(call_603010: Call_GetSetLoadBalancerPoliciesOfListener_602994;
+          LoadBalancerPort: int; LoadBalancerName: string; PolicyNames: JsonNode;
           Action: string = "SetLoadBalancerPoliciesOfListener";
           Version: string = "2012-06-01"): Recallable =
   ## getSetLoadBalancerPoliciesOfListener
   ## <p>Replaces the current set of policies for the specified load balancer port with the specified set of policies.</p> <p>To enable back-end server authentication, use <a>SetLoadBalancerPoliciesForBackendServer</a>.</p> <p>For more information about setting policies, see <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/ssl-config-update.html">Update the SSL Negotiation Configuration</a>, <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-duration">Duration-Based Session Stickiness</a>, and <a href="http://docs.aws.amazon.com/elasticloadbalancing/latest/classic/elb-sticky-sessions.html#enable-sticky-sessions-application">Application-Controlled Session Stickiness</a> in the <i>Classic Load Balancers Guide</i>.</p>
-  ##   LoadBalancerName: string (required)
-  ##                   : The name of the load balancer.
   ##   LoadBalancerPort: int (required)
   ##                   : The external port of the load balancer.
+  ##   LoadBalancerName: string (required)
+  ##                   : The name of the load balancer.
   ##   Action: string (required)
+  ##   Version: string (required)
   ##   PolicyNames: JArray (required)
   ##              : The names of the policies. This list must include all policies to be enabled. If you omit a policy that is currently enabled, it is disabled. If the list is empty, all current policies are disabled.
-  ##   Version: string (required)
-  var query_600989 = newJObject()
-  add(query_600989, "LoadBalancerName", newJString(LoadBalancerName))
-  add(query_600989, "LoadBalancerPort", newJInt(LoadBalancerPort))
-  add(query_600989, "Action", newJString(Action))
+  var query_603011 = newJObject()
+  add(query_603011, "LoadBalancerPort", newJInt(LoadBalancerPort))
+  add(query_603011, "LoadBalancerName", newJString(LoadBalancerName))
+  add(query_603011, "Action", newJString(Action))
+  add(query_603011, "Version", newJString(Version))
   if PolicyNames != nil:
-    query_600989.add "PolicyNames", PolicyNames
-  add(query_600989, "Version", newJString(Version))
-  result = call_600988.call(nil, query_600989, nil, nil, nil)
+    query_603011.add "PolicyNames", PolicyNames
+  result = call_603010.call(nil, query_603011, nil, nil, nil)
 
-var getSetLoadBalancerPoliciesOfListener* = Call_GetSetLoadBalancerPoliciesOfListener_600972(
+var getSetLoadBalancerPoliciesOfListener* = Call_GetSetLoadBalancerPoliciesOfListener_602994(
     name: "getSetLoadBalancerPoliciesOfListener", meth: HttpMethod.HttpGet,
     host: "elasticloadbalancing.amazonaws.com",
     route: "/#Action=SetLoadBalancerPoliciesOfListener",
-    validator: validate_GetSetLoadBalancerPoliciesOfListener_600973, base: "/",
-    url: url_GetSetLoadBalancerPoliciesOfListener_600974,
+    validator: validate_GetSetLoadBalancerPoliciesOfListener_602995, base: "/",
+    url: url_GetSetLoadBalancerPoliciesOfListener_602996,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

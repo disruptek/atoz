@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_599368 = ref object of OpenApiRestCall
+  OpenApiRestCall_601389 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_599368](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_599368): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,19 +134,20 @@ const
   awsServiceName = "service-quotas"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AssociateServiceQuotaTemplate_599705 = ref object of OpenApiRestCall_599368
-proc url_AssociateServiceQuotaTemplate_599707(protocol: Scheme; host: string;
+  Call_AssociateServiceQuotaTemplate_601727 = ref object of OpenApiRestCall_601389
+proc url_AssociateServiceQuotaTemplate_601729(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AssociateServiceQuotaTemplate_599706(path: JsonNode; query: JsonNode;
+proc validate_AssociateServiceQuotaTemplate_601728(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Associates the Service Quotas template with your organization so that when new accounts are created in your organization, the template submits increase requests for the specified service quotas. Use the Service Quotas template to request an increase for any adjustable quota value. After you define the Service Quotas template, use this operation to associate, or enable, the template. 
   ## 
@@ -157,57 +158,57 @@ proc validate_AssociateServiceQuotaTemplate_599706(path: JsonNode; query: JsonNo
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599819 = header.getOrDefault("X-Amz-Date")
-  valid_599819 = validateParameter(valid_599819, JString, required = false,
-                                 default = nil)
-  if valid_599819 != nil:
-    section.add "X-Amz-Date", valid_599819
-  var valid_599820 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599820 = validateParameter(valid_599820, JString, required = false,
-                                 default = nil)
-  if valid_599820 != nil:
-    section.add "X-Amz-Security-Token", valid_599820
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599834 = header.getOrDefault("X-Amz-Target")
-  valid_599834 = validateParameter(valid_599834, JString, required = true, default = newJString(
+  var valid_601854 = header.getOrDefault("X-Amz-Target")
+  valid_601854 = validateParameter(valid_601854, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.AssociateServiceQuotaTemplate"))
-  if valid_599834 != nil:
-    section.add "X-Amz-Target", valid_599834
-  var valid_599835 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599835 = validateParameter(valid_599835, JString, required = false,
+  if valid_601854 != nil:
+    section.add "X-Amz-Target", valid_601854
+  var valid_601855 = header.getOrDefault("X-Amz-Signature")
+  valid_601855 = validateParameter(valid_601855, JString, required = false,
                                  default = nil)
-  if valid_599835 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599835
-  var valid_599836 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599836 = validateParameter(valid_599836, JString, required = false,
+  if valid_601855 != nil:
+    section.add "X-Amz-Signature", valid_601855
+  var valid_601856 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_601856 = validateParameter(valid_601856, JString, required = false,
                                  default = nil)
-  if valid_599836 != nil:
-    section.add "X-Amz-Algorithm", valid_599836
-  var valid_599837 = header.getOrDefault("X-Amz-Signature")
-  valid_599837 = validateParameter(valid_599837, JString, required = false,
+  if valid_601856 != nil:
+    section.add "X-Amz-Content-Sha256", valid_601856
+  var valid_601857 = header.getOrDefault("X-Amz-Date")
+  valid_601857 = validateParameter(valid_601857, JString, required = false,
                                  default = nil)
-  if valid_599837 != nil:
-    section.add "X-Amz-Signature", valid_599837
-  var valid_599838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599838 = validateParameter(valid_599838, JString, required = false,
+  if valid_601857 != nil:
+    section.add "X-Amz-Date", valid_601857
+  var valid_601858 = header.getOrDefault("X-Amz-Credential")
+  valid_601858 = validateParameter(valid_601858, JString, required = false,
                                  default = nil)
-  if valid_599838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599838
-  var valid_599839 = header.getOrDefault("X-Amz-Credential")
-  valid_599839 = validateParameter(valid_599839, JString, required = false,
+  if valid_601858 != nil:
+    section.add "X-Amz-Credential", valid_601858
+  var valid_601859 = header.getOrDefault("X-Amz-Security-Token")
+  valid_601859 = validateParameter(valid_601859, JString, required = false,
                                  default = nil)
-  if valid_599839 != nil:
-    section.add "X-Amz-Credential", valid_599839
+  if valid_601859 != nil:
+    section.add "X-Amz-Security-Token", valid_601859
+  var valid_601860 = header.getOrDefault("X-Amz-Algorithm")
+  valid_601860 = validateParameter(valid_601860, JString, required = false,
+                                 default = nil)
+  if valid_601860 != nil:
+    section.add "X-Amz-Algorithm", valid_601860
+  var valid_601861 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_601861 = validateParameter(valid_601861, JString, required = false,
+                                 default = nil)
+  if valid_601861 != nil:
+    section.add "X-Amz-SignedHeaders", valid_601861
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -218,48 +219,49 @@ proc validate_AssociateServiceQuotaTemplate_599706(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_599863: Call_AssociateServiceQuotaTemplate_599705; path: JsonNode;
+proc call*(call_601885: Call_AssociateServiceQuotaTemplate_601727; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Associates the Service Quotas template with your organization so that when new accounts are created in your organization, the template submits increase requests for the specified service quotas. Use the Service Quotas template to request an increase for any adjustable quota value. After you define the Service Quotas template, use this operation to associate, or enable, the template. 
   ## 
-  let valid = call_599863.validator(path, query, header, formData, body)
-  let scheme = call_599863.pickScheme
+  let valid = call_601885.validator(path, query, header, formData, body)
+  let scheme = call_601885.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599863.url(scheme.get, call_599863.host, call_599863.base,
-                         call_599863.route, valid.getOrDefault("path"),
+  let url = call_601885.url(scheme.get, call_601885.host, call_601885.base,
+                         call_601885.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599863, url, valid)
+  result = atozHook(call_601885, url, valid)
 
-proc call*(call_599934: Call_AssociateServiceQuotaTemplate_599705; body: JsonNode): Recallable =
+proc call*(call_601956: Call_AssociateServiceQuotaTemplate_601727; body: JsonNode): Recallable =
   ## associateServiceQuotaTemplate
   ## Associates the Service Quotas template with your organization so that when new accounts are created in your organization, the template submits increase requests for the specified service quotas. Use the Service Quotas template to request an increase for any adjustable quota value. After you define the Service Quotas template, use this operation to associate, or enable, the template. 
   ##   body: JObject (required)
-  var body_599935 = newJObject()
+  var body_601957 = newJObject()
   if body != nil:
-    body_599935 = body
-  result = call_599934.call(nil, nil, nil, nil, body_599935)
+    body_601957 = body
+  result = call_601956.call(nil, nil, nil, nil, body_601957)
 
-var associateServiceQuotaTemplate* = Call_AssociateServiceQuotaTemplate_599705(
+var associateServiceQuotaTemplate* = Call_AssociateServiceQuotaTemplate_601727(
     name: "associateServiceQuotaTemplate", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.AssociateServiceQuotaTemplate",
-    validator: validate_AssociateServiceQuotaTemplate_599706, base: "/",
-    url: url_AssociateServiceQuotaTemplate_599707,
+    validator: validate_AssociateServiceQuotaTemplate_601728, base: "/",
+    url: url_AssociateServiceQuotaTemplate_601729,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteServiceQuotaIncreaseRequestFromTemplate_599974 = ref object of OpenApiRestCall_599368
-proc url_DeleteServiceQuotaIncreaseRequestFromTemplate_599976(protocol: Scheme;
+  Call_DeleteServiceQuotaIncreaseRequestFromTemplate_601996 = ref object of OpenApiRestCall_601389
+proc url_DeleteServiceQuotaIncreaseRequestFromTemplate_601998(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteServiceQuotaIncreaseRequestFromTemplate_599975(
+proc validate_DeleteServiceQuotaIncreaseRequestFromTemplate_601997(
     path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
     body: JsonNode): JsonNode =
   ## Removes a service quota increase request from the Service Quotas template. 
@@ -271,57 +273,57 @@ proc validate_DeleteServiceQuotaIncreaseRequestFromTemplate_599975(
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599977 = header.getOrDefault("X-Amz-Date")
-  valid_599977 = validateParameter(valid_599977, JString, required = false,
-                                 default = nil)
-  if valid_599977 != nil:
-    section.add "X-Amz-Date", valid_599977
-  var valid_599978 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599978 = validateParameter(valid_599978, JString, required = false,
-                                 default = nil)
-  if valid_599978 != nil:
-    section.add "X-Amz-Security-Token", valid_599978
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599979 = header.getOrDefault("X-Amz-Target")
-  valid_599979 = validateParameter(valid_599979, JString, required = true, default = newJString(
+  var valid_601999 = header.getOrDefault("X-Amz-Target")
+  valid_601999 = validateParameter(valid_601999, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.DeleteServiceQuotaIncreaseRequestFromTemplate"))
-  if valid_599979 != nil:
-    section.add "X-Amz-Target", valid_599979
-  var valid_599980 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599980 = validateParameter(valid_599980, JString, required = false,
+  if valid_601999 != nil:
+    section.add "X-Amz-Target", valid_601999
+  var valid_602000 = header.getOrDefault("X-Amz-Signature")
+  valid_602000 = validateParameter(valid_602000, JString, required = false,
                                  default = nil)
-  if valid_599980 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599980
-  var valid_599981 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599981 = validateParameter(valid_599981, JString, required = false,
+  if valid_602000 != nil:
+    section.add "X-Amz-Signature", valid_602000
+  var valid_602001 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602001 = validateParameter(valid_602001, JString, required = false,
                                  default = nil)
-  if valid_599981 != nil:
-    section.add "X-Amz-Algorithm", valid_599981
-  var valid_599982 = header.getOrDefault("X-Amz-Signature")
-  valid_599982 = validateParameter(valid_599982, JString, required = false,
+  if valid_602001 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602001
+  var valid_602002 = header.getOrDefault("X-Amz-Date")
+  valid_602002 = validateParameter(valid_602002, JString, required = false,
                                  default = nil)
-  if valid_599982 != nil:
-    section.add "X-Amz-Signature", valid_599982
-  var valid_599983 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599983 = validateParameter(valid_599983, JString, required = false,
+  if valid_602002 != nil:
+    section.add "X-Amz-Date", valid_602002
+  var valid_602003 = header.getOrDefault("X-Amz-Credential")
+  valid_602003 = validateParameter(valid_602003, JString, required = false,
                                  default = nil)
-  if valid_599983 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599983
-  var valid_599984 = header.getOrDefault("X-Amz-Credential")
-  valid_599984 = validateParameter(valid_599984, JString, required = false,
+  if valid_602003 != nil:
+    section.add "X-Amz-Credential", valid_602003
+  var valid_602004 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602004 = validateParameter(valid_602004, JString, required = false,
                                  default = nil)
-  if valid_599984 != nil:
-    section.add "X-Amz-Credential", valid_599984
+  if valid_602004 != nil:
+    section.add "X-Amz-Security-Token", valid_602004
+  var valid_602005 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602005 = validateParameter(valid_602005, JString, required = false,
+                                 default = nil)
+  if valid_602005 != nil:
+    section.add "X-Amz-Algorithm", valid_602005
+  var valid_602006 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602006 = validateParameter(valid_602006, JString, required = false,
+                                 default = nil)
+  if valid_602006 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602006
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -332,50 +334,51 @@ proc validate_DeleteServiceQuotaIncreaseRequestFromTemplate_599975(
   if body != nil:
     result.add "body", body
 
-proc call*(call_599986: Call_DeleteServiceQuotaIncreaseRequestFromTemplate_599974;
+proc call*(call_602008: Call_DeleteServiceQuotaIncreaseRequestFromTemplate_601996;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Removes a service quota increase request from the Service Quotas template. 
   ## 
-  let valid = call_599986.validator(path, query, header, formData, body)
-  let scheme = call_599986.pickScheme
+  let valid = call_602008.validator(path, query, header, formData, body)
+  let scheme = call_602008.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_599986.url(scheme.get, call_599986.host, call_599986.base,
-                         call_599986.route, valid.getOrDefault("path"),
+  let url = call_602008.url(scheme.get, call_602008.host, call_602008.base,
+                         call_602008.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_599986, url, valid)
+  result = atozHook(call_602008, url, valid)
 
-proc call*(call_599987: Call_DeleteServiceQuotaIncreaseRequestFromTemplate_599974;
+proc call*(call_602009: Call_DeleteServiceQuotaIncreaseRequestFromTemplate_601996;
           body: JsonNode): Recallable =
   ## deleteServiceQuotaIncreaseRequestFromTemplate
   ## Removes a service quota increase request from the Service Quotas template. 
   ##   body: JObject (required)
-  var body_599988 = newJObject()
+  var body_602010 = newJObject()
   if body != nil:
-    body_599988 = body
-  result = call_599987.call(nil, nil, nil, nil, body_599988)
+    body_602010 = body
+  result = call_602009.call(nil, nil, nil, nil, body_602010)
 
-var deleteServiceQuotaIncreaseRequestFromTemplate* = Call_DeleteServiceQuotaIncreaseRequestFromTemplate_599974(
+var deleteServiceQuotaIncreaseRequestFromTemplate* = Call_DeleteServiceQuotaIncreaseRequestFromTemplate_601996(
     name: "deleteServiceQuotaIncreaseRequestFromTemplate",
     meth: HttpMethod.HttpPost, host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.DeleteServiceQuotaIncreaseRequestFromTemplate",
-    validator: validate_DeleteServiceQuotaIncreaseRequestFromTemplate_599975,
-    base: "/", url: url_DeleteServiceQuotaIncreaseRequestFromTemplate_599976,
+    validator: validate_DeleteServiceQuotaIncreaseRequestFromTemplate_601997,
+    base: "/", url: url_DeleteServiceQuotaIncreaseRequestFromTemplate_601998,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateServiceQuotaTemplate_599989 = ref object of OpenApiRestCall_599368
-proc url_DisassociateServiceQuotaTemplate_599991(protocol: Scheme; host: string;
+  Call_DisassociateServiceQuotaTemplate_602011 = ref object of OpenApiRestCall_601389
+proc url_DisassociateServiceQuotaTemplate_602013(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DisassociateServiceQuotaTemplate_599990(path: JsonNode;
+proc validate_DisassociateServiceQuotaTemplate_602012(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Disables the Service Quotas template. Once the template is disabled, it does not request quota increases for new accounts in your organization. Disabling the quota template does not apply the quota increase requests from the template. </p> <p> <b>Related operations</b> </p> <ul> <li> <p>To enable the quota template, call <a>AssociateServiceQuotaTemplate</a>. </p> </li> <li> <p>To delete a specific service quota from the template, use <a>DeleteServiceQuotaIncreaseRequestFromTemplate</a>.</p> </li> </ul>
   ## 
@@ -386,57 +389,57 @@ proc validate_DisassociateServiceQuotaTemplate_599990(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_599992 = header.getOrDefault("X-Amz-Date")
-  valid_599992 = validateParameter(valid_599992, JString, required = false,
-                                 default = nil)
-  if valid_599992 != nil:
-    section.add "X-Amz-Date", valid_599992
-  var valid_599993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_599993 = validateParameter(valid_599993, JString, required = false,
-                                 default = nil)
-  if valid_599993 != nil:
-    section.add "X-Amz-Security-Token", valid_599993
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_599994 = header.getOrDefault("X-Amz-Target")
-  valid_599994 = validateParameter(valid_599994, JString, required = true, default = newJString(
+  var valid_602014 = header.getOrDefault("X-Amz-Target")
+  valid_602014 = validateParameter(valid_602014, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.DisassociateServiceQuotaTemplate"))
-  if valid_599994 != nil:
-    section.add "X-Amz-Target", valid_599994
-  var valid_599995 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_599995 = validateParameter(valid_599995, JString, required = false,
+  if valid_602014 != nil:
+    section.add "X-Amz-Target", valid_602014
+  var valid_602015 = header.getOrDefault("X-Amz-Signature")
+  valid_602015 = validateParameter(valid_602015, JString, required = false,
                                  default = nil)
-  if valid_599995 != nil:
-    section.add "X-Amz-Content-Sha256", valid_599995
-  var valid_599996 = header.getOrDefault("X-Amz-Algorithm")
-  valid_599996 = validateParameter(valid_599996, JString, required = false,
+  if valid_602015 != nil:
+    section.add "X-Amz-Signature", valid_602015
+  var valid_602016 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602016 = validateParameter(valid_602016, JString, required = false,
                                  default = nil)
-  if valid_599996 != nil:
-    section.add "X-Amz-Algorithm", valid_599996
-  var valid_599997 = header.getOrDefault("X-Amz-Signature")
-  valid_599997 = validateParameter(valid_599997, JString, required = false,
+  if valid_602016 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602016
+  var valid_602017 = header.getOrDefault("X-Amz-Date")
+  valid_602017 = validateParameter(valid_602017, JString, required = false,
                                  default = nil)
-  if valid_599997 != nil:
-    section.add "X-Amz-Signature", valid_599997
-  var valid_599998 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_599998 = validateParameter(valid_599998, JString, required = false,
+  if valid_602017 != nil:
+    section.add "X-Amz-Date", valid_602017
+  var valid_602018 = header.getOrDefault("X-Amz-Credential")
+  valid_602018 = validateParameter(valid_602018, JString, required = false,
                                  default = nil)
-  if valid_599998 != nil:
-    section.add "X-Amz-SignedHeaders", valid_599998
-  var valid_599999 = header.getOrDefault("X-Amz-Credential")
-  valid_599999 = validateParameter(valid_599999, JString, required = false,
+  if valid_602018 != nil:
+    section.add "X-Amz-Credential", valid_602018
+  var valid_602019 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602019 = validateParameter(valid_602019, JString, required = false,
                                  default = nil)
-  if valid_599999 != nil:
-    section.add "X-Amz-Credential", valid_599999
+  if valid_602019 != nil:
+    section.add "X-Amz-Security-Token", valid_602019
+  var valid_602020 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602020 = validateParameter(valid_602020, JString, required = false,
+                                 default = nil)
+  if valid_602020 != nil:
+    section.add "X-Amz-Algorithm", valid_602020
+  var valid_602021 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602021 = validateParameter(valid_602021, JString, required = false,
+                                 default = nil)
+  if valid_602021 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602021
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -447,50 +450,51 @@ proc validate_DisassociateServiceQuotaTemplate_599990(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600001: Call_DisassociateServiceQuotaTemplate_599989;
+proc call*(call_602023: Call_DisassociateServiceQuotaTemplate_602011;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Disables the Service Quotas template. Once the template is disabled, it does not request quota increases for new accounts in your organization. Disabling the quota template does not apply the quota increase requests from the template. </p> <p> <b>Related operations</b> </p> <ul> <li> <p>To enable the quota template, call <a>AssociateServiceQuotaTemplate</a>. </p> </li> <li> <p>To delete a specific service quota from the template, use <a>DeleteServiceQuotaIncreaseRequestFromTemplate</a>.</p> </li> </ul>
   ## 
-  let valid = call_600001.validator(path, query, header, formData, body)
-  let scheme = call_600001.pickScheme
+  let valid = call_602023.validator(path, query, header, formData, body)
+  let scheme = call_602023.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600001.url(scheme.get, call_600001.host, call_600001.base,
-                         call_600001.route, valid.getOrDefault("path"),
+  let url = call_602023.url(scheme.get, call_602023.host, call_602023.base,
+                         call_602023.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600001, url, valid)
+  result = atozHook(call_602023, url, valid)
 
-proc call*(call_600002: Call_DisassociateServiceQuotaTemplate_599989;
+proc call*(call_602024: Call_DisassociateServiceQuotaTemplate_602011;
           body: JsonNode): Recallable =
   ## disassociateServiceQuotaTemplate
   ## <p>Disables the Service Quotas template. Once the template is disabled, it does not request quota increases for new accounts in your organization. Disabling the quota template does not apply the quota increase requests from the template. </p> <p> <b>Related operations</b> </p> <ul> <li> <p>To enable the quota template, call <a>AssociateServiceQuotaTemplate</a>. </p> </li> <li> <p>To delete a specific service quota from the template, use <a>DeleteServiceQuotaIncreaseRequestFromTemplate</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_600003 = newJObject()
+  var body_602025 = newJObject()
   if body != nil:
-    body_600003 = body
-  result = call_600002.call(nil, nil, nil, nil, body_600003)
+    body_602025 = body
+  result = call_602024.call(nil, nil, nil, nil, body_602025)
 
-var disassociateServiceQuotaTemplate* = Call_DisassociateServiceQuotaTemplate_599989(
+var disassociateServiceQuotaTemplate* = Call_DisassociateServiceQuotaTemplate_602011(
     name: "disassociateServiceQuotaTemplate", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.DisassociateServiceQuotaTemplate",
-    validator: validate_DisassociateServiceQuotaTemplate_599990, base: "/",
-    url: url_DisassociateServiceQuotaTemplate_599991,
+    validator: validate_DisassociateServiceQuotaTemplate_602012, base: "/",
+    url: url_DisassociateServiceQuotaTemplate_602013,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAWSDefaultServiceQuota_600004 = ref object of OpenApiRestCall_599368
-proc url_GetAWSDefaultServiceQuota_600006(protocol: Scheme; host: string;
+  Call_GetAWSDefaultServiceQuota_602026 = ref object of OpenApiRestCall_601389
+proc url_GetAWSDefaultServiceQuota_602028(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetAWSDefaultServiceQuota_600005(path: JsonNode; query: JsonNode;
+proc validate_GetAWSDefaultServiceQuota_602027(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the default service quotas values. The Value returned for each quota is the AWS default value, even if the quotas have been increased.. 
   ## 
@@ -501,57 +505,57 @@ proc validate_GetAWSDefaultServiceQuota_600005(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600007 = header.getOrDefault("X-Amz-Date")
-  valid_600007 = validateParameter(valid_600007, JString, required = false,
-                                 default = nil)
-  if valid_600007 != nil:
-    section.add "X-Amz-Date", valid_600007
-  var valid_600008 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600008 = validateParameter(valid_600008, JString, required = false,
-                                 default = nil)
-  if valid_600008 != nil:
-    section.add "X-Amz-Security-Token", valid_600008
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600009 = header.getOrDefault("X-Amz-Target")
-  valid_600009 = validateParameter(valid_600009, JString, required = true, default = newJString(
+  var valid_602029 = header.getOrDefault("X-Amz-Target")
+  valid_602029 = validateParameter(valid_602029, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetAWSDefaultServiceQuota"))
-  if valid_600009 != nil:
-    section.add "X-Amz-Target", valid_600009
-  var valid_600010 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600010 = validateParameter(valid_600010, JString, required = false,
+  if valid_602029 != nil:
+    section.add "X-Amz-Target", valid_602029
+  var valid_602030 = header.getOrDefault("X-Amz-Signature")
+  valid_602030 = validateParameter(valid_602030, JString, required = false,
                                  default = nil)
-  if valid_600010 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600010
-  var valid_600011 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600011 = validateParameter(valid_600011, JString, required = false,
+  if valid_602030 != nil:
+    section.add "X-Amz-Signature", valid_602030
+  var valid_602031 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602031 = validateParameter(valid_602031, JString, required = false,
                                  default = nil)
-  if valid_600011 != nil:
-    section.add "X-Amz-Algorithm", valid_600011
-  var valid_600012 = header.getOrDefault("X-Amz-Signature")
-  valid_600012 = validateParameter(valid_600012, JString, required = false,
+  if valid_602031 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602031
+  var valid_602032 = header.getOrDefault("X-Amz-Date")
+  valid_602032 = validateParameter(valid_602032, JString, required = false,
                                  default = nil)
-  if valid_600012 != nil:
-    section.add "X-Amz-Signature", valid_600012
-  var valid_600013 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600013 = validateParameter(valid_600013, JString, required = false,
+  if valid_602032 != nil:
+    section.add "X-Amz-Date", valid_602032
+  var valid_602033 = header.getOrDefault("X-Amz-Credential")
+  valid_602033 = validateParameter(valid_602033, JString, required = false,
                                  default = nil)
-  if valid_600013 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600013
-  var valid_600014 = header.getOrDefault("X-Amz-Credential")
-  valid_600014 = validateParameter(valid_600014, JString, required = false,
+  if valid_602033 != nil:
+    section.add "X-Amz-Credential", valid_602033
+  var valid_602034 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602034 = validateParameter(valid_602034, JString, required = false,
                                  default = nil)
-  if valid_600014 != nil:
-    section.add "X-Amz-Credential", valid_600014
+  if valid_602034 != nil:
+    section.add "X-Amz-Security-Token", valid_602034
+  var valid_602035 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602035 = validateParameter(valid_602035, JString, required = false,
+                                 default = nil)
+  if valid_602035 != nil:
+    section.add "X-Amz-Algorithm", valid_602035
+  var valid_602036 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602036 = validateParameter(valid_602036, JString, required = false,
+                                 default = nil)
+  if valid_602036 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602036
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -562,49 +566,50 @@ proc validate_GetAWSDefaultServiceQuota_600005(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600016: Call_GetAWSDefaultServiceQuota_600004; path: JsonNode;
+proc call*(call_602038: Call_GetAWSDefaultServiceQuota_602026; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the default service quotas values. The Value returned for each quota is the AWS default value, even if the quotas have been increased.. 
   ## 
-  let valid = call_600016.validator(path, query, header, formData, body)
-  let scheme = call_600016.pickScheme
+  let valid = call_602038.validator(path, query, header, formData, body)
+  let scheme = call_602038.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600016.url(scheme.get, call_600016.host, call_600016.base,
-                         call_600016.route, valid.getOrDefault("path"),
+  let url = call_602038.url(scheme.get, call_602038.host, call_602038.base,
+                         call_602038.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600016, url, valid)
+  result = atozHook(call_602038, url, valid)
 
-proc call*(call_600017: Call_GetAWSDefaultServiceQuota_600004; body: JsonNode): Recallable =
+proc call*(call_602039: Call_GetAWSDefaultServiceQuota_602026; body: JsonNode): Recallable =
   ## getAWSDefaultServiceQuota
   ## Retrieves the default service quotas values. The Value returned for each quota is the AWS default value, even if the quotas have been increased.. 
   ##   body: JObject (required)
-  var body_600018 = newJObject()
+  var body_602040 = newJObject()
   if body != nil:
-    body_600018 = body
-  result = call_600017.call(nil, nil, nil, nil, body_600018)
+    body_602040 = body
+  result = call_602039.call(nil, nil, nil, nil, body_602040)
 
-var getAWSDefaultServiceQuota* = Call_GetAWSDefaultServiceQuota_600004(
+var getAWSDefaultServiceQuota* = Call_GetAWSDefaultServiceQuota_602026(
     name: "getAWSDefaultServiceQuota", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com",
     route: "/#X-Amz-Target=ServiceQuotasV20190624.GetAWSDefaultServiceQuota",
-    validator: validate_GetAWSDefaultServiceQuota_600005, base: "/",
-    url: url_GetAWSDefaultServiceQuota_600006,
+    validator: validate_GetAWSDefaultServiceQuota_602027, base: "/",
+    url: url_GetAWSDefaultServiceQuota_602028,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAssociationForServiceQuotaTemplate_600019 = ref object of OpenApiRestCall_599368
-proc url_GetAssociationForServiceQuotaTemplate_600021(protocol: Scheme;
+  Call_GetAssociationForServiceQuotaTemplate_602041 = ref object of OpenApiRestCall_601389
+proc url_GetAssociationForServiceQuotaTemplate_602043(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetAssociationForServiceQuotaTemplate_600020(path: JsonNode;
+proc validate_GetAssociationForServiceQuotaTemplate_602042(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the <code>ServiceQuotaTemplateAssociationStatus</code> value from the service. Use this action to determine if the Service Quota template is associated, or enabled. 
   ## 
@@ -615,57 +620,57 @@ proc validate_GetAssociationForServiceQuotaTemplate_600020(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600022 = header.getOrDefault("X-Amz-Date")
-  valid_600022 = validateParameter(valid_600022, JString, required = false,
-                                 default = nil)
-  if valid_600022 != nil:
-    section.add "X-Amz-Date", valid_600022
-  var valid_600023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600023 = validateParameter(valid_600023, JString, required = false,
-                                 default = nil)
-  if valid_600023 != nil:
-    section.add "X-Amz-Security-Token", valid_600023
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600024 = header.getOrDefault("X-Amz-Target")
-  valid_600024 = validateParameter(valid_600024, JString, required = true, default = newJString(
+  var valid_602044 = header.getOrDefault("X-Amz-Target")
+  valid_602044 = validateParameter(valid_602044, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetAssociationForServiceQuotaTemplate"))
-  if valid_600024 != nil:
-    section.add "X-Amz-Target", valid_600024
-  var valid_600025 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600025 = validateParameter(valid_600025, JString, required = false,
+  if valid_602044 != nil:
+    section.add "X-Amz-Target", valid_602044
+  var valid_602045 = header.getOrDefault("X-Amz-Signature")
+  valid_602045 = validateParameter(valid_602045, JString, required = false,
                                  default = nil)
-  if valid_600025 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600025
-  var valid_600026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600026 = validateParameter(valid_600026, JString, required = false,
+  if valid_602045 != nil:
+    section.add "X-Amz-Signature", valid_602045
+  var valid_602046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602046 = validateParameter(valid_602046, JString, required = false,
                                  default = nil)
-  if valid_600026 != nil:
-    section.add "X-Amz-Algorithm", valid_600026
-  var valid_600027 = header.getOrDefault("X-Amz-Signature")
-  valid_600027 = validateParameter(valid_600027, JString, required = false,
+  if valid_602046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602046
+  var valid_602047 = header.getOrDefault("X-Amz-Date")
+  valid_602047 = validateParameter(valid_602047, JString, required = false,
                                  default = nil)
-  if valid_600027 != nil:
-    section.add "X-Amz-Signature", valid_600027
-  var valid_600028 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600028 = validateParameter(valid_600028, JString, required = false,
+  if valid_602047 != nil:
+    section.add "X-Amz-Date", valid_602047
+  var valid_602048 = header.getOrDefault("X-Amz-Credential")
+  valid_602048 = validateParameter(valid_602048, JString, required = false,
                                  default = nil)
-  if valid_600028 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600028
-  var valid_600029 = header.getOrDefault("X-Amz-Credential")
-  valid_600029 = validateParameter(valid_600029, JString, required = false,
+  if valid_602048 != nil:
+    section.add "X-Amz-Credential", valid_602048
+  var valid_602049 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602049 = validateParameter(valid_602049, JString, required = false,
                                  default = nil)
-  if valid_600029 != nil:
-    section.add "X-Amz-Credential", valid_600029
+  if valid_602049 != nil:
+    section.add "X-Amz-Security-Token", valid_602049
+  var valid_602050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602050 = validateParameter(valid_602050, JString, required = false,
+                                 default = nil)
+  if valid_602050 != nil:
+    section.add "X-Amz-Algorithm", valid_602050
+  var valid_602051 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602051 = validateParameter(valid_602051, JString, required = false,
+                                 default = nil)
+  if valid_602051 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602051
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -676,50 +681,51 @@ proc validate_GetAssociationForServiceQuotaTemplate_600020(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600031: Call_GetAssociationForServiceQuotaTemplate_600019;
+proc call*(call_602053: Call_GetAssociationForServiceQuotaTemplate_602041;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Retrieves the <code>ServiceQuotaTemplateAssociationStatus</code> value from the service. Use this action to determine if the Service Quota template is associated, or enabled. 
   ## 
-  let valid = call_600031.validator(path, query, header, formData, body)
-  let scheme = call_600031.pickScheme
+  let valid = call_602053.validator(path, query, header, formData, body)
+  let scheme = call_602053.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600031.url(scheme.get, call_600031.host, call_600031.base,
-                         call_600031.route, valid.getOrDefault("path"),
+  let url = call_602053.url(scheme.get, call_602053.host, call_602053.base,
+                         call_602053.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600031, url, valid)
+  result = atozHook(call_602053, url, valid)
 
-proc call*(call_600032: Call_GetAssociationForServiceQuotaTemplate_600019;
+proc call*(call_602054: Call_GetAssociationForServiceQuotaTemplate_602041;
           body: JsonNode): Recallable =
   ## getAssociationForServiceQuotaTemplate
   ## Retrieves the <code>ServiceQuotaTemplateAssociationStatus</code> value from the service. Use this action to determine if the Service Quota template is associated, or enabled. 
   ##   body: JObject (required)
-  var body_600033 = newJObject()
+  var body_602055 = newJObject()
   if body != nil:
-    body_600033 = body
-  result = call_600032.call(nil, nil, nil, nil, body_600033)
+    body_602055 = body
+  result = call_602054.call(nil, nil, nil, nil, body_602055)
 
-var getAssociationForServiceQuotaTemplate* = Call_GetAssociationForServiceQuotaTemplate_600019(
+var getAssociationForServiceQuotaTemplate* = Call_GetAssociationForServiceQuotaTemplate_602041(
     name: "getAssociationForServiceQuotaTemplate", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.GetAssociationForServiceQuotaTemplate",
-    validator: validate_GetAssociationForServiceQuotaTemplate_600020, base: "/",
-    url: url_GetAssociationForServiceQuotaTemplate_600021,
+    validator: validate_GetAssociationForServiceQuotaTemplate_602042, base: "/",
+    url: url_GetAssociationForServiceQuotaTemplate_602043,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRequestedServiceQuotaChange_600034 = ref object of OpenApiRestCall_599368
-proc url_GetRequestedServiceQuotaChange_600036(protocol: Scheme; host: string;
+  Call_GetRequestedServiceQuotaChange_602056 = ref object of OpenApiRestCall_601389
+proc url_GetRequestedServiceQuotaChange_602058(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetRequestedServiceQuotaChange_600035(path: JsonNode;
+proc validate_GetRequestedServiceQuotaChange_602057(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the details for a particular increase request. 
   ## 
@@ -730,57 +736,57 @@ proc validate_GetRequestedServiceQuotaChange_600035(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600037 = header.getOrDefault("X-Amz-Date")
-  valid_600037 = validateParameter(valid_600037, JString, required = false,
-                                 default = nil)
-  if valid_600037 != nil:
-    section.add "X-Amz-Date", valid_600037
-  var valid_600038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600038 = validateParameter(valid_600038, JString, required = false,
-                                 default = nil)
-  if valid_600038 != nil:
-    section.add "X-Amz-Security-Token", valid_600038
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600039 = header.getOrDefault("X-Amz-Target")
-  valid_600039 = validateParameter(valid_600039, JString, required = true, default = newJString(
+  var valid_602059 = header.getOrDefault("X-Amz-Target")
+  valid_602059 = validateParameter(valid_602059, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetRequestedServiceQuotaChange"))
-  if valid_600039 != nil:
-    section.add "X-Amz-Target", valid_600039
-  var valid_600040 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600040 = validateParameter(valid_600040, JString, required = false,
+  if valid_602059 != nil:
+    section.add "X-Amz-Target", valid_602059
+  var valid_602060 = header.getOrDefault("X-Amz-Signature")
+  valid_602060 = validateParameter(valid_602060, JString, required = false,
                                  default = nil)
-  if valid_600040 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600040
-  var valid_600041 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600041 = validateParameter(valid_600041, JString, required = false,
+  if valid_602060 != nil:
+    section.add "X-Amz-Signature", valid_602060
+  var valid_602061 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602061 = validateParameter(valid_602061, JString, required = false,
                                  default = nil)
-  if valid_600041 != nil:
-    section.add "X-Amz-Algorithm", valid_600041
-  var valid_600042 = header.getOrDefault("X-Amz-Signature")
-  valid_600042 = validateParameter(valid_600042, JString, required = false,
+  if valid_602061 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602061
+  var valid_602062 = header.getOrDefault("X-Amz-Date")
+  valid_602062 = validateParameter(valid_602062, JString, required = false,
                                  default = nil)
-  if valid_600042 != nil:
-    section.add "X-Amz-Signature", valid_600042
-  var valid_600043 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600043 = validateParameter(valid_600043, JString, required = false,
+  if valid_602062 != nil:
+    section.add "X-Amz-Date", valid_602062
+  var valid_602063 = header.getOrDefault("X-Amz-Credential")
+  valid_602063 = validateParameter(valid_602063, JString, required = false,
                                  default = nil)
-  if valid_600043 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600043
-  var valid_600044 = header.getOrDefault("X-Amz-Credential")
-  valid_600044 = validateParameter(valid_600044, JString, required = false,
+  if valid_602063 != nil:
+    section.add "X-Amz-Credential", valid_602063
+  var valid_602064 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602064 = validateParameter(valid_602064, JString, required = false,
                                  default = nil)
-  if valid_600044 != nil:
-    section.add "X-Amz-Credential", valid_600044
+  if valid_602064 != nil:
+    section.add "X-Amz-Security-Token", valid_602064
+  var valid_602065 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602065 = validateParameter(valid_602065, JString, required = false,
+                                 default = nil)
+  if valid_602065 != nil:
+    section.add "X-Amz-Algorithm", valid_602065
+  var valid_602066 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602066 = validateParameter(valid_602066, JString, required = false,
+                                 default = nil)
+  if valid_602066 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602066
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -791,48 +797,49 @@ proc validate_GetRequestedServiceQuotaChange_600035(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600046: Call_GetRequestedServiceQuotaChange_600034; path: JsonNode;
+proc call*(call_602068: Call_GetRequestedServiceQuotaChange_602056; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the details for a particular increase request. 
   ## 
-  let valid = call_600046.validator(path, query, header, formData, body)
-  let scheme = call_600046.pickScheme
+  let valid = call_602068.validator(path, query, header, formData, body)
+  let scheme = call_602068.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600046.url(scheme.get, call_600046.host, call_600046.base,
-                         call_600046.route, valid.getOrDefault("path"),
+  let url = call_602068.url(scheme.get, call_602068.host, call_602068.base,
+                         call_602068.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600046, url, valid)
+  result = atozHook(call_602068, url, valid)
 
-proc call*(call_600047: Call_GetRequestedServiceQuotaChange_600034; body: JsonNode): Recallable =
+proc call*(call_602069: Call_GetRequestedServiceQuotaChange_602056; body: JsonNode): Recallable =
   ## getRequestedServiceQuotaChange
   ## Retrieves the details for a particular increase request. 
   ##   body: JObject (required)
-  var body_600048 = newJObject()
+  var body_602070 = newJObject()
   if body != nil:
-    body_600048 = body
-  result = call_600047.call(nil, nil, nil, nil, body_600048)
+    body_602070 = body
+  result = call_602069.call(nil, nil, nil, nil, body_602070)
 
-var getRequestedServiceQuotaChange* = Call_GetRequestedServiceQuotaChange_600034(
+var getRequestedServiceQuotaChange* = Call_GetRequestedServiceQuotaChange_602056(
     name: "getRequestedServiceQuotaChange", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.GetRequestedServiceQuotaChange",
-    validator: validate_GetRequestedServiceQuotaChange_600035, base: "/",
-    url: url_GetRequestedServiceQuotaChange_600036,
+    validator: validate_GetRequestedServiceQuotaChange_602057, base: "/",
+    url: url_GetRequestedServiceQuotaChange_602058,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetServiceQuota_600049 = ref object of OpenApiRestCall_599368
-proc url_GetServiceQuota_600051(protocol: Scheme; host: string; base: string;
+  Call_GetServiceQuota_602071 = ref object of OpenApiRestCall_601389
+proc url_GetServiceQuota_602073(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetServiceQuota_600050(path: JsonNode; query: JsonNode;
+proc validate_GetServiceQuota_602072(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Returns the details for the specified service quota. This operation provides a different Value than the <code>GetAWSDefaultServiceQuota</code> operation. This operation returns the applied value for each quota. <code>GetAWSDefaultServiceQuota</code> returns the default AWS value for each quota. 
@@ -844,57 +851,57 @@ proc validate_GetServiceQuota_600050(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600052 = header.getOrDefault("X-Amz-Date")
-  valid_600052 = validateParameter(valid_600052, JString, required = false,
-                                 default = nil)
-  if valid_600052 != nil:
-    section.add "X-Amz-Date", valid_600052
-  var valid_600053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600053 = validateParameter(valid_600053, JString, required = false,
-                                 default = nil)
-  if valid_600053 != nil:
-    section.add "X-Amz-Security-Token", valid_600053
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600054 = header.getOrDefault("X-Amz-Target")
-  valid_600054 = validateParameter(valid_600054, JString, required = true, default = newJString(
+  var valid_602074 = header.getOrDefault("X-Amz-Target")
+  valid_602074 = validateParameter(valid_602074, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetServiceQuota"))
-  if valid_600054 != nil:
-    section.add "X-Amz-Target", valid_600054
-  var valid_600055 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600055 = validateParameter(valid_600055, JString, required = false,
+  if valid_602074 != nil:
+    section.add "X-Amz-Target", valid_602074
+  var valid_602075 = header.getOrDefault("X-Amz-Signature")
+  valid_602075 = validateParameter(valid_602075, JString, required = false,
                                  default = nil)
-  if valid_600055 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600055
-  var valid_600056 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600056 = validateParameter(valid_600056, JString, required = false,
+  if valid_602075 != nil:
+    section.add "X-Amz-Signature", valid_602075
+  var valid_602076 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602076 = validateParameter(valid_602076, JString, required = false,
                                  default = nil)
-  if valid_600056 != nil:
-    section.add "X-Amz-Algorithm", valid_600056
-  var valid_600057 = header.getOrDefault("X-Amz-Signature")
-  valid_600057 = validateParameter(valid_600057, JString, required = false,
+  if valid_602076 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602076
+  var valid_602077 = header.getOrDefault("X-Amz-Date")
+  valid_602077 = validateParameter(valid_602077, JString, required = false,
                                  default = nil)
-  if valid_600057 != nil:
-    section.add "X-Amz-Signature", valid_600057
-  var valid_600058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600058 = validateParameter(valid_600058, JString, required = false,
+  if valid_602077 != nil:
+    section.add "X-Amz-Date", valid_602077
+  var valid_602078 = header.getOrDefault("X-Amz-Credential")
+  valid_602078 = validateParameter(valid_602078, JString, required = false,
                                  default = nil)
-  if valid_600058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600058
-  var valid_600059 = header.getOrDefault("X-Amz-Credential")
-  valid_600059 = validateParameter(valid_600059, JString, required = false,
+  if valid_602078 != nil:
+    section.add "X-Amz-Credential", valid_602078
+  var valid_602079 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602079 = validateParameter(valid_602079, JString, required = false,
                                  default = nil)
-  if valid_600059 != nil:
-    section.add "X-Amz-Credential", valid_600059
+  if valid_602079 != nil:
+    section.add "X-Amz-Security-Token", valid_602079
+  var valid_602080 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602080 = validateParameter(valid_602080, JString, required = false,
+                                 default = nil)
+  if valid_602080 != nil:
+    section.add "X-Amz-Algorithm", valid_602080
+  var valid_602081 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602081 = validateParameter(valid_602081, JString, required = false,
+                                 default = nil)
+  if valid_602081 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602081
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -905,47 +912,48 @@ proc validate_GetServiceQuota_600050(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600061: Call_GetServiceQuota_600049; path: JsonNode; query: JsonNode;
+proc call*(call_602083: Call_GetServiceQuota_602071; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the details for the specified service quota. This operation provides a different Value than the <code>GetAWSDefaultServiceQuota</code> operation. This operation returns the applied value for each quota. <code>GetAWSDefaultServiceQuota</code> returns the default AWS value for each quota. 
   ## 
-  let valid = call_600061.validator(path, query, header, formData, body)
-  let scheme = call_600061.pickScheme
+  let valid = call_602083.validator(path, query, header, formData, body)
+  let scheme = call_602083.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600061.url(scheme.get, call_600061.host, call_600061.base,
-                         call_600061.route, valid.getOrDefault("path"),
+  let url = call_602083.url(scheme.get, call_602083.host, call_602083.base,
+                         call_602083.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600061, url, valid)
+  result = atozHook(call_602083, url, valid)
 
-proc call*(call_600062: Call_GetServiceQuota_600049; body: JsonNode): Recallable =
+proc call*(call_602084: Call_GetServiceQuota_602071; body: JsonNode): Recallable =
   ## getServiceQuota
   ## Returns the details for the specified service quota. This operation provides a different Value than the <code>GetAWSDefaultServiceQuota</code> operation. This operation returns the applied value for each quota. <code>GetAWSDefaultServiceQuota</code> returns the default AWS value for each quota. 
   ##   body: JObject (required)
-  var body_600063 = newJObject()
+  var body_602085 = newJObject()
   if body != nil:
-    body_600063 = body
-  result = call_600062.call(nil, nil, nil, nil, body_600063)
+    body_602085 = body
+  result = call_602084.call(nil, nil, nil, nil, body_602085)
 
-var getServiceQuota* = Call_GetServiceQuota_600049(name: "getServiceQuota",
+var getServiceQuota* = Call_GetServiceQuota_602071(name: "getServiceQuota",
     meth: HttpMethod.HttpPost, host: "servicequotas.amazonaws.com",
     route: "/#X-Amz-Target=ServiceQuotasV20190624.GetServiceQuota",
-    validator: validate_GetServiceQuota_600050, base: "/", url: url_GetServiceQuota_600051,
+    validator: validate_GetServiceQuota_602072, base: "/", url: url_GetServiceQuota_602073,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetServiceQuotaIncreaseRequestFromTemplate_600064 = ref object of OpenApiRestCall_599368
-proc url_GetServiceQuotaIncreaseRequestFromTemplate_600066(protocol: Scheme;
+  Call_GetServiceQuotaIncreaseRequestFromTemplate_602086 = ref object of OpenApiRestCall_601389
+proc url_GetServiceQuotaIncreaseRequestFromTemplate_602088(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetServiceQuotaIncreaseRequestFromTemplate_600065(path: JsonNode;
+proc validate_GetServiceQuotaIncreaseRequestFromTemplate_602087(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the details of the service quota increase request in your template.
   ## 
@@ -956,57 +964,57 @@ proc validate_GetServiceQuotaIncreaseRequestFromTemplate_600065(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600067 = header.getOrDefault("X-Amz-Date")
-  valid_600067 = validateParameter(valid_600067, JString, required = false,
-                                 default = nil)
-  if valid_600067 != nil:
-    section.add "X-Amz-Date", valid_600067
-  var valid_600068 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600068 = validateParameter(valid_600068, JString, required = false,
-                                 default = nil)
-  if valid_600068 != nil:
-    section.add "X-Amz-Security-Token", valid_600068
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600069 = header.getOrDefault("X-Amz-Target")
-  valid_600069 = validateParameter(valid_600069, JString, required = true, default = newJString(
+  var valid_602089 = header.getOrDefault("X-Amz-Target")
+  valid_602089 = validateParameter(valid_602089, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetServiceQuotaIncreaseRequestFromTemplate"))
-  if valid_600069 != nil:
-    section.add "X-Amz-Target", valid_600069
-  var valid_600070 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600070 = validateParameter(valid_600070, JString, required = false,
+  if valid_602089 != nil:
+    section.add "X-Amz-Target", valid_602089
+  var valid_602090 = header.getOrDefault("X-Amz-Signature")
+  valid_602090 = validateParameter(valid_602090, JString, required = false,
                                  default = nil)
-  if valid_600070 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600070
-  var valid_600071 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600071 = validateParameter(valid_600071, JString, required = false,
+  if valid_602090 != nil:
+    section.add "X-Amz-Signature", valid_602090
+  var valid_602091 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602091 = validateParameter(valid_602091, JString, required = false,
                                  default = nil)
-  if valid_600071 != nil:
-    section.add "X-Amz-Algorithm", valid_600071
-  var valid_600072 = header.getOrDefault("X-Amz-Signature")
-  valid_600072 = validateParameter(valid_600072, JString, required = false,
+  if valid_602091 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602091
+  var valid_602092 = header.getOrDefault("X-Amz-Date")
+  valid_602092 = validateParameter(valid_602092, JString, required = false,
                                  default = nil)
-  if valid_600072 != nil:
-    section.add "X-Amz-Signature", valid_600072
-  var valid_600073 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600073 = validateParameter(valid_600073, JString, required = false,
+  if valid_602092 != nil:
+    section.add "X-Amz-Date", valid_602092
+  var valid_602093 = header.getOrDefault("X-Amz-Credential")
+  valid_602093 = validateParameter(valid_602093, JString, required = false,
                                  default = nil)
-  if valid_600073 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600073
-  var valid_600074 = header.getOrDefault("X-Amz-Credential")
-  valid_600074 = validateParameter(valid_600074, JString, required = false,
+  if valid_602093 != nil:
+    section.add "X-Amz-Credential", valid_602093
+  var valid_602094 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602094 = validateParameter(valid_602094, JString, required = false,
                                  default = nil)
-  if valid_600074 != nil:
-    section.add "X-Amz-Credential", valid_600074
+  if valid_602094 != nil:
+    section.add "X-Amz-Security-Token", valid_602094
+  var valid_602095 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602095 = validateParameter(valid_602095, JString, required = false,
+                                 default = nil)
+  if valid_602095 != nil:
+    section.add "X-Amz-Algorithm", valid_602095
+  var valid_602096 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602096 = validateParameter(valid_602096, JString, required = false,
+                                 default = nil)
+  if valid_602096 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602096
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1017,50 +1025,51 @@ proc validate_GetServiceQuotaIncreaseRequestFromTemplate_600065(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600076: Call_GetServiceQuotaIncreaseRequestFromTemplate_600064;
+proc call*(call_602098: Call_GetServiceQuotaIncreaseRequestFromTemplate_602086;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns the details of the service quota increase request in your template.
   ## 
-  let valid = call_600076.validator(path, query, header, formData, body)
-  let scheme = call_600076.pickScheme
+  let valid = call_602098.validator(path, query, header, formData, body)
+  let scheme = call_602098.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600076.url(scheme.get, call_600076.host, call_600076.base,
-                         call_600076.route, valid.getOrDefault("path"),
+  let url = call_602098.url(scheme.get, call_602098.host, call_602098.base,
+                         call_602098.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600076, url, valid)
+  result = atozHook(call_602098, url, valid)
 
-proc call*(call_600077: Call_GetServiceQuotaIncreaseRequestFromTemplate_600064;
+proc call*(call_602099: Call_GetServiceQuotaIncreaseRequestFromTemplate_602086;
           body: JsonNode): Recallable =
   ## getServiceQuotaIncreaseRequestFromTemplate
   ## Returns the details of the service quota increase request in your template.
   ##   body: JObject (required)
-  var body_600078 = newJObject()
+  var body_602100 = newJObject()
   if body != nil:
-    body_600078 = body
-  result = call_600077.call(nil, nil, nil, nil, body_600078)
+    body_602100 = body
+  result = call_602099.call(nil, nil, nil, nil, body_602100)
 
-var getServiceQuotaIncreaseRequestFromTemplate* = Call_GetServiceQuotaIncreaseRequestFromTemplate_600064(
+var getServiceQuotaIncreaseRequestFromTemplate* = Call_GetServiceQuotaIncreaseRequestFromTemplate_602086(
     name: "getServiceQuotaIncreaseRequestFromTemplate", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.GetServiceQuotaIncreaseRequestFromTemplate",
-    validator: validate_GetServiceQuotaIncreaseRequestFromTemplate_600065,
-    base: "/", url: url_GetServiceQuotaIncreaseRequestFromTemplate_600066,
+    validator: validate_GetServiceQuotaIncreaseRequestFromTemplate_602087,
+    base: "/", url: url_GetServiceQuotaIncreaseRequestFromTemplate_602088,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAWSDefaultServiceQuotas_600079 = ref object of OpenApiRestCall_599368
-proc url_ListAWSDefaultServiceQuotas_600081(protocol: Scheme; host: string;
+  Call_ListAWSDefaultServiceQuotas_602101 = ref object of OpenApiRestCall_601389
+proc url_ListAWSDefaultServiceQuotas_602103(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListAWSDefaultServiceQuotas_600080(path: JsonNode; query: JsonNode;
+proc validate_ListAWSDefaultServiceQuotas_602102(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists all default service quotas for the specified AWS service or all AWS services. ListAWSDefaultServiceQuotas is similar to <a>ListServiceQuotas</a> except for the Value object. The Value object returned by <code>ListAWSDefaultServiceQuotas</code> is the default value assigned by AWS. This request returns a list of all service quotas for the specified service. The listing of each you'll see the default values are the values that AWS provides for the quotas. </p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can return an unexpected list of results, even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass the next call to the same API to request the next part of the list.</p> </note>
   ## 
@@ -1069,74 +1078,74 @@ proc validate_ListAWSDefaultServiceQuotas_600080(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600082 = query.getOrDefault("NextToken")
-  valid_600082 = validateParameter(valid_600082, JString, required = false,
+  var valid_602104 = query.getOrDefault("MaxResults")
+  valid_602104 = validateParameter(valid_602104, JString, required = false,
                                  default = nil)
-  if valid_600082 != nil:
-    section.add "NextToken", valid_600082
-  var valid_600083 = query.getOrDefault("MaxResults")
-  valid_600083 = validateParameter(valid_600083, JString, required = false,
+  if valid_602104 != nil:
+    section.add "MaxResults", valid_602104
+  var valid_602105 = query.getOrDefault("NextToken")
+  valid_602105 = validateParameter(valid_602105, JString, required = false,
                                  default = nil)
-  if valid_600083 != nil:
-    section.add "MaxResults", valid_600083
+  if valid_602105 != nil:
+    section.add "NextToken", valid_602105
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600084 = header.getOrDefault("X-Amz-Date")
-  valid_600084 = validateParameter(valid_600084, JString, required = false,
-                                 default = nil)
-  if valid_600084 != nil:
-    section.add "X-Amz-Date", valid_600084
-  var valid_600085 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600085 = validateParameter(valid_600085, JString, required = false,
-                                 default = nil)
-  if valid_600085 != nil:
-    section.add "X-Amz-Security-Token", valid_600085
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600086 = header.getOrDefault("X-Amz-Target")
-  valid_600086 = validateParameter(valid_600086, JString, required = true, default = newJString(
+  var valid_602106 = header.getOrDefault("X-Amz-Target")
+  valid_602106 = validateParameter(valid_602106, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListAWSDefaultServiceQuotas"))
-  if valid_600086 != nil:
-    section.add "X-Amz-Target", valid_600086
-  var valid_600087 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600087 = validateParameter(valid_600087, JString, required = false,
+  if valid_602106 != nil:
+    section.add "X-Amz-Target", valid_602106
+  var valid_602107 = header.getOrDefault("X-Amz-Signature")
+  valid_602107 = validateParameter(valid_602107, JString, required = false,
                                  default = nil)
-  if valid_600087 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600087
-  var valid_600088 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600088 = validateParameter(valid_600088, JString, required = false,
+  if valid_602107 != nil:
+    section.add "X-Amz-Signature", valid_602107
+  var valid_602108 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602108 = validateParameter(valid_602108, JString, required = false,
                                  default = nil)
-  if valid_600088 != nil:
-    section.add "X-Amz-Algorithm", valid_600088
-  var valid_600089 = header.getOrDefault("X-Amz-Signature")
-  valid_600089 = validateParameter(valid_600089, JString, required = false,
+  if valid_602108 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602108
+  var valid_602109 = header.getOrDefault("X-Amz-Date")
+  valid_602109 = validateParameter(valid_602109, JString, required = false,
                                  default = nil)
-  if valid_600089 != nil:
-    section.add "X-Amz-Signature", valid_600089
-  var valid_600090 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600090 = validateParameter(valid_600090, JString, required = false,
+  if valid_602109 != nil:
+    section.add "X-Amz-Date", valid_602109
+  var valid_602110 = header.getOrDefault("X-Amz-Credential")
+  valid_602110 = validateParameter(valid_602110, JString, required = false,
                                  default = nil)
-  if valid_600090 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600090
-  var valid_600091 = header.getOrDefault("X-Amz-Credential")
-  valid_600091 = validateParameter(valid_600091, JString, required = false,
+  if valid_602110 != nil:
+    section.add "X-Amz-Credential", valid_602110
+  var valid_602111 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602111 = validateParameter(valid_602111, JString, required = false,
                                  default = nil)
-  if valid_600091 != nil:
-    section.add "X-Amz-Credential", valid_600091
+  if valid_602111 != nil:
+    section.add "X-Amz-Security-Token", valid_602111
+  var valid_602112 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602112 = validateParameter(valid_602112, JString, required = false,
+                                 default = nil)
+  if valid_602112 != nil:
+    section.add "X-Amz-Algorithm", valid_602112
+  var valid_602113 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602113 = validateParameter(valid_602113, JString, required = false,
+                                 default = nil)
+  if valid_602113 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602113
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1147,57 +1156,58 @@ proc validate_ListAWSDefaultServiceQuotas_600080(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600093: Call_ListAWSDefaultServiceQuotas_600079; path: JsonNode;
+proc call*(call_602115: Call_ListAWSDefaultServiceQuotas_602101; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all default service quotas for the specified AWS service or all AWS services. ListAWSDefaultServiceQuotas is similar to <a>ListServiceQuotas</a> except for the Value object. The Value object returned by <code>ListAWSDefaultServiceQuotas</code> is the default value assigned by AWS. This request returns a list of all service quotas for the specified service. The listing of each you'll see the default values are the values that AWS provides for the quotas. </p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can return an unexpected list of results, even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass the next call to the same API to request the next part of the list.</p> </note>
   ## 
-  let valid = call_600093.validator(path, query, header, formData, body)
-  let scheme = call_600093.pickScheme
+  let valid = call_602115.validator(path, query, header, formData, body)
+  let scheme = call_602115.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600093.url(scheme.get, call_600093.host, call_600093.base,
-                         call_600093.route, valid.getOrDefault("path"),
+  let url = call_602115.url(scheme.get, call_602115.host, call_602115.base,
+                         call_602115.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600093, url, valid)
+  result = atozHook(call_602115, url, valid)
 
-proc call*(call_600094: Call_ListAWSDefaultServiceQuotas_600079; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602116: Call_ListAWSDefaultServiceQuotas_602101; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listAWSDefaultServiceQuotas
   ## <p>Lists all default service quotas for the specified AWS service or all AWS services. ListAWSDefaultServiceQuotas is similar to <a>ListServiceQuotas</a> except for the Value object. The Value object returned by <code>ListAWSDefaultServiceQuotas</code> is the default value assigned by AWS. This request returns a list of all service quotas for the specified service. The listing of each you'll see the default values are the values that AWS provides for the quotas. </p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can return an unexpected list of results, even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass the next call to the same API to request the next part of the list.</p> </note>
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600095 = newJObject()
-  var body_600096 = newJObject()
-  add(query_600095, "NextToken", newJString(NextToken))
+  var query_602117 = newJObject()
+  var body_602118 = newJObject()
+  add(query_602117, "MaxResults", newJString(MaxResults))
+  add(query_602117, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600096 = body
-  add(query_600095, "MaxResults", newJString(MaxResults))
-  result = call_600094.call(nil, query_600095, nil, nil, body_600096)
+    body_602118 = body
+  result = call_602116.call(nil, query_602117, nil, nil, body_602118)
 
-var listAWSDefaultServiceQuotas* = Call_ListAWSDefaultServiceQuotas_600079(
+var listAWSDefaultServiceQuotas* = Call_ListAWSDefaultServiceQuotas_602101(
     name: "listAWSDefaultServiceQuotas", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com",
     route: "/#X-Amz-Target=ServiceQuotasV20190624.ListAWSDefaultServiceQuotas",
-    validator: validate_ListAWSDefaultServiceQuotas_600080, base: "/",
-    url: url_ListAWSDefaultServiceQuotas_600081,
+    validator: validate_ListAWSDefaultServiceQuotas_602102, base: "/",
+    url: url_ListAWSDefaultServiceQuotas_602103,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRequestedServiceQuotaChangeHistory_600098 = ref object of OpenApiRestCall_599368
-proc url_ListRequestedServiceQuotaChangeHistory_600100(protocol: Scheme;
+  Call_ListRequestedServiceQuotaChangeHistory_602120 = ref object of OpenApiRestCall_601389
+proc url_ListRequestedServiceQuotaChangeHistory_602122(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListRequestedServiceQuotaChangeHistory_600099(path: JsonNode;
+proc validate_ListRequestedServiceQuotaChangeHistory_602121(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Requests a list of the changes to quotas for a service.
   ## 
@@ -1206,74 +1216,74 @@ proc validate_ListRequestedServiceQuotaChangeHistory_600099(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600101 = query.getOrDefault("NextToken")
-  valid_600101 = validateParameter(valid_600101, JString, required = false,
+  var valid_602123 = query.getOrDefault("MaxResults")
+  valid_602123 = validateParameter(valid_602123, JString, required = false,
                                  default = nil)
-  if valid_600101 != nil:
-    section.add "NextToken", valid_600101
-  var valid_600102 = query.getOrDefault("MaxResults")
-  valid_600102 = validateParameter(valid_600102, JString, required = false,
+  if valid_602123 != nil:
+    section.add "MaxResults", valid_602123
+  var valid_602124 = query.getOrDefault("NextToken")
+  valid_602124 = validateParameter(valid_602124, JString, required = false,
                                  default = nil)
-  if valid_600102 != nil:
-    section.add "MaxResults", valid_600102
+  if valid_602124 != nil:
+    section.add "NextToken", valid_602124
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600103 = header.getOrDefault("X-Amz-Date")
-  valid_600103 = validateParameter(valid_600103, JString, required = false,
-                                 default = nil)
-  if valid_600103 != nil:
-    section.add "X-Amz-Date", valid_600103
-  var valid_600104 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600104 = validateParameter(valid_600104, JString, required = false,
-                                 default = nil)
-  if valid_600104 != nil:
-    section.add "X-Amz-Security-Token", valid_600104
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600105 = header.getOrDefault("X-Amz-Target")
-  valid_600105 = validateParameter(valid_600105, JString, required = true, default = newJString(
+  var valid_602125 = header.getOrDefault("X-Amz-Target")
+  valid_602125 = validateParameter(valid_602125, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListRequestedServiceQuotaChangeHistory"))
-  if valid_600105 != nil:
-    section.add "X-Amz-Target", valid_600105
-  var valid_600106 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600106 = validateParameter(valid_600106, JString, required = false,
+  if valid_602125 != nil:
+    section.add "X-Amz-Target", valid_602125
+  var valid_602126 = header.getOrDefault("X-Amz-Signature")
+  valid_602126 = validateParameter(valid_602126, JString, required = false,
                                  default = nil)
-  if valid_600106 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600106
-  var valid_600107 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600107 = validateParameter(valid_600107, JString, required = false,
+  if valid_602126 != nil:
+    section.add "X-Amz-Signature", valid_602126
+  var valid_602127 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602127 = validateParameter(valid_602127, JString, required = false,
                                  default = nil)
-  if valid_600107 != nil:
-    section.add "X-Amz-Algorithm", valid_600107
-  var valid_600108 = header.getOrDefault("X-Amz-Signature")
-  valid_600108 = validateParameter(valid_600108, JString, required = false,
+  if valid_602127 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602127
+  var valid_602128 = header.getOrDefault("X-Amz-Date")
+  valid_602128 = validateParameter(valid_602128, JString, required = false,
                                  default = nil)
-  if valid_600108 != nil:
-    section.add "X-Amz-Signature", valid_600108
-  var valid_600109 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600109 = validateParameter(valid_600109, JString, required = false,
+  if valid_602128 != nil:
+    section.add "X-Amz-Date", valid_602128
+  var valid_602129 = header.getOrDefault("X-Amz-Credential")
+  valid_602129 = validateParameter(valid_602129, JString, required = false,
                                  default = nil)
-  if valid_600109 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600109
-  var valid_600110 = header.getOrDefault("X-Amz-Credential")
-  valid_600110 = validateParameter(valid_600110, JString, required = false,
+  if valid_602129 != nil:
+    section.add "X-Amz-Credential", valid_602129
+  var valid_602130 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602130 = validateParameter(valid_602130, JString, required = false,
                                  default = nil)
-  if valid_600110 != nil:
-    section.add "X-Amz-Credential", valid_600110
+  if valid_602130 != nil:
+    section.add "X-Amz-Security-Token", valid_602130
+  var valid_602131 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602131 = validateParameter(valid_602131, JString, required = false,
+                                 default = nil)
+  if valid_602131 != nil:
+    section.add "X-Amz-Algorithm", valid_602131
+  var valid_602132 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602132 = validateParameter(valid_602132, JString, required = false,
+                                 default = nil)
+  if valid_602132 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602132
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1284,57 +1294,58 @@ proc validate_ListRequestedServiceQuotaChangeHistory_600099(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600112: Call_ListRequestedServiceQuotaChangeHistory_600098;
+proc call*(call_602134: Call_ListRequestedServiceQuotaChangeHistory_602120;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Requests a list of the changes to quotas for a service.
   ## 
-  let valid = call_600112.validator(path, query, header, formData, body)
-  let scheme = call_600112.pickScheme
+  let valid = call_602134.validator(path, query, header, formData, body)
+  let scheme = call_602134.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600112.url(scheme.get, call_600112.host, call_600112.base,
-                         call_600112.route, valid.getOrDefault("path"),
+  let url = call_602134.url(scheme.get, call_602134.host, call_602134.base,
+                         call_602134.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600112, url, valid)
+  result = atozHook(call_602134, url, valid)
 
-proc call*(call_600113: Call_ListRequestedServiceQuotaChangeHistory_600098;
-          body: JsonNode; NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602135: Call_ListRequestedServiceQuotaChangeHistory_602120;
+          body: JsonNode; MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listRequestedServiceQuotaChangeHistory
   ## Requests a list of the changes to quotas for a service.
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600114 = newJObject()
-  var body_600115 = newJObject()
-  add(query_600114, "NextToken", newJString(NextToken))
+  var query_602136 = newJObject()
+  var body_602137 = newJObject()
+  add(query_602136, "MaxResults", newJString(MaxResults))
+  add(query_602136, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600115 = body
-  add(query_600114, "MaxResults", newJString(MaxResults))
-  result = call_600113.call(nil, query_600114, nil, nil, body_600115)
+    body_602137 = body
+  result = call_602135.call(nil, query_602136, nil, nil, body_602137)
 
-var listRequestedServiceQuotaChangeHistory* = Call_ListRequestedServiceQuotaChangeHistory_600098(
+var listRequestedServiceQuotaChangeHistory* = Call_ListRequestedServiceQuotaChangeHistory_602120(
     name: "listRequestedServiceQuotaChangeHistory", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.ListRequestedServiceQuotaChangeHistory",
-    validator: validate_ListRequestedServiceQuotaChangeHistory_600099, base: "/",
-    url: url_ListRequestedServiceQuotaChangeHistory_600100,
+    validator: validate_ListRequestedServiceQuotaChangeHistory_602121, base: "/",
+    url: url_ListRequestedServiceQuotaChangeHistory_602122,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRequestedServiceQuotaChangeHistoryByQuota_600116 = ref object of OpenApiRestCall_599368
-proc url_ListRequestedServiceQuotaChangeHistoryByQuota_600118(protocol: Scheme;
+  Call_ListRequestedServiceQuotaChangeHistoryByQuota_602138 = ref object of OpenApiRestCall_601389
+proc url_ListRequestedServiceQuotaChangeHistoryByQuota_602140(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListRequestedServiceQuotaChangeHistoryByQuota_600117(
+proc validate_ListRequestedServiceQuotaChangeHistoryByQuota_602139(
     path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
     body: JsonNode): JsonNode =
   ## Requests a list of the changes to specific service quotas. This command provides additional granularity over the <code>ListRequestedServiceQuotaChangeHistory</code> command. Once a quota change request has reached <code>CASE_CLOSED, APPROVED,</code> or <code>DENIED</code>, the history has been kept for 90 days.
@@ -1344,74 +1355,74 @@ proc validate_ListRequestedServiceQuotaChangeHistoryByQuota_600117(
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600119 = query.getOrDefault("NextToken")
-  valid_600119 = validateParameter(valid_600119, JString, required = false,
+  var valid_602141 = query.getOrDefault("MaxResults")
+  valid_602141 = validateParameter(valid_602141, JString, required = false,
                                  default = nil)
-  if valid_600119 != nil:
-    section.add "NextToken", valid_600119
-  var valid_600120 = query.getOrDefault("MaxResults")
-  valid_600120 = validateParameter(valid_600120, JString, required = false,
+  if valid_602141 != nil:
+    section.add "MaxResults", valid_602141
+  var valid_602142 = query.getOrDefault("NextToken")
+  valid_602142 = validateParameter(valid_602142, JString, required = false,
                                  default = nil)
-  if valid_600120 != nil:
-    section.add "MaxResults", valid_600120
+  if valid_602142 != nil:
+    section.add "NextToken", valid_602142
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600121 = header.getOrDefault("X-Amz-Date")
-  valid_600121 = validateParameter(valid_600121, JString, required = false,
-                                 default = nil)
-  if valid_600121 != nil:
-    section.add "X-Amz-Date", valid_600121
-  var valid_600122 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600122 = validateParameter(valid_600122, JString, required = false,
-                                 default = nil)
-  if valid_600122 != nil:
-    section.add "X-Amz-Security-Token", valid_600122
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600123 = header.getOrDefault("X-Amz-Target")
-  valid_600123 = validateParameter(valid_600123, JString, required = true, default = newJString(
+  var valid_602143 = header.getOrDefault("X-Amz-Target")
+  valid_602143 = validateParameter(valid_602143, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListRequestedServiceQuotaChangeHistoryByQuota"))
-  if valid_600123 != nil:
-    section.add "X-Amz-Target", valid_600123
-  var valid_600124 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600124 = validateParameter(valid_600124, JString, required = false,
+  if valid_602143 != nil:
+    section.add "X-Amz-Target", valid_602143
+  var valid_602144 = header.getOrDefault("X-Amz-Signature")
+  valid_602144 = validateParameter(valid_602144, JString, required = false,
                                  default = nil)
-  if valid_600124 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600124
-  var valid_600125 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600125 = validateParameter(valid_600125, JString, required = false,
+  if valid_602144 != nil:
+    section.add "X-Amz-Signature", valid_602144
+  var valid_602145 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602145 = validateParameter(valid_602145, JString, required = false,
                                  default = nil)
-  if valid_600125 != nil:
-    section.add "X-Amz-Algorithm", valid_600125
-  var valid_600126 = header.getOrDefault("X-Amz-Signature")
-  valid_600126 = validateParameter(valid_600126, JString, required = false,
+  if valid_602145 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602145
+  var valid_602146 = header.getOrDefault("X-Amz-Date")
+  valid_602146 = validateParameter(valid_602146, JString, required = false,
                                  default = nil)
-  if valid_600126 != nil:
-    section.add "X-Amz-Signature", valid_600126
-  var valid_600127 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600127 = validateParameter(valid_600127, JString, required = false,
+  if valid_602146 != nil:
+    section.add "X-Amz-Date", valid_602146
+  var valid_602147 = header.getOrDefault("X-Amz-Credential")
+  valid_602147 = validateParameter(valid_602147, JString, required = false,
                                  default = nil)
-  if valid_600127 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600127
-  var valid_600128 = header.getOrDefault("X-Amz-Credential")
-  valid_600128 = validateParameter(valid_600128, JString, required = false,
+  if valid_602147 != nil:
+    section.add "X-Amz-Credential", valid_602147
+  var valid_602148 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602148 = validateParameter(valid_602148, JString, required = false,
                                  default = nil)
-  if valid_600128 != nil:
-    section.add "X-Amz-Credential", valid_600128
+  if valid_602148 != nil:
+    section.add "X-Amz-Security-Token", valid_602148
+  var valid_602149 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602149 = validateParameter(valid_602149, JString, required = false,
+                                 default = nil)
+  if valid_602149 != nil:
+    section.add "X-Amz-Algorithm", valid_602149
+  var valid_602150 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602150 = validateParameter(valid_602150, JString, required = false,
+                                 default = nil)
+  if valid_602150 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602150
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1422,57 +1433,58 @@ proc validate_ListRequestedServiceQuotaChangeHistoryByQuota_600117(
   if body != nil:
     result.add "body", body
 
-proc call*(call_600130: Call_ListRequestedServiceQuotaChangeHistoryByQuota_600116;
+proc call*(call_602152: Call_ListRequestedServiceQuotaChangeHistoryByQuota_602138;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Requests a list of the changes to specific service quotas. This command provides additional granularity over the <code>ListRequestedServiceQuotaChangeHistory</code> command. Once a quota change request has reached <code>CASE_CLOSED, APPROVED,</code> or <code>DENIED</code>, the history has been kept for 90 days.
   ## 
-  let valid = call_600130.validator(path, query, header, formData, body)
-  let scheme = call_600130.pickScheme
+  let valid = call_602152.validator(path, query, header, formData, body)
+  let scheme = call_602152.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600130.url(scheme.get, call_600130.host, call_600130.base,
-                         call_600130.route, valid.getOrDefault("path"),
+  let url = call_602152.url(scheme.get, call_602152.host, call_602152.base,
+                         call_602152.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600130, url, valid)
+  result = atozHook(call_602152, url, valid)
 
-proc call*(call_600131: Call_ListRequestedServiceQuotaChangeHistoryByQuota_600116;
-          body: JsonNode; NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602153: Call_ListRequestedServiceQuotaChangeHistoryByQuota_602138;
+          body: JsonNode; MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listRequestedServiceQuotaChangeHistoryByQuota
   ## Requests a list of the changes to specific service quotas. This command provides additional granularity over the <code>ListRequestedServiceQuotaChangeHistory</code> command. Once a quota change request has reached <code>CASE_CLOSED, APPROVED,</code> or <code>DENIED</code>, the history has been kept for 90 days.
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600132 = newJObject()
-  var body_600133 = newJObject()
-  add(query_600132, "NextToken", newJString(NextToken))
+  var query_602154 = newJObject()
+  var body_602155 = newJObject()
+  add(query_602154, "MaxResults", newJString(MaxResults))
+  add(query_602154, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600133 = body
-  add(query_600132, "MaxResults", newJString(MaxResults))
-  result = call_600131.call(nil, query_600132, nil, nil, body_600133)
+    body_602155 = body
+  result = call_602153.call(nil, query_602154, nil, nil, body_602155)
 
-var listRequestedServiceQuotaChangeHistoryByQuota* = Call_ListRequestedServiceQuotaChangeHistoryByQuota_600116(
+var listRequestedServiceQuotaChangeHistoryByQuota* = Call_ListRequestedServiceQuotaChangeHistoryByQuota_602138(
     name: "listRequestedServiceQuotaChangeHistoryByQuota",
     meth: HttpMethod.HttpPost, host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.ListRequestedServiceQuotaChangeHistoryByQuota",
-    validator: validate_ListRequestedServiceQuotaChangeHistoryByQuota_600117,
-    base: "/", url: url_ListRequestedServiceQuotaChangeHistoryByQuota_600118,
+    validator: validate_ListRequestedServiceQuotaChangeHistoryByQuota_602139,
+    base: "/", url: url_ListRequestedServiceQuotaChangeHistoryByQuota_602140,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListServiceQuotaIncreaseRequestsInTemplate_600134 = ref object of OpenApiRestCall_599368
-proc url_ListServiceQuotaIncreaseRequestsInTemplate_600136(protocol: Scheme;
+  Call_ListServiceQuotaIncreaseRequestsInTemplate_602156 = ref object of OpenApiRestCall_601389
+proc url_ListServiceQuotaIncreaseRequestsInTemplate_602158(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListServiceQuotaIncreaseRequestsInTemplate_600135(path: JsonNode;
+proc validate_ListServiceQuotaIncreaseRequestsInTemplate_602157(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of the quota increase requests in the template. 
   ## 
@@ -1481,74 +1493,74 @@ proc validate_ListServiceQuotaIncreaseRequestsInTemplate_600135(path: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600137 = query.getOrDefault("NextToken")
-  valid_600137 = validateParameter(valid_600137, JString, required = false,
+  var valid_602159 = query.getOrDefault("MaxResults")
+  valid_602159 = validateParameter(valid_602159, JString, required = false,
                                  default = nil)
-  if valid_600137 != nil:
-    section.add "NextToken", valid_600137
-  var valid_600138 = query.getOrDefault("MaxResults")
-  valid_600138 = validateParameter(valid_600138, JString, required = false,
+  if valid_602159 != nil:
+    section.add "MaxResults", valid_602159
+  var valid_602160 = query.getOrDefault("NextToken")
+  valid_602160 = validateParameter(valid_602160, JString, required = false,
                                  default = nil)
-  if valid_600138 != nil:
-    section.add "MaxResults", valid_600138
+  if valid_602160 != nil:
+    section.add "NextToken", valid_602160
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600139 = header.getOrDefault("X-Amz-Date")
-  valid_600139 = validateParameter(valid_600139, JString, required = false,
-                                 default = nil)
-  if valid_600139 != nil:
-    section.add "X-Amz-Date", valid_600139
-  var valid_600140 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600140 = validateParameter(valid_600140, JString, required = false,
-                                 default = nil)
-  if valid_600140 != nil:
-    section.add "X-Amz-Security-Token", valid_600140
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600141 = header.getOrDefault("X-Amz-Target")
-  valid_600141 = validateParameter(valid_600141, JString, required = true, default = newJString(
+  var valid_602161 = header.getOrDefault("X-Amz-Target")
+  valid_602161 = validateParameter(valid_602161, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListServiceQuotaIncreaseRequestsInTemplate"))
-  if valid_600141 != nil:
-    section.add "X-Amz-Target", valid_600141
-  var valid_600142 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600142 = validateParameter(valid_600142, JString, required = false,
+  if valid_602161 != nil:
+    section.add "X-Amz-Target", valid_602161
+  var valid_602162 = header.getOrDefault("X-Amz-Signature")
+  valid_602162 = validateParameter(valid_602162, JString, required = false,
                                  default = nil)
-  if valid_600142 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600142
-  var valid_600143 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600143 = validateParameter(valid_600143, JString, required = false,
+  if valid_602162 != nil:
+    section.add "X-Amz-Signature", valid_602162
+  var valid_602163 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602163 = validateParameter(valid_602163, JString, required = false,
                                  default = nil)
-  if valid_600143 != nil:
-    section.add "X-Amz-Algorithm", valid_600143
-  var valid_600144 = header.getOrDefault("X-Amz-Signature")
-  valid_600144 = validateParameter(valid_600144, JString, required = false,
+  if valid_602163 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602163
+  var valid_602164 = header.getOrDefault("X-Amz-Date")
+  valid_602164 = validateParameter(valid_602164, JString, required = false,
                                  default = nil)
-  if valid_600144 != nil:
-    section.add "X-Amz-Signature", valid_600144
-  var valid_600145 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600145 = validateParameter(valid_600145, JString, required = false,
+  if valid_602164 != nil:
+    section.add "X-Amz-Date", valid_602164
+  var valid_602165 = header.getOrDefault("X-Amz-Credential")
+  valid_602165 = validateParameter(valid_602165, JString, required = false,
                                  default = nil)
-  if valid_600145 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600145
-  var valid_600146 = header.getOrDefault("X-Amz-Credential")
-  valid_600146 = validateParameter(valid_600146, JString, required = false,
+  if valid_602165 != nil:
+    section.add "X-Amz-Credential", valid_602165
+  var valid_602166 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602166 = validateParameter(valid_602166, JString, required = false,
                                  default = nil)
-  if valid_600146 != nil:
-    section.add "X-Amz-Credential", valid_600146
+  if valid_602166 != nil:
+    section.add "X-Amz-Security-Token", valid_602166
+  var valid_602167 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602167 = validateParameter(valid_602167, JString, required = false,
+                                 default = nil)
+  if valid_602167 != nil:
+    section.add "X-Amz-Algorithm", valid_602167
+  var valid_602168 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602168 = validateParameter(valid_602168, JString, required = false,
+                                 default = nil)
+  if valid_602168 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602168
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1559,57 +1571,58 @@ proc validate_ListServiceQuotaIncreaseRequestsInTemplate_600135(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600148: Call_ListServiceQuotaIncreaseRequestsInTemplate_600134;
+proc call*(call_602170: Call_ListServiceQuotaIncreaseRequestsInTemplate_602156;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Returns a list of the quota increase requests in the template. 
   ## 
-  let valid = call_600148.validator(path, query, header, formData, body)
-  let scheme = call_600148.pickScheme
+  let valid = call_602170.validator(path, query, header, formData, body)
+  let scheme = call_602170.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600148.url(scheme.get, call_600148.host, call_600148.base,
-                         call_600148.route, valid.getOrDefault("path"),
+  let url = call_602170.url(scheme.get, call_602170.host, call_602170.base,
+                         call_602170.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600148, url, valid)
+  result = atozHook(call_602170, url, valid)
 
-proc call*(call_600149: Call_ListServiceQuotaIncreaseRequestsInTemplate_600134;
-          body: JsonNode; NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602171: Call_ListServiceQuotaIncreaseRequestsInTemplate_602156;
+          body: JsonNode; MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listServiceQuotaIncreaseRequestsInTemplate
   ## Returns a list of the quota increase requests in the template. 
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600150 = newJObject()
-  var body_600151 = newJObject()
-  add(query_600150, "NextToken", newJString(NextToken))
+  var query_602172 = newJObject()
+  var body_602173 = newJObject()
+  add(query_602172, "MaxResults", newJString(MaxResults))
+  add(query_602172, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600151 = body
-  add(query_600150, "MaxResults", newJString(MaxResults))
-  result = call_600149.call(nil, query_600150, nil, nil, body_600151)
+    body_602173 = body
+  result = call_602171.call(nil, query_602172, nil, nil, body_602173)
 
-var listServiceQuotaIncreaseRequestsInTemplate* = Call_ListServiceQuotaIncreaseRequestsInTemplate_600134(
+var listServiceQuotaIncreaseRequestsInTemplate* = Call_ListServiceQuotaIncreaseRequestsInTemplate_602156(
     name: "listServiceQuotaIncreaseRequestsInTemplate", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.ListServiceQuotaIncreaseRequestsInTemplate",
-    validator: validate_ListServiceQuotaIncreaseRequestsInTemplate_600135,
-    base: "/", url: url_ListServiceQuotaIncreaseRequestsInTemplate_600136,
+    validator: validate_ListServiceQuotaIncreaseRequestsInTemplate_602157,
+    base: "/", url: url_ListServiceQuotaIncreaseRequestsInTemplate_602158,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListServiceQuotas_600152 = ref object of OpenApiRestCall_599368
-proc url_ListServiceQuotas_600154(protocol: Scheme; host: string; base: string;
+  Call_ListServiceQuotas_602174 = ref object of OpenApiRestCall_601389
+proc url_ListServiceQuotas_602176(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListServiceQuotas_600153(path: JsonNode; query: JsonNode;
+proc validate_ListServiceQuotas_602175(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Lists all service quotas for the specified AWS service. This request returns a list of the service quotas for the specified service. you'll see the default values are the values that AWS provides for the quotas. </p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can return an unexpected list of results, even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass the next call to the same API to request the next part of the list.</p> </note>
@@ -1619,74 +1632,74 @@ proc validate_ListServiceQuotas_600153(path: JsonNode; query: JsonNode;
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600155 = query.getOrDefault("NextToken")
-  valid_600155 = validateParameter(valid_600155, JString, required = false,
+  var valid_602177 = query.getOrDefault("MaxResults")
+  valid_602177 = validateParameter(valid_602177, JString, required = false,
                                  default = nil)
-  if valid_600155 != nil:
-    section.add "NextToken", valid_600155
-  var valid_600156 = query.getOrDefault("MaxResults")
-  valid_600156 = validateParameter(valid_600156, JString, required = false,
+  if valid_602177 != nil:
+    section.add "MaxResults", valid_602177
+  var valid_602178 = query.getOrDefault("NextToken")
+  valid_602178 = validateParameter(valid_602178, JString, required = false,
                                  default = nil)
-  if valid_600156 != nil:
-    section.add "MaxResults", valid_600156
+  if valid_602178 != nil:
+    section.add "NextToken", valid_602178
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600157 = header.getOrDefault("X-Amz-Date")
-  valid_600157 = validateParameter(valid_600157, JString, required = false,
-                                 default = nil)
-  if valid_600157 != nil:
-    section.add "X-Amz-Date", valid_600157
-  var valid_600158 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600158 = validateParameter(valid_600158, JString, required = false,
-                                 default = nil)
-  if valid_600158 != nil:
-    section.add "X-Amz-Security-Token", valid_600158
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600159 = header.getOrDefault("X-Amz-Target")
-  valid_600159 = validateParameter(valid_600159, JString, required = true, default = newJString(
+  var valid_602179 = header.getOrDefault("X-Amz-Target")
+  valid_602179 = validateParameter(valid_602179, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListServiceQuotas"))
-  if valid_600159 != nil:
-    section.add "X-Amz-Target", valid_600159
-  var valid_600160 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600160 = validateParameter(valid_600160, JString, required = false,
+  if valid_602179 != nil:
+    section.add "X-Amz-Target", valid_602179
+  var valid_602180 = header.getOrDefault("X-Amz-Signature")
+  valid_602180 = validateParameter(valid_602180, JString, required = false,
                                  default = nil)
-  if valid_600160 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600160
-  var valid_600161 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600161 = validateParameter(valid_600161, JString, required = false,
+  if valid_602180 != nil:
+    section.add "X-Amz-Signature", valid_602180
+  var valid_602181 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602181 = validateParameter(valid_602181, JString, required = false,
                                  default = nil)
-  if valid_600161 != nil:
-    section.add "X-Amz-Algorithm", valid_600161
-  var valid_600162 = header.getOrDefault("X-Amz-Signature")
-  valid_600162 = validateParameter(valid_600162, JString, required = false,
+  if valid_602181 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602181
+  var valid_602182 = header.getOrDefault("X-Amz-Date")
+  valid_602182 = validateParameter(valid_602182, JString, required = false,
                                  default = nil)
-  if valid_600162 != nil:
-    section.add "X-Amz-Signature", valid_600162
-  var valid_600163 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600163 = validateParameter(valid_600163, JString, required = false,
+  if valid_602182 != nil:
+    section.add "X-Amz-Date", valid_602182
+  var valid_602183 = header.getOrDefault("X-Amz-Credential")
+  valid_602183 = validateParameter(valid_602183, JString, required = false,
                                  default = nil)
-  if valid_600163 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600163
-  var valid_600164 = header.getOrDefault("X-Amz-Credential")
-  valid_600164 = validateParameter(valid_600164, JString, required = false,
+  if valid_602183 != nil:
+    section.add "X-Amz-Credential", valid_602183
+  var valid_602184 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602184 = validateParameter(valid_602184, JString, required = false,
                                  default = nil)
-  if valid_600164 != nil:
-    section.add "X-Amz-Credential", valid_600164
+  if valid_602184 != nil:
+    section.add "X-Amz-Security-Token", valid_602184
+  var valid_602185 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602185 = validateParameter(valid_602185, JString, required = false,
+                                 default = nil)
+  if valid_602185 != nil:
+    section.add "X-Amz-Algorithm", valid_602185
+  var valid_602186 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602186 = validateParameter(valid_602186, JString, required = false,
+                                 default = nil)
+  if valid_602186 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602186
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1697,55 +1710,56 @@ proc validate_ListServiceQuotas_600153(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600166: Call_ListServiceQuotas_600152; path: JsonNode;
+proc call*(call_602188: Call_ListServiceQuotas_602174; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all service quotas for the specified AWS service. This request returns a list of the service quotas for the specified service. you'll see the default values are the values that AWS provides for the quotas. </p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can return an unexpected list of results, even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass the next call to the same API to request the next part of the list.</p> </note>
   ## 
-  let valid = call_600166.validator(path, query, header, formData, body)
-  let scheme = call_600166.pickScheme
+  let valid = call_602188.validator(path, query, header, formData, body)
+  let scheme = call_602188.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600166.url(scheme.get, call_600166.host, call_600166.base,
-                         call_600166.route, valid.getOrDefault("path"),
+  let url = call_602188.url(scheme.get, call_602188.host, call_602188.base,
+                         call_602188.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600166, url, valid)
+  result = atozHook(call_602188, url, valid)
 
-proc call*(call_600167: Call_ListServiceQuotas_600152; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602189: Call_ListServiceQuotas_602174; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listServiceQuotas
   ## <p>Lists all service quotas for the specified AWS service. This request returns a list of the service quotas for the specified service. you'll see the default values are the values that AWS provides for the quotas. </p> <note> <p>Always check the <code>NextToken</code> response parameter when calling any of the <code>List*</code> operations. These operations can return an unexpected list of results, even when there are more results available. When this happens, the <code>NextToken</code> response parameter contains a value to pass the next call to the same API to request the next part of the list.</p> </note>
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600168 = newJObject()
-  var body_600169 = newJObject()
-  add(query_600168, "NextToken", newJString(NextToken))
+  var query_602190 = newJObject()
+  var body_602191 = newJObject()
+  add(query_602190, "MaxResults", newJString(MaxResults))
+  add(query_602190, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600169 = body
-  add(query_600168, "MaxResults", newJString(MaxResults))
-  result = call_600167.call(nil, query_600168, nil, nil, body_600169)
+    body_602191 = body
+  result = call_602189.call(nil, query_602190, nil, nil, body_602191)
 
-var listServiceQuotas* = Call_ListServiceQuotas_600152(name: "listServiceQuotas",
+var listServiceQuotas* = Call_ListServiceQuotas_602174(name: "listServiceQuotas",
     meth: HttpMethod.HttpPost, host: "servicequotas.amazonaws.com",
     route: "/#X-Amz-Target=ServiceQuotasV20190624.ListServiceQuotas",
-    validator: validate_ListServiceQuotas_600153, base: "/",
-    url: url_ListServiceQuotas_600154, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListServiceQuotas_602175, base: "/",
+    url: url_ListServiceQuotas_602176, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListServices_600170 = ref object of OpenApiRestCall_599368
-proc url_ListServices_600172(protocol: Scheme; host: string; base: string;
+  Call_ListServices_602192 = ref object of OpenApiRestCall_601389
+proc url_ListServices_602194(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListServices_600171(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListServices_602193(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the AWS services available in Service Quotas. Not all AWS services are available in Service Quotas. To list the see the list of the service quotas for a specific service, use <a>ListServiceQuotas</a>.
   ## 
@@ -1754,74 +1768,74 @@ proc validate_ListServices_600171(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   result.add "path", section
   ## parameters in `query` object:
-  ##   NextToken: JString
-  ##            : Pagination token
   ##   MaxResults: JString
   ##             : Pagination limit
+  ##   NextToken: JString
+  ##            : Pagination token
   section = newJObject()
-  var valid_600173 = query.getOrDefault("NextToken")
-  valid_600173 = validateParameter(valid_600173, JString, required = false,
+  var valid_602195 = query.getOrDefault("MaxResults")
+  valid_602195 = validateParameter(valid_602195, JString, required = false,
                                  default = nil)
-  if valid_600173 != nil:
-    section.add "NextToken", valid_600173
-  var valid_600174 = query.getOrDefault("MaxResults")
-  valid_600174 = validateParameter(valid_600174, JString, required = false,
+  if valid_602195 != nil:
+    section.add "MaxResults", valid_602195
+  var valid_602196 = query.getOrDefault("NextToken")
+  valid_602196 = validateParameter(valid_602196, JString, required = false,
                                  default = nil)
-  if valid_600174 != nil:
-    section.add "MaxResults", valid_600174
+  if valid_602196 != nil:
+    section.add "NextToken", valid_602196
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600175 = header.getOrDefault("X-Amz-Date")
-  valid_600175 = validateParameter(valid_600175, JString, required = false,
-                                 default = nil)
-  if valid_600175 != nil:
-    section.add "X-Amz-Date", valid_600175
-  var valid_600176 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600176 = validateParameter(valid_600176, JString, required = false,
-                                 default = nil)
-  if valid_600176 != nil:
-    section.add "X-Amz-Security-Token", valid_600176
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600177 = header.getOrDefault("X-Amz-Target")
-  valid_600177 = validateParameter(valid_600177, JString, required = true, default = newJString(
+  var valid_602197 = header.getOrDefault("X-Amz-Target")
+  valid_602197 = validateParameter(valid_602197, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListServices"))
-  if valid_600177 != nil:
-    section.add "X-Amz-Target", valid_600177
-  var valid_600178 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600178 = validateParameter(valid_600178, JString, required = false,
+  if valid_602197 != nil:
+    section.add "X-Amz-Target", valid_602197
+  var valid_602198 = header.getOrDefault("X-Amz-Signature")
+  valid_602198 = validateParameter(valid_602198, JString, required = false,
                                  default = nil)
-  if valid_600178 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600178
-  var valid_600179 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600179 = validateParameter(valid_600179, JString, required = false,
+  if valid_602198 != nil:
+    section.add "X-Amz-Signature", valid_602198
+  var valid_602199 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602199 = validateParameter(valid_602199, JString, required = false,
                                  default = nil)
-  if valid_600179 != nil:
-    section.add "X-Amz-Algorithm", valid_600179
-  var valid_600180 = header.getOrDefault("X-Amz-Signature")
-  valid_600180 = validateParameter(valid_600180, JString, required = false,
+  if valid_602199 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602199
+  var valid_602200 = header.getOrDefault("X-Amz-Date")
+  valid_602200 = validateParameter(valid_602200, JString, required = false,
                                  default = nil)
-  if valid_600180 != nil:
-    section.add "X-Amz-Signature", valid_600180
-  var valid_600181 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600181 = validateParameter(valid_600181, JString, required = false,
+  if valid_602200 != nil:
+    section.add "X-Amz-Date", valid_602200
+  var valid_602201 = header.getOrDefault("X-Amz-Credential")
+  valid_602201 = validateParameter(valid_602201, JString, required = false,
                                  default = nil)
-  if valid_600181 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600181
-  var valid_600182 = header.getOrDefault("X-Amz-Credential")
-  valid_600182 = validateParameter(valid_600182, JString, required = false,
+  if valid_602201 != nil:
+    section.add "X-Amz-Credential", valid_602201
+  var valid_602202 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602202 = validateParameter(valid_602202, JString, required = false,
                                  default = nil)
-  if valid_600182 != nil:
-    section.add "X-Amz-Credential", valid_600182
+  if valid_602202 != nil:
+    section.add "X-Amz-Security-Token", valid_602202
+  var valid_602203 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602203 = validateParameter(valid_602203, JString, required = false,
+                                 default = nil)
+  if valid_602203 != nil:
+    section.add "X-Amz-Algorithm", valid_602203
+  var valid_602204 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602204 = validateParameter(valid_602204, JString, required = false,
+                                 default = nil)
+  if valid_602204 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602204
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1832,55 +1846,56 @@ proc validate_ListServices_600171(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_600184: Call_ListServices_600170; path: JsonNode; query: JsonNode;
+proc call*(call_602206: Call_ListServices_602192; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the AWS services available in Service Quotas. Not all AWS services are available in Service Quotas. To list the see the list of the service quotas for a specific service, use <a>ListServiceQuotas</a>.
   ## 
-  let valid = call_600184.validator(path, query, header, formData, body)
-  let scheme = call_600184.pickScheme
+  let valid = call_602206.validator(path, query, header, formData, body)
+  let scheme = call_602206.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600184.url(scheme.get, call_600184.host, call_600184.base,
-                         call_600184.route, valid.getOrDefault("path"),
+  let url = call_602206.url(scheme.get, call_602206.host, call_602206.base,
+                         call_602206.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600184, url, valid)
+  result = atozHook(call_602206, url, valid)
 
-proc call*(call_600185: Call_ListServices_600170; body: JsonNode;
-          NextToken: string = ""; MaxResults: string = ""): Recallable =
+proc call*(call_602207: Call_ListServices_602192; body: JsonNode;
+          MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listServices
   ## Lists the AWS services available in Service Quotas. Not all AWS services are available in Service Quotas. To list the see the list of the service quotas for a specific service, use <a>ListServiceQuotas</a>.
+  ##   MaxResults: string
+  ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  ##   MaxResults: string
-  ##             : Pagination limit
-  var query_600186 = newJObject()
-  var body_600187 = newJObject()
-  add(query_600186, "NextToken", newJString(NextToken))
+  var query_602208 = newJObject()
+  var body_602209 = newJObject()
+  add(query_602208, "MaxResults", newJString(MaxResults))
+  add(query_602208, "NextToken", newJString(NextToken))
   if body != nil:
-    body_600187 = body
-  add(query_600186, "MaxResults", newJString(MaxResults))
-  result = call_600185.call(nil, query_600186, nil, nil, body_600187)
+    body_602209 = body
+  result = call_602207.call(nil, query_602208, nil, nil, body_602209)
 
-var listServices* = Call_ListServices_600170(name: "listServices",
+var listServices* = Call_ListServices_602192(name: "listServices",
     meth: HttpMethod.HttpPost, host: "servicequotas.amazonaws.com",
     route: "/#X-Amz-Target=ServiceQuotasV20190624.ListServices",
-    validator: validate_ListServices_600171, base: "/", url: url_ListServices_600172,
+    validator: validate_ListServices_602193, base: "/", url: url_ListServices_602194,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutServiceQuotaIncreaseRequestIntoTemplate_600188 = ref object of OpenApiRestCall_599368
-proc url_PutServiceQuotaIncreaseRequestIntoTemplate_600190(protocol: Scheme;
+  Call_PutServiceQuotaIncreaseRequestIntoTemplate_602210 = ref object of OpenApiRestCall_601389
+proc url_PutServiceQuotaIncreaseRequestIntoTemplate_602212(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_PutServiceQuotaIncreaseRequestIntoTemplate_600189(path: JsonNode;
+proc validate_PutServiceQuotaIncreaseRequestIntoTemplate_602211(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Defines and adds a quota to the service quota template. To add a quota to the template, you must provide the <code>ServiceCode</code>, <code>QuotaCode</code>, <code>AwsRegion</code>, and <code>DesiredValue</code>. Once you add a quota to the template, use <a>ListServiceQuotaIncreaseRequestsInTemplate</a> to see the list of quotas in the template.
   ## 
@@ -1891,57 +1906,57 @@ proc validate_PutServiceQuotaIncreaseRequestIntoTemplate_600189(path: JsonNode;
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600191 = header.getOrDefault("X-Amz-Date")
-  valid_600191 = validateParameter(valid_600191, JString, required = false,
-                                 default = nil)
-  if valid_600191 != nil:
-    section.add "X-Amz-Date", valid_600191
-  var valid_600192 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600192 = validateParameter(valid_600192, JString, required = false,
-                                 default = nil)
-  if valid_600192 != nil:
-    section.add "X-Amz-Security-Token", valid_600192
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600193 = header.getOrDefault("X-Amz-Target")
-  valid_600193 = validateParameter(valid_600193, JString, required = true, default = newJString(
+  var valid_602213 = header.getOrDefault("X-Amz-Target")
+  valid_602213 = validateParameter(valid_602213, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.PutServiceQuotaIncreaseRequestIntoTemplate"))
-  if valid_600193 != nil:
-    section.add "X-Amz-Target", valid_600193
-  var valid_600194 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600194 = validateParameter(valid_600194, JString, required = false,
+  if valid_602213 != nil:
+    section.add "X-Amz-Target", valid_602213
+  var valid_602214 = header.getOrDefault("X-Amz-Signature")
+  valid_602214 = validateParameter(valid_602214, JString, required = false,
                                  default = nil)
-  if valid_600194 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600194
-  var valid_600195 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600195 = validateParameter(valid_600195, JString, required = false,
+  if valid_602214 != nil:
+    section.add "X-Amz-Signature", valid_602214
+  var valid_602215 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602215 = validateParameter(valid_602215, JString, required = false,
                                  default = nil)
-  if valid_600195 != nil:
-    section.add "X-Amz-Algorithm", valid_600195
-  var valid_600196 = header.getOrDefault("X-Amz-Signature")
-  valid_600196 = validateParameter(valid_600196, JString, required = false,
+  if valid_602215 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602215
+  var valid_602216 = header.getOrDefault("X-Amz-Date")
+  valid_602216 = validateParameter(valid_602216, JString, required = false,
                                  default = nil)
-  if valid_600196 != nil:
-    section.add "X-Amz-Signature", valid_600196
-  var valid_600197 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600197 = validateParameter(valid_600197, JString, required = false,
+  if valid_602216 != nil:
+    section.add "X-Amz-Date", valid_602216
+  var valid_602217 = header.getOrDefault("X-Amz-Credential")
+  valid_602217 = validateParameter(valid_602217, JString, required = false,
                                  default = nil)
-  if valid_600197 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600197
-  var valid_600198 = header.getOrDefault("X-Amz-Credential")
-  valid_600198 = validateParameter(valid_600198, JString, required = false,
+  if valid_602217 != nil:
+    section.add "X-Amz-Credential", valid_602217
+  var valid_602218 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602218 = validateParameter(valid_602218, JString, required = false,
                                  default = nil)
-  if valid_600198 != nil:
-    section.add "X-Amz-Credential", valid_600198
+  if valid_602218 != nil:
+    section.add "X-Amz-Security-Token", valid_602218
+  var valid_602219 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602219 = validateParameter(valid_602219, JString, required = false,
+                                 default = nil)
+  if valid_602219 != nil:
+    section.add "X-Amz-Algorithm", valid_602219
+  var valid_602220 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602220 = validateParameter(valid_602220, JString, required = false,
+                                 default = nil)
+  if valid_602220 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602220
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1952,50 +1967,51 @@ proc validate_PutServiceQuotaIncreaseRequestIntoTemplate_600189(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_600200: Call_PutServiceQuotaIncreaseRequestIntoTemplate_600188;
+proc call*(call_602222: Call_PutServiceQuotaIncreaseRequestIntoTemplate_602210;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Defines and adds a quota to the service quota template. To add a quota to the template, you must provide the <code>ServiceCode</code>, <code>QuotaCode</code>, <code>AwsRegion</code>, and <code>DesiredValue</code>. Once you add a quota to the template, use <a>ListServiceQuotaIncreaseRequestsInTemplate</a> to see the list of quotas in the template.
   ## 
-  let valid = call_600200.validator(path, query, header, formData, body)
-  let scheme = call_600200.pickScheme
+  let valid = call_602222.validator(path, query, header, formData, body)
+  let scheme = call_602222.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600200.url(scheme.get, call_600200.host, call_600200.base,
-                         call_600200.route, valid.getOrDefault("path"),
+  let url = call_602222.url(scheme.get, call_602222.host, call_602222.base,
+                         call_602222.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600200, url, valid)
+  result = atozHook(call_602222, url, valid)
 
-proc call*(call_600201: Call_PutServiceQuotaIncreaseRequestIntoTemplate_600188;
+proc call*(call_602223: Call_PutServiceQuotaIncreaseRequestIntoTemplate_602210;
           body: JsonNode): Recallable =
   ## putServiceQuotaIncreaseRequestIntoTemplate
   ## Defines and adds a quota to the service quota template. To add a quota to the template, you must provide the <code>ServiceCode</code>, <code>QuotaCode</code>, <code>AwsRegion</code>, and <code>DesiredValue</code>. Once you add a quota to the template, use <a>ListServiceQuotaIncreaseRequestsInTemplate</a> to see the list of quotas in the template.
   ##   body: JObject (required)
-  var body_600202 = newJObject()
+  var body_602224 = newJObject()
   if body != nil:
-    body_600202 = body
-  result = call_600201.call(nil, nil, nil, nil, body_600202)
+    body_602224 = body
+  result = call_602223.call(nil, nil, nil, nil, body_602224)
 
-var putServiceQuotaIncreaseRequestIntoTemplate* = Call_PutServiceQuotaIncreaseRequestIntoTemplate_600188(
+var putServiceQuotaIncreaseRequestIntoTemplate* = Call_PutServiceQuotaIncreaseRequestIntoTemplate_602210(
     name: "putServiceQuotaIncreaseRequestIntoTemplate", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com", route: "/#X-Amz-Target=ServiceQuotasV20190624.PutServiceQuotaIncreaseRequestIntoTemplate",
-    validator: validate_PutServiceQuotaIncreaseRequestIntoTemplate_600189,
-    base: "/", url: url_PutServiceQuotaIncreaseRequestIntoTemplate_600190,
+    validator: validate_PutServiceQuotaIncreaseRequestIntoTemplate_602211,
+    base: "/", url: url_PutServiceQuotaIncreaseRequestIntoTemplate_602212,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RequestServiceQuotaIncrease_600203 = ref object of OpenApiRestCall_599368
-proc url_RequestServiceQuotaIncrease_600205(protocol: Scheme; host: string;
+  Call_RequestServiceQuotaIncrease_602225 = ref object of OpenApiRestCall_601389
+proc url_RequestServiceQuotaIncrease_602227(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
   if base ==
-      "/" and route.startsWith "/":
+      "/" and
+      route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RequestServiceQuotaIncrease_600204(path: JsonNode; query: JsonNode;
+proc validate_RequestServiceQuotaIncrease_602226(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the details of a service quota increase request. The response to this command provides the details in the <a>RequestedServiceQuotaChange</a> object. 
   ## 
@@ -2006,57 +2022,57 @@ proc validate_RequestServiceQuotaIncrease_600204(path: JsonNode; query: JsonNode
   section = newJObject()
   result.add "query", section
   ## parameters in `header` object:
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Security-Token: JString
   ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Algorithm: JString
   ##   X-Amz-Signature: JString
-  ##   X-Amz-SignedHeaders: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
   ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_600206 = header.getOrDefault("X-Amz-Date")
-  valid_600206 = validateParameter(valid_600206, JString, required = false,
-                                 default = nil)
-  if valid_600206 != nil:
-    section.add "X-Amz-Date", valid_600206
-  var valid_600207 = header.getOrDefault("X-Amz-Security-Token")
-  valid_600207 = validateParameter(valid_600207, JString, required = false,
-                                 default = nil)
-  if valid_600207 != nil:
-    section.add "X-Amz-Security-Token", valid_600207
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_600208 = header.getOrDefault("X-Amz-Target")
-  valid_600208 = validateParameter(valid_600208, JString, required = true, default = newJString(
+  var valid_602228 = header.getOrDefault("X-Amz-Target")
+  valid_602228 = validateParameter(valid_602228, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.RequestServiceQuotaIncrease"))
-  if valid_600208 != nil:
-    section.add "X-Amz-Target", valid_600208
-  var valid_600209 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_600209 = validateParameter(valid_600209, JString, required = false,
+  if valid_602228 != nil:
+    section.add "X-Amz-Target", valid_602228
+  var valid_602229 = header.getOrDefault("X-Amz-Signature")
+  valid_602229 = validateParameter(valid_602229, JString, required = false,
                                  default = nil)
-  if valid_600209 != nil:
-    section.add "X-Amz-Content-Sha256", valid_600209
-  var valid_600210 = header.getOrDefault("X-Amz-Algorithm")
-  valid_600210 = validateParameter(valid_600210, JString, required = false,
+  if valid_602229 != nil:
+    section.add "X-Amz-Signature", valid_602229
+  var valid_602230 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602230 = validateParameter(valid_602230, JString, required = false,
                                  default = nil)
-  if valid_600210 != nil:
-    section.add "X-Amz-Algorithm", valid_600210
-  var valid_600211 = header.getOrDefault("X-Amz-Signature")
-  valid_600211 = validateParameter(valid_600211, JString, required = false,
+  if valid_602230 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602230
+  var valid_602231 = header.getOrDefault("X-Amz-Date")
+  valid_602231 = validateParameter(valid_602231, JString, required = false,
                                  default = nil)
-  if valid_600211 != nil:
-    section.add "X-Amz-Signature", valid_600211
-  var valid_600212 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_600212 = validateParameter(valid_600212, JString, required = false,
+  if valid_602231 != nil:
+    section.add "X-Amz-Date", valid_602231
+  var valid_602232 = header.getOrDefault("X-Amz-Credential")
+  valid_602232 = validateParameter(valid_602232, JString, required = false,
                                  default = nil)
-  if valid_600212 != nil:
-    section.add "X-Amz-SignedHeaders", valid_600212
-  var valid_600213 = header.getOrDefault("X-Amz-Credential")
-  valid_600213 = validateParameter(valid_600213, JString, required = false,
+  if valid_602232 != nil:
+    section.add "X-Amz-Credential", valid_602232
+  var valid_602233 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602233 = validateParameter(valid_602233, JString, required = false,
                                  default = nil)
-  if valid_600213 != nil:
-    section.add "X-Amz-Credential", valid_600213
+  if valid_602233 != nil:
+    section.add "X-Amz-Security-Token", valid_602233
+  var valid_602234 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602234 = validateParameter(valid_602234, JString, required = false,
+                                 default = nil)
+  if valid_602234 != nil:
+    section.add "X-Amz-Algorithm", valid_602234
+  var valid_602235 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602235 = validateParameter(valid_602235, JString, required = false,
+                                 default = nil)
+  if valid_602235 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602235
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2067,34 +2083,34 @@ proc validate_RequestServiceQuotaIncrease_600204(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_600215: Call_RequestServiceQuotaIncrease_600203; path: JsonNode;
+proc call*(call_602237: Call_RequestServiceQuotaIncrease_602225; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the details of a service quota increase request. The response to this command provides the details in the <a>RequestedServiceQuotaChange</a> object. 
   ## 
-  let valid = call_600215.validator(path, query, header, formData, body)
-  let scheme = call_600215.pickScheme
+  let valid = call_602237.validator(path, query, header, formData, body)
+  let scheme = call_602237.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_600215.url(scheme.get, call_600215.host, call_600215.base,
-                         call_600215.route, valid.getOrDefault("path"),
+  let url = call_602237.url(scheme.get, call_602237.host, call_602237.base,
+                         call_602237.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_600215, url, valid)
+  result = atozHook(call_602237, url, valid)
 
-proc call*(call_600216: Call_RequestServiceQuotaIncrease_600203; body: JsonNode): Recallable =
+proc call*(call_602238: Call_RequestServiceQuotaIncrease_602225; body: JsonNode): Recallable =
   ## requestServiceQuotaIncrease
   ## Retrieves the details of a service quota increase request. The response to this command provides the details in the <a>RequestedServiceQuotaChange</a> object. 
   ##   body: JObject (required)
-  var body_600217 = newJObject()
+  var body_602239 = newJObject()
   if body != nil:
-    body_600217 = body
-  result = call_600216.call(nil, nil, nil, nil, body_600217)
+    body_602239 = body
+  result = call_602238.call(nil, nil, nil, nil, body_602239)
 
-var requestServiceQuotaIncrease* = Call_RequestServiceQuotaIncrease_600203(
+var requestServiceQuotaIncrease* = Call_RequestServiceQuotaIncrease_602225(
     name: "requestServiceQuotaIncrease", meth: HttpMethod.HttpPost,
     host: "servicequotas.amazonaws.com",
     route: "/#X-Amz-Target=ServiceQuotasV20190624.RequestServiceQuotaIncrease",
-    validator: validate_RequestServiceQuotaIncrease_600204, base: "/",
-    url: url_RequestServiceQuotaIncrease_600205,
+    validator: validate_RequestServiceQuotaIncrease_602226, base: "/",
+    url: url_RequestServiceQuotaIncrease_602227,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
