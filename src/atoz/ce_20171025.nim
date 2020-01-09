@@ -168,7 +168,7 @@ proc url_CreateCostCategoryDefinition_601729(protocol: Scheme; host: string;
 
 proc validate_CreateCostCategoryDefinition_601728(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Creates a new Cost Category with the requested name and rules.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Creates a new Cost Category with the requested name and rules.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -240,7 +240,7 @@ proc validate_CreateCostCategoryDefinition_601728(path: JsonNode; query: JsonNod
 
 proc call*(call_601885: Call_CreateCostCategoryDefinition_601727; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Creates a new Cost Category with the requested name and rules.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Creates a new Cost Category with the requested name and rules.</p>
   ## 
   let valid = call_601885.validator(path, query, header, formData, body)
   let scheme = call_601885.pickScheme
@@ -253,7 +253,7 @@ proc call*(call_601885: Call_CreateCostCategoryDefinition_601727; path: JsonNode
 
 proc call*(call_601956: Call_CreateCostCategoryDefinition_601727; body: JsonNode): Recallable =
   ## createCostCategoryDefinition
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Creates a new Cost Category with the requested name and rules.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Creates a new Cost Category with the requested name and rules.</p>
   ##   body: JObject (required)
   var body_601957 = newJObject()
   if body != nil:
@@ -282,7 +282,7 @@ proc url_DeleteCostCategoryDefinition_601998(protocol: Scheme; host: string;
 
 proc validate_DeleteCostCategoryDefinition_601997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Deletes a Cost Category. Expenses from this month going forward will no longer be categorized with this Cost Category.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Deletes a Cost Category. Expenses from this month going forward will no longer be categorized with this Cost Category.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -354,7 +354,7 @@ proc validate_DeleteCostCategoryDefinition_601997(path: JsonNode; query: JsonNod
 
 proc call*(call_602008: Call_DeleteCostCategoryDefinition_601996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Deletes a Cost Category. Expenses from this month going forward will no longer be categorized with this Cost Category.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Deletes a Cost Category. Expenses from this month going forward will no longer be categorized with this Cost Category.</p>
   ## 
   let valid = call_602008.validator(path, query, header, formData, body)
   let scheme = call_602008.pickScheme
@@ -367,7 +367,7 @@ proc call*(call_602008: Call_DeleteCostCategoryDefinition_601996; path: JsonNode
 
 proc call*(call_602009: Call_DeleteCostCategoryDefinition_601996; body: JsonNode): Recallable =
   ## deleteCostCategoryDefinition
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Deletes a Cost Category. Expenses from this month going forward will no longer be categorized with this Cost Category.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Deletes a Cost Category. Expenses from this month going forward will no longer be categorized with this Cost Category.</p>
   ##   body: JObject (required)
   var body_602010 = newJObject()
   if body != nil:
@@ -396,7 +396,7 @@ proc url_DescribeCostCategoryDefinition_602013(protocol: Scheme; host: string;
 
 proc validate_DescribeCostCategoryDefinition_602012(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN, rules, definition, and effective dates of a Cost Category that's defined in the account.</p> <p>You have the option to use <code>EffectiveOn</code> to return a Cost Category that is active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see a Cost Category that is effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN, rules, definition, and effective dates of a Cost Category that's defined in the account.</p> <p>You have the option to use <code>EffectiveOn</code> to return a Cost Category that is active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see a Cost Category that is effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -468,7 +468,7 @@ proc validate_DescribeCostCategoryDefinition_602012(path: JsonNode;
 
 proc call*(call_602023: Call_DescribeCostCategoryDefinition_602011; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN, rules, definition, and effective dates of a Cost Category that's defined in the account.</p> <p>You have the option to use <code>EffectiveOn</code> to return a Cost Category that is active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see a Cost Category that is effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN, rules, definition, and effective dates of a Cost Category that's defined in the account.</p> <p>You have the option to use <code>EffectiveOn</code> to return a Cost Category that is active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see a Cost Category that is effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
   ## 
   let valid = call_602023.validator(path, query, header, formData, body)
   let scheme = call_602023.pickScheme
@@ -481,7 +481,7 @@ proc call*(call_602023: Call_DescribeCostCategoryDefinition_602011; path: JsonNo
 
 proc call*(call_602024: Call_DescribeCostCategoryDefinition_602011; body: JsonNode): Recallable =
   ## describeCostCategoryDefinition
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN, rules, definition, and effective dates of a Cost Category that's defined in the account.</p> <p>You have the option to use <code>EffectiveOn</code> to return a Cost Category that is active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see a Cost Category that is effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN, rules, definition, and effective dates of a Cost Category that's defined in the account.</p> <p>You have the option to use <code>EffectiveOn</code> to return a Cost Category that is active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see a Cost Category that is effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
   ##   body: JObject (required)
   var body_602025 = newJObject()
   if body != nil:
@@ -2159,7 +2159,7 @@ proc url_ListCostCategoryDefinitions_602245(protocol: Scheme; host: string;
 
 proc validate_ListCostCategoryDefinitions_602244(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN and effective dates of all Cost Categories defined in the account. You have the option to use <code>EffectiveOn</code> to return a list of Cost Categories that were active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see Cost Categories that are effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN and effective dates of all Cost Categories defined in the account. You have the option to use <code>EffectiveOn</code> to return a list of Cost Categories that were active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see Cost Categories that are effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2231,7 +2231,7 @@ proc validate_ListCostCategoryDefinitions_602244(path: JsonNode; query: JsonNode
 
 proc call*(call_602255: Call_ListCostCategoryDefinitions_602243; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN and effective dates of all Cost Categories defined in the account. You have the option to use <code>EffectiveOn</code> to return a list of Cost Categories that were active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see Cost Categories that are effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN and effective dates of all Cost Categories defined in the account. You have the option to use <code>EffectiveOn</code> to return a list of Cost Categories that were active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see Cost Categories that are effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
   ## 
   let valid = call_602255.validator(path, query, header, formData, body)
   let scheme = call_602255.pickScheme
@@ -2244,7 +2244,7 @@ proc call*(call_602255: Call_ListCostCategoryDefinitions_602243; path: JsonNode;
 
 proc call*(call_602256: Call_ListCostCategoryDefinitions_602243; body: JsonNode): Recallable =
   ## listCostCategoryDefinitions
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN and effective dates of all Cost Categories defined in the account. You have the option to use <code>EffectiveOn</code> to return a list of Cost Categories that were active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see Cost Categories that are effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Returns the name, ARN and effective dates of all Cost Categories defined in the account. You have the option to use <code>EffectiveOn</code> to return a list of Cost Categories that were active on a specific date. If there is no <code>EffectiveOn</code> specified, you’ll see Cost Categories that are effective on the current date. If Cost Category is still effective, <code>EffectiveEnd</code> is omitted in the response. </p>
   ##   body: JObject (required)
   var body_602257 = newJObject()
   if body != nil:
@@ -2273,7 +2273,7 @@ proc url_UpdateCostCategoryDefinition_602260(protocol: Scheme; host: string;
 
 proc validate_UpdateCostCategoryDefinition_602259(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Updates an existing Cost Category. Changes made to the Cost Category rules will be used to categorize the current month’s expenses and future expenses. This won’t change categorization for the previous months.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Updates an existing Cost Category. Changes made to the Cost Category rules will be used to categorize the current month’s expenses and future expenses. This won’t change categorization for the previous months.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2345,7 +2345,7 @@ proc validate_UpdateCostCategoryDefinition_602259(path: JsonNode; query: JsonNod
 
 proc call*(call_602270: Call_UpdateCostCategoryDefinition_602258; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Updates an existing Cost Category. Changes made to the Cost Category rules will be used to categorize the current month’s expenses and future expenses. This won’t change categorization for the previous months.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Updates an existing Cost Category. Changes made to the Cost Category rules will be used to categorize the current month’s expenses and future expenses. This won’t change categorization for the previous months.</p>
   ## 
   let valid = call_602270.validator(path, query, header, formData, body)
   let scheme = call_602270.pickScheme
@@ -2358,7 +2358,7 @@ proc call*(call_602270: Call_UpdateCostCategoryDefinition_602258; path: JsonNode
 
 proc call*(call_602271: Call_UpdateCostCategoryDefinition_602258; body: JsonNode): Recallable =
   ## updateCostCategoryDefinition
-  ## <important> <p> <i> <b>Cost Category is in preview release for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Updates an existing Cost Category. Changes made to the Cost Category rules will be used to categorize the current month’s expenses and future expenses. This won’t change categorization for the previous months.</p>
+  ## <important> <p> <i> <b>Cost Category is in public beta for AWS Billing and Cost Management and is subject to change. Your use of Cost Categories is subject to the Beta Service Participation terms of the <a href="https://aws.amazon.com/service-terms/">AWS Service Terms</a> (Section 1.10).</b> </i> </p> </important> <p>Updates an existing Cost Category. Changes made to the Cost Category rules will be used to categorize the current month’s expenses and future expenses. This won’t change categorization for the previous months.</p>
   ##   body: JObject (required)
   var body_602272 = newJObject()
   if body != nil:

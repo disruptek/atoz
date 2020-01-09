@@ -1588,9 +1588,9 @@ var listPolicies* = Call_ListPolicies_602153(name: "listPolicies",
     validator: validate_ListPolicies_602154, base: "/", url: url_ListPolicies_602155,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutNotificationChannel_602171 = ref object of OpenApiRestCall_601389
-proc url_PutNotificationChannel_602173(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListTagsForResource_602171 = ref object of OpenApiRestCall_601389
+proc url_ListTagsForResource_602173(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1601,9 +1601,10 @@ proc url_PutNotificationChannel_602173(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_PutNotificationChannel_602172(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Designates the IAM role and Amazon Simple Notification Service (SNS) topic that AWS Firewall Manager uses to record SNS logs.
+proc validate_ListTagsForResource_602172(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## Retrieves the list of tags for the specified AWS resource. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1625,7 +1626,7 @@ proc validate_PutNotificationChannel_602172(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_602174 = header.getOrDefault("X-Amz-Target")
   valid_602174 = validateParameter(valid_602174, JString, required = true, default = newJString(
-      "AWSFMS_20180101.PutNotificationChannel"))
+      "AWSFMS_20180101.ListTagsForResource"))
   if valid_602174 != nil:
     section.add "X-Amz-Target", valid_602174
   var valid_602175 = header.getOrDefault("X-Amz-Signature")
@@ -1673,9 +1674,9 @@ proc validate_PutNotificationChannel_602172(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602183: Call_PutNotificationChannel_602171; path: JsonNode;
+proc call*(call_602183: Call_ListTagsForResource_602171; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Designates the IAM role and Amazon Simple Notification Service (SNS) topic that AWS Firewall Manager uses to record SNS logs.
+  ## Retrieves the list of tags for the specified AWS resource. 
   ## 
   let valid = call_602183.validator(path, query, header, formData, body)
   let scheme = call_602183.pickScheme
@@ -1686,25 +1687,25 @@ proc call*(call_602183: Call_PutNotificationChannel_602171; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_602183, url, valid)
 
-proc call*(call_602184: Call_PutNotificationChannel_602171; body: JsonNode): Recallable =
-  ## putNotificationChannel
-  ## Designates the IAM role and Amazon Simple Notification Service (SNS) topic that AWS Firewall Manager uses to record SNS logs.
+proc call*(call_602184: Call_ListTagsForResource_602171; body: JsonNode): Recallable =
+  ## listTagsForResource
+  ## Retrieves the list of tags for the specified AWS resource. 
   ##   body: JObject (required)
   var body_602185 = newJObject()
   if body != nil:
     body_602185 = body
   result = call_602184.call(nil, nil, nil, nil, body_602185)
 
-var putNotificationChannel* = Call_PutNotificationChannel_602171(
-    name: "putNotificationChannel", meth: HttpMethod.HttpPost,
+var listTagsForResource* = Call_ListTagsForResource_602171(
+    name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "fms.amazonaws.com",
-    route: "/#X-Amz-Target=AWSFMS_20180101.PutNotificationChannel",
-    validator: validate_PutNotificationChannel_602172, base: "/",
-    url: url_PutNotificationChannel_602173, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=AWSFMS_20180101.ListTagsForResource",
+    validator: validate_ListTagsForResource_602172, base: "/",
+    url: url_ListTagsForResource_602173, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutPolicy_602186 = ref object of OpenApiRestCall_601389
-proc url_PutPolicy_602188(protocol: Scheme; host: string; base: string; route: string;
-                         path: JsonNode; query: JsonNode): Uri =
+  Call_PutNotificationChannel_602186 = ref object of OpenApiRestCall_601389
+proc url_PutNotificationChannel_602188(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1715,9 +1716,9 @@ proc url_PutPolicy_602188(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & route
 
-proc validate_PutPolicy_602187(path: JsonNode; query: JsonNode; header: JsonNode;
-                              formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates an AWS Firewall Manager policy.</p> <p>Firewall Manager provides the following types of policies: </p> <ul> <li> <p>A Shield Advanced policy, which applies Shield Advanced protection to specified accounts and resources</p> </li> <li> <p>An AWS WAF policy, which contains a rule group and defines which resources are to be protected by that rule group</p> </li> <li> <p>A security group policy, which manages VPC security groups across your AWS organization. </p> </li> </ul> <p>Each policy is specific to one of the three types. If you want to enforce more than one policy type across accounts, you can create multiple policies. You can create multiple policies for each type.</p> <p>You must be subscribed to Shield Advanced to create a Shield Advanced policy. For more information about subscribing to Shield Advanced, see <a href="https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_CreateSubscription.html">CreateSubscription</a>.</p>
+proc validate_PutNotificationChannel_602187(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Designates the IAM role and Amazon Simple Notification Service (SNS) topic that AWS Firewall Manager uses to record SNS logs.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1739,7 +1740,7 @@ proc validate_PutPolicy_602187(path: JsonNode; query: JsonNode; header: JsonNode
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_602189 = header.getOrDefault("X-Amz-Target")
   valid_602189 = validateParameter(valid_602189, JString, required = true, default = newJString(
-      "AWSFMS_20180101.PutPolicy"))
+      "AWSFMS_20180101.PutNotificationChannel"))
   if valid_602189 != nil:
     section.add "X-Amz-Target", valid_602189
   var valid_602190 = header.getOrDefault("X-Amz-Signature")
@@ -1787,9 +1788,9 @@ proc validate_PutPolicy_602187(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_602198: Call_PutPolicy_602186; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates an AWS Firewall Manager policy.</p> <p>Firewall Manager provides the following types of policies: </p> <ul> <li> <p>A Shield Advanced policy, which applies Shield Advanced protection to specified accounts and resources</p> </li> <li> <p>An AWS WAF policy, which contains a rule group and defines which resources are to be protected by that rule group</p> </li> <li> <p>A security group policy, which manages VPC security groups across your AWS organization. </p> </li> </ul> <p>Each policy is specific to one of the three types. If you want to enforce more than one policy type across accounts, you can create multiple policies. You can create multiple policies for each type.</p> <p>You must be subscribed to Shield Advanced to create a Shield Advanced policy. For more information about subscribing to Shield Advanced, see <a href="https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_CreateSubscription.html">CreateSubscription</a>.</p>
+proc call*(call_602198: Call_PutNotificationChannel_602186; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Designates the IAM role and Amazon Simple Notification Service (SNS) topic that AWS Firewall Manager uses to record SNS logs.
   ## 
   let valid = call_602198.validator(path, query, header, formData, body)
   let scheme = call_602198.pickScheme
@@ -1800,20 +1801,361 @@ proc call*(call_602198: Call_PutPolicy_602186; path: JsonNode; query: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_602198, url, valid)
 
-proc call*(call_602199: Call_PutPolicy_602186; body: JsonNode): Recallable =
-  ## putPolicy
-  ## <p>Creates an AWS Firewall Manager policy.</p> <p>Firewall Manager provides the following types of policies: </p> <ul> <li> <p>A Shield Advanced policy, which applies Shield Advanced protection to specified accounts and resources</p> </li> <li> <p>An AWS WAF policy, which contains a rule group and defines which resources are to be protected by that rule group</p> </li> <li> <p>A security group policy, which manages VPC security groups across your AWS organization. </p> </li> </ul> <p>Each policy is specific to one of the three types. If you want to enforce more than one policy type across accounts, you can create multiple policies. You can create multiple policies for each type.</p> <p>You must be subscribed to Shield Advanced to create a Shield Advanced policy. For more information about subscribing to Shield Advanced, see <a href="https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_CreateSubscription.html">CreateSubscription</a>.</p>
+proc call*(call_602199: Call_PutNotificationChannel_602186; body: JsonNode): Recallable =
+  ## putNotificationChannel
+  ## Designates the IAM role and Amazon Simple Notification Service (SNS) topic that AWS Firewall Manager uses to record SNS logs.
   ##   body: JObject (required)
   var body_602200 = newJObject()
   if body != nil:
     body_602200 = body
   result = call_602199.call(nil, nil, nil, nil, body_602200)
 
-var putPolicy* = Call_PutPolicy_602186(name: "putPolicy", meth: HttpMethod.HttpPost,
+var putNotificationChannel* = Call_PutNotificationChannel_602186(
+    name: "putNotificationChannel", meth: HttpMethod.HttpPost,
+    host: "fms.amazonaws.com",
+    route: "/#X-Amz-Target=AWSFMS_20180101.PutNotificationChannel",
+    validator: validate_PutNotificationChannel_602187, base: "/",
+    url: url_PutNotificationChannel_602188, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_PutPolicy_602201 = ref object of OpenApiRestCall_601389
+proc url_PutPolicy_602203(protocol: Scheme; host: string; base: string; route: string;
+                         path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_PutPolicy_602202(path: JsonNode; query: JsonNode; header: JsonNode;
+                              formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Creates an AWS Firewall Manager policy.</p> <p>Firewall Manager provides the following types of policies: </p> <ul> <li> <p>A Shield Advanced policy, which applies Shield Advanced protection to specified accounts and resources</p> </li> <li> <p>An AWS WAF policy, which contains a rule group and defines which resources are to be protected by that rule group</p> </li> <li> <p>A security group policy, which manages VPC security groups across your AWS organization. </p> </li> </ul> <p>Each policy is specific to one of the three types. If you want to enforce more than one policy type across accounts, you can create multiple policies. You can create multiple policies for each type.</p> <p>You must be subscribed to Shield Advanced to create a Shield Advanced policy. For more information about subscribing to Shield Advanced, see <a href="https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_CreateSubscription.html">CreateSubscription</a>.</p>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_602204 = header.getOrDefault("X-Amz-Target")
+  valid_602204 = validateParameter(valid_602204, JString, required = true, default = newJString(
+      "AWSFMS_20180101.PutPolicy"))
+  if valid_602204 != nil:
+    section.add "X-Amz-Target", valid_602204
+  var valid_602205 = header.getOrDefault("X-Amz-Signature")
+  valid_602205 = validateParameter(valid_602205, JString, required = false,
+                                 default = nil)
+  if valid_602205 != nil:
+    section.add "X-Amz-Signature", valid_602205
+  var valid_602206 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602206 = validateParameter(valid_602206, JString, required = false,
+                                 default = nil)
+  if valid_602206 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602206
+  var valid_602207 = header.getOrDefault("X-Amz-Date")
+  valid_602207 = validateParameter(valid_602207, JString, required = false,
+                                 default = nil)
+  if valid_602207 != nil:
+    section.add "X-Amz-Date", valid_602207
+  var valid_602208 = header.getOrDefault("X-Amz-Credential")
+  valid_602208 = validateParameter(valid_602208, JString, required = false,
+                                 default = nil)
+  if valid_602208 != nil:
+    section.add "X-Amz-Credential", valid_602208
+  var valid_602209 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602209 = validateParameter(valid_602209, JString, required = false,
+                                 default = nil)
+  if valid_602209 != nil:
+    section.add "X-Amz-Security-Token", valid_602209
+  var valid_602210 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602210 = validateParameter(valid_602210, JString, required = false,
+                                 default = nil)
+  if valid_602210 != nil:
+    section.add "X-Amz-Algorithm", valid_602210
+  var valid_602211 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602211 = validateParameter(valid_602211, JString, required = false,
+                                 default = nil)
+  if valid_602211 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602211
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_602213: Call_PutPolicy_602201; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Creates an AWS Firewall Manager policy.</p> <p>Firewall Manager provides the following types of policies: </p> <ul> <li> <p>A Shield Advanced policy, which applies Shield Advanced protection to specified accounts and resources</p> </li> <li> <p>An AWS WAF policy, which contains a rule group and defines which resources are to be protected by that rule group</p> </li> <li> <p>A security group policy, which manages VPC security groups across your AWS organization. </p> </li> </ul> <p>Each policy is specific to one of the three types. If you want to enforce more than one policy type across accounts, you can create multiple policies. You can create multiple policies for each type.</p> <p>You must be subscribed to Shield Advanced to create a Shield Advanced policy. For more information about subscribing to Shield Advanced, see <a href="https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_CreateSubscription.html">CreateSubscription</a>.</p>
+  ## 
+  let valid = call_602213.validator(path, query, header, formData, body)
+  let scheme = call_602213.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_602213.url(scheme.get, call_602213.host, call_602213.base,
+                         call_602213.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_602213, url, valid)
+
+proc call*(call_602214: Call_PutPolicy_602201; body: JsonNode): Recallable =
+  ## putPolicy
+  ## <p>Creates an AWS Firewall Manager policy.</p> <p>Firewall Manager provides the following types of policies: </p> <ul> <li> <p>A Shield Advanced policy, which applies Shield Advanced protection to specified accounts and resources</p> </li> <li> <p>An AWS WAF policy, which contains a rule group and defines which resources are to be protected by that rule group</p> </li> <li> <p>A security group policy, which manages VPC security groups across your AWS organization. </p> </li> </ul> <p>Each policy is specific to one of the three types. If you want to enforce more than one policy type across accounts, you can create multiple policies. You can create multiple policies for each type.</p> <p>You must be subscribed to Shield Advanced to create a Shield Advanced policy. For more information about subscribing to Shield Advanced, see <a href="https://docs.aws.amazon.com/waf/latest/DDOSAPIReference/API_CreateSubscription.html">CreateSubscription</a>.</p>
+  ##   body: JObject (required)
+  var body_602215 = newJObject()
+  if body != nil:
+    body_602215 = body
+  result = call_602214.call(nil, nil, nil, nil, body_602215)
+
+var putPolicy* = Call_PutPolicy_602201(name: "putPolicy", meth: HttpMethod.HttpPost,
                                     host: "fms.amazonaws.com", route: "/#X-Amz-Target=AWSFMS_20180101.PutPolicy",
-                                    validator: validate_PutPolicy_602187,
-                                    base: "/", url: url_PutPolicy_602188,
+                                    validator: validate_PutPolicy_602202,
+                                    base: "/", url: url_PutPolicy_602203,
                                     schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_TagResource_602216 = ref object of OpenApiRestCall_601389
+proc url_TagResource_602218(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_TagResource_602217(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## Adds one or more tags to an AWS resource.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_602219 = header.getOrDefault("X-Amz-Target")
+  valid_602219 = validateParameter(valid_602219, JString, required = true, default = newJString(
+      "AWSFMS_20180101.TagResource"))
+  if valid_602219 != nil:
+    section.add "X-Amz-Target", valid_602219
+  var valid_602220 = header.getOrDefault("X-Amz-Signature")
+  valid_602220 = validateParameter(valid_602220, JString, required = false,
+                                 default = nil)
+  if valid_602220 != nil:
+    section.add "X-Amz-Signature", valid_602220
+  var valid_602221 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602221 = validateParameter(valid_602221, JString, required = false,
+                                 default = nil)
+  if valid_602221 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602221
+  var valid_602222 = header.getOrDefault("X-Amz-Date")
+  valid_602222 = validateParameter(valid_602222, JString, required = false,
+                                 default = nil)
+  if valid_602222 != nil:
+    section.add "X-Amz-Date", valid_602222
+  var valid_602223 = header.getOrDefault("X-Amz-Credential")
+  valid_602223 = validateParameter(valid_602223, JString, required = false,
+                                 default = nil)
+  if valid_602223 != nil:
+    section.add "X-Amz-Credential", valid_602223
+  var valid_602224 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602224 = validateParameter(valid_602224, JString, required = false,
+                                 default = nil)
+  if valid_602224 != nil:
+    section.add "X-Amz-Security-Token", valid_602224
+  var valid_602225 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602225 = validateParameter(valid_602225, JString, required = false,
+                                 default = nil)
+  if valid_602225 != nil:
+    section.add "X-Amz-Algorithm", valid_602225
+  var valid_602226 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602226 = validateParameter(valid_602226, JString, required = false,
+                                 default = nil)
+  if valid_602226 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602226
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_602228: Call_TagResource_602216; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Adds one or more tags to an AWS resource.
+  ## 
+  let valid = call_602228.validator(path, query, header, formData, body)
+  let scheme = call_602228.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_602228.url(scheme.get, call_602228.host, call_602228.base,
+                         call_602228.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_602228, url, valid)
+
+proc call*(call_602229: Call_TagResource_602216; body: JsonNode): Recallable =
+  ## tagResource
+  ## Adds one or more tags to an AWS resource.
+  ##   body: JObject (required)
+  var body_602230 = newJObject()
+  if body != nil:
+    body_602230 = body
+  result = call_602229.call(nil, nil, nil, nil, body_602230)
+
+var tagResource* = Call_TagResource_602216(name: "tagResource",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "fms.amazonaws.com", route: "/#X-Amz-Target=AWSFMS_20180101.TagResource",
+                                        validator: validate_TagResource_602217,
+                                        base: "/", url: url_TagResource_602218,
+                                        schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UntagResource_602231 = ref object of OpenApiRestCall_601389
+proc url_UntagResource_602233(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UntagResource_602232(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Removes one or more tags from an AWS resource.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_602234 = header.getOrDefault("X-Amz-Target")
+  valid_602234 = validateParameter(valid_602234, JString, required = true, default = newJString(
+      "AWSFMS_20180101.UntagResource"))
+  if valid_602234 != nil:
+    section.add "X-Amz-Target", valid_602234
+  var valid_602235 = header.getOrDefault("X-Amz-Signature")
+  valid_602235 = validateParameter(valid_602235, JString, required = false,
+                                 default = nil)
+  if valid_602235 != nil:
+    section.add "X-Amz-Signature", valid_602235
+  var valid_602236 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_602236 = validateParameter(valid_602236, JString, required = false,
+                                 default = nil)
+  if valid_602236 != nil:
+    section.add "X-Amz-Content-Sha256", valid_602236
+  var valid_602237 = header.getOrDefault("X-Amz-Date")
+  valid_602237 = validateParameter(valid_602237, JString, required = false,
+                                 default = nil)
+  if valid_602237 != nil:
+    section.add "X-Amz-Date", valid_602237
+  var valid_602238 = header.getOrDefault("X-Amz-Credential")
+  valid_602238 = validateParameter(valid_602238, JString, required = false,
+                                 default = nil)
+  if valid_602238 != nil:
+    section.add "X-Amz-Credential", valid_602238
+  var valid_602239 = header.getOrDefault("X-Amz-Security-Token")
+  valid_602239 = validateParameter(valid_602239, JString, required = false,
+                                 default = nil)
+  if valid_602239 != nil:
+    section.add "X-Amz-Security-Token", valid_602239
+  var valid_602240 = header.getOrDefault("X-Amz-Algorithm")
+  valid_602240 = validateParameter(valid_602240, JString, required = false,
+                                 default = nil)
+  if valid_602240 != nil:
+    section.add "X-Amz-Algorithm", valid_602240
+  var valid_602241 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_602241 = validateParameter(valid_602241, JString, required = false,
+                                 default = nil)
+  if valid_602241 != nil:
+    section.add "X-Amz-SignedHeaders", valid_602241
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_602243: Call_UntagResource_602231; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Removes one or more tags from an AWS resource.
+  ## 
+  let valid = call_602243.validator(path, query, header, formData, body)
+  let scheme = call_602243.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_602243.url(scheme.get, call_602243.host, call_602243.base,
+                         call_602243.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_602243, url, valid)
+
+proc call*(call_602244: Call_UntagResource_602231; body: JsonNode): Recallable =
+  ## untagResource
+  ## Removes one or more tags from an AWS resource.
+  ##   body: JObject (required)
+  var body_602245 = newJObject()
+  if body != nil:
+    body_602245 = body
+  result = call_602244.call(nil, nil, nil, nil, body_602245)
+
+var untagResource* = Call_UntagResource_602231(name: "untagResource",
+    meth: HttpMethod.HttpPost, host: "fms.amazonaws.com",
+    route: "/#X-Amz-Target=AWSFMS_20180101.UntagResource",
+    validator: validate_UntagResource_602232, base: "/", url: url_UntagResource_602233,
+    schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
