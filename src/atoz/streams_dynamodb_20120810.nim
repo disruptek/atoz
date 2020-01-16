@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_601389 = ref object of OpenApiRestCall
+  OpenApiRestCall_605589 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,8 +134,8 @@ const
   awsServiceName = "streams.dynamodb"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_DescribeStream_601727 = ref object of OpenApiRestCall_601389
-proc url_DescribeStream_601729(protocol: Scheme; host: string; base: string;
+  Call_DescribeStream_605927 = ref object of OpenApiRestCall_605589
+proc url_DescribeStream_605929(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -147,7 +147,7 @@ proc url_DescribeStream_601729(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeStream_601728(path: JsonNode; query: JsonNode;
+proc validate_DescribeStream_605928(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns information about a stream, including the current status of the stream, its Amazon Resource Name (ARN), the composition of its shards, and its corresponding DynamoDB table.</p> <note> <p>You can call <code>DescribeStream</code> at a maximum rate of 10 times per second.</p> </note> <p>Each shard in the stream has a <code>SequenceNumberRange</code> associated with it. If the <code>SequenceNumberRange</code> has a <code>StartingSequenceNumber</code> but no <code>EndingSequenceNumber</code>, then the shard is still open (able to receive more stream records). If both <code>StartingSequenceNumber</code> and <code>EndingSequenceNumber</code> are present, then that shard is closed and can no longer receive more data.</p>
@@ -170,46 +170,46 @@ proc validate_DescribeStream_601728(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601854 = header.getOrDefault("X-Amz-Target")
-  valid_601854 = validateParameter(valid_601854, JString, required = true, default = newJString(
+  var valid_606054 = header.getOrDefault("X-Amz-Target")
+  valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "DynamoDBStreams_20120810.DescribeStream"))
-  if valid_601854 != nil:
-    section.add "X-Amz-Target", valid_601854
-  var valid_601855 = header.getOrDefault("X-Amz-Signature")
-  valid_601855 = validateParameter(valid_601855, JString, required = false,
+  if valid_606054 != nil:
+    section.add "X-Amz-Target", valid_606054
+  var valid_606055 = header.getOrDefault("X-Amz-Signature")
+  valid_606055 = validateParameter(valid_606055, JString, required = false,
                                  default = nil)
-  if valid_601855 != nil:
-    section.add "X-Amz-Signature", valid_601855
-  var valid_601856 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601856 = validateParameter(valid_601856, JString, required = false,
+  if valid_606055 != nil:
+    section.add "X-Amz-Signature", valid_606055
+  var valid_606056 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606056 = validateParameter(valid_606056, JString, required = false,
                                  default = nil)
-  if valid_601856 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601856
-  var valid_601857 = header.getOrDefault("X-Amz-Date")
-  valid_601857 = validateParameter(valid_601857, JString, required = false,
+  if valid_606056 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606056
+  var valid_606057 = header.getOrDefault("X-Amz-Date")
+  valid_606057 = validateParameter(valid_606057, JString, required = false,
                                  default = nil)
-  if valid_601857 != nil:
-    section.add "X-Amz-Date", valid_601857
-  var valid_601858 = header.getOrDefault("X-Amz-Credential")
-  valid_601858 = validateParameter(valid_601858, JString, required = false,
+  if valid_606057 != nil:
+    section.add "X-Amz-Date", valid_606057
+  var valid_606058 = header.getOrDefault("X-Amz-Credential")
+  valid_606058 = validateParameter(valid_606058, JString, required = false,
                                  default = nil)
-  if valid_601858 != nil:
-    section.add "X-Amz-Credential", valid_601858
-  var valid_601859 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601859 = validateParameter(valid_601859, JString, required = false,
+  if valid_606058 != nil:
+    section.add "X-Amz-Credential", valid_606058
+  var valid_606059 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606059 = validateParameter(valid_606059, JString, required = false,
                                  default = nil)
-  if valid_601859 != nil:
-    section.add "X-Amz-Security-Token", valid_601859
-  var valid_601860 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601860 = validateParameter(valid_601860, JString, required = false,
+  if valid_606059 != nil:
+    section.add "X-Amz-Security-Token", valid_606059
+  var valid_606060 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606060 = validateParameter(valid_606060, JString, required = false,
                                  default = nil)
-  if valid_601860 != nil:
-    section.add "X-Amz-Algorithm", valid_601860
-  var valid_601861 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601861 = validateParameter(valid_601861, JString, required = false,
+  if valid_606060 != nil:
+    section.add "X-Amz-Algorithm", valid_606060
+  var valid_606061 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606061 = validateParameter(valid_606061, JString, required = false,
                                  default = nil)
-  if valid_601861 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601861
+  if valid_606061 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606061
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -220,36 +220,36 @@ proc validate_DescribeStream_601728(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601885: Call_DescribeStream_601727; path: JsonNode; query: JsonNode;
+proc call*(call_606085: Call_DescribeStream_605927; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns information about a stream, including the current status of the stream, its Amazon Resource Name (ARN), the composition of its shards, and its corresponding DynamoDB table.</p> <note> <p>You can call <code>DescribeStream</code> at a maximum rate of 10 times per second.</p> </note> <p>Each shard in the stream has a <code>SequenceNumberRange</code> associated with it. If the <code>SequenceNumberRange</code> has a <code>StartingSequenceNumber</code> but no <code>EndingSequenceNumber</code>, then the shard is still open (able to receive more stream records). If both <code>StartingSequenceNumber</code> and <code>EndingSequenceNumber</code> are present, then that shard is closed and can no longer receive more data.</p>
   ## 
-  let valid = call_601885.validator(path, query, header, formData, body)
-  let scheme = call_601885.pickScheme
+  let valid = call_606085.validator(path, query, header, formData, body)
+  let scheme = call_606085.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601885.url(scheme.get, call_601885.host, call_601885.base,
-                         call_601885.route, valid.getOrDefault("path"),
+  let url = call_606085.url(scheme.get, call_606085.host, call_606085.base,
+                         call_606085.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601885, url, valid)
+  result = atozHook(call_606085, url, valid)
 
-proc call*(call_601956: Call_DescribeStream_601727; body: JsonNode): Recallable =
+proc call*(call_606156: Call_DescribeStream_605927; body: JsonNode): Recallable =
   ## describeStream
   ## <p>Returns information about a stream, including the current status of the stream, its Amazon Resource Name (ARN), the composition of its shards, and its corresponding DynamoDB table.</p> <note> <p>You can call <code>DescribeStream</code> at a maximum rate of 10 times per second.</p> </note> <p>Each shard in the stream has a <code>SequenceNumberRange</code> associated with it. If the <code>SequenceNumberRange</code> has a <code>StartingSequenceNumber</code> but no <code>EndingSequenceNumber</code>, then the shard is still open (able to receive more stream records). If both <code>StartingSequenceNumber</code> and <code>EndingSequenceNumber</code> are present, then that shard is closed and can no longer receive more data.</p>
   ##   body: JObject (required)
-  var body_601957 = newJObject()
+  var body_606157 = newJObject()
   if body != nil:
-    body_601957 = body
-  result = call_601956.call(nil, nil, nil, nil, body_601957)
+    body_606157 = body
+  result = call_606156.call(nil, nil, nil, nil, body_606157)
 
-var describeStream* = Call_DescribeStream_601727(name: "describeStream",
+var describeStream* = Call_DescribeStream_605927(name: "describeStream",
     meth: HttpMethod.HttpPost, host: "streams.dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDBStreams_20120810.DescribeStream",
-    validator: validate_DescribeStream_601728, base: "/", url: url_DescribeStream_601729,
+    validator: validate_DescribeStream_605928, base: "/", url: url_DescribeStream_605929,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRecords_601996 = ref object of OpenApiRestCall_601389
-proc url_GetRecords_601998(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetRecords_606196 = ref object of OpenApiRestCall_605589
+proc url_GetRecords_606198(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -261,7 +261,7 @@ proc url_GetRecords_601998(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_GetRecords_601997(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetRecords_606197(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves the stream records from a given shard.</p> <p>Specify a shard iterator using the <code>ShardIterator</code> parameter. The shard iterator specifies the position in the shard from which you want to start reading stream records sequentially. If there are no stream records available in the portion of the shard that the iterator points to, <code>GetRecords</code> returns an empty list. Note that it might take multiple calls to get to a portion of the shard that contains stream records.</p> <note> <p> <code>GetRecords</code> can retrieve a maximum of 1 MB of data or 1000 stream records, whichever comes first.</p> </note>
   ## 
@@ -283,46 +283,46 @@ proc validate_GetRecords_601997(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601999 = header.getOrDefault("X-Amz-Target")
-  valid_601999 = validateParameter(valid_601999, JString, required = true, default = newJString(
+  var valid_606199 = header.getOrDefault("X-Amz-Target")
+  valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "DynamoDBStreams_20120810.GetRecords"))
-  if valid_601999 != nil:
-    section.add "X-Amz-Target", valid_601999
-  var valid_602000 = header.getOrDefault("X-Amz-Signature")
-  valid_602000 = validateParameter(valid_602000, JString, required = false,
+  if valid_606199 != nil:
+    section.add "X-Amz-Target", valid_606199
+  var valid_606200 = header.getOrDefault("X-Amz-Signature")
+  valid_606200 = validateParameter(valid_606200, JString, required = false,
                                  default = nil)
-  if valid_602000 != nil:
-    section.add "X-Amz-Signature", valid_602000
-  var valid_602001 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602001 = validateParameter(valid_602001, JString, required = false,
+  if valid_606200 != nil:
+    section.add "X-Amz-Signature", valid_606200
+  var valid_606201 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606201 = validateParameter(valid_606201, JString, required = false,
                                  default = nil)
-  if valid_602001 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602001
-  var valid_602002 = header.getOrDefault("X-Amz-Date")
-  valid_602002 = validateParameter(valid_602002, JString, required = false,
+  if valid_606201 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606201
+  var valid_606202 = header.getOrDefault("X-Amz-Date")
+  valid_606202 = validateParameter(valid_606202, JString, required = false,
                                  default = nil)
-  if valid_602002 != nil:
-    section.add "X-Amz-Date", valid_602002
-  var valid_602003 = header.getOrDefault("X-Amz-Credential")
-  valid_602003 = validateParameter(valid_602003, JString, required = false,
+  if valid_606202 != nil:
+    section.add "X-Amz-Date", valid_606202
+  var valid_606203 = header.getOrDefault("X-Amz-Credential")
+  valid_606203 = validateParameter(valid_606203, JString, required = false,
                                  default = nil)
-  if valid_602003 != nil:
-    section.add "X-Amz-Credential", valid_602003
-  var valid_602004 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602004 = validateParameter(valid_602004, JString, required = false,
+  if valid_606203 != nil:
+    section.add "X-Amz-Credential", valid_606203
+  var valid_606204 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606204 = validateParameter(valid_606204, JString, required = false,
                                  default = nil)
-  if valid_602004 != nil:
-    section.add "X-Amz-Security-Token", valid_602004
-  var valid_602005 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602005 = validateParameter(valid_602005, JString, required = false,
+  if valid_606204 != nil:
+    section.add "X-Amz-Security-Token", valid_606204
+  var valid_606205 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606205 = validateParameter(valid_606205, JString, required = false,
                                  default = nil)
-  if valid_602005 != nil:
-    section.add "X-Amz-Algorithm", valid_602005
-  var valid_602006 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602006 = validateParameter(valid_602006, JString, required = false,
+  if valid_606205 != nil:
+    section.add "X-Amz-Algorithm", valid_606205
+  var valid_606206 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606206 = validateParameter(valid_606206, JString, required = false,
                                  default = nil)
-  if valid_602006 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602006
+  if valid_606206 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606206
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -333,37 +333,37 @@ proc validate_GetRecords_601997(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_602008: Call_GetRecords_601996; path: JsonNode; query: JsonNode;
+proc call*(call_606208: Call_GetRecords_606196; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves the stream records from a given shard.</p> <p>Specify a shard iterator using the <code>ShardIterator</code> parameter. The shard iterator specifies the position in the shard from which you want to start reading stream records sequentially. If there are no stream records available in the portion of the shard that the iterator points to, <code>GetRecords</code> returns an empty list. Note that it might take multiple calls to get to a portion of the shard that contains stream records.</p> <note> <p> <code>GetRecords</code> can retrieve a maximum of 1 MB of data or 1000 stream records, whichever comes first.</p> </note>
   ## 
-  let valid = call_602008.validator(path, query, header, formData, body)
-  let scheme = call_602008.pickScheme
+  let valid = call_606208.validator(path, query, header, formData, body)
+  let scheme = call_606208.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602008.url(scheme.get, call_602008.host, call_602008.base,
-                         call_602008.route, valid.getOrDefault("path"),
+  let url = call_606208.url(scheme.get, call_606208.host, call_606208.base,
+                         call_606208.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602008, url, valid)
+  result = atozHook(call_606208, url, valid)
 
-proc call*(call_602009: Call_GetRecords_601996; body: JsonNode): Recallable =
+proc call*(call_606209: Call_GetRecords_606196; body: JsonNode): Recallable =
   ## getRecords
   ## <p>Retrieves the stream records from a given shard.</p> <p>Specify a shard iterator using the <code>ShardIterator</code> parameter. The shard iterator specifies the position in the shard from which you want to start reading stream records sequentially. If there are no stream records available in the portion of the shard that the iterator points to, <code>GetRecords</code> returns an empty list. Note that it might take multiple calls to get to a portion of the shard that contains stream records.</p> <note> <p> <code>GetRecords</code> can retrieve a maximum of 1 MB of data or 1000 stream records, whichever comes first.</p> </note>
   ##   body: JObject (required)
-  var body_602010 = newJObject()
+  var body_606210 = newJObject()
   if body != nil:
-    body_602010 = body
-  result = call_602009.call(nil, nil, nil, nil, body_602010)
+    body_606210 = body
+  result = call_606209.call(nil, nil, nil, nil, body_606210)
 
-var getRecords* = Call_GetRecords_601996(name: "getRecords",
+var getRecords* = Call_GetRecords_606196(name: "getRecords",
                                       meth: HttpMethod.HttpPost,
                                       host: "streams.dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDBStreams_20120810.GetRecords",
-                                      validator: validate_GetRecords_601997,
-                                      base: "/", url: url_GetRecords_601998,
+                                      validator: validate_GetRecords_606197,
+                                      base: "/", url: url_GetRecords_606198,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetShardIterator_602011 = ref object of OpenApiRestCall_601389
-proc url_GetShardIterator_602013(protocol: Scheme; host: string; base: string;
+  Call_GetShardIterator_606211 = ref object of OpenApiRestCall_605589
+proc url_GetShardIterator_606213(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -375,7 +375,7 @@ proc url_GetShardIterator_602013(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetShardIterator_602012(path: JsonNode; query: JsonNode;
+proc validate_GetShardIterator_606212(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Returns a shard iterator. A shard iterator provides information about how to retrieve the stream records from within a shard. Use the shard iterator in a subsequent <code>GetRecords</code> request to read the stream records from the shard.</p> <note> <p>A shard iterator expires 15 minutes after it is returned to the requester.</p> </note>
@@ -398,46 +398,46 @@ proc validate_GetShardIterator_602012(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602014 = header.getOrDefault("X-Amz-Target")
-  valid_602014 = validateParameter(valid_602014, JString, required = true, default = newJString(
+  var valid_606214 = header.getOrDefault("X-Amz-Target")
+  valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "DynamoDBStreams_20120810.GetShardIterator"))
-  if valid_602014 != nil:
-    section.add "X-Amz-Target", valid_602014
-  var valid_602015 = header.getOrDefault("X-Amz-Signature")
-  valid_602015 = validateParameter(valid_602015, JString, required = false,
+  if valid_606214 != nil:
+    section.add "X-Amz-Target", valid_606214
+  var valid_606215 = header.getOrDefault("X-Amz-Signature")
+  valid_606215 = validateParameter(valid_606215, JString, required = false,
                                  default = nil)
-  if valid_602015 != nil:
-    section.add "X-Amz-Signature", valid_602015
-  var valid_602016 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602016 = validateParameter(valid_602016, JString, required = false,
+  if valid_606215 != nil:
+    section.add "X-Amz-Signature", valid_606215
+  var valid_606216 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606216 = validateParameter(valid_606216, JString, required = false,
                                  default = nil)
-  if valid_602016 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602016
-  var valid_602017 = header.getOrDefault("X-Amz-Date")
-  valid_602017 = validateParameter(valid_602017, JString, required = false,
+  if valid_606216 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606216
+  var valid_606217 = header.getOrDefault("X-Amz-Date")
+  valid_606217 = validateParameter(valid_606217, JString, required = false,
                                  default = nil)
-  if valid_602017 != nil:
-    section.add "X-Amz-Date", valid_602017
-  var valid_602018 = header.getOrDefault("X-Amz-Credential")
-  valid_602018 = validateParameter(valid_602018, JString, required = false,
+  if valid_606217 != nil:
+    section.add "X-Amz-Date", valid_606217
+  var valid_606218 = header.getOrDefault("X-Amz-Credential")
+  valid_606218 = validateParameter(valid_606218, JString, required = false,
                                  default = nil)
-  if valid_602018 != nil:
-    section.add "X-Amz-Credential", valid_602018
-  var valid_602019 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602019 = validateParameter(valid_602019, JString, required = false,
+  if valid_606218 != nil:
+    section.add "X-Amz-Credential", valid_606218
+  var valid_606219 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606219 = validateParameter(valid_606219, JString, required = false,
                                  default = nil)
-  if valid_602019 != nil:
-    section.add "X-Amz-Security-Token", valid_602019
-  var valid_602020 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602020 = validateParameter(valid_602020, JString, required = false,
+  if valid_606219 != nil:
+    section.add "X-Amz-Security-Token", valid_606219
+  var valid_606220 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606220 = validateParameter(valid_606220, JString, required = false,
                                  default = nil)
-  if valid_602020 != nil:
-    section.add "X-Amz-Algorithm", valid_602020
-  var valid_602021 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602021 = validateParameter(valid_602021, JString, required = false,
+  if valid_606220 != nil:
+    section.add "X-Amz-Algorithm", valid_606220
+  var valid_606221 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606221 = validateParameter(valid_606221, JString, required = false,
                                  default = nil)
-  if valid_602021 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602021
+  if valid_606221 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606221
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -448,36 +448,36 @@ proc validate_GetShardIterator_602012(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602023: Call_GetShardIterator_602011; path: JsonNode;
+proc call*(call_606223: Call_GetShardIterator_606211; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a shard iterator. A shard iterator provides information about how to retrieve the stream records from within a shard. Use the shard iterator in a subsequent <code>GetRecords</code> request to read the stream records from the shard.</p> <note> <p>A shard iterator expires 15 minutes after it is returned to the requester.</p> </note>
   ## 
-  let valid = call_602023.validator(path, query, header, formData, body)
-  let scheme = call_602023.pickScheme
+  let valid = call_606223.validator(path, query, header, formData, body)
+  let scheme = call_606223.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602023.url(scheme.get, call_602023.host, call_602023.base,
-                         call_602023.route, valid.getOrDefault("path"),
+  let url = call_606223.url(scheme.get, call_606223.host, call_606223.base,
+                         call_606223.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602023, url, valid)
+  result = atozHook(call_606223, url, valid)
 
-proc call*(call_602024: Call_GetShardIterator_602011; body: JsonNode): Recallable =
+proc call*(call_606224: Call_GetShardIterator_606211; body: JsonNode): Recallable =
   ## getShardIterator
   ## <p>Returns a shard iterator. A shard iterator provides information about how to retrieve the stream records from within a shard. Use the shard iterator in a subsequent <code>GetRecords</code> request to read the stream records from the shard.</p> <note> <p>A shard iterator expires 15 minutes after it is returned to the requester.</p> </note>
   ##   body: JObject (required)
-  var body_602025 = newJObject()
+  var body_606225 = newJObject()
   if body != nil:
-    body_602025 = body
-  result = call_602024.call(nil, nil, nil, nil, body_602025)
+    body_606225 = body
+  result = call_606224.call(nil, nil, nil, nil, body_606225)
 
-var getShardIterator* = Call_GetShardIterator_602011(name: "getShardIterator",
+var getShardIterator* = Call_GetShardIterator_606211(name: "getShardIterator",
     meth: HttpMethod.HttpPost, host: "streams.dynamodb.amazonaws.com",
     route: "/#X-Amz-Target=DynamoDBStreams_20120810.GetShardIterator",
-    validator: validate_GetShardIterator_602012, base: "/",
-    url: url_GetShardIterator_602013, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetShardIterator_606212, base: "/",
+    url: url_GetShardIterator_606213, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListStreams_602026 = ref object of OpenApiRestCall_601389
-proc url_ListStreams_602028(protocol: Scheme; host: string; base: string;
+  Call_ListStreams_606226 = ref object of OpenApiRestCall_605589
+proc url_ListStreams_606228(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -489,7 +489,7 @@ proc url_ListStreams_602028(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListStreams_602027(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListStreams_606227(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns an array of stream ARNs associated with the current account and endpoint. If the <code>TableName</code> parameter is present, then <code>ListStreams</code> will return only the streams ARNs for that table.</p> <note> <p>You can call <code>ListStreams</code> at a maximum rate of 5 times per second.</p> </note>
   ## 
@@ -511,46 +511,46 @@ proc validate_ListStreams_602027(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602029 = header.getOrDefault("X-Amz-Target")
-  valid_602029 = validateParameter(valid_602029, JString, required = true, default = newJString(
+  var valid_606229 = header.getOrDefault("X-Amz-Target")
+  valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "DynamoDBStreams_20120810.ListStreams"))
-  if valid_602029 != nil:
-    section.add "X-Amz-Target", valid_602029
-  var valid_602030 = header.getOrDefault("X-Amz-Signature")
-  valid_602030 = validateParameter(valid_602030, JString, required = false,
+  if valid_606229 != nil:
+    section.add "X-Amz-Target", valid_606229
+  var valid_606230 = header.getOrDefault("X-Amz-Signature")
+  valid_606230 = validateParameter(valid_606230, JString, required = false,
                                  default = nil)
-  if valid_602030 != nil:
-    section.add "X-Amz-Signature", valid_602030
-  var valid_602031 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602031 = validateParameter(valid_602031, JString, required = false,
+  if valid_606230 != nil:
+    section.add "X-Amz-Signature", valid_606230
+  var valid_606231 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606231 = validateParameter(valid_606231, JString, required = false,
                                  default = nil)
-  if valid_602031 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602031
-  var valid_602032 = header.getOrDefault("X-Amz-Date")
-  valid_602032 = validateParameter(valid_602032, JString, required = false,
+  if valid_606231 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606231
+  var valid_606232 = header.getOrDefault("X-Amz-Date")
+  valid_606232 = validateParameter(valid_606232, JString, required = false,
                                  default = nil)
-  if valid_602032 != nil:
-    section.add "X-Amz-Date", valid_602032
-  var valid_602033 = header.getOrDefault("X-Amz-Credential")
-  valid_602033 = validateParameter(valid_602033, JString, required = false,
+  if valid_606232 != nil:
+    section.add "X-Amz-Date", valid_606232
+  var valid_606233 = header.getOrDefault("X-Amz-Credential")
+  valid_606233 = validateParameter(valid_606233, JString, required = false,
                                  default = nil)
-  if valid_602033 != nil:
-    section.add "X-Amz-Credential", valid_602033
-  var valid_602034 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602034 = validateParameter(valid_602034, JString, required = false,
+  if valid_606233 != nil:
+    section.add "X-Amz-Credential", valid_606233
+  var valid_606234 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606234 = validateParameter(valid_606234, JString, required = false,
                                  default = nil)
-  if valid_602034 != nil:
-    section.add "X-Amz-Security-Token", valid_602034
-  var valid_602035 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602035 = validateParameter(valid_602035, JString, required = false,
+  if valid_606234 != nil:
+    section.add "X-Amz-Security-Token", valid_606234
+  var valid_606235 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606235 = validateParameter(valid_606235, JString, required = false,
                                  default = nil)
-  if valid_602035 != nil:
-    section.add "X-Amz-Algorithm", valid_602035
-  var valid_602036 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602036 = validateParameter(valid_602036, JString, required = false,
+  if valid_606235 != nil:
+    section.add "X-Amz-Algorithm", valid_606235
+  var valid_606236 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606236 = validateParameter(valid_606236, JString, required = false,
                                  default = nil)
-  if valid_602036 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602036
+  if valid_606236 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606236
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -561,33 +561,33 @@ proc validate_ListStreams_602027(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_602038: Call_ListStreams_602026; path: JsonNode; query: JsonNode;
+proc call*(call_606238: Call_ListStreams_606226; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns an array of stream ARNs associated with the current account and endpoint. If the <code>TableName</code> parameter is present, then <code>ListStreams</code> will return only the streams ARNs for that table.</p> <note> <p>You can call <code>ListStreams</code> at a maximum rate of 5 times per second.</p> </note>
   ## 
-  let valid = call_602038.validator(path, query, header, formData, body)
-  let scheme = call_602038.pickScheme
+  let valid = call_606238.validator(path, query, header, formData, body)
+  let scheme = call_606238.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602038.url(scheme.get, call_602038.host, call_602038.base,
-                         call_602038.route, valid.getOrDefault("path"),
+  let url = call_606238.url(scheme.get, call_606238.host, call_606238.base,
+                         call_606238.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602038, url, valid)
+  result = atozHook(call_606238, url, valid)
 
-proc call*(call_602039: Call_ListStreams_602026; body: JsonNode): Recallable =
+proc call*(call_606239: Call_ListStreams_606226; body: JsonNode): Recallable =
   ## listStreams
   ## <p>Returns an array of stream ARNs associated with the current account and endpoint. If the <code>TableName</code> parameter is present, then <code>ListStreams</code> will return only the streams ARNs for that table.</p> <note> <p>You can call <code>ListStreams</code> at a maximum rate of 5 times per second.</p> </note>
   ##   body: JObject (required)
-  var body_602040 = newJObject()
+  var body_606240 = newJObject()
   if body != nil:
-    body_602040 = body
-  result = call_602039.call(nil, nil, nil, nil, body_602040)
+    body_606240 = body
+  result = call_606239.call(nil, nil, nil, nil, body_606240)
 
-var listStreams* = Call_ListStreams_602026(name: "listStreams",
+var listStreams* = Call_ListStreams_606226(name: "listStreams",
                                         meth: HttpMethod.HttpPost,
                                         host: "streams.dynamodb.amazonaws.com", route: "/#X-Amz-Target=DynamoDBStreams_20120810.ListStreams",
-                                        validator: validate_ListStreams_602027,
-                                        base: "/", url: url_ListStreams_602028,
+                                        validator: validate_ListStreams_606227,
+                                        base: "/", url: url_ListStreams_606228,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -633,5 +633,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)

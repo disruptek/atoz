@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_601389 = ref object of OpenApiRestCall
+  OpenApiRestCall_605589 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -116,8 +116,8 @@ const
   awsServiceName = "route53"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AssociateVPCWithHostedZone_601727 = ref object of OpenApiRestCall_601389
-proc url_AssociateVPCWithHostedZone_601729(protocol: Scheme; host: string;
+  Call_AssociateVPCWithHostedZone_605927 = ref object of OpenApiRestCall_605589
+proc url_AssociateVPCWithHostedZone_605929(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -138,7 +138,7 @@ proc url_AssociateVPCWithHostedZone_601729(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_AssociateVPCWithHostedZone_601728(path: JsonNode; query: JsonNode;
+proc validate_AssociateVPCWithHostedZone_605928(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Associates an Amazon VPC with a private hosted zone. </p> <important> <p>To perform the association, the VPC and the private hosted zone must already exist. You can't convert a public hosted zone into a private hosted zone.</p> </important> <note> <p>If you want to associate a VPC that was created by using one AWS account with a private hosted zone that was created by using a different account, the AWS account that created the private hosted zone must first submit a <code>CreateVPCAssociationAuthorization</code> request. Then the account that created the VPC must submit an <code>AssociateVPCWithHostedZone</code> request.</p> </note>
   ## 
@@ -149,11 +149,11 @@ proc validate_AssociateVPCWithHostedZone_601728(path: JsonNode; query: JsonNode;
   ##     : <p>The ID of the private hosted zone that you want to associate an Amazon VPC with.</p> <p>Note that you can't associate a VPC with a hosted zone that doesn't have an existing VPC association.</p>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_601855 = path.getOrDefault("Id")
-  valid_601855 = validateParameter(valid_601855, JString, required = true,
+  var valid_606055 = path.getOrDefault("Id")
+  valid_606055 = validateParameter(valid_606055, JString, required = true,
                                  default = nil)
-  if valid_601855 != nil:
-    section.add "Id", valid_601855
+  if valid_606055 != nil:
+    section.add "Id", valid_606055
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -166,41 +166,41 @@ proc validate_AssociateVPCWithHostedZone_601728(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601856 = header.getOrDefault("X-Amz-Signature")
-  valid_601856 = validateParameter(valid_601856, JString, required = false,
+  var valid_606056 = header.getOrDefault("X-Amz-Signature")
+  valid_606056 = validateParameter(valid_606056, JString, required = false,
                                  default = nil)
-  if valid_601856 != nil:
-    section.add "X-Amz-Signature", valid_601856
-  var valid_601857 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601857 = validateParameter(valid_601857, JString, required = false,
+  if valid_606056 != nil:
+    section.add "X-Amz-Signature", valid_606056
+  var valid_606057 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606057 = validateParameter(valid_606057, JString, required = false,
                                  default = nil)
-  if valid_601857 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601857
-  var valid_601858 = header.getOrDefault("X-Amz-Date")
-  valid_601858 = validateParameter(valid_601858, JString, required = false,
+  if valid_606057 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606057
+  var valid_606058 = header.getOrDefault("X-Amz-Date")
+  valid_606058 = validateParameter(valid_606058, JString, required = false,
                                  default = nil)
-  if valid_601858 != nil:
-    section.add "X-Amz-Date", valid_601858
-  var valid_601859 = header.getOrDefault("X-Amz-Credential")
-  valid_601859 = validateParameter(valid_601859, JString, required = false,
+  if valid_606058 != nil:
+    section.add "X-Amz-Date", valid_606058
+  var valid_606059 = header.getOrDefault("X-Amz-Credential")
+  valid_606059 = validateParameter(valid_606059, JString, required = false,
                                  default = nil)
-  if valid_601859 != nil:
-    section.add "X-Amz-Credential", valid_601859
-  var valid_601860 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601860 = validateParameter(valid_601860, JString, required = false,
+  if valid_606059 != nil:
+    section.add "X-Amz-Credential", valid_606059
+  var valid_606060 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606060 = validateParameter(valid_606060, JString, required = false,
                                  default = nil)
-  if valid_601860 != nil:
-    section.add "X-Amz-Security-Token", valid_601860
-  var valid_601861 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601861 = validateParameter(valid_601861, JString, required = false,
+  if valid_606060 != nil:
+    section.add "X-Amz-Security-Token", valid_606060
+  var valid_606061 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606061 = validateParameter(valid_606061, JString, required = false,
                                  default = nil)
-  if valid_601861 != nil:
-    section.add "X-Amz-Algorithm", valid_601861
-  var valid_601862 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601862 = validateParameter(valid_601862, JString, required = false,
+  if valid_606061 != nil:
+    section.add "X-Amz-Algorithm", valid_606061
+  var valid_606062 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606062 = validateParameter(valid_606062, JString, required = false,
                                  default = nil)
-  if valid_601862 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601862
+  if valid_606062 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606062
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -211,43 +211,43 @@ proc validate_AssociateVPCWithHostedZone_601728(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601886: Call_AssociateVPCWithHostedZone_601727; path: JsonNode;
+proc call*(call_606086: Call_AssociateVPCWithHostedZone_605927; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Associates an Amazon VPC with a private hosted zone. </p> <important> <p>To perform the association, the VPC and the private hosted zone must already exist. You can't convert a public hosted zone into a private hosted zone.</p> </important> <note> <p>If you want to associate a VPC that was created by using one AWS account with a private hosted zone that was created by using a different account, the AWS account that created the private hosted zone must first submit a <code>CreateVPCAssociationAuthorization</code> request. Then the account that created the VPC must submit an <code>AssociateVPCWithHostedZone</code> request.</p> </note>
   ## 
-  let valid = call_601886.validator(path, query, header, formData, body)
-  let scheme = call_601886.pickScheme
+  let valid = call_606086.validator(path, query, header, formData, body)
+  let scheme = call_606086.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601886.url(scheme.get, call_601886.host, call_601886.base,
-                         call_601886.route, valid.getOrDefault("path"),
+  let url = call_606086.url(scheme.get, call_606086.host, call_606086.base,
+                         call_606086.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601886, url, valid)
+  result = atozHook(call_606086, url, valid)
 
-proc call*(call_601957: Call_AssociateVPCWithHostedZone_601727; body: JsonNode;
+proc call*(call_606157: Call_AssociateVPCWithHostedZone_605927; body: JsonNode;
           Id: string): Recallable =
   ## associateVPCWithHostedZone
   ## <p>Associates an Amazon VPC with a private hosted zone. </p> <important> <p>To perform the association, the VPC and the private hosted zone must already exist. You can't convert a public hosted zone into a private hosted zone.</p> </important> <note> <p>If you want to associate a VPC that was created by using one AWS account with a private hosted zone that was created by using a different account, the AWS account that created the private hosted zone must first submit a <code>CreateVPCAssociationAuthorization</code> request. Then the account that created the VPC must submit an <code>AssociateVPCWithHostedZone</code> request.</p> </note>
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : <p>The ID of the private hosted zone that you want to associate an Amazon VPC with.</p> <p>Note that you can't associate a VPC with a hosted zone that doesn't have an existing VPC association.</p>
-  var path_601958 = newJObject()
-  var body_601960 = newJObject()
+  var path_606158 = newJObject()
+  var body_606160 = newJObject()
   if body != nil:
-    body_601960 = body
-  add(path_601958, "Id", newJString(Id))
-  result = call_601957.call(path_601958, nil, nil, nil, body_601960)
+    body_606160 = body
+  add(path_606158, "Id", newJString(Id))
+  result = call_606157.call(path_606158, nil, nil, nil, body_606160)
 
-var associateVPCWithHostedZone* = Call_AssociateVPCWithHostedZone_601727(
+var associateVPCWithHostedZone* = Call_AssociateVPCWithHostedZone_605927(
     name: "associateVPCWithHostedZone", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/hostedzone/{Id}/associatevpc",
-    validator: validate_AssociateVPCWithHostedZone_601728, base: "/",
-    url: url_AssociateVPCWithHostedZone_601729,
+    validator: validate_AssociateVPCWithHostedZone_605928, base: "/",
+    url: url_AssociateVPCWithHostedZone_605929,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ChangeResourceRecordSets_601999 = ref object of OpenApiRestCall_601389
-proc url_ChangeResourceRecordSets_602001(protocol: Scheme; host: string;
+  Call_ChangeResourceRecordSets_606199 = ref object of OpenApiRestCall_605589
+proc url_ChangeResourceRecordSets_606201(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -269,7 +269,7 @@ proc url_ChangeResourceRecordSets_602001(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ChangeResourceRecordSets_602000(path: JsonNode; query: JsonNode;
+proc validate_ChangeResourceRecordSets_606200(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates, changes, or deletes a resource record set, which contains authoritative DNS information for a specified domain name or subdomain name. For example, you can use <code>ChangeResourceRecordSets</code> to create a resource record set that routes traffic for test.example.com to a web server that has an IP address of 192.0.2.44.</p> <p> <b>Change Batches and Transactional Changes</b> </p> <p>The request body must include a document with a <code>ChangeResourceRecordSetsRequest</code> element. The request body contains a list of change items, known as a change batch. Change batches are considered transactional changes. When using the Amazon Route 53 API to change resource record sets, Route 53 either makes all or none of the changes in a change batch request. This ensures that Route 53 never partially implements the intended changes to the resource record sets in a hosted zone. </p> <p>For example, a change batch request that deletes the <code>CNAME</code> record for www.example.com and creates an alias resource record set for www.example.com. Route 53 deletes the first resource record set and creates the second resource record set in a single operation. If either the <code>DELETE</code> or the <code>CREATE</code> action fails, then both changes (plus any other changes in the batch) fail, and the original <code>CNAME</code> record continues to exist.</p> <important> <p>Due to the nature of transactional changes, you can't delete the same resource record set more than once in a single change batch. If you attempt to delete the same change batch more than once, Route 53 returns an <code>InvalidChangeBatch</code> error.</p> </important> <p> <b>Traffic Flow</b> </p> <p>To create resource record sets for complex routing configurations, use either the traffic flow visual editor in the Route 53 console or the API actions for traffic policies and traffic policy instances. Save the configuration as a traffic policy, then associate the traffic policy with one or more domain names (such as example.com) or subdomain names (such as www.example.com), in the same hosted zone or in multiple hosted zones. You can roll back the updates if the new configuration isn't performing as expected. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/traffic-flow.html">Using Traffic Flow to Route DNS Traffic</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p> <b>Create, Delete, and Upsert</b> </p> <p>Use <code>ChangeResourceRecordsSetsRequest</code> to perform the following actions:</p> <ul> <li> <p> <code>CREATE</code>: Creates a resource record set that has the specified values.</p> </li> <li> <p> <code>DELETE</code>: Deletes an existing resource record set that has the specified values.</p> </li> <li> <p> <code>UPSERT</code>: If a resource record set does not already exist, AWS creates it. If a resource set does exist, Route 53 updates it with the values in the request. </p> </li> </ul> <p> <b>Syntaxes for Creating, Updating, and Deleting Resource Record Sets</b> </p> <p>The syntax for a request depends on the type of resource record set that you want to create, delete, or update, such as weighted, alias, or failover. The XML elements in your request must appear in the order listed in the syntax. </p> <p>For an example for each type of resource record set, see "Examples."</p> <p>Don't refer to the syntax in the "Parameter Syntax" section, which includes all of the elements for every kind of resource record set that you can create, delete, or update by using <code>ChangeResourceRecordSets</code>. </p> <p> <b>Change Propagation to Route 53 DNS Servers</b> </p> <p>When you submit a <code>ChangeResourceRecordSets</code> request, Route 53 propagates your changes to all of the Route 53 authoritative DNS servers. While your changes are propagating, <code>GetChange</code> returns a status of <code>PENDING</code>. When propagation is complete, <code>GetChange</code> returns a status of <code>INSYNC</code>. Changes generally propagate to all Route 53 name servers within 60 seconds. For more information, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetChange.html">GetChange</a>.</p> <p> <b>Limits on ChangeResourceRecordSets Requests</b> </p> <p>For information about the limits on a <code>ChangeResourceRecordSets</code> request, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
   ## 
@@ -280,11 +280,11 @@ proc validate_ChangeResourceRecordSets_602000(path: JsonNode; query: JsonNode;
   ##     : The ID of the hosted zone that contains the resource record sets that you want to change.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602002 = path.getOrDefault("Id")
-  valid_602002 = validateParameter(valid_602002, JString, required = true,
+  var valid_606202 = path.getOrDefault("Id")
+  valid_606202 = validateParameter(valid_606202, JString, required = true,
                                  default = nil)
-  if valid_602002 != nil:
-    section.add "Id", valid_602002
+  if valid_606202 != nil:
+    section.add "Id", valid_606202
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -297,41 +297,41 @@ proc validate_ChangeResourceRecordSets_602000(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602003 = header.getOrDefault("X-Amz-Signature")
-  valid_602003 = validateParameter(valid_602003, JString, required = false,
+  var valid_606203 = header.getOrDefault("X-Amz-Signature")
+  valid_606203 = validateParameter(valid_606203, JString, required = false,
                                  default = nil)
-  if valid_602003 != nil:
-    section.add "X-Amz-Signature", valid_602003
-  var valid_602004 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602004 = validateParameter(valid_602004, JString, required = false,
+  if valid_606203 != nil:
+    section.add "X-Amz-Signature", valid_606203
+  var valid_606204 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606204 = validateParameter(valid_606204, JString, required = false,
                                  default = nil)
-  if valid_602004 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602004
-  var valid_602005 = header.getOrDefault("X-Amz-Date")
-  valid_602005 = validateParameter(valid_602005, JString, required = false,
+  if valid_606204 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606204
+  var valid_606205 = header.getOrDefault("X-Amz-Date")
+  valid_606205 = validateParameter(valid_606205, JString, required = false,
                                  default = nil)
-  if valid_602005 != nil:
-    section.add "X-Amz-Date", valid_602005
-  var valid_602006 = header.getOrDefault("X-Amz-Credential")
-  valid_602006 = validateParameter(valid_602006, JString, required = false,
+  if valid_606205 != nil:
+    section.add "X-Amz-Date", valid_606205
+  var valid_606206 = header.getOrDefault("X-Amz-Credential")
+  valid_606206 = validateParameter(valid_606206, JString, required = false,
                                  default = nil)
-  if valid_602006 != nil:
-    section.add "X-Amz-Credential", valid_602006
-  var valid_602007 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602007 = validateParameter(valid_602007, JString, required = false,
+  if valid_606206 != nil:
+    section.add "X-Amz-Credential", valid_606206
+  var valid_606207 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606207 = validateParameter(valid_606207, JString, required = false,
                                  default = nil)
-  if valid_602007 != nil:
-    section.add "X-Amz-Security-Token", valid_602007
-  var valid_602008 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602008 = validateParameter(valid_602008, JString, required = false,
+  if valid_606207 != nil:
+    section.add "X-Amz-Security-Token", valid_606207
+  var valid_606208 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606208 = validateParameter(valid_606208, JString, required = false,
                                  default = nil)
-  if valid_602008 != nil:
-    section.add "X-Amz-Algorithm", valid_602008
-  var valid_602009 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602009 = validateParameter(valid_602009, JString, required = false,
+  if valid_606208 != nil:
+    section.add "X-Amz-Algorithm", valid_606208
+  var valid_606209 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606209 = validateParameter(valid_606209, JString, required = false,
                                  default = nil)
-  if valid_602009 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602009
+  if valid_606209 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606209
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -342,41 +342,41 @@ proc validate_ChangeResourceRecordSets_602000(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602011: Call_ChangeResourceRecordSets_601999; path: JsonNode;
+proc call*(call_606211: Call_ChangeResourceRecordSets_606199; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates, changes, or deletes a resource record set, which contains authoritative DNS information for a specified domain name or subdomain name. For example, you can use <code>ChangeResourceRecordSets</code> to create a resource record set that routes traffic for test.example.com to a web server that has an IP address of 192.0.2.44.</p> <p> <b>Change Batches and Transactional Changes</b> </p> <p>The request body must include a document with a <code>ChangeResourceRecordSetsRequest</code> element. The request body contains a list of change items, known as a change batch. Change batches are considered transactional changes. When using the Amazon Route 53 API to change resource record sets, Route 53 either makes all or none of the changes in a change batch request. This ensures that Route 53 never partially implements the intended changes to the resource record sets in a hosted zone. </p> <p>For example, a change batch request that deletes the <code>CNAME</code> record for www.example.com and creates an alias resource record set for www.example.com. Route 53 deletes the first resource record set and creates the second resource record set in a single operation. If either the <code>DELETE</code> or the <code>CREATE</code> action fails, then both changes (plus any other changes in the batch) fail, and the original <code>CNAME</code> record continues to exist.</p> <important> <p>Due to the nature of transactional changes, you can't delete the same resource record set more than once in a single change batch. If you attempt to delete the same change batch more than once, Route 53 returns an <code>InvalidChangeBatch</code> error.</p> </important> <p> <b>Traffic Flow</b> </p> <p>To create resource record sets for complex routing configurations, use either the traffic flow visual editor in the Route 53 console or the API actions for traffic policies and traffic policy instances. Save the configuration as a traffic policy, then associate the traffic policy with one or more domain names (such as example.com) or subdomain names (such as www.example.com), in the same hosted zone or in multiple hosted zones. You can roll back the updates if the new configuration isn't performing as expected. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/traffic-flow.html">Using Traffic Flow to Route DNS Traffic</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p> <b>Create, Delete, and Upsert</b> </p> <p>Use <code>ChangeResourceRecordsSetsRequest</code> to perform the following actions:</p> <ul> <li> <p> <code>CREATE</code>: Creates a resource record set that has the specified values.</p> </li> <li> <p> <code>DELETE</code>: Deletes an existing resource record set that has the specified values.</p> </li> <li> <p> <code>UPSERT</code>: If a resource record set does not already exist, AWS creates it. If a resource set does exist, Route 53 updates it with the values in the request. </p> </li> </ul> <p> <b>Syntaxes for Creating, Updating, and Deleting Resource Record Sets</b> </p> <p>The syntax for a request depends on the type of resource record set that you want to create, delete, or update, such as weighted, alias, or failover. The XML elements in your request must appear in the order listed in the syntax. </p> <p>For an example for each type of resource record set, see "Examples."</p> <p>Don't refer to the syntax in the "Parameter Syntax" section, which includes all of the elements for every kind of resource record set that you can create, delete, or update by using <code>ChangeResourceRecordSets</code>. </p> <p> <b>Change Propagation to Route 53 DNS Servers</b> </p> <p>When you submit a <code>ChangeResourceRecordSets</code> request, Route 53 propagates your changes to all of the Route 53 authoritative DNS servers. While your changes are propagating, <code>GetChange</code> returns a status of <code>PENDING</code>. When propagation is complete, <code>GetChange</code> returns a status of <code>INSYNC</code>. Changes generally propagate to all Route 53 name servers within 60 seconds. For more information, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetChange.html">GetChange</a>.</p> <p> <b>Limits on ChangeResourceRecordSets Requests</b> </p> <p>For information about the limits on a <code>ChangeResourceRecordSets</code> request, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
   ## 
-  let valid = call_602011.validator(path, query, header, formData, body)
-  let scheme = call_602011.pickScheme
+  let valid = call_606211.validator(path, query, header, formData, body)
+  let scheme = call_606211.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602011.url(scheme.get, call_602011.host, call_602011.base,
-                         call_602011.route, valid.getOrDefault("path"),
+  let url = call_606211.url(scheme.get, call_606211.host, call_606211.base,
+                         call_606211.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602011, url, valid)
+  result = atozHook(call_606211, url, valid)
 
-proc call*(call_602012: Call_ChangeResourceRecordSets_601999; body: JsonNode;
+proc call*(call_606212: Call_ChangeResourceRecordSets_606199; body: JsonNode;
           Id: string): Recallable =
   ## changeResourceRecordSets
   ## <p>Creates, changes, or deletes a resource record set, which contains authoritative DNS information for a specified domain name or subdomain name. For example, you can use <code>ChangeResourceRecordSets</code> to create a resource record set that routes traffic for test.example.com to a web server that has an IP address of 192.0.2.44.</p> <p> <b>Change Batches and Transactional Changes</b> </p> <p>The request body must include a document with a <code>ChangeResourceRecordSetsRequest</code> element. The request body contains a list of change items, known as a change batch. Change batches are considered transactional changes. When using the Amazon Route 53 API to change resource record sets, Route 53 either makes all or none of the changes in a change batch request. This ensures that Route 53 never partially implements the intended changes to the resource record sets in a hosted zone. </p> <p>For example, a change batch request that deletes the <code>CNAME</code> record for www.example.com and creates an alias resource record set for www.example.com. Route 53 deletes the first resource record set and creates the second resource record set in a single operation. If either the <code>DELETE</code> or the <code>CREATE</code> action fails, then both changes (plus any other changes in the batch) fail, and the original <code>CNAME</code> record continues to exist.</p> <important> <p>Due to the nature of transactional changes, you can't delete the same resource record set more than once in a single change batch. If you attempt to delete the same change batch more than once, Route 53 returns an <code>InvalidChangeBatch</code> error.</p> </important> <p> <b>Traffic Flow</b> </p> <p>To create resource record sets for complex routing configurations, use either the traffic flow visual editor in the Route 53 console or the API actions for traffic policies and traffic policy instances. Save the configuration as a traffic policy, then associate the traffic policy with one or more domain names (such as example.com) or subdomain names (such as www.example.com), in the same hosted zone or in multiple hosted zones. You can roll back the updates if the new configuration isn't performing as expected. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/traffic-flow.html">Using Traffic Flow to Route DNS Traffic</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p> <b>Create, Delete, and Upsert</b> </p> <p>Use <code>ChangeResourceRecordsSetsRequest</code> to perform the following actions:</p> <ul> <li> <p> <code>CREATE</code>: Creates a resource record set that has the specified values.</p> </li> <li> <p> <code>DELETE</code>: Deletes an existing resource record set that has the specified values.</p> </li> <li> <p> <code>UPSERT</code>: If a resource record set does not already exist, AWS creates it. If a resource set does exist, Route 53 updates it with the values in the request. </p> </li> </ul> <p> <b>Syntaxes for Creating, Updating, and Deleting Resource Record Sets</b> </p> <p>The syntax for a request depends on the type of resource record set that you want to create, delete, or update, such as weighted, alias, or failover. The XML elements in your request must appear in the order listed in the syntax. </p> <p>For an example for each type of resource record set, see "Examples."</p> <p>Don't refer to the syntax in the "Parameter Syntax" section, which includes all of the elements for every kind of resource record set that you can create, delete, or update by using <code>ChangeResourceRecordSets</code>. </p> <p> <b>Change Propagation to Route 53 DNS Servers</b> </p> <p>When you submit a <code>ChangeResourceRecordSets</code> request, Route 53 propagates your changes to all of the Route 53 authoritative DNS servers. While your changes are propagating, <code>GetChange</code> returns a status of <code>PENDING</code>. When propagation is complete, <code>GetChange</code> returns a status of <code>INSYNC</code>. Changes generally propagate to all Route 53 name servers within 60 seconds. For more information, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetChange.html">GetChange</a>.</p> <p> <b>Limits on ChangeResourceRecordSets Requests</b> </p> <p>For information about the limits on a <code>ChangeResourceRecordSets</code> request, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : The ID of the hosted zone that contains the resource record sets that you want to change.
-  var path_602013 = newJObject()
-  var body_602014 = newJObject()
+  var path_606213 = newJObject()
+  var body_606214 = newJObject()
   if body != nil:
-    body_602014 = body
-  add(path_602013, "Id", newJString(Id))
-  result = call_602012.call(path_602013, nil, nil, nil, body_602014)
+    body_606214 = body
+  add(path_606213, "Id", newJString(Id))
+  result = call_606212.call(path_606213, nil, nil, nil, body_606214)
 
-var changeResourceRecordSets* = Call_ChangeResourceRecordSets_601999(
+var changeResourceRecordSets* = Call_ChangeResourceRecordSets_606199(
     name: "changeResourceRecordSets", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com", route: "/2013-04-01/hostedzone/{Id}/rrset/",
-    validator: validate_ChangeResourceRecordSets_602000, base: "/",
-    url: url_ChangeResourceRecordSets_602001, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ChangeResourceRecordSets_606200, base: "/",
+    url: url_ChangeResourceRecordSets_606201, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ChangeTagsForResource_602043 = ref object of OpenApiRestCall_601389
-proc url_ChangeTagsForResource_602045(protocol: Scheme; host: string; base: string;
+  Call_ChangeTagsForResource_606243 = ref object of OpenApiRestCall_605589
+proc url_ChangeTagsForResource_606245(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -399,7 +399,7 @@ proc url_ChangeTagsForResource_602045(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & hydrated.get
 
-proc validate_ChangeTagsForResource_602044(path: JsonNode; query: JsonNode;
+proc validate_ChangeTagsForResource_606244(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds, edits, or deletes tags for a health check or a hosted zone.</p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
   ## 
@@ -413,16 +413,16 @@ proc validate_ChangeTagsForResource_602044(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceId` field"
-  var valid_602046 = path.getOrDefault("ResourceId")
-  valid_602046 = validateParameter(valid_602046, JString, required = true,
+  var valid_606246 = path.getOrDefault("ResourceId")
+  valid_606246 = validateParameter(valid_606246, JString, required = true,
                                  default = nil)
-  if valid_602046 != nil:
-    section.add "ResourceId", valid_602046
-  var valid_602047 = path.getOrDefault("ResourceType")
-  valid_602047 = validateParameter(valid_602047, JString, required = true,
+  if valid_606246 != nil:
+    section.add "ResourceId", valid_606246
+  var valid_606247 = path.getOrDefault("ResourceType")
+  valid_606247 = validateParameter(valid_606247, JString, required = true,
                                  default = newJString("healthcheck"))
-  if valid_602047 != nil:
-    section.add "ResourceType", valid_602047
+  if valid_606247 != nil:
+    section.add "ResourceType", valid_606247
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -435,41 +435,41 @@ proc validate_ChangeTagsForResource_602044(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602048 = header.getOrDefault("X-Amz-Signature")
-  valid_602048 = validateParameter(valid_602048, JString, required = false,
+  var valid_606248 = header.getOrDefault("X-Amz-Signature")
+  valid_606248 = validateParameter(valid_606248, JString, required = false,
                                  default = nil)
-  if valid_602048 != nil:
-    section.add "X-Amz-Signature", valid_602048
-  var valid_602049 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602049 = validateParameter(valid_602049, JString, required = false,
+  if valid_606248 != nil:
+    section.add "X-Amz-Signature", valid_606248
+  var valid_606249 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606249 = validateParameter(valid_606249, JString, required = false,
                                  default = nil)
-  if valid_602049 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602049
-  var valid_602050 = header.getOrDefault("X-Amz-Date")
-  valid_602050 = validateParameter(valid_602050, JString, required = false,
+  if valid_606249 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606249
+  var valid_606250 = header.getOrDefault("X-Amz-Date")
+  valid_606250 = validateParameter(valid_606250, JString, required = false,
                                  default = nil)
-  if valid_602050 != nil:
-    section.add "X-Amz-Date", valid_602050
-  var valid_602051 = header.getOrDefault("X-Amz-Credential")
-  valid_602051 = validateParameter(valid_602051, JString, required = false,
+  if valid_606250 != nil:
+    section.add "X-Amz-Date", valid_606250
+  var valid_606251 = header.getOrDefault("X-Amz-Credential")
+  valid_606251 = validateParameter(valid_606251, JString, required = false,
                                  default = nil)
-  if valid_602051 != nil:
-    section.add "X-Amz-Credential", valid_602051
-  var valid_602052 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602052 = validateParameter(valid_602052, JString, required = false,
+  if valid_606251 != nil:
+    section.add "X-Amz-Credential", valid_606251
+  var valid_606252 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606252 = validateParameter(valid_606252, JString, required = false,
                                  default = nil)
-  if valid_602052 != nil:
-    section.add "X-Amz-Security-Token", valid_602052
-  var valid_602053 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602053 = validateParameter(valid_602053, JString, required = false,
+  if valid_606252 != nil:
+    section.add "X-Amz-Security-Token", valid_606252
+  var valid_606253 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606253 = validateParameter(valid_606253, JString, required = false,
                                  default = nil)
-  if valid_602053 != nil:
-    section.add "X-Amz-Algorithm", valid_602053
-  var valid_602054 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602054 = validateParameter(valid_602054, JString, required = false,
+  if valid_606253 != nil:
+    section.add "X-Amz-Algorithm", valid_606253
+  var valid_606254 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606254 = validateParameter(valid_606254, JString, required = false,
                                  default = nil)
-  if valid_602054 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602054
+  if valid_606254 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606254
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -480,20 +480,20 @@ proc validate_ChangeTagsForResource_602044(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602056: Call_ChangeTagsForResource_602043; path: JsonNode;
+proc call*(call_606256: Call_ChangeTagsForResource_606243; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds, edits, or deletes tags for a health check or a hosted zone.</p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
   ## 
-  let valid = call_602056.validator(path, query, header, formData, body)
-  let scheme = call_602056.pickScheme
+  let valid = call_606256.validator(path, query, header, formData, body)
+  let scheme = call_606256.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602056.url(scheme.get, call_602056.host, call_602056.base,
-                         call_602056.route, valid.getOrDefault("path"),
+  let url = call_606256.url(scheme.get, call_606256.host, call_606256.base,
+                         call_606256.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602056, url, valid)
+  result = atozHook(call_606256, url, valid)
 
-proc call*(call_602057: Call_ChangeTagsForResource_602043; ResourceId: string;
+proc call*(call_606257: Call_ChangeTagsForResource_606243; ResourceId: string;
           body: JsonNode; ResourceType: string = "healthcheck"): Recallable =
   ## changeTagsForResource
   ## <p>Adds, edits, or deletes tags for a health check or a hosted zone.</p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
@@ -502,23 +502,23 @@ proc call*(call_602057: Call_ChangeTagsForResource_602043; ResourceId: string;
   ##   ResourceType: string (required)
   ##               : <p>The type of the resource.</p> <ul> <li> <p>The resource type for health checks is <code>healthcheck</code>.</p> </li> <li> <p>The resource type for hosted zones is <code>hostedzone</code>.</p> </li> </ul>
   ##   body: JObject (required)
-  var path_602058 = newJObject()
-  var body_602059 = newJObject()
-  add(path_602058, "ResourceId", newJString(ResourceId))
-  add(path_602058, "ResourceType", newJString(ResourceType))
+  var path_606258 = newJObject()
+  var body_606259 = newJObject()
+  add(path_606258, "ResourceId", newJString(ResourceId))
+  add(path_606258, "ResourceType", newJString(ResourceType))
   if body != nil:
-    body_602059 = body
-  result = call_602057.call(path_602058, nil, nil, nil, body_602059)
+    body_606259 = body
+  result = call_606257.call(path_606258, nil, nil, nil, body_606259)
 
-var changeTagsForResource* = Call_ChangeTagsForResource_602043(
+var changeTagsForResource* = Call_ChangeTagsForResource_606243(
     name: "changeTagsForResource", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/tags/{ResourceType}/{ResourceId}",
-    validator: validate_ChangeTagsForResource_602044, base: "/",
-    url: url_ChangeTagsForResource_602045, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ChangeTagsForResource_606244, base: "/",
+    url: url_ChangeTagsForResource_606245, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_602015 = ref object of OpenApiRestCall_601389
-proc url_ListTagsForResource_602017(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_606215 = ref object of OpenApiRestCall_605589
+proc url_ListTagsForResource_606217(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -541,7 +541,7 @@ proc url_ListTagsForResource_602017(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_ListTagsForResource_602016(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_606216(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Lists tags for one health check or hosted zone. </p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
@@ -556,16 +556,16 @@ proc validate_ListTagsForResource_602016(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceId` field"
-  var valid_602018 = path.getOrDefault("ResourceId")
-  valid_602018 = validateParameter(valid_602018, JString, required = true,
+  var valid_606218 = path.getOrDefault("ResourceId")
+  valid_606218 = validateParameter(valid_606218, JString, required = true,
                                  default = nil)
-  if valid_602018 != nil:
-    section.add "ResourceId", valid_602018
-  var valid_602032 = path.getOrDefault("ResourceType")
-  valid_602032 = validateParameter(valid_602032, JString, required = true,
+  if valid_606218 != nil:
+    section.add "ResourceId", valid_606218
+  var valid_606232 = path.getOrDefault("ResourceType")
+  valid_606232 = validateParameter(valid_606232, JString, required = true,
                                  default = newJString("healthcheck"))
-  if valid_602032 != nil:
-    section.add "ResourceType", valid_602032
+  if valid_606232 != nil:
+    section.add "ResourceType", valid_606232
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -578,61 +578,61 @@ proc validate_ListTagsForResource_602016(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602033 = header.getOrDefault("X-Amz-Signature")
-  valid_602033 = validateParameter(valid_602033, JString, required = false,
+  var valid_606233 = header.getOrDefault("X-Amz-Signature")
+  valid_606233 = validateParameter(valid_606233, JString, required = false,
                                  default = nil)
-  if valid_602033 != nil:
-    section.add "X-Amz-Signature", valid_602033
-  var valid_602034 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602034 = validateParameter(valid_602034, JString, required = false,
+  if valid_606233 != nil:
+    section.add "X-Amz-Signature", valid_606233
+  var valid_606234 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606234 = validateParameter(valid_606234, JString, required = false,
                                  default = nil)
-  if valid_602034 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602034
-  var valid_602035 = header.getOrDefault("X-Amz-Date")
-  valid_602035 = validateParameter(valid_602035, JString, required = false,
+  if valid_606234 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606234
+  var valid_606235 = header.getOrDefault("X-Amz-Date")
+  valid_606235 = validateParameter(valid_606235, JString, required = false,
                                  default = nil)
-  if valid_602035 != nil:
-    section.add "X-Amz-Date", valid_602035
-  var valid_602036 = header.getOrDefault("X-Amz-Credential")
-  valid_602036 = validateParameter(valid_602036, JString, required = false,
+  if valid_606235 != nil:
+    section.add "X-Amz-Date", valid_606235
+  var valid_606236 = header.getOrDefault("X-Amz-Credential")
+  valid_606236 = validateParameter(valid_606236, JString, required = false,
                                  default = nil)
-  if valid_602036 != nil:
-    section.add "X-Amz-Credential", valid_602036
-  var valid_602037 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602037 = validateParameter(valid_602037, JString, required = false,
+  if valid_606236 != nil:
+    section.add "X-Amz-Credential", valid_606236
+  var valid_606237 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606237 = validateParameter(valid_606237, JString, required = false,
                                  default = nil)
-  if valid_602037 != nil:
-    section.add "X-Amz-Security-Token", valid_602037
-  var valid_602038 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602038 = validateParameter(valid_602038, JString, required = false,
+  if valid_606237 != nil:
+    section.add "X-Amz-Security-Token", valid_606237
+  var valid_606238 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606238 = validateParameter(valid_606238, JString, required = false,
                                  default = nil)
-  if valid_602038 != nil:
-    section.add "X-Amz-Algorithm", valid_602038
-  var valid_602039 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602039 = validateParameter(valid_602039, JString, required = false,
+  if valid_606238 != nil:
+    section.add "X-Amz-Algorithm", valid_606238
+  var valid_606239 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606239 = validateParameter(valid_606239, JString, required = false,
                                  default = nil)
-  if valid_602039 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602039
+  if valid_606239 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606239
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602040: Call_ListTagsForResource_602015; path: JsonNode;
+proc call*(call_606240: Call_ListTagsForResource_606215; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists tags for one health check or hosted zone. </p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
   ## 
-  let valid = call_602040.validator(path, query, header, formData, body)
-  let scheme = call_602040.pickScheme
+  let valid = call_606240.validator(path, query, header, formData, body)
+  let scheme = call_606240.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602040.url(scheme.get, call_602040.host, call_602040.base,
-                         call_602040.route, valid.getOrDefault("path"),
+  let url = call_606240.url(scheme.get, call_606240.host, call_606240.base,
+                         call_606240.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602040, url, valid)
+  result = atozHook(call_606240, url, valid)
 
-proc call*(call_602041: Call_ListTagsForResource_602015; ResourceId: string;
+proc call*(call_606241: Call_ListTagsForResource_606215; ResourceId: string;
           ResourceType: string = "healthcheck"): Recallable =
   ## listTagsForResource
   ## <p>Lists tags for one health check or hosted zone. </p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
@@ -640,20 +640,20 @@ proc call*(call_602041: Call_ListTagsForResource_602015; ResourceId: string;
   ##             : The ID of the resource for which you want to retrieve tags.
   ##   ResourceType: string (required)
   ##               : <p>The type of the resource.</p> <ul> <li> <p>The resource type for health checks is <code>healthcheck</code>.</p> </li> <li> <p>The resource type for hosted zones is <code>hostedzone</code>.</p> </li> </ul>
-  var path_602042 = newJObject()
-  add(path_602042, "ResourceId", newJString(ResourceId))
-  add(path_602042, "ResourceType", newJString(ResourceType))
-  result = call_602041.call(path_602042, nil, nil, nil, nil)
+  var path_606242 = newJObject()
+  add(path_606242, "ResourceId", newJString(ResourceId))
+  add(path_606242, "ResourceType", newJString(ResourceType))
+  result = call_606241.call(path_606242, nil, nil, nil, nil)
 
-var listTagsForResource* = Call_ListTagsForResource_602015(
+var listTagsForResource* = Call_ListTagsForResource_606215(
     name: "listTagsForResource", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/tags/{ResourceType}/{ResourceId}",
-    validator: validate_ListTagsForResource_602016, base: "/",
-    url: url_ListTagsForResource_602017, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_606216, base: "/",
+    url: url_ListTagsForResource_606217, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateHealthCheck_602077 = ref object of OpenApiRestCall_601389
-proc url_CreateHealthCheck_602079(protocol: Scheme; host: string; base: string;
+  Call_CreateHealthCheck_606277 = ref object of OpenApiRestCall_605589
+proc url_CreateHealthCheck_606279(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -665,7 +665,7 @@ proc url_CreateHealthCheck_602079(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateHealthCheck_602078(path: JsonNode; query: JsonNode;
+proc validate_CreateHealthCheck_606278(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Creates a new health check.</p> <p>For information about adding health checks to resource record sets, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html#Route53-Type-ResourceRecordSet-HealthCheckId">HealthCheckId</a> in <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a>. </p> <p> <b>ELB Load Balancers</b> </p> <p>If you're registering EC2 instances with an Elastic Load Balancing (ELB) load balancer, do not create Amazon Route 53 health checks for the EC2 instances. When you register an EC2 instance with a load balancer, you configure settings for an ELB health check, which performs a similar function to a Route 53 health check.</p> <p> <b>Private Hosted Zones</b> </p> <p>You can associate health checks with failover resource record sets in a private hosted zone. Note the following:</p> <ul> <li> <p>Route 53 health checkers are outside the VPC. To check the health of an endpoint within a VPC by IP address, you must assign a public IP address to the instance in the VPC.</p> </li> <li> <p>You can configure a health checker to check the health of an external resource that the instance relies on, such as a database server.</p> </li> <li> <p>You can create a CloudWatch metric, associate an alarm with the metric, and then create a health check that is based on the state of the alarm. For example, you might create a CloudWatch metric that checks the status of the Amazon EC2 <code>StatusCheckFailed</code> metric, add an alarm to the metric, and then create a health check that is based on the state of the alarm. For information about creating CloudWatch metrics and alarms by using the CloudWatch console, see the <a href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/WhatIsCloudWatch.html">Amazon CloudWatch User Guide</a>.</p> </li> </ul>
@@ -685,41 +685,41 @@ proc validate_CreateHealthCheck_602078(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602080 = header.getOrDefault("X-Amz-Signature")
-  valid_602080 = validateParameter(valid_602080, JString, required = false,
+  var valid_606280 = header.getOrDefault("X-Amz-Signature")
+  valid_606280 = validateParameter(valid_606280, JString, required = false,
                                  default = nil)
-  if valid_602080 != nil:
-    section.add "X-Amz-Signature", valid_602080
-  var valid_602081 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602081 = validateParameter(valid_602081, JString, required = false,
+  if valid_606280 != nil:
+    section.add "X-Amz-Signature", valid_606280
+  var valid_606281 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606281 = validateParameter(valid_606281, JString, required = false,
                                  default = nil)
-  if valid_602081 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602081
-  var valid_602082 = header.getOrDefault("X-Amz-Date")
-  valid_602082 = validateParameter(valid_602082, JString, required = false,
+  if valid_606281 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606281
+  var valid_606282 = header.getOrDefault("X-Amz-Date")
+  valid_606282 = validateParameter(valid_606282, JString, required = false,
                                  default = nil)
-  if valid_602082 != nil:
-    section.add "X-Amz-Date", valid_602082
-  var valid_602083 = header.getOrDefault("X-Amz-Credential")
-  valid_602083 = validateParameter(valid_602083, JString, required = false,
+  if valid_606282 != nil:
+    section.add "X-Amz-Date", valid_606282
+  var valid_606283 = header.getOrDefault("X-Amz-Credential")
+  valid_606283 = validateParameter(valid_606283, JString, required = false,
                                  default = nil)
-  if valid_602083 != nil:
-    section.add "X-Amz-Credential", valid_602083
-  var valid_602084 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602084 = validateParameter(valid_602084, JString, required = false,
+  if valid_606283 != nil:
+    section.add "X-Amz-Credential", valid_606283
+  var valid_606284 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606284 = validateParameter(valid_606284, JString, required = false,
                                  default = nil)
-  if valid_602084 != nil:
-    section.add "X-Amz-Security-Token", valid_602084
-  var valid_602085 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602085 = validateParameter(valid_602085, JString, required = false,
+  if valid_606284 != nil:
+    section.add "X-Amz-Security-Token", valid_606284
+  var valid_606285 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606285 = validateParameter(valid_606285, JString, required = false,
                                  default = nil)
-  if valid_602085 != nil:
-    section.add "X-Amz-Algorithm", valid_602085
-  var valid_602086 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602086 = validateParameter(valid_602086, JString, required = false,
+  if valid_606285 != nil:
+    section.add "X-Amz-Algorithm", valid_606285
+  var valid_606286 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606286 = validateParameter(valid_606286, JString, required = false,
                                  default = nil)
-  if valid_602086 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602086
+  if valid_606286 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606286
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -730,36 +730,36 @@ proc validate_CreateHealthCheck_602078(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602088: Call_CreateHealthCheck_602077; path: JsonNode;
+proc call*(call_606288: Call_CreateHealthCheck_606277; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new health check.</p> <p>For information about adding health checks to resource record sets, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html#Route53-Type-ResourceRecordSet-HealthCheckId">HealthCheckId</a> in <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a>. </p> <p> <b>ELB Load Balancers</b> </p> <p>If you're registering EC2 instances with an Elastic Load Balancing (ELB) load balancer, do not create Amazon Route 53 health checks for the EC2 instances. When you register an EC2 instance with a load balancer, you configure settings for an ELB health check, which performs a similar function to a Route 53 health check.</p> <p> <b>Private Hosted Zones</b> </p> <p>You can associate health checks with failover resource record sets in a private hosted zone. Note the following:</p> <ul> <li> <p>Route 53 health checkers are outside the VPC. To check the health of an endpoint within a VPC by IP address, you must assign a public IP address to the instance in the VPC.</p> </li> <li> <p>You can configure a health checker to check the health of an external resource that the instance relies on, such as a database server.</p> </li> <li> <p>You can create a CloudWatch metric, associate an alarm with the metric, and then create a health check that is based on the state of the alarm. For example, you might create a CloudWatch metric that checks the status of the Amazon EC2 <code>StatusCheckFailed</code> metric, add an alarm to the metric, and then create a health check that is based on the state of the alarm. For information about creating CloudWatch metrics and alarms by using the CloudWatch console, see the <a href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/WhatIsCloudWatch.html">Amazon CloudWatch User Guide</a>.</p> </li> </ul>
   ## 
-  let valid = call_602088.validator(path, query, header, formData, body)
-  let scheme = call_602088.pickScheme
+  let valid = call_606288.validator(path, query, header, formData, body)
+  let scheme = call_606288.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602088.url(scheme.get, call_602088.host, call_602088.base,
-                         call_602088.route, valid.getOrDefault("path"),
+  let url = call_606288.url(scheme.get, call_606288.host, call_606288.base,
+                         call_606288.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602088, url, valid)
+  result = atozHook(call_606288, url, valid)
 
-proc call*(call_602089: Call_CreateHealthCheck_602077; body: JsonNode): Recallable =
+proc call*(call_606289: Call_CreateHealthCheck_606277; body: JsonNode): Recallable =
   ## createHealthCheck
   ## <p>Creates a new health check.</p> <p>For information about adding health checks to resource record sets, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ResourceRecordSet.html#Route53-Type-ResourceRecordSet-HealthCheckId">HealthCheckId</a> in <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a>. </p> <p> <b>ELB Load Balancers</b> </p> <p>If you're registering EC2 instances with an Elastic Load Balancing (ELB) load balancer, do not create Amazon Route 53 health checks for the EC2 instances. When you register an EC2 instance with a load balancer, you configure settings for an ELB health check, which performs a similar function to a Route 53 health check.</p> <p> <b>Private Hosted Zones</b> </p> <p>You can associate health checks with failover resource record sets in a private hosted zone. Note the following:</p> <ul> <li> <p>Route 53 health checkers are outside the VPC. To check the health of an endpoint within a VPC by IP address, you must assign a public IP address to the instance in the VPC.</p> </li> <li> <p>You can configure a health checker to check the health of an external resource that the instance relies on, such as a database server.</p> </li> <li> <p>You can create a CloudWatch metric, associate an alarm with the metric, and then create a health check that is based on the state of the alarm. For example, you might create a CloudWatch metric that checks the status of the Amazon EC2 <code>StatusCheckFailed</code> metric, add an alarm to the metric, and then create a health check that is based on the state of the alarm. For information about creating CloudWatch metrics and alarms by using the CloudWatch console, see the <a href="http://docs.aws.amazon.com/AmazonCloudWatch/latest/DeveloperGuide/WhatIsCloudWatch.html">Amazon CloudWatch User Guide</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_602090 = newJObject()
+  var body_606290 = newJObject()
   if body != nil:
-    body_602090 = body
-  result = call_602089.call(nil, nil, nil, nil, body_602090)
+    body_606290 = body
+  result = call_606289.call(nil, nil, nil, nil, body_606290)
 
-var createHealthCheck* = Call_CreateHealthCheck_602077(name: "createHealthCheck",
+var createHealthCheck* = Call_CreateHealthCheck_606277(name: "createHealthCheck",
     meth: HttpMethod.HttpPost, host: "route53.amazonaws.com",
-    route: "/2013-04-01/healthcheck", validator: validate_CreateHealthCheck_602078,
-    base: "/", url: url_CreateHealthCheck_602079,
+    route: "/2013-04-01/healthcheck", validator: validate_CreateHealthCheck_606278,
+    base: "/", url: url_CreateHealthCheck_606279,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHealthChecks_602060 = ref object of OpenApiRestCall_601389
-proc url_ListHealthChecks_602062(protocol: Scheme; host: string; base: string;
+  Call_ListHealthChecks_606260 = ref object of OpenApiRestCall_605589
+proc url_ListHealthChecks_606262(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -771,7 +771,7 @@ proc url_ListHealthChecks_602062(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListHealthChecks_602061(path: JsonNode; query: JsonNode;
+proc validate_ListHealthChecks_606261(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Retrieve a list of the health checks that are associated with the current AWS account. 
@@ -790,26 +790,26 @@ proc validate_ListHealthChecks_602061(path: JsonNode; query: JsonNode;
   ##   marker: JString
   ##         : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more health checks. To get another group, submit another <code>ListHealthChecks</code> request. </p> <p>For the value of <code>marker</code>, specify the value of <code>NextMarker</code> from the previous response, which is the ID of the first health check that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more health checks to get.</p>
   section = newJObject()
-  var valid_602063 = query.getOrDefault("Marker")
-  valid_602063 = validateParameter(valid_602063, JString, required = false,
+  var valid_606263 = query.getOrDefault("Marker")
+  valid_606263 = validateParameter(valid_606263, JString, required = false,
                                  default = nil)
-  if valid_602063 != nil:
-    section.add "Marker", valid_602063
-  var valid_602064 = query.getOrDefault("MaxItems")
-  valid_602064 = validateParameter(valid_602064, JString, required = false,
+  if valid_606263 != nil:
+    section.add "Marker", valid_606263
+  var valid_606264 = query.getOrDefault("MaxItems")
+  valid_606264 = validateParameter(valid_606264, JString, required = false,
                                  default = nil)
-  if valid_602064 != nil:
-    section.add "MaxItems", valid_602064
-  var valid_602065 = query.getOrDefault("maxitems")
-  valid_602065 = validateParameter(valid_602065, JString, required = false,
+  if valid_606264 != nil:
+    section.add "MaxItems", valid_606264
+  var valid_606265 = query.getOrDefault("maxitems")
+  valid_606265 = validateParameter(valid_606265, JString, required = false,
                                  default = nil)
-  if valid_602065 != nil:
-    section.add "maxitems", valid_602065
-  var valid_602066 = query.getOrDefault("marker")
-  valid_602066 = validateParameter(valid_602066, JString, required = false,
+  if valid_606265 != nil:
+    section.add "maxitems", valid_606265
+  var valid_606266 = query.getOrDefault("marker")
+  valid_606266 = validateParameter(valid_606266, JString, required = false,
                                  default = nil)
-  if valid_602066 != nil:
-    section.add "marker", valid_602066
+  if valid_606266 != nil:
+    section.add "marker", valid_606266
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -820,61 +820,61 @@ proc validate_ListHealthChecks_602061(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602067 = header.getOrDefault("X-Amz-Signature")
-  valid_602067 = validateParameter(valid_602067, JString, required = false,
+  var valid_606267 = header.getOrDefault("X-Amz-Signature")
+  valid_606267 = validateParameter(valid_606267, JString, required = false,
                                  default = nil)
-  if valid_602067 != nil:
-    section.add "X-Amz-Signature", valid_602067
-  var valid_602068 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602068 = validateParameter(valid_602068, JString, required = false,
+  if valid_606267 != nil:
+    section.add "X-Amz-Signature", valid_606267
+  var valid_606268 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606268 = validateParameter(valid_606268, JString, required = false,
                                  default = nil)
-  if valid_602068 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602068
-  var valid_602069 = header.getOrDefault("X-Amz-Date")
-  valid_602069 = validateParameter(valid_602069, JString, required = false,
+  if valid_606268 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606268
+  var valid_606269 = header.getOrDefault("X-Amz-Date")
+  valid_606269 = validateParameter(valid_606269, JString, required = false,
                                  default = nil)
-  if valid_602069 != nil:
-    section.add "X-Amz-Date", valid_602069
-  var valid_602070 = header.getOrDefault("X-Amz-Credential")
-  valid_602070 = validateParameter(valid_602070, JString, required = false,
+  if valid_606269 != nil:
+    section.add "X-Amz-Date", valid_606269
+  var valid_606270 = header.getOrDefault("X-Amz-Credential")
+  valid_606270 = validateParameter(valid_606270, JString, required = false,
                                  default = nil)
-  if valid_602070 != nil:
-    section.add "X-Amz-Credential", valid_602070
-  var valid_602071 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602071 = validateParameter(valid_602071, JString, required = false,
+  if valid_606270 != nil:
+    section.add "X-Amz-Credential", valid_606270
+  var valid_606271 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606271 = validateParameter(valid_606271, JString, required = false,
                                  default = nil)
-  if valid_602071 != nil:
-    section.add "X-Amz-Security-Token", valid_602071
-  var valid_602072 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602072 = validateParameter(valid_602072, JString, required = false,
+  if valid_606271 != nil:
+    section.add "X-Amz-Security-Token", valid_606271
+  var valid_606272 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606272 = validateParameter(valid_606272, JString, required = false,
                                  default = nil)
-  if valid_602072 != nil:
-    section.add "X-Amz-Algorithm", valid_602072
-  var valid_602073 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602073 = validateParameter(valid_602073, JString, required = false,
+  if valid_606272 != nil:
+    section.add "X-Amz-Algorithm", valid_606272
+  var valid_606273 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606273 = validateParameter(valid_606273, JString, required = false,
                                  default = nil)
-  if valid_602073 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602073
+  if valid_606273 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606273
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602074: Call_ListHealthChecks_602060; path: JsonNode;
+proc call*(call_606274: Call_ListHealthChecks_606260; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieve a list of the health checks that are associated with the current AWS account. 
   ## 
-  let valid = call_602074.validator(path, query, header, formData, body)
-  let scheme = call_602074.pickScheme
+  let valid = call_606274.validator(path, query, header, formData, body)
+  let scheme = call_606274.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602074.url(scheme.get, call_602074.host, call_602074.base,
-                         call_602074.route, valid.getOrDefault("path"),
+  let url = call_606274.url(scheme.get, call_606274.host, call_606274.base,
+                         call_606274.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602074, url, valid)
+  result = atozHook(call_606274, url, valid)
 
-proc call*(call_602075: Call_ListHealthChecks_602060; Marker: string = "";
+proc call*(call_606275: Call_ListHealthChecks_606260; Marker: string = "";
           MaxItems: string = ""; maxitems: string = ""; marker: string = ""): Recallable =
   ## listHealthChecks
   ## Retrieve a list of the health checks that are associated with the current AWS account. 
@@ -886,21 +886,21 @@ proc call*(call_602075: Call_ListHealthChecks_602060; Marker: string = "";
   ##           : The maximum number of health checks that you want <code>ListHealthChecks</code> to return in response to the current request. Amazon Route 53 returns a maximum of 100 items. If you set <code>MaxItems</code> to a value greater than 100, Route 53 returns only the first 100 health checks. 
   ##   marker: string
   ##         : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more health checks. To get another group, submit another <code>ListHealthChecks</code> request. </p> <p>For the value of <code>marker</code>, specify the value of <code>NextMarker</code> from the previous response, which is the ID of the first health check that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more health checks to get.</p>
-  var query_602076 = newJObject()
-  add(query_602076, "Marker", newJString(Marker))
-  add(query_602076, "MaxItems", newJString(MaxItems))
-  add(query_602076, "maxitems", newJString(maxitems))
-  add(query_602076, "marker", newJString(marker))
-  result = call_602075.call(nil, query_602076, nil, nil, nil)
+  var query_606276 = newJObject()
+  add(query_606276, "Marker", newJString(Marker))
+  add(query_606276, "MaxItems", newJString(MaxItems))
+  add(query_606276, "maxitems", newJString(maxitems))
+  add(query_606276, "marker", newJString(marker))
+  result = call_606275.call(nil, query_606276, nil, nil, nil)
 
-var listHealthChecks* = Call_ListHealthChecks_602060(name: "listHealthChecks",
+var listHealthChecks* = Call_ListHealthChecks_606260(name: "listHealthChecks",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
-    route: "/2013-04-01/healthcheck", validator: validate_ListHealthChecks_602061,
-    base: "/", url: url_ListHealthChecks_602062,
+    route: "/2013-04-01/healthcheck", validator: validate_ListHealthChecks_606261,
+    base: "/", url: url_ListHealthChecks_606262,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateHostedZone_602109 = ref object of OpenApiRestCall_601389
-proc url_CreateHostedZone_602111(protocol: Scheme; host: string; base: string;
+  Call_CreateHostedZone_606309 = ref object of OpenApiRestCall_605589
+proc url_CreateHostedZone_606311(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -912,7 +912,7 @@ proc url_CreateHostedZone_602111(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateHostedZone_602110(path: JsonNode; query: JsonNode;
+proc validate_CreateHostedZone_606310(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates a new public or private hosted zone. You create records in a public hosted zone to define how you want to route traffic on the internet for a domain, such as example.com, and its subdomains (apex.example.com, acme.example.com). You create records in a private hosted zone to define how you want to route traffic for a domain and its subdomains within one or more Amazon Virtual Private Clouds (Amazon VPCs). </p> <important> <p>You can't convert a public hosted zone to a private hosted zone or vice versa. Instead, you must create a new hosted zone with the same name and create new resource record sets.</p> </important> <p>For more information about charges for hosted zones, see <a href="http://aws.amazon.com/route53/pricing/">Amazon Route 53 Pricing</a>.</p> <p>Note the following:</p> <ul> <li> <p>You can't create a hosted zone for a top-level domain (TLD) such as .com.</p> </li> <li> <p>For public hosted zones, Amazon Route 53 automatically creates a default SOA record and four NS records for the zone. For more information about SOA and NS records, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html">NS and SOA Records that Route 53 Creates for a Hosted Zone</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>If you want to use the same name servers for multiple public hosted zones, you can optionally associate a reusable delegation set with the hosted zone. See the <code>DelegationSetId</code> element.</p> </li> <li> <p>If your domain is registered with a registrar other than Route 53, you must update the name servers with your registrar to make Route 53 the DNS service for the domain. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/MigratingDNS.html">Migrating DNS Service for an Existing Domain to Amazon Route 53</a> in the <i>Amazon Route 53 Developer Guide</i>. </p> </li> </ul> <p>When you submit a <code>CreateHostedZone</code> request, the initial status of the hosted zone is <code>PENDING</code>. For public hosted zones, this means that the NS and SOA records are not yet available on all Route 53 DNS servers. When the NS and SOA records are available, the status of the zone changes to <code>INSYNC</code>.</p>
@@ -932,41 +932,41 @@ proc validate_CreateHostedZone_602110(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602112 = header.getOrDefault("X-Amz-Signature")
-  valid_602112 = validateParameter(valid_602112, JString, required = false,
+  var valid_606312 = header.getOrDefault("X-Amz-Signature")
+  valid_606312 = validateParameter(valid_606312, JString, required = false,
                                  default = nil)
-  if valid_602112 != nil:
-    section.add "X-Amz-Signature", valid_602112
-  var valid_602113 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602113 = validateParameter(valid_602113, JString, required = false,
+  if valid_606312 != nil:
+    section.add "X-Amz-Signature", valid_606312
+  var valid_606313 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606313 = validateParameter(valid_606313, JString, required = false,
                                  default = nil)
-  if valid_602113 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602113
-  var valid_602114 = header.getOrDefault("X-Amz-Date")
-  valid_602114 = validateParameter(valid_602114, JString, required = false,
+  if valid_606313 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606313
+  var valid_606314 = header.getOrDefault("X-Amz-Date")
+  valid_606314 = validateParameter(valid_606314, JString, required = false,
                                  default = nil)
-  if valid_602114 != nil:
-    section.add "X-Amz-Date", valid_602114
-  var valid_602115 = header.getOrDefault("X-Amz-Credential")
-  valid_602115 = validateParameter(valid_602115, JString, required = false,
+  if valid_606314 != nil:
+    section.add "X-Amz-Date", valid_606314
+  var valid_606315 = header.getOrDefault("X-Amz-Credential")
+  valid_606315 = validateParameter(valid_606315, JString, required = false,
                                  default = nil)
-  if valid_602115 != nil:
-    section.add "X-Amz-Credential", valid_602115
-  var valid_602116 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602116 = validateParameter(valid_602116, JString, required = false,
+  if valid_606315 != nil:
+    section.add "X-Amz-Credential", valid_606315
+  var valid_606316 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606316 = validateParameter(valid_606316, JString, required = false,
                                  default = nil)
-  if valid_602116 != nil:
-    section.add "X-Amz-Security-Token", valid_602116
-  var valid_602117 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602117 = validateParameter(valid_602117, JString, required = false,
+  if valid_606316 != nil:
+    section.add "X-Amz-Security-Token", valid_606316
+  var valid_606317 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606317 = validateParameter(valid_606317, JString, required = false,
                                  default = nil)
-  if valid_602117 != nil:
-    section.add "X-Amz-Algorithm", valid_602117
-  var valid_602118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602118 = validateParameter(valid_602118, JString, required = false,
+  if valid_606317 != nil:
+    section.add "X-Amz-Algorithm", valid_606317
+  var valid_606318 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606318 = validateParameter(valid_606318, JString, required = false,
                                  default = nil)
-  if valid_602118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602118
+  if valid_606318 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606318
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -977,36 +977,36 @@ proc validate_CreateHostedZone_602110(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602120: Call_CreateHostedZone_602109; path: JsonNode;
+proc call*(call_606320: Call_CreateHostedZone_606309; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new public or private hosted zone. You create records in a public hosted zone to define how you want to route traffic on the internet for a domain, such as example.com, and its subdomains (apex.example.com, acme.example.com). You create records in a private hosted zone to define how you want to route traffic for a domain and its subdomains within one or more Amazon Virtual Private Clouds (Amazon VPCs). </p> <important> <p>You can't convert a public hosted zone to a private hosted zone or vice versa. Instead, you must create a new hosted zone with the same name and create new resource record sets.</p> </important> <p>For more information about charges for hosted zones, see <a href="http://aws.amazon.com/route53/pricing/">Amazon Route 53 Pricing</a>.</p> <p>Note the following:</p> <ul> <li> <p>You can't create a hosted zone for a top-level domain (TLD) such as .com.</p> </li> <li> <p>For public hosted zones, Amazon Route 53 automatically creates a default SOA record and four NS records for the zone. For more information about SOA and NS records, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html">NS and SOA Records that Route 53 Creates for a Hosted Zone</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>If you want to use the same name servers for multiple public hosted zones, you can optionally associate a reusable delegation set with the hosted zone. See the <code>DelegationSetId</code> element.</p> </li> <li> <p>If your domain is registered with a registrar other than Route 53, you must update the name servers with your registrar to make Route 53 the DNS service for the domain. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/MigratingDNS.html">Migrating DNS Service for an Existing Domain to Amazon Route 53</a> in the <i>Amazon Route 53 Developer Guide</i>. </p> </li> </ul> <p>When you submit a <code>CreateHostedZone</code> request, the initial status of the hosted zone is <code>PENDING</code>. For public hosted zones, this means that the NS and SOA records are not yet available on all Route 53 DNS servers. When the NS and SOA records are available, the status of the zone changes to <code>INSYNC</code>.</p>
   ## 
-  let valid = call_602120.validator(path, query, header, formData, body)
-  let scheme = call_602120.pickScheme
+  let valid = call_606320.validator(path, query, header, formData, body)
+  let scheme = call_606320.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602120.url(scheme.get, call_602120.host, call_602120.base,
-                         call_602120.route, valid.getOrDefault("path"),
+  let url = call_606320.url(scheme.get, call_606320.host, call_606320.base,
+                         call_606320.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602120, url, valid)
+  result = atozHook(call_606320, url, valid)
 
-proc call*(call_602121: Call_CreateHostedZone_602109; body: JsonNode): Recallable =
+proc call*(call_606321: Call_CreateHostedZone_606309; body: JsonNode): Recallable =
   ## createHostedZone
   ## <p>Creates a new public or private hosted zone. You create records in a public hosted zone to define how you want to route traffic on the internet for a domain, such as example.com, and its subdomains (apex.example.com, acme.example.com). You create records in a private hosted zone to define how you want to route traffic for a domain and its subdomains within one or more Amazon Virtual Private Clouds (Amazon VPCs). </p> <important> <p>You can't convert a public hosted zone to a private hosted zone or vice versa. Instead, you must create a new hosted zone with the same name and create new resource record sets.</p> </important> <p>For more information about charges for hosted zones, see <a href="http://aws.amazon.com/route53/pricing/">Amazon Route 53 Pricing</a>.</p> <p>Note the following:</p> <ul> <li> <p>You can't create a hosted zone for a top-level domain (TLD) such as .com.</p> </li> <li> <p>For public hosted zones, Amazon Route 53 automatically creates a default SOA record and four NS records for the zone. For more information about SOA and NS records, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/SOA-NSrecords.html">NS and SOA Records that Route 53 Creates for a Hosted Zone</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>If you want to use the same name servers for multiple public hosted zones, you can optionally associate a reusable delegation set with the hosted zone. See the <code>DelegationSetId</code> element.</p> </li> <li> <p>If your domain is registered with a registrar other than Route 53, you must update the name servers with your registrar to make Route 53 the DNS service for the domain. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/MigratingDNS.html">Migrating DNS Service for an Existing Domain to Amazon Route 53</a> in the <i>Amazon Route 53 Developer Guide</i>. </p> </li> </ul> <p>When you submit a <code>CreateHostedZone</code> request, the initial status of the hosted zone is <code>PENDING</code>. For public hosted zones, this means that the NS and SOA records are not yet available on all Route 53 DNS servers. When the NS and SOA records are available, the status of the zone changes to <code>INSYNC</code>.</p>
   ##   body: JObject (required)
-  var body_602122 = newJObject()
+  var body_606322 = newJObject()
   if body != nil:
-    body_602122 = body
-  result = call_602121.call(nil, nil, nil, nil, body_602122)
+    body_606322 = body
+  result = call_606321.call(nil, nil, nil, nil, body_606322)
 
-var createHostedZone* = Call_CreateHostedZone_602109(name: "createHostedZone",
+var createHostedZone* = Call_CreateHostedZone_606309(name: "createHostedZone",
     meth: HttpMethod.HttpPost, host: "route53.amazonaws.com",
-    route: "/2013-04-01/hostedzone", validator: validate_CreateHostedZone_602110,
-    base: "/", url: url_CreateHostedZone_602111,
+    route: "/2013-04-01/hostedzone", validator: validate_CreateHostedZone_606310,
+    base: "/", url: url_CreateHostedZone_606311,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHostedZones_602091 = ref object of OpenApiRestCall_601389
-proc url_ListHostedZones_602093(protocol: Scheme; host: string; base: string;
+  Call_ListHostedZones_606291 = ref object of OpenApiRestCall_605589
+proc url_ListHostedZones_606293(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1018,7 +1018,7 @@ proc url_ListHostedZones_602093(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListHostedZones_602092(path: JsonNode; query: JsonNode;
+proc validate_ListHostedZones_606292(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Retrieves a list of the public and private hosted zones that are associated with the current AWS account. The response includes a <code>HostedZones</code> child element for each hosted zone.</p> <p>Amazon Route 53 returns a maximum of 100 items in each response. If you have a lot of hosted zones, you can use the <code>maxitems</code> parameter to list them in groups of up to 100.</p>
@@ -1039,31 +1039,31 @@ proc validate_ListHostedZones_602092(path: JsonNode; query: JsonNode;
   ##   marker: JString
   ##         : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more hosted zones. To get more hosted zones, submit another <code>ListHostedZones</code> request. </p> <p>For the value of <code>marker</code>, specify the value of <code>NextMarker</code> from the previous response, which is the ID of the first hosted zone that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more hosted zones to get.</p>
   section = newJObject()
-  var valid_602094 = query.getOrDefault("Marker")
-  valid_602094 = validateParameter(valid_602094, JString, required = false,
+  var valid_606294 = query.getOrDefault("Marker")
+  valid_606294 = validateParameter(valid_606294, JString, required = false,
                                  default = nil)
-  if valid_602094 != nil:
-    section.add "Marker", valid_602094
-  var valid_602095 = query.getOrDefault("MaxItems")
-  valid_602095 = validateParameter(valid_602095, JString, required = false,
+  if valid_606294 != nil:
+    section.add "Marker", valid_606294
+  var valid_606295 = query.getOrDefault("MaxItems")
+  valid_606295 = validateParameter(valid_606295, JString, required = false,
                                  default = nil)
-  if valid_602095 != nil:
-    section.add "MaxItems", valid_602095
-  var valid_602096 = query.getOrDefault("maxitems")
-  valid_602096 = validateParameter(valid_602096, JString, required = false,
+  if valid_606295 != nil:
+    section.add "MaxItems", valid_606295
+  var valid_606296 = query.getOrDefault("maxitems")
+  valid_606296 = validateParameter(valid_606296, JString, required = false,
                                  default = nil)
-  if valid_602096 != nil:
-    section.add "maxitems", valid_602096
-  var valid_602097 = query.getOrDefault("delegationsetid")
-  valid_602097 = validateParameter(valid_602097, JString, required = false,
+  if valid_606296 != nil:
+    section.add "maxitems", valid_606296
+  var valid_606297 = query.getOrDefault("delegationsetid")
+  valid_606297 = validateParameter(valid_606297, JString, required = false,
                                  default = nil)
-  if valid_602097 != nil:
-    section.add "delegationsetid", valid_602097
-  var valid_602098 = query.getOrDefault("marker")
-  valid_602098 = validateParameter(valid_602098, JString, required = false,
+  if valid_606297 != nil:
+    section.add "delegationsetid", valid_606297
+  var valid_606298 = query.getOrDefault("marker")
+  valid_606298 = validateParameter(valid_606298, JString, required = false,
                                  default = nil)
-  if valid_602098 != nil:
-    section.add "marker", valid_602098
+  if valid_606298 != nil:
+    section.add "marker", valid_606298
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1074,61 +1074,61 @@ proc validate_ListHostedZones_602092(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602099 = header.getOrDefault("X-Amz-Signature")
-  valid_602099 = validateParameter(valid_602099, JString, required = false,
+  var valid_606299 = header.getOrDefault("X-Amz-Signature")
+  valid_606299 = validateParameter(valid_606299, JString, required = false,
                                  default = nil)
-  if valid_602099 != nil:
-    section.add "X-Amz-Signature", valid_602099
-  var valid_602100 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602100 = validateParameter(valid_602100, JString, required = false,
+  if valid_606299 != nil:
+    section.add "X-Amz-Signature", valid_606299
+  var valid_606300 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606300 = validateParameter(valid_606300, JString, required = false,
                                  default = nil)
-  if valid_602100 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602100
-  var valid_602101 = header.getOrDefault("X-Amz-Date")
-  valid_602101 = validateParameter(valid_602101, JString, required = false,
+  if valid_606300 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606300
+  var valid_606301 = header.getOrDefault("X-Amz-Date")
+  valid_606301 = validateParameter(valid_606301, JString, required = false,
                                  default = nil)
-  if valid_602101 != nil:
-    section.add "X-Amz-Date", valid_602101
-  var valid_602102 = header.getOrDefault("X-Amz-Credential")
-  valid_602102 = validateParameter(valid_602102, JString, required = false,
+  if valid_606301 != nil:
+    section.add "X-Amz-Date", valid_606301
+  var valid_606302 = header.getOrDefault("X-Amz-Credential")
+  valid_606302 = validateParameter(valid_606302, JString, required = false,
                                  default = nil)
-  if valid_602102 != nil:
-    section.add "X-Amz-Credential", valid_602102
-  var valid_602103 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602103 = validateParameter(valid_602103, JString, required = false,
+  if valid_606302 != nil:
+    section.add "X-Amz-Credential", valid_606302
+  var valid_606303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606303 = validateParameter(valid_606303, JString, required = false,
                                  default = nil)
-  if valid_602103 != nil:
-    section.add "X-Amz-Security-Token", valid_602103
-  var valid_602104 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602104 = validateParameter(valid_602104, JString, required = false,
+  if valid_606303 != nil:
+    section.add "X-Amz-Security-Token", valid_606303
+  var valid_606304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606304 = validateParameter(valid_606304, JString, required = false,
                                  default = nil)
-  if valid_602104 != nil:
-    section.add "X-Amz-Algorithm", valid_602104
-  var valid_602105 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602105 = validateParameter(valid_602105, JString, required = false,
+  if valid_606304 != nil:
+    section.add "X-Amz-Algorithm", valid_606304
+  var valid_606305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606305 = validateParameter(valid_606305, JString, required = false,
                                  default = nil)
-  if valid_602105 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602105
+  if valid_606305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606305
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602106: Call_ListHostedZones_602091; path: JsonNode; query: JsonNode;
+proc call*(call_606306: Call_ListHostedZones_606291; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves a list of the public and private hosted zones that are associated with the current AWS account. The response includes a <code>HostedZones</code> child element for each hosted zone.</p> <p>Amazon Route 53 returns a maximum of 100 items in each response. If you have a lot of hosted zones, you can use the <code>maxitems</code> parameter to list them in groups of up to 100.</p>
   ## 
-  let valid = call_602106.validator(path, query, header, formData, body)
-  let scheme = call_602106.pickScheme
+  let valid = call_606306.validator(path, query, header, formData, body)
+  let scheme = call_606306.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602106.url(scheme.get, call_602106.host, call_602106.base,
-                         call_602106.route, valid.getOrDefault("path"),
+  let url = call_606306.url(scheme.get, call_606306.host, call_606306.base,
+                         call_606306.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602106, url, valid)
+  result = atozHook(call_606306, url, valid)
 
-proc call*(call_602107: Call_ListHostedZones_602091; Marker: string = "";
+proc call*(call_606307: Call_ListHostedZones_606291; Marker: string = "";
           MaxItems: string = ""; maxitems: string = ""; delegationsetid: string = "";
           marker: string = ""): Recallable =
   ## listHostedZones
@@ -1143,21 +1143,21 @@ proc call*(call_602107: Call_ListHostedZones_602091; Marker: string = "";
   ##                  : If you're using reusable delegation sets and you want to list all of the hosted zones that are associated with a reusable delegation set, specify the ID of that reusable delegation set. 
   ##   marker: string
   ##         : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more hosted zones. To get more hosted zones, submit another <code>ListHostedZones</code> request. </p> <p>For the value of <code>marker</code>, specify the value of <code>NextMarker</code> from the previous response, which is the ID of the first hosted zone that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more hosted zones to get.</p>
-  var query_602108 = newJObject()
-  add(query_602108, "Marker", newJString(Marker))
-  add(query_602108, "MaxItems", newJString(MaxItems))
-  add(query_602108, "maxitems", newJString(maxitems))
-  add(query_602108, "delegationsetid", newJString(delegationsetid))
-  add(query_602108, "marker", newJString(marker))
-  result = call_602107.call(nil, query_602108, nil, nil, nil)
+  var query_606308 = newJObject()
+  add(query_606308, "Marker", newJString(Marker))
+  add(query_606308, "MaxItems", newJString(MaxItems))
+  add(query_606308, "maxitems", newJString(maxitems))
+  add(query_606308, "delegationsetid", newJString(delegationsetid))
+  add(query_606308, "marker", newJString(marker))
+  result = call_606307.call(nil, query_606308, nil, nil, nil)
 
-var listHostedZones* = Call_ListHostedZones_602091(name: "listHostedZones",
+var listHostedZones* = Call_ListHostedZones_606291(name: "listHostedZones",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
-    route: "/2013-04-01/hostedzone", validator: validate_ListHostedZones_602092,
-    base: "/", url: url_ListHostedZones_602093, schemes: {Scheme.Https, Scheme.Http})
+    route: "/2013-04-01/hostedzone", validator: validate_ListHostedZones_606292,
+    base: "/", url: url_ListHostedZones_606293, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateQueryLoggingConfig_602139 = ref object of OpenApiRestCall_601389
-proc url_CreateQueryLoggingConfig_602141(protocol: Scheme; host: string;
+  Call_CreateQueryLoggingConfig_606339 = ref object of OpenApiRestCall_605589
+proc url_CreateQueryLoggingConfig_606341(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1170,7 +1170,7 @@ proc url_CreateQueryLoggingConfig_602141(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CreateQueryLoggingConfig_602140(path: JsonNode; query: JsonNode;
+proc validate_CreateQueryLoggingConfig_606340(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a configuration for DNS query logging. After you create a query logging configuration, Amazon Route 53 begins to publish log data to an Amazon CloudWatch Logs log group.</p> <p>DNS query logs contain information about the queries that Route 53 receives for a specified public hosted zone, such as the following:</p> <ul> <li> <p>Route 53 edge location that responded to the DNS query</p> </li> <li> <p>Domain or subdomain that was requested</p> </li> <li> <p>DNS record type, such as A or AAAA</p> </li> <li> <p>DNS response code, such as <code>NoError</code> or <code>ServFail</code> </p> </li> </ul> <dl> <dt>Log Group and Resource Policy</dt> <dd> <p>Before you create a query logging configuration, perform the following operations.</p> <note> <p>If you create a query logging configuration using the Route 53 console, Route 53 performs these operations automatically.</p> </note> <ol> <li> <p>Create a CloudWatch Logs log group, and make note of the ARN, which you specify when you create a query logging configuration. Note the following:</p> <ul> <li> <p>You must create the log group in the us-east-1 region.</p> </li> <li> <p>You must use the same AWS account to create the log group and the hosted zone that you want to configure query logging for.</p> </li> <li> <p>When you create log groups for query logging, we recommend that you use a consistent prefix, for example:</p> <p> <code>/aws/route53/<i>hosted zone name</i> </code> </p> <p>In the next step, you'll create a resource policy, which controls access to one or more log groups and the associated AWS resources, such as Route 53 hosted zones. There's a limit on the number of resource policies that you can create, so we recommend that you use a consistent prefix so you can use the same resource policy for all the log groups that you create for query logging.</p> </li> </ul> </li> <li> <p>Create a CloudWatch Logs resource policy, and give it the permissions that Route 53 needs to create log streams and to send query logs to log streams. For the value of <code>Resource</code>, specify the ARN for the log group that you created in the previous step. To use the same resource policy for all the CloudWatch Logs log groups that you created for query logging configurations, replace the hosted zone name with <code>*</code>, for example:</p> <p> <code>arn:aws:logs:us-east-1:123412341234:log-group:/aws/route53/*</code> </p> <note> <p>You can't use the CloudWatch console to create or edit a resource policy. You must use the CloudWatch API, one of the AWS SDKs, or the AWS CLI.</p> </note> </li> </ol> </dd> <dt>Log Streams and Edge Locations</dt> <dd> <p>When Route 53 finishes creating the configuration for DNS query logging, it does the following:</p> <ul> <li> <p>Creates a log stream for an edge location the first time that the edge location responds to DNS queries for the specified hosted zone. That log stream is used to log all queries that Route 53 responds to for that edge location.</p> </li> <li> <p>Begins to send query logs to the applicable log stream.</p> </li> </ul> <p>The name of each log stream is in the following format:</p> <p> <code> <i>hosted zone ID</i>/<i>edge location code</i> </code> </p> <p>The edge location code is a three-letter code and an arbitrarily assigned number, for example, DFW3. The three-letter code typically corresponds with the International Air Transport Association airport code for an airport near the edge location. (These abbreviations might change in the future.) For a list of edge locations, see "The Route 53 Global Network" on the <a href="http://aws.amazon.com/route53/details/">Route 53 Product Details</a> page.</p> </dd> <dt>Queries That Are Logged</dt> <dd> <p>Query logs contain only the queries that DNS resolvers forward to Route 53. If a DNS resolver has already cached the response to a query (such as the IP address for a load balancer for example.com), the resolver will continue to return the cached response. It doesn't forward another query to Route 53 until the TTL for the corresponding resource record set expires. Depending on how many DNS queries are submitted for a resource record set, and depending on the TTL for that resource record set, query logs might contain information about only one query out of every several thousand queries that are submitted to DNS. For more information about how DNS works, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/welcome-dns-service.html">Routing Internet Traffic to Your Website or Web Application</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </dd> <dt>Log File Format</dt> <dd> <p>For a list of the values in each query log and the format of each value, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </dd> <dt>Pricing</dt> <dd> <p>For information about charges for query logs, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </dd> <dt>How to Stop Logging</dt> <dd> <p>If you want Route 53 to stop sending query logs to CloudWatch Logs, delete the query logging configuration. For more information, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_DeleteQueryLoggingConfig.html">DeleteQueryLoggingConfig</a>.</p> </dd> </dl>
   ## 
@@ -1189,41 +1189,41 @@ proc validate_CreateQueryLoggingConfig_602140(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602142 = header.getOrDefault("X-Amz-Signature")
-  valid_602142 = validateParameter(valid_602142, JString, required = false,
+  var valid_606342 = header.getOrDefault("X-Amz-Signature")
+  valid_606342 = validateParameter(valid_606342, JString, required = false,
                                  default = nil)
-  if valid_602142 != nil:
-    section.add "X-Amz-Signature", valid_602142
-  var valid_602143 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602143 = validateParameter(valid_602143, JString, required = false,
+  if valid_606342 != nil:
+    section.add "X-Amz-Signature", valid_606342
+  var valid_606343 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606343 = validateParameter(valid_606343, JString, required = false,
                                  default = nil)
-  if valid_602143 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602143
-  var valid_602144 = header.getOrDefault("X-Amz-Date")
-  valid_602144 = validateParameter(valid_602144, JString, required = false,
+  if valid_606343 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606343
+  var valid_606344 = header.getOrDefault("X-Amz-Date")
+  valid_606344 = validateParameter(valid_606344, JString, required = false,
                                  default = nil)
-  if valid_602144 != nil:
-    section.add "X-Amz-Date", valid_602144
-  var valid_602145 = header.getOrDefault("X-Amz-Credential")
-  valid_602145 = validateParameter(valid_602145, JString, required = false,
+  if valid_606344 != nil:
+    section.add "X-Amz-Date", valid_606344
+  var valid_606345 = header.getOrDefault("X-Amz-Credential")
+  valid_606345 = validateParameter(valid_606345, JString, required = false,
                                  default = nil)
-  if valid_602145 != nil:
-    section.add "X-Amz-Credential", valid_602145
-  var valid_602146 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602146 = validateParameter(valid_602146, JString, required = false,
+  if valid_606345 != nil:
+    section.add "X-Amz-Credential", valid_606345
+  var valid_606346 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606346 = validateParameter(valid_606346, JString, required = false,
                                  default = nil)
-  if valid_602146 != nil:
-    section.add "X-Amz-Security-Token", valid_602146
-  var valid_602147 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602147 = validateParameter(valid_602147, JString, required = false,
+  if valid_606346 != nil:
+    section.add "X-Amz-Security-Token", valid_606346
+  var valid_606347 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606347 = validateParameter(valid_606347, JString, required = false,
                                  default = nil)
-  if valid_602147 != nil:
-    section.add "X-Amz-Algorithm", valid_602147
-  var valid_602148 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602148 = validateParameter(valid_602148, JString, required = false,
+  if valid_606347 != nil:
+    section.add "X-Amz-Algorithm", valid_606347
+  var valid_606348 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606348 = validateParameter(valid_606348, JString, required = false,
                                  default = nil)
-  if valid_602148 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602148
+  if valid_606348 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606348
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1234,36 +1234,36 @@ proc validate_CreateQueryLoggingConfig_602140(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602150: Call_CreateQueryLoggingConfig_602139; path: JsonNode;
+proc call*(call_606350: Call_CreateQueryLoggingConfig_606339; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a configuration for DNS query logging. After you create a query logging configuration, Amazon Route 53 begins to publish log data to an Amazon CloudWatch Logs log group.</p> <p>DNS query logs contain information about the queries that Route 53 receives for a specified public hosted zone, such as the following:</p> <ul> <li> <p>Route 53 edge location that responded to the DNS query</p> </li> <li> <p>Domain or subdomain that was requested</p> </li> <li> <p>DNS record type, such as A or AAAA</p> </li> <li> <p>DNS response code, such as <code>NoError</code> or <code>ServFail</code> </p> </li> </ul> <dl> <dt>Log Group and Resource Policy</dt> <dd> <p>Before you create a query logging configuration, perform the following operations.</p> <note> <p>If you create a query logging configuration using the Route 53 console, Route 53 performs these operations automatically.</p> </note> <ol> <li> <p>Create a CloudWatch Logs log group, and make note of the ARN, which you specify when you create a query logging configuration. Note the following:</p> <ul> <li> <p>You must create the log group in the us-east-1 region.</p> </li> <li> <p>You must use the same AWS account to create the log group and the hosted zone that you want to configure query logging for.</p> </li> <li> <p>When you create log groups for query logging, we recommend that you use a consistent prefix, for example:</p> <p> <code>/aws/route53/<i>hosted zone name</i> </code> </p> <p>In the next step, you'll create a resource policy, which controls access to one or more log groups and the associated AWS resources, such as Route 53 hosted zones. There's a limit on the number of resource policies that you can create, so we recommend that you use a consistent prefix so you can use the same resource policy for all the log groups that you create for query logging.</p> </li> </ul> </li> <li> <p>Create a CloudWatch Logs resource policy, and give it the permissions that Route 53 needs to create log streams and to send query logs to log streams. For the value of <code>Resource</code>, specify the ARN for the log group that you created in the previous step. To use the same resource policy for all the CloudWatch Logs log groups that you created for query logging configurations, replace the hosted zone name with <code>*</code>, for example:</p> <p> <code>arn:aws:logs:us-east-1:123412341234:log-group:/aws/route53/*</code> </p> <note> <p>You can't use the CloudWatch console to create or edit a resource policy. You must use the CloudWatch API, one of the AWS SDKs, or the AWS CLI.</p> </note> </li> </ol> </dd> <dt>Log Streams and Edge Locations</dt> <dd> <p>When Route 53 finishes creating the configuration for DNS query logging, it does the following:</p> <ul> <li> <p>Creates a log stream for an edge location the first time that the edge location responds to DNS queries for the specified hosted zone. That log stream is used to log all queries that Route 53 responds to for that edge location.</p> </li> <li> <p>Begins to send query logs to the applicable log stream.</p> </li> </ul> <p>The name of each log stream is in the following format:</p> <p> <code> <i>hosted zone ID</i>/<i>edge location code</i> </code> </p> <p>The edge location code is a three-letter code and an arbitrarily assigned number, for example, DFW3. The three-letter code typically corresponds with the International Air Transport Association airport code for an airport near the edge location. (These abbreviations might change in the future.) For a list of edge locations, see "The Route 53 Global Network" on the <a href="http://aws.amazon.com/route53/details/">Route 53 Product Details</a> page.</p> </dd> <dt>Queries That Are Logged</dt> <dd> <p>Query logs contain only the queries that DNS resolvers forward to Route 53. If a DNS resolver has already cached the response to a query (such as the IP address for a load balancer for example.com), the resolver will continue to return the cached response. It doesn't forward another query to Route 53 until the TTL for the corresponding resource record set expires. Depending on how many DNS queries are submitted for a resource record set, and depending on the TTL for that resource record set, query logs might contain information about only one query out of every several thousand queries that are submitted to DNS. For more information about how DNS works, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/welcome-dns-service.html">Routing Internet Traffic to Your Website or Web Application</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </dd> <dt>Log File Format</dt> <dd> <p>For a list of the values in each query log and the format of each value, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </dd> <dt>Pricing</dt> <dd> <p>For information about charges for query logs, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </dd> <dt>How to Stop Logging</dt> <dd> <p>If you want Route 53 to stop sending query logs to CloudWatch Logs, delete the query logging configuration. For more information, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_DeleteQueryLoggingConfig.html">DeleteQueryLoggingConfig</a>.</p> </dd> </dl>
   ## 
-  let valid = call_602150.validator(path, query, header, formData, body)
-  let scheme = call_602150.pickScheme
+  let valid = call_606350.validator(path, query, header, formData, body)
+  let scheme = call_606350.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602150.url(scheme.get, call_602150.host, call_602150.base,
-                         call_602150.route, valid.getOrDefault("path"),
+  let url = call_606350.url(scheme.get, call_606350.host, call_606350.base,
+                         call_606350.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602150, url, valid)
+  result = atozHook(call_606350, url, valid)
 
-proc call*(call_602151: Call_CreateQueryLoggingConfig_602139; body: JsonNode): Recallable =
+proc call*(call_606351: Call_CreateQueryLoggingConfig_606339; body: JsonNode): Recallable =
   ## createQueryLoggingConfig
   ## <p>Creates a configuration for DNS query logging. After you create a query logging configuration, Amazon Route 53 begins to publish log data to an Amazon CloudWatch Logs log group.</p> <p>DNS query logs contain information about the queries that Route 53 receives for a specified public hosted zone, such as the following:</p> <ul> <li> <p>Route 53 edge location that responded to the DNS query</p> </li> <li> <p>Domain or subdomain that was requested</p> </li> <li> <p>DNS record type, such as A or AAAA</p> </li> <li> <p>DNS response code, such as <code>NoError</code> or <code>ServFail</code> </p> </li> </ul> <dl> <dt>Log Group and Resource Policy</dt> <dd> <p>Before you create a query logging configuration, perform the following operations.</p> <note> <p>If you create a query logging configuration using the Route 53 console, Route 53 performs these operations automatically.</p> </note> <ol> <li> <p>Create a CloudWatch Logs log group, and make note of the ARN, which you specify when you create a query logging configuration. Note the following:</p> <ul> <li> <p>You must create the log group in the us-east-1 region.</p> </li> <li> <p>You must use the same AWS account to create the log group and the hosted zone that you want to configure query logging for.</p> </li> <li> <p>When you create log groups for query logging, we recommend that you use a consistent prefix, for example:</p> <p> <code>/aws/route53/<i>hosted zone name</i> </code> </p> <p>In the next step, you'll create a resource policy, which controls access to one or more log groups and the associated AWS resources, such as Route 53 hosted zones. There's a limit on the number of resource policies that you can create, so we recommend that you use a consistent prefix so you can use the same resource policy for all the log groups that you create for query logging.</p> </li> </ul> </li> <li> <p>Create a CloudWatch Logs resource policy, and give it the permissions that Route 53 needs to create log streams and to send query logs to log streams. For the value of <code>Resource</code>, specify the ARN for the log group that you created in the previous step. To use the same resource policy for all the CloudWatch Logs log groups that you created for query logging configurations, replace the hosted zone name with <code>*</code>, for example:</p> <p> <code>arn:aws:logs:us-east-1:123412341234:log-group:/aws/route53/*</code> </p> <note> <p>You can't use the CloudWatch console to create or edit a resource policy. You must use the CloudWatch API, one of the AWS SDKs, or the AWS CLI.</p> </note> </li> </ol> </dd> <dt>Log Streams and Edge Locations</dt> <dd> <p>When Route 53 finishes creating the configuration for DNS query logging, it does the following:</p> <ul> <li> <p>Creates a log stream for an edge location the first time that the edge location responds to DNS queries for the specified hosted zone. That log stream is used to log all queries that Route 53 responds to for that edge location.</p> </li> <li> <p>Begins to send query logs to the applicable log stream.</p> </li> </ul> <p>The name of each log stream is in the following format:</p> <p> <code> <i>hosted zone ID</i>/<i>edge location code</i> </code> </p> <p>The edge location code is a three-letter code and an arbitrarily assigned number, for example, DFW3. The three-letter code typically corresponds with the International Air Transport Association airport code for an airport near the edge location. (These abbreviations might change in the future.) For a list of edge locations, see "The Route 53 Global Network" on the <a href="http://aws.amazon.com/route53/details/">Route 53 Product Details</a> page.</p> </dd> <dt>Queries That Are Logged</dt> <dd> <p>Query logs contain only the queries that DNS resolvers forward to Route 53. If a DNS resolver has already cached the response to a query (such as the IP address for a load balancer for example.com), the resolver will continue to return the cached response. It doesn't forward another query to Route 53 until the TTL for the corresponding resource record set expires. Depending on how many DNS queries are submitted for a resource record set, and depending on the TTL for that resource record set, query logs might contain information about only one query out of every several thousand queries that are submitted to DNS. For more information about how DNS works, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/welcome-dns-service.html">Routing Internet Traffic to Your Website or Web Application</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </dd> <dt>Log File Format</dt> <dd> <p>For a list of the values in each query log and the format of each value, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </dd> <dt>Pricing</dt> <dd> <p>For information about charges for query logs, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </dd> <dt>How to Stop Logging</dt> <dd> <p>If you want Route 53 to stop sending query logs to CloudWatch Logs, delete the query logging configuration. For more information, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_DeleteQueryLoggingConfig.html">DeleteQueryLoggingConfig</a>.</p> </dd> </dl>
   ##   body: JObject (required)
-  var body_602152 = newJObject()
+  var body_606352 = newJObject()
   if body != nil:
-    body_602152 = body
-  result = call_602151.call(nil, nil, nil, nil, body_602152)
+    body_606352 = body
+  result = call_606351.call(nil, nil, nil, nil, body_606352)
 
-var createQueryLoggingConfig* = Call_CreateQueryLoggingConfig_602139(
+var createQueryLoggingConfig* = Call_CreateQueryLoggingConfig_606339(
     name: "createQueryLoggingConfig", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com", route: "/2013-04-01/queryloggingconfig",
-    validator: validate_CreateQueryLoggingConfig_602140, base: "/",
-    url: url_CreateQueryLoggingConfig_602141, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateQueryLoggingConfig_606340, base: "/",
+    url: url_CreateQueryLoggingConfig_606341, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListQueryLoggingConfigs_602123 = ref object of OpenApiRestCall_601389
-proc url_ListQueryLoggingConfigs_602125(protocol: Scheme; host: string; base: string;
+  Call_ListQueryLoggingConfigs_606323 = ref object of OpenApiRestCall_605589
+proc url_ListQueryLoggingConfigs_606325(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1276,7 +1276,7 @@ proc url_ListQueryLoggingConfigs_602125(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_ListQueryLoggingConfigs_602124(path: JsonNode; query: JsonNode;
+proc validate_ListQueryLoggingConfigs_606324(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the configurations for DNS query logging that are associated with the current AWS account or the configuration that is associated with a specified hosted zone.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a>. Additional information, including the format of DNS query logs, appears in <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
   ## 
@@ -1293,21 +1293,21 @@ proc validate_ListQueryLoggingConfigs_602124(path: JsonNode; query: JsonNode;
   ##   hostedzoneid: JString
   ##               : <p>(Optional) If you want to list the query logging configuration that is associated with a hosted zone, specify the ID in <code>HostedZoneId</code>. </p> <p>If you don't specify a hosted zone ID, <code>ListQueryLoggingConfigs</code> returns all of the configurations that are associated with the current AWS account.</p>
   section = newJObject()
-  var valid_602126 = query.getOrDefault("nexttoken")
-  valid_602126 = validateParameter(valid_602126, JString, required = false,
+  var valid_606326 = query.getOrDefault("nexttoken")
+  valid_606326 = validateParameter(valid_606326, JString, required = false,
                                  default = nil)
-  if valid_602126 != nil:
-    section.add "nexttoken", valid_602126
-  var valid_602127 = query.getOrDefault("maxresults")
-  valid_602127 = validateParameter(valid_602127, JString, required = false,
+  if valid_606326 != nil:
+    section.add "nexttoken", valid_606326
+  var valid_606327 = query.getOrDefault("maxresults")
+  valid_606327 = validateParameter(valid_606327, JString, required = false,
                                  default = nil)
-  if valid_602127 != nil:
-    section.add "maxresults", valid_602127
-  var valid_602128 = query.getOrDefault("hostedzoneid")
-  valid_602128 = validateParameter(valid_602128, JString, required = false,
+  if valid_606327 != nil:
+    section.add "maxresults", valid_606327
+  var valid_606328 = query.getOrDefault("hostedzoneid")
+  valid_606328 = validateParameter(valid_606328, JString, required = false,
                                  default = nil)
-  if valid_602128 != nil:
-    section.add "hostedzoneid", valid_602128
+  if valid_606328 != nil:
+    section.add "hostedzoneid", valid_606328
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1318,61 +1318,61 @@ proc validate_ListQueryLoggingConfigs_602124(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602129 = header.getOrDefault("X-Amz-Signature")
-  valid_602129 = validateParameter(valid_602129, JString, required = false,
+  var valid_606329 = header.getOrDefault("X-Amz-Signature")
+  valid_606329 = validateParameter(valid_606329, JString, required = false,
                                  default = nil)
-  if valid_602129 != nil:
-    section.add "X-Amz-Signature", valid_602129
-  var valid_602130 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602130 = validateParameter(valid_602130, JString, required = false,
+  if valid_606329 != nil:
+    section.add "X-Amz-Signature", valid_606329
+  var valid_606330 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606330 = validateParameter(valid_606330, JString, required = false,
                                  default = nil)
-  if valid_602130 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602130
-  var valid_602131 = header.getOrDefault("X-Amz-Date")
-  valid_602131 = validateParameter(valid_602131, JString, required = false,
+  if valid_606330 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606330
+  var valid_606331 = header.getOrDefault("X-Amz-Date")
+  valid_606331 = validateParameter(valid_606331, JString, required = false,
                                  default = nil)
-  if valid_602131 != nil:
-    section.add "X-Amz-Date", valid_602131
-  var valid_602132 = header.getOrDefault("X-Amz-Credential")
-  valid_602132 = validateParameter(valid_602132, JString, required = false,
+  if valid_606331 != nil:
+    section.add "X-Amz-Date", valid_606331
+  var valid_606332 = header.getOrDefault("X-Amz-Credential")
+  valid_606332 = validateParameter(valid_606332, JString, required = false,
                                  default = nil)
-  if valid_602132 != nil:
-    section.add "X-Amz-Credential", valid_602132
-  var valid_602133 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602133 = validateParameter(valid_602133, JString, required = false,
+  if valid_606332 != nil:
+    section.add "X-Amz-Credential", valid_606332
+  var valid_606333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606333 = validateParameter(valid_606333, JString, required = false,
                                  default = nil)
-  if valid_602133 != nil:
-    section.add "X-Amz-Security-Token", valid_602133
-  var valid_602134 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602134 = validateParameter(valid_602134, JString, required = false,
+  if valid_606333 != nil:
+    section.add "X-Amz-Security-Token", valid_606333
+  var valid_606334 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606334 = validateParameter(valid_606334, JString, required = false,
                                  default = nil)
-  if valid_602134 != nil:
-    section.add "X-Amz-Algorithm", valid_602134
-  var valid_602135 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602135 = validateParameter(valid_602135, JString, required = false,
+  if valid_606334 != nil:
+    section.add "X-Amz-Algorithm", valid_606334
+  var valid_606335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606335 = validateParameter(valid_606335, JString, required = false,
                                  default = nil)
-  if valid_602135 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602135
+  if valid_606335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606335
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602136: Call_ListQueryLoggingConfigs_602123; path: JsonNode;
+proc call*(call_606336: Call_ListQueryLoggingConfigs_606323; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the configurations for DNS query logging that are associated with the current AWS account or the configuration that is associated with a specified hosted zone.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a>. Additional information, including the format of DNS query logs, appears in <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
   ## 
-  let valid = call_602136.validator(path, query, header, formData, body)
-  let scheme = call_602136.pickScheme
+  let valid = call_606336.validator(path, query, header, formData, body)
+  let scheme = call_606336.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602136.url(scheme.get, call_602136.host, call_602136.base,
-                         call_602136.route, valid.getOrDefault("path"),
+  let url = call_606336.url(scheme.get, call_606336.host, call_606336.base,
+                         call_606336.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602136, url, valid)
+  result = atozHook(call_606336, url, valid)
 
-proc call*(call_602137: Call_ListQueryLoggingConfigs_602123;
+proc call*(call_606337: Call_ListQueryLoggingConfigs_606323;
           nexttoken: string = ""; maxresults: string = ""; hostedzoneid: string = ""): Recallable =
   ## listQueryLoggingConfigs
   ## <p>Lists the configurations for DNS query logging that are associated with the current AWS account or the configuration that is associated with a specified hosted zone.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a>. Additional information, including the format of DNS query logs, appears in <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
@@ -1383,20 +1383,20 @@ proc call*(call_602137: Call_ListQueryLoggingConfigs_602123;
   ## href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ListQueryLoggingConfigs.html#API_ListQueryLoggingConfigs_RequestSyntax">NextToken</a> in the response to get the next page of results.</p> <p>If you don't specify a value for <code>MaxResults</code>, Route 53 returns up to 100 configurations.</p>
   ##   hostedzoneid: string
   ##               : <p>(Optional) If you want to list the query logging configuration that is associated with a hosted zone, specify the ID in <code>HostedZoneId</code>. </p> <p>If you don't specify a hosted zone ID, <code>ListQueryLoggingConfigs</code> returns all of the configurations that are associated with the current AWS account.</p>
-  var query_602138 = newJObject()
-  add(query_602138, "nexttoken", newJString(nexttoken))
-  add(query_602138, "maxresults", newJString(maxresults))
-  add(query_602138, "hostedzoneid", newJString(hostedzoneid))
-  result = call_602137.call(nil, query_602138, nil, nil, nil)
+  var query_606338 = newJObject()
+  add(query_606338, "nexttoken", newJString(nexttoken))
+  add(query_606338, "maxresults", newJString(maxresults))
+  add(query_606338, "hostedzoneid", newJString(hostedzoneid))
+  result = call_606337.call(nil, query_606338, nil, nil, nil)
 
-var listQueryLoggingConfigs* = Call_ListQueryLoggingConfigs_602123(
+var listQueryLoggingConfigs* = Call_ListQueryLoggingConfigs_606323(
     name: "listQueryLoggingConfigs", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/queryloggingconfig",
-    validator: validate_ListQueryLoggingConfigs_602124, base: "/",
-    url: url_ListQueryLoggingConfigs_602125, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListQueryLoggingConfigs_606324, base: "/",
+    url: url_ListQueryLoggingConfigs_606325, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateReusableDelegationSet_602168 = ref object of OpenApiRestCall_601389
-proc url_CreateReusableDelegationSet_602170(protocol: Scheme; host: string;
+  Call_CreateReusableDelegationSet_606368 = ref object of OpenApiRestCall_605589
+proc url_CreateReusableDelegationSet_606370(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1408,7 +1408,7 @@ proc url_CreateReusableDelegationSet_602170(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CreateReusableDelegationSet_602169(path: JsonNode; query: JsonNode;
+proc validate_CreateReusableDelegationSet_606369(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a delegation set (a group of four name servers) that can be reused by multiple hosted zones. If a hosted zoned ID is specified, <code>CreateReusableDelegationSet</code> marks the delegation set associated with that zone as reusable.</p> <note> <p>You can't associate a reusable delegation set with a private hosted zone.</p> </note> <p>For information about using a reusable delegation set to configure white label name servers, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/white-label-name-servers.html">Configuring White Label Name Servers</a>.</p> <p>The process for migrating existing hosted zones to use a reusable delegation set is comparable to the process for configuring white label name servers. You need to perform the following steps:</p> <ol> <li> <p>Create a reusable delegation set.</p> </li> <li> <p>Recreate hosted zones, and reduce the TTL to 60 seconds or less.</p> </li> <li> <p>Recreate resource record sets in the new hosted zones.</p> </li> <li> <p>Change the registrar's name servers to use the name servers for the new hosted zones.</p> </li> <li> <p>Monitor traffic for the website or application.</p> </li> <li> <p>Change TTLs back to their original values.</p> </li> </ol> <p>If you want to migrate existing hosted zones to use a reusable delegation set, the existing hosted zones can't use any of the name servers that are assigned to the reusable delegation set. If one or more hosted zones do use one or more name servers that are assigned to the reusable delegation set, you can do one of the following:</p> <ul> <li> <p>For small numbers of hosted zones—up to a few hundred—it's relatively easy to create reusable delegation sets until you get one that has four name servers that don't overlap with any of the name servers in your hosted zones.</p> </li> <li> <p>For larger numbers of hosted zones, the easiest solution is to use more than one reusable delegation set.</p> </li> <li> <p>For larger numbers of hosted zones, you can also migrate hosted zones that have overlapping name servers to hosted zones that don't have overlapping name servers, then migrate the hosted zones again to use the reusable delegation set.</p> </li> </ul>
   ## 
@@ -1427,41 +1427,41 @@ proc validate_CreateReusableDelegationSet_602169(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602171 = header.getOrDefault("X-Amz-Signature")
-  valid_602171 = validateParameter(valid_602171, JString, required = false,
+  var valid_606371 = header.getOrDefault("X-Amz-Signature")
+  valid_606371 = validateParameter(valid_606371, JString, required = false,
                                  default = nil)
-  if valid_602171 != nil:
-    section.add "X-Amz-Signature", valid_602171
-  var valid_602172 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602172 = validateParameter(valid_602172, JString, required = false,
+  if valid_606371 != nil:
+    section.add "X-Amz-Signature", valid_606371
+  var valid_606372 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606372 = validateParameter(valid_606372, JString, required = false,
                                  default = nil)
-  if valid_602172 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602172
-  var valid_602173 = header.getOrDefault("X-Amz-Date")
-  valid_602173 = validateParameter(valid_602173, JString, required = false,
+  if valid_606372 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606372
+  var valid_606373 = header.getOrDefault("X-Amz-Date")
+  valid_606373 = validateParameter(valid_606373, JString, required = false,
                                  default = nil)
-  if valid_602173 != nil:
-    section.add "X-Amz-Date", valid_602173
-  var valid_602174 = header.getOrDefault("X-Amz-Credential")
-  valid_602174 = validateParameter(valid_602174, JString, required = false,
+  if valid_606373 != nil:
+    section.add "X-Amz-Date", valid_606373
+  var valid_606374 = header.getOrDefault("X-Amz-Credential")
+  valid_606374 = validateParameter(valid_606374, JString, required = false,
                                  default = nil)
-  if valid_602174 != nil:
-    section.add "X-Amz-Credential", valid_602174
-  var valid_602175 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602175 = validateParameter(valid_602175, JString, required = false,
+  if valid_606374 != nil:
+    section.add "X-Amz-Credential", valid_606374
+  var valid_606375 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606375 = validateParameter(valid_606375, JString, required = false,
                                  default = nil)
-  if valid_602175 != nil:
-    section.add "X-Amz-Security-Token", valid_602175
-  var valid_602176 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602176 = validateParameter(valid_602176, JString, required = false,
+  if valid_606375 != nil:
+    section.add "X-Amz-Security-Token", valid_606375
+  var valid_606376 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606376 = validateParameter(valid_606376, JString, required = false,
                                  default = nil)
-  if valid_602176 != nil:
-    section.add "X-Amz-Algorithm", valid_602176
-  var valid_602177 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602177 = validateParameter(valid_602177, JString, required = false,
+  if valid_606376 != nil:
+    section.add "X-Amz-Algorithm", valid_606376
+  var valid_606377 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606377 = validateParameter(valid_606377, JString, required = false,
                                  default = nil)
-  if valid_602177 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602177
+  if valid_606377 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606377
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1472,37 +1472,37 @@ proc validate_CreateReusableDelegationSet_602169(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_602179: Call_CreateReusableDelegationSet_602168; path: JsonNode;
+proc call*(call_606379: Call_CreateReusableDelegationSet_606368; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a delegation set (a group of four name servers) that can be reused by multiple hosted zones. If a hosted zoned ID is specified, <code>CreateReusableDelegationSet</code> marks the delegation set associated with that zone as reusable.</p> <note> <p>You can't associate a reusable delegation set with a private hosted zone.</p> </note> <p>For information about using a reusable delegation set to configure white label name servers, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/white-label-name-servers.html">Configuring White Label Name Servers</a>.</p> <p>The process for migrating existing hosted zones to use a reusable delegation set is comparable to the process for configuring white label name servers. You need to perform the following steps:</p> <ol> <li> <p>Create a reusable delegation set.</p> </li> <li> <p>Recreate hosted zones, and reduce the TTL to 60 seconds or less.</p> </li> <li> <p>Recreate resource record sets in the new hosted zones.</p> </li> <li> <p>Change the registrar's name servers to use the name servers for the new hosted zones.</p> </li> <li> <p>Monitor traffic for the website or application.</p> </li> <li> <p>Change TTLs back to their original values.</p> </li> </ol> <p>If you want to migrate existing hosted zones to use a reusable delegation set, the existing hosted zones can't use any of the name servers that are assigned to the reusable delegation set. If one or more hosted zones do use one or more name servers that are assigned to the reusable delegation set, you can do one of the following:</p> <ul> <li> <p>For small numbers of hosted zones—up to a few hundred—it's relatively easy to create reusable delegation sets until you get one that has four name servers that don't overlap with any of the name servers in your hosted zones.</p> </li> <li> <p>For larger numbers of hosted zones, the easiest solution is to use more than one reusable delegation set.</p> </li> <li> <p>For larger numbers of hosted zones, you can also migrate hosted zones that have overlapping name servers to hosted zones that don't have overlapping name servers, then migrate the hosted zones again to use the reusable delegation set.</p> </li> </ul>
   ## 
-  let valid = call_602179.validator(path, query, header, formData, body)
-  let scheme = call_602179.pickScheme
+  let valid = call_606379.validator(path, query, header, formData, body)
+  let scheme = call_606379.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602179.url(scheme.get, call_602179.host, call_602179.base,
-                         call_602179.route, valid.getOrDefault("path"),
+  let url = call_606379.url(scheme.get, call_606379.host, call_606379.base,
+                         call_606379.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602179, url, valid)
+  result = atozHook(call_606379, url, valid)
 
-proc call*(call_602180: Call_CreateReusableDelegationSet_602168; body: JsonNode): Recallable =
+proc call*(call_606380: Call_CreateReusableDelegationSet_606368; body: JsonNode): Recallable =
   ## createReusableDelegationSet
   ## <p>Creates a delegation set (a group of four name servers) that can be reused by multiple hosted zones. If a hosted zoned ID is specified, <code>CreateReusableDelegationSet</code> marks the delegation set associated with that zone as reusable.</p> <note> <p>You can't associate a reusable delegation set with a private hosted zone.</p> </note> <p>For information about using a reusable delegation set to configure white label name servers, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/white-label-name-servers.html">Configuring White Label Name Servers</a>.</p> <p>The process for migrating existing hosted zones to use a reusable delegation set is comparable to the process for configuring white label name servers. You need to perform the following steps:</p> <ol> <li> <p>Create a reusable delegation set.</p> </li> <li> <p>Recreate hosted zones, and reduce the TTL to 60 seconds or less.</p> </li> <li> <p>Recreate resource record sets in the new hosted zones.</p> </li> <li> <p>Change the registrar's name servers to use the name servers for the new hosted zones.</p> </li> <li> <p>Monitor traffic for the website or application.</p> </li> <li> <p>Change TTLs back to their original values.</p> </li> </ol> <p>If you want to migrate existing hosted zones to use a reusable delegation set, the existing hosted zones can't use any of the name servers that are assigned to the reusable delegation set. If one or more hosted zones do use one or more name servers that are assigned to the reusable delegation set, you can do one of the following:</p> <ul> <li> <p>For small numbers of hosted zones—up to a few hundred—it's relatively easy to create reusable delegation sets until you get one that has four name servers that don't overlap with any of the name servers in your hosted zones.</p> </li> <li> <p>For larger numbers of hosted zones, the easiest solution is to use more than one reusable delegation set.</p> </li> <li> <p>For larger numbers of hosted zones, you can also migrate hosted zones that have overlapping name servers to hosted zones that don't have overlapping name servers, then migrate the hosted zones again to use the reusable delegation set.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_602181 = newJObject()
+  var body_606381 = newJObject()
   if body != nil:
-    body_602181 = body
-  result = call_602180.call(nil, nil, nil, nil, body_602181)
+    body_606381 = body
+  result = call_606380.call(nil, nil, nil, nil, body_606381)
 
-var createReusableDelegationSet* = Call_CreateReusableDelegationSet_602168(
+var createReusableDelegationSet* = Call_CreateReusableDelegationSet_606368(
     name: "createReusableDelegationSet", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com", route: "/2013-04-01/delegationset",
-    validator: validate_CreateReusableDelegationSet_602169, base: "/",
-    url: url_CreateReusableDelegationSet_602170,
+    validator: validate_CreateReusableDelegationSet_606369, base: "/",
+    url: url_CreateReusableDelegationSet_606370,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListReusableDelegationSets_602153 = ref object of OpenApiRestCall_601389
-proc url_ListReusableDelegationSets_602155(protocol: Scheme; host: string;
+  Call_ListReusableDelegationSets_606353 = ref object of OpenApiRestCall_605589
+proc url_ListReusableDelegationSets_606355(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1514,7 +1514,7 @@ proc url_ListReusableDelegationSets_602155(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListReusableDelegationSets_602154(path: JsonNode; query: JsonNode;
+proc validate_ListReusableDelegationSets_606354(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves a list of the reusable delegation sets that are associated with the current AWS account.
   ## 
@@ -1528,16 +1528,16 @@ proc validate_ListReusableDelegationSets_602154(path: JsonNode; query: JsonNode;
   ##   marker: JString
   ##         : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more reusable delegation sets. To get another group, submit another <code>ListReusableDelegationSets</code> request. </p> <p>For the value of <code>marker</code>, specify the value of <code>NextMarker</code> from the previous response, which is the ID of the first reusable delegation set that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more reusable delegation sets to get.</p>
   section = newJObject()
-  var valid_602156 = query.getOrDefault("maxitems")
-  valid_602156 = validateParameter(valid_602156, JString, required = false,
+  var valid_606356 = query.getOrDefault("maxitems")
+  valid_606356 = validateParameter(valid_606356, JString, required = false,
                                  default = nil)
-  if valid_602156 != nil:
-    section.add "maxitems", valid_602156
-  var valid_602157 = query.getOrDefault("marker")
-  valid_602157 = validateParameter(valid_602157, JString, required = false,
+  if valid_606356 != nil:
+    section.add "maxitems", valid_606356
+  var valid_606357 = query.getOrDefault("marker")
+  valid_606357 = validateParameter(valid_606357, JString, required = false,
                                  default = nil)
-  if valid_602157 != nil:
-    section.add "marker", valid_602157
+  if valid_606357 != nil:
+    section.add "marker", valid_606357
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1548,61 +1548,61 @@ proc validate_ListReusableDelegationSets_602154(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602158 = header.getOrDefault("X-Amz-Signature")
-  valid_602158 = validateParameter(valid_602158, JString, required = false,
+  var valid_606358 = header.getOrDefault("X-Amz-Signature")
+  valid_606358 = validateParameter(valid_606358, JString, required = false,
                                  default = nil)
-  if valid_602158 != nil:
-    section.add "X-Amz-Signature", valid_602158
-  var valid_602159 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602159 = validateParameter(valid_602159, JString, required = false,
+  if valid_606358 != nil:
+    section.add "X-Amz-Signature", valid_606358
+  var valid_606359 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606359 = validateParameter(valid_606359, JString, required = false,
                                  default = nil)
-  if valid_602159 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602159
-  var valid_602160 = header.getOrDefault("X-Amz-Date")
-  valid_602160 = validateParameter(valid_602160, JString, required = false,
+  if valid_606359 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606359
+  var valid_606360 = header.getOrDefault("X-Amz-Date")
+  valid_606360 = validateParameter(valid_606360, JString, required = false,
                                  default = nil)
-  if valid_602160 != nil:
-    section.add "X-Amz-Date", valid_602160
-  var valid_602161 = header.getOrDefault("X-Amz-Credential")
-  valid_602161 = validateParameter(valid_602161, JString, required = false,
+  if valid_606360 != nil:
+    section.add "X-Amz-Date", valid_606360
+  var valid_606361 = header.getOrDefault("X-Amz-Credential")
+  valid_606361 = validateParameter(valid_606361, JString, required = false,
                                  default = nil)
-  if valid_602161 != nil:
-    section.add "X-Amz-Credential", valid_602161
-  var valid_602162 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602162 = validateParameter(valid_602162, JString, required = false,
+  if valid_606361 != nil:
+    section.add "X-Amz-Credential", valid_606361
+  var valid_606362 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606362 = validateParameter(valid_606362, JString, required = false,
                                  default = nil)
-  if valid_602162 != nil:
-    section.add "X-Amz-Security-Token", valid_602162
-  var valid_602163 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602163 = validateParameter(valid_602163, JString, required = false,
+  if valid_606362 != nil:
+    section.add "X-Amz-Security-Token", valid_606362
+  var valid_606363 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606363 = validateParameter(valid_606363, JString, required = false,
                                  default = nil)
-  if valid_602163 != nil:
-    section.add "X-Amz-Algorithm", valid_602163
-  var valid_602164 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602164 = validateParameter(valid_602164, JString, required = false,
+  if valid_606363 != nil:
+    section.add "X-Amz-Algorithm", valid_606363
+  var valid_606364 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606364 = validateParameter(valid_606364, JString, required = false,
                                  default = nil)
-  if valid_602164 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602164
+  if valid_606364 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606364
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602165: Call_ListReusableDelegationSets_602153; path: JsonNode;
+proc call*(call_606365: Call_ListReusableDelegationSets_606353; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a list of the reusable delegation sets that are associated with the current AWS account.
   ## 
-  let valid = call_602165.validator(path, query, header, formData, body)
-  let scheme = call_602165.pickScheme
+  let valid = call_606365.validator(path, query, header, formData, body)
+  let scheme = call_606365.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602165.url(scheme.get, call_602165.host, call_602165.base,
-                         call_602165.route, valid.getOrDefault("path"),
+  let url = call_606365.url(scheme.get, call_606365.host, call_606365.base,
+                         call_606365.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602165, url, valid)
+  result = atozHook(call_606365, url, valid)
 
-proc call*(call_602166: Call_ListReusableDelegationSets_602153;
+proc call*(call_606366: Call_ListReusableDelegationSets_606353;
           maxitems: string = ""; marker: string = ""): Recallable =
   ## listReusableDelegationSets
   ## Retrieves a list of the reusable delegation sets that are associated with the current AWS account.
@@ -1610,20 +1610,20 @@ proc call*(call_602166: Call_ListReusableDelegationSets_602153;
   ##           : The number of reusable delegation sets that you want Amazon Route 53 to return in the response to this request. If you specify a value greater than 100, Route 53 returns only the first 100 reusable delegation sets.
   ##   marker: string
   ##         : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more reusable delegation sets. To get another group, submit another <code>ListReusableDelegationSets</code> request. </p> <p>For the value of <code>marker</code>, specify the value of <code>NextMarker</code> from the previous response, which is the ID of the first reusable delegation set that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more reusable delegation sets to get.</p>
-  var query_602167 = newJObject()
-  add(query_602167, "maxitems", newJString(maxitems))
-  add(query_602167, "marker", newJString(marker))
-  result = call_602166.call(nil, query_602167, nil, nil, nil)
+  var query_606367 = newJObject()
+  add(query_606367, "maxitems", newJString(maxitems))
+  add(query_606367, "marker", newJString(marker))
+  result = call_606366.call(nil, query_606367, nil, nil, nil)
 
-var listReusableDelegationSets* = Call_ListReusableDelegationSets_602153(
+var listReusableDelegationSets* = Call_ListReusableDelegationSets_606353(
     name: "listReusableDelegationSets", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/delegationset",
-    validator: validate_ListReusableDelegationSets_602154, base: "/",
-    url: url_ListReusableDelegationSets_602155,
+    validator: validate_ListReusableDelegationSets_606354, base: "/",
+    url: url_ListReusableDelegationSets_606355,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTrafficPolicy_602182 = ref object of OpenApiRestCall_601389
-proc url_CreateTrafficPolicy_602184(protocol: Scheme; host: string; base: string;
+  Call_CreateTrafficPolicy_606382 = ref object of OpenApiRestCall_605589
+proc url_CreateTrafficPolicy_606384(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1635,7 +1635,7 @@ proc url_CreateTrafficPolicy_602184(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_CreateTrafficPolicy_602183(path: JsonNode; query: JsonNode;
+proc validate_CreateTrafficPolicy_606383(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Creates a traffic policy, which you use to create multiple DNS resource record sets for one domain name (such as example.com) or one subdomain name (such as www.example.com).
@@ -1655,41 +1655,41 @@ proc validate_CreateTrafficPolicy_602183(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602185 = header.getOrDefault("X-Amz-Signature")
-  valid_602185 = validateParameter(valid_602185, JString, required = false,
+  var valid_606385 = header.getOrDefault("X-Amz-Signature")
+  valid_606385 = validateParameter(valid_606385, JString, required = false,
                                  default = nil)
-  if valid_602185 != nil:
-    section.add "X-Amz-Signature", valid_602185
-  var valid_602186 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602186 = validateParameter(valid_602186, JString, required = false,
+  if valid_606385 != nil:
+    section.add "X-Amz-Signature", valid_606385
+  var valid_606386 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606386 = validateParameter(valid_606386, JString, required = false,
                                  default = nil)
-  if valid_602186 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602186
-  var valid_602187 = header.getOrDefault("X-Amz-Date")
-  valid_602187 = validateParameter(valid_602187, JString, required = false,
+  if valid_606386 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606386
+  var valid_606387 = header.getOrDefault("X-Amz-Date")
+  valid_606387 = validateParameter(valid_606387, JString, required = false,
                                  default = nil)
-  if valid_602187 != nil:
-    section.add "X-Amz-Date", valid_602187
-  var valid_602188 = header.getOrDefault("X-Amz-Credential")
-  valid_602188 = validateParameter(valid_602188, JString, required = false,
+  if valid_606387 != nil:
+    section.add "X-Amz-Date", valid_606387
+  var valid_606388 = header.getOrDefault("X-Amz-Credential")
+  valid_606388 = validateParameter(valid_606388, JString, required = false,
                                  default = nil)
-  if valid_602188 != nil:
-    section.add "X-Amz-Credential", valid_602188
-  var valid_602189 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602189 = validateParameter(valid_602189, JString, required = false,
+  if valid_606388 != nil:
+    section.add "X-Amz-Credential", valid_606388
+  var valid_606389 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606389 = validateParameter(valid_606389, JString, required = false,
                                  default = nil)
-  if valid_602189 != nil:
-    section.add "X-Amz-Security-Token", valid_602189
-  var valid_602190 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602190 = validateParameter(valid_602190, JString, required = false,
+  if valid_606389 != nil:
+    section.add "X-Amz-Security-Token", valid_606389
+  var valid_606390 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606390 = validateParameter(valid_606390, JString, required = false,
                                  default = nil)
-  if valid_602190 != nil:
-    section.add "X-Amz-Algorithm", valid_602190
-  var valid_602191 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602191 = validateParameter(valid_602191, JString, required = false,
+  if valid_606390 != nil:
+    section.add "X-Amz-Algorithm", valid_606390
+  var valid_606391 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606391 = validateParameter(valid_606391, JString, required = false,
                                  default = nil)
-  if valid_602191 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602191
+  if valid_606391 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606391
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1700,36 +1700,36 @@ proc validate_CreateTrafficPolicy_602183(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602193: Call_CreateTrafficPolicy_602182; path: JsonNode;
+proc call*(call_606393: Call_CreateTrafficPolicy_606382; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a traffic policy, which you use to create multiple DNS resource record sets for one domain name (such as example.com) or one subdomain name (such as www.example.com).
   ## 
-  let valid = call_602193.validator(path, query, header, formData, body)
-  let scheme = call_602193.pickScheme
+  let valid = call_606393.validator(path, query, header, formData, body)
+  let scheme = call_606393.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602193.url(scheme.get, call_602193.host, call_602193.base,
-                         call_602193.route, valid.getOrDefault("path"),
+  let url = call_606393.url(scheme.get, call_606393.host, call_606393.base,
+                         call_606393.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602193, url, valid)
+  result = atozHook(call_606393, url, valid)
 
-proc call*(call_602194: Call_CreateTrafficPolicy_602182; body: JsonNode): Recallable =
+proc call*(call_606394: Call_CreateTrafficPolicy_606382; body: JsonNode): Recallable =
   ## createTrafficPolicy
   ## Creates a traffic policy, which you use to create multiple DNS resource record sets for one domain name (such as example.com) or one subdomain name (such as www.example.com).
   ##   body: JObject (required)
-  var body_602195 = newJObject()
+  var body_606395 = newJObject()
   if body != nil:
-    body_602195 = body
-  result = call_602194.call(nil, nil, nil, nil, body_602195)
+    body_606395 = body
+  result = call_606394.call(nil, nil, nil, nil, body_606395)
 
-var createTrafficPolicy* = Call_CreateTrafficPolicy_602182(
+var createTrafficPolicy* = Call_CreateTrafficPolicy_606382(
     name: "createTrafficPolicy", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com", route: "/2013-04-01/trafficpolicy",
-    validator: validate_CreateTrafficPolicy_602183, base: "/",
-    url: url_CreateTrafficPolicy_602184, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateTrafficPolicy_606383, base: "/",
+    url: url_CreateTrafficPolicy_606384, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTrafficPolicyInstance_602196 = ref object of OpenApiRestCall_601389
-proc url_CreateTrafficPolicyInstance_602198(protocol: Scheme; host: string;
+  Call_CreateTrafficPolicyInstance_606396 = ref object of OpenApiRestCall_605589
+proc url_CreateTrafficPolicyInstance_606398(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1741,7 +1741,7 @@ proc url_CreateTrafficPolicyInstance_602198(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CreateTrafficPolicyInstance_602197(path: JsonNode; query: JsonNode;
+proc validate_CreateTrafficPolicyInstance_606397(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates resource record sets in a specified hosted zone based on the settings in a specified traffic policy version. In addition, <code>CreateTrafficPolicyInstance</code> associates the resource record sets with a specified domain name (such as example.com) or subdomain name (such as www.example.com). Amazon Route 53 responds to DNS queries for the domain or subdomain name by using the resource record sets that <code>CreateTrafficPolicyInstance</code> created.
   ## 
@@ -1760,41 +1760,41 @@ proc validate_CreateTrafficPolicyInstance_602197(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602199 = header.getOrDefault("X-Amz-Signature")
-  valid_602199 = validateParameter(valid_602199, JString, required = false,
+  var valid_606399 = header.getOrDefault("X-Amz-Signature")
+  valid_606399 = validateParameter(valid_606399, JString, required = false,
                                  default = nil)
-  if valid_602199 != nil:
-    section.add "X-Amz-Signature", valid_602199
-  var valid_602200 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602200 = validateParameter(valid_602200, JString, required = false,
+  if valid_606399 != nil:
+    section.add "X-Amz-Signature", valid_606399
+  var valid_606400 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606400 = validateParameter(valid_606400, JString, required = false,
                                  default = nil)
-  if valid_602200 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602200
-  var valid_602201 = header.getOrDefault("X-Amz-Date")
-  valid_602201 = validateParameter(valid_602201, JString, required = false,
+  if valid_606400 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606400
+  var valid_606401 = header.getOrDefault("X-Amz-Date")
+  valid_606401 = validateParameter(valid_606401, JString, required = false,
                                  default = nil)
-  if valid_602201 != nil:
-    section.add "X-Amz-Date", valid_602201
-  var valid_602202 = header.getOrDefault("X-Amz-Credential")
-  valid_602202 = validateParameter(valid_602202, JString, required = false,
+  if valid_606401 != nil:
+    section.add "X-Amz-Date", valid_606401
+  var valid_606402 = header.getOrDefault("X-Amz-Credential")
+  valid_606402 = validateParameter(valid_606402, JString, required = false,
                                  default = nil)
-  if valid_602202 != nil:
-    section.add "X-Amz-Credential", valid_602202
-  var valid_602203 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602203 = validateParameter(valid_602203, JString, required = false,
+  if valid_606402 != nil:
+    section.add "X-Amz-Credential", valid_606402
+  var valid_606403 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606403 = validateParameter(valid_606403, JString, required = false,
                                  default = nil)
-  if valid_602203 != nil:
-    section.add "X-Amz-Security-Token", valid_602203
-  var valid_602204 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602204 = validateParameter(valid_602204, JString, required = false,
+  if valid_606403 != nil:
+    section.add "X-Amz-Security-Token", valid_606403
+  var valid_606404 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606404 = validateParameter(valid_606404, JString, required = false,
                                  default = nil)
-  if valid_602204 != nil:
-    section.add "X-Amz-Algorithm", valid_602204
-  var valid_602205 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602205 = validateParameter(valid_602205, JString, required = false,
+  if valid_606404 != nil:
+    section.add "X-Amz-Algorithm", valid_606404
+  var valid_606405 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606405 = validateParameter(valid_606405, JString, required = false,
                                  default = nil)
-  if valid_602205 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602205
+  if valid_606405 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606405
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1805,37 +1805,37 @@ proc validate_CreateTrafficPolicyInstance_602197(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_602207: Call_CreateTrafficPolicyInstance_602196; path: JsonNode;
+proc call*(call_606407: Call_CreateTrafficPolicyInstance_606396; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates resource record sets in a specified hosted zone based on the settings in a specified traffic policy version. In addition, <code>CreateTrafficPolicyInstance</code> associates the resource record sets with a specified domain name (such as example.com) or subdomain name (such as www.example.com). Amazon Route 53 responds to DNS queries for the domain or subdomain name by using the resource record sets that <code>CreateTrafficPolicyInstance</code> created.
   ## 
-  let valid = call_602207.validator(path, query, header, formData, body)
-  let scheme = call_602207.pickScheme
+  let valid = call_606407.validator(path, query, header, formData, body)
+  let scheme = call_606407.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602207.url(scheme.get, call_602207.host, call_602207.base,
-                         call_602207.route, valid.getOrDefault("path"),
+  let url = call_606407.url(scheme.get, call_606407.host, call_606407.base,
+                         call_606407.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602207, url, valid)
+  result = atozHook(call_606407, url, valid)
 
-proc call*(call_602208: Call_CreateTrafficPolicyInstance_602196; body: JsonNode): Recallable =
+proc call*(call_606408: Call_CreateTrafficPolicyInstance_606396; body: JsonNode): Recallable =
   ## createTrafficPolicyInstance
   ## Creates resource record sets in a specified hosted zone based on the settings in a specified traffic policy version. In addition, <code>CreateTrafficPolicyInstance</code> associates the resource record sets with a specified domain name (such as example.com) or subdomain name (such as www.example.com). Amazon Route 53 responds to DNS queries for the domain or subdomain name by using the resource record sets that <code>CreateTrafficPolicyInstance</code> created.
   ##   body: JObject (required)
-  var body_602209 = newJObject()
+  var body_606409 = newJObject()
   if body != nil:
-    body_602209 = body
-  result = call_602208.call(nil, nil, nil, nil, body_602209)
+    body_606409 = body
+  result = call_606408.call(nil, nil, nil, nil, body_606409)
 
-var createTrafficPolicyInstance* = Call_CreateTrafficPolicyInstance_602196(
+var createTrafficPolicyInstance* = Call_CreateTrafficPolicyInstance_606396(
     name: "createTrafficPolicyInstance", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com", route: "/2013-04-01/trafficpolicyinstance",
-    validator: validate_CreateTrafficPolicyInstance_602197, base: "/",
-    url: url_CreateTrafficPolicyInstance_602198,
+    validator: validate_CreateTrafficPolicyInstance_606397, base: "/",
+    url: url_CreateTrafficPolicyInstance_606398,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTrafficPolicyVersion_602210 = ref object of OpenApiRestCall_601389
-proc url_CreateTrafficPolicyVersion_602212(protocol: Scheme; host: string;
+  Call_CreateTrafficPolicyVersion_606410 = ref object of OpenApiRestCall_605589
+proc url_CreateTrafficPolicyVersion_606412(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1855,7 +1855,7 @@ proc url_CreateTrafficPolicyVersion_602212(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_CreateTrafficPolicyVersion_602211(path: JsonNode; query: JsonNode;
+proc validate_CreateTrafficPolicyVersion_606411(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a new version of an existing traffic policy. When you create a new version of a traffic policy, you specify the ID of the traffic policy that you want to update and a JSON-formatted document that describes the new version. You use traffic policies to create multiple DNS resource record sets for one domain name (such as example.com) or one subdomain name (such as www.example.com). You can create a maximum of 1000 versions of a traffic policy. If you reach the limit and need to create another version, you'll need to start a new traffic policy.
   ## 
@@ -1866,11 +1866,11 @@ proc validate_CreateTrafficPolicyVersion_602211(path: JsonNode; query: JsonNode;
   ##     : The ID of the traffic policy for which you want to create a new version.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602213 = path.getOrDefault("Id")
-  valid_602213 = validateParameter(valid_602213, JString, required = true,
+  var valid_606413 = path.getOrDefault("Id")
+  valid_606413 = validateParameter(valid_606413, JString, required = true,
                                  default = nil)
-  if valid_602213 != nil:
-    section.add "Id", valid_602213
+  if valid_606413 != nil:
+    section.add "Id", valid_606413
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1883,41 +1883,41 @@ proc validate_CreateTrafficPolicyVersion_602211(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602214 = header.getOrDefault("X-Amz-Signature")
-  valid_602214 = validateParameter(valid_602214, JString, required = false,
+  var valid_606414 = header.getOrDefault("X-Amz-Signature")
+  valid_606414 = validateParameter(valid_606414, JString, required = false,
                                  default = nil)
-  if valid_602214 != nil:
-    section.add "X-Amz-Signature", valid_602214
-  var valid_602215 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602215 = validateParameter(valid_602215, JString, required = false,
+  if valid_606414 != nil:
+    section.add "X-Amz-Signature", valid_606414
+  var valid_606415 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606415 = validateParameter(valid_606415, JString, required = false,
                                  default = nil)
-  if valid_602215 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602215
-  var valid_602216 = header.getOrDefault("X-Amz-Date")
-  valid_602216 = validateParameter(valid_602216, JString, required = false,
+  if valid_606415 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606415
+  var valid_606416 = header.getOrDefault("X-Amz-Date")
+  valid_606416 = validateParameter(valid_606416, JString, required = false,
                                  default = nil)
-  if valid_602216 != nil:
-    section.add "X-Amz-Date", valid_602216
-  var valid_602217 = header.getOrDefault("X-Amz-Credential")
-  valid_602217 = validateParameter(valid_602217, JString, required = false,
+  if valid_606416 != nil:
+    section.add "X-Amz-Date", valid_606416
+  var valid_606417 = header.getOrDefault("X-Amz-Credential")
+  valid_606417 = validateParameter(valid_606417, JString, required = false,
                                  default = nil)
-  if valid_602217 != nil:
-    section.add "X-Amz-Credential", valid_602217
-  var valid_602218 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602218 = validateParameter(valid_602218, JString, required = false,
+  if valid_606417 != nil:
+    section.add "X-Amz-Credential", valid_606417
+  var valid_606418 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606418 = validateParameter(valid_606418, JString, required = false,
                                  default = nil)
-  if valid_602218 != nil:
-    section.add "X-Amz-Security-Token", valid_602218
-  var valid_602219 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602219 = validateParameter(valid_602219, JString, required = false,
+  if valid_606418 != nil:
+    section.add "X-Amz-Security-Token", valid_606418
+  var valid_606419 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606419 = validateParameter(valid_606419, JString, required = false,
                                  default = nil)
-  if valid_602219 != nil:
-    section.add "X-Amz-Algorithm", valid_602219
-  var valid_602220 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602220 = validateParameter(valid_602220, JString, required = false,
+  if valid_606419 != nil:
+    section.add "X-Amz-Algorithm", valid_606419
+  var valid_606420 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606420 = validateParameter(valid_606420, JString, required = false,
                                  default = nil)
-  if valid_602220 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602220
+  if valid_606420 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606420
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1928,42 +1928,42 @@ proc validate_CreateTrafficPolicyVersion_602211(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602222: Call_CreateTrafficPolicyVersion_602210; path: JsonNode;
+proc call*(call_606422: Call_CreateTrafficPolicyVersion_606410; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a new version of an existing traffic policy. When you create a new version of a traffic policy, you specify the ID of the traffic policy that you want to update and a JSON-formatted document that describes the new version. You use traffic policies to create multiple DNS resource record sets for one domain name (such as example.com) or one subdomain name (such as www.example.com). You can create a maximum of 1000 versions of a traffic policy. If you reach the limit and need to create another version, you'll need to start a new traffic policy.
   ## 
-  let valid = call_602222.validator(path, query, header, formData, body)
-  let scheme = call_602222.pickScheme
+  let valid = call_606422.validator(path, query, header, formData, body)
+  let scheme = call_606422.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602222.url(scheme.get, call_602222.host, call_602222.base,
-                         call_602222.route, valid.getOrDefault("path"),
+  let url = call_606422.url(scheme.get, call_606422.host, call_606422.base,
+                         call_606422.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602222, url, valid)
+  result = atozHook(call_606422, url, valid)
 
-proc call*(call_602223: Call_CreateTrafficPolicyVersion_602210; body: JsonNode;
+proc call*(call_606423: Call_CreateTrafficPolicyVersion_606410; body: JsonNode;
           Id: string): Recallable =
   ## createTrafficPolicyVersion
   ## Creates a new version of an existing traffic policy. When you create a new version of a traffic policy, you specify the ID of the traffic policy that you want to update and a JSON-formatted document that describes the new version. You use traffic policies to create multiple DNS resource record sets for one domain name (such as example.com) or one subdomain name (such as www.example.com). You can create a maximum of 1000 versions of a traffic policy. If you reach the limit and need to create another version, you'll need to start a new traffic policy.
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : The ID of the traffic policy for which you want to create a new version.
-  var path_602224 = newJObject()
-  var body_602225 = newJObject()
+  var path_606424 = newJObject()
+  var body_606425 = newJObject()
   if body != nil:
-    body_602225 = body
-  add(path_602224, "Id", newJString(Id))
-  result = call_602223.call(path_602224, nil, nil, nil, body_602225)
+    body_606425 = body
+  add(path_606424, "Id", newJString(Id))
+  result = call_606423.call(path_606424, nil, nil, nil, body_606425)
 
-var createTrafficPolicyVersion* = Call_CreateTrafficPolicyVersion_602210(
+var createTrafficPolicyVersion* = Call_CreateTrafficPolicyVersion_606410(
     name: "createTrafficPolicyVersion", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com", route: "/2013-04-01/trafficpolicy/{Id}",
-    validator: validate_CreateTrafficPolicyVersion_602211, base: "/",
-    url: url_CreateTrafficPolicyVersion_602212,
+    validator: validate_CreateTrafficPolicyVersion_606411, base: "/",
+    url: url_CreateTrafficPolicyVersion_606412,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateVPCAssociationAuthorization_602243 = ref object of OpenApiRestCall_601389
-proc url_CreateVPCAssociationAuthorization_602245(protocol: Scheme; host: string;
+  Call_CreateVPCAssociationAuthorization_606443 = ref object of OpenApiRestCall_605589
+proc url_CreateVPCAssociationAuthorization_606445(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1984,7 +1984,7 @@ proc url_CreateVPCAssociationAuthorization_602245(protocol: Scheme; host: string
   else:
     result.path = base & hydrated.get
 
-proc validate_CreateVPCAssociationAuthorization_602244(path: JsonNode;
+proc validate_CreateVPCAssociationAuthorization_606444(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Authorizes the AWS account that created a specified VPC to submit an <code>AssociateVPCWithHostedZone</code> request to associate the VPC with a specified hosted zone that was created by a different account. To submit a <code>CreateVPCAssociationAuthorization</code> request, you must use the account that created the hosted zone. After you authorize the association, use the account that created the VPC to submit an <code>AssociateVPCWithHostedZone</code> request.</p> <note> <p>If you want to associate multiple VPCs that you created by using one account with a hosted zone that you created by using a different account, you must submit one authorization request for each VPC.</p> </note>
   ## 
@@ -1995,11 +1995,11 @@ proc validate_CreateVPCAssociationAuthorization_602244(path: JsonNode;
   ##     : The ID of the private hosted zone that you want to authorize associating a VPC with.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602246 = path.getOrDefault("Id")
-  valid_602246 = validateParameter(valid_602246, JString, required = true,
+  var valid_606446 = path.getOrDefault("Id")
+  valid_606446 = validateParameter(valid_606446, JString, required = true,
                                  default = nil)
-  if valid_602246 != nil:
-    section.add "Id", valid_602246
+  if valid_606446 != nil:
+    section.add "Id", valid_606446
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2012,41 +2012,41 @@ proc validate_CreateVPCAssociationAuthorization_602244(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602247 = header.getOrDefault("X-Amz-Signature")
-  valid_602247 = validateParameter(valid_602247, JString, required = false,
+  var valid_606447 = header.getOrDefault("X-Amz-Signature")
+  valid_606447 = validateParameter(valid_606447, JString, required = false,
                                  default = nil)
-  if valid_602247 != nil:
-    section.add "X-Amz-Signature", valid_602247
-  var valid_602248 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602248 = validateParameter(valid_602248, JString, required = false,
+  if valid_606447 != nil:
+    section.add "X-Amz-Signature", valid_606447
+  var valid_606448 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606448 = validateParameter(valid_606448, JString, required = false,
                                  default = nil)
-  if valid_602248 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602248
-  var valid_602249 = header.getOrDefault("X-Amz-Date")
-  valid_602249 = validateParameter(valid_602249, JString, required = false,
+  if valid_606448 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606448
+  var valid_606449 = header.getOrDefault("X-Amz-Date")
+  valid_606449 = validateParameter(valid_606449, JString, required = false,
                                  default = nil)
-  if valid_602249 != nil:
-    section.add "X-Amz-Date", valid_602249
-  var valid_602250 = header.getOrDefault("X-Amz-Credential")
-  valid_602250 = validateParameter(valid_602250, JString, required = false,
+  if valid_606449 != nil:
+    section.add "X-Amz-Date", valid_606449
+  var valid_606450 = header.getOrDefault("X-Amz-Credential")
+  valid_606450 = validateParameter(valid_606450, JString, required = false,
                                  default = nil)
-  if valid_602250 != nil:
-    section.add "X-Amz-Credential", valid_602250
-  var valid_602251 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602251 = validateParameter(valid_602251, JString, required = false,
+  if valid_606450 != nil:
+    section.add "X-Amz-Credential", valid_606450
+  var valid_606451 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606451 = validateParameter(valid_606451, JString, required = false,
                                  default = nil)
-  if valid_602251 != nil:
-    section.add "X-Amz-Security-Token", valid_602251
-  var valid_602252 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602252 = validateParameter(valid_602252, JString, required = false,
+  if valid_606451 != nil:
+    section.add "X-Amz-Security-Token", valid_606451
+  var valid_606452 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606452 = validateParameter(valid_606452, JString, required = false,
                                  default = nil)
-  if valid_602252 != nil:
-    section.add "X-Amz-Algorithm", valid_602252
-  var valid_602253 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602253 = validateParameter(valid_602253, JString, required = false,
+  if valid_606452 != nil:
+    section.add "X-Amz-Algorithm", valid_606452
+  var valid_606453 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606453 = validateParameter(valid_606453, JString, required = false,
                                  default = nil)
-  if valid_602253 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602253
+  if valid_606453 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606453
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2057,44 +2057,44 @@ proc validate_CreateVPCAssociationAuthorization_602244(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602255: Call_CreateVPCAssociationAuthorization_602243;
+proc call*(call_606455: Call_CreateVPCAssociationAuthorization_606443;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Authorizes the AWS account that created a specified VPC to submit an <code>AssociateVPCWithHostedZone</code> request to associate the VPC with a specified hosted zone that was created by a different account. To submit a <code>CreateVPCAssociationAuthorization</code> request, you must use the account that created the hosted zone. After you authorize the association, use the account that created the VPC to submit an <code>AssociateVPCWithHostedZone</code> request.</p> <note> <p>If you want to associate multiple VPCs that you created by using one account with a hosted zone that you created by using a different account, you must submit one authorization request for each VPC.</p> </note>
   ## 
-  let valid = call_602255.validator(path, query, header, formData, body)
-  let scheme = call_602255.pickScheme
+  let valid = call_606455.validator(path, query, header, formData, body)
+  let scheme = call_606455.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602255.url(scheme.get, call_602255.host, call_602255.base,
-                         call_602255.route, valid.getOrDefault("path"),
+  let url = call_606455.url(scheme.get, call_606455.host, call_606455.base,
+                         call_606455.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602255, url, valid)
+  result = atozHook(call_606455, url, valid)
 
-proc call*(call_602256: Call_CreateVPCAssociationAuthorization_602243;
+proc call*(call_606456: Call_CreateVPCAssociationAuthorization_606443;
           body: JsonNode; Id: string): Recallable =
   ## createVPCAssociationAuthorization
   ## <p>Authorizes the AWS account that created a specified VPC to submit an <code>AssociateVPCWithHostedZone</code> request to associate the VPC with a specified hosted zone that was created by a different account. To submit a <code>CreateVPCAssociationAuthorization</code> request, you must use the account that created the hosted zone. After you authorize the association, use the account that created the VPC to submit an <code>AssociateVPCWithHostedZone</code> request.</p> <note> <p>If you want to associate multiple VPCs that you created by using one account with a hosted zone that you created by using a different account, you must submit one authorization request for each VPC.</p> </note>
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : The ID of the private hosted zone that you want to authorize associating a VPC with.
-  var path_602257 = newJObject()
-  var body_602258 = newJObject()
+  var path_606457 = newJObject()
+  var body_606458 = newJObject()
   if body != nil:
-    body_602258 = body
-  add(path_602257, "Id", newJString(Id))
-  result = call_602256.call(path_602257, nil, nil, nil, body_602258)
+    body_606458 = body
+  add(path_606457, "Id", newJString(Id))
+  result = call_606456.call(path_606457, nil, nil, nil, body_606458)
 
-var createVPCAssociationAuthorization* = Call_CreateVPCAssociationAuthorization_602243(
+var createVPCAssociationAuthorization* = Call_CreateVPCAssociationAuthorization_606443(
     name: "createVPCAssociationAuthorization", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/hostedzone/{Id}/authorizevpcassociation",
-    validator: validate_CreateVPCAssociationAuthorization_602244, base: "/",
-    url: url_CreateVPCAssociationAuthorization_602245,
+    validator: validate_CreateVPCAssociationAuthorization_606444, base: "/",
+    url: url_CreateVPCAssociationAuthorization_606445,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListVPCAssociationAuthorizations_602226 = ref object of OpenApiRestCall_601389
-proc url_ListVPCAssociationAuthorizations_602228(protocol: Scheme; host: string;
+  Call_ListVPCAssociationAuthorizations_606426 = ref object of OpenApiRestCall_605589
+proc url_ListVPCAssociationAuthorizations_606428(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2115,7 +2115,7 @@ proc url_ListVPCAssociationAuthorizations_602228(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListVPCAssociationAuthorizations_602227(path: JsonNode;
+proc validate_ListVPCAssociationAuthorizations_606427(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets a list of the VPCs that were created by other accounts and that can be associated with a specified hosted zone because you've submitted one or more <code>CreateVPCAssociationAuthorization</code> requests. </p> <p>The response includes a <code>VPCs</code> element with a <code>VPC</code> child element for each VPC that can be associated with the hosted zone.</p>
   ## 
@@ -2126,11 +2126,11 @@ proc validate_ListVPCAssociationAuthorizations_602227(path: JsonNode;
   ##     : The ID of the hosted zone for which you want a list of VPCs that can be associated with the hosted zone.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602229 = path.getOrDefault("Id")
-  valid_602229 = validateParameter(valid_602229, JString, required = true,
+  var valid_606429 = path.getOrDefault("Id")
+  valid_606429 = validateParameter(valid_606429, JString, required = true,
                                  default = nil)
-  if valid_602229 != nil:
-    section.add "Id", valid_602229
+  if valid_606429 != nil:
+    section.add "Id", valid_606429
   result.add "path", section
   ## parameters in `query` object:
   ##   nexttoken: JString
@@ -2138,16 +2138,16 @@ proc validate_ListVPCAssociationAuthorizations_602227(path: JsonNode;
   ##   maxresults: JString
   ##             :  <i>Optional</i>: An integer that specifies the maximum number of VPCs that you want Amazon Route 53 to return. If you don't specify a value for <code>MaxResults</code>, Route 53 returns up to 50 VPCs per page.
   section = newJObject()
-  var valid_602230 = query.getOrDefault("nexttoken")
-  valid_602230 = validateParameter(valid_602230, JString, required = false,
+  var valid_606430 = query.getOrDefault("nexttoken")
+  valid_606430 = validateParameter(valid_606430, JString, required = false,
                                  default = nil)
-  if valid_602230 != nil:
-    section.add "nexttoken", valid_602230
-  var valid_602231 = query.getOrDefault("maxresults")
-  valid_602231 = validateParameter(valid_602231, JString, required = false,
+  if valid_606430 != nil:
+    section.add "nexttoken", valid_606430
+  var valid_606431 = query.getOrDefault("maxresults")
+  valid_606431 = validateParameter(valid_606431, JString, required = false,
                                  default = nil)
-  if valid_602231 != nil:
-    section.add "maxresults", valid_602231
+  if valid_606431 != nil:
+    section.add "maxresults", valid_606431
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2158,62 +2158,62 @@ proc validate_ListVPCAssociationAuthorizations_602227(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602232 = header.getOrDefault("X-Amz-Signature")
-  valid_602232 = validateParameter(valid_602232, JString, required = false,
+  var valid_606432 = header.getOrDefault("X-Amz-Signature")
+  valid_606432 = validateParameter(valid_606432, JString, required = false,
                                  default = nil)
-  if valid_602232 != nil:
-    section.add "X-Amz-Signature", valid_602232
-  var valid_602233 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602233 = validateParameter(valid_602233, JString, required = false,
+  if valid_606432 != nil:
+    section.add "X-Amz-Signature", valid_606432
+  var valid_606433 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606433 = validateParameter(valid_606433, JString, required = false,
                                  default = nil)
-  if valid_602233 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602233
-  var valid_602234 = header.getOrDefault("X-Amz-Date")
-  valid_602234 = validateParameter(valid_602234, JString, required = false,
+  if valid_606433 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606433
+  var valid_606434 = header.getOrDefault("X-Amz-Date")
+  valid_606434 = validateParameter(valid_606434, JString, required = false,
                                  default = nil)
-  if valid_602234 != nil:
-    section.add "X-Amz-Date", valid_602234
-  var valid_602235 = header.getOrDefault("X-Amz-Credential")
-  valid_602235 = validateParameter(valid_602235, JString, required = false,
+  if valid_606434 != nil:
+    section.add "X-Amz-Date", valid_606434
+  var valid_606435 = header.getOrDefault("X-Amz-Credential")
+  valid_606435 = validateParameter(valid_606435, JString, required = false,
                                  default = nil)
-  if valid_602235 != nil:
-    section.add "X-Amz-Credential", valid_602235
-  var valid_602236 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602236 = validateParameter(valid_602236, JString, required = false,
+  if valid_606435 != nil:
+    section.add "X-Amz-Credential", valid_606435
+  var valid_606436 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606436 = validateParameter(valid_606436, JString, required = false,
                                  default = nil)
-  if valid_602236 != nil:
-    section.add "X-Amz-Security-Token", valid_602236
-  var valid_602237 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602237 = validateParameter(valid_602237, JString, required = false,
+  if valid_606436 != nil:
+    section.add "X-Amz-Security-Token", valid_606436
+  var valid_606437 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606437 = validateParameter(valid_606437, JString, required = false,
                                  default = nil)
-  if valid_602237 != nil:
-    section.add "X-Amz-Algorithm", valid_602237
-  var valid_602238 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602238 = validateParameter(valid_602238, JString, required = false,
+  if valid_606437 != nil:
+    section.add "X-Amz-Algorithm", valid_606437
+  var valid_606438 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606438 = validateParameter(valid_606438, JString, required = false,
                                  default = nil)
-  if valid_602238 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602238
+  if valid_606438 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606438
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602239: Call_ListVPCAssociationAuthorizations_602226;
+proc call*(call_606439: Call_ListVPCAssociationAuthorizations_606426;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Gets a list of the VPCs that were created by other accounts and that can be associated with a specified hosted zone because you've submitted one or more <code>CreateVPCAssociationAuthorization</code> requests. </p> <p>The response includes a <code>VPCs</code> element with a <code>VPC</code> child element for each VPC that can be associated with the hosted zone.</p>
   ## 
-  let valid = call_602239.validator(path, query, header, formData, body)
-  let scheme = call_602239.pickScheme
+  let valid = call_606439.validator(path, query, header, formData, body)
+  let scheme = call_606439.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602239.url(scheme.get, call_602239.host, call_602239.base,
-                         call_602239.route, valid.getOrDefault("path"),
+  let url = call_606439.url(scheme.get, call_606439.host, call_606439.base,
+                         call_606439.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602239, url, valid)
+  result = atozHook(call_606439, url, valid)
 
-proc call*(call_602240: Call_ListVPCAssociationAuthorizations_602226; Id: string;
+proc call*(call_606440: Call_ListVPCAssociationAuthorizations_606426; Id: string;
           nexttoken: string = ""; maxresults: string = ""): Recallable =
   ## listVPCAssociationAuthorizations
   ## <p>Gets a list of the VPCs that were created by other accounts and that can be associated with a specified hosted zone because you've submitted one or more <code>CreateVPCAssociationAuthorization</code> requests. </p> <p>The response includes a <code>VPCs</code> element with a <code>VPC</code> child element for each VPC that can be associated with the hosted zone.</p>
@@ -2223,23 +2223,23 @@ proc call*(call_602240: Call_ListVPCAssociationAuthorizations_602226; Id: string
   ##             :  <i>Optional</i>: An integer that specifies the maximum number of VPCs that you want Amazon Route 53 to return. If you don't specify a value for <code>MaxResults</code>, Route 53 returns up to 50 VPCs per page.
   ##   Id: string (required)
   ##     : The ID of the hosted zone for which you want a list of VPCs that can be associated with the hosted zone.
-  var path_602241 = newJObject()
-  var query_602242 = newJObject()
-  add(query_602242, "nexttoken", newJString(nexttoken))
-  add(query_602242, "maxresults", newJString(maxresults))
-  add(path_602241, "Id", newJString(Id))
-  result = call_602240.call(path_602241, query_602242, nil, nil, nil)
+  var path_606441 = newJObject()
+  var query_606442 = newJObject()
+  add(query_606442, "nexttoken", newJString(nexttoken))
+  add(query_606442, "maxresults", newJString(maxresults))
+  add(path_606441, "Id", newJString(Id))
+  result = call_606440.call(path_606441, query_606442, nil, nil, nil)
 
-var listVPCAssociationAuthorizations* = Call_ListVPCAssociationAuthorizations_602226(
+var listVPCAssociationAuthorizations* = Call_ListVPCAssociationAuthorizations_606426(
     name: "listVPCAssociationAuthorizations", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/hostedzone/{Id}/authorizevpcassociation",
-    validator: validate_ListVPCAssociationAuthorizations_602227, base: "/",
-    url: url_ListVPCAssociationAuthorizations_602228,
+    validator: validate_ListVPCAssociationAuthorizations_606427, base: "/",
+    url: url_ListVPCAssociationAuthorizations_606428,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateHealthCheck_602273 = ref object of OpenApiRestCall_601389
-proc url_UpdateHealthCheck_602275(protocol: Scheme; host: string; base: string;
+  Call_UpdateHealthCheck_606473 = ref object of OpenApiRestCall_605589
+proc url_UpdateHealthCheck_606475(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2259,7 +2259,7 @@ proc url_UpdateHealthCheck_602275(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateHealthCheck_602274(path: JsonNode; query: JsonNode;
+proc validate_UpdateHealthCheck_606474(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Updates an existing health check. Note that some values can't be updated. </p> <p>For more information about updating health checks, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-creating-deleting.html">Creating, Updating, and Deleting Health Checks</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
@@ -2272,11 +2272,11 @@ proc validate_UpdateHealthCheck_602274(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `HealthCheckId` field"
-  var valid_602276 = path.getOrDefault("HealthCheckId")
-  valid_602276 = validateParameter(valid_602276, JString, required = true,
+  var valid_606476 = path.getOrDefault("HealthCheckId")
+  valid_606476 = validateParameter(valid_606476, JString, required = true,
                                  default = nil)
-  if valid_602276 != nil:
-    section.add "HealthCheckId", valid_602276
+  if valid_606476 != nil:
+    section.add "HealthCheckId", valid_606476
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2289,41 +2289,41 @@ proc validate_UpdateHealthCheck_602274(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602277 = header.getOrDefault("X-Amz-Signature")
-  valid_602277 = validateParameter(valid_602277, JString, required = false,
+  var valid_606477 = header.getOrDefault("X-Amz-Signature")
+  valid_606477 = validateParameter(valid_606477, JString, required = false,
                                  default = nil)
-  if valid_602277 != nil:
-    section.add "X-Amz-Signature", valid_602277
-  var valid_602278 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602278 = validateParameter(valid_602278, JString, required = false,
+  if valid_606477 != nil:
+    section.add "X-Amz-Signature", valid_606477
+  var valid_606478 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606478 = validateParameter(valid_606478, JString, required = false,
                                  default = nil)
-  if valid_602278 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602278
-  var valid_602279 = header.getOrDefault("X-Amz-Date")
-  valid_602279 = validateParameter(valid_602279, JString, required = false,
+  if valid_606478 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606478
+  var valid_606479 = header.getOrDefault("X-Amz-Date")
+  valid_606479 = validateParameter(valid_606479, JString, required = false,
                                  default = nil)
-  if valid_602279 != nil:
-    section.add "X-Amz-Date", valid_602279
-  var valid_602280 = header.getOrDefault("X-Amz-Credential")
-  valid_602280 = validateParameter(valid_602280, JString, required = false,
+  if valid_606479 != nil:
+    section.add "X-Amz-Date", valid_606479
+  var valid_606480 = header.getOrDefault("X-Amz-Credential")
+  valid_606480 = validateParameter(valid_606480, JString, required = false,
                                  default = nil)
-  if valid_602280 != nil:
-    section.add "X-Amz-Credential", valid_602280
-  var valid_602281 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602281 = validateParameter(valid_602281, JString, required = false,
+  if valid_606480 != nil:
+    section.add "X-Amz-Credential", valid_606480
+  var valid_606481 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606481 = validateParameter(valid_606481, JString, required = false,
                                  default = nil)
-  if valid_602281 != nil:
-    section.add "X-Amz-Security-Token", valid_602281
-  var valid_602282 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602282 = validateParameter(valid_602282, JString, required = false,
+  if valid_606481 != nil:
+    section.add "X-Amz-Security-Token", valid_606481
+  var valid_606482 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606482 = validateParameter(valid_606482, JString, required = false,
                                  default = nil)
-  if valid_602282 != nil:
-    section.add "X-Amz-Algorithm", valid_602282
-  var valid_602283 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602283 = validateParameter(valid_602283, JString, required = false,
+  if valid_606482 != nil:
+    section.add "X-Amz-Algorithm", valid_606482
+  var valid_606483 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606483 = validateParameter(valid_606483, JString, required = false,
                                  default = nil)
-  if valid_602283 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602283
+  if valid_606483 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606483
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2334,41 +2334,41 @@ proc validate_UpdateHealthCheck_602274(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602285: Call_UpdateHealthCheck_602273; path: JsonNode;
+proc call*(call_606485: Call_UpdateHealthCheck_606473; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates an existing health check. Note that some values can't be updated. </p> <p>For more information about updating health checks, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-creating-deleting.html">Creating, Updating, and Deleting Health Checks</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
   ## 
-  let valid = call_602285.validator(path, query, header, formData, body)
-  let scheme = call_602285.pickScheme
+  let valid = call_606485.validator(path, query, header, formData, body)
+  let scheme = call_606485.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602285.url(scheme.get, call_602285.host, call_602285.base,
-                         call_602285.route, valid.getOrDefault("path"),
+  let url = call_606485.url(scheme.get, call_606485.host, call_606485.base,
+                         call_606485.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602285, url, valid)
+  result = atozHook(call_606485, url, valid)
 
-proc call*(call_602286: Call_UpdateHealthCheck_602273; HealthCheckId: string;
+proc call*(call_606486: Call_UpdateHealthCheck_606473; HealthCheckId: string;
           body: JsonNode): Recallable =
   ## updateHealthCheck
   ## <p>Updates an existing health check. Note that some values can't be updated. </p> <p>For more information about updating health checks, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-creating-deleting.html">Creating, Updating, and Deleting Health Checks</a> in the <i>Amazon Route 53 Developer Guide</i>.</p>
   ##   HealthCheckId: string (required)
   ##                : The ID for the health check for which you want detailed information. When you created the health check, <code>CreateHealthCheck</code> returned the ID in the response, in the <code>HealthCheckId</code> element.
   ##   body: JObject (required)
-  var path_602287 = newJObject()
-  var body_602288 = newJObject()
-  add(path_602287, "HealthCheckId", newJString(HealthCheckId))
+  var path_606487 = newJObject()
+  var body_606488 = newJObject()
+  add(path_606487, "HealthCheckId", newJString(HealthCheckId))
   if body != nil:
-    body_602288 = body
-  result = call_602286.call(path_602287, nil, nil, nil, body_602288)
+    body_606488 = body
+  result = call_606486.call(path_606487, nil, nil, nil, body_606488)
 
-var updateHealthCheck* = Call_UpdateHealthCheck_602273(name: "updateHealthCheck",
+var updateHealthCheck* = Call_UpdateHealthCheck_606473(name: "updateHealthCheck",
     meth: HttpMethod.HttpPost, host: "route53.amazonaws.com",
     route: "/2013-04-01/healthcheck/{HealthCheckId}",
-    validator: validate_UpdateHealthCheck_602274, base: "/",
-    url: url_UpdateHealthCheck_602275, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateHealthCheck_606474, base: "/",
+    url: url_UpdateHealthCheck_606475, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHealthCheck_602259 = ref object of OpenApiRestCall_601389
-proc url_GetHealthCheck_602261(protocol: Scheme; host: string; base: string;
+  Call_GetHealthCheck_606459 = ref object of OpenApiRestCall_605589
+proc url_GetHealthCheck_606461(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2388,7 +2388,7 @@ proc url_GetHealthCheck_602261(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetHealthCheck_602260(path: JsonNode; query: JsonNode;
+proc validate_GetHealthCheck_606460(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Gets information about a specified health check.
@@ -2401,11 +2401,11 @@ proc validate_GetHealthCheck_602260(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `HealthCheckId` field"
-  var valid_602262 = path.getOrDefault("HealthCheckId")
-  valid_602262 = validateParameter(valid_602262, JString, required = true,
+  var valid_606462 = path.getOrDefault("HealthCheckId")
+  valid_606462 = validateParameter(valid_606462, JString, required = true,
                                  default = nil)
-  if valid_602262 != nil:
-    section.add "HealthCheckId", valid_602262
+  if valid_606462 != nil:
+    section.add "HealthCheckId", valid_606462
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2418,77 +2418,77 @@ proc validate_GetHealthCheck_602260(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602263 = header.getOrDefault("X-Amz-Signature")
-  valid_602263 = validateParameter(valid_602263, JString, required = false,
+  var valid_606463 = header.getOrDefault("X-Amz-Signature")
+  valid_606463 = validateParameter(valid_606463, JString, required = false,
                                  default = nil)
-  if valid_602263 != nil:
-    section.add "X-Amz-Signature", valid_602263
-  var valid_602264 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602264 = validateParameter(valid_602264, JString, required = false,
+  if valid_606463 != nil:
+    section.add "X-Amz-Signature", valid_606463
+  var valid_606464 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606464 = validateParameter(valid_606464, JString, required = false,
                                  default = nil)
-  if valid_602264 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602264
-  var valid_602265 = header.getOrDefault("X-Amz-Date")
-  valid_602265 = validateParameter(valid_602265, JString, required = false,
+  if valid_606464 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606464
+  var valid_606465 = header.getOrDefault("X-Amz-Date")
+  valid_606465 = validateParameter(valid_606465, JString, required = false,
                                  default = nil)
-  if valid_602265 != nil:
-    section.add "X-Amz-Date", valid_602265
-  var valid_602266 = header.getOrDefault("X-Amz-Credential")
-  valid_602266 = validateParameter(valid_602266, JString, required = false,
+  if valid_606465 != nil:
+    section.add "X-Amz-Date", valid_606465
+  var valid_606466 = header.getOrDefault("X-Amz-Credential")
+  valid_606466 = validateParameter(valid_606466, JString, required = false,
                                  default = nil)
-  if valid_602266 != nil:
-    section.add "X-Amz-Credential", valid_602266
-  var valid_602267 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602267 = validateParameter(valid_602267, JString, required = false,
+  if valid_606466 != nil:
+    section.add "X-Amz-Credential", valid_606466
+  var valid_606467 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606467 = validateParameter(valid_606467, JString, required = false,
                                  default = nil)
-  if valid_602267 != nil:
-    section.add "X-Amz-Security-Token", valid_602267
-  var valid_602268 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602268 = validateParameter(valid_602268, JString, required = false,
+  if valid_606467 != nil:
+    section.add "X-Amz-Security-Token", valid_606467
+  var valid_606468 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606468 = validateParameter(valid_606468, JString, required = false,
                                  default = nil)
-  if valid_602268 != nil:
-    section.add "X-Amz-Algorithm", valid_602268
-  var valid_602269 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602269 = validateParameter(valid_602269, JString, required = false,
+  if valid_606468 != nil:
+    section.add "X-Amz-Algorithm", valid_606468
+  var valid_606469 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606469 = validateParameter(valid_606469, JString, required = false,
                                  default = nil)
-  if valid_602269 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602269
+  if valid_606469 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606469
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602270: Call_GetHealthCheck_602259; path: JsonNode; query: JsonNode;
+proc call*(call_606470: Call_GetHealthCheck_606459; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about a specified health check.
   ## 
-  let valid = call_602270.validator(path, query, header, formData, body)
-  let scheme = call_602270.pickScheme
+  let valid = call_606470.validator(path, query, header, formData, body)
+  let scheme = call_606470.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602270.url(scheme.get, call_602270.host, call_602270.base,
-                         call_602270.route, valid.getOrDefault("path"),
+  let url = call_606470.url(scheme.get, call_606470.host, call_606470.base,
+                         call_606470.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602270, url, valid)
+  result = atozHook(call_606470, url, valid)
 
-proc call*(call_602271: Call_GetHealthCheck_602259; HealthCheckId: string): Recallable =
+proc call*(call_606471: Call_GetHealthCheck_606459; HealthCheckId: string): Recallable =
   ## getHealthCheck
   ## Gets information about a specified health check.
   ##   HealthCheckId: string (required)
   ##                : The identifier that Amazon Route 53 assigned to the health check when you created it. When you add or update a resource record set, you use this value to specify which health check to use. The value can be up to 64 characters long.
-  var path_602272 = newJObject()
-  add(path_602272, "HealthCheckId", newJString(HealthCheckId))
-  result = call_602271.call(path_602272, nil, nil, nil, nil)
+  var path_606472 = newJObject()
+  add(path_606472, "HealthCheckId", newJString(HealthCheckId))
+  result = call_606471.call(path_606472, nil, nil, nil, nil)
 
-var getHealthCheck* = Call_GetHealthCheck_602259(name: "getHealthCheck",
+var getHealthCheck* = Call_GetHealthCheck_606459(name: "getHealthCheck",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
     route: "/2013-04-01/healthcheck/{HealthCheckId}",
-    validator: validate_GetHealthCheck_602260, base: "/", url: url_GetHealthCheck_602261,
+    validator: validate_GetHealthCheck_606460, base: "/", url: url_GetHealthCheck_606461,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteHealthCheck_602289 = ref object of OpenApiRestCall_601389
-proc url_DeleteHealthCheck_602291(protocol: Scheme; host: string; base: string;
+  Call_DeleteHealthCheck_606489 = ref object of OpenApiRestCall_605589
+proc url_DeleteHealthCheck_606491(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2508,7 +2508,7 @@ proc url_DeleteHealthCheck_602291(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteHealthCheck_602290(path: JsonNode; query: JsonNode;
+proc validate_DeleteHealthCheck_606490(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes a health check.</p> <important> <p>Amazon Route 53 does not prevent you from deleting a health check even if the health check is associated with one or more resource record sets. If you delete a health check and you don't update the associated resource record sets, the future status of the health check can't be predicted and may change. This will affect the routing of DNS queries for your DNS failover configuration. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-creating-deleting.html#health-checks-deleting.html">Replacing and Deleting Health Checks</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </important>
@@ -2521,11 +2521,11 @@ proc validate_DeleteHealthCheck_602290(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `HealthCheckId` field"
-  var valid_602292 = path.getOrDefault("HealthCheckId")
-  valid_602292 = validateParameter(valid_602292, JString, required = true,
+  var valid_606492 = path.getOrDefault("HealthCheckId")
+  valid_606492 = validateParameter(valid_606492, JString, required = true,
                                  default = nil)
-  if valid_602292 != nil:
-    section.add "HealthCheckId", valid_602292
+  if valid_606492 != nil:
+    section.add "HealthCheckId", valid_606492
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2538,77 +2538,77 @@ proc validate_DeleteHealthCheck_602290(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602293 = header.getOrDefault("X-Amz-Signature")
-  valid_602293 = validateParameter(valid_602293, JString, required = false,
+  var valid_606493 = header.getOrDefault("X-Amz-Signature")
+  valid_606493 = validateParameter(valid_606493, JString, required = false,
                                  default = nil)
-  if valid_602293 != nil:
-    section.add "X-Amz-Signature", valid_602293
-  var valid_602294 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602294 = validateParameter(valid_602294, JString, required = false,
+  if valid_606493 != nil:
+    section.add "X-Amz-Signature", valid_606493
+  var valid_606494 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606494 = validateParameter(valid_606494, JString, required = false,
                                  default = nil)
-  if valid_602294 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602294
-  var valid_602295 = header.getOrDefault("X-Amz-Date")
-  valid_602295 = validateParameter(valid_602295, JString, required = false,
+  if valid_606494 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606494
+  var valid_606495 = header.getOrDefault("X-Amz-Date")
+  valid_606495 = validateParameter(valid_606495, JString, required = false,
                                  default = nil)
-  if valid_602295 != nil:
-    section.add "X-Amz-Date", valid_602295
-  var valid_602296 = header.getOrDefault("X-Amz-Credential")
-  valid_602296 = validateParameter(valid_602296, JString, required = false,
+  if valid_606495 != nil:
+    section.add "X-Amz-Date", valid_606495
+  var valid_606496 = header.getOrDefault("X-Amz-Credential")
+  valid_606496 = validateParameter(valid_606496, JString, required = false,
                                  default = nil)
-  if valid_602296 != nil:
-    section.add "X-Amz-Credential", valid_602296
-  var valid_602297 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602297 = validateParameter(valid_602297, JString, required = false,
+  if valid_606496 != nil:
+    section.add "X-Amz-Credential", valid_606496
+  var valid_606497 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606497 = validateParameter(valid_606497, JString, required = false,
                                  default = nil)
-  if valid_602297 != nil:
-    section.add "X-Amz-Security-Token", valid_602297
-  var valid_602298 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602298 = validateParameter(valid_602298, JString, required = false,
+  if valid_606497 != nil:
+    section.add "X-Amz-Security-Token", valid_606497
+  var valid_606498 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606498 = validateParameter(valid_606498, JString, required = false,
                                  default = nil)
-  if valid_602298 != nil:
-    section.add "X-Amz-Algorithm", valid_602298
-  var valid_602299 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602299 = validateParameter(valid_602299, JString, required = false,
+  if valid_606498 != nil:
+    section.add "X-Amz-Algorithm", valid_606498
+  var valid_606499 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606499 = validateParameter(valid_606499, JString, required = false,
                                  default = nil)
-  if valid_602299 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602299
+  if valid_606499 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606499
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602300: Call_DeleteHealthCheck_602289; path: JsonNode;
+proc call*(call_606500: Call_DeleteHealthCheck_606489; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a health check.</p> <important> <p>Amazon Route 53 does not prevent you from deleting a health check even if the health check is associated with one or more resource record sets. If you delete a health check and you don't update the associated resource record sets, the future status of the health check can't be predicted and may change. This will affect the routing of DNS queries for your DNS failover configuration. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-creating-deleting.html#health-checks-deleting.html">Replacing and Deleting Health Checks</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </important>
   ## 
-  let valid = call_602300.validator(path, query, header, formData, body)
-  let scheme = call_602300.pickScheme
+  let valid = call_606500.validator(path, query, header, formData, body)
+  let scheme = call_606500.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602300.url(scheme.get, call_602300.host, call_602300.base,
-                         call_602300.route, valid.getOrDefault("path"),
+  let url = call_606500.url(scheme.get, call_606500.host, call_606500.base,
+                         call_606500.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602300, url, valid)
+  result = atozHook(call_606500, url, valid)
 
-proc call*(call_602301: Call_DeleteHealthCheck_602289; HealthCheckId: string): Recallable =
+proc call*(call_606501: Call_DeleteHealthCheck_606489; HealthCheckId: string): Recallable =
   ## deleteHealthCheck
   ## <p>Deletes a health check.</p> <important> <p>Amazon Route 53 does not prevent you from deleting a health check even if the health check is associated with one or more resource record sets. If you delete a health check and you don't update the associated resource record sets, the future status of the health check can't be predicted and may change. This will affect the routing of DNS queries for your DNS failover configuration. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/health-checks-creating-deleting.html#health-checks-deleting.html">Replacing and Deleting Health Checks</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </important>
   ##   HealthCheckId: string (required)
   ##                : The ID of the health check that you want to delete.
-  var path_602302 = newJObject()
-  add(path_602302, "HealthCheckId", newJString(HealthCheckId))
-  result = call_602301.call(path_602302, nil, nil, nil, nil)
+  var path_606502 = newJObject()
+  add(path_606502, "HealthCheckId", newJString(HealthCheckId))
+  result = call_606501.call(path_606502, nil, nil, nil, nil)
 
-var deleteHealthCheck* = Call_DeleteHealthCheck_602289(name: "deleteHealthCheck",
+var deleteHealthCheck* = Call_DeleteHealthCheck_606489(name: "deleteHealthCheck",
     meth: HttpMethod.HttpDelete, host: "route53.amazonaws.com",
     route: "/2013-04-01/healthcheck/{HealthCheckId}",
-    validator: validate_DeleteHealthCheck_602290, base: "/",
-    url: url_DeleteHealthCheck_602291, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteHealthCheck_606490, base: "/",
+    url: url_DeleteHealthCheck_606491, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateHostedZoneComment_602317 = ref object of OpenApiRestCall_601389
-proc url_UpdateHostedZoneComment_602319(protocol: Scheme; host: string; base: string;
+  Call_UpdateHostedZoneComment_606517 = ref object of OpenApiRestCall_605589
+proc url_UpdateHostedZoneComment_606519(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -2629,7 +2629,7 @@ proc url_UpdateHostedZoneComment_602319(protocol: Scheme; host: string; base: st
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateHostedZoneComment_602318(path: JsonNode; query: JsonNode;
+proc validate_UpdateHostedZoneComment_606518(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates the comment for a specified hosted zone.
   ## 
@@ -2640,11 +2640,11 @@ proc validate_UpdateHostedZoneComment_602318(path: JsonNode; query: JsonNode;
   ##     : The ID for the hosted zone that you want to update the comment for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602320 = path.getOrDefault("Id")
-  valid_602320 = validateParameter(valid_602320, JString, required = true,
+  var valid_606520 = path.getOrDefault("Id")
+  valid_606520 = validateParameter(valid_606520, JString, required = true,
                                  default = nil)
-  if valid_602320 != nil:
-    section.add "Id", valid_602320
+  if valid_606520 != nil:
+    section.add "Id", valid_606520
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2657,41 +2657,41 @@ proc validate_UpdateHostedZoneComment_602318(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602321 = header.getOrDefault("X-Amz-Signature")
-  valid_602321 = validateParameter(valid_602321, JString, required = false,
+  var valid_606521 = header.getOrDefault("X-Amz-Signature")
+  valid_606521 = validateParameter(valid_606521, JString, required = false,
                                  default = nil)
-  if valid_602321 != nil:
-    section.add "X-Amz-Signature", valid_602321
-  var valid_602322 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602322 = validateParameter(valid_602322, JString, required = false,
+  if valid_606521 != nil:
+    section.add "X-Amz-Signature", valid_606521
+  var valid_606522 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606522 = validateParameter(valid_606522, JString, required = false,
                                  default = nil)
-  if valid_602322 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602322
-  var valid_602323 = header.getOrDefault("X-Amz-Date")
-  valid_602323 = validateParameter(valid_602323, JString, required = false,
+  if valid_606522 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606522
+  var valid_606523 = header.getOrDefault("X-Amz-Date")
+  valid_606523 = validateParameter(valid_606523, JString, required = false,
                                  default = nil)
-  if valid_602323 != nil:
-    section.add "X-Amz-Date", valid_602323
-  var valid_602324 = header.getOrDefault("X-Amz-Credential")
-  valid_602324 = validateParameter(valid_602324, JString, required = false,
+  if valid_606523 != nil:
+    section.add "X-Amz-Date", valid_606523
+  var valid_606524 = header.getOrDefault("X-Amz-Credential")
+  valid_606524 = validateParameter(valid_606524, JString, required = false,
                                  default = nil)
-  if valid_602324 != nil:
-    section.add "X-Amz-Credential", valid_602324
-  var valid_602325 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602325 = validateParameter(valid_602325, JString, required = false,
+  if valid_606524 != nil:
+    section.add "X-Amz-Credential", valid_606524
+  var valid_606525 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606525 = validateParameter(valid_606525, JString, required = false,
                                  default = nil)
-  if valid_602325 != nil:
-    section.add "X-Amz-Security-Token", valid_602325
-  var valid_602326 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602326 = validateParameter(valid_602326, JString, required = false,
+  if valid_606525 != nil:
+    section.add "X-Amz-Security-Token", valid_606525
+  var valid_606526 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606526 = validateParameter(valid_606526, JString, required = false,
                                  default = nil)
-  if valid_602326 != nil:
-    section.add "X-Amz-Algorithm", valid_602326
-  var valid_602327 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602327 = validateParameter(valid_602327, JString, required = false,
+  if valid_606526 != nil:
+    section.add "X-Amz-Algorithm", valid_606526
+  var valid_606527 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606527 = validateParameter(valid_606527, JString, required = false,
                                  default = nil)
-  if valid_602327 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602327
+  if valid_606527 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606527
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2702,41 +2702,41 @@ proc validate_UpdateHostedZoneComment_602318(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602329: Call_UpdateHostedZoneComment_602317; path: JsonNode;
+proc call*(call_606529: Call_UpdateHostedZoneComment_606517; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the comment for a specified hosted zone.
   ## 
-  let valid = call_602329.validator(path, query, header, formData, body)
-  let scheme = call_602329.pickScheme
+  let valid = call_606529.validator(path, query, header, formData, body)
+  let scheme = call_606529.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602329.url(scheme.get, call_602329.host, call_602329.base,
-                         call_602329.route, valid.getOrDefault("path"),
+  let url = call_606529.url(scheme.get, call_606529.host, call_606529.base,
+                         call_606529.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602329, url, valid)
+  result = atozHook(call_606529, url, valid)
 
-proc call*(call_602330: Call_UpdateHostedZoneComment_602317; body: JsonNode;
+proc call*(call_606530: Call_UpdateHostedZoneComment_606517; body: JsonNode;
           Id: string): Recallable =
   ## updateHostedZoneComment
   ## Updates the comment for a specified hosted zone.
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : The ID for the hosted zone that you want to update the comment for.
-  var path_602331 = newJObject()
-  var body_602332 = newJObject()
+  var path_606531 = newJObject()
+  var body_606532 = newJObject()
   if body != nil:
-    body_602332 = body
-  add(path_602331, "Id", newJString(Id))
-  result = call_602330.call(path_602331, nil, nil, nil, body_602332)
+    body_606532 = body
+  add(path_606531, "Id", newJString(Id))
+  result = call_606530.call(path_606531, nil, nil, nil, body_606532)
 
-var updateHostedZoneComment* = Call_UpdateHostedZoneComment_602317(
+var updateHostedZoneComment* = Call_UpdateHostedZoneComment_606517(
     name: "updateHostedZoneComment", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com", route: "/2013-04-01/hostedzone/{Id}",
-    validator: validate_UpdateHostedZoneComment_602318, base: "/",
-    url: url_UpdateHostedZoneComment_602319, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateHostedZoneComment_606518, base: "/",
+    url: url_UpdateHostedZoneComment_606519, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHostedZone_602303 = ref object of OpenApiRestCall_601389
-proc url_GetHostedZone_602305(protocol: Scheme; host: string; base: string;
+  Call_GetHostedZone_606503 = ref object of OpenApiRestCall_605589
+proc url_GetHostedZone_606505(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2756,7 +2756,7 @@ proc url_GetHostedZone_602305(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetHostedZone_602304(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetHostedZone_606504(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets information about a specified hosted zone including the four name servers assigned to the hosted zone.
   ## 
@@ -2767,11 +2767,11 @@ proc validate_GetHostedZone_602304(path: JsonNode; query: JsonNode; header: Json
   ##     : The ID of the hosted zone that you want to get information about.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602306 = path.getOrDefault("Id")
-  valid_602306 = validateParameter(valid_602306, JString, required = true,
+  var valid_606506 = path.getOrDefault("Id")
+  valid_606506 = validateParameter(valid_606506, JString, required = true,
                                  default = nil)
-  if valid_602306 != nil:
-    section.add "Id", valid_602306
+  if valid_606506 != nil:
+    section.add "Id", valid_606506
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2784,76 +2784,76 @@ proc validate_GetHostedZone_602304(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602307 = header.getOrDefault("X-Amz-Signature")
-  valid_602307 = validateParameter(valid_602307, JString, required = false,
+  var valid_606507 = header.getOrDefault("X-Amz-Signature")
+  valid_606507 = validateParameter(valid_606507, JString, required = false,
                                  default = nil)
-  if valid_602307 != nil:
-    section.add "X-Amz-Signature", valid_602307
-  var valid_602308 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602308 = validateParameter(valid_602308, JString, required = false,
+  if valid_606507 != nil:
+    section.add "X-Amz-Signature", valid_606507
+  var valid_606508 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606508 = validateParameter(valid_606508, JString, required = false,
                                  default = nil)
-  if valid_602308 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602308
-  var valid_602309 = header.getOrDefault("X-Amz-Date")
-  valid_602309 = validateParameter(valid_602309, JString, required = false,
+  if valid_606508 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606508
+  var valid_606509 = header.getOrDefault("X-Amz-Date")
+  valid_606509 = validateParameter(valid_606509, JString, required = false,
                                  default = nil)
-  if valid_602309 != nil:
-    section.add "X-Amz-Date", valid_602309
-  var valid_602310 = header.getOrDefault("X-Amz-Credential")
-  valid_602310 = validateParameter(valid_602310, JString, required = false,
+  if valid_606509 != nil:
+    section.add "X-Amz-Date", valid_606509
+  var valid_606510 = header.getOrDefault("X-Amz-Credential")
+  valid_606510 = validateParameter(valid_606510, JString, required = false,
                                  default = nil)
-  if valid_602310 != nil:
-    section.add "X-Amz-Credential", valid_602310
-  var valid_602311 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602311 = validateParameter(valid_602311, JString, required = false,
+  if valid_606510 != nil:
+    section.add "X-Amz-Credential", valid_606510
+  var valid_606511 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606511 = validateParameter(valid_606511, JString, required = false,
                                  default = nil)
-  if valid_602311 != nil:
-    section.add "X-Amz-Security-Token", valid_602311
-  var valid_602312 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602312 = validateParameter(valid_602312, JString, required = false,
+  if valid_606511 != nil:
+    section.add "X-Amz-Security-Token", valid_606511
+  var valid_606512 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606512 = validateParameter(valid_606512, JString, required = false,
                                  default = nil)
-  if valid_602312 != nil:
-    section.add "X-Amz-Algorithm", valid_602312
-  var valid_602313 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602313 = validateParameter(valid_602313, JString, required = false,
+  if valid_606512 != nil:
+    section.add "X-Amz-Algorithm", valid_606512
+  var valid_606513 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606513 = validateParameter(valid_606513, JString, required = false,
                                  default = nil)
-  if valid_602313 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602313
+  if valid_606513 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606513
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602314: Call_GetHostedZone_602303; path: JsonNode; query: JsonNode;
+proc call*(call_606514: Call_GetHostedZone_606503; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about a specified hosted zone including the four name servers assigned to the hosted zone.
   ## 
-  let valid = call_602314.validator(path, query, header, formData, body)
-  let scheme = call_602314.pickScheme
+  let valid = call_606514.validator(path, query, header, formData, body)
+  let scheme = call_606514.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602314.url(scheme.get, call_602314.host, call_602314.base,
-                         call_602314.route, valid.getOrDefault("path"),
+  let url = call_606514.url(scheme.get, call_606514.host, call_606514.base,
+                         call_606514.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602314, url, valid)
+  result = atozHook(call_606514, url, valid)
 
-proc call*(call_602315: Call_GetHostedZone_602303; Id: string): Recallable =
+proc call*(call_606515: Call_GetHostedZone_606503; Id: string): Recallable =
   ## getHostedZone
   ## Gets information about a specified hosted zone including the four name servers assigned to the hosted zone.
   ##   Id: string (required)
   ##     : The ID of the hosted zone that you want to get information about.
-  var path_602316 = newJObject()
-  add(path_602316, "Id", newJString(Id))
-  result = call_602315.call(path_602316, nil, nil, nil, nil)
+  var path_606516 = newJObject()
+  add(path_606516, "Id", newJString(Id))
+  result = call_606515.call(path_606516, nil, nil, nil, nil)
 
-var getHostedZone* = Call_GetHostedZone_602303(name: "getHostedZone",
+var getHostedZone* = Call_GetHostedZone_606503(name: "getHostedZone",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
-    route: "/2013-04-01/hostedzone/{Id}", validator: validate_GetHostedZone_602304,
-    base: "/", url: url_GetHostedZone_602305, schemes: {Scheme.Https, Scheme.Http})
+    route: "/2013-04-01/hostedzone/{Id}", validator: validate_GetHostedZone_606504,
+    base: "/", url: url_GetHostedZone_606505, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteHostedZone_602333 = ref object of OpenApiRestCall_601389
-proc url_DeleteHostedZone_602335(protocol: Scheme; host: string; base: string;
+  Call_DeleteHostedZone_606533 = ref object of OpenApiRestCall_605589
+proc url_DeleteHostedZone_606535(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2873,7 +2873,7 @@ proc url_DeleteHostedZone_602335(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteHostedZone_602334(path: JsonNode; query: JsonNode;
+proc validate_DeleteHostedZone_606534(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes a hosted zone.</p> <p>If the hosted zone was created by another service, such as AWS Cloud Map, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DeleteHostedZone.html#delete-public-hosted-zone-created-by-another-service">Deleting Public Hosted Zones That Were Created by Another Service</a> in the <i>Amazon Route 53 Developer Guide</i> for information about how to delete it. (The process is the same for public and private hosted zones that were created by another service.)</p> <p>If you want to keep your domain registration but you want to stop routing internet traffic to your website or web application, we recommend that you delete resource record sets in the hosted zone instead of deleting the hosted zone.</p> <important> <p>If you delete a hosted zone, you can't undelete it. You must create a new hosted zone and update the name servers for your domain registration, which can require up to 48 hours to take effect. (If you delegated responsibility for a subdomain to a hosted zone and you delete the child hosted zone, you must update the name servers in the parent hosted zone.) In addition, if you delete a hosted zone, someone could hijack the domain and route traffic to their own resources using your domain name.</p> </important> <p>If you want to avoid the monthly charge for the hosted zone, you can transfer DNS service for the domain to a free DNS service. When you transfer DNS service, you have to update the name servers for the domain registration. If the domain is registered with Route 53, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_UpdateDomainNameservers.html">UpdateDomainNameservers</a> for information about how to replace Route 53 name servers with name servers for the new DNS service. If the domain is registered with another registrar, use the method provided by the registrar to update name servers for the domain registration. For more information, perform an internet search on "free DNS service."</p> <p>You can delete a hosted zone only if it contains only the default SOA record and NS resource record sets. If the hosted zone contains other resource record sets, you must delete them before you can delete the hosted zone. If you try to delete a hosted zone that contains other resource record sets, the request fails, and Route 53 returns a <code>HostedZoneNotEmpty</code> error. For information about deleting records from your hosted zone, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a>.</p> <p>To verify that the hosted zone has been deleted, do one of the following:</p> <ul> <li> <p>Use the <code>GetHostedZone</code> action to request information about the hosted zone.</p> </li> <li> <p>Use the <code>ListHostedZones</code> action to get a list of the hosted zones associated with the current AWS account.</p> </li> </ul>
@@ -2885,11 +2885,11 @@ proc validate_DeleteHostedZone_602334(path: JsonNode; query: JsonNode;
   ##     : The ID of the hosted zone you want to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602336 = path.getOrDefault("Id")
-  valid_602336 = validateParameter(valid_602336, JString, required = true,
+  var valid_606536 = path.getOrDefault("Id")
+  valid_606536 = validateParameter(valid_606536, JString, required = true,
                                  default = nil)
-  if valid_602336 != nil:
-    section.add "Id", valid_602336
+  if valid_606536 != nil:
+    section.add "Id", valid_606536
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2902,77 +2902,77 @@ proc validate_DeleteHostedZone_602334(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602337 = header.getOrDefault("X-Amz-Signature")
-  valid_602337 = validateParameter(valid_602337, JString, required = false,
+  var valid_606537 = header.getOrDefault("X-Amz-Signature")
+  valid_606537 = validateParameter(valid_606537, JString, required = false,
                                  default = nil)
-  if valid_602337 != nil:
-    section.add "X-Amz-Signature", valid_602337
-  var valid_602338 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602338 = validateParameter(valid_602338, JString, required = false,
+  if valid_606537 != nil:
+    section.add "X-Amz-Signature", valid_606537
+  var valid_606538 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606538 = validateParameter(valid_606538, JString, required = false,
                                  default = nil)
-  if valid_602338 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602338
-  var valid_602339 = header.getOrDefault("X-Amz-Date")
-  valid_602339 = validateParameter(valid_602339, JString, required = false,
+  if valid_606538 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606538
+  var valid_606539 = header.getOrDefault("X-Amz-Date")
+  valid_606539 = validateParameter(valid_606539, JString, required = false,
                                  default = nil)
-  if valid_602339 != nil:
-    section.add "X-Amz-Date", valid_602339
-  var valid_602340 = header.getOrDefault("X-Amz-Credential")
-  valid_602340 = validateParameter(valid_602340, JString, required = false,
+  if valid_606539 != nil:
+    section.add "X-Amz-Date", valid_606539
+  var valid_606540 = header.getOrDefault("X-Amz-Credential")
+  valid_606540 = validateParameter(valid_606540, JString, required = false,
                                  default = nil)
-  if valid_602340 != nil:
-    section.add "X-Amz-Credential", valid_602340
-  var valid_602341 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602341 = validateParameter(valid_602341, JString, required = false,
+  if valid_606540 != nil:
+    section.add "X-Amz-Credential", valid_606540
+  var valid_606541 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606541 = validateParameter(valid_606541, JString, required = false,
                                  default = nil)
-  if valid_602341 != nil:
-    section.add "X-Amz-Security-Token", valid_602341
-  var valid_602342 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602342 = validateParameter(valid_602342, JString, required = false,
+  if valid_606541 != nil:
+    section.add "X-Amz-Security-Token", valid_606541
+  var valid_606542 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606542 = validateParameter(valid_606542, JString, required = false,
                                  default = nil)
-  if valid_602342 != nil:
-    section.add "X-Amz-Algorithm", valid_602342
-  var valid_602343 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602343 = validateParameter(valid_602343, JString, required = false,
+  if valid_606542 != nil:
+    section.add "X-Amz-Algorithm", valid_606542
+  var valid_606543 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606543 = validateParameter(valid_606543, JString, required = false,
                                  default = nil)
-  if valid_602343 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602343
+  if valid_606543 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606543
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602344: Call_DeleteHostedZone_602333; path: JsonNode;
+proc call*(call_606544: Call_DeleteHostedZone_606533; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a hosted zone.</p> <p>If the hosted zone was created by another service, such as AWS Cloud Map, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DeleteHostedZone.html#delete-public-hosted-zone-created-by-another-service">Deleting Public Hosted Zones That Were Created by Another Service</a> in the <i>Amazon Route 53 Developer Guide</i> for information about how to delete it. (The process is the same for public and private hosted zones that were created by another service.)</p> <p>If you want to keep your domain registration but you want to stop routing internet traffic to your website or web application, we recommend that you delete resource record sets in the hosted zone instead of deleting the hosted zone.</p> <important> <p>If you delete a hosted zone, you can't undelete it. You must create a new hosted zone and update the name servers for your domain registration, which can require up to 48 hours to take effect. (If you delegated responsibility for a subdomain to a hosted zone and you delete the child hosted zone, you must update the name servers in the parent hosted zone.) In addition, if you delete a hosted zone, someone could hijack the domain and route traffic to their own resources using your domain name.</p> </important> <p>If you want to avoid the monthly charge for the hosted zone, you can transfer DNS service for the domain to a free DNS service. When you transfer DNS service, you have to update the name servers for the domain registration. If the domain is registered with Route 53, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_UpdateDomainNameservers.html">UpdateDomainNameservers</a> for information about how to replace Route 53 name servers with name servers for the new DNS service. If the domain is registered with another registrar, use the method provided by the registrar to update name servers for the domain registration. For more information, perform an internet search on "free DNS service."</p> <p>You can delete a hosted zone only if it contains only the default SOA record and NS resource record sets. If the hosted zone contains other resource record sets, you must delete them before you can delete the hosted zone. If you try to delete a hosted zone that contains other resource record sets, the request fails, and Route 53 returns a <code>HostedZoneNotEmpty</code> error. For information about deleting records from your hosted zone, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a>.</p> <p>To verify that the hosted zone has been deleted, do one of the following:</p> <ul> <li> <p>Use the <code>GetHostedZone</code> action to request information about the hosted zone.</p> </li> <li> <p>Use the <code>ListHostedZones</code> action to get a list of the hosted zones associated with the current AWS account.</p> </li> </ul>
   ## 
-  let valid = call_602344.validator(path, query, header, formData, body)
-  let scheme = call_602344.pickScheme
+  let valid = call_606544.validator(path, query, header, formData, body)
+  let scheme = call_606544.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602344.url(scheme.get, call_602344.host, call_602344.base,
-                         call_602344.route, valid.getOrDefault("path"),
+  let url = call_606544.url(scheme.get, call_606544.host, call_606544.base,
+                         call_606544.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602344, url, valid)
+  result = atozHook(call_606544, url, valid)
 
-proc call*(call_602345: Call_DeleteHostedZone_602333; Id: string): Recallable =
+proc call*(call_606545: Call_DeleteHostedZone_606533; Id: string): Recallable =
   ## deleteHostedZone
   ## <p>Deletes a hosted zone.</p> <p>If the hosted zone was created by another service, such as AWS Cloud Map, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DeleteHostedZone.html#delete-public-hosted-zone-created-by-another-service">Deleting Public Hosted Zones That Were Created by Another Service</a> in the <i>Amazon Route 53 Developer Guide</i> for information about how to delete it. (The process is the same for public and private hosted zones that were created by another service.)</p> <p>If you want to keep your domain registration but you want to stop routing internet traffic to your website or web application, we recommend that you delete resource record sets in the hosted zone instead of deleting the hosted zone.</p> <important> <p>If you delete a hosted zone, you can't undelete it. You must create a new hosted zone and update the name servers for your domain registration, which can require up to 48 hours to take effect. (If you delegated responsibility for a subdomain to a hosted zone and you delete the child hosted zone, you must update the name servers in the parent hosted zone.) In addition, if you delete a hosted zone, someone could hijack the domain and route traffic to their own resources using your domain name.</p> </important> <p>If you want to avoid the monthly charge for the hosted zone, you can transfer DNS service for the domain to a free DNS service. When you transfer DNS service, you have to update the name servers for the domain registration. If the domain is registered with Route 53, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_domains_UpdateDomainNameservers.html">UpdateDomainNameservers</a> for information about how to replace Route 53 name servers with name servers for the new DNS service. If the domain is registered with another registrar, use the method provided by the registrar to update name servers for the domain registration. For more information, perform an internet search on "free DNS service."</p> <p>You can delete a hosted zone only if it contains only the default SOA record and NS resource record sets. If the hosted zone contains other resource record sets, you must delete them before you can delete the hosted zone. If you try to delete a hosted zone that contains other resource record sets, the request fails, and Route 53 returns a <code>HostedZoneNotEmpty</code> error. For information about deleting records from your hosted zone, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_ChangeResourceRecordSets.html">ChangeResourceRecordSets</a>.</p> <p>To verify that the hosted zone has been deleted, do one of the following:</p> <ul> <li> <p>Use the <code>GetHostedZone</code> action to request information about the hosted zone.</p> </li> <li> <p>Use the <code>ListHostedZones</code> action to get a list of the hosted zones associated with the current AWS account.</p> </li> </ul>
   ##   Id: string (required)
   ##     : The ID of the hosted zone you want to delete.
-  var path_602346 = newJObject()
-  add(path_602346, "Id", newJString(Id))
-  result = call_602345.call(path_602346, nil, nil, nil, nil)
+  var path_606546 = newJObject()
+  add(path_606546, "Id", newJString(Id))
+  result = call_606545.call(path_606546, nil, nil, nil, nil)
 
-var deleteHostedZone* = Call_DeleteHostedZone_602333(name: "deleteHostedZone",
+var deleteHostedZone* = Call_DeleteHostedZone_606533(name: "deleteHostedZone",
     meth: HttpMethod.HttpDelete, host: "route53.amazonaws.com",
-    route: "/2013-04-01/hostedzone/{Id}", validator: validate_DeleteHostedZone_602334,
-    base: "/", url: url_DeleteHostedZone_602335,
+    route: "/2013-04-01/hostedzone/{Id}", validator: validate_DeleteHostedZone_606534,
+    base: "/", url: url_DeleteHostedZone_606535,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetQueryLoggingConfig_602347 = ref object of OpenApiRestCall_601389
-proc url_GetQueryLoggingConfig_602349(protocol: Scheme; host: string; base: string;
+  Call_GetQueryLoggingConfig_606547 = ref object of OpenApiRestCall_605589
+proc url_GetQueryLoggingConfig_606549(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2992,7 +2992,7 @@ proc url_GetQueryLoggingConfig_602349(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & hydrated.get
 
-proc validate_GetQueryLoggingConfig_602348(path: JsonNode; query: JsonNode;
+proc validate_GetQueryLoggingConfig_606548(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets information about a specified configuration for DNS query logging.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a> and <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a>.</p>
   ## 
@@ -3003,11 +3003,11 @@ proc validate_GetQueryLoggingConfig_602348(path: JsonNode; query: JsonNode;
   ##     : The ID of the configuration for DNS query logging that you want to get information about.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602350 = path.getOrDefault("Id")
-  valid_602350 = validateParameter(valid_602350, JString, required = true,
+  var valid_606550 = path.getOrDefault("Id")
+  valid_606550 = validateParameter(valid_606550, JString, required = true,
                                  default = nil)
-  if valid_602350 != nil:
-    section.add "Id", valid_602350
+  if valid_606550 != nil:
+    section.add "Id", valid_606550
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3020,77 +3020,77 @@ proc validate_GetQueryLoggingConfig_602348(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602351 = header.getOrDefault("X-Amz-Signature")
-  valid_602351 = validateParameter(valid_602351, JString, required = false,
+  var valid_606551 = header.getOrDefault("X-Amz-Signature")
+  valid_606551 = validateParameter(valid_606551, JString, required = false,
                                  default = nil)
-  if valid_602351 != nil:
-    section.add "X-Amz-Signature", valid_602351
-  var valid_602352 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602352 = validateParameter(valid_602352, JString, required = false,
+  if valid_606551 != nil:
+    section.add "X-Amz-Signature", valid_606551
+  var valid_606552 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606552 = validateParameter(valid_606552, JString, required = false,
                                  default = nil)
-  if valid_602352 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602352
-  var valid_602353 = header.getOrDefault("X-Amz-Date")
-  valid_602353 = validateParameter(valid_602353, JString, required = false,
+  if valid_606552 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606552
+  var valid_606553 = header.getOrDefault("X-Amz-Date")
+  valid_606553 = validateParameter(valid_606553, JString, required = false,
                                  default = nil)
-  if valid_602353 != nil:
-    section.add "X-Amz-Date", valid_602353
-  var valid_602354 = header.getOrDefault("X-Amz-Credential")
-  valid_602354 = validateParameter(valid_602354, JString, required = false,
+  if valid_606553 != nil:
+    section.add "X-Amz-Date", valid_606553
+  var valid_606554 = header.getOrDefault("X-Amz-Credential")
+  valid_606554 = validateParameter(valid_606554, JString, required = false,
                                  default = nil)
-  if valid_602354 != nil:
-    section.add "X-Amz-Credential", valid_602354
-  var valid_602355 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602355 = validateParameter(valid_602355, JString, required = false,
+  if valid_606554 != nil:
+    section.add "X-Amz-Credential", valid_606554
+  var valid_606555 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606555 = validateParameter(valid_606555, JString, required = false,
                                  default = nil)
-  if valid_602355 != nil:
-    section.add "X-Amz-Security-Token", valid_602355
-  var valid_602356 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602356 = validateParameter(valid_602356, JString, required = false,
+  if valid_606555 != nil:
+    section.add "X-Amz-Security-Token", valid_606555
+  var valid_606556 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606556 = validateParameter(valid_606556, JString, required = false,
                                  default = nil)
-  if valid_602356 != nil:
-    section.add "X-Amz-Algorithm", valid_602356
-  var valid_602357 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602357 = validateParameter(valid_602357, JString, required = false,
+  if valid_606556 != nil:
+    section.add "X-Amz-Algorithm", valid_606556
+  var valid_606557 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606557 = validateParameter(valid_606557, JString, required = false,
                                  default = nil)
-  if valid_602357 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602357
+  if valid_606557 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606557
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602358: Call_GetQueryLoggingConfig_602347; path: JsonNode;
+proc call*(call_606558: Call_GetQueryLoggingConfig_606547; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about a specified configuration for DNS query logging.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a> and <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a>.</p>
   ## 
-  let valid = call_602358.validator(path, query, header, formData, body)
-  let scheme = call_602358.pickScheme
+  let valid = call_606558.validator(path, query, header, formData, body)
+  let scheme = call_606558.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602358.url(scheme.get, call_602358.host, call_602358.base,
-                         call_602358.route, valid.getOrDefault("path"),
+  let url = call_606558.url(scheme.get, call_606558.host, call_606558.base,
+                         call_606558.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602358, url, valid)
+  result = atozHook(call_606558, url, valid)
 
-proc call*(call_602359: Call_GetQueryLoggingConfig_602347; Id: string): Recallable =
+proc call*(call_606559: Call_GetQueryLoggingConfig_606547; Id: string): Recallable =
   ## getQueryLoggingConfig
   ## <p>Gets information about a specified configuration for DNS query logging.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a> and <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/query-logs.html">Logging DNS Queries</a>.</p>
   ##   Id: string (required)
   ##     : The ID of the configuration for DNS query logging that you want to get information about.
-  var path_602360 = newJObject()
-  add(path_602360, "Id", newJString(Id))
-  result = call_602359.call(path_602360, nil, nil, nil, nil)
+  var path_606560 = newJObject()
+  add(path_606560, "Id", newJString(Id))
+  result = call_606559.call(path_606560, nil, nil, nil, nil)
 
-var getQueryLoggingConfig* = Call_GetQueryLoggingConfig_602347(
+var getQueryLoggingConfig* = Call_GetQueryLoggingConfig_606547(
     name: "getQueryLoggingConfig", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/queryloggingconfig/{Id}",
-    validator: validate_GetQueryLoggingConfig_602348, base: "/",
-    url: url_GetQueryLoggingConfig_602349, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetQueryLoggingConfig_606548, base: "/",
+    url: url_GetQueryLoggingConfig_606549, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteQueryLoggingConfig_602361 = ref object of OpenApiRestCall_601389
-proc url_DeleteQueryLoggingConfig_602363(protocol: Scheme; host: string;
+  Call_DeleteQueryLoggingConfig_606561 = ref object of OpenApiRestCall_605589
+proc url_DeleteQueryLoggingConfig_606563(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -3111,7 +3111,7 @@ proc url_DeleteQueryLoggingConfig_602363(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteQueryLoggingConfig_602362(path: JsonNode; query: JsonNode;
+proc validate_DeleteQueryLoggingConfig_606562(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a configuration for DNS query logging. If you delete a configuration, Amazon Route 53 stops sending query logs to CloudWatch Logs. Route 53 doesn't delete any logs that are already in CloudWatch Logs.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a>.</p>
   ## 
@@ -3122,11 +3122,11 @@ proc validate_DeleteQueryLoggingConfig_602362(path: JsonNode; query: JsonNode;
   ##     : The ID of the configuration that you want to delete. 
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602364 = path.getOrDefault("Id")
-  valid_602364 = validateParameter(valid_602364, JString, required = true,
+  var valid_606564 = path.getOrDefault("Id")
+  valid_606564 = validateParameter(valid_606564, JString, required = true,
                                  default = nil)
-  if valid_602364 != nil:
-    section.add "Id", valid_602364
+  if valid_606564 != nil:
+    section.add "Id", valid_606564
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3139,77 +3139,77 @@ proc validate_DeleteQueryLoggingConfig_602362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602365 = header.getOrDefault("X-Amz-Signature")
-  valid_602365 = validateParameter(valid_602365, JString, required = false,
+  var valid_606565 = header.getOrDefault("X-Amz-Signature")
+  valid_606565 = validateParameter(valid_606565, JString, required = false,
                                  default = nil)
-  if valid_602365 != nil:
-    section.add "X-Amz-Signature", valid_602365
-  var valid_602366 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602366 = validateParameter(valid_602366, JString, required = false,
+  if valid_606565 != nil:
+    section.add "X-Amz-Signature", valid_606565
+  var valid_606566 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606566 = validateParameter(valid_606566, JString, required = false,
                                  default = nil)
-  if valid_602366 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602366
-  var valid_602367 = header.getOrDefault("X-Amz-Date")
-  valid_602367 = validateParameter(valid_602367, JString, required = false,
+  if valid_606566 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606566
+  var valid_606567 = header.getOrDefault("X-Amz-Date")
+  valid_606567 = validateParameter(valid_606567, JString, required = false,
                                  default = nil)
-  if valid_602367 != nil:
-    section.add "X-Amz-Date", valid_602367
-  var valid_602368 = header.getOrDefault("X-Amz-Credential")
-  valid_602368 = validateParameter(valid_602368, JString, required = false,
+  if valid_606567 != nil:
+    section.add "X-Amz-Date", valid_606567
+  var valid_606568 = header.getOrDefault("X-Amz-Credential")
+  valid_606568 = validateParameter(valid_606568, JString, required = false,
                                  default = nil)
-  if valid_602368 != nil:
-    section.add "X-Amz-Credential", valid_602368
-  var valid_602369 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602369 = validateParameter(valid_602369, JString, required = false,
+  if valid_606568 != nil:
+    section.add "X-Amz-Credential", valid_606568
+  var valid_606569 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606569 = validateParameter(valid_606569, JString, required = false,
                                  default = nil)
-  if valid_602369 != nil:
-    section.add "X-Amz-Security-Token", valid_602369
-  var valid_602370 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602370 = validateParameter(valid_602370, JString, required = false,
+  if valid_606569 != nil:
+    section.add "X-Amz-Security-Token", valid_606569
+  var valid_606570 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606570 = validateParameter(valid_606570, JString, required = false,
                                  default = nil)
-  if valid_602370 != nil:
-    section.add "X-Amz-Algorithm", valid_602370
-  var valid_602371 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602371 = validateParameter(valid_602371, JString, required = false,
+  if valid_606570 != nil:
+    section.add "X-Amz-Algorithm", valid_606570
+  var valid_606571 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606571 = validateParameter(valid_606571, JString, required = false,
                                  default = nil)
-  if valid_602371 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602371
+  if valid_606571 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606571
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602372: Call_DeleteQueryLoggingConfig_602361; path: JsonNode;
+proc call*(call_606572: Call_DeleteQueryLoggingConfig_606561; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a configuration for DNS query logging. If you delete a configuration, Amazon Route 53 stops sending query logs to CloudWatch Logs. Route 53 doesn't delete any logs that are already in CloudWatch Logs.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a>.</p>
   ## 
-  let valid = call_602372.validator(path, query, header, formData, body)
-  let scheme = call_602372.pickScheme
+  let valid = call_606572.validator(path, query, header, formData, body)
+  let scheme = call_606572.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602372.url(scheme.get, call_602372.host, call_602372.base,
-                         call_602372.route, valid.getOrDefault("path"),
+  let url = call_606572.url(scheme.get, call_606572.host, call_606572.base,
+                         call_606572.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602372, url, valid)
+  result = atozHook(call_606572, url, valid)
 
-proc call*(call_602373: Call_DeleteQueryLoggingConfig_602361; Id: string): Recallable =
+proc call*(call_606573: Call_DeleteQueryLoggingConfig_606561; Id: string): Recallable =
   ## deleteQueryLoggingConfig
   ## <p>Deletes a configuration for DNS query logging. If you delete a configuration, Amazon Route 53 stops sending query logs to CloudWatch Logs. Route 53 doesn't delete any logs that are already in CloudWatch Logs.</p> <p>For more information about DNS query logs, see <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_CreateQueryLoggingConfig.html">CreateQueryLoggingConfig</a>.</p>
   ##   Id: string (required)
   ##     : The ID of the configuration that you want to delete. 
-  var path_602374 = newJObject()
-  add(path_602374, "Id", newJString(Id))
-  result = call_602373.call(path_602374, nil, nil, nil, nil)
+  var path_606574 = newJObject()
+  add(path_606574, "Id", newJString(Id))
+  result = call_606573.call(path_606574, nil, nil, nil, nil)
 
-var deleteQueryLoggingConfig* = Call_DeleteQueryLoggingConfig_602361(
+var deleteQueryLoggingConfig* = Call_DeleteQueryLoggingConfig_606561(
     name: "deleteQueryLoggingConfig", meth: HttpMethod.HttpDelete,
     host: "route53.amazonaws.com", route: "/2013-04-01/queryloggingconfig/{Id}",
-    validator: validate_DeleteQueryLoggingConfig_602362, base: "/",
-    url: url_DeleteQueryLoggingConfig_602363, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteQueryLoggingConfig_606562, base: "/",
+    url: url_DeleteQueryLoggingConfig_606563, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetReusableDelegationSet_602375 = ref object of OpenApiRestCall_601389
-proc url_GetReusableDelegationSet_602377(protocol: Scheme; host: string;
+  Call_GetReusableDelegationSet_606575 = ref object of OpenApiRestCall_605589
+proc url_GetReusableDelegationSet_606577(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -3230,7 +3230,7 @@ proc url_GetReusableDelegationSet_602377(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetReusableDelegationSet_602376(path: JsonNode; query: JsonNode;
+proc validate_GetReusableDelegationSet_606576(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves information about a specified reusable delegation set, including the four name servers that are assigned to the delegation set.
   ## 
@@ -3241,11 +3241,11 @@ proc validate_GetReusableDelegationSet_602376(path: JsonNode; query: JsonNode;
   ##     : The ID of the reusable delegation set that you want to get a list of name servers for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602378 = path.getOrDefault("Id")
-  valid_602378 = validateParameter(valid_602378, JString, required = true,
+  var valid_606578 = path.getOrDefault("Id")
+  valid_606578 = validateParameter(valid_606578, JString, required = true,
                                  default = nil)
-  if valid_602378 != nil:
-    section.add "Id", valid_602378
+  if valid_606578 != nil:
+    section.add "Id", valid_606578
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3258,77 +3258,77 @@ proc validate_GetReusableDelegationSet_602376(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602379 = header.getOrDefault("X-Amz-Signature")
-  valid_602379 = validateParameter(valid_602379, JString, required = false,
+  var valid_606579 = header.getOrDefault("X-Amz-Signature")
+  valid_606579 = validateParameter(valid_606579, JString, required = false,
                                  default = nil)
-  if valid_602379 != nil:
-    section.add "X-Amz-Signature", valid_602379
-  var valid_602380 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602380 = validateParameter(valid_602380, JString, required = false,
+  if valid_606579 != nil:
+    section.add "X-Amz-Signature", valid_606579
+  var valid_606580 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606580 = validateParameter(valid_606580, JString, required = false,
                                  default = nil)
-  if valid_602380 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602380
-  var valid_602381 = header.getOrDefault("X-Amz-Date")
-  valid_602381 = validateParameter(valid_602381, JString, required = false,
+  if valid_606580 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606580
+  var valid_606581 = header.getOrDefault("X-Amz-Date")
+  valid_606581 = validateParameter(valid_606581, JString, required = false,
                                  default = nil)
-  if valid_602381 != nil:
-    section.add "X-Amz-Date", valid_602381
-  var valid_602382 = header.getOrDefault("X-Amz-Credential")
-  valid_602382 = validateParameter(valid_602382, JString, required = false,
+  if valid_606581 != nil:
+    section.add "X-Amz-Date", valid_606581
+  var valid_606582 = header.getOrDefault("X-Amz-Credential")
+  valid_606582 = validateParameter(valid_606582, JString, required = false,
                                  default = nil)
-  if valid_602382 != nil:
-    section.add "X-Amz-Credential", valid_602382
-  var valid_602383 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602383 = validateParameter(valid_602383, JString, required = false,
+  if valid_606582 != nil:
+    section.add "X-Amz-Credential", valid_606582
+  var valid_606583 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606583 = validateParameter(valid_606583, JString, required = false,
                                  default = nil)
-  if valid_602383 != nil:
-    section.add "X-Amz-Security-Token", valid_602383
-  var valid_602384 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602384 = validateParameter(valid_602384, JString, required = false,
+  if valid_606583 != nil:
+    section.add "X-Amz-Security-Token", valid_606583
+  var valid_606584 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606584 = validateParameter(valid_606584, JString, required = false,
                                  default = nil)
-  if valid_602384 != nil:
-    section.add "X-Amz-Algorithm", valid_602384
-  var valid_602385 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602385 = validateParameter(valid_602385, JString, required = false,
+  if valid_606584 != nil:
+    section.add "X-Amz-Algorithm", valid_606584
+  var valid_606585 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606585 = validateParameter(valid_606585, JString, required = false,
                                  default = nil)
-  if valid_602385 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602385
+  if valid_606585 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606585
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602386: Call_GetReusableDelegationSet_602375; path: JsonNode;
+proc call*(call_606586: Call_GetReusableDelegationSet_606575; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves information about a specified reusable delegation set, including the four name servers that are assigned to the delegation set.
   ## 
-  let valid = call_602386.validator(path, query, header, formData, body)
-  let scheme = call_602386.pickScheme
+  let valid = call_606586.validator(path, query, header, formData, body)
+  let scheme = call_606586.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602386.url(scheme.get, call_602386.host, call_602386.base,
-                         call_602386.route, valid.getOrDefault("path"),
+  let url = call_606586.url(scheme.get, call_606586.host, call_606586.base,
+                         call_606586.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602386, url, valid)
+  result = atozHook(call_606586, url, valid)
 
-proc call*(call_602387: Call_GetReusableDelegationSet_602375; Id: string): Recallable =
+proc call*(call_606587: Call_GetReusableDelegationSet_606575; Id: string): Recallable =
   ## getReusableDelegationSet
   ## Retrieves information about a specified reusable delegation set, including the four name servers that are assigned to the delegation set.
   ##   Id: string (required)
   ##     : The ID of the reusable delegation set that you want to get a list of name servers for.
-  var path_602388 = newJObject()
-  add(path_602388, "Id", newJString(Id))
-  result = call_602387.call(path_602388, nil, nil, nil, nil)
+  var path_606588 = newJObject()
+  add(path_606588, "Id", newJString(Id))
+  result = call_606587.call(path_606588, nil, nil, nil, nil)
 
-var getReusableDelegationSet* = Call_GetReusableDelegationSet_602375(
+var getReusableDelegationSet* = Call_GetReusableDelegationSet_606575(
     name: "getReusableDelegationSet", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/delegationset/{Id}",
-    validator: validate_GetReusableDelegationSet_602376, base: "/",
-    url: url_GetReusableDelegationSet_602377, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetReusableDelegationSet_606576, base: "/",
+    url: url_GetReusableDelegationSet_606577, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteReusableDelegationSet_602389 = ref object of OpenApiRestCall_601389
-proc url_DeleteReusableDelegationSet_602391(protocol: Scheme; host: string;
+  Call_DeleteReusableDelegationSet_606589 = ref object of OpenApiRestCall_605589
+proc url_DeleteReusableDelegationSet_606591(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3348,7 +3348,7 @@ proc url_DeleteReusableDelegationSet_602391(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteReusableDelegationSet_602390(path: JsonNode; query: JsonNode;
+proc validate_DeleteReusableDelegationSet_606590(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a reusable delegation set.</p> <important> <p>You can delete a reusable delegation set only if it isn't associated with any hosted zones.</p> </important> <p>To verify that the reusable delegation set is not associated with any hosted zones, submit a <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetReusableDelegationSet.html">GetReusableDelegationSet</a> request and specify the ID of the reusable delegation set that you want to delete.</p>
   ## 
@@ -3359,11 +3359,11 @@ proc validate_DeleteReusableDelegationSet_602390(path: JsonNode; query: JsonNode
   ##     : The ID of the reusable delegation set that you want to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602392 = path.getOrDefault("Id")
-  valid_602392 = validateParameter(valid_602392, JString, required = true,
+  var valid_606592 = path.getOrDefault("Id")
+  valid_606592 = validateParameter(valid_606592, JString, required = true,
                                  default = nil)
-  if valid_602392 != nil:
-    section.add "Id", valid_602392
+  if valid_606592 != nil:
+    section.add "Id", valid_606592
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3376,78 +3376,78 @@ proc validate_DeleteReusableDelegationSet_602390(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602393 = header.getOrDefault("X-Amz-Signature")
-  valid_602393 = validateParameter(valid_602393, JString, required = false,
+  var valid_606593 = header.getOrDefault("X-Amz-Signature")
+  valid_606593 = validateParameter(valid_606593, JString, required = false,
                                  default = nil)
-  if valid_602393 != nil:
-    section.add "X-Amz-Signature", valid_602393
-  var valid_602394 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602394 = validateParameter(valid_602394, JString, required = false,
+  if valid_606593 != nil:
+    section.add "X-Amz-Signature", valid_606593
+  var valid_606594 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606594 = validateParameter(valid_606594, JString, required = false,
                                  default = nil)
-  if valid_602394 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602394
-  var valid_602395 = header.getOrDefault("X-Amz-Date")
-  valid_602395 = validateParameter(valid_602395, JString, required = false,
+  if valid_606594 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606594
+  var valid_606595 = header.getOrDefault("X-Amz-Date")
+  valid_606595 = validateParameter(valid_606595, JString, required = false,
                                  default = nil)
-  if valid_602395 != nil:
-    section.add "X-Amz-Date", valid_602395
-  var valid_602396 = header.getOrDefault("X-Amz-Credential")
-  valid_602396 = validateParameter(valid_602396, JString, required = false,
+  if valid_606595 != nil:
+    section.add "X-Amz-Date", valid_606595
+  var valid_606596 = header.getOrDefault("X-Amz-Credential")
+  valid_606596 = validateParameter(valid_606596, JString, required = false,
                                  default = nil)
-  if valid_602396 != nil:
-    section.add "X-Amz-Credential", valid_602396
-  var valid_602397 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602397 = validateParameter(valid_602397, JString, required = false,
+  if valid_606596 != nil:
+    section.add "X-Amz-Credential", valid_606596
+  var valid_606597 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606597 = validateParameter(valid_606597, JString, required = false,
                                  default = nil)
-  if valid_602397 != nil:
-    section.add "X-Amz-Security-Token", valid_602397
-  var valid_602398 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602398 = validateParameter(valid_602398, JString, required = false,
+  if valid_606597 != nil:
+    section.add "X-Amz-Security-Token", valid_606597
+  var valid_606598 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606598 = validateParameter(valid_606598, JString, required = false,
                                  default = nil)
-  if valid_602398 != nil:
-    section.add "X-Amz-Algorithm", valid_602398
-  var valid_602399 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602399 = validateParameter(valid_602399, JString, required = false,
+  if valid_606598 != nil:
+    section.add "X-Amz-Algorithm", valid_606598
+  var valid_606599 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606599 = validateParameter(valid_606599, JString, required = false,
                                  default = nil)
-  if valid_602399 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602399
+  if valid_606599 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606599
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602400: Call_DeleteReusableDelegationSet_602389; path: JsonNode;
+proc call*(call_606600: Call_DeleteReusableDelegationSet_606589; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a reusable delegation set.</p> <important> <p>You can delete a reusable delegation set only if it isn't associated with any hosted zones.</p> </important> <p>To verify that the reusable delegation set is not associated with any hosted zones, submit a <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetReusableDelegationSet.html">GetReusableDelegationSet</a> request and specify the ID of the reusable delegation set that you want to delete.</p>
   ## 
-  let valid = call_602400.validator(path, query, header, formData, body)
-  let scheme = call_602400.pickScheme
+  let valid = call_606600.validator(path, query, header, formData, body)
+  let scheme = call_606600.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602400.url(scheme.get, call_602400.host, call_602400.base,
-                         call_602400.route, valid.getOrDefault("path"),
+  let url = call_606600.url(scheme.get, call_606600.host, call_606600.base,
+                         call_606600.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602400, url, valid)
+  result = atozHook(call_606600, url, valid)
 
-proc call*(call_602401: Call_DeleteReusableDelegationSet_602389; Id: string): Recallable =
+proc call*(call_606601: Call_DeleteReusableDelegationSet_606589; Id: string): Recallable =
   ## deleteReusableDelegationSet
   ## <p>Deletes a reusable delegation set.</p> <important> <p>You can delete a reusable delegation set only if it isn't associated with any hosted zones.</p> </important> <p>To verify that the reusable delegation set is not associated with any hosted zones, submit a <a href="https://docs.aws.amazon.com/Route53/latest/APIReference/API_GetReusableDelegationSet.html">GetReusableDelegationSet</a> request and specify the ID of the reusable delegation set that you want to delete.</p>
   ##   Id: string (required)
   ##     : The ID of the reusable delegation set that you want to delete.
-  var path_602402 = newJObject()
-  add(path_602402, "Id", newJString(Id))
-  result = call_602401.call(path_602402, nil, nil, nil, nil)
+  var path_606602 = newJObject()
+  add(path_606602, "Id", newJString(Id))
+  result = call_606601.call(path_606602, nil, nil, nil, nil)
 
-var deleteReusableDelegationSet* = Call_DeleteReusableDelegationSet_602389(
+var deleteReusableDelegationSet* = Call_DeleteReusableDelegationSet_606589(
     name: "deleteReusableDelegationSet", meth: HttpMethod.HttpDelete,
     host: "route53.amazonaws.com", route: "/2013-04-01/delegationset/{Id}",
-    validator: validate_DeleteReusableDelegationSet_602390, base: "/",
-    url: url_DeleteReusableDelegationSet_602391,
+    validator: validate_DeleteReusableDelegationSet_606590, base: "/",
+    url: url_DeleteReusableDelegationSet_606591,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTrafficPolicyComment_602418 = ref object of OpenApiRestCall_601389
-proc url_UpdateTrafficPolicyComment_602420(protocol: Scheme; host: string;
+  Call_UpdateTrafficPolicyComment_606618 = ref object of OpenApiRestCall_605589
+proc url_UpdateTrafficPolicyComment_606620(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3470,7 +3470,7 @@ proc url_UpdateTrafficPolicyComment_602420(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateTrafficPolicyComment_602419(path: JsonNode; query: JsonNode;
+proc validate_UpdateTrafficPolicyComment_606619(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates the comment for a specified traffic policy version.
   ## 
@@ -3483,15 +3483,15 @@ proc validate_UpdateTrafficPolicyComment_602419(path: JsonNode; query: JsonNode;
   ##     : The value of <code>Id</code> for the traffic policy that you want to update the comment for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Version` field"
-  var valid_602421 = path.getOrDefault("Version")
-  valid_602421 = validateParameter(valid_602421, JInt, required = true, default = nil)
-  if valid_602421 != nil:
-    section.add "Version", valid_602421
-  var valid_602422 = path.getOrDefault("Id")
-  valid_602422 = validateParameter(valid_602422, JString, required = true,
+  var valid_606621 = path.getOrDefault("Version")
+  valid_606621 = validateParameter(valid_606621, JInt, required = true, default = nil)
+  if valid_606621 != nil:
+    section.add "Version", valid_606621
+  var valid_606622 = path.getOrDefault("Id")
+  valid_606622 = validateParameter(valid_606622, JString, required = true,
                                  default = nil)
-  if valid_602422 != nil:
-    section.add "Id", valid_602422
+  if valid_606622 != nil:
+    section.add "Id", valid_606622
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3504,41 +3504,41 @@ proc validate_UpdateTrafficPolicyComment_602419(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602423 = header.getOrDefault("X-Amz-Signature")
-  valid_602423 = validateParameter(valid_602423, JString, required = false,
+  var valid_606623 = header.getOrDefault("X-Amz-Signature")
+  valid_606623 = validateParameter(valid_606623, JString, required = false,
                                  default = nil)
-  if valid_602423 != nil:
-    section.add "X-Amz-Signature", valid_602423
-  var valid_602424 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602424 = validateParameter(valid_602424, JString, required = false,
+  if valid_606623 != nil:
+    section.add "X-Amz-Signature", valid_606623
+  var valid_606624 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606624 = validateParameter(valid_606624, JString, required = false,
                                  default = nil)
-  if valid_602424 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602424
-  var valid_602425 = header.getOrDefault("X-Amz-Date")
-  valid_602425 = validateParameter(valid_602425, JString, required = false,
+  if valid_606624 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606624
+  var valid_606625 = header.getOrDefault("X-Amz-Date")
+  valid_606625 = validateParameter(valid_606625, JString, required = false,
                                  default = nil)
-  if valid_602425 != nil:
-    section.add "X-Amz-Date", valid_602425
-  var valid_602426 = header.getOrDefault("X-Amz-Credential")
-  valid_602426 = validateParameter(valid_602426, JString, required = false,
+  if valid_606625 != nil:
+    section.add "X-Amz-Date", valid_606625
+  var valid_606626 = header.getOrDefault("X-Amz-Credential")
+  valid_606626 = validateParameter(valid_606626, JString, required = false,
                                  default = nil)
-  if valid_602426 != nil:
-    section.add "X-Amz-Credential", valid_602426
-  var valid_602427 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602427 = validateParameter(valid_602427, JString, required = false,
+  if valid_606626 != nil:
+    section.add "X-Amz-Credential", valid_606626
+  var valid_606627 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606627 = validateParameter(valid_606627, JString, required = false,
                                  default = nil)
-  if valid_602427 != nil:
-    section.add "X-Amz-Security-Token", valid_602427
-  var valid_602428 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602428 = validateParameter(valid_602428, JString, required = false,
+  if valid_606627 != nil:
+    section.add "X-Amz-Security-Token", valid_606627
+  var valid_606628 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606628 = validateParameter(valid_606628, JString, required = false,
                                  default = nil)
-  if valid_602428 != nil:
-    section.add "X-Amz-Algorithm", valid_602428
-  var valid_602429 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602429 = validateParameter(valid_602429, JString, required = false,
+  if valid_606628 != nil:
+    section.add "X-Amz-Algorithm", valid_606628
+  var valid_606629 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606629 = validateParameter(valid_606629, JString, required = false,
                                  default = nil)
-  if valid_602429 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602429
+  if valid_606629 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606629
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3549,20 +3549,20 @@ proc validate_UpdateTrafficPolicyComment_602419(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602431: Call_UpdateTrafficPolicyComment_602418; path: JsonNode;
+proc call*(call_606631: Call_UpdateTrafficPolicyComment_606618; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the comment for a specified traffic policy version.
   ## 
-  let valid = call_602431.validator(path, query, header, formData, body)
-  let scheme = call_602431.pickScheme
+  let valid = call_606631.validator(path, query, header, formData, body)
+  let scheme = call_606631.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602431.url(scheme.get, call_602431.host, call_602431.base,
-                         call_602431.route, valid.getOrDefault("path"),
+  let url = call_606631.url(scheme.get, call_606631.host, call_606631.base,
+                         call_606631.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602431, url, valid)
+  result = atozHook(call_606631, url, valid)
 
-proc call*(call_602432: Call_UpdateTrafficPolicyComment_602418; Version: int;
+proc call*(call_606632: Call_UpdateTrafficPolicyComment_606618; Version: int;
           body: JsonNode; Id: string): Recallable =
   ## updateTrafficPolicyComment
   ## Updates the comment for a specified traffic policy version.
@@ -3571,24 +3571,24 @@ proc call*(call_602432: Call_UpdateTrafficPolicyComment_602418; Version: int;
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : The value of <code>Id</code> for the traffic policy that you want to update the comment for.
-  var path_602433 = newJObject()
-  var body_602434 = newJObject()
-  add(path_602433, "Version", newJInt(Version))
+  var path_606633 = newJObject()
+  var body_606634 = newJObject()
+  add(path_606633, "Version", newJInt(Version))
   if body != nil:
-    body_602434 = body
-  add(path_602433, "Id", newJString(Id))
-  result = call_602432.call(path_602433, nil, nil, nil, body_602434)
+    body_606634 = body
+  add(path_606633, "Id", newJString(Id))
+  result = call_606632.call(path_606633, nil, nil, nil, body_606634)
 
-var updateTrafficPolicyComment* = Call_UpdateTrafficPolicyComment_602418(
+var updateTrafficPolicyComment* = Call_UpdateTrafficPolicyComment_606618(
     name: "updateTrafficPolicyComment", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicy/{Id}/{Version}",
-    validator: validate_UpdateTrafficPolicyComment_602419, base: "/",
-    url: url_UpdateTrafficPolicyComment_602420,
+    validator: validate_UpdateTrafficPolicyComment_606619, base: "/",
+    url: url_UpdateTrafficPolicyComment_606620,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTrafficPolicy_602403 = ref object of OpenApiRestCall_601389
-proc url_GetTrafficPolicy_602405(protocol: Scheme; host: string; base: string;
+  Call_GetTrafficPolicy_606603 = ref object of OpenApiRestCall_605589
+proc url_GetTrafficPolicy_606605(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3611,7 +3611,7 @@ proc url_GetTrafficPolicy_602405(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetTrafficPolicy_602404(path: JsonNode; query: JsonNode;
+proc validate_GetTrafficPolicy_606604(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Gets information about a specific traffic policy version.
@@ -3625,15 +3625,15 @@ proc validate_GetTrafficPolicy_602404(path: JsonNode; query: JsonNode;
   ##     : The ID of the traffic policy that you want to get information about.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Version` field"
-  var valid_602406 = path.getOrDefault("Version")
-  valid_602406 = validateParameter(valid_602406, JInt, required = true, default = nil)
-  if valid_602406 != nil:
-    section.add "Version", valid_602406
-  var valid_602407 = path.getOrDefault("Id")
-  valid_602407 = validateParameter(valid_602407, JString, required = true,
+  var valid_606606 = path.getOrDefault("Version")
+  valid_606606 = validateParameter(valid_606606, JInt, required = true, default = nil)
+  if valid_606606 != nil:
+    section.add "Version", valid_606606
+  var valid_606607 = path.getOrDefault("Id")
+  valid_606607 = validateParameter(valid_606607, JString, required = true,
                                  default = nil)
-  if valid_602407 != nil:
-    section.add "Id", valid_602407
+  if valid_606607 != nil:
+    section.add "Id", valid_606607
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3646,80 +3646,80 @@ proc validate_GetTrafficPolicy_602404(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602408 = header.getOrDefault("X-Amz-Signature")
-  valid_602408 = validateParameter(valid_602408, JString, required = false,
+  var valid_606608 = header.getOrDefault("X-Amz-Signature")
+  valid_606608 = validateParameter(valid_606608, JString, required = false,
                                  default = nil)
-  if valid_602408 != nil:
-    section.add "X-Amz-Signature", valid_602408
-  var valid_602409 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602409 = validateParameter(valid_602409, JString, required = false,
+  if valid_606608 != nil:
+    section.add "X-Amz-Signature", valid_606608
+  var valid_606609 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606609 = validateParameter(valid_606609, JString, required = false,
                                  default = nil)
-  if valid_602409 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602409
-  var valid_602410 = header.getOrDefault("X-Amz-Date")
-  valid_602410 = validateParameter(valid_602410, JString, required = false,
+  if valid_606609 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606609
+  var valid_606610 = header.getOrDefault("X-Amz-Date")
+  valid_606610 = validateParameter(valid_606610, JString, required = false,
                                  default = nil)
-  if valid_602410 != nil:
-    section.add "X-Amz-Date", valid_602410
-  var valid_602411 = header.getOrDefault("X-Amz-Credential")
-  valid_602411 = validateParameter(valid_602411, JString, required = false,
+  if valid_606610 != nil:
+    section.add "X-Amz-Date", valid_606610
+  var valid_606611 = header.getOrDefault("X-Amz-Credential")
+  valid_606611 = validateParameter(valid_606611, JString, required = false,
                                  default = nil)
-  if valid_602411 != nil:
-    section.add "X-Amz-Credential", valid_602411
-  var valid_602412 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602412 = validateParameter(valid_602412, JString, required = false,
+  if valid_606611 != nil:
+    section.add "X-Amz-Credential", valid_606611
+  var valid_606612 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606612 = validateParameter(valid_606612, JString, required = false,
                                  default = nil)
-  if valid_602412 != nil:
-    section.add "X-Amz-Security-Token", valid_602412
-  var valid_602413 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602413 = validateParameter(valid_602413, JString, required = false,
+  if valid_606612 != nil:
+    section.add "X-Amz-Security-Token", valid_606612
+  var valid_606613 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606613 = validateParameter(valid_606613, JString, required = false,
                                  default = nil)
-  if valid_602413 != nil:
-    section.add "X-Amz-Algorithm", valid_602413
-  var valid_602414 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602414 = validateParameter(valid_602414, JString, required = false,
+  if valid_606613 != nil:
+    section.add "X-Amz-Algorithm", valid_606613
+  var valid_606614 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606614 = validateParameter(valid_606614, JString, required = false,
                                  default = nil)
-  if valid_602414 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602414
+  if valid_606614 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606614
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602415: Call_GetTrafficPolicy_602403; path: JsonNode;
+proc call*(call_606615: Call_GetTrafficPolicy_606603; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about a specific traffic policy version.
   ## 
-  let valid = call_602415.validator(path, query, header, formData, body)
-  let scheme = call_602415.pickScheme
+  let valid = call_606615.validator(path, query, header, formData, body)
+  let scheme = call_606615.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602415.url(scheme.get, call_602415.host, call_602415.base,
-                         call_602415.route, valid.getOrDefault("path"),
+  let url = call_606615.url(scheme.get, call_606615.host, call_606615.base,
+                         call_606615.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602415, url, valid)
+  result = atozHook(call_606615, url, valid)
 
-proc call*(call_602416: Call_GetTrafficPolicy_602403; Version: int; Id: string): Recallable =
+proc call*(call_606616: Call_GetTrafficPolicy_606603; Version: int; Id: string): Recallable =
   ## getTrafficPolicy
   ## Gets information about a specific traffic policy version.
   ##   Version: int (required)
   ##          : The version number of the traffic policy that you want to get information about.
   ##   Id: string (required)
   ##     : The ID of the traffic policy that you want to get information about.
-  var path_602417 = newJObject()
-  add(path_602417, "Version", newJInt(Version))
-  add(path_602417, "Id", newJString(Id))
-  result = call_602416.call(path_602417, nil, nil, nil, nil)
+  var path_606617 = newJObject()
+  add(path_606617, "Version", newJInt(Version))
+  add(path_606617, "Id", newJString(Id))
+  result = call_606616.call(path_606617, nil, nil, nil, nil)
 
-var getTrafficPolicy* = Call_GetTrafficPolicy_602403(name: "getTrafficPolicy",
+var getTrafficPolicy* = Call_GetTrafficPolicy_606603(name: "getTrafficPolicy",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicy/{Id}/{Version}",
-    validator: validate_GetTrafficPolicy_602404, base: "/",
-    url: url_GetTrafficPolicy_602405, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetTrafficPolicy_606604, base: "/",
+    url: url_GetTrafficPolicy_606605, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTrafficPolicy_602435 = ref object of OpenApiRestCall_601389
-proc url_DeleteTrafficPolicy_602437(protocol: Scheme; host: string; base: string;
+  Call_DeleteTrafficPolicy_606635 = ref object of OpenApiRestCall_605589
+proc url_DeleteTrafficPolicy_606637(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3742,7 +3742,7 @@ proc url_DeleteTrafficPolicy_602437(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteTrafficPolicy_602436(path: JsonNode; query: JsonNode;
+proc validate_DeleteTrafficPolicy_606636(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Deletes a traffic policy.
@@ -3756,15 +3756,15 @@ proc validate_DeleteTrafficPolicy_602436(path: JsonNode; query: JsonNode;
   ##     : The ID of the traffic policy that you want to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Version` field"
-  var valid_602438 = path.getOrDefault("Version")
-  valid_602438 = validateParameter(valid_602438, JInt, required = true, default = nil)
-  if valid_602438 != nil:
-    section.add "Version", valid_602438
-  var valid_602439 = path.getOrDefault("Id")
-  valid_602439 = validateParameter(valid_602439, JString, required = true,
+  var valid_606638 = path.getOrDefault("Version")
+  valid_606638 = validateParameter(valid_606638, JInt, required = true, default = nil)
+  if valid_606638 != nil:
+    section.add "Version", valid_606638
+  var valid_606639 = path.getOrDefault("Id")
+  valid_606639 = validateParameter(valid_606639, JString, required = true,
                                  default = nil)
-  if valid_602439 != nil:
-    section.add "Id", valid_602439
+  if valid_606639 != nil:
+    section.add "Id", valid_606639
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3777,81 +3777,81 @@ proc validate_DeleteTrafficPolicy_602436(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602440 = header.getOrDefault("X-Amz-Signature")
-  valid_602440 = validateParameter(valid_602440, JString, required = false,
+  var valid_606640 = header.getOrDefault("X-Amz-Signature")
+  valid_606640 = validateParameter(valid_606640, JString, required = false,
                                  default = nil)
-  if valid_602440 != nil:
-    section.add "X-Amz-Signature", valid_602440
-  var valid_602441 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602441 = validateParameter(valid_602441, JString, required = false,
+  if valid_606640 != nil:
+    section.add "X-Amz-Signature", valid_606640
+  var valid_606641 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606641 = validateParameter(valid_606641, JString, required = false,
                                  default = nil)
-  if valid_602441 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602441
-  var valid_602442 = header.getOrDefault("X-Amz-Date")
-  valid_602442 = validateParameter(valid_602442, JString, required = false,
+  if valid_606641 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606641
+  var valid_606642 = header.getOrDefault("X-Amz-Date")
+  valid_606642 = validateParameter(valid_606642, JString, required = false,
                                  default = nil)
-  if valid_602442 != nil:
-    section.add "X-Amz-Date", valid_602442
-  var valid_602443 = header.getOrDefault("X-Amz-Credential")
-  valid_602443 = validateParameter(valid_602443, JString, required = false,
+  if valid_606642 != nil:
+    section.add "X-Amz-Date", valid_606642
+  var valid_606643 = header.getOrDefault("X-Amz-Credential")
+  valid_606643 = validateParameter(valid_606643, JString, required = false,
                                  default = nil)
-  if valid_602443 != nil:
-    section.add "X-Amz-Credential", valid_602443
-  var valid_602444 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602444 = validateParameter(valid_602444, JString, required = false,
+  if valid_606643 != nil:
+    section.add "X-Amz-Credential", valid_606643
+  var valid_606644 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606644 = validateParameter(valid_606644, JString, required = false,
                                  default = nil)
-  if valid_602444 != nil:
-    section.add "X-Amz-Security-Token", valid_602444
-  var valid_602445 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602445 = validateParameter(valid_602445, JString, required = false,
+  if valid_606644 != nil:
+    section.add "X-Amz-Security-Token", valid_606644
+  var valid_606645 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606645 = validateParameter(valid_606645, JString, required = false,
                                  default = nil)
-  if valid_602445 != nil:
-    section.add "X-Amz-Algorithm", valid_602445
-  var valid_602446 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602446 = validateParameter(valid_602446, JString, required = false,
+  if valid_606645 != nil:
+    section.add "X-Amz-Algorithm", valid_606645
+  var valid_606646 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606646 = validateParameter(valid_606646, JString, required = false,
                                  default = nil)
-  if valid_602446 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602446
+  if valid_606646 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606646
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602447: Call_DeleteTrafficPolicy_602435; path: JsonNode;
+proc call*(call_606647: Call_DeleteTrafficPolicy_606635; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a traffic policy.
   ## 
-  let valid = call_602447.validator(path, query, header, formData, body)
-  let scheme = call_602447.pickScheme
+  let valid = call_606647.validator(path, query, header, formData, body)
+  let scheme = call_606647.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602447.url(scheme.get, call_602447.host, call_602447.base,
-                         call_602447.route, valid.getOrDefault("path"),
+  let url = call_606647.url(scheme.get, call_606647.host, call_606647.base,
+                         call_606647.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602447, url, valid)
+  result = atozHook(call_606647, url, valid)
 
-proc call*(call_602448: Call_DeleteTrafficPolicy_602435; Version: int; Id: string): Recallable =
+proc call*(call_606648: Call_DeleteTrafficPolicy_606635; Version: int; Id: string): Recallable =
   ## deleteTrafficPolicy
   ## Deletes a traffic policy.
   ##   Version: int (required)
   ##          : The version number of the traffic policy that you want to delete.
   ##   Id: string (required)
   ##     : The ID of the traffic policy that you want to delete.
-  var path_602449 = newJObject()
-  add(path_602449, "Version", newJInt(Version))
-  add(path_602449, "Id", newJString(Id))
-  result = call_602448.call(path_602449, nil, nil, nil, nil)
+  var path_606649 = newJObject()
+  add(path_606649, "Version", newJInt(Version))
+  add(path_606649, "Id", newJString(Id))
+  result = call_606648.call(path_606649, nil, nil, nil, nil)
 
-var deleteTrafficPolicy* = Call_DeleteTrafficPolicy_602435(
+var deleteTrafficPolicy* = Call_DeleteTrafficPolicy_606635(
     name: "deleteTrafficPolicy", meth: HttpMethod.HttpDelete,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicy/{Id}/{Version}",
-    validator: validate_DeleteTrafficPolicy_602436, base: "/",
-    url: url_DeleteTrafficPolicy_602437, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteTrafficPolicy_606636, base: "/",
+    url: url_DeleteTrafficPolicy_606637, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTrafficPolicyInstance_602464 = ref object of OpenApiRestCall_601389
-proc url_UpdateTrafficPolicyInstance_602466(protocol: Scheme; host: string;
+  Call_UpdateTrafficPolicyInstance_606664 = ref object of OpenApiRestCall_605589
+proc url_UpdateTrafficPolicyInstance_606666(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3871,7 +3871,7 @@ proc url_UpdateTrafficPolicyInstance_602466(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateTrafficPolicyInstance_602465(path: JsonNode; query: JsonNode;
+proc validate_UpdateTrafficPolicyInstance_606665(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the resource record sets in a specified hosted zone that were created based on the settings in a specified traffic policy version.</p> <p>When you update a traffic policy instance, Amazon Route 53 continues to respond to DNS queries for the root resource record set name (such as example.com) while it replaces one group of resource record sets with another. Route 53 performs the following operations:</p> <ol> <li> <p>Route 53 creates a new group of resource record sets based on the specified traffic policy. This is true regardless of how significant the differences are between the existing resource record sets and the new resource record sets. </p> </li> <li> <p>When all of the new resource record sets have been created, Route 53 starts to respond to DNS queries for the root resource record set name (such as example.com) by using the new resource record sets.</p> </li> <li> <p>Route 53 deletes the old group of resource record sets that are associated with the root resource record set name.</p> </li> </ol>
   ## 
@@ -3882,11 +3882,11 @@ proc validate_UpdateTrafficPolicyInstance_602465(path: JsonNode; query: JsonNode
   ##     : The ID of the traffic policy instance that you want to update.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602467 = path.getOrDefault("Id")
-  valid_602467 = validateParameter(valid_602467, JString, required = true,
+  var valid_606667 = path.getOrDefault("Id")
+  valid_606667 = validateParameter(valid_606667, JString, required = true,
                                  default = nil)
-  if valid_602467 != nil:
-    section.add "Id", valid_602467
+  if valid_606667 != nil:
+    section.add "Id", valid_606667
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3899,41 +3899,41 @@ proc validate_UpdateTrafficPolicyInstance_602465(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602468 = header.getOrDefault("X-Amz-Signature")
-  valid_602468 = validateParameter(valid_602468, JString, required = false,
+  var valid_606668 = header.getOrDefault("X-Amz-Signature")
+  valid_606668 = validateParameter(valid_606668, JString, required = false,
                                  default = nil)
-  if valid_602468 != nil:
-    section.add "X-Amz-Signature", valid_602468
-  var valid_602469 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602469 = validateParameter(valid_602469, JString, required = false,
+  if valid_606668 != nil:
+    section.add "X-Amz-Signature", valid_606668
+  var valid_606669 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606669 = validateParameter(valid_606669, JString, required = false,
                                  default = nil)
-  if valid_602469 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602469
-  var valid_602470 = header.getOrDefault("X-Amz-Date")
-  valid_602470 = validateParameter(valid_602470, JString, required = false,
+  if valid_606669 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606669
+  var valid_606670 = header.getOrDefault("X-Amz-Date")
+  valid_606670 = validateParameter(valid_606670, JString, required = false,
                                  default = nil)
-  if valid_602470 != nil:
-    section.add "X-Amz-Date", valid_602470
-  var valid_602471 = header.getOrDefault("X-Amz-Credential")
-  valid_602471 = validateParameter(valid_602471, JString, required = false,
+  if valid_606670 != nil:
+    section.add "X-Amz-Date", valid_606670
+  var valid_606671 = header.getOrDefault("X-Amz-Credential")
+  valid_606671 = validateParameter(valid_606671, JString, required = false,
                                  default = nil)
-  if valid_602471 != nil:
-    section.add "X-Amz-Credential", valid_602471
-  var valid_602472 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602472 = validateParameter(valid_602472, JString, required = false,
+  if valid_606671 != nil:
+    section.add "X-Amz-Credential", valid_606671
+  var valid_606672 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606672 = validateParameter(valid_606672, JString, required = false,
                                  default = nil)
-  if valid_602472 != nil:
-    section.add "X-Amz-Security-Token", valid_602472
-  var valid_602473 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602473 = validateParameter(valid_602473, JString, required = false,
+  if valid_606672 != nil:
+    section.add "X-Amz-Security-Token", valid_606672
+  var valid_606673 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606673 = validateParameter(valid_606673, JString, required = false,
                                  default = nil)
-  if valid_602473 != nil:
-    section.add "X-Amz-Algorithm", valid_602473
-  var valid_602474 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602474 = validateParameter(valid_602474, JString, required = false,
+  if valid_606673 != nil:
+    section.add "X-Amz-Algorithm", valid_606673
+  var valid_606674 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606674 = validateParameter(valid_606674, JString, required = false,
                                  default = nil)
-  if valid_602474 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602474
+  if valid_606674 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606674
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3944,43 +3944,43 @@ proc validate_UpdateTrafficPolicyInstance_602465(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_602476: Call_UpdateTrafficPolicyInstance_602464; path: JsonNode;
+proc call*(call_606676: Call_UpdateTrafficPolicyInstance_606664; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the resource record sets in a specified hosted zone that were created based on the settings in a specified traffic policy version.</p> <p>When you update a traffic policy instance, Amazon Route 53 continues to respond to DNS queries for the root resource record set name (such as example.com) while it replaces one group of resource record sets with another. Route 53 performs the following operations:</p> <ol> <li> <p>Route 53 creates a new group of resource record sets based on the specified traffic policy. This is true regardless of how significant the differences are between the existing resource record sets and the new resource record sets. </p> </li> <li> <p>When all of the new resource record sets have been created, Route 53 starts to respond to DNS queries for the root resource record set name (such as example.com) by using the new resource record sets.</p> </li> <li> <p>Route 53 deletes the old group of resource record sets that are associated with the root resource record set name.</p> </li> </ol>
   ## 
-  let valid = call_602476.validator(path, query, header, formData, body)
-  let scheme = call_602476.pickScheme
+  let valid = call_606676.validator(path, query, header, formData, body)
+  let scheme = call_606676.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602476.url(scheme.get, call_602476.host, call_602476.base,
-                         call_602476.route, valid.getOrDefault("path"),
+  let url = call_606676.url(scheme.get, call_606676.host, call_606676.base,
+                         call_606676.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602476, url, valid)
+  result = atozHook(call_606676, url, valid)
 
-proc call*(call_602477: Call_UpdateTrafficPolicyInstance_602464; body: JsonNode;
+proc call*(call_606677: Call_UpdateTrafficPolicyInstance_606664; body: JsonNode;
           Id: string): Recallable =
   ## updateTrafficPolicyInstance
   ## <p>Updates the resource record sets in a specified hosted zone that were created based on the settings in a specified traffic policy version.</p> <p>When you update a traffic policy instance, Amazon Route 53 continues to respond to DNS queries for the root resource record set name (such as example.com) while it replaces one group of resource record sets with another. Route 53 performs the following operations:</p> <ol> <li> <p>Route 53 creates a new group of resource record sets based on the specified traffic policy. This is true regardless of how significant the differences are between the existing resource record sets and the new resource record sets. </p> </li> <li> <p>When all of the new resource record sets have been created, Route 53 starts to respond to DNS queries for the root resource record set name (such as example.com) by using the new resource record sets.</p> </li> <li> <p>Route 53 deletes the old group of resource record sets that are associated with the root resource record set name.</p> </li> </ol>
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : The ID of the traffic policy instance that you want to update.
-  var path_602478 = newJObject()
-  var body_602479 = newJObject()
+  var path_606678 = newJObject()
+  var body_606679 = newJObject()
   if body != nil:
-    body_602479 = body
-  add(path_602478, "Id", newJString(Id))
-  result = call_602477.call(path_602478, nil, nil, nil, body_602479)
+    body_606679 = body
+  add(path_606678, "Id", newJString(Id))
+  result = call_606677.call(path_606678, nil, nil, nil, body_606679)
 
-var updateTrafficPolicyInstance* = Call_UpdateTrafficPolicyInstance_602464(
+var updateTrafficPolicyInstance* = Call_UpdateTrafficPolicyInstance_606664(
     name: "updateTrafficPolicyInstance", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicyinstance/{Id}",
-    validator: validate_UpdateTrafficPolicyInstance_602465, base: "/",
-    url: url_UpdateTrafficPolicyInstance_602466,
+    validator: validate_UpdateTrafficPolicyInstance_606665, base: "/",
+    url: url_UpdateTrafficPolicyInstance_606666,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTrafficPolicyInstance_602450 = ref object of OpenApiRestCall_601389
-proc url_GetTrafficPolicyInstance_602452(protocol: Scheme; host: string;
+  Call_GetTrafficPolicyInstance_606650 = ref object of OpenApiRestCall_605589
+proc url_GetTrafficPolicyInstance_606652(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -4001,7 +4001,7 @@ proc url_GetTrafficPolicyInstance_602452(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetTrafficPolicyInstance_602451(path: JsonNode; query: JsonNode;
+proc validate_GetTrafficPolicyInstance_606651(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets information about a specified traffic policy instance.</p> <note> <p>After you submit a <code>CreateTrafficPolicyInstance</code> or an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <note> <p>In the Route 53 console, traffic policy instances are known as policy records.</p> </note>
   ## 
@@ -4012,11 +4012,11 @@ proc validate_GetTrafficPolicyInstance_602451(path: JsonNode; query: JsonNode;
   ##     : The ID of the traffic policy instance that you want to get information about.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602453 = path.getOrDefault("Id")
-  valid_602453 = validateParameter(valid_602453, JString, required = true,
+  var valid_606653 = path.getOrDefault("Id")
+  valid_606653 = validateParameter(valid_606653, JString, required = true,
                                  default = nil)
-  if valid_602453 != nil:
-    section.add "Id", valid_602453
+  if valid_606653 != nil:
+    section.add "Id", valid_606653
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4029,78 +4029,78 @@ proc validate_GetTrafficPolicyInstance_602451(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602454 = header.getOrDefault("X-Amz-Signature")
-  valid_602454 = validateParameter(valid_602454, JString, required = false,
+  var valid_606654 = header.getOrDefault("X-Amz-Signature")
+  valid_606654 = validateParameter(valid_606654, JString, required = false,
                                  default = nil)
-  if valid_602454 != nil:
-    section.add "X-Amz-Signature", valid_602454
-  var valid_602455 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602455 = validateParameter(valid_602455, JString, required = false,
+  if valid_606654 != nil:
+    section.add "X-Amz-Signature", valid_606654
+  var valid_606655 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606655 = validateParameter(valid_606655, JString, required = false,
                                  default = nil)
-  if valid_602455 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602455
-  var valid_602456 = header.getOrDefault("X-Amz-Date")
-  valid_602456 = validateParameter(valid_602456, JString, required = false,
+  if valid_606655 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606655
+  var valid_606656 = header.getOrDefault("X-Amz-Date")
+  valid_606656 = validateParameter(valid_606656, JString, required = false,
                                  default = nil)
-  if valid_602456 != nil:
-    section.add "X-Amz-Date", valid_602456
-  var valid_602457 = header.getOrDefault("X-Amz-Credential")
-  valid_602457 = validateParameter(valid_602457, JString, required = false,
+  if valid_606656 != nil:
+    section.add "X-Amz-Date", valid_606656
+  var valid_606657 = header.getOrDefault("X-Amz-Credential")
+  valid_606657 = validateParameter(valid_606657, JString, required = false,
                                  default = nil)
-  if valid_602457 != nil:
-    section.add "X-Amz-Credential", valid_602457
-  var valid_602458 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602458 = validateParameter(valid_602458, JString, required = false,
+  if valid_606657 != nil:
+    section.add "X-Amz-Credential", valid_606657
+  var valid_606658 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606658 = validateParameter(valid_606658, JString, required = false,
                                  default = nil)
-  if valid_602458 != nil:
-    section.add "X-Amz-Security-Token", valid_602458
-  var valid_602459 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602459 = validateParameter(valid_602459, JString, required = false,
+  if valid_606658 != nil:
+    section.add "X-Amz-Security-Token", valid_606658
+  var valid_606659 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606659 = validateParameter(valid_606659, JString, required = false,
                                  default = nil)
-  if valid_602459 != nil:
-    section.add "X-Amz-Algorithm", valid_602459
-  var valid_602460 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602460 = validateParameter(valid_602460, JString, required = false,
+  if valid_606659 != nil:
+    section.add "X-Amz-Algorithm", valid_606659
+  var valid_606660 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606660 = validateParameter(valid_606660, JString, required = false,
                                  default = nil)
-  if valid_602460 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602460
+  if valid_606660 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606660
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602461: Call_GetTrafficPolicyInstance_602450; path: JsonNode;
+proc call*(call_606661: Call_GetTrafficPolicyInstance_606650; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about a specified traffic policy instance.</p> <note> <p>After you submit a <code>CreateTrafficPolicyInstance</code> or an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <note> <p>In the Route 53 console, traffic policy instances are known as policy records.</p> </note>
   ## 
-  let valid = call_602461.validator(path, query, header, formData, body)
-  let scheme = call_602461.pickScheme
+  let valid = call_606661.validator(path, query, header, formData, body)
+  let scheme = call_606661.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602461.url(scheme.get, call_602461.host, call_602461.base,
-                         call_602461.route, valid.getOrDefault("path"),
+  let url = call_606661.url(scheme.get, call_606661.host, call_606661.base,
+                         call_606661.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602461, url, valid)
+  result = atozHook(call_606661, url, valid)
 
-proc call*(call_602462: Call_GetTrafficPolicyInstance_602450; Id: string): Recallable =
+proc call*(call_606662: Call_GetTrafficPolicyInstance_606650; Id: string): Recallable =
   ## getTrafficPolicyInstance
   ## <p>Gets information about a specified traffic policy instance.</p> <note> <p>After you submit a <code>CreateTrafficPolicyInstance</code> or an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <note> <p>In the Route 53 console, traffic policy instances are known as policy records.</p> </note>
   ##   Id: string (required)
   ##     : The ID of the traffic policy instance that you want to get information about.
-  var path_602463 = newJObject()
-  add(path_602463, "Id", newJString(Id))
-  result = call_602462.call(path_602463, nil, nil, nil, nil)
+  var path_606663 = newJObject()
+  add(path_606663, "Id", newJString(Id))
+  result = call_606662.call(path_606663, nil, nil, nil, nil)
 
-var getTrafficPolicyInstance* = Call_GetTrafficPolicyInstance_602450(
+var getTrafficPolicyInstance* = Call_GetTrafficPolicyInstance_606650(
     name: "getTrafficPolicyInstance", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicyinstance/{Id}",
-    validator: validate_GetTrafficPolicyInstance_602451, base: "/",
-    url: url_GetTrafficPolicyInstance_602452, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetTrafficPolicyInstance_606651, base: "/",
+    url: url_GetTrafficPolicyInstance_606652, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTrafficPolicyInstance_602480 = ref object of OpenApiRestCall_601389
-proc url_DeleteTrafficPolicyInstance_602482(protocol: Scheme; host: string;
+  Call_DeleteTrafficPolicyInstance_606680 = ref object of OpenApiRestCall_605589
+proc url_DeleteTrafficPolicyInstance_606682(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4120,7 +4120,7 @@ proc url_DeleteTrafficPolicyInstance_602482(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteTrafficPolicyInstance_602481(path: JsonNode; query: JsonNode;
+proc validate_DeleteTrafficPolicyInstance_606681(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a traffic policy instance and all of the resource record sets that Amazon Route 53 created when you created the instance.</p> <note> <p>In the Route 53 console, traffic policy instances are known as policy records.</p> </note>
   ## 
@@ -4131,11 +4131,11 @@ proc validate_DeleteTrafficPolicyInstance_602481(path: JsonNode; query: JsonNode
   ##     : <p>The ID of the traffic policy instance that you want to delete. </p> <important> <p>When you delete a traffic policy instance, Amazon Route 53 also deletes all of the resource record sets that were created when you created the traffic policy instance.</p> </important>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602483 = path.getOrDefault("Id")
-  valid_602483 = validateParameter(valid_602483, JString, required = true,
+  var valid_606683 = path.getOrDefault("Id")
+  valid_606683 = validateParameter(valid_606683, JString, required = true,
                                  default = nil)
-  if valid_602483 != nil:
-    section.add "Id", valid_602483
+  if valid_606683 != nil:
+    section.add "Id", valid_606683
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4148,79 +4148,79 @@ proc validate_DeleteTrafficPolicyInstance_602481(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602484 = header.getOrDefault("X-Amz-Signature")
-  valid_602484 = validateParameter(valid_602484, JString, required = false,
+  var valid_606684 = header.getOrDefault("X-Amz-Signature")
+  valid_606684 = validateParameter(valid_606684, JString, required = false,
                                  default = nil)
-  if valid_602484 != nil:
-    section.add "X-Amz-Signature", valid_602484
-  var valid_602485 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602485 = validateParameter(valid_602485, JString, required = false,
+  if valid_606684 != nil:
+    section.add "X-Amz-Signature", valid_606684
+  var valid_606685 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606685 = validateParameter(valid_606685, JString, required = false,
                                  default = nil)
-  if valid_602485 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602485
-  var valid_602486 = header.getOrDefault("X-Amz-Date")
-  valid_602486 = validateParameter(valid_602486, JString, required = false,
+  if valid_606685 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606685
+  var valid_606686 = header.getOrDefault("X-Amz-Date")
+  valid_606686 = validateParameter(valid_606686, JString, required = false,
                                  default = nil)
-  if valid_602486 != nil:
-    section.add "X-Amz-Date", valid_602486
-  var valid_602487 = header.getOrDefault("X-Amz-Credential")
-  valid_602487 = validateParameter(valid_602487, JString, required = false,
+  if valid_606686 != nil:
+    section.add "X-Amz-Date", valid_606686
+  var valid_606687 = header.getOrDefault("X-Amz-Credential")
+  valid_606687 = validateParameter(valid_606687, JString, required = false,
                                  default = nil)
-  if valid_602487 != nil:
-    section.add "X-Amz-Credential", valid_602487
-  var valid_602488 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602488 = validateParameter(valid_602488, JString, required = false,
+  if valid_606687 != nil:
+    section.add "X-Amz-Credential", valid_606687
+  var valid_606688 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606688 = validateParameter(valid_606688, JString, required = false,
                                  default = nil)
-  if valid_602488 != nil:
-    section.add "X-Amz-Security-Token", valid_602488
-  var valid_602489 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602489 = validateParameter(valid_602489, JString, required = false,
+  if valid_606688 != nil:
+    section.add "X-Amz-Security-Token", valid_606688
+  var valid_606689 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606689 = validateParameter(valid_606689, JString, required = false,
                                  default = nil)
-  if valid_602489 != nil:
-    section.add "X-Amz-Algorithm", valid_602489
-  var valid_602490 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602490 = validateParameter(valid_602490, JString, required = false,
+  if valid_606689 != nil:
+    section.add "X-Amz-Algorithm", valid_606689
+  var valid_606690 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606690 = validateParameter(valid_606690, JString, required = false,
                                  default = nil)
-  if valid_602490 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602490
+  if valid_606690 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606690
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602491: Call_DeleteTrafficPolicyInstance_602480; path: JsonNode;
+proc call*(call_606691: Call_DeleteTrafficPolicyInstance_606680; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a traffic policy instance and all of the resource record sets that Amazon Route 53 created when you created the instance.</p> <note> <p>In the Route 53 console, traffic policy instances are known as policy records.</p> </note>
   ## 
-  let valid = call_602491.validator(path, query, header, formData, body)
-  let scheme = call_602491.pickScheme
+  let valid = call_606691.validator(path, query, header, formData, body)
+  let scheme = call_606691.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602491.url(scheme.get, call_602491.host, call_602491.base,
-                         call_602491.route, valid.getOrDefault("path"),
+  let url = call_606691.url(scheme.get, call_606691.host, call_606691.base,
+                         call_606691.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602491, url, valid)
+  result = atozHook(call_606691, url, valid)
 
-proc call*(call_602492: Call_DeleteTrafficPolicyInstance_602480; Id: string): Recallable =
+proc call*(call_606692: Call_DeleteTrafficPolicyInstance_606680; Id: string): Recallable =
   ## deleteTrafficPolicyInstance
   ## <p>Deletes a traffic policy instance and all of the resource record sets that Amazon Route 53 created when you created the instance.</p> <note> <p>In the Route 53 console, traffic policy instances are known as policy records.</p> </note>
   ##   Id: string (required)
   ##     : <p>The ID of the traffic policy instance that you want to delete. </p> <important> <p>When you delete a traffic policy instance, Amazon Route 53 also deletes all of the resource record sets that were created when you created the traffic policy instance.</p> </important>
-  var path_602493 = newJObject()
-  add(path_602493, "Id", newJString(Id))
-  result = call_602492.call(path_602493, nil, nil, nil, nil)
+  var path_606693 = newJObject()
+  add(path_606693, "Id", newJString(Id))
+  result = call_606692.call(path_606693, nil, nil, nil, nil)
 
-var deleteTrafficPolicyInstance* = Call_DeleteTrafficPolicyInstance_602480(
+var deleteTrafficPolicyInstance* = Call_DeleteTrafficPolicyInstance_606680(
     name: "deleteTrafficPolicyInstance", meth: HttpMethod.HttpDelete,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicyinstance/{Id}",
-    validator: validate_DeleteTrafficPolicyInstance_602481, base: "/",
-    url: url_DeleteTrafficPolicyInstance_602482,
+    validator: validate_DeleteTrafficPolicyInstance_606681, base: "/",
+    url: url_DeleteTrafficPolicyInstance_606682,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteVPCAssociationAuthorization_602494 = ref object of OpenApiRestCall_601389
-proc url_DeleteVPCAssociationAuthorization_602496(protocol: Scheme; host: string;
+  Call_DeleteVPCAssociationAuthorization_606694 = ref object of OpenApiRestCall_605589
+proc url_DeleteVPCAssociationAuthorization_606696(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4241,7 +4241,7 @@ proc url_DeleteVPCAssociationAuthorization_602496(protocol: Scheme; host: string
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteVPCAssociationAuthorization_602495(path: JsonNode;
+proc validate_DeleteVPCAssociationAuthorization_606695(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes authorization to submit an <code>AssociateVPCWithHostedZone</code> request to associate a specified VPC with a hosted zone that was created by a different account. You must use the account that created the hosted zone to submit a <code>DeleteVPCAssociationAuthorization</code> request.</p> <important> <p>Sending this request only prevents the AWS account that created the VPC from associating the VPC with the Amazon Route 53 hosted zone in the future. If the VPC is already associated with the hosted zone, <code>DeleteVPCAssociationAuthorization</code> won't disassociate the VPC from the hosted zone. If you want to delete an existing association, use <code>DisassociateVPCFromHostedZone</code>.</p> </important>
   ## 
@@ -4252,11 +4252,11 @@ proc validate_DeleteVPCAssociationAuthorization_602495(path: JsonNode;
   ##     : When removing authorization to associate a VPC that was created by one AWS account with a hosted zone that was created with a different AWS account, the ID of the hosted zone.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602497 = path.getOrDefault("Id")
-  valid_602497 = validateParameter(valid_602497, JString, required = true,
+  var valid_606697 = path.getOrDefault("Id")
+  valid_606697 = validateParameter(valid_606697, JString, required = true,
                                  default = nil)
-  if valid_602497 != nil:
-    section.add "Id", valid_602497
+  if valid_606697 != nil:
+    section.add "Id", valid_606697
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4269,41 +4269,41 @@ proc validate_DeleteVPCAssociationAuthorization_602495(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602498 = header.getOrDefault("X-Amz-Signature")
-  valid_602498 = validateParameter(valid_602498, JString, required = false,
+  var valid_606698 = header.getOrDefault("X-Amz-Signature")
+  valid_606698 = validateParameter(valid_606698, JString, required = false,
                                  default = nil)
-  if valid_602498 != nil:
-    section.add "X-Amz-Signature", valid_602498
-  var valid_602499 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602499 = validateParameter(valid_602499, JString, required = false,
+  if valid_606698 != nil:
+    section.add "X-Amz-Signature", valid_606698
+  var valid_606699 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606699 = validateParameter(valid_606699, JString, required = false,
                                  default = nil)
-  if valid_602499 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602499
-  var valid_602500 = header.getOrDefault("X-Amz-Date")
-  valid_602500 = validateParameter(valid_602500, JString, required = false,
+  if valid_606699 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606699
+  var valid_606700 = header.getOrDefault("X-Amz-Date")
+  valid_606700 = validateParameter(valid_606700, JString, required = false,
                                  default = nil)
-  if valid_602500 != nil:
-    section.add "X-Amz-Date", valid_602500
-  var valid_602501 = header.getOrDefault("X-Amz-Credential")
-  valid_602501 = validateParameter(valid_602501, JString, required = false,
+  if valid_606700 != nil:
+    section.add "X-Amz-Date", valid_606700
+  var valid_606701 = header.getOrDefault("X-Amz-Credential")
+  valid_606701 = validateParameter(valid_606701, JString, required = false,
                                  default = nil)
-  if valid_602501 != nil:
-    section.add "X-Amz-Credential", valid_602501
-  var valid_602502 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602502 = validateParameter(valid_602502, JString, required = false,
+  if valid_606701 != nil:
+    section.add "X-Amz-Credential", valid_606701
+  var valid_606702 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606702 = validateParameter(valid_606702, JString, required = false,
                                  default = nil)
-  if valid_602502 != nil:
-    section.add "X-Amz-Security-Token", valid_602502
-  var valid_602503 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602503 = validateParameter(valid_602503, JString, required = false,
+  if valid_606702 != nil:
+    section.add "X-Amz-Security-Token", valid_606702
+  var valid_606703 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606703 = validateParameter(valid_606703, JString, required = false,
                                  default = nil)
-  if valid_602503 != nil:
-    section.add "X-Amz-Algorithm", valid_602503
-  var valid_602504 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602504 = validateParameter(valid_602504, JString, required = false,
+  if valid_606703 != nil:
+    section.add "X-Amz-Algorithm", valid_606703
+  var valid_606704 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606704 = validateParameter(valid_606704, JString, required = false,
                                  default = nil)
-  if valid_602504 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602504
+  if valid_606704 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606704
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4314,44 +4314,44 @@ proc validate_DeleteVPCAssociationAuthorization_602495(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602506: Call_DeleteVPCAssociationAuthorization_602494;
+proc call*(call_606706: Call_DeleteVPCAssociationAuthorization_606694;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Removes authorization to submit an <code>AssociateVPCWithHostedZone</code> request to associate a specified VPC with a hosted zone that was created by a different account. You must use the account that created the hosted zone to submit a <code>DeleteVPCAssociationAuthorization</code> request.</p> <important> <p>Sending this request only prevents the AWS account that created the VPC from associating the VPC with the Amazon Route 53 hosted zone in the future. If the VPC is already associated with the hosted zone, <code>DeleteVPCAssociationAuthorization</code> won't disassociate the VPC from the hosted zone. If you want to delete an existing association, use <code>DisassociateVPCFromHostedZone</code>.</p> </important>
   ## 
-  let valid = call_602506.validator(path, query, header, formData, body)
-  let scheme = call_602506.pickScheme
+  let valid = call_606706.validator(path, query, header, formData, body)
+  let scheme = call_606706.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602506.url(scheme.get, call_602506.host, call_602506.base,
-                         call_602506.route, valid.getOrDefault("path"),
+  let url = call_606706.url(scheme.get, call_606706.host, call_606706.base,
+                         call_606706.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602506, url, valid)
+  result = atozHook(call_606706, url, valid)
 
-proc call*(call_602507: Call_DeleteVPCAssociationAuthorization_602494;
+proc call*(call_606707: Call_DeleteVPCAssociationAuthorization_606694;
           body: JsonNode; Id: string): Recallable =
   ## deleteVPCAssociationAuthorization
   ## <p>Removes authorization to submit an <code>AssociateVPCWithHostedZone</code> request to associate a specified VPC with a hosted zone that was created by a different account. You must use the account that created the hosted zone to submit a <code>DeleteVPCAssociationAuthorization</code> request.</p> <important> <p>Sending this request only prevents the AWS account that created the VPC from associating the VPC with the Amazon Route 53 hosted zone in the future. If the VPC is already associated with the hosted zone, <code>DeleteVPCAssociationAuthorization</code> won't disassociate the VPC from the hosted zone. If you want to delete an existing association, use <code>DisassociateVPCFromHostedZone</code>.</p> </important>
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : When removing authorization to associate a VPC that was created by one AWS account with a hosted zone that was created with a different AWS account, the ID of the hosted zone.
-  var path_602508 = newJObject()
-  var body_602509 = newJObject()
+  var path_606708 = newJObject()
+  var body_606709 = newJObject()
   if body != nil:
-    body_602509 = body
-  add(path_602508, "Id", newJString(Id))
-  result = call_602507.call(path_602508, nil, nil, nil, body_602509)
+    body_606709 = body
+  add(path_606708, "Id", newJString(Id))
+  result = call_606707.call(path_606708, nil, nil, nil, body_606709)
 
-var deleteVPCAssociationAuthorization* = Call_DeleteVPCAssociationAuthorization_602494(
+var deleteVPCAssociationAuthorization* = Call_DeleteVPCAssociationAuthorization_606694(
     name: "deleteVPCAssociationAuthorization", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/hostedzone/{Id}/deauthorizevpcassociation",
-    validator: validate_DeleteVPCAssociationAuthorization_602495, base: "/",
-    url: url_DeleteVPCAssociationAuthorization_602496,
+    validator: validate_DeleteVPCAssociationAuthorization_606695, base: "/",
+    url: url_DeleteVPCAssociationAuthorization_606696,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateVPCFromHostedZone_602510 = ref object of OpenApiRestCall_601389
-proc url_DisassociateVPCFromHostedZone_602512(protocol: Scheme; host: string;
+  Call_DisassociateVPCFromHostedZone_606710 = ref object of OpenApiRestCall_605589
+proc url_DisassociateVPCFromHostedZone_606712(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4372,7 +4372,7 @@ proc url_DisassociateVPCFromHostedZone_602512(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DisassociateVPCFromHostedZone_602511(path: JsonNode; query: JsonNode;
+proc validate_DisassociateVPCFromHostedZone_606711(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Disassociates a VPC from a Amazon Route 53 private hosted zone. Note the following:</p> <ul> <li> <p>You can't disassociate the last VPC from a private hosted zone.</p> </li> <li> <p>You can't convert a private hosted zone into a public hosted zone.</p> </li> <li> <p>You can submit a <code>DisassociateVPCFromHostedZone</code> request using either the account that created the hosted zone or the account that created the VPC.</p> </li> </ul>
   ## 
@@ -4383,11 +4383,11 @@ proc validate_DisassociateVPCFromHostedZone_602511(path: JsonNode; query: JsonNo
   ##     : The ID of the private hosted zone that you want to disassociate a VPC from.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602513 = path.getOrDefault("Id")
-  valid_602513 = validateParameter(valid_602513, JString, required = true,
+  var valid_606713 = path.getOrDefault("Id")
+  valid_606713 = validateParameter(valid_606713, JString, required = true,
                                  default = nil)
-  if valid_602513 != nil:
-    section.add "Id", valid_602513
+  if valid_606713 != nil:
+    section.add "Id", valid_606713
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4400,41 +4400,41 @@ proc validate_DisassociateVPCFromHostedZone_602511(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602514 = header.getOrDefault("X-Amz-Signature")
-  valid_602514 = validateParameter(valid_602514, JString, required = false,
+  var valid_606714 = header.getOrDefault("X-Amz-Signature")
+  valid_606714 = validateParameter(valid_606714, JString, required = false,
                                  default = nil)
-  if valid_602514 != nil:
-    section.add "X-Amz-Signature", valid_602514
-  var valid_602515 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602515 = validateParameter(valid_602515, JString, required = false,
+  if valid_606714 != nil:
+    section.add "X-Amz-Signature", valid_606714
+  var valid_606715 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606715 = validateParameter(valid_606715, JString, required = false,
                                  default = nil)
-  if valid_602515 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602515
-  var valid_602516 = header.getOrDefault("X-Amz-Date")
-  valid_602516 = validateParameter(valid_602516, JString, required = false,
+  if valid_606715 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606715
+  var valid_606716 = header.getOrDefault("X-Amz-Date")
+  valid_606716 = validateParameter(valid_606716, JString, required = false,
                                  default = nil)
-  if valid_602516 != nil:
-    section.add "X-Amz-Date", valid_602516
-  var valid_602517 = header.getOrDefault("X-Amz-Credential")
-  valid_602517 = validateParameter(valid_602517, JString, required = false,
+  if valid_606716 != nil:
+    section.add "X-Amz-Date", valid_606716
+  var valid_606717 = header.getOrDefault("X-Amz-Credential")
+  valid_606717 = validateParameter(valid_606717, JString, required = false,
                                  default = nil)
-  if valid_602517 != nil:
-    section.add "X-Amz-Credential", valid_602517
-  var valid_602518 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602518 = validateParameter(valid_602518, JString, required = false,
+  if valid_606717 != nil:
+    section.add "X-Amz-Credential", valid_606717
+  var valid_606718 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606718 = validateParameter(valid_606718, JString, required = false,
                                  default = nil)
-  if valid_602518 != nil:
-    section.add "X-Amz-Security-Token", valid_602518
-  var valid_602519 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602519 = validateParameter(valid_602519, JString, required = false,
+  if valid_606718 != nil:
+    section.add "X-Amz-Security-Token", valid_606718
+  var valid_606719 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606719 = validateParameter(valid_606719, JString, required = false,
                                  default = nil)
-  if valid_602519 != nil:
-    section.add "X-Amz-Algorithm", valid_602519
-  var valid_602520 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602520 = validateParameter(valid_602520, JString, required = false,
+  if valid_606719 != nil:
+    section.add "X-Amz-Algorithm", valid_606719
+  var valid_606720 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606720 = validateParameter(valid_606720, JString, required = false,
                                  default = nil)
-  if valid_602520 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602520
+  if valid_606720 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606720
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4445,43 +4445,43 @@ proc validate_DisassociateVPCFromHostedZone_602511(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_602522: Call_DisassociateVPCFromHostedZone_602510; path: JsonNode;
+proc call*(call_606722: Call_DisassociateVPCFromHostedZone_606710; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Disassociates a VPC from a Amazon Route 53 private hosted zone. Note the following:</p> <ul> <li> <p>You can't disassociate the last VPC from a private hosted zone.</p> </li> <li> <p>You can't convert a private hosted zone into a public hosted zone.</p> </li> <li> <p>You can submit a <code>DisassociateVPCFromHostedZone</code> request using either the account that created the hosted zone or the account that created the VPC.</p> </li> </ul>
   ## 
-  let valid = call_602522.validator(path, query, header, formData, body)
-  let scheme = call_602522.pickScheme
+  let valid = call_606722.validator(path, query, header, formData, body)
+  let scheme = call_606722.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602522.url(scheme.get, call_602522.host, call_602522.base,
-                         call_602522.route, valid.getOrDefault("path"),
+  let url = call_606722.url(scheme.get, call_606722.host, call_606722.base,
+                         call_606722.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602522, url, valid)
+  result = atozHook(call_606722, url, valid)
 
-proc call*(call_602523: Call_DisassociateVPCFromHostedZone_602510; body: JsonNode;
+proc call*(call_606723: Call_DisassociateVPCFromHostedZone_606710; body: JsonNode;
           Id: string): Recallable =
   ## disassociateVPCFromHostedZone
   ## <p>Disassociates a VPC from a Amazon Route 53 private hosted zone. Note the following:</p> <ul> <li> <p>You can't disassociate the last VPC from a private hosted zone.</p> </li> <li> <p>You can't convert a private hosted zone into a public hosted zone.</p> </li> <li> <p>You can submit a <code>DisassociateVPCFromHostedZone</code> request using either the account that created the hosted zone or the account that created the VPC.</p> </li> </ul>
   ##   body: JObject (required)
   ##   Id: string (required)
   ##     : The ID of the private hosted zone that you want to disassociate a VPC from.
-  var path_602524 = newJObject()
-  var body_602525 = newJObject()
+  var path_606724 = newJObject()
+  var body_606725 = newJObject()
   if body != nil:
-    body_602525 = body
-  add(path_602524, "Id", newJString(Id))
-  result = call_602523.call(path_602524, nil, nil, nil, body_602525)
+    body_606725 = body
+  add(path_606724, "Id", newJString(Id))
+  result = call_606723.call(path_606724, nil, nil, nil, body_606725)
 
-var disassociateVPCFromHostedZone* = Call_DisassociateVPCFromHostedZone_602510(
+var disassociateVPCFromHostedZone* = Call_DisassociateVPCFromHostedZone_606710(
     name: "disassociateVPCFromHostedZone", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/hostedzone/{Id}/disassociatevpc",
-    validator: validate_DisassociateVPCFromHostedZone_602511, base: "/",
-    url: url_DisassociateVPCFromHostedZone_602512,
+    validator: validate_DisassociateVPCFromHostedZone_606711, base: "/",
+    url: url_DisassociateVPCFromHostedZone_606712,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAccountLimit_602526 = ref object of OpenApiRestCall_601389
-proc url_GetAccountLimit_602528(protocol: Scheme; host: string; base: string;
+  Call_GetAccountLimit_606726 = ref object of OpenApiRestCall_605589
+proc url_GetAccountLimit_606728(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4501,7 +4501,7 @@ proc url_GetAccountLimit_602528(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetAccountLimit_602527(path: JsonNode; query: JsonNode;
+proc validate_GetAccountLimit_606727(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Gets the specified limit for the current account, for example, the maximum number of health checks that you can create using the account.</p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p> <note> <p>You can also view account limits in AWS Trusted Advisor. Sign in to the AWS Management Console and open the Trusted Advisor console at <a href="https://console.aws.amazon.com/trustedadvisor">https://console.aws.amazon.com/trustedadvisor/</a>. Then choose <b>Service limits</b> in the navigation pane.</p> </note>
@@ -4513,11 +4513,11 @@ proc validate_GetAccountLimit_602527(path: JsonNode; query: JsonNode;
   ##       : <p>The limit that you want to get. Valid values include the following:</p> <ul> <li> <p> <b>MAX_HEALTH_CHECKS_BY_OWNER</b>: The maximum number of health checks that you can create using the current account.</p> </li> <li> <p> <b>MAX_HOSTED_ZONES_BY_OWNER</b>: The maximum number of hosted zones that you can create using the current account.</p> </li> <li> <p> <b>MAX_REUSABLE_DELEGATION_SETS_BY_OWNER</b>: The maximum number of reusable delegation sets that you can create using the current account.</p> </li> <li> <p> <b>MAX_TRAFFIC_POLICIES_BY_OWNER</b>: The maximum number of traffic policies that you can create using the current account.</p> </li> <li> <p> <b>MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER</b>: The maximum number of traffic policy instances that you can create using the current account. (Traffic policy instances are referred to as traffic flow policy records in the Amazon Route 53 console.)</p> </li> </ul>
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Type` field"
-  var valid_602529 = path.getOrDefault("Type")
-  valid_602529 = validateParameter(valid_602529, JString, required = true, default = newJString(
+  var valid_606729 = path.getOrDefault("Type")
+  valid_606729 = validateParameter(valid_606729, JString, required = true, default = newJString(
       "MAX_HEALTH_CHECKS_BY_OWNER"))
-  if valid_602529 != nil:
-    section.add "Type", valid_602529
+  if valid_606729 != nil:
+    section.add "Type", valid_606729
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4530,77 +4530,77 @@ proc validate_GetAccountLimit_602527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602530 = header.getOrDefault("X-Amz-Signature")
-  valid_602530 = validateParameter(valid_602530, JString, required = false,
+  var valid_606730 = header.getOrDefault("X-Amz-Signature")
+  valid_606730 = validateParameter(valid_606730, JString, required = false,
                                  default = nil)
-  if valid_602530 != nil:
-    section.add "X-Amz-Signature", valid_602530
-  var valid_602531 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602531 = validateParameter(valid_602531, JString, required = false,
+  if valid_606730 != nil:
+    section.add "X-Amz-Signature", valid_606730
+  var valid_606731 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606731 = validateParameter(valid_606731, JString, required = false,
                                  default = nil)
-  if valid_602531 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602531
-  var valid_602532 = header.getOrDefault("X-Amz-Date")
-  valid_602532 = validateParameter(valid_602532, JString, required = false,
+  if valid_606731 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606731
+  var valid_606732 = header.getOrDefault("X-Amz-Date")
+  valid_606732 = validateParameter(valid_606732, JString, required = false,
                                  default = nil)
-  if valid_602532 != nil:
-    section.add "X-Amz-Date", valid_602532
-  var valid_602533 = header.getOrDefault("X-Amz-Credential")
-  valid_602533 = validateParameter(valid_602533, JString, required = false,
+  if valid_606732 != nil:
+    section.add "X-Amz-Date", valid_606732
+  var valid_606733 = header.getOrDefault("X-Amz-Credential")
+  valid_606733 = validateParameter(valid_606733, JString, required = false,
                                  default = nil)
-  if valid_602533 != nil:
-    section.add "X-Amz-Credential", valid_602533
-  var valid_602534 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602534 = validateParameter(valid_602534, JString, required = false,
+  if valid_606733 != nil:
+    section.add "X-Amz-Credential", valid_606733
+  var valid_606734 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606734 = validateParameter(valid_606734, JString, required = false,
                                  default = nil)
-  if valid_602534 != nil:
-    section.add "X-Amz-Security-Token", valid_602534
-  var valid_602535 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602535 = validateParameter(valid_602535, JString, required = false,
+  if valid_606734 != nil:
+    section.add "X-Amz-Security-Token", valid_606734
+  var valid_606735 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606735 = validateParameter(valid_606735, JString, required = false,
                                  default = nil)
-  if valid_602535 != nil:
-    section.add "X-Amz-Algorithm", valid_602535
-  var valid_602536 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602536 = validateParameter(valid_602536, JString, required = false,
+  if valid_606735 != nil:
+    section.add "X-Amz-Algorithm", valid_606735
+  var valid_606736 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606736 = validateParameter(valid_606736, JString, required = false,
                                  default = nil)
-  if valid_602536 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602536
+  if valid_606736 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606736
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602537: Call_GetAccountLimit_602526; path: JsonNode; query: JsonNode;
+proc call*(call_606737: Call_GetAccountLimit_606726; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the specified limit for the current account, for example, the maximum number of health checks that you can create using the account.</p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p> <note> <p>You can also view account limits in AWS Trusted Advisor. Sign in to the AWS Management Console and open the Trusted Advisor console at <a href="https://console.aws.amazon.com/trustedadvisor">https://console.aws.amazon.com/trustedadvisor/</a>. Then choose <b>Service limits</b> in the navigation pane.</p> </note>
   ## 
-  let valid = call_602537.validator(path, query, header, formData, body)
-  let scheme = call_602537.pickScheme
+  let valid = call_606737.validator(path, query, header, formData, body)
+  let scheme = call_606737.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602537.url(scheme.get, call_602537.host, call_602537.base,
-                         call_602537.route, valid.getOrDefault("path"),
+  let url = call_606737.url(scheme.get, call_606737.host, call_606737.base,
+                         call_606737.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602537, url, valid)
+  result = atozHook(call_606737, url, valid)
 
-proc call*(call_602538: Call_GetAccountLimit_602526;
+proc call*(call_606738: Call_GetAccountLimit_606726;
           Type: string = "MAX_HEALTH_CHECKS_BY_OWNER"): Recallable =
   ## getAccountLimit
   ## <p>Gets the specified limit for the current account, for example, the maximum number of health checks that you can create using the account.</p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p> <note> <p>You can also view account limits in AWS Trusted Advisor. Sign in to the AWS Management Console and open the Trusted Advisor console at <a href="https://console.aws.amazon.com/trustedadvisor">https://console.aws.amazon.com/trustedadvisor/</a>. Then choose <b>Service limits</b> in the navigation pane.</p> </note>
   ##   Type: string (required)
   ##       : <p>The limit that you want to get. Valid values include the following:</p> <ul> <li> <p> <b>MAX_HEALTH_CHECKS_BY_OWNER</b>: The maximum number of health checks that you can create using the current account.</p> </li> <li> <p> <b>MAX_HOSTED_ZONES_BY_OWNER</b>: The maximum number of hosted zones that you can create using the current account.</p> </li> <li> <p> <b>MAX_REUSABLE_DELEGATION_SETS_BY_OWNER</b>: The maximum number of reusable delegation sets that you can create using the current account.</p> </li> <li> <p> <b>MAX_TRAFFIC_POLICIES_BY_OWNER</b>: The maximum number of traffic policies that you can create using the current account.</p> </li> <li> <p> <b>MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER</b>: The maximum number of traffic policy instances that you can create using the current account. (Traffic policy instances are referred to as traffic flow policy records in the Amazon Route 53 console.)</p> </li> </ul>
-  var path_602539 = newJObject()
-  add(path_602539, "Type", newJString(Type))
-  result = call_602538.call(path_602539, nil, nil, nil, nil)
+  var path_606739 = newJObject()
+  add(path_606739, "Type", newJString(Type))
+  result = call_606738.call(path_606739, nil, nil, nil, nil)
 
-var getAccountLimit* = Call_GetAccountLimit_602526(name: "getAccountLimit",
+var getAccountLimit* = Call_GetAccountLimit_606726(name: "getAccountLimit",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
-    route: "/2013-04-01/accountlimit/{Type}", validator: validate_GetAccountLimit_602527,
-    base: "/", url: url_GetAccountLimit_602528, schemes: {Scheme.Https, Scheme.Http})
+    route: "/2013-04-01/accountlimit/{Type}", validator: validate_GetAccountLimit_606727,
+    base: "/", url: url_GetAccountLimit_606728, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetChange_602540 = ref object of OpenApiRestCall_601389
-proc url_GetChange_602542(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetChange_606740 = ref object of OpenApiRestCall_605589
+proc url_GetChange_606742(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4620,7 +4620,7 @@ proc url_GetChange_602542(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & hydrated.get
 
-proc validate_GetChange_602541(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetChange_606741(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the current status of a change batch request. The status is one of the following values:</p> <ul> <li> <p> <code>PENDING</code> indicates that the changes in this request have not propagated to all Amazon Route 53 DNS servers. This is the initial status of all change batch requests.</p> </li> <li> <p> <code>INSYNC</code> indicates that the changes have propagated to all Route 53 DNS servers. </p> </li> </ul>
   ## 
@@ -4631,11 +4631,11 @@ proc validate_GetChange_602541(path: JsonNode; query: JsonNode; header: JsonNode
   ##     : The ID of the change batch request. The value that you specify here is the value that <code>ChangeResourceRecordSets</code> returned in the <code>Id</code> element when you submitted the request.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602543 = path.getOrDefault("Id")
-  valid_602543 = validateParameter(valid_602543, JString, required = true,
+  var valid_606743 = path.getOrDefault("Id")
+  valid_606743 = validateParameter(valid_606743, JString, required = true,
                                  default = nil)
-  if valid_602543 != nil:
-    section.add "Id", valid_602543
+  if valid_606743 != nil:
+    section.add "Id", valid_606743
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -4648,78 +4648,78 @@ proc validate_GetChange_602541(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602544 = header.getOrDefault("X-Amz-Signature")
-  valid_602544 = validateParameter(valid_602544, JString, required = false,
+  var valid_606744 = header.getOrDefault("X-Amz-Signature")
+  valid_606744 = validateParameter(valid_606744, JString, required = false,
                                  default = nil)
-  if valid_602544 != nil:
-    section.add "X-Amz-Signature", valid_602544
-  var valid_602545 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602545 = validateParameter(valid_602545, JString, required = false,
+  if valid_606744 != nil:
+    section.add "X-Amz-Signature", valid_606744
+  var valid_606745 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606745 = validateParameter(valid_606745, JString, required = false,
                                  default = nil)
-  if valid_602545 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602545
-  var valid_602546 = header.getOrDefault("X-Amz-Date")
-  valid_602546 = validateParameter(valid_602546, JString, required = false,
+  if valid_606745 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606745
+  var valid_606746 = header.getOrDefault("X-Amz-Date")
+  valid_606746 = validateParameter(valid_606746, JString, required = false,
                                  default = nil)
-  if valid_602546 != nil:
-    section.add "X-Amz-Date", valid_602546
-  var valid_602547 = header.getOrDefault("X-Amz-Credential")
-  valid_602547 = validateParameter(valid_602547, JString, required = false,
+  if valid_606746 != nil:
+    section.add "X-Amz-Date", valid_606746
+  var valid_606747 = header.getOrDefault("X-Amz-Credential")
+  valid_606747 = validateParameter(valid_606747, JString, required = false,
                                  default = nil)
-  if valid_602547 != nil:
-    section.add "X-Amz-Credential", valid_602547
-  var valid_602548 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602548 = validateParameter(valid_602548, JString, required = false,
+  if valid_606747 != nil:
+    section.add "X-Amz-Credential", valid_606747
+  var valid_606748 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606748 = validateParameter(valid_606748, JString, required = false,
                                  default = nil)
-  if valid_602548 != nil:
-    section.add "X-Amz-Security-Token", valid_602548
-  var valid_602549 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602549 = validateParameter(valid_602549, JString, required = false,
+  if valid_606748 != nil:
+    section.add "X-Amz-Security-Token", valid_606748
+  var valid_606749 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606749 = validateParameter(valid_606749, JString, required = false,
                                  default = nil)
-  if valid_602549 != nil:
-    section.add "X-Amz-Algorithm", valid_602549
-  var valid_602550 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602550 = validateParameter(valid_602550, JString, required = false,
+  if valid_606749 != nil:
+    section.add "X-Amz-Algorithm", valid_606749
+  var valid_606750 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606750 = validateParameter(valid_606750, JString, required = false,
                                  default = nil)
-  if valid_602550 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602550
+  if valid_606750 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606750
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602551: Call_GetChange_602540; path: JsonNode; query: JsonNode;
+proc call*(call_606751: Call_GetChange_606740; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the current status of a change batch request. The status is one of the following values:</p> <ul> <li> <p> <code>PENDING</code> indicates that the changes in this request have not propagated to all Amazon Route 53 DNS servers. This is the initial status of all change batch requests.</p> </li> <li> <p> <code>INSYNC</code> indicates that the changes have propagated to all Route 53 DNS servers. </p> </li> </ul>
   ## 
-  let valid = call_602551.validator(path, query, header, formData, body)
-  let scheme = call_602551.pickScheme
+  let valid = call_606751.validator(path, query, header, formData, body)
+  let scheme = call_606751.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602551.url(scheme.get, call_602551.host, call_602551.base,
-                         call_602551.route, valid.getOrDefault("path"),
+  let url = call_606751.url(scheme.get, call_606751.host, call_606751.base,
+                         call_606751.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602551, url, valid)
+  result = atozHook(call_606751, url, valid)
 
-proc call*(call_602552: Call_GetChange_602540; Id: string): Recallable =
+proc call*(call_606752: Call_GetChange_606740; Id: string): Recallable =
   ## getChange
   ## <p>Returns the current status of a change batch request. The status is one of the following values:</p> <ul> <li> <p> <code>PENDING</code> indicates that the changes in this request have not propagated to all Amazon Route 53 DNS servers. This is the initial status of all change batch requests.</p> </li> <li> <p> <code>INSYNC</code> indicates that the changes have propagated to all Route 53 DNS servers. </p> </li> </ul>
   ##   Id: string (required)
   ##     : The ID of the change batch request. The value that you specify here is the value that <code>ChangeResourceRecordSets</code> returned in the <code>Id</code> element when you submitted the request.
-  var path_602553 = newJObject()
-  add(path_602553, "Id", newJString(Id))
-  result = call_602552.call(path_602553, nil, nil, nil, nil)
+  var path_606753 = newJObject()
+  add(path_606753, "Id", newJString(Id))
+  result = call_606752.call(path_606753, nil, nil, nil, nil)
 
-var getChange* = Call_GetChange_602540(name: "getChange", meth: HttpMethod.HttpGet,
+var getChange* = Call_GetChange_606740(name: "getChange", meth: HttpMethod.HttpGet,
                                     host: "route53.amazonaws.com",
                                     route: "/2013-04-01/change/{Id}",
-                                    validator: validate_GetChange_602541,
-                                    base: "/", url: url_GetChange_602542,
+                                    validator: validate_GetChange_606741,
+                                    base: "/", url: url_GetChange_606742,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCheckerIpRanges_602554 = ref object of OpenApiRestCall_601389
-proc url_GetCheckerIpRanges_602556(protocol: Scheme; host: string; base: string;
+  Call_GetCheckerIpRanges_606754 = ref object of OpenApiRestCall_605589
+proc url_GetCheckerIpRanges_606756(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4731,7 +4731,7 @@ proc url_GetCheckerIpRanges_602556(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetCheckerIpRanges_602555(path: JsonNode; query: JsonNode;
+proc validate_GetCheckerIpRanges_606755(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <important> <p> <code>GetCheckerIpRanges</code> still works, but we recommend that you download ip-ranges.json, which includes IP address ranges for all AWS services. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/route-53-ip-addresses.html">IP Address Ranges of Amazon Route 53 Servers</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </important>
@@ -4751,73 +4751,73 @@ proc validate_GetCheckerIpRanges_602555(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602557 = header.getOrDefault("X-Amz-Signature")
-  valid_602557 = validateParameter(valid_602557, JString, required = false,
+  var valid_606757 = header.getOrDefault("X-Amz-Signature")
+  valid_606757 = validateParameter(valid_606757, JString, required = false,
                                  default = nil)
-  if valid_602557 != nil:
-    section.add "X-Amz-Signature", valid_602557
-  var valid_602558 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602558 = validateParameter(valid_602558, JString, required = false,
+  if valid_606757 != nil:
+    section.add "X-Amz-Signature", valid_606757
+  var valid_606758 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606758 = validateParameter(valid_606758, JString, required = false,
                                  default = nil)
-  if valid_602558 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602558
-  var valid_602559 = header.getOrDefault("X-Amz-Date")
-  valid_602559 = validateParameter(valid_602559, JString, required = false,
+  if valid_606758 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606758
+  var valid_606759 = header.getOrDefault("X-Amz-Date")
+  valid_606759 = validateParameter(valid_606759, JString, required = false,
                                  default = nil)
-  if valid_602559 != nil:
-    section.add "X-Amz-Date", valid_602559
-  var valid_602560 = header.getOrDefault("X-Amz-Credential")
-  valid_602560 = validateParameter(valid_602560, JString, required = false,
+  if valid_606759 != nil:
+    section.add "X-Amz-Date", valid_606759
+  var valid_606760 = header.getOrDefault("X-Amz-Credential")
+  valid_606760 = validateParameter(valid_606760, JString, required = false,
                                  default = nil)
-  if valid_602560 != nil:
-    section.add "X-Amz-Credential", valid_602560
-  var valid_602561 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602561 = validateParameter(valid_602561, JString, required = false,
+  if valid_606760 != nil:
+    section.add "X-Amz-Credential", valid_606760
+  var valid_606761 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606761 = validateParameter(valid_606761, JString, required = false,
                                  default = nil)
-  if valid_602561 != nil:
-    section.add "X-Amz-Security-Token", valid_602561
-  var valid_602562 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602562 = validateParameter(valid_602562, JString, required = false,
+  if valid_606761 != nil:
+    section.add "X-Amz-Security-Token", valid_606761
+  var valid_606762 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606762 = validateParameter(valid_606762, JString, required = false,
                                  default = nil)
-  if valid_602562 != nil:
-    section.add "X-Amz-Algorithm", valid_602562
-  var valid_602563 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602563 = validateParameter(valid_602563, JString, required = false,
+  if valid_606762 != nil:
+    section.add "X-Amz-Algorithm", valid_606762
+  var valid_606763 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606763 = validateParameter(valid_606763, JString, required = false,
                                  default = nil)
-  if valid_602563 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602563
+  if valid_606763 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606763
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602564: Call_GetCheckerIpRanges_602554; path: JsonNode;
+proc call*(call_606764: Call_GetCheckerIpRanges_606754; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <important> <p> <code>GetCheckerIpRanges</code> still works, but we recommend that you download ip-ranges.json, which includes IP address ranges for all AWS services. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/route-53-ip-addresses.html">IP Address Ranges of Amazon Route 53 Servers</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </important>
   ## 
-  let valid = call_602564.validator(path, query, header, formData, body)
-  let scheme = call_602564.pickScheme
+  let valid = call_606764.validator(path, query, header, formData, body)
+  let scheme = call_606764.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602564.url(scheme.get, call_602564.host, call_602564.base,
-                         call_602564.route, valid.getOrDefault("path"),
+  let url = call_606764.url(scheme.get, call_606764.host, call_606764.base,
+                         call_606764.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602564, url, valid)
+  result = atozHook(call_606764, url, valid)
 
-proc call*(call_602565: Call_GetCheckerIpRanges_602554): Recallable =
+proc call*(call_606765: Call_GetCheckerIpRanges_606754): Recallable =
   ## getCheckerIpRanges
   ## <important> <p> <code>GetCheckerIpRanges</code> still works, but we recommend that you download ip-ranges.json, which includes IP address ranges for all AWS services. For more information, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/route-53-ip-addresses.html">IP Address Ranges of Amazon Route 53 Servers</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> </important>
-  result = call_602565.call(nil, nil, nil, nil, nil)
+  result = call_606765.call(nil, nil, nil, nil, nil)
 
-var getCheckerIpRanges* = Call_GetCheckerIpRanges_602554(
+var getCheckerIpRanges* = Call_GetCheckerIpRanges_606754(
     name: "getCheckerIpRanges", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/checkeripranges",
-    validator: validate_GetCheckerIpRanges_602555, base: "/",
-    url: url_GetCheckerIpRanges_602556, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetCheckerIpRanges_606755, base: "/",
+    url: url_GetCheckerIpRanges_606756, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGeoLocation_602566 = ref object of OpenApiRestCall_601389
-proc url_GetGeoLocation_602568(protocol: Scheme; host: string; base: string;
+  Call_GetGeoLocation_606766 = ref object of OpenApiRestCall_605589
+proc url_GetGeoLocation_606768(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4829,7 +4829,7 @@ proc url_GetGeoLocation_602568(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetGeoLocation_602567(path: JsonNode; query: JsonNode;
+proc validate_GetGeoLocation_606767(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Gets information about whether a specified geographic location is supported for Amazon Route 53 geolocation resource record sets.</p> <p>Use the following syntax to determine whether a continent is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?continentcode=<i>two-letter abbreviation for a continent</i> </code> </p> <p>Use the following syntax to determine whether a country is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?countrycode=<i>two-character country code</i> </code> </p> <p>Use the following syntax to determine whether a subdivision of a country is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?countrycode=<i>two-character country code</i>&amp;subdivisioncode=<i>subdivision code</i> </code> </p>
@@ -4846,21 +4846,21 @@ proc validate_GetGeoLocation_602567(path: JsonNode; query: JsonNode;
   ##   subdivisioncode: JString
   ##                  : Amazon Route 53 uses the one- to three-letter subdivision codes that are specified in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO standard 3166-1 alpha-2</a>. Route 53 doesn't support subdivision codes for all countries. If you specify <code>subdivisioncode</code>, you must also specify <code>countrycode</code>. 
   section = newJObject()
-  var valid_602569 = query.getOrDefault("continentcode")
-  valid_602569 = validateParameter(valid_602569, JString, required = false,
+  var valid_606769 = query.getOrDefault("continentcode")
+  valid_606769 = validateParameter(valid_606769, JString, required = false,
                                  default = nil)
-  if valid_602569 != nil:
-    section.add "continentcode", valid_602569
-  var valid_602570 = query.getOrDefault("countrycode")
-  valid_602570 = validateParameter(valid_602570, JString, required = false,
+  if valid_606769 != nil:
+    section.add "continentcode", valid_606769
+  var valid_606770 = query.getOrDefault("countrycode")
+  valid_606770 = validateParameter(valid_606770, JString, required = false,
                                  default = nil)
-  if valid_602570 != nil:
-    section.add "countrycode", valid_602570
-  var valid_602571 = query.getOrDefault("subdivisioncode")
-  valid_602571 = validateParameter(valid_602571, JString, required = false,
+  if valid_606770 != nil:
+    section.add "countrycode", valid_606770
+  var valid_606771 = query.getOrDefault("subdivisioncode")
+  valid_606771 = validateParameter(valid_606771, JString, required = false,
                                  default = nil)
-  if valid_602571 != nil:
-    section.add "subdivisioncode", valid_602571
+  if valid_606771 != nil:
+    section.add "subdivisioncode", valid_606771
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -4871,61 +4871,61 @@ proc validate_GetGeoLocation_602567(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602572 = header.getOrDefault("X-Amz-Signature")
-  valid_602572 = validateParameter(valid_602572, JString, required = false,
+  var valid_606772 = header.getOrDefault("X-Amz-Signature")
+  valid_606772 = validateParameter(valid_606772, JString, required = false,
                                  default = nil)
-  if valid_602572 != nil:
-    section.add "X-Amz-Signature", valid_602572
-  var valid_602573 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602573 = validateParameter(valid_602573, JString, required = false,
+  if valid_606772 != nil:
+    section.add "X-Amz-Signature", valid_606772
+  var valid_606773 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606773 = validateParameter(valid_606773, JString, required = false,
                                  default = nil)
-  if valid_602573 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602573
-  var valid_602574 = header.getOrDefault("X-Amz-Date")
-  valid_602574 = validateParameter(valid_602574, JString, required = false,
+  if valid_606773 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606773
+  var valid_606774 = header.getOrDefault("X-Amz-Date")
+  valid_606774 = validateParameter(valid_606774, JString, required = false,
                                  default = nil)
-  if valid_602574 != nil:
-    section.add "X-Amz-Date", valid_602574
-  var valid_602575 = header.getOrDefault("X-Amz-Credential")
-  valid_602575 = validateParameter(valid_602575, JString, required = false,
+  if valid_606774 != nil:
+    section.add "X-Amz-Date", valid_606774
+  var valid_606775 = header.getOrDefault("X-Amz-Credential")
+  valid_606775 = validateParameter(valid_606775, JString, required = false,
                                  default = nil)
-  if valid_602575 != nil:
-    section.add "X-Amz-Credential", valid_602575
-  var valid_602576 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602576 = validateParameter(valid_602576, JString, required = false,
+  if valid_606775 != nil:
+    section.add "X-Amz-Credential", valid_606775
+  var valid_606776 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606776 = validateParameter(valid_606776, JString, required = false,
                                  default = nil)
-  if valid_602576 != nil:
-    section.add "X-Amz-Security-Token", valid_602576
-  var valid_602577 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602577 = validateParameter(valid_602577, JString, required = false,
+  if valid_606776 != nil:
+    section.add "X-Amz-Security-Token", valid_606776
+  var valid_606777 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606777 = validateParameter(valid_606777, JString, required = false,
                                  default = nil)
-  if valid_602577 != nil:
-    section.add "X-Amz-Algorithm", valid_602577
-  var valid_602578 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602578 = validateParameter(valid_602578, JString, required = false,
+  if valid_606777 != nil:
+    section.add "X-Amz-Algorithm", valid_606777
+  var valid_606778 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606778 = validateParameter(valid_606778, JString, required = false,
                                  default = nil)
-  if valid_602578 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602578
+  if valid_606778 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606778
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602579: Call_GetGeoLocation_602566; path: JsonNode; query: JsonNode;
+proc call*(call_606779: Call_GetGeoLocation_606766; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about whether a specified geographic location is supported for Amazon Route 53 geolocation resource record sets.</p> <p>Use the following syntax to determine whether a continent is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?continentcode=<i>two-letter abbreviation for a continent</i> </code> </p> <p>Use the following syntax to determine whether a country is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?countrycode=<i>two-character country code</i> </code> </p> <p>Use the following syntax to determine whether a subdivision of a country is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?countrycode=<i>two-character country code</i>&amp;subdivisioncode=<i>subdivision code</i> </code> </p>
   ## 
-  let valid = call_602579.validator(path, query, header, formData, body)
-  let scheme = call_602579.pickScheme
+  let valid = call_606779.validator(path, query, header, formData, body)
+  let scheme = call_606779.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602579.url(scheme.get, call_602579.host, call_602579.base,
-                         call_602579.route, valid.getOrDefault("path"),
+  let url = call_606779.url(scheme.get, call_606779.host, call_606779.base,
+                         call_606779.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602579, url, valid)
+  result = atozHook(call_606779, url, valid)
 
-proc call*(call_602580: Call_GetGeoLocation_602566; continentcode: string = "";
+proc call*(call_606780: Call_GetGeoLocation_606766; continentcode: string = "";
           countrycode: string = ""; subdivisioncode: string = ""): Recallable =
   ## getGeoLocation
   ## <p>Gets information about whether a specified geographic location is supported for Amazon Route 53 geolocation resource record sets.</p> <p>Use the following syntax to determine whether a continent is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?continentcode=<i>two-letter abbreviation for a continent</i> </code> </p> <p>Use the following syntax to determine whether a country is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?countrycode=<i>two-character country code</i> </code> </p> <p>Use the following syntax to determine whether a subdivision of a country is supported for geolocation:</p> <p> <code>GET /2013-04-01/geolocation?countrycode=<i>two-character country code</i>&amp;subdivisioncode=<i>subdivision code</i> </code> </p>
@@ -4935,19 +4935,19 @@ proc call*(call_602580: Call_GetGeoLocation_602566; continentcode: string = "";
   ##              : Amazon Route 53 uses the two-letter country codes that are specified in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO standard 3166-1 alpha-2</a>.
   ##   subdivisioncode: string
   ##                  : Amazon Route 53 uses the one- to three-letter subdivision codes that are specified in <a href="https://en.wikipedia.org/wiki/ISO_3166-1_alpha-2">ISO standard 3166-1 alpha-2</a>. Route 53 doesn't support subdivision codes for all countries. If you specify <code>subdivisioncode</code>, you must also specify <code>countrycode</code>. 
-  var query_602581 = newJObject()
-  add(query_602581, "continentcode", newJString(continentcode))
-  add(query_602581, "countrycode", newJString(countrycode))
-  add(query_602581, "subdivisioncode", newJString(subdivisioncode))
-  result = call_602580.call(nil, query_602581, nil, nil, nil)
+  var query_606781 = newJObject()
+  add(query_606781, "continentcode", newJString(continentcode))
+  add(query_606781, "countrycode", newJString(countrycode))
+  add(query_606781, "subdivisioncode", newJString(subdivisioncode))
+  result = call_606780.call(nil, query_606781, nil, nil, nil)
 
-var getGeoLocation* = Call_GetGeoLocation_602566(name: "getGeoLocation",
+var getGeoLocation* = Call_GetGeoLocation_606766(name: "getGeoLocation",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
-    route: "/2013-04-01/geolocation", validator: validate_GetGeoLocation_602567,
-    base: "/", url: url_GetGeoLocation_602568, schemes: {Scheme.Https, Scheme.Http})
+    route: "/2013-04-01/geolocation", validator: validate_GetGeoLocation_606767,
+    base: "/", url: url_GetGeoLocation_606768, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHealthCheckCount_602582 = ref object of OpenApiRestCall_601389
-proc url_GetHealthCheckCount_602584(protocol: Scheme; host: string; base: string;
+  Call_GetHealthCheckCount_606782 = ref object of OpenApiRestCall_605589
+proc url_GetHealthCheckCount_606784(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4959,7 +4959,7 @@ proc url_GetHealthCheckCount_602584(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_GetHealthCheckCount_602583(path: JsonNode; query: JsonNode;
+proc validate_GetHealthCheckCount_606783(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Retrieves the number of health checks that are associated with the current AWS account.
@@ -4979,73 +4979,73 @@ proc validate_GetHealthCheckCount_602583(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602585 = header.getOrDefault("X-Amz-Signature")
-  valid_602585 = validateParameter(valid_602585, JString, required = false,
+  var valid_606785 = header.getOrDefault("X-Amz-Signature")
+  valid_606785 = validateParameter(valid_606785, JString, required = false,
                                  default = nil)
-  if valid_602585 != nil:
-    section.add "X-Amz-Signature", valid_602585
-  var valid_602586 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602586 = validateParameter(valid_602586, JString, required = false,
+  if valid_606785 != nil:
+    section.add "X-Amz-Signature", valid_606785
+  var valid_606786 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606786 = validateParameter(valid_606786, JString, required = false,
                                  default = nil)
-  if valid_602586 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602586
-  var valid_602587 = header.getOrDefault("X-Amz-Date")
-  valid_602587 = validateParameter(valid_602587, JString, required = false,
+  if valid_606786 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606786
+  var valid_606787 = header.getOrDefault("X-Amz-Date")
+  valid_606787 = validateParameter(valid_606787, JString, required = false,
                                  default = nil)
-  if valid_602587 != nil:
-    section.add "X-Amz-Date", valid_602587
-  var valid_602588 = header.getOrDefault("X-Amz-Credential")
-  valid_602588 = validateParameter(valid_602588, JString, required = false,
+  if valid_606787 != nil:
+    section.add "X-Amz-Date", valid_606787
+  var valid_606788 = header.getOrDefault("X-Amz-Credential")
+  valid_606788 = validateParameter(valid_606788, JString, required = false,
                                  default = nil)
-  if valid_602588 != nil:
-    section.add "X-Amz-Credential", valid_602588
-  var valid_602589 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602589 = validateParameter(valid_602589, JString, required = false,
+  if valid_606788 != nil:
+    section.add "X-Amz-Credential", valid_606788
+  var valid_606789 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606789 = validateParameter(valid_606789, JString, required = false,
                                  default = nil)
-  if valid_602589 != nil:
-    section.add "X-Amz-Security-Token", valid_602589
-  var valid_602590 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602590 = validateParameter(valid_602590, JString, required = false,
+  if valid_606789 != nil:
+    section.add "X-Amz-Security-Token", valid_606789
+  var valid_606790 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606790 = validateParameter(valid_606790, JString, required = false,
                                  default = nil)
-  if valid_602590 != nil:
-    section.add "X-Amz-Algorithm", valid_602590
-  var valid_602591 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602591 = validateParameter(valid_602591, JString, required = false,
+  if valid_606790 != nil:
+    section.add "X-Amz-Algorithm", valid_606790
+  var valid_606791 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606791 = validateParameter(valid_606791, JString, required = false,
                                  default = nil)
-  if valid_602591 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602591
+  if valid_606791 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606791
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602592: Call_GetHealthCheckCount_602582; path: JsonNode;
+proc call*(call_606792: Call_GetHealthCheckCount_606782; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the number of health checks that are associated with the current AWS account.
   ## 
-  let valid = call_602592.validator(path, query, header, formData, body)
-  let scheme = call_602592.pickScheme
+  let valid = call_606792.validator(path, query, header, formData, body)
+  let scheme = call_606792.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602592.url(scheme.get, call_602592.host, call_602592.base,
-                         call_602592.route, valid.getOrDefault("path"),
+  let url = call_606792.url(scheme.get, call_606792.host, call_606792.base,
+                         call_606792.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602592, url, valid)
+  result = atozHook(call_606792, url, valid)
 
-proc call*(call_602593: Call_GetHealthCheckCount_602582): Recallable =
+proc call*(call_606793: Call_GetHealthCheckCount_606782): Recallable =
   ## getHealthCheckCount
   ## Retrieves the number of health checks that are associated with the current AWS account.
-  result = call_602593.call(nil, nil, nil, nil, nil)
+  result = call_606793.call(nil, nil, nil, nil, nil)
 
-var getHealthCheckCount* = Call_GetHealthCheckCount_602582(
+var getHealthCheckCount* = Call_GetHealthCheckCount_606782(
     name: "getHealthCheckCount", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/healthcheckcount",
-    validator: validate_GetHealthCheckCount_602583, base: "/",
-    url: url_GetHealthCheckCount_602584, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetHealthCheckCount_606783, base: "/",
+    url: url_GetHealthCheckCount_606784, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHealthCheckLastFailureReason_602594 = ref object of OpenApiRestCall_601389
-proc url_GetHealthCheckLastFailureReason_602596(protocol: Scheme; host: string;
+  Call_GetHealthCheckLastFailureReason_606794 = ref object of OpenApiRestCall_605589
+proc url_GetHealthCheckLastFailureReason_606796(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5066,7 +5066,7 @@ proc url_GetHealthCheckLastFailureReason_602596(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetHealthCheckLastFailureReason_602595(path: JsonNode;
+proc validate_GetHealthCheckLastFailureReason_606795(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets the reason that a specified health check failed most recently.
   ## 
@@ -5078,11 +5078,11 @@ proc validate_GetHealthCheckLastFailureReason_602595(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `HealthCheckId` field"
-  var valid_602597 = path.getOrDefault("HealthCheckId")
-  valid_602597 = validateParameter(valid_602597, JString, required = true,
+  var valid_606797 = path.getOrDefault("HealthCheckId")
+  valid_606797 = validateParameter(valid_606797, JString, required = true,
                                  default = nil)
-  if valid_602597 != nil:
-    section.add "HealthCheckId", valid_602597
+  if valid_606797 != nil:
+    section.add "HealthCheckId", valid_606797
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -5095,81 +5095,81 @@ proc validate_GetHealthCheckLastFailureReason_602595(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602598 = header.getOrDefault("X-Amz-Signature")
-  valid_602598 = validateParameter(valid_602598, JString, required = false,
+  var valid_606798 = header.getOrDefault("X-Amz-Signature")
+  valid_606798 = validateParameter(valid_606798, JString, required = false,
                                  default = nil)
-  if valid_602598 != nil:
-    section.add "X-Amz-Signature", valid_602598
-  var valid_602599 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602599 = validateParameter(valid_602599, JString, required = false,
+  if valid_606798 != nil:
+    section.add "X-Amz-Signature", valid_606798
+  var valid_606799 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606799 = validateParameter(valid_606799, JString, required = false,
                                  default = nil)
-  if valid_602599 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602599
-  var valid_602600 = header.getOrDefault("X-Amz-Date")
-  valid_602600 = validateParameter(valid_602600, JString, required = false,
+  if valid_606799 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606799
+  var valid_606800 = header.getOrDefault("X-Amz-Date")
+  valid_606800 = validateParameter(valid_606800, JString, required = false,
                                  default = nil)
-  if valid_602600 != nil:
-    section.add "X-Amz-Date", valid_602600
-  var valid_602601 = header.getOrDefault("X-Amz-Credential")
-  valid_602601 = validateParameter(valid_602601, JString, required = false,
+  if valid_606800 != nil:
+    section.add "X-Amz-Date", valid_606800
+  var valid_606801 = header.getOrDefault("X-Amz-Credential")
+  valid_606801 = validateParameter(valid_606801, JString, required = false,
                                  default = nil)
-  if valid_602601 != nil:
-    section.add "X-Amz-Credential", valid_602601
-  var valid_602602 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602602 = validateParameter(valid_602602, JString, required = false,
+  if valid_606801 != nil:
+    section.add "X-Amz-Credential", valid_606801
+  var valid_606802 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606802 = validateParameter(valid_606802, JString, required = false,
                                  default = nil)
-  if valid_602602 != nil:
-    section.add "X-Amz-Security-Token", valid_602602
-  var valid_602603 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602603 = validateParameter(valid_602603, JString, required = false,
+  if valid_606802 != nil:
+    section.add "X-Amz-Security-Token", valid_606802
+  var valid_606803 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606803 = validateParameter(valid_606803, JString, required = false,
                                  default = nil)
-  if valid_602603 != nil:
-    section.add "X-Amz-Algorithm", valid_602603
-  var valid_602604 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602604 = validateParameter(valid_602604, JString, required = false,
+  if valid_606803 != nil:
+    section.add "X-Amz-Algorithm", valid_606803
+  var valid_606804 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606804 = validateParameter(valid_606804, JString, required = false,
                                  default = nil)
-  if valid_602604 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602604
+  if valid_606804 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606804
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602605: Call_GetHealthCheckLastFailureReason_602594;
+proc call*(call_606805: Call_GetHealthCheckLastFailureReason_606794;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Gets the reason that a specified health check failed most recently.
   ## 
-  let valid = call_602605.validator(path, query, header, formData, body)
-  let scheme = call_602605.pickScheme
+  let valid = call_606805.validator(path, query, header, formData, body)
+  let scheme = call_606805.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602605.url(scheme.get, call_602605.host, call_602605.base,
-                         call_602605.route, valid.getOrDefault("path"),
+  let url = call_606805.url(scheme.get, call_606805.host, call_606805.base,
+                         call_606805.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602605, url, valid)
+  result = atozHook(call_606805, url, valid)
 
-proc call*(call_602606: Call_GetHealthCheckLastFailureReason_602594;
+proc call*(call_606806: Call_GetHealthCheckLastFailureReason_606794;
           HealthCheckId: string): Recallable =
   ## getHealthCheckLastFailureReason
   ## Gets the reason that a specified health check failed most recently.
   ##   HealthCheckId: string (required)
   ##                : <p>The ID for the health check for which you want the last failure reason. When you created the health check, <code>CreateHealthCheck</code> returned the ID in the response, in the <code>HealthCheckId</code> element.</p> <note> <p>If you want to get the last failure reason for a calculated health check, you must use the Amazon Route 53 console or the CloudWatch console. You can't use <code>GetHealthCheckLastFailureReason</code> for a calculated health check.</p> </note>
-  var path_602607 = newJObject()
-  add(path_602607, "HealthCheckId", newJString(HealthCheckId))
-  result = call_602606.call(path_602607, nil, nil, nil, nil)
+  var path_606807 = newJObject()
+  add(path_606807, "HealthCheckId", newJString(HealthCheckId))
+  result = call_606806.call(path_606807, nil, nil, nil, nil)
 
-var getHealthCheckLastFailureReason* = Call_GetHealthCheckLastFailureReason_602594(
+var getHealthCheckLastFailureReason* = Call_GetHealthCheckLastFailureReason_606794(
     name: "getHealthCheckLastFailureReason", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/healthcheck/{HealthCheckId}/lastfailurereason",
-    validator: validate_GetHealthCheckLastFailureReason_602595, base: "/",
-    url: url_GetHealthCheckLastFailureReason_602596,
+    validator: validate_GetHealthCheckLastFailureReason_606795, base: "/",
+    url: url_GetHealthCheckLastFailureReason_606796,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHealthCheckStatus_602608 = ref object of OpenApiRestCall_601389
-proc url_GetHealthCheckStatus_602610(protocol: Scheme; host: string; base: string;
+  Call_GetHealthCheckStatus_606808 = ref object of OpenApiRestCall_605589
+proc url_GetHealthCheckStatus_606810(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5190,7 +5190,7 @@ proc url_GetHealthCheckStatus_602610(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_GetHealthCheckStatus_602609(path: JsonNode; query: JsonNode;
+proc validate_GetHealthCheckStatus_606809(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets status of a specified health check. 
   ## 
@@ -5202,11 +5202,11 @@ proc validate_GetHealthCheckStatus_602609(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `HealthCheckId` field"
-  var valid_602611 = path.getOrDefault("HealthCheckId")
-  valid_602611 = validateParameter(valid_602611, JString, required = true,
+  var valid_606811 = path.getOrDefault("HealthCheckId")
+  valid_606811 = validateParameter(valid_606811, JString, required = true,
                                  default = nil)
-  if valid_602611 != nil:
-    section.add "HealthCheckId", valid_602611
+  if valid_606811 != nil:
+    section.add "HealthCheckId", valid_606811
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -5219,78 +5219,78 @@ proc validate_GetHealthCheckStatus_602609(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602612 = header.getOrDefault("X-Amz-Signature")
-  valid_602612 = validateParameter(valid_602612, JString, required = false,
+  var valid_606812 = header.getOrDefault("X-Amz-Signature")
+  valid_606812 = validateParameter(valid_606812, JString, required = false,
                                  default = nil)
-  if valid_602612 != nil:
-    section.add "X-Amz-Signature", valid_602612
-  var valid_602613 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602613 = validateParameter(valid_602613, JString, required = false,
+  if valid_606812 != nil:
+    section.add "X-Amz-Signature", valid_606812
+  var valid_606813 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606813 = validateParameter(valid_606813, JString, required = false,
                                  default = nil)
-  if valid_602613 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602613
-  var valid_602614 = header.getOrDefault("X-Amz-Date")
-  valid_602614 = validateParameter(valid_602614, JString, required = false,
+  if valid_606813 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606813
+  var valid_606814 = header.getOrDefault("X-Amz-Date")
+  valid_606814 = validateParameter(valid_606814, JString, required = false,
                                  default = nil)
-  if valid_602614 != nil:
-    section.add "X-Amz-Date", valid_602614
-  var valid_602615 = header.getOrDefault("X-Amz-Credential")
-  valid_602615 = validateParameter(valid_602615, JString, required = false,
+  if valid_606814 != nil:
+    section.add "X-Amz-Date", valid_606814
+  var valid_606815 = header.getOrDefault("X-Amz-Credential")
+  valid_606815 = validateParameter(valid_606815, JString, required = false,
                                  default = nil)
-  if valid_602615 != nil:
-    section.add "X-Amz-Credential", valid_602615
-  var valid_602616 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602616 = validateParameter(valid_602616, JString, required = false,
+  if valid_606815 != nil:
+    section.add "X-Amz-Credential", valid_606815
+  var valid_606816 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606816 = validateParameter(valid_606816, JString, required = false,
                                  default = nil)
-  if valid_602616 != nil:
-    section.add "X-Amz-Security-Token", valid_602616
-  var valid_602617 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602617 = validateParameter(valid_602617, JString, required = false,
+  if valid_606816 != nil:
+    section.add "X-Amz-Security-Token", valid_606816
+  var valid_606817 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606817 = validateParameter(valid_606817, JString, required = false,
                                  default = nil)
-  if valid_602617 != nil:
-    section.add "X-Amz-Algorithm", valid_602617
-  var valid_602618 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602618 = validateParameter(valid_602618, JString, required = false,
+  if valid_606817 != nil:
+    section.add "X-Amz-Algorithm", valid_606817
+  var valid_606818 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606818 = validateParameter(valid_606818, JString, required = false,
                                  default = nil)
-  if valid_602618 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602618
+  if valid_606818 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606818
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602619: Call_GetHealthCheckStatus_602608; path: JsonNode;
+proc call*(call_606819: Call_GetHealthCheckStatus_606808; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets status of a specified health check. 
   ## 
-  let valid = call_602619.validator(path, query, header, formData, body)
-  let scheme = call_602619.pickScheme
+  let valid = call_606819.validator(path, query, header, formData, body)
+  let scheme = call_606819.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602619.url(scheme.get, call_602619.host, call_602619.base,
-                         call_602619.route, valid.getOrDefault("path"),
+  let url = call_606819.url(scheme.get, call_606819.host, call_606819.base,
+                         call_606819.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602619, url, valid)
+  result = atozHook(call_606819, url, valid)
 
-proc call*(call_602620: Call_GetHealthCheckStatus_602608; HealthCheckId: string): Recallable =
+proc call*(call_606820: Call_GetHealthCheckStatus_606808; HealthCheckId: string): Recallable =
   ## getHealthCheckStatus
   ## Gets status of a specified health check. 
   ##   HealthCheckId: string (required)
   ##                : <p>The ID for the health check that you want the current status for. When you created the health check, <code>CreateHealthCheck</code> returned the ID in the response, in the <code>HealthCheckId</code> element.</p> <note> <p>If you want to check the status of a calculated health check, you must use the Amazon Route 53 console or the CloudWatch console. You can't use <code>GetHealthCheckStatus</code> to get the status of a calculated health check.</p> </note>
-  var path_602621 = newJObject()
-  add(path_602621, "HealthCheckId", newJString(HealthCheckId))
-  result = call_602620.call(path_602621, nil, nil, nil, nil)
+  var path_606821 = newJObject()
+  add(path_606821, "HealthCheckId", newJString(HealthCheckId))
+  result = call_606820.call(path_606821, nil, nil, nil, nil)
 
-var getHealthCheckStatus* = Call_GetHealthCheckStatus_602608(
+var getHealthCheckStatus* = Call_GetHealthCheckStatus_606808(
     name: "getHealthCheckStatus", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/healthcheck/{HealthCheckId}/status",
-    validator: validate_GetHealthCheckStatus_602609, base: "/",
-    url: url_GetHealthCheckStatus_602610, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetHealthCheckStatus_606809, base: "/",
+    url: url_GetHealthCheckStatus_606810, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHostedZoneCount_602622 = ref object of OpenApiRestCall_601389
-proc url_GetHostedZoneCount_602624(protocol: Scheme; host: string; base: string;
+  Call_GetHostedZoneCount_606822 = ref object of OpenApiRestCall_605589
+proc url_GetHostedZoneCount_606824(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5302,7 +5302,7 @@ proc url_GetHostedZoneCount_602624(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetHostedZoneCount_602623(path: JsonNode; query: JsonNode;
+proc validate_GetHostedZoneCount_606823(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Retrieves the number of hosted zones that are associated with the current AWS account.
@@ -5322,73 +5322,73 @@ proc validate_GetHostedZoneCount_602623(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602625 = header.getOrDefault("X-Amz-Signature")
-  valid_602625 = validateParameter(valid_602625, JString, required = false,
+  var valid_606825 = header.getOrDefault("X-Amz-Signature")
+  valid_606825 = validateParameter(valid_606825, JString, required = false,
                                  default = nil)
-  if valid_602625 != nil:
-    section.add "X-Amz-Signature", valid_602625
-  var valid_602626 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602626 = validateParameter(valid_602626, JString, required = false,
+  if valid_606825 != nil:
+    section.add "X-Amz-Signature", valid_606825
+  var valid_606826 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606826 = validateParameter(valid_606826, JString, required = false,
                                  default = nil)
-  if valid_602626 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602626
-  var valid_602627 = header.getOrDefault("X-Amz-Date")
-  valid_602627 = validateParameter(valid_602627, JString, required = false,
+  if valid_606826 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606826
+  var valid_606827 = header.getOrDefault("X-Amz-Date")
+  valid_606827 = validateParameter(valid_606827, JString, required = false,
                                  default = nil)
-  if valid_602627 != nil:
-    section.add "X-Amz-Date", valid_602627
-  var valid_602628 = header.getOrDefault("X-Amz-Credential")
-  valid_602628 = validateParameter(valid_602628, JString, required = false,
+  if valid_606827 != nil:
+    section.add "X-Amz-Date", valid_606827
+  var valid_606828 = header.getOrDefault("X-Amz-Credential")
+  valid_606828 = validateParameter(valid_606828, JString, required = false,
                                  default = nil)
-  if valid_602628 != nil:
-    section.add "X-Amz-Credential", valid_602628
-  var valid_602629 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602629 = validateParameter(valid_602629, JString, required = false,
+  if valid_606828 != nil:
+    section.add "X-Amz-Credential", valid_606828
+  var valid_606829 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606829 = validateParameter(valid_606829, JString, required = false,
                                  default = nil)
-  if valid_602629 != nil:
-    section.add "X-Amz-Security-Token", valid_602629
-  var valid_602630 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602630 = validateParameter(valid_602630, JString, required = false,
+  if valid_606829 != nil:
+    section.add "X-Amz-Security-Token", valid_606829
+  var valid_606830 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606830 = validateParameter(valid_606830, JString, required = false,
                                  default = nil)
-  if valid_602630 != nil:
-    section.add "X-Amz-Algorithm", valid_602630
-  var valid_602631 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602631 = validateParameter(valid_602631, JString, required = false,
+  if valid_606830 != nil:
+    section.add "X-Amz-Algorithm", valid_606830
+  var valid_606831 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606831 = validateParameter(valid_606831, JString, required = false,
                                  default = nil)
-  if valid_602631 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602631
+  if valid_606831 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606831
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602632: Call_GetHostedZoneCount_602622; path: JsonNode;
+proc call*(call_606832: Call_GetHostedZoneCount_606822; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the number of hosted zones that are associated with the current AWS account.
   ## 
-  let valid = call_602632.validator(path, query, header, formData, body)
-  let scheme = call_602632.pickScheme
+  let valid = call_606832.validator(path, query, header, formData, body)
+  let scheme = call_606832.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602632.url(scheme.get, call_602632.host, call_602632.base,
-                         call_602632.route, valid.getOrDefault("path"),
+  let url = call_606832.url(scheme.get, call_606832.host, call_606832.base,
+                         call_606832.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602632, url, valid)
+  result = atozHook(call_606832, url, valid)
 
-proc call*(call_602633: Call_GetHostedZoneCount_602622): Recallable =
+proc call*(call_606833: Call_GetHostedZoneCount_606822): Recallable =
   ## getHostedZoneCount
   ## Retrieves the number of hosted zones that are associated with the current AWS account.
-  result = call_602633.call(nil, nil, nil, nil, nil)
+  result = call_606833.call(nil, nil, nil, nil, nil)
 
-var getHostedZoneCount* = Call_GetHostedZoneCount_602622(
+var getHostedZoneCount* = Call_GetHostedZoneCount_606822(
     name: "getHostedZoneCount", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/hostedzonecount",
-    validator: validate_GetHostedZoneCount_602623, base: "/",
-    url: url_GetHostedZoneCount_602624, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetHostedZoneCount_606823, base: "/",
+    url: url_GetHostedZoneCount_606824, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHostedZoneLimit_602634 = ref object of OpenApiRestCall_601389
-proc url_GetHostedZoneLimit_602636(protocol: Scheme; host: string; base: string;
+  Call_GetHostedZoneLimit_606834 = ref object of OpenApiRestCall_605589
+proc url_GetHostedZoneLimit_606836(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5411,7 +5411,7 @@ proc url_GetHostedZoneLimit_602636(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetHostedZoneLimit_602635(path: JsonNode; query: JsonNode;
+proc validate_GetHostedZoneLimit_606835(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Gets the specified limit for a specified hosted zone, for example, the maximum number of records that you can create in the hosted zone. </p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p>
@@ -5425,16 +5425,16 @@ proc validate_GetHostedZoneLimit_602635(path: JsonNode; query: JsonNode;
   ##     : The ID of the hosted zone that you want to get a limit for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Type` field"
-  var valid_602637 = path.getOrDefault("Type")
-  valid_602637 = validateParameter(valid_602637, JString, required = true,
+  var valid_606837 = path.getOrDefault("Type")
+  valid_606837 = validateParameter(valid_606837, JString, required = true,
                                  default = newJString("MAX_RRSETS_BY_ZONE"))
-  if valid_602637 != nil:
-    section.add "Type", valid_602637
-  var valid_602638 = path.getOrDefault("Id")
-  valid_602638 = validateParameter(valid_602638, JString, required = true,
+  if valid_606837 != nil:
+    section.add "Type", valid_606837
+  var valid_606838 = path.getOrDefault("Id")
+  valid_606838 = validateParameter(valid_606838, JString, required = true,
                                  default = nil)
-  if valid_602638 != nil:
-    section.add "Id", valid_602638
+  if valid_606838 != nil:
+    section.add "Id", valid_606838
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -5447,61 +5447,61 @@ proc validate_GetHostedZoneLimit_602635(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602639 = header.getOrDefault("X-Amz-Signature")
-  valid_602639 = validateParameter(valid_602639, JString, required = false,
+  var valid_606839 = header.getOrDefault("X-Amz-Signature")
+  valid_606839 = validateParameter(valid_606839, JString, required = false,
                                  default = nil)
-  if valid_602639 != nil:
-    section.add "X-Amz-Signature", valid_602639
-  var valid_602640 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602640 = validateParameter(valid_602640, JString, required = false,
+  if valid_606839 != nil:
+    section.add "X-Amz-Signature", valid_606839
+  var valid_606840 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606840 = validateParameter(valid_606840, JString, required = false,
                                  default = nil)
-  if valid_602640 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602640
-  var valid_602641 = header.getOrDefault("X-Amz-Date")
-  valid_602641 = validateParameter(valid_602641, JString, required = false,
+  if valid_606840 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606840
+  var valid_606841 = header.getOrDefault("X-Amz-Date")
+  valid_606841 = validateParameter(valid_606841, JString, required = false,
                                  default = nil)
-  if valid_602641 != nil:
-    section.add "X-Amz-Date", valid_602641
-  var valid_602642 = header.getOrDefault("X-Amz-Credential")
-  valid_602642 = validateParameter(valid_602642, JString, required = false,
+  if valid_606841 != nil:
+    section.add "X-Amz-Date", valid_606841
+  var valid_606842 = header.getOrDefault("X-Amz-Credential")
+  valid_606842 = validateParameter(valid_606842, JString, required = false,
                                  default = nil)
-  if valid_602642 != nil:
-    section.add "X-Amz-Credential", valid_602642
-  var valid_602643 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602643 = validateParameter(valid_602643, JString, required = false,
+  if valid_606842 != nil:
+    section.add "X-Amz-Credential", valid_606842
+  var valid_606843 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606843 = validateParameter(valid_606843, JString, required = false,
                                  default = nil)
-  if valid_602643 != nil:
-    section.add "X-Amz-Security-Token", valid_602643
-  var valid_602644 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602644 = validateParameter(valid_602644, JString, required = false,
+  if valid_606843 != nil:
+    section.add "X-Amz-Security-Token", valid_606843
+  var valid_606844 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606844 = validateParameter(valid_606844, JString, required = false,
                                  default = nil)
-  if valid_602644 != nil:
-    section.add "X-Amz-Algorithm", valid_602644
-  var valid_602645 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602645 = validateParameter(valid_602645, JString, required = false,
+  if valid_606844 != nil:
+    section.add "X-Amz-Algorithm", valid_606844
+  var valid_606845 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606845 = validateParameter(valid_606845, JString, required = false,
                                  default = nil)
-  if valid_602645 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602645
+  if valid_606845 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606845
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602646: Call_GetHostedZoneLimit_602634; path: JsonNode;
+proc call*(call_606846: Call_GetHostedZoneLimit_606834; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the specified limit for a specified hosted zone, for example, the maximum number of records that you can create in the hosted zone. </p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p>
   ## 
-  let valid = call_602646.validator(path, query, header, formData, body)
-  let scheme = call_602646.pickScheme
+  let valid = call_606846.validator(path, query, header, formData, body)
+  let scheme = call_606846.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602646.url(scheme.get, call_602646.host, call_602646.base,
-                         call_602646.route, valid.getOrDefault("path"),
+  let url = call_606846.url(scheme.get, call_606846.host, call_606846.base,
+                         call_606846.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602646, url, valid)
+  result = atozHook(call_606846, url, valid)
 
-proc call*(call_602647: Call_GetHostedZoneLimit_602634; Id: string;
+proc call*(call_606847: Call_GetHostedZoneLimit_606834; Id: string;
           Type: string = "MAX_RRSETS_BY_ZONE"): Recallable =
   ## getHostedZoneLimit
   ## <p>Gets the specified limit for a specified hosted zone, for example, the maximum number of records that you can create in the hosted zone. </p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p>
@@ -5509,20 +5509,20 @@ proc call*(call_602647: Call_GetHostedZoneLimit_602634; Id: string;
   ##       : <p>The limit that you want to get. Valid values include the following:</p> <ul> <li> <p> <b>MAX_RRSETS_BY_ZONE</b>: The maximum number of records that you can create in the specified hosted zone.</p> </li> <li> <p> <b>MAX_VPCS_ASSOCIATED_BY_ZONE</b>: The maximum number of Amazon VPCs that you can associate with the specified private hosted zone.</p> </li> </ul>
   ##   Id: string (required)
   ##     : The ID of the hosted zone that you want to get a limit for.
-  var path_602648 = newJObject()
-  add(path_602648, "Type", newJString(Type))
-  add(path_602648, "Id", newJString(Id))
-  result = call_602647.call(path_602648, nil, nil, nil, nil)
+  var path_606848 = newJObject()
+  add(path_606848, "Type", newJString(Type))
+  add(path_606848, "Id", newJString(Id))
+  result = call_606847.call(path_606848, nil, nil, nil, nil)
 
-var getHostedZoneLimit* = Call_GetHostedZoneLimit_602634(
+var getHostedZoneLimit* = Call_GetHostedZoneLimit_606834(
     name: "getHostedZoneLimit", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/hostedzonelimit/{Id}/{Type}",
-    validator: validate_GetHostedZoneLimit_602635, base: "/",
-    url: url_GetHostedZoneLimit_602636, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetHostedZoneLimit_606835, base: "/",
+    url: url_GetHostedZoneLimit_606836, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetReusableDelegationSetLimit_602649 = ref object of OpenApiRestCall_601389
-proc url_GetReusableDelegationSetLimit_602651(protocol: Scheme; host: string;
+  Call_GetReusableDelegationSetLimit_606849 = ref object of OpenApiRestCall_605589
+proc url_GetReusableDelegationSetLimit_606851(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5546,7 +5546,7 @@ proc url_GetReusableDelegationSetLimit_602651(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetReusableDelegationSetLimit_602650(path: JsonNode; query: JsonNode;
+proc validate_GetReusableDelegationSetLimit_606850(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets the maximum number of hosted zones that you can associate with the specified reusable delegation set.</p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p>
   ## 
@@ -5559,16 +5559,16 @@ proc validate_GetReusableDelegationSetLimit_602650(path: JsonNode; query: JsonNo
   ##     : The ID of the delegation set that you want to get the limit for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Type` field"
-  var valid_602652 = path.getOrDefault("Type")
-  valid_602652 = validateParameter(valid_602652, JString, required = true, default = newJString(
+  var valid_606852 = path.getOrDefault("Type")
+  valid_606852 = validateParameter(valid_606852, JString, required = true, default = newJString(
       "MAX_ZONES_BY_REUSABLE_DELEGATION_SET"))
-  if valid_602652 != nil:
-    section.add "Type", valid_602652
-  var valid_602653 = path.getOrDefault("Id")
-  valid_602653 = validateParameter(valid_602653, JString, required = true,
+  if valid_606852 != nil:
+    section.add "Type", valid_606852
+  var valid_606853 = path.getOrDefault("Id")
+  valid_606853 = validateParameter(valid_606853, JString, required = true,
                                  default = nil)
-  if valid_602653 != nil:
-    section.add "Id", valid_602653
+  if valid_606853 != nil:
+    section.add "Id", valid_606853
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -5581,61 +5581,61 @@ proc validate_GetReusableDelegationSetLimit_602650(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602654 = header.getOrDefault("X-Amz-Signature")
-  valid_602654 = validateParameter(valid_602654, JString, required = false,
+  var valid_606854 = header.getOrDefault("X-Amz-Signature")
+  valid_606854 = validateParameter(valid_606854, JString, required = false,
                                  default = nil)
-  if valid_602654 != nil:
-    section.add "X-Amz-Signature", valid_602654
-  var valid_602655 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602655 = validateParameter(valid_602655, JString, required = false,
+  if valid_606854 != nil:
+    section.add "X-Amz-Signature", valid_606854
+  var valid_606855 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606855 = validateParameter(valid_606855, JString, required = false,
                                  default = nil)
-  if valid_602655 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602655
-  var valid_602656 = header.getOrDefault("X-Amz-Date")
-  valid_602656 = validateParameter(valid_602656, JString, required = false,
+  if valid_606855 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606855
+  var valid_606856 = header.getOrDefault("X-Amz-Date")
+  valid_606856 = validateParameter(valid_606856, JString, required = false,
                                  default = nil)
-  if valid_602656 != nil:
-    section.add "X-Amz-Date", valid_602656
-  var valid_602657 = header.getOrDefault("X-Amz-Credential")
-  valid_602657 = validateParameter(valid_602657, JString, required = false,
+  if valid_606856 != nil:
+    section.add "X-Amz-Date", valid_606856
+  var valid_606857 = header.getOrDefault("X-Amz-Credential")
+  valid_606857 = validateParameter(valid_606857, JString, required = false,
                                  default = nil)
-  if valid_602657 != nil:
-    section.add "X-Amz-Credential", valid_602657
-  var valid_602658 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602658 = validateParameter(valid_602658, JString, required = false,
+  if valid_606857 != nil:
+    section.add "X-Amz-Credential", valid_606857
+  var valid_606858 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606858 = validateParameter(valid_606858, JString, required = false,
                                  default = nil)
-  if valid_602658 != nil:
-    section.add "X-Amz-Security-Token", valid_602658
-  var valid_602659 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602659 = validateParameter(valid_602659, JString, required = false,
+  if valid_606858 != nil:
+    section.add "X-Amz-Security-Token", valid_606858
+  var valid_606859 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606859 = validateParameter(valid_606859, JString, required = false,
                                  default = nil)
-  if valid_602659 != nil:
-    section.add "X-Amz-Algorithm", valid_602659
-  var valid_602660 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602660 = validateParameter(valid_602660, JString, required = false,
+  if valid_606859 != nil:
+    section.add "X-Amz-Algorithm", valid_606859
+  var valid_606860 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606860 = validateParameter(valid_606860, JString, required = false,
                                  default = nil)
-  if valid_602660 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602660
+  if valid_606860 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606860
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602661: Call_GetReusableDelegationSetLimit_602649; path: JsonNode;
+proc call*(call_606861: Call_GetReusableDelegationSetLimit_606849; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets the maximum number of hosted zones that you can associate with the specified reusable delegation set.</p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p>
   ## 
-  let valid = call_602661.validator(path, query, header, formData, body)
-  let scheme = call_602661.pickScheme
+  let valid = call_606861.validator(path, query, header, formData, body)
+  let scheme = call_606861.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602661.url(scheme.get, call_602661.host, call_602661.base,
-                         call_602661.route, valid.getOrDefault("path"),
+  let url = call_606861.url(scheme.get, call_606861.host, call_606861.base,
+                         call_606861.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602661, url, valid)
+  result = atozHook(call_606861, url, valid)
 
-proc call*(call_602662: Call_GetReusableDelegationSetLimit_602649; Id: string;
+proc call*(call_606862: Call_GetReusableDelegationSetLimit_606849; Id: string;
           Type: string = "MAX_ZONES_BY_REUSABLE_DELEGATION_SET"): Recallable =
   ## getReusableDelegationSetLimit
   ## <p>Gets the maximum number of hosted zones that you can associate with the specified reusable delegation set.</p> <p>For the default limit, see <a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DNSLimitations.html">Limits</a> in the <i>Amazon Route 53 Developer Guide</i>. To request a higher limit, <a href="https://console.aws.amazon.com/support/home#/case/create?issueType=service-limit-increase&amp;limitType=service-code-route53">open a case</a>.</p>
@@ -5643,21 +5643,21 @@ proc call*(call_602662: Call_GetReusableDelegationSetLimit_602649; Id: string;
   ##       : Specify <code>MAX_ZONES_BY_REUSABLE_DELEGATION_SET</code> to get the maximum number of hosted zones that you can associate with the specified reusable delegation set.
   ##   Id: string (required)
   ##     : The ID of the delegation set that you want to get the limit for.
-  var path_602663 = newJObject()
-  add(path_602663, "Type", newJString(Type))
-  add(path_602663, "Id", newJString(Id))
-  result = call_602662.call(path_602663, nil, nil, nil, nil)
+  var path_606863 = newJObject()
+  add(path_606863, "Type", newJString(Type))
+  add(path_606863, "Id", newJString(Id))
+  result = call_606862.call(path_606863, nil, nil, nil, nil)
 
-var getReusableDelegationSetLimit* = Call_GetReusableDelegationSetLimit_602649(
+var getReusableDelegationSetLimit* = Call_GetReusableDelegationSetLimit_606849(
     name: "getReusableDelegationSetLimit", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/reusabledelegationsetlimit/{Id}/{Type}",
-    validator: validate_GetReusableDelegationSetLimit_602650, base: "/",
-    url: url_GetReusableDelegationSetLimit_602651,
+    validator: validate_GetReusableDelegationSetLimit_606850, base: "/",
+    url: url_GetReusableDelegationSetLimit_606851,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTrafficPolicyInstanceCount_602664 = ref object of OpenApiRestCall_601389
-proc url_GetTrafficPolicyInstanceCount_602666(protocol: Scheme; host: string;
+  Call_GetTrafficPolicyInstanceCount_606864 = ref object of OpenApiRestCall_605589
+proc url_GetTrafficPolicyInstanceCount_606866(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5669,7 +5669,7 @@ proc url_GetTrafficPolicyInstanceCount_602666(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_GetTrafficPolicyInstanceCount_602665(path: JsonNode; query: JsonNode;
+proc validate_GetTrafficPolicyInstanceCount_606865(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets the number of traffic policy instances that are associated with the current AWS account.
   ## 
@@ -5688,75 +5688,75 @@ proc validate_GetTrafficPolicyInstanceCount_602665(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602667 = header.getOrDefault("X-Amz-Signature")
-  valid_602667 = validateParameter(valid_602667, JString, required = false,
+  var valid_606867 = header.getOrDefault("X-Amz-Signature")
+  valid_606867 = validateParameter(valid_606867, JString, required = false,
                                  default = nil)
-  if valid_602667 != nil:
-    section.add "X-Amz-Signature", valid_602667
-  var valid_602668 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602668 = validateParameter(valid_602668, JString, required = false,
+  if valid_606867 != nil:
+    section.add "X-Amz-Signature", valid_606867
+  var valid_606868 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606868 = validateParameter(valid_606868, JString, required = false,
                                  default = nil)
-  if valid_602668 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602668
-  var valid_602669 = header.getOrDefault("X-Amz-Date")
-  valid_602669 = validateParameter(valid_602669, JString, required = false,
+  if valid_606868 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606868
+  var valid_606869 = header.getOrDefault("X-Amz-Date")
+  valid_606869 = validateParameter(valid_606869, JString, required = false,
                                  default = nil)
-  if valid_602669 != nil:
-    section.add "X-Amz-Date", valid_602669
-  var valid_602670 = header.getOrDefault("X-Amz-Credential")
-  valid_602670 = validateParameter(valid_602670, JString, required = false,
+  if valid_606869 != nil:
+    section.add "X-Amz-Date", valid_606869
+  var valid_606870 = header.getOrDefault("X-Amz-Credential")
+  valid_606870 = validateParameter(valid_606870, JString, required = false,
                                  default = nil)
-  if valid_602670 != nil:
-    section.add "X-Amz-Credential", valid_602670
-  var valid_602671 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602671 = validateParameter(valid_602671, JString, required = false,
+  if valid_606870 != nil:
+    section.add "X-Amz-Credential", valid_606870
+  var valid_606871 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606871 = validateParameter(valid_606871, JString, required = false,
                                  default = nil)
-  if valid_602671 != nil:
-    section.add "X-Amz-Security-Token", valid_602671
-  var valid_602672 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602672 = validateParameter(valid_602672, JString, required = false,
+  if valid_606871 != nil:
+    section.add "X-Amz-Security-Token", valid_606871
+  var valid_606872 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606872 = validateParameter(valid_606872, JString, required = false,
                                  default = nil)
-  if valid_602672 != nil:
-    section.add "X-Amz-Algorithm", valid_602672
-  var valid_602673 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602673 = validateParameter(valid_602673, JString, required = false,
+  if valid_606872 != nil:
+    section.add "X-Amz-Algorithm", valid_606872
+  var valid_606873 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606873 = validateParameter(valid_606873, JString, required = false,
                                  default = nil)
-  if valid_602673 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602673
+  if valid_606873 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606873
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602674: Call_GetTrafficPolicyInstanceCount_602664; path: JsonNode;
+proc call*(call_606874: Call_GetTrafficPolicyInstanceCount_606864; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets the number of traffic policy instances that are associated with the current AWS account.
   ## 
-  let valid = call_602674.validator(path, query, header, formData, body)
-  let scheme = call_602674.pickScheme
+  let valid = call_606874.validator(path, query, header, formData, body)
+  let scheme = call_606874.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602674.url(scheme.get, call_602674.host, call_602674.base,
-                         call_602674.route, valid.getOrDefault("path"),
+  let url = call_606874.url(scheme.get, call_606874.host, call_606874.base,
+                         call_606874.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602674, url, valid)
+  result = atozHook(call_606874, url, valid)
 
-proc call*(call_602675: Call_GetTrafficPolicyInstanceCount_602664): Recallable =
+proc call*(call_606875: Call_GetTrafficPolicyInstanceCount_606864): Recallable =
   ## getTrafficPolicyInstanceCount
   ## Gets the number of traffic policy instances that are associated with the current AWS account.
-  result = call_602675.call(nil, nil, nil, nil, nil)
+  result = call_606875.call(nil, nil, nil, nil, nil)
 
-var getTrafficPolicyInstanceCount* = Call_GetTrafficPolicyInstanceCount_602664(
+var getTrafficPolicyInstanceCount* = Call_GetTrafficPolicyInstanceCount_606864(
     name: "getTrafficPolicyInstanceCount", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicyinstancecount",
-    validator: validate_GetTrafficPolicyInstanceCount_602665, base: "/",
-    url: url_GetTrafficPolicyInstanceCount_602666,
+    validator: validate_GetTrafficPolicyInstanceCount_606865, base: "/",
+    url: url_GetTrafficPolicyInstanceCount_606866,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListGeoLocations_602676 = ref object of OpenApiRestCall_601389
-proc url_ListGeoLocations_602678(protocol: Scheme; host: string; base: string;
+  Call_ListGeoLocations_606876 = ref object of OpenApiRestCall_605589
+proc url_ListGeoLocations_606878(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5768,7 +5768,7 @@ proc url_ListGeoLocations_602678(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListGeoLocations_602677(path: JsonNode; query: JsonNode;
+proc validate_ListGeoLocations_606877(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Retrieves a list of supported geographic locations.</p> <p>Countries are listed first, and continents are listed last. If Amazon Route 53 supports subdivisions for a country (for example, states or provinces), the subdivisions for that country are listed in alphabetical order immediately after the corresponding country.</p>
@@ -5787,26 +5787,26 @@ proc validate_ListGeoLocations_602677(path: JsonNode; query: JsonNode;
   ##   maxitems: JString
   ##           : (Optional) The maximum number of geolocations to be included in the response body for this request. If more than <code>maxitems</code> geolocations remain to be listed, then the value of the <code>IsTruncated</code> element in the response is <code>true</code>.
   section = newJObject()
-  var valid_602679 = query.getOrDefault("startcountrycode")
-  valid_602679 = validateParameter(valid_602679, JString, required = false,
+  var valid_606879 = query.getOrDefault("startcountrycode")
+  valid_606879 = validateParameter(valid_606879, JString, required = false,
                                  default = nil)
-  if valid_602679 != nil:
-    section.add "startcountrycode", valid_602679
-  var valid_602680 = query.getOrDefault("startsubdivisioncode")
-  valid_602680 = validateParameter(valid_602680, JString, required = false,
+  if valid_606879 != nil:
+    section.add "startcountrycode", valid_606879
+  var valid_606880 = query.getOrDefault("startsubdivisioncode")
+  valid_606880 = validateParameter(valid_606880, JString, required = false,
                                  default = nil)
-  if valid_602680 != nil:
-    section.add "startsubdivisioncode", valid_602680
-  var valid_602681 = query.getOrDefault("startcontinentcode")
-  valid_602681 = validateParameter(valid_602681, JString, required = false,
+  if valid_606880 != nil:
+    section.add "startsubdivisioncode", valid_606880
+  var valid_606881 = query.getOrDefault("startcontinentcode")
+  valid_606881 = validateParameter(valid_606881, JString, required = false,
                                  default = nil)
-  if valid_602681 != nil:
-    section.add "startcontinentcode", valid_602681
-  var valid_602682 = query.getOrDefault("maxitems")
-  valid_602682 = validateParameter(valid_602682, JString, required = false,
+  if valid_606881 != nil:
+    section.add "startcontinentcode", valid_606881
+  var valid_606882 = query.getOrDefault("maxitems")
+  valid_606882 = validateParameter(valid_606882, JString, required = false,
                                  default = nil)
-  if valid_602682 != nil:
-    section.add "maxitems", valid_602682
+  if valid_606882 != nil:
+    section.add "maxitems", valid_606882
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -5817,61 +5817,61 @@ proc validate_ListGeoLocations_602677(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602683 = header.getOrDefault("X-Amz-Signature")
-  valid_602683 = validateParameter(valid_602683, JString, required = false,
+  var valid_606883 = header.getOrDefault("X-Amz-Signature")
+  valid_606883 = validateParameter(valid_606883, JString, required = false,
                                  default = nil)
-  if valid_602683 != nil:
-    section.add "X-Amz-Signature", valid_602683
-  var valid_602684 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602684 = validateParameter(valid_602684, JString, required = false,
+  if valid_606883 != nil:
+    section.add "X-Amz-Signature", valid_606883
+  var valid_606884 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606884 = validateParameter(valid_606884, JString, required = false,
                                  default = nil)
-  if valid_602684 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602684
-  var valid_602685 = header.getOrDefault("X-Amz-Date")
-  valid_602685 = validateParameter(valid_602685, JString, required = false,
+  if valid_606884 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606884
+  var valid_606885 = header.getOrDefault("X-Amz-Date")
+  valid_606885 = validateParameter(valid_606885, JString, required = false,
                                  default = nil)
-  if valid_602685 != nil:
-    section.add "X-Amz-Date", valid_602685
-  var valid_602686 = header.getOrDefault("X-Amz-Credential")
-  valid_602686 = validateParameter(valid_602686, JString, required = false,
+  if valid_606885 != nil:
+    section.add "X-Amz-Date", valid_606885
+  var valid_606886 = header.getOrDefault("X-Amz-Credential")
+  valid_606886 = validateParameter(valid_606886, JString, required = false,
                                  default = nil)
-  if valid_602686 != nil:
-    section.add "X-Amz-Credential", valid_602686
-  var valid_602687 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602687 = validateParameter(valid_602687, JString, required = false,
+  if valid_606886 != nil:
+    section.add "X-Amz-Credential", valid_606886
+  var valid_606887 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606887 = validateParameter(valid_606887, JString, required = false,
                                  default = nil)
-  if valid_602687 != nil:
-    section.add "X-Amz-Security-Token", valid_602687
-  var valid_602688 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602688 = validateParameter(valid_602688, JString, required = false,
+  if valid_606887 != nil:
+    section.add "X-Amz-Security-Token", valid_606887
+  var valid_606888 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606888 = validateParameter(valid_606888, JString, required = false,
                                  default = nil)
-  if valid_602688 != nil:
-    section.add "X-Amz-Algorithm", valid_602688
-  var valid_602689 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602689 = validateParameter(valid_602689, JString, required = false,
+  if valid_606888 != nil:
+    section.add "X-Amz-Algorithm", valid_606888
+  var valid_606889 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606889 = validateParameter(valid_606889, JString, required = false,
                                  default = nil)
-  if valid_602689 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602689
+  if valid_606889 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606889
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602690: Call_ListGeoLocations_602676; path: JsonNode;
+proc call*(call_606890: Call_ListGeoLocations_606876; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves a list of supported geographic locations.</p> <p>Countries are listed first, and continents are listed last. If Amazon Route 53 supports subdivisions for a country (for example, states or provinces), the subdivisions for that country are listed in alphabetical order immediately after the corresponding country.</p>
   ## 
-  let valid = call_602690.validator(path, query, header, formData, body)
-  let scheme = call_602690.pickScheme
+  let valid = call_606890.validator(path, query, header, formData, body)
+  let scheme = call_606890.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602690.url(scheme.get, call_602690.host, call_602690.base,
-                         call_602690.route, valid.getOrDefault("path"),
+  let url = call_606890.url(scheme.get, call_606890.host, call_606890.base,
+                         call_606890.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602690, url, valid)
+  result = atozHook(call_606890, url, valid)
 
-proc call*(call_602691: Call_ListGeoLocations_602676;
+proc call*(call_606891: Call_ListGeoLocations_606876;
           startcountrycode: string = ""; startsubdivisioncode: string = "";
           startcontinentcode: string = ""; maxitems: string = ""): Recallable =
   ## listGeoLocations
@@ -5884,21 +5884,21 @@ proc call*(call_602691: Call_ListGeoLocations_602676;
   ##                     : <p>The code for the continent with which you want to start listing locations that Amazon Route 53 supports for geolocation. If Route 53 has already returned a page or more of results, if <code>IsTruncated</code> is true, and if <code>NextContinentCode</code> from the previous response has a value, enter that value in <code>startcontinentcode</code> to return the next page of results.</p> <p>Include <code>startcontinentcode</code> only if you want to list continents. Don't include <code>startcontinentcode</code> when you're listing countries or countries with their subdivisions.</p>
   ##   maxitems: string
   ##           : (Optional) The maximum number of geolocations to be included in the response body for this request. If more than <code>maxitems</code> geolocations remain to be listed, then the value of the <code>IsTruncated</code> element in the response is <code>true</code>.
-  var query_602692 = newJObject()
-  add(query_602692, "startcountrycode", newJString(startcountrycode))
-  add(query_602692, "startsubdivisioncode", newJString(startsubdivisioncode))
-  add(query_602692, "startcontinentcode", newJString(startcontinentcode))
-  add(query_602692, "maxitems", newJString(maxitems))
-  result = call_602691.call(nil, query_602692, nil, nil, nil)
+  var query_606892 = newJObject()
+  add(query_606892, "startcountrycode", newJString(startcountrycode))
+  add(query_606892, "startsubdivisioncode", newJString(startsubdivisioncode))
+  add(query_606892, "startcontinentcode", newJString(startcontinentcode))
+  add(query_606892, "maxitems", newJString(maxitems))
+  result = call_606891.call(nil, query_606892, nil, nil, nil)
 
-var listGeoLocations* = Call_ListGeoLocations_602676(name: "listGeoLocations",
+var listGeoLocations* = Call_ListGeoLocations_606876(name: "listGeoLocations",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
-    route: "/2013-04-01/geolocations", validator: validate_ListGeoLocations_602677,
-    base: "/", url: url_ListGeoLocations_602678,
+    route: "/2013-04-01/geolocations", validator: validate_ListGeoLocations_606877,
+    base: "/", url: url_ListGeoLocations_606878,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHostedZonesByName_602693 = ref object of OpenApiRestCall_601389
-proc url_ListHostedZonesByName_602695(protocol: Scheme; host: string; base: string;
+  Call_ListHostedZonesByName_606893 = ref object of OpenApiRestCall_605589
+proc url_ListHostedZonesByName_606895(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5910,7 +5910,7 @@ proc url_ListHostedZonesByName_602695(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListHostedZonesByName_602694(path: JsonNode; query: JsonNode;
+proc validate_ListHostedZonesByName_606894(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves a list of your hosted zones in lexicographic order. The response includes a <code>HostedZones</code> child element for each hosted zone created by the current AWS account. </p> <p> <code>ListHostedZonesByName</code> sorts hosted zones by name with the labels reversed. For example:</p> <p> <code>com.example.www.</code> </p> <p>Note the trailing dot, which can change the sort order in some circumstances.</p> <p>If the domain name includes escape characters or Punycode, <code>ListHostedZonesByName</code> alphabetizes the domain name using the escaped or Punycoded value, which is the format that Amazon Route 53 saves in its database. For example, to create a hosted zone for exämple.com, you specify ex\344mple.com for the domain name. <code>ListHostedZonesByName</code> alphabetizes it as:</p> <p> <code>com.ex\344mple.</code> </p> <p>The labels are reversed and alphabetized using the escaped value. For more information about valid domain name formats, including internationalized domain names, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DomainNameFormat.html">DNS Domain Name Format</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>Route 53 returns up to 100 items in each response. If you have a lot of hosted zones, use the <code>MaxItems</code> parameter to list them in groups of up to 100. The response includes values that help navigate from one group of <code>MaxItems</code> hosted zones to the next:</p> <ul> <li> <p>The <code>DNSName</code> and <code>HostedZoneId</code> elements in the response contain the values, if any, specified for the <code>dnsname</code> and <code>hostedzoneid</code> parameters in the request that produced the current response.</p> </li> <li> <p>The <code>MaxItems</code> element in the response contains the value, if any, that you specified for the <code>maxitems</code> parameter in the request that produced the current response.</p> </li> <li> <p>If the value of <code>IsTruncated</code> in the response is true, there are more hosted zones associated with the current AWS account. </p> <p>If <code>IsTruncated</code> is false, this response includes the last hosted zone that is associated with the current account. The <code>NextDNSName</code> element and <code>NextHostedZoneId</code> elements are omitted from the response.</p> </li> <li> <p>The <code>NextDNSName</code> and <code>NextHostedZoneId</code> elements in the response contain the domain name and the hosted zone ID of the next hosted zone that is associated with the current AWS account. If you want to list more hosted zones, make another call to <code>ListHostedZonesByName</code>, and specify the value of <code>NextDNSName</code> and <code>NextHostedZoneId</code> in the <code>dnsname</code> and <code>hostedzoneid</code> parameters, respectively.</p> </li> </ul>
   ## 
@@ -5926,21 +5926,21 @@ proc validate_ListHostedZonesByName_602694(path: JsonNode; query: JsonNode;
   ##   hostedzoneid: JString
   ##               : <p>(Optional) For your first request to <code>ListHostedZonesByName</code>, do not include the <code>hostedzoneid</code> parameter.</p> <p>If you have more hosted zones than the value of <code>maxitems</code>, <code>ListHostedZonesByName</code> returns only the first <code>maxitems</code> hosted zones. To get the next group of <code>maxitems</code> hosted zones, submit another request to <code>ListHostedZonesByName</code> and include both <code>dnsname</code> and <code>hostedzoneid</code> parameters. For the value of <code>hostedzoneid</code>, specify the value of the <code>NextHostedZoneId</code> element from the previous response.</p>
   section = newJObject()
-  var valid_602696 = query.getOrDefault("dnsname")
-  valid_602696 = validateParameter(valid_602696, JString, required = false,
+  var valid_606896 = query.getOrDefault("dnsname")
+  valid_606896 = validateParameter(valid_606896, JString, required = false,
                                  default = nil)
-  if valid_602696 != nil:
-    section.add "dnsname", valid_602696
-  var valid_602697 = query.getOrDefault("maxitems")
-  valid_602697 = validateParameter(valid_602697, JString, required = false,
+  if valid_606896 != nil:
+    section.add "dnsname", valid_606896
+  var valid_606897 = query.getOrDefault("maxitems")
+  valid_606897 = validateParameter(valid_606897, JString, required = false,
                                  default = nil)
-  if valid_602697 != nil:
-    section.add "maxitems", valid_602697
-  var valid_602698 = query.getOrDefault("hostedzoneid")
-  valid_602698 = validateParameter(valid_602698, JString, required = false,
+  if valid_606897 != nil:
+    section.add "maxitems", valid_606897
+  var valid_606898 = query.getOrDefault("hostedzoneid")
+  valid_606898 = validateParameter(valid_606898, JString, required = false,
                                  default = nil)
-  if valid_602698 != nil:
-    section.add "hostedzoneid", valid_602698
+  if valid_606898 != nil:
+    section.add "hostedzoneid", valid_606898
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -5951,61 +5951,61 @@ proc validate_ListHostedZonesByName_602694(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602699 = header.getOrDefault("X-Amz-Signature")
-  valid_602699 = validateParameter(valid_602699, JString, required = false,
+  var valid_606899 = header.getOrDefault("X-Amz-Signature")
+  valid_606899 = validateParameter(valid_606899, JString, required = false,
                                  default = nil)
-  if valid_602699 != nil:
-    section.add "X-Amz-Signature", valid_602699
-  var valid_602700 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602700 = validateParameter(valid_602700, JString, required = false,
+  if valid_606899 != nil:
+    section.add "X-Amz-Signature", valid_606899
+  var valid_606900 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606900 = validateParameter(valid_606900, JString, required = false,
                                  default = nil)
-  if valid_602700 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602700
-  var valid_602701 = header.getOrDefault("X-Amz-Date")
-  valid_602701 = validateParameter(valid_602701, JString, required = false,
+  if valid_606900 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606900
+  var valid_606901 = header.getOrDefault("X-Amz-Date")
+  valid_606901 = validateParameter(valid_606901, JString, required = false,
                                  default = nil)
-  if valid_602701 != nil:
-    section.add "X-Amz-Date", valid_602701
-  var valid_602702 = header.getOrDefault("X-Amz-Credential")
-  valid_602702 = validateParameter(valid_602702, JString, required = false,
+  if valid_606901 != nil:
+    section.add "X-Amz-Date", valid_606901
+  var valid_606902 = header.getOrDefault("X-Amz-Credential")
+  valid_606902 = validateParameter(valid_606902, JString, required = false,
                                  default = nil)
-  if valid_602702 != nil:
-    section.add "X-Amz-Credential", valid_602702
-  var valid_602703 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602703 = validateParameter(valid_602703, JString, required = false,
+  if valid_606902 != nil:
+    section.add "X-Amz-Credential", valid_606902
+  var valid_606903 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606903 = validateParameter(valid_606903, JString, required = false,
                                  default = nil)
-  if valid_602703 != nil:
-    section.add "X-Amz-Security-Token", valid_602703
-  var valid_602704 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602704 = validateParameter(valid_602704, JString, required = false,
+  if valid_606903 != nil:
+    section.add "X-Amz-Security-Token", valid_606903
+  var valid_606904 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606904 = validateParameter(valid_606904, JString, required = false,
                                  default = nil)
-  if valid_602704 != nil:
-    section.add "X-Amz-Algorithm", valid_602704
-  var valid_602705 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602705 = validateParameter(valid_602705, JString, required = false,
+  if valid_606904 != nil:
+    section.add "X-Amz-Algorithm", valid_606904
+  var valid_606905 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606905 = validateParameter(valid_606905, JString, required = false,
                                  default = nil)
-  if valid_602705 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602705
+  if valid_606905 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606905
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602706: Call_ListHostedZonesByName_602693; path: JsonNode;
+proc call*(call_606906: Call_ListHostedZonesByName_606893; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves a list of your hosted zones in lexicographic order. The response includes a <code>HostedZones</code> child element for each hosted zone created by the current AWS account. </p> <p> <code>ListHostedZonesByName</code> sorts hosted zones by name with the labels reversed. For example:</p> <p> <code>com.example.www.</code> </p> <p>Note the trailing dot, which can change the sort order in some circumstances.</p> <p>If the domain name includes escape characters or Punycode, <code>ListHostedZonesByName</code> alphabetizes the domain name using the escaped or Punycoded value, which is the format that Amazon Route 53 saves in its database. For example, to create a hosted zone for exämple.com, you specify ex\344mple.com for the domain name. <code>ListHostedZonesByName</code> alphabetizes it as:</p> <p> <code>com.ex\344mple.</code> </p> <p>The labels are reversed and alphabetized using the escaped value. For more information about valid domain name formats, including internationalized domain names, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DomainNameFormat.html">DNS Domain Name Format</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>Route 53 returns up to 100 items in each response. If you have a lot of hosted zones, use the <code>MaxItems</code> parameter to list them in groups of up to 100. The response includes values that help navigate from one group of <code>MaxItems</code> hosted zones to the next:</p> <ul> <li> <p>The <code>DNSName</code> and <code>HostedZoneId</code> elements in the response contain the values, if any, specified for the <code>dnsname</code> and <code>hostedzoneid</code> parameters in the request that produced the current response.</p> </li> <li> <p>The <code>MaxItems</code> element in the response contains the value, if any, that you specified for the <code>maxitems</code> parameter in the request that produced the current response.</p> </li> <li> <p>If the value of <code>IsTruncated</code> in the response is true, there are more hosted zones associated with the current AWS account. </p> <p>If <code>IsTruncated</code> is false, this response includes the last hosted zone that is associated with the current account. The <code>NextDNSName</code> element and <code>NextHostedZoneId</code> elements are omitted from the response.</p> </li> <li> <p>The <code>NextDNSName</code> and <code>NextHostedZoneId</code> elements in the response contain the domain name and the hosted zone ID of the next hosted zone that is associated with the current AWS account. If you want to list more hosted zones, make another call to <code>ListHostedZonesByName</code>, and specify the value of <code>NextDNSName</code> and <code>NextHostedZoneId</code> in the <code>dnsname</code> and <code>hostedzoneid</code> parameters, respectively.</p> </li> </ul>
   ## 
-  let valid = call_602706.validator(path, query, header, formData, body)
-  let scheme = call_602706.pickScheme
+  let valid = call_606906.validator(path, query, header, formData, body)
+  let scheme = call_606906.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602706.url(scheme.get, call_602706.host, call_602706.base,
-                         call_602706.route, valid.getOrDefault("path"),
+  let url = call_606906.url(scheme.get, call_606906.host, call_606906.base,
+                         call_606906.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602706, url, valid)
+  result = atozHook(call_606906, url, valid)
 
-proc call*(call_602707: Call_ListHostedZonesByName_602693; dnsname: string = "";
+proc call*(call_606907: Call_ListHostedZonesByName_606893; dnsname: string = "";
           maxitems: string = ""; hostedzoneid: string = ""): Recallable =
   ## listHostedZonesByName
   ## <p>Retrieves a list of your hosted zones in lexicographic order. The response includes a <code>HostedZones</code> child element for each hosted zone created by the current AWS account. </p> <p> <code>ListHostedZonesByName</code> sorts hosted zones by name with the labels reversed. For example:</p> <p> <code>com.example.www.</code> </p> <p>Note the trailing dot, which can change the sort order in some circumstances.</p> <p>If the domain name includes escape characters or Punycode, <code>ListHostedZonesByName</code> alphabetizes the domain name using the escaped or Punycoded value, which is the format that Amazon Route 53 saves in its database. For example, to create a hosted zone for exämple.com, you specify ex\344mple.com for the domain name. <code>ListHostedZonesByName</code> alphabetizes it as:</p> <p> <code>com.ex\344mple.</code> </p> <p>The labels are reversed and alphabetized using the escaped value. For more information about valid domain name formats, including internationalized domain names, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/DomainNameFormat.html">DNS Domain Name Format</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>Route 53 returns up to 100 items in each response. If you have a lot of hosted zones, use the <code>MaxItems</code> parameter to list them in groups of up to 100. The response includes values that help navigate from one group of <code>MaxItems</code> hosted zones to the next:</p> <ul> <li> <p>The <code>DNSName</code> and <code>HostedZoneId</code> elements in the response contain the values, if any, specified for the <code>dnsname</code> and <code>hostedzoneid</code> parameters in the request that produced the current response.</p> </li> <li> <p>The <code>MaxItems</code> element in the response contains the value, if any, that you specified for the <code>maxitems</code> parameter in the request that produced the current response.</p> </li> <li> <p>If the value of <code>IsTruncated</code> in the response is true, there are more hosted zones associated with the current AWS account. </p> <p>If <code>IsTruncated</code> is false, this response includes the last hosted zone that is associated with the current account. The <code>NextDNSName</code> element and <code>NextHostedZoneId</code> elements are omitted from the response.</p> </li> <li> <p>The <code>NextDNSName</code> and <code>NextHostedZoneId</code> elements in the response contain the domain name and the hosted zone ID of the next hosted zone that is associated with the current AWS account. If you want to list more hosted zones, make another call to <code>ListHostedZonesByName</code>, and specify the value of <code>NextDNSName</code> and <code>NextHostedZoneId</code> in the <code>dnsname</code> and <code>hostedzoneid</code> parameters, respectively.</p> </li> </ul>
@@ -6015,20 +6015,20 @@ proc call*(call_602707: Call_ListHostedZonesByName_602693; dnsname: string = "";
   ##           : The maximum number of hosted zones to be included in the response body for this request. If you have more than <code>maxitems</code> hosted zones, then the value of the <code>IsTruncated</code> element in the response is true, and the values of <code>NextDNSName</code> and <code>NextHostedZoneId</code> specify the first hosted zone in the next group of <code>maxitems</code> hosted zones. 
   ##   hostedzoneid: string
   ##               : <p>(Optional) For your first request to <code>ListHostedZonesByName</code>, do not include the <code>hostedzoneid</code> parameter.</p> <p>If you have more hosted zones than the value of <code>maxitems</code>, <code>ListHostedZonesByName</code> returns only the first <code>maxitems</code> hosted zones. To get the next group of <code>maxitems</code> hosted zones, submit another request to <code>ListHostedZonesByName</code> and include both <code>dnsname</code> and <code>hostedzoneid</code> parameters. For the value of <code>hostedzoneid</code>, specify the value of the <code>NextHostedZoneId</code> element from the previous response.</p>
-  var query_602708 = newJObject()
-  add(query_602708, "dnsname", newJString(dnsname))
-  add(query_602708, "maxitems", newJString(maxitems))
-  add(query_602708, "hostedzoneid", newJString(hostedzoneid))
-  result = call_602707.call(nil, query_602708, nil, nil, nil)
+  var query_606908 = newJObject()
+  add(query_606908, "dnsname", newJString(dnsname))
+  add(query_606908, "maxitems", newJString(maxitems))
+  add(query_606908, "hostedzoneid", newJString(hostedzoneid))
+  result = call_606907.call(nil, query_606908, nil, nil, nil)
 
-var listHostedZonesByName* = Call_ListHostedZonesByName_602693(
+var listHostedZonesByName* = Call_ListHostedZonesByName_606893(
     name: "listHostedZonesByName", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/hostedzonesbyname",
-    validator: validate_ListHostedZonesByName_602694, base: "/",
-    url: url_ListHostedZonesByName_602695, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListHostedZonesByName_606894, base: "/",
+    url: url_ListHostedZonesByName_606895, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListResourceRecordSets_602709 = ref object of OpenApiRestCall_601389
-proc url_ListResourceRecordSets_602711(protocol: Scheme; host: string; base: string;
+  Call_ListResourceRecordSets_606909 = ref object of OpenApiRestCall_605589
+proc url_ListResourceRecordSets_606911(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6049,7 +6049,7 @@ proc url_ListResourceRecordSets_602711(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_ListResourceRecordSets_602710(path: JsonNode; query: JsonNode;
+proc validate_ListResourceRecordSets_606910(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists the resource record sets in a specified hosted zone.</p> <p> <code>ListResourceRecordSets</code> returns up to 100 resource record sets at a time in ASCII order, beginning at a position specified by the <code>name</code> and <code>type</code> elements.</p> <p> <b>Sort order</b> </p> <p> <code>ListResourceRecordSets</code> sorts results first by DNS name with the labels reversed, for example:</p> <p> <code>com.example.www.</code> </p> <p>Note the trailing dot, which can change the sort order when the record name contains characters that appear before <code>.</code> (decimal 46) in the ASCII table. These characters include the following: <code>! " # $ % &amp; ' ( ) * + , -</code> </p> <p>When multiple records have the same DNS name, <code>ListResourceRecordSets</code> sorts results by the record type.</p> <p> <b>Specifying where to start listing records</b> </p> <p>You can use the name and type elements to specify the resource record set that the list begins with:</p> <dl> <dt>If you do not specify Name or Type</dt> <dd> <p>The results begin with the first resource record set that the hosted zone contains.</p> </dd> <dt>If you specify Name but not Type</dt> <dd> <p>The results begin with the first resource record set in the list whose name is greater than or equal to <code>Name</code>.</p> </dd> <dt>If you specify Type but not Name</dt> <dd> <p>Amazon Route 53 returns the <code>InvalidInput</code> error.</p> </dd> <dt>If you specify both Name and Type</dt> <dd> <p>The results begin with the first resource record set in the list whose name is greater than or equal to <code>Name</code>, and whose type is greater than or equal to <code>Type</code>.</p> </dd> </dl> <p> <b>Resource record sets that are PENDING</b> </p> <p>This action returns the most current version of the records. This includes records that are <code>PENDING</code>, and that are not yet available on all Route 53 DNS servers.</p> <p> <b>Changing resource record sets</b> </p> <p>To ensure that you get an accurate listing of the resource record sets for a hosted zone at a point in time, do not submit a <code>ChangeResourceRecordSets</code> request while you're paging through the results of a <code>ListResourceRecordSets</code> request. If you do, some pages may display results without the latest changes while other pages display results with the latest changes.</p> <p> <b>Displaying the next page of results</b> </p> <p>If a <code>ListResourceRecordSets</code> command returns more than one page of results, the value of <code>IsTruncated</code> is <code>true</code>. To display the next page of results, get the values of <code>NextRecordName</code>, <code>NextRecordType</code>, and <code>NextRecordIdentifier</code> (if any) from the response. Then submit another <code>ListResourceRecordSets</code> request, and specify those values for <code>StartRecordName</code>, <code>StartRecordType</code>, and <code>StartRecordIdentifier</code>.</p>
   ## 
@@ -6060,11 +6060,11 @@ proc validate_ListResourceRecordSets_602710(path: JsonNode; query: JsonNode;
   ##     : The ID of the hosted zone that contains the resource record sets that you want to list.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602712 = path.getOrDefault("Id")
-  valid_602712 = validateParameter(valid_602712, JString, required = true,
+  var valid_606912 = path.getOrDefault("Id")
+  valid_606912 = validateParameter(valid_606912, JString, required = true,
                                  default = nil)
-  if valid_602712 != nil:
-    section.add "Id", valid_602712
+  if valid_606912 != nil:
+    section.add "Id", valid_606912
   result.add "path", section
   ## parameters in `query` object:
   ##   name: JString
@@ -6084,46 +6084,46 @@ proc validate_ListResourceRecordSets_602710(path: JsonNode; query: JsonNode;
   ##   identifier: JString
   ##             :  <i>Resource record sets that have a routing policy other than simple:</i> If results were truncated for a given DNS name and type, specify the value of <code>NextRecordIdentifier</code> from the previous response to get the next resource record set that has the current DNS name and type.
   section = newJObject()
-  var valid_602713 = query.getOrDefault("name")
-  valid_602713 = validateParameter(valid_602713, JString, required = false,
+  var valid_606913 = query.getOrDefault("name")
+  valid_606913 = validateParameter(valid_606913, JString, required = false,
                                  default = nil)
-  if valid_602713 != nil:
-    section.add "name", valid_602713
-  var valid_602714 = query.getOrDefault("MaxItems")
-  valid_602714 = validateParameter(valid_602714, JString, required = false,
+  if valid_606913 != nil:
+    section.add "name", valid_606913
+  var valid_606914 = query.getOrDefault("MaxItems")
+  valid_606914 = validateParameter(valid_606914, JString, required = false,
                                  default = nil)
-  if valid_602714 != nil:
-    section.add "MaxItems", valid_602714
-  var valid_602715 = query.getOrDefault("type")
-  valid_602715 = validateParameter(valid_602715, JString, required = false,
+  if valid_606914 != nil:
+    section.add "MaxItems", valid_606914
+  var valid_606915 = query.getOrDefault("type")
+  valid_606915 = validateParameter(valid_606915, JString, required = false,
                                  default = newJString("SOA"))
-  if valid_602715 != nil:
-    section.add "type", valid_602715
-  var valid_602716 = query.getOrDefault("maxitems")
-  valid_602716 = validateParameter(valid_602716, JString, required = false,
+  if valid_606915 != nil:
+    section.add "type", valid_606915
+  var valid_606916 = query.getOrDefault("maxitems")
+  valid_606916 = validateParameter(valid_606916, JString, required = false,
                                  default = nil)
-  if valid_602716 != nil:
-    section.add "maxitems", valid_602716
-  var valid_602717 = query.getOrDefault("StartRecordName")
-  valid_602717 = validateParameter(valid_602717, JString, required = false,
+  if valid_606916 != nil:
+    section.add "maxitems", valid_606916
+  var valid_606917 = query.getOrDefault("StartRecordName")
+  valid_606917 = validateParameter(valid_606917, JString, required = false,
                                  default = nil)
-  if valid_602717 != nil:
-    section.add "StartRecordName", valid_602717
-  var valid_602718 = query.getOrDefault("StartRecordIdentifier")
-  valid_602718 = validateParameter(valid_602718, JString, required = false,
+  if valid_606917 != nil:
+    section.add "StartRecordName", valid_606917
+  var valid_606918 = query.getOrDefault("StartRecordIdentifier")
+  valid_606918 = validateParameter(valid_606918, JString, required = false,
                                  default = nil)
-  if valid_602718 != nil:
-    section.add "StartRecordIdentifier", valid_602718
-  var valid_602719 = query.getOrDefault("StartRecordType")
-  valid_602719 = validateParameter(valid_602719, JString, required = false,
+  if valid_606918 != nil:
+    section.add "StartRecordIdentifier", valid_606918
+  var valid_606919 = query.getOrDefault("StartRecordType")
+  valid_606919 = validateParameter(valid_606919, JString, required = false,
                                  default = nil)
-  if valid_602719 != nil:
-    section.add "StartRecordType", valid_602719
-  var valid_602720 = query.getOrDefault("identifier")
-  valid_602720 = validateParameter(valid_602720, JString, required = false,
+  if valid_606919 != nil:
+    section.add "StartRecordType", valid_606919
+  var valid_606920 = query.getOrDefault("identifier")
+  valid_606920 = validateParameter(valid_606920, JString, required = false,
                                  default = nil)
-  if valid_602720 != nil:
-    section.add "identifier", valid_602720
+  if valid_606920 != nil:
+    section.add "identifier", valid_606920
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -6134,61 +6134,61 @@ proc validate_ListResourceRecordSets_602710(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602721 = header.getOrDefault("X-Amz-Signature")
-  valid_602721 = validateParameter(valid_602721, JString, required = false,
+  var valid_606921 = header.getOrDefault("X-Amz-Signature")
+  valid_606921 = validateParameter(valid_606921, JString, required = false,
                                  default = nil)
-  if valid_602721 != nil:
-    section.add "X-Amz-Signature", valid_602721
-  var valid_602722 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602722 = validateParameter(valid_602722, JString, required = false,
+  if valid_606921 != nil:
+    section.add "X-Amz-Signature", valid_606921
+  var valid_606922 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606922 = validateParameter(valid_606922, JString, required = false,
                                  default = nil)
-  if valid_602722 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602722
-  var valid_602723 = header.getOrDefault("X-Amz-Date")
-  valid_602723 = validateParameter(valid_602723, JString, required = false,
+  if valid_606922 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606922
+  var valid_606923 = header.getOrDefault("X-Amz-Date")
+  valid_606923 = validateParameter(valid_606923, JString, required = false,
                                  default = nil)
-  if valid_602723 != nil:
-    section.add "X-Amz-Date", valid_602723
-  var valid_602724 = header.getOrDefault("X-Amz-Credential")
-  valid_602724 = validateParameter(valid_602724, JString, required = false,
+  if valid_606923 != nil:
+    section.add "X-Amz-Date", valid_606923
+  var valid_606924 = header.getOrDefault("X-Amz-Credential")
+  valid_606924 = validateParameter(valid_606924, JString, required = false,
                                  default = nil)
-  if valid_602724 != nil:
-    section.add "X-Amz-Credential", valid_602724
-  var valid_602725 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602725 = validateParameter(valid_602725, JString, required = false,
+  if valid_606924 != nil:
+    section.add "X-Amz-Credential", valid_606924
+  var valid_606925 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606925 = validateParameter(valid_606925, JString, required = false,
                                  default = nil)
-  if valid_602725 != nil:
-    section.add "X-Amz-Security-Token", valid_602725
-  var valid_602726 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602726 = validateParameter(valid_602726, JString, required = false,
+  if valid_606925 != nil:
+    section.add "X-Amz-Security-Token", valid_606925
+  var valid_606926 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606926 = validateParameter(valid_606926, JString, required = false,
                                  default = nil)
-  if valid_602726 != nil:
-    section.add "X-Amz-Algorithm", valid_602726
-  var valid_602727 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602727 = validateParameter(valid_602727, JString, required = false,
+  if valid_606926 != nil:
+    section.add "X-Amz-Algorithm", valid_606926
+  var valid_606927 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606927 = validateParameter(valid_606927, JString, required = false,
                                  default = nil)
-  if valid_602727 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602727
+  if valid_606927 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606927
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602728: Call_ListResourceRecordSets_602709; path: JsonNode;
+proc call*(call_606928: Call_ListResourceRecordSets_606909; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists the resource record sets in a specified hosted zone.</p> <p> <code>ListResourceRecordSets</code> returns up to 100 resource record sets at a time in ASCII order, beginning at a position specified by the <code>name</code> and <code>type</code> elements.</p> <p> <b>Sort order</b> </p> <p> <code>ListResourceRecordSets</code> sorts results first by DNS name with the labels reversed, for example:</p> <p> <code>com.example.www.</code> </p> <p>Note the trailing dot, which can change the sort order when the record name contains characters that appear before <code>.</code> (decimal 46) in the ASCII table. These characters include the following: <code>! " # $ % &amp; ' ( ) * + , -</code> </p> <p>When multiple records have the same DNS name, <code>ListResourceRecordSets</code> sorts results by the record type.</p> <p> <b>Specifying where to start listing records</b> </p> <p>You can use the name and type elements to specify the resource record set that the list begins with:</p> <dl> <dt>If you do not specify Name or Type</dt> <dd> <p>The results begin with the first resource record set that the hosted zone contains.</p> </dd> <dt>If you specify Name but not Type</dt> <dd> <p>The results begin with the first resource record set in the list whose name is greater than or equal to <code>Name</code>.</p> </dd> <dt>If you specify Type but not Name</dt> <dd> <p>Amazon Route 53 returns the <code>InvalidInput</code> error.</p> </dd> <dt>If you specify both Name and Type</dt> <dd> <p>The results begin with the first resource record set in the list whose name is greater than or equal to <code>Name</code>, and whose type is greater than or equal to <code>Type</code>.</p> </dd> </dl> <p> <b>Resource record sets that are PENDING</b> </p> <p>This action returns the most current version of the records. This includes records that are <code>PENDING</code>, and that are not yet available on all Route 53 DNS servers.</p> <p> <b>Changing resource record sets</b> </p> <p>To ensure that you get an accurate listing of the resource record sets for a hosted zone at a point in time, do not submit a <code>ChangeResourceRecordSets</code> request while you're paging through the results of a <code>ListResourceRecordSets</code> request. If you do, some pages may display results without the latest changes while other pages display results with the latest changes.</p> <p> <b>Displaying the next page of results</b> </p> <p>If a <code>ListResourceRecordSets</code> command returns more than one page of results, the value of <code>IsTruncated</code> is <code>true</code>. To display the next page of results, get the values of <code>NextRecordName</code>, <code>NextRecordType</code>, and <code>NextRecordIdentifier</code> (if any) from the response. Then submit another <code>ListResourceRecordSets</code> request, and specify those values for <code>StartRecordName</code>, <code>StartRecordType</code>, and <code>StartRecordIdentifier</code>.</p>
   ## 
-  let valid = call_602728.validator(path, query, header, formData, body)
-  let scheme = call_602728.pickScheme
+  let valid = call_606928.validator(path, query, header, formData, body)
+  let scheme = call_606928.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602728.url(scheme.get, call_602728.host, call_602728.base,
-                         call_602728.route, valid.getOrDefault("path"),
+  let url = call_606928.url(scheme.get, call_606928.host, call_606928.base,
+                         call_606928.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602728, url, valid)
+  result = atozHook(call_606928, url, valid)
 
-proc call*(call_602729: Call_ListResourceRecordSets_602709; Id: string;
+proc call*(call_606929: Call_ListResourceRecordSets_606909; Id: string;
           name: string = ""; MaxItems: string = ""; `type`: string = "SOA";
           maxitems: string = ""; StartRecordName: string = "";
           StartRecordIdentifier: string = ""; StartRecordType: string = "";
@@ -6213,27 +6213,27 @@ proc call*(call_602729: Call_ListResourceRecordSets_602709; Id: string;
   ##     : The ID of the hosted zone that contains the resource record sets that you want to list.
   ##   identifier: string
   ##             :  <i>Resource record sets that have a routing policy other than simple:</i> If results were truncated for a given DNS name and type, specify the value of <code>NextRecordIdentifier</code> from the previous response to get the next resource record set that has the current DNS name and type.
-  var path_602730 = newJObject()
-  var query_602731 = newJObject()
-  add(query_602731, "name", newJString(name))
-  add(query_602731, "MaxItems", newJString(MaxItems))
-  add(query_602731, "type", newJString(`type`))
-  add(query_602731, "maxitems", newJString(maxitems))
-  add(query_602731, "StartRecordName", newJString(StartRecordName))
-  add(query_602731, "StartRecordIdentifier", newJString(StartRecordIdentifier))
-  add(query_602731, "StartRecordType", newJString(StartRecordType))
-  add(path_602730, "Id", newJString(Id))
-  add(query_602731, "identifier", newJString(identifier))
-  result = call_602729.call(path_602730, query_602731, nil, nil, nil)
+  var path_606930 = newJObject()
+  var query_606931 = newJObject()
+  add(query_606931, "name", newJString(name))
+  add(query_606931, "MaxItems", newJString(MaxItems))
+  add(query_606931, "type", newJString(`type`))
+  add(query_606931, "maxitems", newJString(maxitems))
+  add(query_606931, "StartRecordName", newJString(StartRecordName))
+  add(query_606931, "StartRecordIdentifier", newJString(StartRecordIdentifier))
+  add(query_606931, "StartRecordType", newJString(StartRecordType))
+  add(path_606930, "Id", newJString(Id))
+  add(query_606931, "identifier", newJString(identifier))
+  result = call_606929.call(path_606930, query_606931, nil, nil, nil)
 
-var listResourceRecordSets* = Call_ListResourceRecordSets_602709(
+var listResourceRecordSets* = Call_ListResourceRecordSets_606909(
     name: "listResourceRecordSets", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/hostedzone/{Id}/rrset",
-    validator: validate_ListResourceRecordSets_602710, base: "/",
-    url: url_ListResourceRecordSets_602711, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListResourceRecordSets_606910, base: "/",
+    url: url_ListResourceRecordSets_606911, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResources_602732 = ref object of OpenApiRestCall_601389
-proc url_ListTagsForResources_602734(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResources_606932 = ref object of OpenApiRestCall_605589
+proc url_ListTagsForResources_606934(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6253,7 +6253,7 @@ proc url_ListTagsForResources_602734(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_ListTagsForResources_602733(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResources_606933(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Lists tags for up to 10 health checks or hosted zones.</p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
   ## 
@@ -6265,11 +6265,11 @@ proc validate_ListTagsForResources_602733(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceType` field"
-  var valid_602735 = path.getOrDefault("ResourceType")
-  valid_602735 = validateParameter(valid_602735, JString, required = true,
+  var valid_606935 = path.getOrDefault("ResourceType")
+  valid_606935 = validateParameter(valid_606935, JString, required = true,
                                  default = newJString("healthcheck"))
-  if valid_602735 != nil:
-    section.add "ResourceType", valid_602735
+  if valid_606935 != nil:
+    section.add "ResourceType", valid_606935
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -6282,41 +6282,41 @@ proc validate_ListTagsForResources_602733(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602736 = header.getOrDefault("X-Amz-Signature")
-  valid_602736 = validateParameter(valid_602736, JString, required = false,
+  var valid_606936 = header.getOrDefault("X-Amz-Signature")
+  valid_606936 = validateParameter(valid_606936, JString, required = false,
                                  default = nil)
-  if valid_602736 != nil:
-    section.add "X-Amz-Signature", valid_602736
-  var valid_602737 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602737 = validateParameter(valid_602737, JString, required = false,
+  if valid_606936 != nil:
+    section.add "X-Amz-Signature", valid_606936
+  var valid_606937 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606937 = validateParameter(valid_606937, JString, required = false,
                                  default = nil)
-  if valid_602737 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602737
-  var valid_602738 = header.getOrDefault("X-Amz-Date")
-  valid_602738 = validateParameter(valid_602738, JString, required = false,
+  if valid_606937 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606937
+  var valid_606938 = header.getOrDefault("X-Amz-Date")
+  valid_606938 = validateParameter(valid_606938, JString, required = false,
                                  default = nil)
-  if valid_602738 != nil:
-    section.add "X-Amz-Date", valid_602738
-  var valid_602739 = header.getOrDefault("X-Amz-Credential")
-  valid_602739 = validateParameter(valid_602739, JString, required = false,
+  if valid_606938 != nil:
+    section.add "X-Amz-Date", valid_606938
+  var valid_606939 = header.getOrDefault("X-Amz-Credential")
+  valid_606939 = validateParameter(valid_606939, JString, required = false,
                                  default = nil)
-  if valid_602739 != nil:
-    section.add "X-Amz-Credential", valid_602739
-  var valid_602740 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602740 = validateParameter(valid_602740, JString, required = false,
+  if valid_606939 != nil:
+    section.add "X-Amz-Credential", valid_606939
+  var valid_606940 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606940 = validateParameter(valid_606940, JString, required = false,
                                  default = nil)
-  if valid_602740 != nil:
-    section.add "X-Amz-Security-Token", valid_602740
-  var valid_602741 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602741 = validateParameter(valid_602741, JString, required = false,
+  if valid_606940 != nil:
+    section.add "X-Amz-Security-Token", valid_606940
+  var valid_606941 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606941 = validateParameter(valid_606941, JString, required = false,
                                  default = nil)
-  if valid_602741 != nil:
-    section.add "X-Amz-Algorithm", valid_602741
-  var valid_602742 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602742 = validateParameter(valid_602742, JString, required = false,
+  if valid_606941 != nil:
+    section.add "X-Amz-Algorithm", valid_606941
+  var valid_606942 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606942 = validateParameter(valid_606942, JString, required = false,
                                  default = nil)
-  if valid_602742 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602742
+  if valid_606942 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606942
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6327,41 +6327,41 @@ proc validate_ListTagsForResources_602733(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602744: Call_ListTagsForResources_602732; path: JsonNode;
+proc call*(call_606944: Call_ListTagsForResources_606932; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists tags for up to 10 health checks or hosted zones.</p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
   ## 
-  let valid = call_602744.validator(path, query, header, formData, body)
-  let scheme = call_602744.pickScheme
+  let valid = call_606944.validator(path, query, header, formData, body)
+  let scheme = call_606944.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602744.url(scheme.get, call_602744.host, call_602744.base,
-                         call_602744.route, valid.getOrDefault("path"),
+  let url = call_606944.url(scheme.get, call_606944.host, call_606944.base,
+                         call_606944.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602744, url, valid)
+  result = atozHook(call_606944, url, valid)
 
-proc call*(call_602745: Call_ListTagsForResources_602732; body: JsonNode;
+proc call*(call_606945: Call_ListTagsForResources_606932; body: JsonNode;
           ResourceType: string = "healthcheck"): Recallable =
   ## listTagsForResources
   ## <p>Lists tags for up to 10 health checks or hosted zones.</p> <p>For information about using tags for cost allocation, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p>
   ##   ResourceType: string (required)
   ##               : <p>The type of the resources.</p> <ul> <li> <p>The resource type for health checks is <code>healthcheck</code>.</p> </li> <li> <p>The resource type for hosted zones is <code>hostedzone</code>.</p> </li> </ul>
   ##   body: JObject (required)
-  var path_602746 = newJObject()
-  var body_602747 = newJObject()
-  add(path_602746, "ResourceType", newJString(ResourceType))
+  var path_606946 = newJObject()
+  var body_606947 = newJObject()
+  add(path_606946, "ResourceType", newJString(ResourceType))
   if body != nil:
-    body_602747 = body
-  result = call_602745.call(path_602746, nil, nil, nil, body_602747)
+    body_606947 = body
+  result = call_606945.call(path_606946, nil, nil, nil, body_606947)
 
-var listTagsForResources* = Call_ListTagsForResources_602732(
+var listTagsForResources* = Call_ListTagsForResources_606932(
     name: "listTagsForResources", meth: HttpMethod.HttpPost,
     host: "route53.amazonaws.com", route: "/2013-04-01/tags/{ResourceType}",
-    validator: validate_ListTagsForResources_602733, base: "/",
-    url: url_ListTagsForResources_602734, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResources_606933, base: "/",
+    url: url_ListTagsForResources_606934, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrafficPolicies_602748 = ref object of OpenApiRestCall_601389
-proc url_ListTrafficPolicies_602750(protocol: Scheme; host: string; base: string;
+  Call_ListTrafficPolicies_606948 = ref object of OpenApiRestCall_605589
+proc url_ListTrafficPolicies_606950(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6373,7 +6373,7 @@ proc url_ListTrafficPolicies_602750(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListTrafficPolicies_602749(path: JsonNode; query: JsonNode;
+proc validate_ListTrafficPolicies_606949(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Gets information about the latest version for every traffic policy that is associated with the current AWS account. Policies are listed in the order that they were created in. 
@@ -6388,16 +6388,16 @@ proc validate_ListTrafficPolicies_602749(path: JsonNode; query: JsonNode;
   ##   trafficpolicyid: JString
   ##                  : <p>(Conditional) For your first request to <code>ListTrafficPolicies</code>, don't include the <code>TrafficPolicyIdMarker</code> parameter.</p> <p>If you have more traffic policies than the value of <code>MaxItems</code>, <code>ListTrafficPolicies</code> returns only the first <code>MaxItems</code> traffic policies. To get the next group of policies, submit another request to <code>ListTrafficPolicies</code>. For the value of <code>TrafficPolicyIdMarker</code>, specify the value of <code>TrafficPolicyIdMarker</code> that was returned in the previous response.</p>
   section = newJObject()
-  var valid_602751 = query.getOrDefault("maxitems")
-  valid_602751 = validateParameter(valid_602751, JString, required = false,
+  var valid_606951 = query.getOrDefault("maxitems")
+  valid_606951 = validateParameter(valid_606951, JString, required = false,
                                  default = nil)
-  if valid_602751 != nil:
-    section.add "maxitems", valid_602751
-  var valid_602752 = query.getOrDefault("trafficpolicyid")
-  valid_602752 = validateParameter(valid_602752, JString, required = false,
+  if valid_606951 != nil:
+    section.add "maxitems", valid_606951
+  var valid_606952 = query.getOrDefault("trafficpolicyid")
+  valid_606952 = validateParameter(valid_606952, JString, required = false,
                                  default = nil)
-  if valid_602752 != nil:
-    section.add "trafficpolicyid", valid_602752
+  if valid_606952 != nil:
+    section.add "trafficpolicyid", valid_606952
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -6408,61 +6408,61 @@ proc validate_ListTrafficPolicies_602749(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602753 = header.getOrDefault("X-Amz-Signature")
-  valid_602753 = validateParameter(valid_602753, JString, required = false,
+  var valid_606953 = header.getOrDefault("X-Amz-Signature")
+  valid_606953 = validateParameter(valid_606953, JString, required = false,
                                  default = nil)
-  if valid_602753 != nil:
-    section.add "X-Amz-Signature", valid_602753
-  var valid_602754 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602754 = validateParameter(valid_602754, JString, required = false,
+  if valid_606953 != nil:
+    section.add "X-Amz-Signature", valid_606953
+  var valid_606954 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606954 = validateParameter(valid_606954, JString, required = false,
                                  default = nil)
-  if valid_602754 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602754
-  var valid_602755 = header.getOrDefault("X-Amz-Date")
-  valid_602755 = validateParameter(valid_602755, JString, required = false,
+  if valid_606954 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606954
+  var valid_606955 = header.getOrDefault("X-Amz-Date")
+  valid_606955 = validateParameter(valid_606955, JString, required = false,
                                  default = nil)
-  if valid_602755 != nil:
-    section.add "X-Amz-Date", valid_602755
-  var valid_602756 = header.getOrDefault("X-Amz-Credential")
-  valid_602756 = validateParameter(valid_602756, JString, required = false,
+  if valid_606955 != nil:
+    section.add "X-Amz-Date", valid_606955
+  var valid_606956 = header.getOrDefault("X-Amz-Credential")
+  valid_606956 = validateParameter(valid_606956, JString, required = false,
                                  default = nil)
-  if valid_602756 != nil:
-    section.add "X-Amz-Credential", valid_602756
-  var valid_602757 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602757 = validateParameter(valid_602757, JString, required = false,
+  if valid_606956 != nil:
+    section.add "X-Amz-Credential", valid_606956
+  var valid_606957 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606957 = validateParameter(valid_606957, JString, required = false,
                                  default = nil)
-  if valid_602757 != nil:
-    section.add "X-Amz-Security-Token", valid_602757
-  var valid_602758 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602758 = validateParameter(valid_602758, JString, required = false,
+  if valid_606957 != nil:
+    section.add "X-Amz-Security-Token", valid_606957
+  var valid_606958 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606958 = validateParameter(valid_606958, JString, required = false,
                                  default = nil)
-  if valid_602758 != nil:
-    section.add "X-Amz-Algorithm", valid_602758
-  var valid_602759 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602759 = validateParameter(valid_602759, JString, required = false,
+  if valid_606958 != nil:
+    section.add "X-Amz-Algorithm", valid_606958
+  var valid_606959 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606959 = validateParameter(valid_606959, JString, required = false,
                                  default = nil)
-  if valid_602759 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602759
+  if valid_606959 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606959
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602760: Call_ListTrafficPolicies_602748; path: JsonNode;
+proc call*(call_606960: Call_ListTrafficPolicies_606948; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets information about the latest version for every traffic policy that is associated with the current AWS account. Policies are listed in the order that they were created in. 
   ## 
-  let valid = call_602760.validator(path, query, header, formData, body)
-  let scheme = call_602760.pickScheme
+  let valid = call_606960.validator(path, query, header, formData, body)
+  let scheme = call_606960.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602760.url(scheme.get, call_602760.host, call_602760.base,
-                         call_602760.route, valid.getOrDefault("path"),
+  let url = call_606960.url(scheme.get, call_606960.host, call_606960.base,
+                         call_606960.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602760, url, valid)
+  result = atozHook(call_606960, url, valid)
 
-proc call*(call_602761: Call_ListTrafficPolicies_602748; maxitems: string = "";
+proc call*(call_606961: Call_ListTrafficPolicies_606948; maxitems: string = "";
           trafficpolicyid: string = ""): Recallable =
   ## listTrafficPolicies
   ## Gets information about the latest version for every traffic policy that is associated with the current AWS account. Policies are listed in the order that they were created in. 
@@ -6470,19 +6470,19 @@ proc call*(call_602761: Call_ListTrafficPolicies_602748; maxitems: string = "";
   ##           : (Optional) The maximum number of traffic policies that you want Amazon Route 53 to return in response to this request. If you have more than <code>MaxItems</code> traffic policies, the value of <code>IsTruncated</code> in the response is <code>true</code>, and the value of <code>TrafficPolicyIdMarker</code> is the ID of the first traffic policy that Route 53 will return if you submit another request.
   ##   trafficpolicyid: string
   ##                  : <p>(Conditional) For your first request to <code>ListTrafficPolicies</code>, don't include the <code>TrafficPolicyIdMarker</code> parameter.</p> <p>If you have more traffic policies than the value of <code>MaxItems</code>, <code>ListTrafficPolicies</code> returns only the first <code>MaxItems</code> traffic policies. To get the next group of policies, submit another request to <code>ListTrafficPolicies</code>. For the value of <code>TrafficPolicyIdMarker</code>, specify the value of <code>TrafficPolicyIdMarker</code> that was returned in the previous response.</p>
-  var query_602762 = newJObject()
-  add(query_602762, "maxitems", newJString(maxitems))
-  add(query_602762, "trafficpolicyid", newJString(trafficpolicyid))
-  result = call_602761.call(nil, query_602762, nil, nil, nil)
+  var query_606962 = newJObject()
+  add(query_606962, "maxitems", newJString(maxitems))
+  add(query_606962, "trafficpolicyid", newJString(trafficpolicyid))
+  result = call_606961.call(nil, query_606962, nil, nil, nil)
 
-var listTrafficPolicies* = Call_ListTrafficPolicies_602748(
+var listTrafficPolicies* = Call_ListTrafficPolicies_606948(
     name: "listTrafficPolicies", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/trafficpolicies",
-    validator: validate_ListTrafficPolicies_602749, base: "/",
-    url: url_ListTrafficPolicies_602750, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTrafficPolicies_606949, base: "/",
+    url: url_ListTrafficPolicies_606950, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrafficPolicyInstances_602763 = ref object of OpenApiRestCall_601389
-proc url_ListTrafficPolicyInstances_602765(protocol: Scheme; host: string;
+  Call_ListTrafficPolicyInstances_606963 = ref object of OpenApiRestCall_605589
+proc url_ListTrafficPolicyInstances_606965(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6494,7 +6494,7 @@ proc url_ListTrafficPolicyInstances_602765(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListTrafficPolicyInstances_602764(path: JsonNode; query: JsonNode;
+proc validate_ListTrafficPolicyInstances_606964(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets information about the traffic policy instances that you created by using the current AWS account.</p> <note> <p>After you submit an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <p>Route 53 returns a maximum of 100 items in each response. If you have a lot of traffic policy instances, you can use the <code>MaxItems</code> parameter to list them in groups of up to 100.</p>
   ## 
@@ -6512,26 +6512,26 @@ proc validate_ListTrafficPolicyInstances_602764(path: JsonNode; query: JsonNode;
   ##   hostedzoneid: JString
   ##               : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more traffic policy instances. To get more traffic policy instances, submit another <code>ListTrafficPolicyInstances</code> request. For the value of <code>HostedZoneId</code>, specify the value of <code>HostedZoneIdMarker</code> from the previous response, which is the hosted zone ID of the first traffic policy instance in the next group of traffic policy instances.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more traffic policy instances to get.</p>
   section = newJObject()
-  var valid_602766 = query.getOrDefault("trafficpolicyinstancetype")
-  valid_602766 = validateParameter(valid_602766, JString, required = false,
+  var valid_606966 = query.getOrDefault("trafficpolicyinstancetype")
+  valid_606966 = validateParameter(valid_606966, JString, required = false,
                                  default = newJString("SOA"))
-  if valid_602766 != nil:
-    section.add "trafficpolicyinstancetype", valid_602766
-  var valid_602767 = query.getOrDefault("maxitems")
-  valid_602767 = validateParameter(valid_602767, JString, required = false,
+  if valid_606966 != nil:
+    section.add "trafficpolicyinstancetype", valid_606966
+  var valid_606967 = query.getOrDefault("maxitems")
+  valid_606967 = validateParameter(valid_606967, JString, required = false,
                                  default = nil)
-  if valid_602767 != nil:
-    section.add "maxitems", valid_602767
-  var valid_602768 = query.getOrDefault("trafficpolicyinstancename")
-  valid_602768 = validateParameter(valid_602768, JString, required = false,
+  if valid_606967 != nil:
+    section.add "maxitems", valid_606967
+  var valid_606968 = query.getOrDefault("trafficpolicyinstancename")
+  valid_606968 = validateParameter(valid_606968, JString, required = false,
                                  default = nil)
-  if valid_602768 != nil:
-    section.add "trafficpolicyinstancename", valid_602768
-  var valid_602769 = query.getOrDefault("hostedzoneid")
-  valid_602769 = validateParameter(valid_602769, JString, required = false,
+  if valid_606968 != nil:
+    section.add "trafficpolicyinstancename", valid_606968
+  var valid_606969 = query.getOrDefault("hostedzoneid")
+  valid_606969 = validateParameter(valid_606969, JString, required = false,
                                  default = nil)
-  if valid_602769 != nil:
-    section.add "hostedzoneid", valid_602769
+  if valid_606969 != nil:
+    section.add "hostedzoneid", valid_606969
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -6542,61 +6542,61 @@ proc validate_ListTrafficPolicyInstances_602764(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602770 = header.getOrDefault("X-Amz-Signature")
-  valid_602770 = validateParameter(valid_602770, JString, required = false,
+  var valid_606970 = header.getOrDefault("X-Amz-Signature")
+  valid_606970 = validateParameter(valid_606970, JString, required = false,
                                  default = nil)
-  if valid_602770 != nil:
-    section.add "X-Amz-Signature", valid_602770
-  var valid_602771 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602771 = validateParameter(valid_602771, JString, required = false,
+  if valid_606970 != nil:
+    section.add "X-Amz-Signature", valid_606970
+  var valid_606971 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606971 = validateParameter(valid_606971, JString, required = false,
                                  default = nil)
-  if valid_602771 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602771
-  var valid_602772 = header.getOrDefault("X-Amz-Date")
-  valid_602772 = validateParameter(valid_602772, JString, required = false,
+  if valid_606971 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606971
+  var valid_606972 = header.getOrDefault("X-Amz-Date")
+  valid_606972 = validateParameter(valid_606972, JString, required = false,
                                  default = nil)
-  if valid_602772 != nil:
-    section.add "X-Amz-Date", valid_602772
-  var valid_602773 = header.getOrDefault("X-Amz-Credential")
-  valid_602773 = validateParameter(valid_602773, JString, required = false,
+  if valid_606972 != nil:
+    section.add "X-Amz-Date", valid_606972
+  var valid_606973 = header.getOrDefault("X-Amz-Credential")
+  valid_606973 = validateParameter(valid_606973, JString, required = false,
                                  default = nil)
-  if valid_602773 != nil:
-    section.add "X-Amz-Credential", valid_602773
-  var valid_602774 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602774 = validateParameter(valid_602774, JString, required = false,
+  if valid_606973 != nil:
+    section.add "X-Amz-Credential", valid_606973
+  var valid_606974 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606974 = validateParameter(valid_606974, JString, required = false,
                                  default = nil)
-  if valid_602774 != nil:
-    section.add "X-Amz-Security-Token", valid_602774
-  var valid_602775 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602775 = validateParameter(valid_602775, JString, required = false,
+  if valid_606974 != nil:
+    section.add "X-Amz-Security-Token", valid_606974
+  var valid_606975 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606975 = validateParameter(valid_606975, JString, required = false,
                                  default = nil)
-  if valid_602775 != nil:
-    section.add "X-Amz-Algorithm", valid_602775
-  var valid_602776 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602776 = validateParameter(valid_602776, JString, required = false,
+  if valid_606975 != nil:
+    section.add "X-Amz-Algorithm", valid_606975
+  var valid_606976 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606976 = validateParameter(valid_606976, JString, required = false,
                                  default = nil)
-  if valid_602776 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602776
+  if valid_606976 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606976
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602777: Call_ListTrafficPolicyInstances_602763; path: JsonNode;
+proc call*(call_606977: Call_ListTrafficPolicyInstances_606963; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about the traffic policy instances that you created by using the current AWS account.</p> <note> <p>After you submit an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <p>Route 53 returns a maximum of 100 items in each response. If you have a lot of traffic policy instances, you can use the <code>MaxItems</code> parameter to list them in groups of up to 100.</p>
   ## 
-  let valid = call_602777.validator(path, query, header, formData, body)
-  let scheme = call_602777.pickScheme
+  let valid = call_606977.validator(path, query, header, formData, body)
+  let scheme = call_606977.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602777.url(scheme.get, call_602777.host, call_602777.base,
-                         call_602777.route, valid.getOrDefault("path"),
+  let url = call_606977.url(scheme.get, call_606977.host, call_606977.base,
+                         call_606977.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602777, url, valid)
+  result = atozHook(call_606977, url, valid)
 
-proc call*(call_602778: Call_ListTrafficPolicyInstances_602763;
+proc call*(call_606978: Call_ListTrafficPolicyInstances_606963;
           trafficpolicyinstancetype: string = "SOA"; maxitems: string = "";
           trafficpolicyinstancename: string = ""; hostedzoneid: string = ""): Recallable =
   ## listTrafficPolicyInstances
@@ -6609,24 +6609,24 @@ proc call*(call_602778: Call_ListTrafficPolicyInstances_602763;
   ##                            : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more traffic policy instances. To get more traffic policy instances, submit another <code>ListTrafficPolicyInstances</code> request. For the value of <code>trafficpolicyinstancename</code>, specify the value of <code>TrafficPolicyInstanceNameMarker</code> from the previous response, which is the name of the first traffic policy instance in the next group of traffic policy instances.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more traffic policy instances to get.</p>
   ##   hostedzoneid: string
   ##               : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more traffic policy instances. To get more traffic policy instances, submit another <code>ListTrafficPolicyInstances</code> request. For the value of <code>HostedZoneId</code>, specify the value of <code>HostedZoneIdMarker</code> from the previous response, which is the hosted zone ID of the first traffic policy instance in the next group of traffic policy instances.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more traffic policy instances to get.</p>
-  var query_602779 = newJObject()
-  add(query_602779, "trafficpolicyinstancetype",
+  var query_606979 = newJObject()
+  add(query_606979, "trafficpolicyinstancetype",
       newJString(trafficpolicyinstancetype))
-  add(query_602779, "maxitems", newJString(maxitems))
-  add(query_602779, "trafficpolicyinstancename",
+  add(query_606979, "maxitems", newJString(maxitems))
+  add(query_606979, "trafficpolicyinstancename",
       newJString(trafficpolicyinstancename))
-  add(query_602779, "hostedzoneid", newJString(hostedzoneid))
-  result = call_602778.call(nil, query_602779, nil, nil, nil)
+  add(query_606979, "hostedzoneid", newJString(hostedzoneid))
+  result = call_606978.call(nil, query_606979, nil, nil, nil)
 
-var listTrafficPolicyInstances* = Call_ListTrafficPolicyInstances_602763(
+var listTrafficPolicyInstances* = Call_ListTrafficPolicyInstances_606963(
     name: "listTrafficPolicyInstances", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com", route: "/2013-04-01/trafficpolicyinstances",
-    validator: validate_ListTrafficPolicyInstances_602764, base: "/",
-    url: url_ListTrafficPolicyInstances_602765,
+    validator: validate_ListTrafficPolicyInstances_606964, base: "/",
+    url: url_ListTrafficPolicyInstances_606965,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrafficPolicyInstancesByHostedZone_602780 = ref object of OpenApiRestCall_601389
-proc url_ListTrafficPolicyInstancesByHostedZone_602782(protocol: Scheme;
+  Call_ListTrafficPolicyInstancesByHostedZone_606980 = ref object of OpenApiRestCall_605589
+proc url_ListTrafficPolicyInstancesByHostedZone_606982(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6638,7 +6638,7 @@ proc url_ListTrafficPolicyInstancesByHostedZone_602782(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_ListTrafficPolicyInstancesByHostedZone_602781(path: JsonNode;
+proc validate_ListTrafficPolicyInstancesByHostedZone_606981(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets information about the traffic policy instances that you created in a specified hosted zone.</p> <note> <p>After you submit a <code>CreateTrafficPolicyInstance</code> or an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <p>Route 53 returns a maximum of 100 items in each response. If you have a lot of traffic policy instances, you can use the <code>MaxItems</code> parameter to list them in groups of up to 100.</p>
   ## 
@@ -6656,27 +6656,27 @@ proc validate_ListTrafficPolicyInstancesByHostedZone_602781(path: JsonNode;
   ##   trafficpolicyinstancename: JString
   ##                            : <p>If the value of <code>IsTruncated</code> in the previous response is true, you have more traffic policy instances. To get more traffic policy instances, submit another <code>ListTrafficPolicyInstances</code> request. For the value of <code>trafficpolicyinstancename</code>, specify the value of <code>TrafficPolicyInstanceNameMarker</code> from the previous response, which is the name of the first traffic policy instance in the next group of traffic policy instances.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more traffic policy instances to get.</p>
   section = newJObject()
-  var valid_602783 = query.getOrDefault("trafficpolicyinstancetype")
-  valid_602783 = validateParameter(valid_602783, JString, required = false,
+  var valid_606983 = query.getOrDefault("trafficpolicyinstancetype")
+  valid_606983 = validateParameter(valid_606983, JString, required = false,
                                  default = newJString("SOA"))
-  if valid_602783 != nil:
-    section.add "trafficpolicyinstancetype", valid_602783
-  var valid_602784 = query.getOrDefault("maxitems")
-  valid_602784 = validateParameter(valid_602784, JString, required = false,
+  if valid_606983 != nil:
+    section.add "trafficpolicyinstancetype", valid_606983
+  var valid_606984 = query.getOrDefault("maxitems")
+  valid_606984 = validateParameter(valid_606984, JString, required = false,
                                  default = nil)
-  if valid_602784 != nil:
-    section.add "maxitems", valid_602784
+  if valid_606984 != nil:
+    section.add "maxitems", valid_606984
   assert query != nil, "query argument is necessary due to required `id` field"
-  var valid_602785 = query.getOrDefault("id")
-  valid_602785 = validateParameter(valid_602785, JString, required = true,
+  var valid_606985 = query.getOrDefault("id")
+  valid_606985 = validateParameter(valid_606985, JString, required = true,
                                  default = nil)
-  if valid_602785 != nil:
-    section.add "id", valid_602785
-  var valid_602786 = query.getOrDefault("trafficpolicyinstancename")
-  valid_602786 = validateParameter(valid_602786, JString, required = false,
+  if valid_606985 != nil:
+    section.add "id", valid_606985
+  var valid_606986 = query.getOrDefault("trafficpolicyinstancename")
+  valid_606986 = validateParameter(valid_606986, JString, required = false,
                                  default = nil)
-  if valid_602786 != nil:
-    section.add "trafficpolicyinstancename", valid_602786
+  if valid_606986 != nil:
+    section.add "trafficpolicyinstancename", valid_606986
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -6687,62 +6687,62 @@ proc validate_ListTrafficPolicyInstancesByHostedZone_602781(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602787 = header.getOrDefault("X-Amz-Signature")
-  valid_602787 = validateParameter(valid_602787, JString, required = false,
+  var valid_606987 = header.getOrDefault("X-Amz-Signature")
+  valid_606987 = validateParameter(valid_606987, JString, required = false,
                                  default = nil)
-  if valid_602787 != nil:
-    section.add "X-Amz-Signature", valid_602787
-  var valid_602788 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602788 = validateParameter(valid_602788, JString, required = false,
+  if valid_606987 != nil:
+    section.add "X-Amz-Signature", valid_606987
+  var valid_606988 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606988 = validateParameter(valid_606988, JString, required = false,
                                  default = nil)
-  if valid_602788 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602788
-  var valid_602789 = header.getOrDefault("X-Amz-Date")
-  valid_602789 = validateParameter(valid_602789, JString, required = false,
+  if valid_606988 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606988
+  var valid_606989 = header.getOrDefault("X-Amz-Date")
+  valid_606989 = validateParameter(valid_606989, JString, required = false,
                                  default = nil)
-  if valid_602789 != nil:
-    section.add "X-Amz-Date", valid_602789
-  var valid_602790 = header.getOrDefault("X-Amz-Credential")
-  valid_602790 = validateParameter(valid_602790, JString, required = false,
+  if valid_606989 != nil:
+    section.add "X-Amz-Date", valid_606989
+  var valid_606990 = header.getOrDefault("X-Amz-Credential")
+  valid_606990 = validateParameter(valid_606990, JString, required = false,
                                  default = nil)
-  if valid_602790 != nil:
-    section.add "X-Amz-Credential", valid_602790
-  var valid_602791 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602791 = validateParameter(valid_602791, JString, required = false,
+  if valid_606990 != nil:
+    section.add "X-Amz-Credential", valid_606990
+  var valid_606991 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606991 = validateParameter(valid_606991, JString, required = false,
                                  default = nil)
-  if valid_602791 != nil:
-    section.add "X-Amz-Security-Token", valid_602791
-  var valid_602792 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602792 = validateParameter(valid_602792, JString, required = false,
+  if valid_606991 != nil:
+    section.add "X-Amz-Security-Token", valid_606991
+  var valid_606992 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606992 = validateParameter(valid_606992, JString, required = false,
                                  default = nil)
-  if valid_602792 != nil:
-    section.add "X-Amz-Algorithm", valid_602792
-  var valid_602793 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602793 = validateParameter(valid_602793, JString, required = false,
+  if valid_606992 != nil:
+    section.add "X-Amz-Algorithm", valid_606992
+  var valid_606993 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606993 = validateParameter(valid_606993, JString, required = false,
                                  default = nil)
-  if valid_602793 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602793
+  if valid_606993 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606993
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602794: Call_ListTrafficPolicyInstancesByHostedZone_602780;
+proc call*(call_606994: Call_ListTrafficPolicyInstancesByHostedZone_606980;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Gets information about the traffic policy instances that you created in a specified hosted zone.</p> <note> <p>After you submit a <code>CreateTrafficPolicyInstance</code> or an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <p>Route 53 returns a maximum of 100 items in each response. If you have a lot of traffic policy instances, you can use the <code>MaxItems</code> parameter to list them in groups of up to 100.</p>
   ## 
-  let valid = call_602794.validator(path, query, header, formData, body)
-  let scheme = call_602794.pickScheme
+  let valid = call_606994.validator(path, query, header, formData, body)
+  let scheme = call_606994.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602794.url(scheme.get, call_602794.host, call_602794.base,
-                         call_602794.route, valid.getOrDefault("path"),
+  let url = call_606994.url(scheme.get, call_606994.host, call_606994.base,
+                         call_606994.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602794, url, valid)
+  result = atozHook(call_606994, url, valid)
 
-proc call*(call_602795: Call_ListTrafficPolicyInstancesByHostedZone_602780;
+proc call*(call_606995: Call_ListTrafficPolicyInstancesByHostedZone_606980;
           id: string; trafficpolicyinstancetype: string = "SOA";
           maxitems: string = ""; trafficpolicyinstancename: string = ""): Recallable =
   ## listTrafficPolicyInstancesByHostedZone
@@ -6755,25 +6755,25 @@ proc call*(call_602795: Call_ListTrafficPolicyInstancesByHostedZone_602780;
   ##     : The ID of the hosted zone that you want to list traffic policy instances for.
   ##   trafficpolicyinstancename: string
   ##                            : <p>If the value of <code>IsTruncated</code> in the previous response is true, you have more traffic policy instances. To get more traffic policy instances, submit another <code>ListTrafficPolicyInstances</code> request. For the value of <code>trafficpolicyinstancename</code>, specify the value of <code>TrafficPolicyInstanceNameMarker</code> from the previous response, which is the name of the first traffic policy instance in the next group of traffic policy instances.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more traffic policy instances to get.</p>
-  var query_602796 = newJObject()
-  add(query_602796, "trafficpolicyinstancetype",
+  var query_606996 = newJObject()
+  add(query_606996, "trafficpolicyinstancetype",
       newJString(trafficpolicyinstancetype))
-  add(query_602796, "maxitems", newJString(maxitems))
-  add(query_602796, "id", newJString(id))
-  add(query_602796, "trafficpolicyinstancename",
+  add(query_606996, "maxitems", newJString(maxitems))
+  add(query_606996, "id", newJString(id))
+  add(query_606996, "trafficpolicyinstancename",
       newJString(trafficpolicyinstancename))
-  result = call_602795.call(nil, query_602796, nil, nil, nil)
+  result = call_606995.call(nil, query_606996, nil, nil, nil)
 
-var listTrafficPolicyInstancesByHostedZone* = Call_ListTrafficPolicyInstancesByHostedZone_602780(
+var listTrafficPolicyInstancesByHostedZone* = Call_ListTrafficPolicyInstancesByHostedZone_606980(
     name: "listTrafficPolicyInstancesByHostedZone", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicyinstances/hostedzone#id",
-    validator: validate_ListTrafficPolicyInstancesByHostedZone_602781, base: "/",
-    url: url_ListTrafficPolicyInstancesByHostedZone_602782,
+    validator: validate_ListTrafficPolicyInstancesByHostedZone_606981, base: "/",
+    url: url_ListTrafficPolicyInstancesByHostedZone_606982,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrafficPolicyInstancesByPolicy_602797 = ref object of OpenApiRestCall_601389
-proc url_ListTrafficPolicyInstancesByPolicy_602799(protocol: Scheme; host: string;
+  Call_ListTrafficPolicyInstancesByPolicy_606997 = ref object of OpenApiRestCall_605589
+proc url_ListTrafficPolicyInstancesByPolicy_606999(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6785,7 +6785,7 @@ proc url_ListTrafficPolicyInstancesByPolicy_602799(protocol: Scheme; host: strin
   else:
     result.path = base & route
 
-proc validate_ListTrafficPolicyInstancesByPolicy_602798(path: JsonNode;
+proc validate_ListTrafficPolicyInstancesByPolicy_606998(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets information about the traffic policy instances that you created by using a specify traffic policy version.</p> <note> <p>After you submit a <code>CreateTrafficPolicyInstance</code> or an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <p>Route 53 returns a maximum of 100 items in each response. If you have a lot of traffic policy instances, you can use the <code>MaxItems</code> parameter to list them in groups of up to 100.</p>
   ## 
@@ -6807,36 +6807,36 @@ proc validate_ListTrafficPolicyInstancesByPolicy_602798(path: JsonNode;
   ##   hostedzoneid: JString
   ##               : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more traffic policy instances. To get more traffic policy instances, submit another <code>ListTrafficPolicyInstancesByPolicy</code> request. </p> <p>For the value of <code>hostedzoneid</code>, specify the value of <code>HostedZoneIdMarker</code> from the previous response, which is the hosted zone ID of the first traffic policy instance that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more traffic policy instances to get.</p>
   section = newJObject()
-  var valid_602800 = query.getOrDefault("trafficpolicyinstancetype")
-  valid_602800 = validateParameter(valid_602800, JString, required = false,
+  var valid_607000 = query.getOrDefault("trafficpolicyinstancetype")
+  valid_607000 = validateParameter(valid_607000, JString, required = false,
                                  default = newJString("SOA"))
-  if valid_602800 != nil:
-    section.add "trafficpolicyinstancetype", valid_602800
+  if valid_607000 != nil:
+    section.add "trafficpolicyinstancetype", valid_607000
   assert query != nil, "query argument is necessary due to required `version` field"
-  var valid_602801 = query.getOrDefault("version")
-  valid_602801 = validateParameter(valid_602801, JInt, required = true, default = nil)
-  if valid_602801 != nil:
-    section.add "version", valid_602801
-  var valid_602802 = query.getOrDefault("maxitems")
-  valid_602802 = validateParameter(valid_602802, JString, required = false,
+  var valid_607001 = query.getOrDefault("version")
+  valid_607001 = validateParameter(valid_607001, JInt, required = true, default = nil)
+  if valid_607001 != nil:
+    section.add "version", valid_607001
+  var valid_607002 = query.getOrDefault("maxitems")
+  valid_607002 = validateParameter(valid_607002, JString, required = false,
                                  default = nil)
-  if valid_602802 != nil:
-    section.add "maxitems", valid_602802
-  var valid_602803 = query.getOrDefault("id")
-  valid_602803 = validateParameter(valid_602803, JString, required = true,
+  if valid_607002 != nil:
+    section.add "maxitems", valid_607002
+  var valid_607003 = query.getOrDefault("id")
+  valid_607003 = validateParameter(valid_607003, JString, required = true,
                                  default = nil)
-  if valid_602803 != nil:
-    section.add "id", valid_602803
-  var valid_602804 = query.getOrDefault("trafficpolicyinstancename")
-  valid_602804 = validateParameter(valid_602804, JString, required = false,
+  if valid_607003 != nil:
+    section.add "id", valid_607003
+  var valid_607004 = query.getOrDefault("trafficpolicyinstancename")
+  valid_607004 = validateParameter(valid_607004, JString, required = false,
                                  default = nil)
-  if valid_602804 != nil:
-    section.add "trafficpolicyinstancename", valid_602804
-  var valid_602805 = query.getOrDefault("hostedzoneid")
-  valid_602805 = validateParameter(valid_602805, JString, required = false,
+  if valid_607004 != nil:
+    section.add "trafficpolicyinstancename", valid_607004
+  var valid_607005 = query.getOrDefault("hostedzoneid")
+  valid_607005 = validateParameter(valid_607005, JString, required = false,
                                  default = nil)
-  if valid_602805 != nil:
-    section.add "hostedzoneid", valid_602805
+  if valid_607005 != nil:
+    section.add "hostedzoneid", valid_607005
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -6847,62 +6847,62 @@ proc validate_ListTrafficPolicyInstancesByPolicy_602798(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602806 = header.getOrDefault("X-Amz-Signature")
-  valid_602806 = validateParameter(valid_602806, JString, required = false,
+  var valid_607006 = header.getOrDefault("X-Amz-Signature")
+  valid_607006 = validateParameter(valid_607006, JString, required = false,
                                  default = nil)
-  if valid_602806 != nil:
-    section.add "X-Amz-Signature", valid_602806
-  var valid_602807 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602807 = validateParameter(valid_602807, JString, required = false,
+  if valid_607006 != nil:
+    section.add "X-Amz-Signature", valid_607006
+  var valid_607007 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607007 = validateParameter(valid_607007, JString, required = false,
                                  default = nil)
-  if valid_602807 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602807
-  var valid_602808 = header.getOrDefault("X-Amz-Date")
-  valid_602808 = validateParameter(valid_602808, JString, required = false,
+  if valid_607007 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607007
+  var valid_607008 = header.getOrDefault("X-Amz-Date")
+  valid_607008 = validateParameter(valid_607008, JString, required = false,
                                  default = nil)
-  if valid_602808 != nil:
-    section.add "X-Amz-Date", valid_602808
-  var valid_602809 = header.getOrDefault("X-Amz-Credential")
-  valid_602809 = validateParameter(valid_602809, JString, required = false,
+  if valid_607008 != nil:
+    section.add "X-Amz-Date", valid_607008
+  var valid_607009 = header.getOrDefault("X-Amz-Credential")
+  valid_607009 = validateParameter(valid_607009, JString, required = false,
                                  default = nil)
-  if valid_602809 != nil:
-    section.add "X-Amz-Credential", valid_602809
-  var valid_602810 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602810 = validateParameter(valid_602810, JString, required = false,
+  if valid_607009 != nil:
+    section.add "X-Amz-Credential", valid_607009
+  var valid_607010 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607010 = validateParameter(valid_607010, JString, required = false,
                                  default = nil)
-  if valid_602810 != nil:
-    section.add "X-Amz-Security-Token", valid_602810
-  var valid_602811 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602811 = validateParameter(valid_602811, JString, required = false,
+  if valid_607010 != nil:
+    section.add "X-Amz-Security-Token", valid_607010
+  var valid_607011 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607011 = validateParameter(valid_607011, JString, required = false,
                                  default = nil)
-  if valid_602811 != nil:
-    section.add "X-Amz-Algorithm", valid_602811
-  var valid_602812 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602812 = validateParameter(valid_602812, JString, required = false,
+  if valid_607011 != nil:
+    section.add "X-Amz-Algorithm", valid_607011
+  var valid_607012 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607012 = validateParameter(valid_607012, JString, required = false,
                                  default = nil)
-  if valid_602812 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602812
+  if valid_607012 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607012
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602813: Call_ListTrafficPolicyInstancesByPolicy_602797;
+proc call*(call_607013: Call_ListTrafficPolicyInstancesByPolicy_606997;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Gets information about the traffic policy instances that you created by using a specify traffic policy version.</p> <note> <p>After you submit a <code>CreateTrafficPolicyInstance</code> or an <code>UpdateTrafficPolicyInstance</code> request, there's a brief delay while Amazon Route 53 creates the resource record sets that are specified in the traffic policy definition. For more information, see the <code>State</code> response element.</p> </note> <p>Route 53 returns a maximum of 100 items in each response. If you have a lot of traffic policy instances, you can use the <code>MaxItems</code> parameter to list them in groups of up to 100.</p>
   ## 
-  let valid = call_602813.validator(path, query, header, formData, body)
-  let scheme = call_602813.pickScheme
+  let valid = call_607013.validator(path, query, header, formData, body)
+  let scheme = call_607013.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602813.url(scheme.get, call_602813.host, call_602813.base,
-                         call_602813.route, valid.getOrDefault("path"),
+  let url = call_607013.url(scheme.get, call_607013.host, call_607013.base,
+                         call_607013.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602813, url, valid)
+  result = atozHook(call_607013, url, valid)
 
-proc call*(call_602814: Call_ListTrafficPolicyInstancesByPolicy_602797;
+proc call*(call_607014: Call_ListTrafficPolicyInstancesByPolicy_606997;
           version: int; id: string; trafficpolicyinstancetype: string = "SOA";
           maxitems: string = ""; trafficpolicyinstancename: string = "";
           hostedzoneid: string = ""): Recallable =
@@ -6920,27 +6920,27 @@ proc call*(call_602814: Call_ListTrafficPolicyInstancesByPolicy_602797;
   ##                            : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more traffic policy instances. To get more traffic policy instances, submit another <code>ListTrafficPolicyInstancesByPolicy</code> request.</p> <p>For the value of <code>trafficpolicyinstancename</code>, specify the value of <code>TrafficPolicyInstanceNameMarker</code> from the previous response, which is the name of the first traffic policy instance that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more traffic policy instances to get.</p>
   ##   hostedzoneid: string
   ##               : <p>If the value of <code>IsTruncated</code> in the previous response was <code>true</code>, you have more traffic policy instances. To get more traffic policy instances, submit another <code>ListTrafficPolicyInstancesByPolicy</code> request. </p> <p>For the value of <code>hostedzoneid</code>, specify the value of <code>HostedZoneIdMarker</code> from the previous response, which is the hosted zone ID of the first traffic policy instance that Amazon Route 53 will return if you submit another request.</p> <p>If the value of <code>IsTruncated</code> in the previous response was <code>false</code>, there are no more traffic policy instances to get.</p>
-  var query_602815 = newJObject()
-  add(query_602815, "trafficpolicyinstancetype",
+  var query_607015 = newJObject()
+  add(query_607015, "trafficpolicyinstancetype",
       newJString(trafficpolicyinstancetype))
-  add(query_602815, "version", newJInt(version))
-  add(query_602815, "maxitems", newJString(maxitems))
-  add(query_602815, "id", newJString(id))
-  add(query_602815, "trafficpolicyinstancename",
+  add(query_607015, "version", newJInt(version))
+  add(query_607015, "maxitems", newJString(maxitems))
+  add(query_607015, "id", newJString(id))
+  add(query_607015, "trafficpolicyinstancename",
       newJString(trafficpolicyinstancename))
-  add(query_602815, "hostedzoneid", newJString(hostedzoneid))
-  result = call_602814.call(nil, query_602815, nil, nil, nil)
+  add(query_607015, "hostedzoneid", newJString(hostedzoneid))
+  result = call_607014.call(nil, query_607015, nil, nil, nil)
 
-var listTrafficPolicyInstancesByPolicy* = Call_ListTrafficPolicyInstancesByPolicy_602797(
+var listTrafficPolicyInstancesByPolicy* = Call_ListTrafficPolicyInstancesByPolicy_606997(
     name: "listTrafficPolicyInstancesByPolicy", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicyinstances/trafficpolicy#id&version",
-    validator: validate_ListTrafficPolicyInstancesByPolicy_602798, base: "/",
-    url: url_ListTrafficPolicyInstancesByPolicy_602799,
+    validator: validate_ListTrafficPolicyInstancesByPolicy_606998, base: "/",
+    url: url_ListTrafficPolicyInstancesByPolicy_606999,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrafficPolicyVersions_602816 = ref object of OpenApiRestCall_601389
-proc url_ListTrafficPolicyVersions_602818(protocol: Scheme; host: string;
+  Call_ListTrafficPolicyVersions_607016 = ref object of OpenApiRestCall_605589
+proc url_ListTrafficPolicyVersions_607018(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6961,7 +6961,7 @@ proc url_ListTrafficPolicyVersions_602818(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListTrafficPolicyVersions_602817(path: JsonNode; query: JsonNode;
+proc validate_ListTrafficPolicyVersions_607017(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets information about all of the versions for a specified traffic policy.</p> <p>Traffic policy versions are listed in numerical order by <code>VersionNumber</code>.</p>
   ## 
@@ -6972,11 +6972,11 @@ proc validate_ListTrafficPolicyVersions_602817(path: JsonNode; query: JsonNode;
   ##     : Specify the value of <code>Id</code> of the traffic policy for which you want to list all versions.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `Id` field"
-  var valid_602819 = path.getOrDefault("Id")
-  valid_602819 = validateParameter(valid_602819, JString, required = true,
+  var valid_607019 = path.getOrDefault("Id")
+  valid_607019 = validateParameter(valid_607019, JString, required = true,
                                  default = nil)
-  if valid_602819 != nil:
-    section.add "Id", valid_602819
+  if valid_607019 != nil:
+    section.add "Id", valid_607019
   result.add "path", section
   ## parameters in `query` object:
   ##   maxitems: JString
@@ -6984,16 +6984,16 @@ proc validate_ListTrafficPolicyVersions_602817(path: JsonNode; query: JsonNode;
   ##   trafficpolicyversion: JString
   ##                       : <p>For your first request to <code>ListTrafficPolicyVersions</code>, don't include the <code>TrafficPolicyVersionMarker</code> parameter.</p> <p>If you have more traffic policy versions than the value of <code>MaxItems</code>, <code>ListTrafficPolicyVersions</code> returns only the first group of <code>MaxItems</code> versions. To get more traffic policy versions, submit another <code>ListTrafficPolicyVersions</code> request. For the value of <code>TrafficPolicyVersionMarker</code>, specify the value of <code>TrafficPolicyVersionMarker</code> in the previous response.</p>
   section = newJObject()
-  var valid_602820 = query.getOrDefault("maxitems")
-  valid_602820 = validateParameter(valid_602820, JString, required = false,
+  var valid_607020 = query.getOrDefault("maxitems")
+  valid_607020 = validateParameter(valid_607020, JString, required = false,
                                  default = nil)
-  if valid_602820 != nil:
-    section.add "maxitems", valid_602820
-  var valid_602821 = query.getOrDefault("trafficpolicyversion")
-  valid_602821 = validateParameter(valid_602821, JString, required = false,
+  if valid_607020 != nil:
+    section.add "maxitems", valid_607020
+  var valid_607021 = query.getOrDefault("trafficpolicyversion")
+  valid_607021 = validateParameter(valid_607021, JString, required = false,
                                  default = nil)
-  if valid_602821 != nil:
-    section.add "trafficpolicyversion", valid_602821
+  if valid_607021 != nil:
+    section.add "trafficpolicyversion", valid_607021
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -7004,61 +7004,61 @@ proc validate_ListTrafficPolicyVersions_602817(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602822 = header.getOrDefault("X-Amz-Signature")
-  valid_602822 = validateParameter(valid_602822, JString, required = false,
+  var valid_607022 = header.getOrDefault("X-Amz-Signature")
+  valid_607022 = validateParameter(valid_607022, JString, required = false,
                                  default = nil)
-  if valid_602822 != nil:
-    section.add "X-Amz-Signature", valid_602822
-  var valid_602823 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602823 = validateParameter(valid_602823, JString, required = false,
+  if valid_607022 != nil:
+    section.add "X-Amz-Signature", valid_607022
+  var valid_607023 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607023 = validateParameter(valid_607023, JString, required = false,
                                  default = nil)
-  if valid_602823 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602823
-  var valid_602824 = header.getOrDefault("X-Amz-Date")
-  valid_602824 = validateParameter(valid_602824, JString, required = false,
+  if valid_607023 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607023
+  var valid_607024 = header.getOrDefault("X-Amz-Date")
+  valid_607024 = validateParameter(valid_607024, JString, required = false,
                                  default = nil)
-  if valid_602824 != nil:
-    section.add "X-Amz-Date", valid_602824
-  var valid_602825 = header.getOrDefault("X-Amz-Credential")
-  valid_602825 = validateParameter(valid_602825, JString, required = false,
+  if valid_607024 != nil:
+    section.add "X-Amz-Date", valid_607024
+  var valid_607025 = header.getOrDefault("X-Amz-Credential")
+  valid_607025 = validateParameter(valid_607025, JString, required = false,
                                  default = nil)
-  if valid_602825 != nil:
-    section.add "X-Amz-Credential", valid_602825
-  var valid_602826 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602826 = validateParameter(valid_602826, JString, required = false,
+  if valid_607025 != nil:
+    section.add "X-Amz-Credential", valid_607025
+  var valid_607026 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607026 = validateParameter(valid_607026, JString, required = false,
                                  default = nil)
-  if valid_602826 != nil:
-    section.add "X-Amz-Security-Token", valid_602826
-  var valid_602827 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602827 = validateParameter(valid_602827, JString, required = false,
+  if valid_607026 != nil:
+    section.add "X-Amz-Security-Token", valid_607026
+  var valid_607027 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607027 = validateParameter(valid_607027, JString, required = false,
                                  default = nil)
-  if valid_602827 != nil:
-    section.add "X-Amz-Algorithm", valid_602827
-  var valid_602828 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602828 = validateParameter(valid_602828, JString, required = false,
+  if valid_607027 != nil:
+    section.add "X-Amz-Algorithm", valid_607027
+  var valid_607028 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607028 = validateParameter(valid_607028, JString, required = false,
                                  default = nil)
-  if valid_602828 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602828
+  if valid_607028 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607028
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602829: Call_ListTrafficPolicyVersions_602816; path: JsonNode;
+proc call*(call_607029: Call_ListTrafficPolicyVersions_607016; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets information about all of the versions for a specified traffic policy.</p> <p>Traffic policy versions are listed in numerical order by <code>VersionNumber</code>.</p>
   ## 
-  let valid = call_602829.validator(path, query, header, formData, body)
-  let scheme = call_602829.pickScheme
+  let valid = call_607029.validator(path, query, header, formData, body)
+  let scheme = call_607029.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602829.url(scheme.get, call_602829.host, call_602829.base,
-                         call_602829.route, valid.getOrDefault("path"),
+  let url = call_607029.url(scheme.get, call_607029.host, call_607029.base,
+                         call_607029.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602829, url, valid)
+  result = atozHook(call_607029, url, valid)
 
-proc call*(call_602830: Call_ListTrafficPolicyVersions_602816; Id: string;
+proc call*(call_607030: Call_ListTrafficPolicyVersions_607016; Id: string;
           maxitems: string = ""; trafficpolicyversion: string = ""): Recallable =
   ## listTrafficPolicyVersions
   ## <p>Gets information about all of the versions for a specified traffic policy.</p> <p>Traffic policy versions are listed in numerical order by <code>VersionNumber</code>.</p>
@@ -7068,23 +7068,23 @@ proc call*(call_602830: Call_ListTrafficPolicyVersions_602816; Id: string;
   ##                       : <p>For your first request to <code>ListTrafficPolicyVersions</code>, don't include the <code>TrafficPolicyVersionMarker</code> parameter.</p> <p>If you have more traffic policy versions than the value of <code>MaxItems</code>, <code>ListTrafficPolicyVersions</code> returns only the first group of <code>MaxItems</code> versions. To get more traffic policy versions, submit another <code>ListTrafficPolicyVersions</code> request. For the value of <code>TrafficPolicyVersionMarker</code>, specify the value of <code>TrafficPolicyVersionMarker</code> in the previous response.</p>
   ##   Id: string (required)
   ##     : Specify the value of <code>Id</code> of the traffic policy for which you want to list all versions.
-  var path_602831 = newJObject()
-  var query_602832 = newJObject()
-  add(query_602832, "maxitems", newJString(maxitems))
-  add(query_602832, "trafficpolicyversion", newJString(trafficpolicyversion))
-  add(path_602831, "Id", newJString(Id))
-  result = call_602830.call(path_602831, query_602832, nil, nil, nil)
+  var path_607031 = newJObject()
+  var query_607032 = newJObject()
+  add(query_607032, "maxitems", newJString(maxitems))
+  add(query_607032, "trafficpolicyversion", newJString(trafficpolicyversion))
+  add(path_607031, "Id", newJString(Id))
+  result = call_607030.call(path_607031, query_607032, nil, nil, nil)
 
-var listTrafficPolicyVersions* = Call_ListTrafficPolicyVersions_602816(
+var listTrafficPolicyVersions* = Call_ListTrafficPolicyVersions_607016(
     name: "listTrafficPolicyVersions", meth: HttpMethod.HttpGet,
     host: "route53.amazonaws.com",
     route: "/2013-04-01/trafficpolicies/{Id}/versions",
-    validator: validate_ListTrafficPolicyVersions_602817, base: "/",
-    url: url_ListTrafficPolicyVersions_602818,
+    validator: validate_ListTrafficPolicyVersions_607017, base: "/",
+    url: url_ListTrafficPolicyVersions_607018,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TestDNSAnswer_602833 = ref object of OpenApiRestCall_601389
-proc url_TestDNSAnswer_602835(protocol: Scheme; host: string; base: string;
+  Call_TestDNSAnswer_607033 = ref object of OpenApiRestCall_605589
+proc url_TestDNSAnswer_607035(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7096,7 +7096,7 @@ proc url_TestDNSAnswer_602835(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TestDNSAnswer_602834(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TestDNSAnswer_607034(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets the value that Amazon Route 53 returns in response to a DNS request for a specified record name and type. You can optionally specify the IP address of a DNS resolver, an EDNS0 client subnet IP address, and a subnet mask. 
   ## 
@@ -7118,38 +7118,38 @@ proc validate_TestDNSAnswer_602834(path: JsonNode; query: JsonNode; header: Json
   ##   hostedzoneid: JString (required)
   ##               : The ID of the hosted zone that you want Amazon Route 53 to simulate a query for.
   section = newJObject()
-  var valid_602836 = query.getOrDefault("edns0clientsubnetip")
-  valid_602836 = validateParameter(valid_602836, JString, required = false,
+  var valid_607036 = query.getOrDefault("edns0clientsubnetip")
+  valid_607036 = validateParameter(valid_607036, JString, required = false,
                                  default = nil)
-  if valid_602836 != nil:
-    section.add "edns0clientsubnetip", valid_602836
-  var valid_602837 = query.getOrDefault("edns0clientsubnetmask")
-  valid_602837 = validateParameter(valid_602837, JString, required = false,
+  if valid_607036 != nil:
+    section.add "edns0clientsubnetip", valid_607036
+  var valid_607037 = query.getOrDefault("edns0clientsubnetmask")
+  valid_607037 = validateParameter(valid_607037, JString, required = false,
                                  default = nil)
-  if valid_602837 != nil:
-    section.add "edns0clientsubnetmask", valid_602837
+  if valid_607037 != nil:
+    section.add "edns0clientsubnetmask", valid_607037
   assert query != nil,
         "query argument is necessary due to required `recordname` field"
-  var valid_602838 = query.getOrDefault("recordname")
-  valid_602838 = validateParameter(valid_602838, JString, required = true,
+  var valid_607038 = query.getOrDefault("recordname")
+  valid_607038 = validateParameter(valid_607038, JString, required = true,
                                  default = nil)
-  if valid_602838 != nil:
-    section.add "recordname", valid_602838
-  var valid_602839 = query.getOrDefault("resolverip")
-  valid_602839 = validateParameter(valid_602839, JString, required = false,
+  if valid_607038 != nil:
+    section.add "recordname", valid_607038
+  var valid_607039 = query.getOrDefault("resolverip")
+  valid_607039 = validateParameter(valid_607039, JString, required = false,
                                  default = nil)
-  if valid_602839 != nil:
-    section.add "resolverip", valid_602839
-  var valid_602840 = query.getOrDefault("recordtype")
-  valid_602840 = validateParameter(valid_602840, JString, required = true,
+  if valid_607039 != nil:
+    section.add "resolverip", valid_607039
+  var valid_607040 = query.getOrDefault("recordtype")
+  valid_607040 = validateParameter(valid_607040, JString, required = true,
                                  default = newJString("SOA"))
-  if valid_602840 != nil:
-    section.add "recordtype", valid_602840
-  var valid_602841 = query.getOrDefault("hostedzoneid")
-  valid_602841 = validateParameter(valid_602841, JString, required = true,
+  if valid_607040 != nil:
+    section.add "recordtype", valid_607040
+  var valid_607041 = query.getOrDefault("hostedzoneid")
+  valid_607041 = validateParameter(valid_607041, JString, required = true,
                                  default = nil)
-  if valid_602841 != nil:
-    section.add "hostedzoneid", valid_602841
+  if valid_607041 != nil:
+    section.add "hostedzoneid", valid_607041
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -7160,61 +7160,61 @@ proc validate_TestDNSAnswer_602834(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602842 = header.getOrDefault("X-Amz-Signature")
-  valid_602842 = validateParameter(valid_602842, JString, required = false,
+  var valid_607042 = header.getOrDefault("X-Amz-Signature")
+  valid_607042 = validateParameter(valid_607042, JString, required = false,
                                  default = nil)
-  if valid_602842 != nil:
-    section.add "X-Amz-Signature", valid_602842
-  var valid_602843 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602843 = validateParameter(valid_602843, JString, required = false,
+  if valid_607042 != nil:
+    section.add "X-Amz-Signature", valid_607042
+  var valid_607043 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607043 = validateParameter(valid_607043, JString, required = false,
                                  default = nil)
-  if valid_602843 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602843
-  var valid_602844 = header.getOrDefault("X-Amz-Date")
-  valid_602844 = validateParameter(valid_602844, JString, required = false,
+  if valid_607043 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607043
+  var valid_607044 = header.getOrDefault("X-Amz-Date")
+  valid_607044 = validateParameter(valid_607044, JString, required = false,
                                  default = nil)
-  if valid_602844 != nil:
-    section.add "X-Amz-Date", valid_602844
-  var valid_602845 = header.getOrDefault("X-Amz-Credential")
-  valid_602845 = validateParameter(valid_602845, JString, required = false,
+  if valid_607044 != nil:
+    section.add "X-Amz-Date", valid_607044
+  var valid_607045 = header.getOrDefault("X-Amz-Credential")
+  valid_607045 = validateParameter(valid_607045, JString, required = false,
                                  default = nil)
-  if valid_602845 != nil:
-    section.add "X-Amz-Credential", valid_602845
-  var valid_602846 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602846 = validateParameter(valid_602846, JString, required = false,
+  if valid_607045 != nil:
+    section.add "X-Amz-Credential", valid_607045
+  var valid_607046 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607046 = validateParameter(valid_607046, JString, required = false,
                                  default = nil)
-  if valid_602846 != nil:
-    section.add "X-Amz-Security-Token", valid_602846
-  var valid_602847 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602847 = validateParameter(valid_602847, JString, required = false,
+  if valid_607046 != nil:
+    section.add "X-Amz-Security-Token", valid_607046
+  var valid_607047 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607047 = validateParameter(valid_607047, JString, required = false,
                                  default = nil)
-  if valid_602847 != nil:
-    section.add "X-Amz-Algorithm", valid_602847
-  var valid_602848 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602848 = validateParameter(valid_602848, JString, required = false,
+  if valid_607047 != nil:
+    section.add "X-Amz-Algorithm", valid_607047
+  var valid_607048 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607048 = validateParameter(valid_607048, JString, required = false,
                                  default = nil)
-  if valid_602848 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602848
+  if valid_607048 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607048
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602849: Call_TestDNSAnswer_602833; path: JsonNode; query: JsonNode;
+proc call*(call_607049: Call_TestDNSAnswer_607033; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets the value that Amazon Route 53 returns in response to a DNS request for a specified record name and type. You can optionally specify the IP address of a DNS resolver, an EDNS0 client subnet IP address, and a subnet mask. 
   ## 
-  let valid = call_602849.validator(path, query, header, formData, body)
-  let scheme = call_602849.pickScheme
+  let valid = call_607049.validator(path, query, header, formData, body)
+  let scheme = call_607049.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602849.url(scheme.get, call_602849.host, call_602849.base,
-                         call_602849.route, valid.getOrDefault("path"),
+  let url = call_607049.url(scheme.get, call_607049.host, call_607049.base,
+                         call_607049.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602849, url, valid)
+  result = atozHook(call_607049, url, valid)
 
-proc call*(call_602850: Call_TestDNSAnswer_602833; recordname: string;
+proc call*(call_607050: Call_TestDNSAnswer_607033; recordname: string;
           hostedzoneid: string; edns0clientsubnetip: string = "";
           edns0clientsubnetmask: string = ""; resolverip: string = "";
           recordtype: string = "SOA"): Recallable =
@@ -7232,19 +7232,19 @@ proc call*(call_602850: Call_TestDNSAnswer_602833; recordname: string;
   ##             : The type of the resource record set.
   ##   hostedzoneid: string (required)
   ##               : The ID of the hosted zone that you want Amazon Route 53 to simulate a query for.
-  var query_602851 = newJObject()
-  add(query_602851, "edns0clientsubnetip", newJString(edns0clientsubnetip))
-  add(query_602851, "edns0clientsubnetmask", newJString(edns0clientsubnetmask))
-  add(query_602851, "recordname", newJString(recordname))
-  add(query_602851, "resolverip", newJString(resolverip))
-  add(query_602851, "recordtype", newJString(recordtype))
-  add(query_602851, "hostedzoneid", newJString(hostedzoneid))
-  result = call_602850.call(nil, query_602851, nil, nil, nil)
+  var query_607051 = newJObject()
+  add(query_607051, "edns0clientsubnetip", newJString(edns0clientsubnetip))
+  add(query_607051, "edns0clientsubnetmask", newJString(edns0clientsubnetmask))
+  add(query_607051, "recordname", newJString(recordname))
+  add(query_607051, "resolverip", newJString(resolverip))
+  add(query_607051, "recordtype", newJString(recordtype))
+  add(query_607051, "hostedzoneid", newJString(hostedzoneid))
+  result = call_607050.call(nil, query_607051, nil, nil, nil)
 
-var testDNSAnswer* = Call_TestDNSAnswer_602833(name: "testDNSAnswer",
+var testDNSAnswer* = Call_TestDNSAnswer_607033(name: "testDNSAnswer",
     meth: HttpMethod.HttpGet, host: "route53.amazonaws.com",
     route: "/2013-04-01/testdnsanswer#hostedzoneid&recordname&recordtype",
-    validator: validate_TestDNSAnswer_602834, base: "/", url: url_TestDNSAnswer_602835,
+    validator: validate_TestDNSAnswer_607034, base: "/", url: url_TestDNSAnswer_607035,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -7290,5 +7290,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)

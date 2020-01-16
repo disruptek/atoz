@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_601389 = ref object of OpenApiRestCall
+  OpenApiRestCall_605589 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -147,8 +147,8 @@ const
   awsServiceName = "signer"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_PutSigningProfile_601997 = ref object of OpenApiRestCall_601389
-proc url_PutSigningProfile_601999(protocol: Scheme; host: string; base: string;
+  Call_PutSigningProfile_606197 = ref object of OpenApiRestCall_605589
+proc url_PutSigningProfile_606199(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -168,7 +168,7 @@ proc url_PutSigningProfile_601999(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_PutSigningProfile_601998(path: JsonNode; query: JsonNode;
+proc validate_PutSigningProfile_606198(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Creates a signing profile. A signing profile is a code signing template that can be used to carry out a pre-defined signing job. For more information, see <a href="http://docs.aws.amazon.com/signer/latest/developerguide/gs-profile.html">http://docs.aws.amazon.com/signer/latest/developerguide/gs-profile.html</a> 
@@ -181,11 +181,11 @@ proc validate_PutSigningProfile_601998(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profileName` field"
-  var valid_602000 = path.getOrDefault("profileName")
-  valid_602000 = validateParameter(valid_602000, JString, required = true,
+  var valid_606200 = path.getOrDefault("profileName")
+  valid_606200 = validateParameter(valid_606200, JString, required = true,
                                  default = nil)
-  if valid_602000 != nil:
-    section.add "profileName", valid_602000
+  if valid_606200 != nil:
+    section.add "profileName", valid_606200
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -198,41 +198,41 @@ proc validate_PutSigningProfile_601998(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602001 = header.getOrDefault("X-Amz-Signature")
-  valid_602001 = validateParameter(valid_602001, JString, required = false,
+  var valid_606201 = header.getOrDefault("X-Amz-Signature")
+  valid_606201 = validateParameter(valid_606201, JString, required = false,
                                  default = nil)
-  if valid_602001 != nil:
-    section.add "X-Amz-Signature", valid_602001
-  var valid_602002 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602002 = validateParameter(valid_602002, JString, required = false,
+  if valid_606201 != nil:
+    section.add "X-Amz-Signature", valid_606201
+  var valid_606202 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606202 = validateParameter(valid_606202, JString, required = false,
                                  default = nil)
-  if valid_602002 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602002
-  var valid_602003 = header.getOrDefault("X-Amz-Date")
-  valid_602003 = validateParameter(valid_602003, JString, required = false,
+  if valid_606202 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606202
+  var valid_606203 = header.getOrDefault("X-Amz-Date")
+  valid_606203 = validateParameter(valid_606203, JString, required = false,
                                  default = nil)
-  if valid_602003 != nil:
-    section.add "X-Amz-Date", valid_602003
-  var valid_602004 = header.getOrDefault("X-Amz-Credential")
-  valid_602004 = validateParameter(valid_602004, JString, required = false,
+  if valid_606203 != nil:
+    section.add "X-Amz-Date", valid_606203
+  var valid_606204 = header.getOrDefault("X-Amz-Credential")
+  valid_606204 = validateParameter(valid_606204, JString, required = false,
                                  default = nil)
-  if valid_602004 != nil:
-    section.add "X-Amz-Credential", valid_602004
-  var valid_602005 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602005 = validateParameter(valid_602005, JString, required = false,
+  if valid_606204 != nil:
+    section.add "X-Amz-Credential", valid_606204
+  var valid_606205 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606205 = validateParameter(valid_606205, JString, required = false,
                                  default = nil)
-  if valid_602005 != nil:
-    section.add "X-Amz-Security-Token", valid_602005
-  var valid_602006 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602006 = validateParameter(valid_602006, JString, required = false,
+  if valid_606205 != nil:
+    section.add "X-Amz-Security-Token", valid_606205
+  var valid_606206 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606206 = validateParameter(valid_606206, JString, required = false,
                                  default = nil)
-  if valid_602006 != nil:
-    section.add "X-Amz-Algorithm", valid_602006
-  var valid_602007 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602007 = validateParameter(valid_602007, JString, required = false,
+  if valid_606206 != nil:
+    section.add "X-Amz-Algorithm", valid_606206
+  var valid_606207 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606207 = validateParameter(valid_606207, JString, required = false,
                                  default = nil)
-  if valid_602007 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602007
+  if valid_606207 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606207
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -243,41 +243,41 @@ proc validate_PutSigningProfile_601998(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602009: Call_PutSigningProfile_601997; path: JsonNode;
+proc call*(call_606209: Call_PutSigningProfile_606197; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a signing profile. A signing profile is a code signing template that can be used to carry out a pre-defined signing job. For more information, see <a href="http://docs.aws.amazon.com/signer/latest/developerguide/gs-profile.html">http://docs.aws.amazon.com/signer/latest/developerguide/gs-profile.html</a> 
   ## 
-  let valid = call_602009.validator(path, query, header, formData, body)
-  let scheme = call_602009.pickScheme
+  let valid = call_606209.validator(path, query, header, formData, body)
+  let scheme = call_606209.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602009.url(scheme.get, call_602009.host, call_602009.base,
-                         call_602009.route, valid.getOrDefault("path"),
+  let url = call_606209.url(scheme.get, call_606209.host, call_606209.base,
+                         call_606209.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602009, url, valid)
+  result = atozHook(call_606209, url, valid)
 
-proc call*(call_602010: Call_PutSigningProfile_601997; profileName: string;
+proc call*(call_606210: Call_PutSigningProfile_606197; profileName: string;
           body: JsonNode): Recallable =
   ## putSigningProfile
   ## Creates a signing profile. A signing profile is a code signing template that can be used to carry out a pre-defined signing job. For more information, see <a href="http://docs.aws.amazon.com/signer/latest/developerguide/gs-profile.html">http://docs.aws.amazon.com/signer/latest/developerguide/gs-profile.html</a> 
   ##   profileName: string (required)
   ##              : The name of the signing profile to be created.
   ##   body: JObject (required)
-  var path_602011 = newJObject()
-  var body_602012 = newJObject()
-  add(path_602011, "profileName", newJString(profileName))
+  var path_606211 = newJObject()
+  var body_606212 = newJObject()
+  add(path_606211, "profileName", newJString(profileName))
   if body != nil:
-    body_602012 = body
-  result = call_602010.call(path_602011, nil, nil, nil, body_602012)
+    body_606212 = body
+  result = call_606210.call(path_606211, nil, nil, nil, body_606212)
 
-var putSigningProfile* = Call_PutSigningProfile_601997(name: "putSigningProfile",
+var putSigningProfile* = Call_PutSigningProfile_606197(name: "putSigningProfile",
     meth: HttpMethod.HttpPut, host: "signer.amazonaws.com",
     route: "/signing-profiles/{profileName}",
-    validator: validate_PutSigningProfile_601998, base: "/",
-    url: url_PutSigningProfile_601999, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutSigningProfile_606198, base: "/",
+    url: url_PutSigningProfile_606199, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSigningProfile_601727 = ref object of OpenApiRestCall_601389
-proc url_GetSigningProfile_601729(protocol: Scheme; host: string; base: string;
+  Call_GetSigningProfile_605927 = ref object of OpenApiRestCall_605589
+proc url_GetSigningProfile_605929(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -297,7 +297,7 @@ proc url_GetSigningProfile_601729(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetSigningProfile_601728(path: JsonNode; query: JsonNode;
+proc validate_GetSigningProfile_605928(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Returns information on a specific signing profile.
@@ -310,11 +310,11 @@ proc validate_GetSigningProfile_601728(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profileName` field"
-  var valid_601855 = path.getOrDefault("profileName")
-  valid_601855 = validateParameter(valid_601855, JString, required = true,
+  var valid_606055 = path.getOrDefault("profileName")
+  valid_606055 = validateParameter(valid_606055, JString, required = true,
                                  default = nil)
-  if valid_601855 != nil:
-    section.add "profileName", valid_601855
+  if valid_606055 != nil:
+    section.add "profileName", valid_606055
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -327,77 +327,77 @@ proc validate_GetSigningProfile_601728(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601856 = header.getOrDefault("X-Amz-Signature")
-  valid_601856 = validateParameter(valid_601856, JString, required = false,
+  var valid_606056 = header.getOrDefault("X-Amz-Signature")
+  valid_606056 = validateParameter(valid_606056, JString, required = false,
                                  default = nil)
-  if valid_601856 != nil:
-    section.add "X-Amz-Signature", valid_601856
-  var valid_601857 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601857 = validateParameter(valid_601857, JString, required = false,
+  if valid_606056 != nil:
+    section.add "X-Amz-Signature", valid_606056
+  var valid_606057 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606057 = validateParameter(valid_606057, JString, required = false,
                                  default = nil)
-  if valid_601857 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601857
-  var valid_601858 = header.getOrDefault("X-Amz-Date")
-  valid_601858 = validateParameter(valid_601858, JString, required = false,
+  if valid_606057 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606057
+  var valid_606058 = header.getOrDefault("X-Amz-Date")
+  valid_606058 = validateParameter(valid_606058, JString, required = false,
                                  default = nil)
-  if valid_601858 != nil:
-    section.add "X-Amz-Date", valid_601858
-  var valid_601859 = header.getOrDefault("X-Amz-Credential")
-  valid_601859 = validateParameter(valid_601859, JString, required = false,
+  if valid_606058 != nil:
+    section.add "X-Amz-Date", valid_606058
+  var valid_606059 = header.getOrDefault("X-Amz-Credential")
+  valid_606059 = validateParameter(valid_606059, JString, required = false,
                                  default = nil)
-  if valid_601859 != nil:
-    section.add "X-Amz-Credential", valid_601859
-  var valid_601860 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601860 = validateParameter(valid_601860, JString, required = false,
+  if valid_606059 != nil:
+    section.add "X-Amz-Credential", valid_606059
+  var valid_606060 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606060 = validateParameter(valid_606060, JString, required = false,
                                  default = nil)
-  if valid_601860 != nil:
-    section.add "X-Amz-Security-Token", valid_601860
-  var valid_601861 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601861 = validateParameter(valid_601861, JString, required = false,
+  if valid_606060 != nil:
+    section.add "X-Amz-Security-Token", valid_606060
+  var valid_606061 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606061 = validateParameter(valid_606061, JString, required = false,
                                  default = nil)
-  if valid_601861 != nil:
-    section.add "X-Amz-Algorithm", valid_601861
-  var valid_601862 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601862 = validateParameter(valid_601862, JString, required = false,
+  if valid_606061 != nil:
+    section.add "X-Amz-Algorithm", valid_606061
+  var valid_606062 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606062 = validateParameter(valid_606062, JString, required = false,
                                  default = nil)
-  if valid_601862 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601862
+  if valid_606062 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606062
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601885: Call_GetSigningProfile_601727; path: JsonNode;
+proc call*(call_606085: Call_GetSigningProfile_605927; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information on a specific signing profile.
   ## 
-  let valid = call_601885.validator(path, query, header, formData, body)
-  let scheme = call_601885.pickScheme
+  let valid = call_606085.validator(path, query, header, formData, body)
+  let scheme = call_606085.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601885.url(scheme.get, call_601885.host, call_601885.base,
-                         call_601885.route, valid.getOrDefault("path"),
+  let url = call_606085.url(scheme.get, call_606085.host, call_606085.base,
+                         call_606085.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601885, url, valid)
+  result = atozHook(call_606085, url, valid)
 
-proc call*(call_601956: Call_GetSigningProfile_601727; profileName: string): Recallable =
+proc call*(call_606156: Call_GetSigningProfile_605927; profileName: string): Recallable =
   ## getSigningProfile
   ## Returns information on a specific signing profile.
   ##   profileName: string (required)
   ##              : The name of the target signing profile.
-  var path_601957 = newJObject()
-  add(path_601957, "profileName", newJString(profileName))
-  result = call_601956.call(path_601957, nil, nil, nil, nil)
+  var path_606157 = newJObject()
+  add(path_606157, "profileName", newJString(profileName))
+  result = call_606156.call(path_606157, nil, nil, nil, nil)
 
-var getSigningProfile* = Call_GetSigningProfile_601727(name: "getSigningProfile",
+var getSigningProfile* = Call_GetSigningProfile_605927(name: "getSigningProfile",
     meth: HttpMethod.HttpGet, host: "signer.amazonaws.com",
     route: "/signing-profiles/{profileName}",
-    validator: validate_GetSigningProfile_601728, base: "/",
-    url: url_GetSigningProfile_601729, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSigningProfile_605928, base: "/",
+    url: url_GetSigningProfile_605929, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CancelSigningProfile_602013 = ref object of OpenApiRestCall_601389
-proc url_CancelSigningProfile_602015(protocol: Scheme; host: string; base: string;
+  Call_CancelSigningProfile_606213 = ref object of OpenApiRestCall_605589
+proc url_CancelSigningProfile_606215(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -417,7 +417,7 @@ proc url_CancelSigningProfile_602015(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_CancelSigningProfile_602014(path: JsonNode; query: JsonNode;
+proc validate_CancelSigningProfile_606214(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Changes the state of an <code>ACTIVE</code> signing profile to <code>CANCELED</code>. A canceled profile is still viewable with the <code>ListSigningProfiles</code> operation, but it cannot perform new signing jobs, and is deleted two years after cancelation.
   ## 
@@ -429,11 +429,11 @@ proc validate_CancelSigningProfile_602014(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `profileName` field"
-  var valid_602016 = path.getOrDefault("profileName")
-  valid_602016 = validateParameter(valid_602016, JString, required = true,
+  var valid_606216 = path.getOrDefault("profileName")
+  valid_606216 = validateParameter(valid_606216, JString, required = true,
                                  default = nil)
-  if valid_602016 != nil:
-    section.add "profileName", valid_602016
+  if valid_606216 != nil:
+    section.add "profileName", valid_606216
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -446,77 +446,77 @@ proc validate_CancelSigningProfile_602014(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602017 = header.getOrDefault("X-Amz-Signature")
-  valid_602017 = validateParameter(valid_602017, JString, required = false,
+  var valid_606217 = header.getOrDefault("X-Amz-Signature")
+  valid_606217 = validateParameter(valid_606217, JString, required = false,
                                  default = nil)
-  if valid_602017 != nil:
-    section.add "X-Amz-Signature", valid_602017
-  var valid_602018 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602018 = validateParameter(valid_602018, JString, required = false,
+  if valid_606217 != nil:
+    section.add "X-Amz-Signature", valid_606217
+  var valid_606218 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606218 = validateParameter(valid_606218, JString, required = false,
                                  default = nil)
-  if valid_602018 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602018
-  var valid_602019 = header.getOrDefault("X-Amz-Date")
-  valid_602019 = validateParameter(valid_602019, JString, required = false,
+  if valid_606218 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606218
+  var valid_606219 = header.getOrDefault("X-Amz-Date")
+  valid_606219 = validateParameter(valid_606219, JString, required = false,
                                  default = nil)
-  if valid_602019 != nil:
-    section.add "X-Amz-Date", valid_602019
-  var valid_602020 = header.getOrDefault("X-Amz-Credential")
-  valid_602020 = validateParameter(valid_602020, JString, required = false,
+  if valid_606219 != nil:
+    section.add "X-Amz-Date", valid_606219
+  var valid_606220 = header.getOrDefault("X-Amz-Credential")
+  valid_606220 = validateParameter(valid_606220, JString, required = false,
                                  default = nil)
-  if valid_602020 != nil:
-    section.add "X-Amz-Credential", valid_602020
-  var valid_602021 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602021 = validateParameter(valid_602021, JString, required = false,
+  if valid_606220 != nil:
+    section.add "X-Amz-Credential", valid_606220
+  var valid_606221 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606221 = validateParameter(valid_606221, JString, required = false,
                                  default = nil)
-  if valid_602021 != nil:
-    section.add "X-Amz-Security-Token", valid_602021
-  var valid_602022 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602022 = validateParameter(valid_602022, JString, required = false,
+  if valid_606221 != nil:
+    section.add "X-Amz-Security-Token", valid_606221
+  var valid_606222 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606222 = validateParameter(valid_606222, JString, required = false,
                                  default = nil)
-  if valid_602022 != nil:
-    section.add "X-Amz-Algorithm", valid_602022
-  var valid_602023 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602023 = validateParameter(valid_602023, JString, required = false,
+  if valid_606222 != nil:
+    section.add "X-Amz-Algorithm", valid_606222
+  var valid_606223 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606223 = validateParameter(valid_606223, JString, required = false,
                                  default = nil)
-  if valid_602023 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602023
+  if valid_606223 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606223
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602024: Call_CancelSigningProfile_602013; path: JsonNode;
+proc call*(call_606224: Call_CancelSigningProfile_606213; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Changes the state of an <code>ACTIVE</code> signing profile to <code>CANCELED</code>. A canceled profile is still viewable with the <code>ListSigningProfiles</code> operation, but it cannot perform new signing jobs, and is deleted two years after cancelation.
   ## 
-  let valid = call_602024.validator(path, query, header, formData, body)
-  let scheme = call_602024.pickScheme
+  let valid = call_606224.validator(path, query, header, formData, body)
+  let scheme = call_606224.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602024.url(scheme.get, call_602024.host, call_602024.base,
-                         call_602024.route, valid.getOrDefault("path"),
+  let url = call_606224.url(scheme.get, call_606224.host, call_606224.base,
+                         call_606224.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602024, url, valid)
+  result = atozHook(call_606224, url, valid)
 
-proc call*(call_602025: Call_CancelSigningProfile_602013; profileName: string): Recallable =
+proc call*(call_606225: Call_CancelSigningProfile_606213; profileName: string): Recallable =
   ## cancelSigningProfile
   ## Changes the state of an <code>ACTIVE</code> signing profile to <code>CANCELED</code>. A canceled profile is still viewable with the <code>ListSigningProfiles</code> operation, but it cannot perform new signing jobs, and is deleted two years after cancelation.
   ##   profileName: string (required)
   ##              : The name of the signing profile to be canceled.
-  var path_602026 = newJObject()
-  add(path_602026, "profileName", newJString(profileName))
-  result = call_602025.call(path_602026, nil, nil, nil, nil)
+  var path_606226 = newJObject()
+  add(path_606226, "profileName", newJString(profileName))
+  result = call_606225.call(path_606226, nil, nil, nil, nil)
 
-var cancelSigningProfile* = Call_CancelSigningProfile_602013(
+var cancelSigningProfile* = Call_CancelSigningProfile_606213(
     name: "cancelSigningProfile", meth: HttpMethod.HttpDelete,
     host: "signer.amazonaws.com", route: "/signing-profiles/{profileName}",
-    validator: validate_CancelSigningProfile_602014, base: "/",
-    url: url_CancelSigningProfile_602015, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CancelSigningProfile_606214, base: "/",
+    url: url_CancelSigningProfile_606215, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSigningJob_602027 = ref object of OpenApiRestCall_601389
-proc url_DescribeSigningJob_602029(protocol: Scheme; host: string; base: string;
+  Call_DescribeSigningJob_606227 = ref object of OpenApiRestCall_605589
+proc url_DescribeSigningJob_606229(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -536,7 +536,7 @@ proc url_DescribeSigningJob_602029(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeSigningJob_602028(path: JsonNode; query: JsonNode;
+proc validate_DescribeSigningJob_606228(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns information about a specific code signing job. You specify the job by using the <code>jobId</code> value that is returned by the <a>StartSigningJob</a> operation. 
@@ -548,11 +548,11 @@ proc validate_DescribeSigningJob_602028(path: JsonNode; query: JsonNode;
   ##        : The ID of the signing job on input.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `jobId` field"
-  var valid_602030 = path.getOrDefault("jobId")
-  valid_602030 = validateParameter(valid_602030, JString, required = true,
+  var valid_606230 = path.getOrDefault("jobId")
+  valid_606230 = validateParameter(valid_606230, JString, required = true,
                                  default = nil)
-  if valid_602030 != nil:
-    section.add "jobId", valid_602030
+  if valid_606230 != nil:
+    section.add "jobId", valid_606230
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -565,77 +565,77 @@ proc validate_DescribeSigningJob_602028(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602031 = header.getOrDefault("X-Amz-Signature")
-  valid_602031 = validateParameter(valid_602031, JString, required = false,
+  var valid_606231 = header.getOrDefault("X-Amz-Signature")
+  valid_606231 = validateParameter(valid_606231, JString, required = false,
                                  default = nil)
-  if valid_602031 != nil:
-    section.add "X-Amz-Signature", valid_602031
-  var valid_602032 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602032 = validateParameter(valid_602032, JString, required = false,
+  if valid_606231 != nil:
+    section.add "X-Amz-Signature", valid_606231
+  var valid_606232 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606232 = validateParameter(valid_606232, JString, required = false,
                                  default = nil)
-  if valid_602032 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602032
-  var valid_602033 = header.getOrDefault("X-Amz-Date")
-  valid_602033 = validateParameter(valid_602033, JString, required = false,
+  if valid_606232 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606232
+  var valid_606233 = header.getOrDefault("X-Amz-Date")
+  valid_606233 = validateParameter(valid_606233, JString, required = false,
                                  default = nil)
-  if valid_602033 != nil:
-    section.add "X-Amz-Date", valid_602033
-  var valid_602034 = header.getOrDefault("X-Amz-Credential")
-  valid_602034 = validateParameter(valid_602034, JString, required = false,
+  if valid_606233 != nil:
+    section.add "X-Amz-Date", valid_606233
+  var valid_606234 = header.getOrDefault("X-Amz-Credential")
+  valid_606234 = validateParameter(valid_606234, JString, required = false,
                                  default = nil)
-  if valid_602034 != nil:
-    section.add "X-Amz-Credential", valid_602034
-  var valid_602035 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602035 = validateParameter(valid_602035, JString, required = false,
+  if valid_606234 != nil:
+    section.add "X-Amz-Credential", valid_606234
+  var valid_606235 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606235 = validateParameter(valid_606235, JString, required = false,
                                  default = nil)
-  if valid_602035 != nil:
-    section.add "X-Amz-Security-Token", valid_602035
-  var valid_602036 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602036 = validateParameter(valid_602036, JString, required = false,
+  if valid_606235 != nil:
+    section.add "X-Amz-Security-Token", valid_606235
+  var valid_606236 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606236 = validateParameter(valid_606236, JString, required = false,
                                  default = nil)
-  if valid_602036 != nil:
-    section.add "X-Amz-Algorithm", valid_602036
-  var valid_602037 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602037 = validateParameter(valid_602037, JString, required = false,
+  if valid_606236 != nil:
+    section.add "X-Amz-Algorithm", valid_606236
+  var valid_606237 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606237 = validateParameter(valid_606237, JString, required = false,
                                  default = nil)
-  if valid_602037 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602037
+  if valid_606237 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606237
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602038: Call_DescribeSigningJob_602027; path: JsonNode;
+proc call*(call_606238: Call_DescribeSigningJob_606227; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about a specific code signing job. You specify the job by using the <code>jobId</code> value that is returned by the <a>StartSigningJob</a> operation. 
   ## 
-  let valid = call_602038.validator(path, query, header, formData, body)
-  let scheme = call_602038.pickScheme
+  let valid = call_606238.validator(path, query, header, formData, body)
+  let scheme = call_606238.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602038.url(scheme.get, call_602038.host, call_602038.base,
-                         call_602038.route, valid.getOrDefault("path"),
+  let url = call_606238.url(scheme.get, call_606238.host, call_606238.base,
+                         call_606238.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602038, url, valid)
+  result = atozHook(call_606238, url, valid)
 
-proc call*(call_602039: Call_DescribeSigningJob_602027; jobId: string): Recallable =
+proc call*(call_606239: Call_DescribeSigningJob_606227; jobId: string): Recallable =
   ## describeSigningJob
   ## Returns information about a specific code signing job. You specify the job by using the <code>jobId</code> value that is returned by the <a>StartSigningJob</a> operation. 
   ##   jobId: string (required)
   ##        : The ID of the signing job on input.
-  var path_602040 = newJObject()
-  add(path_602040, "jobId", newJString(jobId))
-  result = call_602039.call(path_602040, nil, nil, nil, nil)
+  var path_606240 = newJObject()
+  add(path_606240, "jobId", newJString(jobId))
+  result = call_606239.call(path_606240, nil, nil, nil, nil)
 
-var describeSigningJob* = Call_DescribeSigningJob_602027(
+var describeSigningJob* = Call_DescribeSigningJob_606227(
     name: "describeSigningJob", meth: HttpMethod.HttpGet,
     host: "signer.amazonaws.com", route: "/signing-jobs/{jobId}",
-    validator: validate_DescribeSigningJob_602028, base: "/",
-    url: url_DescribeSigningJob_602029, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeSigningJob_606228, base: "/",
+    url: url_DescribeSigningJob_606229, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSigningPlatform_602041 = ref object of OpenApiRestCall_601389
-proc url_GetSigningPlatform_602043(protocol: Scheme; host: string; base: string;
+  Call_GetSigningPlatform_606241 = ref object of OpenApiRestCall_605589
+proc url_GetSigningPlatform_606243(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -655,7 +655,7 @@ proc url_GetSigningPlatform_602043(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetSigningPlatform_602042(path: JsonNode; query: JsonNode;
+proc validate_GetSigningPlatform_606242(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns information on a specific signing platform.
@@ -668,11 +668,11 @@ proc validate_GetSigningPlatform_602042(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `platformId` field"
-  var valid_602044 = path.getOrDefault("platformId")
-  valid_602044 = validateParameter(valid_602044, JString, required = true,
+  var valid_606244 = path.getOrDefault("platformId")
+  valid_606244 = validateParameter(valid_606244, JString, required = true,
                                  default = nil)
-  if valid_602044 != nil:
-    section.add "platformId", valid_602044
+  if valid_606244 != nil:
+    section.add "platformId", valid_606244
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -685,77 +685,77 @@ proc validate_GetSigningPlatform_602042(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602045 = header.getOrDefault("X-Amz-Signature")
-  valid_602045 = validateParameter(valid_602045, JString, required = false,
+  var valid_606245 = header.getOrDefault("X-Amz-Signature")
+  valid_606245 = validateParameter(valid_606245, JString, required = false,
                                  default = nil)
-  if valid_602045 != nil:
-    section.add "X-Amz-Signature", valid_602045
-  var valid_602046 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602046 = validateParameter(valid_602046, JString, required = false,
+  if valid_606245 != nil:
+    section.add "X-Amz-Signature", valid_606245
+  var valid_606246 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606246 = validateParameter(valid_606246, JString, required = false,
                                  default = nil)
-  if valid_602046 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602046
-  var valid_602047 = header.getOrDefault("X-Amz-Date")
-  valid_602047 = validateParameter(valid_602047, JString, required = false,
+  if valid_606246 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606246
+  var valid_606247 = header.getOrDefault("X-Amz-Date")
+  valid_606247 = validateParameter(valid_606247, JString, required = false,
                                  default = nil)
-  if valid_602047 != nil:
-    section.add "X-Amz-Date", valid_602047
-  var valid_602048 = header.getOrDefault("X-Amz-Credential")
-  valid_602048 = validateParameter(valid_602048, JString, required = false,
+  if valid_606247 != nil:
+    section.add "X-Amz-Date", valid_606247
+  var valid_606248 = header.getOrDefault("X-Amz-Credential")
+  valid_606248 = validateParameter(valid_606248, JString, required = false,
                                  default = nil)
-  if valid_602048 != nil:
-    section.add "X-Amz-Credential", valid_602048
-  var valid_602049 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602049 = validateParameter(valid_602049, JString, required = false,
+  if valid_606248 != nil:
+    section.add "X-Amz-Credential", valid_606248
+  var valid_606249 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606249 = validateParameter(valid_606249, JString, required = false,
                                  default = nil)
-  if valid_602049 != nil:
-    section.add "X-Amz-Security-Token", valid_602049
-  var valid_602050 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602050 = validateParameter(valid_602050, JString, required = false,
+  if valid_606249 != nil:
+    section.add "X-Amz-Security-Token", valid_606249
+  var valid_606250 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606250 = validateParameter(valid_606250, JString, required = false,
                                  default = nil)
-  if valid_602050 != nil:
-    section.add "X-Amz-Algorithm", valid_602050
-  var valid_602051 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602051 = validateParameter(valid_602051, JString, required = false,
+  if valid_606250 != nil:
+    section.add "X-Amz-Algorithm", valid_606250
+  var valid_606251 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606251 = validateParameter(valid_606251, JString, required = false,
                                  default = nil)
-  if valid_602051 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602051
+  if valid_606251 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606251
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602052: Call_GetSigningPlatform_602041; path: JsonNode;
+proc call*(call_606252: Call_GetSigningPlatform_606241; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information on a specific signing platform.
   ## 
-  let valid = call_602052.validator(path, query, header, formData, body)
-  let scheme = call_602052.pickScheme
+  let valid = call_606252.validator(path, query, header, formData, body)
+  let scheme = call_606252.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602052.url(scheme.get, call_602052.host, call_602052.base,
-                         call_602052.route, valid.getOrDefault("path"),
+  let url = call_606252.url(scheme.get, call_606252.host, call_606252.base,
+                         call_606252.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602052, url, valid)
+  result = atozHook(call_606252, url, valid)
 
-proc call*(call_602053: Call_GetSigningPlatform_602041; platformId: string): Recallable =
+proc call*(call_606253: Call_GetSigningPlatform_606241; platformId: string): Recallable =
   ## getSigningPlatform
   ## Returns information on a specific signing platform.
   ##   platformId: string (required)
   ##             : The ID of the target signing platform.
-  var path_602054 = newJObject()
-  add(path_602054, "platformId", newJString(platformId))
-  result = call_602053.call(path_602054, nil, nil, nil, nil)
+  var path_606254 = newJObject()
+  add(path_606254, "platformId", newJString(platformId))
+  result = call_606253.call(path_606254, nil, nil, nil, nil)
 
-var getSigningPlatform* = Call_GetSigningPlatform_602041(
+var getSigningPlatform* = Call_GetSigningPlatform_606241(
     name: "getSigningPlatform", meth: HttpMethod.HttpGet,
     host: "signer.amazonaws.com", route: "/signing-platforms/{platformId}",
-    validator: validate_GetSigningPlatform_602042, base: "/",
-    url: url_GetSigningPlatform_602043, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSigningPlatform_606242, base: "/",
+    url: url_GetSigningPlatform_606243, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartSigningJob_602086 = ref object of OpenApiRestCall_601389
-proc url_StartSigningJob_602088(protocol: Scheme; host: string; base: string;
+  Call_StartSigningJob_606286 = ref object of OpenApiRestCall_605589
+proc url_StartSigningJob_606288(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -767,7 +767,7 @@ proc url_StartSigningJob_602088(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StartSigningJob_602087(path: JsonNode; query: JsonNode;
+proc validate_StartSigningJob_606287(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Initiates a signing job to be performed on the code provided. Signing jobs are viewable by the <code>ListSigningJobs</code> operation for two years after they are performed. Note the following requirements: </p> <ul> <li> <p> You must create an Amazon S3 source bucket. For more information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html">Create a Bucket</a> in the <i>Amazon S3 Getting Started Guide</i>. </p> </li> <li> <p>Your S3 source bucket must be version enabled.</p> </li> <li> <p>You must create an S3 destination bucket. Code signing uses your S3 destination bucket to write your signed code.</p> </li> <li> <p>You specify the name of the source and destination buckets when calling the <code>StartSigningJob</code> operation.</p> </li> <li> <p>You must also specify a request token that identifies your request to code signing.</p> </li> </ul> <p>You can call the <a>DescribeSigningJob</a> and the <a>ListSigningJobs</a> actions after you call <code>StartSigningJob</code>.</p> <p>For a Java example that shows how to use this action, see <a href="http://docs.aws.amazon.com/acm/latest/userguide/">http://docs.aws.amazon.com/acm/latest/userguide/</a> </p>
@@ -787,41 +787,41 @@ proc validate_StartSigningJob_602087(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602089 = header.getOrDefault("X-Amz-Signature")
-  valid_602089 = validateParameter(valid_602089, JString, required = false,
+  var valid_606289 = header.getOrDefault("X-Amz-Signature")
+  valid_606289 = validateParameter(valid_606289, JString, required = false,
                                  default = nil)
-  if valid_602089 != nil:
-    section.add "X-Amz-Signature", valid_602089
-  var valid_602090 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602090 = validateParameter(valid_602090, JString, required = false,
+  if valid_606289 != nil:
+    section.add "X-Amz-Signature", valid_606289
+  var valid_606290 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606290 = validateParameter(valid_606290, JString, required = false,
                                  default = nil)
-  if valid_602090 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602090
-  var valid_602091 = header.getOrDefault("X-Amz-Date")
-  valid_602091 = validateParameter(valid_602091, JString, required = false,
+  if valid_606290 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606290
+  var valid_606291 = header.getOrDefault("X-Amz-Date")
+  valid_606291 = validateParameter(valid_606291, JString, required = false,
                                  default = nil)
-  if valid_602091 != nil:
-    section.add "X-Amz-Date", valid_602091
-  var valid_602092 = header.getOrDefault("X-Amz-Credential")
-  valid_602092 = validateParameter(valid_602092, JString, required = false,
+  if valid_606291 != nil:
+    section.add "X-Amz-Date", valid_606291
+  var valid_606292 = header.getOrDefault("X-Amz-Credential")
+  valid_606292 = validateParameter(valid_606292, JString, required = false,
                                  default = nil)
-  if valid_602092 != nil:
-    section.add "X-Amz-Credential", valid_602092
-  var valid_602093 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602093 = validateParameter(valid_602093, JString, required = false,
+  if valid_606292 != nil:
+    section.add "X-Amz-Credential", valid_606292
+  var valid_606293 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606293 = validateParameter(valid_606293, JString, required = false,
                                  default = nil)
-  if valid_602093 != nil:
-    section.add "X-Amz-Security-Token", valid_602093
-  var valid_602094 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602094 = validateParameter(valid_602094, JString, required = false,
+  if valid_606293 != nil:
+    section.add "X-Amz-Security-Token", valid_606293
+  var valid_606294 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606294 = validateParameter(valid_606294, JString, required = false,
                                  default = nil)
-  if valid_602094 != nil:
-    section.add "X-Amz-Algorithm", valid_602094
-  var valid_602095 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602095 = validateParameter(valid_602095, JString, required = false,
+  if valid_606294 != nil:
+    section.add "X-Amz-Algorithm", valid_606294
+  var valid_606295 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606295 = validateParameter(valid_606295, JString, required = false,
                                  default = nil)
-  if valid_602095 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602095
+  if valid_606295 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606295
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -832,35 +832,35 @@ proc validate_StartSigningJob_602087(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602097: Call_StartSigningJob_602086; path: JsonNode; query: JsonNode;
+proc call*(call_606297: Call_StartSigningJob_606286; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Initiates a signing job to be performed on the code provided. Signing jobs are viewable by the <code>ListSigningJobs</code> operation for two years after they are performed. Note the following requirements: </p> <ul> <li> <p> You must create an Amazon S3 source bucket. For more information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html">Create a Bucket</a> in the <i>Amazon S3 Getting Started Guide</i>. </p> </li> <li> <p>Your S3 source bucket must be version enabled.</p> </li> <li> <p>You must create an S3 destination bucket. Code signing uses your S3 destination bucket to write your signed code.</p> </li> <li> <p>You specify the name of the source and destination buckets when calling the <code>StartSigningJob</code> operation.</p> </li> <li> <p>You must also specify a request token that identifies your request to code signing.</p> </li> </ul> <p>You can call the <a>DescribeSigningJob</a> and the <a>ListSigningJobs</a> actions after you call <code>StartSigningJob</code>.</p> <p>For a Java example that shows how to use this action, see <a href="http://docs.aws.amazon.com/acm/latest/userguide/">http://docs.aws.amazon.com/acm/latest/userguide/</a> </p>
   ## 
-  let valid = call_602097.validator(path, query, header, formData, body)
-  let scheme = call_602097.pickScheme
+  let valid = call_606297.validator(path, query, header, formData, body)
+  let scheme = call_606297.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602097.url(scheme.get, call_602097.host, call_602097.base,
-                         call_602097.route, valid.getOrDefault("path"),
+  let url = call_606297.url(scheme.get, call_606297.host, call_606297.base,
+                         call_606297.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602097, url, valid)
+  result = atozHook(call_606297, url, valid)
 
-proc call*(call_602098: Call_StartSigningJob_602086; body: JsonNode): Recallable =
+proc call*(call_606298: Call_StartSigningJob_606286; body: JsonNode): Recallable =
   ## startSigningJob
   ## <p>Initiates a signing job to be performed on the code provided. Signing jobs are viewable by the <code>ListSigningJobs</code> operation for two years after they are performed. Note the following requirements: </p> <ul> <li> <p> You must create an Amazon S3 source bucket. For more information, see <a href="http://docs.aws.amazon.com/AmazonS3/latest/gsg/CreatingABucket.html">Create a Bucket</a> in the <i>Amazon S3 Getting Started Guide</i>. </p> </li> <li> <p>Your S3 source bucket must be version enabled.</p> </li> <li> <p>You must create an S3 destination bucket. Code signing uses your S3 destination bucket to write your signed code.</p> </li> <li> <p>You specify the name of the source and destination buckets when calling the <code>StartSigningJob</code> operation.</p> </li> <li> <p>You must also specify a request token that identifies your request to code signing.</p> </li> </ul> <p>You can call the <a>DescribeSigningJob</a> and the <a>ListSigningJobs</a> actions after you call <code>StartSigningJob</code>.</p> <p>For a Java example that shows how to use this action, see <a href="http://docs.aws.amazon.com/acm/latest/userguide/">http://docs.aws.amazon.com/acm/latest/userguide/</a> </p>
   ##   body: JObject (required)
-  var body_602099 = newJObject()
+  var body_606299 = newJObject()
   if body != nil:
-    body_602099 = body
-  result = call_602098.call(nil, nil, nil, nil, body_602099)
+    body_606299 = body
+  result = call_606298.call(nil, nil, nil, nil, body_606299)
 
-var startSigningJob* = Call_StartSigningJob_602086(name: "startSigningJob",
+var startSigningJob* = Call_StartSigningJob_606286(name: "startSigningJob",
     meth: HttpMethod.HttpPost, host: "signer.amazonaws.com", route: "/signing-jobs",
-    validator: validate_StartSigningJob_602087, base: "/", url: url_StartSigningJob_602088,
+    validator: validate_StartSigningJob_606287, base: "/", url: url_StartSigningJob_606288,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSigningJobs_602055 = ref object of OpenApiRestCall_601389
-proc url_ListSigningJobs_602057(protocol: Scheme; host: string; base: string;
+  Call_ListSigningJobs_606255 = ref object of OpenApiRestCall_605589
+proc url_ListSigningJobs_606257(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -872,7 +872,7 @@ proc url_ListSigningJobs_602057(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListSigningJobs_602056(path: JsonNode; query: JsonNode;
+proc validate_ListSigningJobs_606256(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Lists all your signing jobs. You can use the <code>maxResults</code> parameter to limit the number of signing jobs that are returned in the response. If additional jobs remain to be listed, code signing returns a <code>nextToken</code> value. Use this value in subsequent calls to <code>ListSigningJobs</code> to fetch the remaining values. You can continue calling <code>ListSigningJobs</code> with your <code>maxResults</code> parameter and with new values that code signing returns in the <code>nextToken</code> parameter until all of your signing jobs have been returned. 
@@ -893,30 +893,30 @@ proc validate_ListSigningJobs_602056(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             : Specifies the maximum number of items to return in the response. Use this parameter when paginating results. If additional items exist beyond the number you specify, the <code>nextToken</code> element is set in the response. Use the <code>nextToken</code> value in a subsequent request to retrieve additional items. 
   section = newJObject()
-  var valid_602058 = query.getOrDefault("nextToken")
-  valid_602058 = validateParameter(valid_602058, JString, required = false,
+  var valid_606258 = query.getOrDefault("nextToken")
+  valid_606258 = validateParameter(valid_606258, JString, required = false,
                                  default = nil)
-  if valid_602058 != nil:
-    section.add "nextToken", valid_602058
-  var valid_602059 = query.getOrDefault("platformId")
-  valid_602059 = validateParameter(valid_602059, JString, required = false,
+  if valid_606258 != nil:
+    section.add "nextToken", valid_606258
+  var valid_606259 = query.getOrDefault("platformId")
+  valid_606259 = validateParameter(valid_606259, JString, required = false,
                                  default = nil)
-  if valid_602059 != nil:
-    section.add "platformId", valid_602059
-  var valid_602060 = query.getOrDefault("requestedBy")
-  valid_602060 = validateParameter(valid_602060, JString, required = false,
+  if valid_606259 != nil:
+    section.add "platformId", valid_606259
+  var valid_606260 = query.getOrDefault("requestedBy")
+  valid_606260 = validateParameter(valid_606260, JString, required = false,
                                  default = nil)
-  if valid_602060 != nil:
-    section.add "requestedBy", valid_602060
-  var valid_602074 = query.getOrDefault("status")
-  valid_602074 = validateParameter(valid_602074, JString, required = false,
+  if valid_606260 != nil:
+    section.add "requestedBy", valid_606260
+  var valid_606274 = query.getOrDefault("status")
+  valid_606274 = validateParameter(valid_606274, JString, required = false,
                                  default = newJString("InProgress"))
-  if valid_602074 != nil:
-    section.add "status", valid_602074
-  var valid_602075 = query.getOrDefault("maxResults")
-  valid_602075 = validateParameter(valid_602075, JInt, required = false, default = nil)
-  if valid_602075 != nil:
-    section.add "maxResults", valid_602075
+  if valid_606274 != nil:
+    section.add "status", valid_606274
+  var valid_606275 = query.getOrDefault("maxResults")
+  valid_606275 = validateParameter(valid_606275, JInt, required = false, default = nil)
+  if valid_606275 != nil:
+    section.add "maxResults", valid_606275
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -927,61 +927,61 @@ proc validate_ListSigningJobs_602056(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602076 = header.getOrDefault("X-Amz-Signature")
-  valid_602076 = validateParameter(valid_602076, JString, required = false,
+  var valid_606276 = header.getOrDefault("X-Amz-Signature")
+  valid_606276 = validateParameter(valid_606276, JString, required = false,
                                  default = nil)
-  if valid_602076 != nil:
-    section.add "X-Amz-Signature", valid_602076
-  var valid_602077 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602077 = validateParameter(valid_602077, JString, required = false,
+  if valid_606276 != nil:
+    section.add "X-Amz-Signature", valid_606276
+  var valid_606277 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606277 = validateParameter(valid_606277, JString, required = false,
                                  default = nil)
-  if valid_602077 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602077
-  var valid_602078 = header.getOrDefault("X-Amz-Date")
-  valid_602078 = validateParameter(valid_602078, JString, required = false,
+  if valid_606277 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606277
+  var valid_606278 = header.getOrDefault("X-Amz-Date")
+  valid_606278 = validateParameter(valid_606278, JString, required = false,
                                  default = nil)
-  if valid_602078 != nil:
-    section.add "X-Amz-Date", valid_602078
-  var valid_602079 = header.getOrDefault("X-Amz-Credential")
-  valid_602079 = validateParameter(valid_602079, JString, required = false,
+  if valid_606278 != nil:
+    section.add "X-Amz-Date", valid_606278
+  var valid_606279 = header.getOrDefault("X-Amz-Credential")
+  valid_606279 = validateParameter(valid_606279, JString, required = false,
                                  default = nil)
-  if valid_602079 != nil:
-    section.add "X-Amz-Credential", valid_602079
-  var valid_602080 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602080 = validateParameter(valid_602080, JString, required = false,
+  if valid_606279 != nil:
+    section.add "X-Amz-Credential", valid_606279
+  var valid_606280 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606280 = validateParameter(valid_606280, JString, required = false,
                                  default = nil)
-  if valid_602080 != nil:
-    section.add "X-Amz-Security-Token", valid_602080
-  var valid_602081 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602081 = validateParameter(valid_602081, JString, required = false,
+  if valid_606280 != nil:
+    section.add "X-Amz-Security-Token", valid_606280
+  var valid_606281 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606281 = validateParameter(valid_606281, JString, required = false,
                                  default = nil)
-  if valid_602081 != nil:
-    section.add "X-Amz-Algorithm", valid_602081
-  var valid_602082 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602082 = validateParameter(valid_602082, JString, required = false,
+  if valid_606281 != nil:
+    section.add "X-Amz-Algorithm", valid_606281
+  var valid_606282 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606282 = validateParameter(valid_606282, JString, required = false,
                                  default = nil)
-  if valid_602082 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602082
+  if valid_606282 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606282
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602083: Call_ListSigningJobs_602055; path: JsonNode; query: JsonNode;
+proc call*(call_606283: Call_ListSigningJobs_606255; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all your signing jobs. You can use the <code>maxResults</code> parameter to limit the number of signing jobs that are returned in the response. If additional jobs remain to be listed, code signing returns a <code>nextToken</code> value. Use this value in subsequent calls to <code>ListSigningJobs</code> to fetch the remaining values. You can continue calling <code>ListSigningJobs</code> with your <code>maxResults</code> parameter and with new values that code signing returns in the <code>nextToken</code> parameter until all of your signing jobs have been returned. 
   ## 
-  let valid = call_602083.validator(path, query, header, formData, body)
-  let scheme = call_602083.pickScheme
+  let valid = call_606283.validator(path, query, header, formData, body)
+  let scheme = call_606283.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602083.url(scheme.get, call_602083.host, call_602083.base,
-                         call_602083.route, valid.getOrDefault("path"),
+  let url = call_606283.url(scheme.get, call_606283.host, call_606283.base,
+                         call_606283.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602083, url, valid)
+  result = atozHook(call_606283, url, valid)
 
-proc call*(call_602084: Call_ListSigningJobs_602055; nextToken: string = "";
+proc call*(call_606284: Call_ListSigningJobs_606255; nextToken: string = "";
           platformId: string = ""; requestedBy: string = "";
           status: string = "InProgress"; maxResults: int = 0): Recallable =
   ## listSigningJobs
@@ -996,21 +996,21 @@ proc call*(call_602084: Call_ListSigningJobs_602055; nextToken: string = "";
   ##         : A status value with which to filter your results.
   ##   maxResults: int
   ##             : Specifies the maximum number of items to return in the response. Use this parameter when paginating results. If additional items exist beyond the number you specify, the <code>nextToken</code> element is set in the response. Use the <code>nextToken</code> value in a subsequent request to retrieve additional items. 
-  var query_602085 = newJObject()
-  add(query_602085, "nextToken", newJString(nextToken))
-  add(query_602085, "platformId", newJString(platformId))
-  add(query_602085, "requestedBy", newJString(requestedBy))
-  add(query_602085, "status", newJString(status))
-  add(query_602085, "maxResults", newJInt(maxResults))
-  result = call_602084.call(nil, query_602085, nil, nil, nil)
+  var query_606285 = newJObject()
+  add(query_606285, "nextToken", newJString(nextToken))
+  add(query_606285, "platformId", newJString(platformId))
+  add(query_606285, "requestedBy", newJString(requestedBy))
+  add(query_606285, "status", newJString(status))
+  add(query_606285, "maxResults", newJInt(maxResults))
+  result = call_606284.call(nil, query_606285, nil, nil, nil)
 
-var listSigningJobs* = Call_ListSigningJobs_602055(name: "listSigningJobs",
+var listSigningJobs* = Call_ListSigningJobs_606255(name: "listSigningJobs",
     meth: HttpMethod.HttpGet, host: "signer.amazonaws.com", route: "/signing-jobs",
-    validator: validate_ListSigningJobs_602056, base: "/", url: url_ListSigningJobs_602057,
+    validator: validate_ListSigningJobs_606256, base: "/", url: url_ListSigningJobs_606257,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSigningPlatforms_602100 = ref object of OpenApiRestCall_601389
-proc url_ListSigningPlatforms_602102(protocol: Scheme; host: string; base: string;
+  Call_ListSigningPlatforms_606300 = ref object of OpenApiRestCall_605589
+proc url_ListSigningPlatforms_606302(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1022,7 +1022,7 @@ proc url_ListSigningPlatforms_602102(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListSigningPlatforms_602101(path: JsonNode; query: JsonNode;
+proc validate_ListSigningPlatforms_606301(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists all signing platforms available in code signing that match the request parameters. If additional jobs remain to be listed, code signing returns a <code>nextToken</code> value. Use this value in subsequent calls to <code>ListSigningJobs</code> to fetch the remaining values. You can continue calling <code>ListSigningJobs</code> with your <code>maxResults</code> parameter and with new values that code signing returns in the <code>nextToken</code> parameter until all of your signing jobs have been returned.
   ## 
@@ -1042,30 +1042,30 @@ proc validate_ListSigningPlatforms_602101(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             : The maximum number of results to be returned by this operation.
   section = newJObject()
-  var valid_602103 = query.getOrDefault("nextToken")
-  valid_602103 = validateParameter(valid_602103, JString, required = false,
+  var valid_606303 = query.getOrDefault("nextToken")
+  valid_606303 = validateParameter(valid_606303, JString, required = false,
                                  default = nil)
-  if valid_602103 != nil:
-    section.add "nextToken", valid_602103
-  var valid_602104 = query.getOrDefault("target")
-  valid_602104 = validateParameter(valid_602104, JString, required = false,
+  if valid_606303 != nil:
+    section.add "nextToken", valid_606303
+  var valid_606304 = query.getOrDefault("target")
+  valid_606304 = validateParameter(valid_606304, JString, required = false,
                                  default = nil)
-  if valid_602104 != nil:
-    section.add "target", valid_602104
-  var valid_602105 = query.getOrDefault("partner")
-  valid_602105 = validateParameter(valid_602105, JString, required = false,
+  if valid_606304 != nil:
+    section.add "target", valid_606304
+  var valid_606305 = query.getOrDefault("partner")
+  valid_606305 = validateParameter(valid_606305, JString, required = false,
                                  default = nil)
-  if valid_602105 != nil:
-    section.add "partner", valid_602105
-  var valid_602106 = query.getOrDefault("category")
-  valid_602106 = validateParameter(valid_602106, JString, required = false,
+  if valid_606305 != nil:
+    section.add "partner", valid_606305
+  var valid_606306 = query.getOrDefault("category")
+  valid_606306 = validateParameter(valid_606306, JString, required = false,
                                  default = nil)
-  if valid_602106 != nil:
-    section.add "category", valid_602106
-  var valid_602107 = query.getOrDefault("maxResults")
-  valid_602107 = validateParameter(valid_602107, JInt, required = false, default = nil)
-  if valid_602107 != nil:
-    section.add "maxResults", valid_602107
+  if valid_606306 != nil:
+    section.add "category", valid_606306
+  var valid_606307 = query.getOrDefault("maxResults")
+  valid_606307 = validateParameter(valid_606307, JInt, required = false, default = nil)
+  if valid_606307 != nil:
+    section.add "maxResults", valid_606307
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1076,61 +1076,61 @@ proc validate_ListSigningPlatforms_602101(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602108 = header.getOrDefault("X-Amz-Signature")
-  valid_602108 = validateParameter(valid_602108, JString, required = false,
+  var valid_606308 = header.getOrDefault("X-Amz-Signature")
+  valid_606308 = validateParameter(valid_606308, JString, required = false,
                                  default = nil)
-  if valid_602108 != nil:
-    section.add "X-Amz-Signature", valid_602108
-  var valid_602109 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602109 = validateParameter(valid_602109, JString, required = false,
+  if valid_606308 != nil:
+    section.add "X-Amz-Signature", valid_606308
+  var valid_606309 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606309 = validateParameter(valid_606309, JString, required = false,
                                  default = nil)
-  if valid_602109 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602109
-  var valid_602110 = header.getOrDefault("X-Amz-Date")
-  valid_602110 = validateParameter(valid_602110, JString, required = false,
+  if valid_606309 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606309
+  var valid_606310 = header.getOrDefault("X-Amz-Date")
+  valid_606310 = validateParameter(valid_606310, JString, required = false,
                                  default = nil)
-  if valid_602110 != nil:
-    section.add "X-Amz-Date", valid_602110
-  var valid_602111 = header.getOrDefault("X-Amz-Credential")
-  valid_602111 = validateParameter(valid_602111, JString, required = false,
+  if valid_606310 != nil:
+    section.add "X-Amz-Date", valid_606310
+  var valid_606311 = header.getOrDefault("X-Amz-Credential")
+  valid_606311 = validateParameter(valid_606311, JString, required = false,
                                  default = nil)
-  if valid_602111 != nil:
-    section.add "X-Amz-Credential", valid_602111
-  var valid_602112 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602112 = validateParameter(valid_602112, JString, required = false,
+  if valid_606311 != nil:
+    section.add "X-Amz-Credential", valid_606311
+  var valid_606312 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606312 = validateParameter(valid_606312, JString, required = false,
                                  default = nil)
-  if valid_602112 != nil:
-    section.add "X-Amz-Security-Token", valid_602112
-  var valid_602113 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602113 = validateParameter(valid_602113, JString, required = false,
+  if valid_606312 != nil:
+    section.add "X-Amz-Security-Token", valid_606312
+  var valid_606313 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606313 = validateParameter(valid_606313, JString, required = false,
                                  default = nil)
-  if valid_602113 != nil:
-    section.add "X-Amz-Algorithm", valid_602113
-  var valid_602114 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602114 = validateParameter(valid_602114, JString, required = false,
+  if valid_606313 != nil:
+    section.add "X-Amz-Algorithm", valid_606313
+  var valid_606314 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606314 = validateParameter(valid_606314, JString, required = false,
                                  default = nil)
-  if valid_602114 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602114
+  if valid_606314 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606314
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602115: Call_ListSigningPlatforms_602100; path: JsonNode;
+proc call*(call_606315: Call_ListSigningPlatforms_606300; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all signing platforms available in code signing that match the request parameters. If additional jobs remain to be listed, code signing returns a <code>nextToken</code> value. Use this value in subsequent calls to <code>ListSigningJobs</code> to fetch the remaining values. You can continue calling <code>ListSigningJobs</code> with your <code>maxResults</code> parameter and with new values that code signing returns in the <code>nextToken</code> parameter until all of your signing jobs have been returned.
   ## 
-  let valid = call_602115.validator(path, query, header, formData, body)
-  let scheme = call_602115.pickScheme
+  let valid = call_606315.validator(path, query, header, formData, body)
+  let scheme = call_606315.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602115.url(scheme.get, call_602115.host, call_602115.base,
-                         call_602115.route, valid.getOrDefault("path"),
+  let url = call_606315.url(scheme.get, call_606315.host, call_606315.base,
+                         call_606315.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602115, url, valid)
+  result = atozHook(call_606315, url, valid)
 
-proc call*(call_602116: Call_ListSigningPlatforms_602100; nextToken: string = "";
+proc call*(call_606316: Call_ListSigningPlatforms_606300; nextToken: string = "";
           target: string = ""; partner: string = ""; category: string = "";
           maxResults: int = 0): Recallable =
   ## listSigningPlatforms
@@ -1145,22 +1145,22 @@ proc call*(call_602116: Call_ListSigningPlatforms_602100; nextToken: string = ""
   ##           : The category type of a signing platform.
   ##   maxResults: int
   ##             : The maximum number of results to be returned by this operation.
-  var query_602117 = newJObject()
-  add(query_602117, "nextToken", newJString(nextToken))
-  add(query_602117, "target", newJString(target))
-  add(query_602117, "partner", newJString(partner))
-  add(query_602117, "category", newJString(category))
-  add(query_602117, "maxResults", newJInt(maxResults))
-  result = call_602116.call(nil, query_602117, nil, nil, nil)
+  var query_606317 = newJObject()
+  add(query_606317, "nextToken", newJString(nextToken))
+  add(query_606317, "target", newJString(target))
+  add(query_606317, "partner", newJString(partner))
+  add(query_606317, "category", newJString(category))
+  add(query_606317, "maxResults", newJInt(maxResults))
+  result = call_606316.call(nil, query_606317, nil, nil, nil)
 
-var listSigningPlatforms* = Call_ListSigningPlatforms_602100(
+var listSigningPlatforms* = Call_ListSigningPlatforms_606300(
     name: "listSigningPlatforms", meth: HttpMethod.HttpGet,
     host: "signer.amazonaws.com", route: "/signing-platforms",
-    validator: validate_ListSigningPlatforms_602101, base: "/",
-    url: url_ListSigningPlatforms_602102, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSigningPlatforms_606301, base: "/",
+    url: url_ListSigningPlatforms_606302, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSigningProfiles_602118 = ref object of OpenApiRestCall_601389
-proc url_ListSigningProfiles_602120(protocol: Scheme; host: string; base: string;
+  Call_ListSigningProfiles_606318 = ref object of OpenApiRestCall_605589
+proc url_ListSigningProfiles_606320(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1172,7 +1172,7 @@ proc url_ListSigningProfiles_602120(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListSigningProfiles_602119(path: JsonNode; query: JsonNode;
+proc validate_ListSigningProfiles_606319(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lists all available signing profiles in your AWS account. Returns only profiles with an <code>ACTIVE</code> status unless the <code>includeCanceled</code> request field is set to <code>true</code>. If additional jobs remain to be listed, code signing returns a <code>nextToken</code> value. Use this value in subsequent calls to <code>ListSigningJobs</code> to fetch the remaining values. You can continue calling <code>ListSigningJobs</code> with your <code>maxResults</code> parameter and with new values that code signing returns in the <code>nextToken</code> parameter until all of your signing jobs have been returned.
@@ -1189,19 +1189,19 @@ proc validate_ListSigningProfiles_602119(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             : The maximum number of profiles to be returned.
   section = newJObject()
-  var valid_602121 = query.getOrDefault("nextToken")
-  valid_602121 = validateParameter(valid_602121, JString, required = false,
+  var valid_606321 = query.getOrDefault("nextToken")
+  valid_606321 = validateParameter(valid_606321, JString, required = false,
                                  default = nil)
-  if valid_602121 != nil:
-    section.add "nextToken", valid_602121
-  var valid_602122 = query.getOrDefault("includeCanceled")
-  valid_602122 = validateParameter(valid_602122, JBool, required = false, default = nil)
-  if valid_602122 != nil:
-    section.add "includeCanceled", valid_602122
-  var valid_602123 = query.getOrDefault("maxResults")
-  valid_602123 = validateParameter(valid_602123, JInt, required = false, default = nil)
-  if valid_602123 != nil:
-    section.add "maxResults", valid_602123
+  if valid_606321 != nil:
+    section.add "nextToken", valid_606321
+  var valid_606322 = query.getOrDefault("includeCanceled")
+  valid_606322 = validateParameter(valid_606322, JBool, required = false, default = nil)
+  if valid_606322 != nil:
+    section.add "includeCanceled", valid_606322
+  var valid_606323 = query.getOrDefault("maxResults")
+  valid_606323 = validateParameter(valid_606323, JInt, required = false, default = nil)
+  if valid_606323 != nil:
+    section.add "maxResults", valid_606323
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1212,61 +1212,61 @@ proc validate_ListSigningProfiles_602119(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602124 = header.getOrDefault("X-Amz-Signature")
-  valid_602124 = validateParameter(valid_602124, JString, required = false,
+  var valid_606324 = header.getOrDefault("X-Amz-Signature")
+  valid_606324 = validateParameter(valid_606324, JString, required = false,
                                  default = nil)
-  if valid_602124 != nil:
-    section.add "X-Amz-Signature", valid_602124
-  var valid_602125 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602125 = validateParameter(valid_602125, JString, required = false,
+  if valid_606324 != nil:
+    section.add "X-Amz-Signature", valid_606324
+  var valid_606325 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606325 = validateParameter(valid_606325, JString, required = false,
                                  default = nil)
-  if valid_602125 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602125
-  var valid_602126 = header.getOrDefault("X-Amz-Date")
-  valid_602126 = validateParameter(valid_602126, JString, required = false,
+  if valid_606325 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606325
+  var valid_606326 = header.getOrDefault("X-Amz-Date")
+  valid_606326 = validateParameter(valid_606326, JString, required = false,
                                  default = nil)
-  if valid_602126 != nil:
-    section.add "X-Amz-Date", valid_602126
-  var valid_602127 = header.getOrDefault("X-Amz-Credential")
-  valid_602127 = validateParameter(valid_602127, JString, required = false,
+  if valid_606326 != nil:
+    section.add "X-Amz-Date", valid_606326
+  var valid_606327 = header.getOrDefault("X-Amz-Credential")
+  valid_606327 = validateParameter(valid_606327, JString, required = false,
                                  default = nil)
-  if valid_602127 != nil:
-    section.add "X-Amz-Credential", valid_602127
-  var valid_602128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602128 = validateParameter(valid_602128, JString, required = false,
+  if valid_606327 != nil:
+    section.add "X-Amz-Credential", valid_606327
+  var valid_606328 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606328 = validateParameter(valid_606328, JString, required = false,
                                  default = nil)
-  if valid_602128 != nil:
-    section.add "X-Amz-Security-Token", valid_602128
-  var valid_602129 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602129 = validateParameter(valid_602129, JString, required = false,
+  if valid_606328 != nil:
+    section.add "X-Amz-Security-Token", valid_606328
+  var valid_606329 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606329 = validateParameter(valid_606329, JString, required = false,
                                  default = nil)
-  if valid_602129 != nil:
-    section.add "X-Amz-Algorithm", valid_602129
-  var valid_602130 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602130 = validateParameter(valid_602130, JString, required = false,
+  if valid_606329 != nil:
+    section.add "X-Amz-Algorithm", valid_606329
+  var valid_606330 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606330 = validateParameter(valid_606330, JString, required = false,
                                  default = nil)
-  if valid_602130 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602130
+  if valid_606330 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606330
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602131: Call_ListSigningProfiles_602118; path: JsonNode;
+proc call*(call_606331: Call_ListSigningProfiles_606318; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all available signing profiles in your AWS account. Returns only profiles with an <code>ACTIVE</code> status unless the <code>includeCanceled</code> request field is set to <code>true</code>. If additional jobs remain to be listed, code signing returns a <code>nextToken</code> value. Use this value in subsequent calls to <code>ListSigningJobs</code> to fetch the remaining values. You can continue calling <code>ListSigningJobs</code> with your <code>maxResults</code> parameter and with new values that code signing returns in the <code>nextToken</code> parameter until all of your signing jobs have been returned.
   ## 
-  let valid = call_602131.validator(path, query, header, formData, body)
-  let scheme = call_602131.pickScheme
+  let valid = call_606331.validator(path, query, header, formData, body)
+  let scheme = call_606331.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602131.url(scheme.get, call_602131.host, call_602131.base,
-                         call_602131.route, valid.getOrDefault("path"),
+  let url = call_606331.url(scheme.get, call_606331.host, call_606331.base,
+                         call_606331.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602131, url, valid)
+  result = atozHook(call_606331, url, valid)
 
-proc call*(call_602132: Call_ListSigningProfiles_602118; nextToken: string = "";
+proc call*(call_606332: Call_ListSigningProfiles_606318; nextToken: string = "";
           includeCanceled: bool = false; maxResults: int = 0): Recallable =
   ## listSigningProfiles
   ## Lists all available signing profiles in your AWS account. Returns only profiles with an <code>ACTIVE</code> status unless the <code>includeCanceled</code> request field is set to <code>true</code>. If additional jobs remain to be listed, code signing returns a <code>nextToken</code> value. Use this value in subsequent calls to <code>ListSigningJobs</code> to fetch the remaining values. You can continue calling <code>ListSigningJobs</code> with your <code>maxResults</code> parameter and with new values that code signing returns in the <code>nextToken</code> parameter until all of your signing jobs have been returned.
@@ -1276,20 +1276,20 @@ proc call*(call_602132: Call_ListSigningProfiles_602118; nextToken: string = "";
   ##                  : Designates whether to include profiles with the status of <code>CANCELED</code>.
   ##   maxResults: int
   ##             : The maximum number of profiles to be returned.
-  var query_602133 = newJObject()
-  add(query_602133, "nextToken", newJString(nextToken))
-  add(query_602133, "includeCanceled", newJBool(includeCanceled))
-  add(query_602133, "maxResults", newJInt(maxResults))
-  result = call_602132.call(nil, query_602133, nil, nil, nil)
+  var query_606333 = newJObject()
+  add(query_606333, "nextToken", newJString(nextToken))
+  add(query_606333, "includeCanceled", newJBool(includeCanceled))
+  add(query_606333, "maxResults", newJInt(maxResults))
+  result = call_606332.call(nil, query_606333, nil, nil, nil)
 
-var listSigningProfiles* = Call_ListSigningProfiles_602118(
+var listSigningProfiles* = Call_ListSigningProfiles_606318(
     name: "listSigningProfiles", meth: HttpMethod.HttpGet,
     host: "signer.amazonaws.com", route: "/signing-profiles",
-    validator: validate_ListSigningProfiles_602119, base: "/",
-    url: url_ListSigningProfiles_602120, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSigningProfiles_606319, base: "/",
+    url: url_ListSigningProfiles_606320, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_602148 = ref object of OpenApiRestCall_601389
-proc url_TagResource_602150(protocol: Scheme; host: string; base: string;
+  Call_TagResource_606348 = ref object of OpenApiRestCall_605589
+proc url_TagResource_606350(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1309,7 +1309,7 @@ proc url_TagResource_602150(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_TagResource_602149(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_606349(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds one or more tags to a signing profile. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a key and an optional value. You specify the signing profile using its Amazon Resource Name (ARN). You specify the tag by using a key-value pair.
   ## 
@@ -1321,11 +1321,11 @@ proc validate_TagResource_602149(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_602151 = path.getOrDefault("resourceArn")
-  valid_602151 = validateParameter(valid_602151, JString, required = true,
+  var valid_606351 = path.getOrDefault("resourceArn")
+  valid_606351 = validateParameter(valid_606351, JString, required = true,
                                  default = nil)
-  if valid_602151 != nil:
-    section.add "resourceArn", valid_602151
+  if valid_606351 != nil:
+    section.add "resourceArn", valid_606351
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1338,41 +1338,41 @@ proc validate_TagResource_602149(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602152 = header.getOrDefault("X-Amz-Signature")
-  valid_602152 = validateParameter(valid_602152, JString, required = false,
+  var valid_606352 = header.getOrDefault("X-Amz-Signature")
+  valid_606352 = validateParameter(valid_606352, JString, required = false,
                                  default = nil)
-  if valid_602152 != nil:
-    section.add "X-Amz-Signature", valid_602152
-  var valid_602153 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602153 = validateParameter(valid_602153, JString, required = false,
+  if valid_606352 != nil:
+    section.add "X-Amz-Signature", valid_606352
+  var valid_606353 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606353 = validateParameter(valid_606353, JString, required = false,
                                  default = nil)
-  if valid_602153 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602153
-  var valid_602154 = header.getOrDefault("X-Amz-Date")
-  valid_602154 = validateParameter(valid_602154, JString, required = false,
+  if valid_606353 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606353
+  var valid_606354 = header.getOrDefault("X-Amz-Date")
+  valid_606354 = validateParameter(valid_606354, JString, required = false,
                                  default = nil)
-  if valid_602154 != nil:
-    section.add "X-Amz-Date", valid_602154
-  var valid_602155 = header.getOrDefault("X-Amz-Credential")
-  valid_602155 = validateParameter(valid_602155, JString, required = false,
+  if valid_606354 != nil:
+    section.add "X-Amz-Date", valid_606354
+  var valid_606355 = header.getOrDefault("X-Amz-Credential")
+  valid_606355 = validateParameter(valid_606355, JString, required = false,
                                  default = nil)
-  if valid_602155 != nil:
-    section.add "X-Amz-Credential", valid_602155
-  var valid_602156 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602156 = validateParameter(valid_602156, JString, required = false,
+  if valid_606355 != nil:
+    section.add "X-Amz-Credential", valid_606355
+  var valid_606356 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606356 = validateParameter(valid_606356, JString, required = false,
                                  default = nil)
-  if valid_602156 != nil:
-    section.add "X-Amz-Security-Token", valid_602156
-  var valid_602157 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602157 = validateParameter(valid_602157, JString, required = false,
+  if valid_606356 != nil:
+    section.add "X-Amz-Security-Token", valid_606356
+  var valid_606357 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606357 = validateParameter(valid_606357, JString, required = false,
                                  default = nil)
-  if valid_602157 != nil:
-    section.add "X-Amz-Algorithm", valid_602157
-  var valid_602158 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602158 = validateParameter(valid_602158, JString, required = false,
+  if valid_606357 != nil:
+    section.add "X-Amz-Algorithm", valid_606357
+  var valid_606358 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606358 = validateParameter(valid_606358, JString, required = false,
                                  default = nil)
-  if valid_602158 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602158
+  if valid_606358 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606358
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1383,42 +1383,42 @@ proc validate_TagResource_602149(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_602160: Call_TagResource_602148; path: JsonNode; query: JsonNode;
+proc call*(call_606360: Call_TagResource_606348; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds one or more tags to a signing profile. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a key and an optional value. You specify the signing profile using its Amazon Resource Name (ARN). You specify the tag by using a key-value pair.
   ## 
-  let valid = call_602160.validator(path, query, header, formData, body)
-  let scheme = call_602160.pickScheme
+  let valid = call_606360.validator(path, query, header, formData, body)
+  let scheme = call_606360.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602160.url(scheme.get, call_602160.host, call_602160.base,
-                         call_602160.route, valid.getOrDefault("path"),
+  let url = call_606360.url(scheme.get, call_606360.host, call_606360.base,
+                         call_606360.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602160, url, valid)
+  result = atozHook(call_606360, url, valid)
 
-proc call*(call_602161: Call_TagResource_602148; resourceArn: string; body: JsonNode): Recallable =
+proc call*(call_606361: Call_TagResource_606348; resourceArn: string; body: JsonNode): Recallable =
   ## tagResource
   ## Adds one or more tags to a signing profile. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a key and an optional value. You specify the signing profile using its Amazon Resource Name (ARN). You specify the tag by using a key-value pair.
   ##   resourceArn: string (required)
   ##              : Amazon Resource Name (ARN) for the signing profile.
   ##   body: JObject (required)
-  var path_602162 = newJObject()
-  var body_602163 = newJObject()
-  add(path_602162, "resourceArn", newJString(resourceArn))
+  var path_606362 = newJObject()
+  var body_606363 = newJObject()
+  add(path_606362, "resourceArn", newJString(resourceArn))
   if body != nil:
-    body_602163 = body
-  result = call_602161.call(path_602162, nil, nil, nil, body_602163)
+    body_606363 = body
+  result = call_606361.call(path_606362, nil, nil, nil, body_606363)
 
-var tagResource* = Call_TagResource_602148(name: "tagResource",
+var tagResource* = Call_TagResource_606348(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "signer.amazonaws.com",
                                         route: "/tags/{resourceArn}",
-                                        validator: validate_TagResource_602149,
-                                        base: "/", url: url_TagResource_602150,
+                                        validator: validate_TagResource_606349,
+                                        base: "/", url: url_TagResource_606350,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_602134 = ref object of OpenApiRestCall_601389
-proc url_ListTagsForResource_602136(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_606334 = ref object of OpenApiRestCall_605589
+proc url_ListTagsForResource_606336(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1438,7 +1438,7 @@ proc url_ListTagsForResource_602136(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_ListTagsForResource_602135(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_606335(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns a list of the tags associated with a signing profile resource.
@@ -1451,11 +1451,11 @@ proc validate_ListTagsForResource_602135(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_602137 = path.getOrDefault("resourceArn")
-  valid_602137 = validateParameter(valid_602137, JString, required = true,
+  var valid_606337 = path.getOrDefault("resourceArn")
+  valid_606337 = validateParameter(valid_606337, JString, required = true,
                                  default = nil)
-  if valid_602137 != nil:
-    section.add "resourceArn", valid_602137
+  if valid_606337 != nil:
+    section.add "resourceArn", valid_606337
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1468,77 +1468,77 @@ proc validate_ListTagsForResource_602135(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602138 = header.getOrDefault("X-Amz-Signature")
-  valid_602138 = validateParameter(valid_602138, JString, required = false,
+  var valid_606338 = header.getOrDefault("X-Amz-Signature")
+  valid_606338 = validateParameter(valid_606338, JString, required = false,
                                  default = nil)
-  if valid_602138 != nil:
-    section.add "X-Amz-Signature", valid_602138
-  var valid_602139 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602139 = validateParameter(valid_602139, JString, required = false,
+  if valid_606338 != nil:
+    section.add "X-Amz-Signature", valid_606338
+  var valid_606339 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606339 = validateParameter(valid_606339, JString, required = false,
                                  default = nil)
-  if valid_602139 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602139
-  var valid_602140 = header.getOrDefault("X-Amz-Date")
-  valid_602140 = validateParameter(valid_602140, JString, required = false,
+  if valid_606339 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606339
+  var valid_606340 = header.getOrDefault("X-Amz-Date")
+  valid_606340 = validateParameter(valid_606340, JString, required = false,
                                  default = nil)
-  if valid_602140 != nil:
-    section.add "X-Amz-Date", valid_602140
-  var valid_602141 = header.getOrDefault("X-Amz-Credential")
-  valid_602141 = validateParameter(valid_602141, JString, required = false,
+  if valid_606340 != nil:
+    section.add "X-Amz-Date", valid_606340
+  var valid_606341 = header.getOrDefault("X-Amz-Credential")
+  valid_606341 = validateParameter(valid_606341, JString, required = false,
                                  default = nil)
-  if valid_602141 != nil:
-    section.add "X-Amz-Credential", valid_602141
-  var valid_602142 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602142 = validateParameter(valid_602142, JString, required = false,
+  if valid_606341 != nil:
+    section.add "X-Amz-Credential", valid_606341
+  var valid_606342 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606342 = validateParameter(valid_606342, JString, required = false,
                                  default = nil)
-  if valid_602142 != nil:
-    section.add "X-Amz-Security-Token", valid_602142
-  var valid_602143 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602143 = validateParameter(valid_602143, JString, required = false,
+  if valid_606342 != nil:
+    section.add "X-Amz-Security-Token", valid_606342
+  var valid_606343 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606343 = validateParameter(valid_606343, JString, required = false,
                                  default = nil)
-  if valid_602143 != nil:
-    section.add "X-Amz-Algorithm", valid_602143
-  var valid_602144 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602144 = validateParameter(valid_602144, JString, required = false,
+  if valid_606343 != nil:
+    section.add "X-Amz-Algorithm", valid_606343
+  var valid_606344 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606344 = validateParameter(valid_606344, JString, required = false,
                                  default = nil)
-  if valid_602144 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602144
+  if valid_606344 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606344
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602145: Call_ListTagsForResource_602134; path: JsonNode;
+proc call*(call_606345: Call_ListTagsForResource_606334; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of the tags associated with a signing profile resource.
   ## 
-  let valid = call_602145.validator(path, query, header, formData, body)
-  let scheme = call_602145.pickScheme
+  let valid = call_606345.validator(path, query, header, formData, body)
+  let scheme = call_606345.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602145.url(scheme.get, call_602145.host, call_602145.base,
-                         call_602145.route, valid.getOrDefault("path"),
+  let url = call_606345.url(scheme.get, call_606345.host, call_606345.base,
+                         call_606345.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602145, url, valid)
+  result = atozHook(call_606345, url, valid)
 
-proc call*(call_602146: Call_ListTagsForResource_602134; resourceArn: string): Recallable =
+proc call*(call_606346: Call_ListTagsForResource_606334; resourceArn: string): Recallable =
   ## listTagsForResource
   ## Returns a list of the tags associated with a signing profile resource.
   ##   resourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) for the signing profile.
-  var path_602147 = newJObject()
-  add(path_602147, "resourceArn", newJString(resourceArn))
-  result = call_602146.call(path_602147, nil, nil, nil, nil)
+  var path_606347 = newJObject()
+  add(path_606347, "resourceArn", newJString(resourceArn))
+  result = call_606346.call(path_606347, nil, nil, nil, nil)
 
-var listTagsForResource* = Call_ListTagsForResource_602134(
+var listTagsForResource* = Call_ListTagsForResource_606334(
     name: "listTagsForResource", meth: HttpMethod.HttpGet,
     host: "signer.amazonaws.com", route: "/tags/{resourceArn}",
-    validator: validate_ListTagsForResource_602135, base: "/",
-    url: url_ListTagsForResource_602136, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_606335, base: "/",
+    url: url_ListTagsForResource_606336, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_602164 = ref object of OpenApiRestCall_601389
-proc url_UntagResource_602166(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_606364 = ref object of OpenApiRestCall_605589
+proc url_UntagResource_606366(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1559,7 +1559,7 @@ proc url_UntagResource_602166(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UntagResource_602165(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_606365(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Remove one or more tags from a signing profile. Specify a list of tag keys to remove the tags.
   ## 
@@ -1571,21 +1571,21 @@ proc validate_UntagResource_602165(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_602167 = path.getOrDefault("resourceArn")
-  valid_602167 = validateParameter(valid_602167, JString, required = true,
+  var valid_606367 = path.getOrDefault("resourceArn")
+  valid_606367 = validateParameter(valid_606367, JString, required = true,
                                  default = nil)
-  if valid_602167 != nil:
-    section.add "resourceArn", valid_602167
+  if valid_606367 != nil:
+    section.add "resourceArn", valid_606367
   result.add "path", section
   ## parameters in `query` object:
   ##   tagKeys: JArray (required)
   ##          : A list of tag keys to be removed from the signing profile .
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `tagKeys` field"
-  var valid_602168 = query.getOrDefault("tagKeys")
-  valid_602168 = validateParameter(valid_602168, JArray, required = true, default = nil)
-  if valid_602168 != nil:
-    section.add "tagKeys", valid_602168
+  var valid_606368 = query.getOrDefault("tagKeys")
+  valid_606368 = validateParameter(valid_606368, JArray, required = true, default = nil)
+  if valid_606368 != nil:
+    section.add "tagKeys", valid_606368
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1596,61 +1596,61 @@ proc validate_UntagResource_602165(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602169 = header.getOrDefault("X-Amz-Signature")
-  valid_602169 = validateParameter(valid_602169, JString, required = false,
+  var valid_606369 = header.getOrDefault("X-Amz-Signature")
+  valid_606369 = validateParameter(valid_606369, JString, required = false,
                                  default = nil)
-  if valid_602169 != nil:
-    section.add "X-Amz-Signature", valid_602169
-  var valid_602170 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602170 = validateParameter(valid_602170, JString, required = false,
+  if valid_606369 != nil:
+    section.add "X-Amz-Signature", valid_606369
+  var valid_606370 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606370 = validateParameter(valid_606370, JString, required = false,
                                  default = nil)
-  if valid_602170 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602170
-  var valid_602171 = header.getOrDefault("X-Amz-Date")
-  valid_602171 = validateParameter(valid_602171, JString, required = false,
+  if valid_606370 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606370
+  var valid_606371 = header.getOrDefault("X-Amz-Date")
+  valid_606371 = validateParameter(valid_606371, JString, required = false,
                                  default = nil)
-  if valid_602171 != nil:
-    section.add "X-Amz-Date", valid_602171
-  var valid_602172 = header.getOrDefault("X-Amz-Credential")
-  valid_602172 = validateParameter(valid_602172, JString, required = false,
+  if valid_606371 != nil:
+    section.add "X-Amz-Date", valid_606371
+  var valid_606372 = header.getOrDefault("X-Amz-Credential")
+  valid_606372 = validateParameter(valid_606372, JString, required = false,
                                  default = nil)
-  if valid_602172 != nil:
-    section.add "X-Amz-Credential", valid_602172
-  var valid_602173 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602173 = validateParameter(valid_602173, JString, required = false,
+  if valid_606372 != nil:
+    section.add "X-Amz-Credential", valid_606372
+  var valid_606373 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606373 = validateParameter(valid_606373, JString, required = false,
                                  default = nil)
-  if valid_602173 != nil:
-    section.add "X-Amz-Security-Token", valid_602173
-  var valid_602174 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602174 = validateParameter(valid_602174, JString, required = false,
+  if valid_606373 != nil:
+    section.add "X-Amz-Security-Token", valid_606373
+  var valid_606374 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606374 = validateParameter(valid_606374, JString, required = false,
                                  default = nil)
-  if valid_602174 != nil:
-    section.add "X-Amz-Algorithm", valid_602174
-  var valid_602175 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602175 = validateParameter(valid_602175, JString, required = false,
+  if valid_606374 != nil:
+    section.add "X-Amz-Algorithm", valid_606374
+  var valid_606375 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606375 = validateParameter(valid_606375, JString, required = false,
                                  default = nil)
-  if valid_602175 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602175
+  if valid_606375 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606375
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602176: Call_UntagResource_602164; path: JsonNode; query: JsonNode;
+proc call*(call_606376: Call_UntagResource_606364; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Remove one or more tags from a signing profile. Specify a list of tag keys to remove the tags.
   ## 
-  let valid = call_602176.validator(path, query, header, formData, body)
-  let scheme = call_602176.pickScheme
+  let valid = call_606376.validator(path, query, header, formData, body)
+  let scheme = call_606376.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602176.url(scheme.get, call_602176.host, call_602176.base,
-                         call_602176.route, valid.getOrDefault("path"),
+  let url = call_606376.url(scheme.get, call_606376.host, call_606376.base,
+                         call_606376.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602176, url, valid)
+  result = atozHook(call_606376, url, valid)
 
-proc call*(call_602177: Call_UntagResource_602164; resourceArn: string;
+proc call*(call_606377: Call_UntagResource_606364; resourceArn: string;
           tagKeys: JsonNode): Recallable =
   ## untagResource
   ## Remove one or more tags from a signing profile. Specify a list of tag keys to remove the tags.
@@ -1658,17 +1658,17 @@ proc call*(call_602177: Call_UntagResource_602164; resourceArn: string;
   ##              : Amazon Resource Name (ARN) for the signing profile .
   ##   tagKeys: JArray (required)
   ##          : A list of tag keys to be removed from the signing profile .
-  var path_602178 = newJObject()
-  var query_602179 = newJObject()
-  add(path_602178, "resourceArn", newJString(resourceArn))
+  var path_606378 = newJObject()
+  var query_606379 = newJObject()
+  add(path_606378, "resourceArn", newJString(resourceArn))
   if tagKeys != nil:
-    query_602179.add "tagKeys", tagKeys
-  result = call_602177.call(path_602178, query_602179, nil, nil, nil)
+    query_606379.add "tagKeys", tagKeys
+  result = call_606377.call(path_606378, query_606379, nil, nil, nil)
 
-var untagResource* = Call_UntagResource_602164(name: "untagResource",
+var untagResource* = Call_UntagResource_606364(name: "untagResource",
     meth: HttpMethod.HttpDelete, host: "signer.amazonaws.com",
-    route: "/tags/{resourceArn}#tagKeys", validator: validate_UntagResource_602165,
-    base: "/", url: url_UntagResource_602166, schemes: {Scheme.Https, Scheme.Http})
+    route: "/tags/{resourceArn}#tagKeys", validator: validate_UntagResource_606365,
+    base: "/", url: url_UntagResource_606366, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -1713,5 +1713,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)

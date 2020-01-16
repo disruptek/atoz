@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_601390 = ref object of OpenApiRestCall
+  OpenApiRestCall_605590 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_601390](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605590](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_601390): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605590): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -149,8 +149,8 @@ const
   awsServiceName = "eks"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateCluster_601985 = ref object of OpenApiRestCall_601390
-proc url_CreateCluster_601987(protocol: Scheme; host: string; base: string;
+  Call_CreateCluster_606185 = ref object of OpenApiRestCall_605590
+proc url_CreateCluster_606187(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -162,7 +162,7 @@ proc url_CreateCluster_601987(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateCluster_601986(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateCluster_606186(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an Amazon EKS control plane. </p> <p>The Amazon EKS control plane consists of control plane instances that run the Kubernetes software, such as <code>etcd</code> and the API server. The control plane runs in an account managed by AWS, and the Kubernetes API is exposed via the Amazon EKS API server endpoint. Each Amazon EKS cluster control plane is single-tenant and unique and runs on its own set of Amazon EC2 instances.</p> <p>The cluster control plane is provisioned across multiple Availability Zones and fronted by an Elastic Load Balancing Network Load Balancer. Amazon EKS also provisions elastic network interfaces in your VPC subnets to provide connectivity from the control plane instances to the worker nodes (for example, to support <code>kubectl exec</code>, <code>logs</code>, and <code>proxy</code> data flows).</p> <p>Amazon EKS worker nodes run in your AWS account and connect to your cluster's control plane via the Kubernetes API server endpoint and a certificate file that is created for your cluster.</p> <p>You can use the <code>endpointPublicAccess</code> and <code>endpointPrivateAccess</code> parameters to enable or disable public and private access to your cluster's Kubernetes API server endpoint. By default, public access is enabled, and private access is disabled. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html">Amazon EKS Cluster Endpoint Access Control</a> in the <i> <i>Amazon EKS User Guide</i> </i>. </p> <p>You can use the <code>logging</code> parameter to enable or disable exporting the Kubernetes control plane logs for your cluster to CloudWatch Logs. By default, cluster control plane logs aren't exported to CloudWatch Logs. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html">Amazon EKS Cluster Control Plane Logs</a> in the <i> <i>Amazon EKS User Guide</i> </i>.</p> <note> <p>CloudWatch Logs ingestion, archive storage, and data scanning rates apply to exported control plane logs. For more information, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </note> <p>Cluster creation typically takes between 10 and 15 minutes. After you create an Amazon EKS cluster, you must configure your Kubernetes tooling to communicate with the API server and launch worker nodes into your cluster. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-auth.html">Managing Cluster Authentication</a> and <a href="https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html">Launching Amazon EKS Worker Nodes</a> in the <i>Amazon EKS User Guide</i>.</p>
   ## 
@@ -181,41 +181,41 @@ proc validate_CreateCluster_601986(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601988 = header.getOrDefault("X-Amz-Signature")
-  valid_601988 = validateParameter(valid_601988, JString, required = false,
+  var valid_606188 = header.getOrDefault("X-Amz-Signature")
+  valid_606188 = validateParameter(valid_606188, JString, required = false,
                                  default = nil)
-  if valid_601988 != nil:
-    section.add "X-Amz-Signature", valid_601988
-  var valid_601989 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601989 = validateParameter(valid_601989, JString, required = false,
+  if valid_606188 != nil:
+    section.add "X-Amz-Signature", valid_606188
+  var valid_606189 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606189 = validateParameter(valid_606189, JString, required = false,
                                  default = nil)
-  if valid_601989 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601989
-  var valid_601990 = header.getOrDefault("X-Amz-Date")
-  valid_601990 = validateParameter(valid_601990, JString, required = false,
+  if valid_606189 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606189
+  var valid_606190 = header.getOrDefault("X-Amz-Date")
+  valid_606190 = validateParameter(valid_606190, JString, required = false,
                                  default = nil)
-  if valid_601990 != nil:
-    section.add "X-Amz-Date", valid_601990
-  var valid_601991 = header.getOrDefault("X-Amz-Credential")
-  valid_601991 = validateParameter(valid_601991, JString, required = false,
+  if valid_606190 != nil:
+    section.add "X-Amz-Date", valid_606190
+  var valid_606191 = header.getOrDefault("X-Amz-Credential")
+  valid_606191 = validateParameter(valid_606191, JString, required = false,
                                  default = nil)
-  if valid_601991 != nil:
-    section.add "X-Amz-Credential", valid_601991
-  var valid_601992 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601992 = validateParameter(valid_601992, JString, required = false,
+  if valid_606191 != nil:
+    section.add "X-Amz-Credential", valid_606191
+  var valid_606192 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606192 = validateParameter(valid_606192, JString, required = false,
                                  default = nil)
-  if valid_601992 != nil:
-    section.add "X-Amz-Security-Token", valid_601992
-  var valid_601993 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601993 = validateParameter(valid_601993, JString, required = false,
+  if valid_606192 != nil:
+    section.add "X-Amz-Security-Token", valid_606192
+  var valid_606193 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606193 = validateParameter(valid_606193, JString, required = false,
                                  default = nil)
-  if valid_601993 != nil:
-    section.add "X-Amz-Algorithm", valid_601993
-  var valid_601994 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601994 = validateParameter(valid_601994, JString, required = false,
+  if valid_606193 != nil:
+    section.add "X-Amz-Algorithm", valid_606193
+  var valid_606194 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606194 = validateParameter(valid_606194, JString, required = false,
                                  default = nil)
-  if valid_601994 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601994
+  if valid_606194 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606194
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -226,35 +226,35 @@ proc validate_CreateCluster_601986(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_601996: Call_CreateCluster_601985; path: JsonNode; query: JsonNode;
+proc call*(call_606196: Call_CreateCluster_606185; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an Amazon EKS control plane. </p> <p>The Amazon EKS control plane consists of control plane instances that run the Kubernetes software, such as <code>etcd</code> and the API server. The control plane runs in an account managed by AWS, and the Kubernetes API is exposed via the Amazon EKS API server endpoint. Each Amazon EKS cluster control plane is single-tenant and unique and runs on its own set of Amazon EC2 instances.</p> <p>The cluster control plane is provisioned across multiple Availability Zones and fronted by an Elastic Load Balancing Network Load Balancer. Amazon EKS also provisions elastic network interfaces in your VPC subnets to provide connectivity from the control plane instances to the worker nodes (for example, to support <code>kubectl exec</code>, <code>logs</code>, and <code>proxy</code> data flows).</p> <p>Amazon EKS worker nodes run in your AWS account and connect to your cluster's control plane via the Kubernetes API server endpoint and a certificate file that is created for your cluster.</p> <p>You can use the <code>endpointPublicAccess</code> and <code>endpointPrivateAccess</code> parameters to enable or disable public and private access to your cluster's Kubernetes API server endpoint. By default, public access is enabled, and private access is disabled. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html">Amazon EKS Cluster Endpoint Access Control</a> in the <i> <i>Amazon EKS User Guide</i> </i>. </p> <p>You can use the <code>logging</code> parameter to enable or disable exporting the Kubernetes control plane logs for your cluster to CloudWatch Logs. By default, cluster control plane logs aren't exported to CloudWatch Logs. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html">Amazon EKS Cluster Control Plane Logs</a> in the <i> <i>Amazon EKS User Guide</i> </i>.</p> <note> <p>CloudWatch Logs ingestion, archive storage, and data scanning rates apply to exported control plane logs. For more information, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </note> <p>Cluster creation typically takes between 10 and 15 minutes. After you create an Amazon EKS cluster, you must configure your Kubernetes tooling to communicate with the API server and launch worker nodes into your cluster. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-auth.html">Managing Cluster Authentication</a> and <a href="https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html">Launching Amazon EKS Worker Nodes</a> in the <i>Amazon EKS User Guide</i>.</p>
   ## 
-  let valid = call_601996.validator(path, query, header, formData, body)
-  let scheme = call_601996.pickScheme
+  let valid = call_606196.validator(path, query, header, formData, body)
+  let scheme = call_606196.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601996.url(scheme.get, call_601996.host, call_601996.base,
-                         call_601996.route, valid.getOrDefault("path"),
+  let url = call_606196.url(scheme.get, call_606196.host, call_606196.base,
+                         call_606196.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601996, url, valid)
+  result = atozHook(call_606196, url, valid)
 
-proc call*(call_601997: Call_CreateCluster_601985; body: JsonNode): Recallable =
+proc call*(call_606197: Call_CreateCluster_606185; body: JsonNode): Recallable =
   ## createCluster
   ## <p>Creates an Amazon EKS control plane. </p> <p>The Amazon EKS control plane consists of control plane instances that run the Kubernetes software, such as <code>etcd</code> and the API server. The control plane runs in an account managed by AWS, and the Kubernetes API is exposed via the Amazon EKS API server endpoint. Each Amazon EKS cluster control plane is single-tenant and unique and runs on its own set of Amazon EC2 instances.</p> <p>The cluster control plane is provisioned across multiple Availability Zones and fronted by an Elastic Load Balancing Network Load Balancer. Amazon EKS also provisions elastic network interfaces in your VPC subnets to provide connectivity from the control plane instances to the worker nodes (for example, to support <code>kubectl exec</code>, <code>logs</code>, and <code>proxy</code> data flows).</p> <p>Amazon EKS worker nodes run in your AWS account and connect to your cluster's control plane via the Kubernetes API server endpoint and a certificate file that is created for your cluster.</p> <p>You can use the <code>endpointPublicAccess</code> and <code>endpointPrivateAccess</code> parameters to enable or disable public and private access to your cluster's Kubernetes API server endpoint. By default, public access is enabled, and private access is disabled. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html">Amazon EKS Cluster Endpoint Access Control</a> in the <i> <i>Amazon EKS User Guide</i> </i>. </p> <p>You can use the <code>logging</code> parameter to enable or disable exporting the Kubernetes control plane logs for your cluster to CloudWatch Logs. By default, cluster control plane logs aren't exported to CloudWatch Logs. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html">Amazon EKS Cluster Control Plane Logs</a> in the <i> <i>Amazon EKS User Guide</i> </i>.</p> <note> <p>CloudWatch Logs ingestion, archive storage, and data scanning rates apply to exported control plane logs. For more information, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </note> <p>Cluster creation typically takes between 10 and 15 minutes. After you create an Amazon EKS cluster, you must configure your Kubernetes tooling to communicate with the API server and launch worker nodes into your cluster. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/managing-auth.html">Managing Cluster Authentication</a> and <a href="https://docs.aws.amazon.com/eks/latest/userguide/launch-workers.html">Launching Amazon EKS Worker Nodes</a> in the <i>Amazon EKS User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_601998 = newJObject()
+  var body_606198 = newJObject()
   if body != nil:
-    body_601998 = body
-  result = call_601997.call(nil, nil, nil, nil, body_601998)
+    body_606198 = body
+  result = call_606197.call(nil, nil, nil, nil, body_606198)
 
-var createCluster* = Call_CreateCluster_601985(name: "createCluster",
+var createCluster* = Call_CreateCluster_606185(name: "createCluster",
     meth: HttpMethod.HttpPost, host: "eks.amazonaws.com", route: "/clusters",
-    validator: validate_CreateCluster_601986, base: "/", url: url_CreateCluster_601987,
+    validator: validate_CreateCluster_606186, base: "/", url: url_CreateCluster_606187,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListClusters_601728 = ref object of OpenApiRestCall_601390
-proc url_ListClusters_601730(protocol: Scheme; host: string; base: string;
+  Call_ListClusters_605928 = ref object of OpenApiRestCall_605590
+proc url_ListClusters_605930(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -266,7 +266,7 @@ proc url_ListClusters_601730(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListClusters_601729(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListClusters_605929(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the Amazon EKS clusters in your AWS account in the specified Region.
   ## 
@@ -280,15 +280,15 @@ proc validate_ListClusters_601729(path: JsonNode; query: JsonNode; header: JsonN
   ##   maxResults: JInt
   ##             : The maximum number of cluster results returned by <code>ListClusters</code> in paginated output. When you use this parameter, <code>ListClusters</code> returns only <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. You can see the remaining results of the initial request by sending another <code>ListClusters</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If you don't use this parameter, <code>ListClusters</code> returns up to 100 results and a <code>nextToken</code> value if applicable.
   section = newJObject()
-  var valid_601842 = query.getOrDefault("nextToken")
-  valid_601842 = validateParameter(valid_601842, JString, required = false,
+  var valid_606042 = query.getOrDefault("nextToken")
+  valid_606042 = validateParameter(valid_606042, JString, required = false,
                                  default = nil)
-  if valid_601842 != nil:
-    section.add "nextToken", valid_601842
-  var valid_601843 = query.getOrDefault("maxResults")
-  valid_601843 = validateParameter(valid_601843, JInt, required = false, default = nil)
-  if valid_601843 != nil:
-    section.add "maxResults", valid_601843
+  if valid_606042 != nil:
+    section.add "nextToken", valid_606042
+  var valid_606043 = query.getOrDefault("maxResults")
+  valid_606043 = validateParameter(valid_606043, JInt, required = false, default = nil)
+  if valid_606043 != nil:
+    section.add "maxResults", valid_606043
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -299,61 +299,61 @@ proc validate_ListClusters_601729(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601844 = header.getOrDefault("X-Amz-Signature")
-  valid_601844 = validateParameter(valid_601844, JString, required = false,
+  var valid_606044 = header.getOrDefault("X-Amz-Signature")
+  valid_606044 = validateParameter(valid_606044, JString, required = false,
                                  default = nil)
-  if valid_601844 != nil:
-    section.add "X-Amz-Signature", valid_601844
-  var valid_601845 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601845 = validateParameter(valid_601845, JString, required = false,
+  if valid_606044 != nil:
+    section.add "X-Amz-Signature", valid_606044
+  var valid_606045 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606045 = validateParameter(valid_606045, JString, required = false,
                                  default = nil)
-  if valid_601845 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601845
-  var valid_601846 = header.getOrDefault("X-Amz-Date")
-  valid_601846 = validateParameter(valid_601846, JString, required = false,
+  if valid_606045 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606045
+  var valid_606046 = header.getOrDefault("X-Amz-Date")
+  valid_606046 = validateParameter(valid_606046, JString, required = false,
                                  default = nil)
-  if valid_601846 != nil:
-    section.add "X-Amz-Date", valid_601846
-  var valid_601847 = header.getOrDefault("X-Amz-Credential")
-  valid_601847 = validateParameter(valid_601847, JString, required = false,
+  if valid_606046 != nil:
+    section.add "X-Amz-Date", valid_606046
+  var valid_606047 = header.getOrDefault("X-Amz-Credential")
+  valid_606047 = validateParameter(valid_606047, JString, required = false,
                                  default = nil)
-  if valid_601847 != nil:
-    section.add "X-Amz-Credential", valid_601847
-  var valid_601848 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601848 = validateParameter(valid_601848, JString, required = false,
+  if valid_606047 != nil:
+    section.add "X-Amz-Credential", valid_606047
+  var valid_606048 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606048 = validateParameter(valid_606048, JString, required = false,
                                  default = nil)
-  if valid_601848 != nil:
-    section.add "X-Amz-Security-Token", valid_601848
-  var valid_601849 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601849 = validateParameter(valid_601849, JString, required = false,
+  if valid_606048 != nil:
+    section.add "X-Amz-Security-Token", valid_606048
+  var valid_606049 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606049 = validateParameter(valid_606049, JString, required = false,
                                  default = nil)
-  if valid_601849 != nil:
-    section.add "X-Amz-Algorithm", valid_601849
-  var valid_601850 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601850 = validateParameter(valid_601850, JString, required = false,
+  if valid_606049 != nil:
+    section.add "X-Amz-Algorithm", valid_606049
+  var valid_606050 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606050 = validateParameter(valid_606050, JString, required = false,
                                  default = nil)
-  if valid_601850 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601850
+  if valid_606050 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606050
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601873: Call_ListClusters_601728; path: JsonNode; query: JsonNode;
+proc call*(call_606073: Call_ListClusters_605928; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the Amazon EKS clusters in your AWS account in the specified Region.
   ## 
-  let valid = call_601873.validator(path, query, header, formData, body)
-  let scheme = call_601873.pickScheme
+  let valid = call_606073.validator(path, query, header, formData, body)
+  let scheme = call_606073.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601873.url(scheme.get, call_601873.host, call_601873.base,
-                         call_601873.route, valid.getOrDefault("path"),
+  let url = call_606073.url(scheme.get, call_606073.host, call_606073.base,
+                         call_606073.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601873, url, valid)
+  result = atozHook(call_606073, url, valid)
 
-proc call*(call_601944: Call_ListClusters_601728; nextToken: string = "";
+proc call*(call_606144: Call_ListClusters_605928; nextToken: string = "";
           maxResults: int = 0): Recallable =
   ## listClusters
   ## Lists the Amazon EKS clusters in your AWS account in the specified Region.
@@ -361,18 +361,18 @@ proc call*(call_601944: Call_ListClusters_601728; nextToken: string = "";
   ##            : <p>The <code>nextToken</code> value returned from a previous paginated <code>ListClusters</code> request where <code>maxResults</code> was used and the results exceeded the value of that parameter. Pagination continues from the end of the previous results that returned the <code>nextToken</code> value.</p> <note> <p>This token should be treated as an opaque identifier that is used only to retrieve the next items in a list and not for other programmatic purposes.</p> </note>
   ##   maxResults: int
   ##             : The maximum number of cluster results returned by <code>ListClusters</code> in paginated output. When you use this parameter, <code>ListClusters</code> returns only <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. You can see the remaining results of the initial request by sending another <code>ListClusters</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If you don't use this parameter, <code>ListClusters</code> returns up to 100 results and a <code>nextToken</code> value if applicable.
-  var query_601945 = newJObject()
-  add(query_601945, "nextToken", newJString(nextToken))
-  add(query_601945, "maxResults", newJInt(maxResults))
-  result = call_601944.call(nil, query_601945, nil, nil, nil)
+  var query_606145 = newJObject()
+  add(query_606145, "nextToken", newJString(nextToken))
+  add(query_606145, "maxResults", newJInt(maxResults))
+  result = call_606144.call(nil, query_606145, nil, nil, nil)
 
-var listClusters* = Call_ListClusters_601728(name: "listClusters",
+var listClusters* = Call_ListClusters_605928(name: "listClusters",
     meth: HttpMethod.HttpGet, host: "eks.amazonaws.com", route: "/clusters",
-    validator: validate_ListClusters_601729, base: "/", url: url_ListClusters_601730,
+    validator: validate_ListClusters_605929, base: "/", url: url_ListClusters_605930,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateFargateProfile_602030 = ref object of OpenApiRestCall_601390
-proc url_CreateFargateProfile_602032(protocol: Scheme; host: string; base: string;
+  Call_CreateFargateProfile_606230 = ref object of OpenApiRestCall_605590
+proc url_CreateFargateProfile_606232(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -393,7 +393,7 @@ proc url_CreateFargateProfile_602032(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_CreateFargateProfile_602031(path: JsonNode; query: JsonNode;
+proc validate_CreateFargateProfile_606231(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an AWS Fargate profile for your Amazon EKS cluster. You must have at least one Fargate profile in a cluster to be able to run pods on Fargate.</p> <p>The Fargate profile allows an administrator to declare which pods run on Fargate and specify which pods run on which Fargate profile. This declaration is done through the profile’s selectors. Each profile can have up to five selectors that contain a namespace and labels. A namespace is required for every selector. The label field consists of multiple optional key-value pairs. Pods that match the selectors are scheduled on Fargate. If a to-be-scheduled pod matches any of the selectors in the Fargate profile, then that pod is run on Fargate.</p> <p>When you create a Fargate profile, you must specify a pod execution role to use with the pods that are scheduled with the profile. This role is added to the cluster's Kubernetes <a href="https://kubernetes.io/docs/admin/authorization/rbac/">Role Based Access Control</a> (RBAC) for authorization so that the <code>kubelet</code> that is running on the Fargate infrastructure can register with your Amazon EKS cluster so that it can appear in your cluster as a node. The pod execution role also provides IAM permissions to the Fargate infrastructure to allow read access to Amazon ECR image repositories. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/pod-execution-role.html">Pod Execution Role</a> in the <i>Amazon EKS User Guide</i>.</p> <p>Fargate profiles are immutable. However, you can create a new updated profile to replace an existing profile and then delete the original after the updated profile has finished creating.</p> <p>If any Fargate profiles in a cluster are in the <code>DELETING</code> status, you must wait for that Fargate profile to finish deleting before you can create any other profiles in that cluster.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html">AWS Fargate Profile</a> in the <i>Amazon EKS User Guide</i>.</p>
   ## 
@@ -404,11 +404,11 @@ proc validate_CreateFargateProfile_602031(path: JsonNode; query: JsonNode;
   ##       : The name of the Amazon EKS cluster to apply the Fargate profile to.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602033 = path.getOrDefault("name")
-  valid_602033 = validateParameter(valid_602033, JString, required = true,
+  var valid_606233 = path.getOrDefault("name")
+  valid_606233 = validateParameter(valid_606233, JString, required = true,
                                  default = nil)
-  if valid_602033 != nil:
-    section.add "name", valid_602033
+  if valid_606233 != nil:
+    section.add "name", valid_606233
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -421,41 +421,41 @@ proc validate_CreateFargateProfile_602031(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602034 = header.getOrDefault("X-Amz-Signature")
-  valid_602034 = validateParameter(valid_602034, JString, required = false,
+  var valid_606234 = header.getOrDefault("X-Amz-Signature")
+  valid_606234 = validateParameter(valid_606234, JString, required = false,
                                  default = nil)
-  if valid_602034 != nil:
-    section.add "X-Amz-Signature", valid_602034
-  var valid_602035 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602035 = validateParameter(valid_602035, JString, required = false,
+  if valid_606234 != nil:
+    section.add "X-Amz-Signature", valid_606234
+  var valid_606235 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606235 = validateParameter(valid_606235, JString, required = false,
                                  default = nil)
-  if valid_602035 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602035
-  var valid_602036 = header.getOrDefault("X-Amz-Date")
-  valid_602036 = validateParameter(valid_602036, JString, required = false,
+  if valid_606235 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606235
+  var valid_606236 = header.getOrDefault("X-Amz-Date")
+  valid_606236 = validateParameter(valid_606236, JString, required = false,
                                  default = nil)
-  if valid_602036 != nil:
-    section.add "X-Amz-Date", valid_602036
-  var valid_602037 = header.getOrDefault("X-Amz-Credential")
-  valid_602037 = validateParameter(valid_602037, JString, required = false,
+  if valid_606236 != nil:
+    section.add "X-Amz-Date", valid_606236
+  var valid_606237 = header.getOrDefault("X-Amz-Credential")
+  valid_606237 = validateParameter(valid_606237, JString, required = false,
                                  default = nil)
-  if valid_602037 != nil:
-    section.add "X-Amz-Credential", valid_602037
-  var valid_602038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602038 = validateParameter(valid_602038, JString, required = false,
+  if valid_606237 != nil:
+    section.add "X-Amz-Credential", valid_606237
+  var valid_606238 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606238 = validateParameter(valid_606238, JString, required = false,
                                  default = nil)
-  if valid_602038 != nil:
-    section.add "X-Amz-Security-Token", valid_602038
-  var valid_602039 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602039 = validateParameter(valid_602039, JString, required = false,
+  if valid_606238 != nil:
+    section.add "X-Amz-Security-Token", valid_606238
+  var valid_606239 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606239 = validateParameter(valid_606239, JString, required = false,
                                  default = nil)
-  if valid_602039 != nil:
-    section.add "X-Amz-Algorithm", valid_602039
-  var valid_602040 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602040 = validateParameter(valid_602040, JString, required = false,
+  if valid_606239 != nil:
+    section.add "X-Amz-Algorithm", valid_606239
+  var valid_606240 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606240 = validateParameter(valid_606240, JString, required = false,
                                  default = nil)
-  if valid_602040 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602040
+  if valid_606240 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606240
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -466,41 +466,41 @@ proc validate_CreateFargateProfile_602031(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602042: Call_CreateFargateProfile_602030; path: JsonNode;
+proc call*(call_606242: Call_CreateFargateProfile_606230; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an AWS Fargate profile for your Amazon EKS cluster. You must have at least one Fargate profile in a cluster to be able to run pods on Fargate.</p> <p>The Fargate profile allows an administrator to declare which pods run on Fargate and specify which pods run on which Fargate profile. This declaration is done through the profile’s selectors. Each profile can have up to five selectors that contain a namespace and labels. A namespace is required for every selector. The label field consists of multiple optional key-value pairs. Pods that match the selectors are scheduled on Fargate. If a to-be-scheduled pod matches any of the selectors in the Fargate profile, then that pod is run on Fargate.</p> <p>When you create a Fargate profile, you must specify a pod execution role to use with the pods that are scheduled with the profile. This role is added to the cluster's Kubernetes <a href="https://kubernetes.io/docs/admin/authorization/rbac/">Role Based Access Control</a> (RBAC) for authorization so that the <code>kubelet</code> that is running on the Fargate infrastructure can register with your Amazon EKS cluster so that it can appear in your cluster as a node. The pod execution role also provides IAM permissions to the Fargate infrastructure to allow read access to Amazon ECR image repositories. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/pod-execution-role.html">Pod Execution Role</a> in the <i>Amazon EKS User Guide</i>.</p> <p>Fargate profiles are immutable. However, you can create a new updated profile to replace an existing profile and then delete the original after the updated profile has finished creating.</p> <p>If any Fargate profiles in a cluster are in the <code>DELETING</code> status, you must wait for that Fargate profile to finish deleting before you can create any other profiles in that cluster.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html">AWS Fargate Profile</a> in the <i>Amazon EKS User Guide</i>.</p>
   ## 
-  let valid = call_602042.validator(path, query, header, formData, body)
-  let scheme = call_602042.pickScheme
+  let valid = call_606242.validator(path, query, header, formData, body)
+  let scheme = call_606242.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602042.url(scheme.get, call_602042.host, call_602042.base,
-                         call_602042.route, valid.getOrDefault("path"),
+  let url = call_606242.url(scheme.get, call_606242.host, call_606242.base,
+                         call_606242.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602042, url, valid)
+  result = atozHook(call_606242, url, valid)
 
-proc call*(call_602043: Call_CreateFargateProfile_602030; name: string;
+proc call*(call_606243: Call_CreateFargateProfile_606230; name: string;
           body: JsonNode): Recallable =
   ## createFargateProfile
   ## <p>Creates an AWS Fargate profile for your Amazon EKS cluster. You must have at least one Fargate profile in a cluster to be able to run pods on Fargate.</p> <p>The Fargate profile allows an administrator to declare which pods run on Fargate and specify which pods run on which Fargate profile. This declaration is done through the profile’s selectors. Each profile can have up to five selectors that contain a namespace and labels. A namespace is required for every selector. The label field consists of multiple optional key-value pairs. Pods that match the selectors are scheduled on Fargate. If a to-be-scheduled pod matches any of the selectors in the Fargate profile, then that pod is run on Fargate.</p> <p>When you create a Fargate profile, you must specify a pod execution role to use with the pods that are scheduled with the profile. This role is added to the cluster's Kubernetes <a href="https://kubernetes.io/docs/admin/authorization/rbac/">Role Based Access Control</a> (RBAC) for authorization so that the <code>kubelet</code> that is running on the Fargate infrastructure can register with your Amazon EKS cluster so that it can appear in your cluster as a node. The pod execution role also provides IAM permissions to the Fargate infrastructure to allow read access to Amazon ECR image repositories. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/pod-execution-role.html">Pod Execution Role</a> in the <i>Amazon EKS User Guide</i>.</p> <p>Fargate profiles are immutable. However, you can create a new updated profile to replace an existing profile and then delete the original after the updated profile has finished creating.</p> <p>If any Fargate profiles in a cluster are in the <code>DELETING</code> status, you must wait for that Fargate profile to finish deleting before you can create any other profiles in that cluster.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/fargate-profile.html">AWS Fargate Profile</a> in the <i>Amazon EKS User Guide</i>.</p>
   ##   name: string (required)
   ##       : The name of the Amazon EKS cluster to apply the Fargate profile to.
   ##   body: JObject (required)
-  var path_602044 = newJObject()
-  var body_602045 = newJObject()
-  add(path_602044, "name", newJString(name))
+  var path_606244 = newJObject()
+  var body_606245 = newJObject()
+  add(path_606244, "name", newJString(name))
   if body != nil:
-    body_602045 = body
-  result = call_602043.call(path_602044, nil, nil, nil, body_602045)
+    body_606245 = body
+  result = call_606243.call(path_606244, nil, nil, nil, body_606245)
 
-var createFargateProfile* = Call_CreateFargateProfile_602030(
+var createFargateProfile* = Call_CreateFargateProfile_606230(
     name: "createFargateProfile", meth: HttpMethod.HttpPost,
     host: "eks.amazonaws.com", route: "/clusters/{name}/fargate-profiles",
-    validator: validate_CreateFargateProfile_602031, base: "/",
-    url: url_CreateFargateProfile_602032, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateFargateProfile_606231, base: "/",
+    url: url_CreateFargateProfile_606232, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListFargateProfiles_601999 = ref object of OpenApiRestCall_601390
-proc url_ListFargateProfiles_602001(protocol: Scheme; host: string; base: string;
+  Call_ListFargateProfiles_606199 = ref object of OpenApiRestCall_605590
+proc url_ListFargateProfiles_606201(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -521,7 +521,7 @@ proc url_ListFargateProfiles_602001(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_ListFargateProfiles_602000(path: JsonNode; query: JsonNode;
+proc validate_ListFargateProfiles_606200(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lists the AWS Fargate profiles associated with the specified cluster in your AWS account in the specified Region.
@@ -533,11 +533,11 @@ proc validate_ListFargateProfiles_602000(path: JsonNode; query: JsonNode;
   ##       : The name of the Amazon EKS cluster that you would like to listFargate profiles in.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602016 = path.getOrDefault("name")
-  valid_602016 = validateParameter(valid_602016, JString, required = true,
+  var valid_606216 = path.getOrDefault("name")
+  valid_606216 = validateParameter(valid_606216, JString, required = true,
                                  default = nil)
-  if valid_602016 != nil:
-    section.add "name", valid_602016
+  if valid_606216 != nil:
+    section.add "name", valid_606216
   result.add "path", section
   ## parameters in `query` object:
   ##   nextToken: JString
@@ -545,15 +545,15 @@ proc validate_ListFargateProfiles_602000(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             : The maximum number of Fargate profile results returned by <code>ListFargateProfiles</code> in paginated output. When you use this parameter, <code>ListFargateProfiles</code> returns only <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. You can see the remaining results of the initial request by sending another <code>ListFargateProfiles</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If you don't use this parameter, <code>ListFargateProfiles</code> returns up to 100 results and a <code>nextToken</code> value if applicable.
   section = newJObject()
-  var valid_602017 = query.getOrDefault("nextToken")
-  valid_602017 = validateParameter(valid_602017, JString, required = false,
+  var valid_606217 = query.getOrDefault("nextToken")
+  valid_606217 = validateParameter(valid_606217, JString, required = false,
                                  default = nil)
-  if valid_602017 != nil:
-    section.add "nextToken", valid_602017
-  var valid_602018 = query.getOrDefault("maxResults")
-  valid_602018 = validateParameter(valid_602018, JInt, required = false, default = nil)
-  if valid_602018 != nil:
-    section.add "maxResults", valid_602018
+  if valid_606217 != nil:
+    section.add "nextToken", valid_606217
+  var valid_606218 = query.getOrDefault("maxResults")
+  valid_606218 = validateParameter(valid_606218, JInt, required = false, default = nil)
+  if valid_606218 != nil:
+    section.add "maxResults", valid_606218
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -564,61 +564,61 @@ proc validate_ListFargateProfiles_602000(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602019 = header.getOrDefault("X-Amz-Signature")
-  valid_602019 = validateParameter(valid_602019, JString, required = false,
+  var valid_606219 = header.getOrDefault("X-Amz-Signature")
+  valid_606219 = validateParameter(valid_606219, JString, required = false,
                                  default = nil)
-  if valid_602019 != nil:
-    section.add "X-Amz-Signature", valid_602019
-  var valid_602020 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602020 = validateParameter(valid_602020, JString, required = false,
+  if valid_606219 != nil:
+    section.add "X-Amz-Signature", valid_606219
+  var valid_606220 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606220 = validateParameter(valid_606220, JString, required = false,
                                  default = nil)
-  if valid_602020 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602020
-  var valid_602021 = header.getOrDefault("X-Amz-Date")
-  valid_602021 = validateParameter(valid_602021, JString, required = false,
+  if valid_606220 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606220
+  var valid_606221 = header.getOrDefault("X-Amz-Date")
+  valid_606221 = validateParameter(valid_606221, JString, required = false,
                                  default = nil)
-  if valid_602021 != nil:
-    section.add "X-Amz-Date", valid_602021
-  var valid_602022 = header.getOrDefault("X-Amz-Credential")
-  valid_602022 = validateParameter(valid_602022, JString, required = false,
+  if valid_606221 != nil:
+    section.add "X-Amz-Date", valid_606221
+  var valid_606222 = header.getOrDefault("X-Amz-Credential")
+  valid_606222 = validateParameter(valid_606222, JString, required = false,
                                  default = nil)
-  if valid_602022 != nil:
-    section.add "X-Amz-Credential", valid_602022
-  var valid_602023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602023 = validateParameter(valid_602023, JString, required = false,
+  if valid_606222 != nil:
+    section.add "X-Amz-Credential", valid_606222
+  var valid_606223 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606223 = validateParameter(valid_606223, JString, required = false,
                                  default = nil)
-  if valid_602023 != nil:
-    section.add "X-Amz-Security-Token", valid_602023
-  var valid_602024 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602024 = validateParameter(valid_602024, JString, required = false,
+  if valid_606223 != nil:
+    section.add "X-Amz-Security-Token", valid_606223
+  var valid_606224 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606224 = validateParameter(valid_606224, JString, required = false,
                                  default = nil)
-  if valid_602024 != nil:
-    section.add "X-Amz-Algorithm", valid_602024
-  var valid_602025 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602025 = validateParameter(valid_602025, JString, required = false,
+  if valid_606224 != nil:
+    section.add "X-Amz-Algorithm", valid_606224
+  var valid_606225 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606225 = validateParameter(valid_606225, JString, required = false,
                                  default = nil)
-  if valid_602025 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602025
+  if valid_606225 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606225
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602026: Call_ListFargateProfiles_601999; path: JsonNode;
+proc call*(call_606226: Call_ListFargateProfiles_606199; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the AWS Fargate profiles associated with the specified cluster in your AWS account in the specified Region.
   ## 
-  let valid = call_602026.validator(path, query, header, formData, body)
-  let scheme = call_602026.pickScheme
+  let valid = call_606226.validator(path, query, header, formData, body)
+  let scheme = call_606226.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602026.url(scheme.get, call_602026.host, call_602026.base,
-                         call_602026.route, valid.getOrDefault("path"),
+  let url = call_606226.url(scheme.get, call_606226.host, call_606226.base,
+                         call_606226.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602026, url, valid)
+  result = atozHook(call_606226, url, valid)
 
-proc call*(call_602027: Call_ListFargateProfiles_601999; name: string;
+proc call*(call_606227: Call_ListFargateProfiles_606199; name: string;
           nextToken: string = ""; maxResults: int = 0): Recallable =
   ## listFargateProfiles
   ## Lists the AWS Fargate profiles associated with the specified cluster in your AWS account in the specified Region.
@@ -628,21 +628,21 @@ proc call*(call_602027: Call_ListFargateProfiles_601999; name: string;
   ##       : The name of the Amazon EKS cluster that you would like to listFargate profiles in.
   ##   maxResults: int
   ##             : The maximum number of Fargate profile results returned by <code>ListFargateProfiles</code> in paginated output. When you use this parameter, <code>ListFargateProfiles</code> returns only <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. You can see the remaining results of the initial request by sending another <code>ListFargateProfiles</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If you don't use this parameter, <code>ListFargateProfiles</code> returns up to 100 results and a <code>nextToken</code> value if applicable.
-  var path_602028 = newJObject()
-  var query_602029 = newJObject()
-  add(query_602029, "nextToken", newJString(nextToken))
-  add(path_602028, "name", newJString(name))
-  add(query_602029, "maxResults", newJInt(maxResults))
-  result = call_602027.call(path_602028, query_602029, nil, nil, nil)
+  var path_606228 = newJObject()
+  var query_606229 = newJObject()
+  add(query_606229, "nextToken", newJString(nextToken))
+  add(path_606228, "name", newJString(name))
+  add(query_606229, "maxResults", newJInt(maxResults))
+  result = call_606227.call(path_606228, query_606229, nil, nil, nil)
 
-var listFargateProfiles* = Call_ListFargateProfiles_601999(
+var listFargateProfiles* = Call_ListFargateProfiles_606199(
     name: "listFargateProfiles", meth: HttpMethod.HttpGet,
     host: "eks.amazonaws.com", route: "/clusters/{name}/fargate-profiles",
-    validator: validate_ListFargateProfiles_602000, base: "/",
-    url: url_ListFargateProfiles_602001, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListFargateProfiles_606200, base: "/",
+    url: url_ListFargateProfiles_606201, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateNodegroup_602063 = ref object of OpenApiRestCall_601390
-proc url_CreateNodegroup_602065(protocol: Scheme; host: string; base: string;
+  Call_CreateNodegroup_606263 = ref object of OpenApiRestCall_605590
+proc url_CreateNodegroup_606265(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -663,7 +663,7 @@ proc url_CreateNodegroup_602065(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_CreateNodegroup_602064(path: JsonNode; query: JsonNode;
+proc validate_CreateNodegroup_606264(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Creates a managed worker node group for an Amazon EKS cluster. You can only create a node group for your cluster that is equal to the current Kubernetes version for the cluster. All node groups are created with the latest AMI release version for the respective minor Kubernetes version of the cluster.</p> <p>An Amazon EKS managed node group is an Amazon EC2 Auto Scaling group and associated Amazon EC2 instances that are managed by AWS for an Amazon EKS cluster. Each node group uses a version of the Amazon EKS-optimized Amazon Linux 2 AMI. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html">Managed Node Groups</a> in the <i>Amazon EKS User Guide</i>. </p>
@@ -675,11 +675,11 @@ proc validate_CreateNodegroup_602064(path: JsonNode; query: JsonNode;
   ##       : The name of the cluster to create the node group in.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602066 = path.getOrDefault("name")
-  valid_602066 = validateParameter(valid_602066, JString, required = true,
+  var valid_606266 = path.getOrDefault("name")
+  valid_606266 = validateParameter(valid_606266, JString, required = true,
                                  default = nil)
-  if valid_602066 != nil:
-    section.add "name", valid_602066
+  if valid_606266 != nil:
+    section.add "name", valid_606266
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -692,41 +692,41 @@ proc validate_CreateNodegroup_602064(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602067 = header.getOrDefault("X-Amz-Signature")
-  valid_602067 = validateParameter(valid_602067, JString, required = false,
+  var valid_606267 = header.getOrDefault("X-Amz-Signature")
+  valid_606267 = validateParameter(valid_606267, JString, required = false,
                                  default = nil)
-  if valid_602067 != nil:
-    section.add "X-Amz-Signature", valid_602067
-  var valid_602068 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602068 = validateParameter(valid_602068, JString, required = false,
+  if valid_606267 != nil:
+    section.add "X-Amz-Signature", valid_606267
+  var valid_606268 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606268 = validateParameter(valid_606268, JString, required = false,
                                  default = nil)
-  if valid_602068 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602068
-  var valid_602069 = header.getOrDefault("X-Amz-Date")
-  valid_602069 = validateParameter(valid_602069, JString, required = false,
+  if valid_606268 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606268
+  var valid_606269 = header.getOrDefault("X-Amz-Date")
+  valid_606269 = validateParameter(valid_606269, JString, required = false,
                                  default = nil)
-  if valid_602069 != nil:
-    section.add "X-Amz-Date", valid_602069
-  var valid_602070 = header.getOrDefault("X-Amz-Credential")
-  valid_602070 = validateParameter(valid_602070, JString, required = false,
+  if valid_606269 != nil:
+    section.add "X-Amz-Date", valid_606269
+  var valid_606270 = header.getOrDefault("X-Amz-Credential")
+  valid_606270 = validateParameter(valid_606270, JString, required = false,
                                  default = nil)
-  if valid_602070 != nil:
-    section.add "X-Amz-Credential", valid_602070
-  var valid_602071 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602071 = validateParameter(valid_602071, JString, required = false,
+  if valid_606270 != nil:
+    section.add "X-Amz-Credential", valid_606270
+  var valid_606271 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606271 = validateParameter(valid_606271, JString, required = false,
                                  default = nil)
-  if valid_602071 != nil:
-    section.add "X-Amz-Security-Token", valid_602071
-  var valid_602072 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602072 = validateParameter(valid_602072, JString, required = false,
+  if valid_606271 != nil:
+    section.add "X-Amz-Security-Token", valid_606271
+  var valid_606272 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606272 = validateParameter(valid_606272, JString, required = false,
                                  default = nil)
-  if valid_602072 != nil:
-    section.add "X-Amz-Algorithm", valid_602072
-  var valid_602073 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602073 = validateParameter(valid_602073, JString, required = false,
+  if valid_606272 != nil:
+    section.add "X-Amz-Algorithm", valid_606272
+  var valid_606273 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606273 = validateParameter(valid_606273, JString, required = false,
                                  default = nil)
-  if valid_602073 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602073
+  if valid_606273 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606273
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -737,39 +737,39 @@ proc validate_CreateNodegroup_602064(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602075: Call_CreateNodegroup_602063; path: JsonNode; query: JsonNode;
+proc call*(call_606275: Call_CreateNodegroup_606263; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a managed worker node group for an Amazon EKS cluster. You can only create a node group for your cluster that is equal to the current Kubernetes version for the cluster. All node groups are created with the latest AMI release version for the respective minor Kubernetes version of the cluster.</p> <p>An Amazon EKS managed node group is an Amazon EC2 Auto Scaling group and associated Amazon EC2 instances that are managed by AWS for an Amazon EKS cluster. Each node group uses a version of the Amazon EKS-optimized Amazon Linux 2 AMI. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html">Managed Node Groups</a> in the <i>Amazon EKS User Guide</i>. </p>
   ## 
-  let valid = call_602075.validator(path, query, header, formData, body)
-  let scheme = call_602075.pickScheme
+  let valid = call_606275.validator(path, query, header, formData, body)
+  let scheme = call_606275.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602075.url(scheme.get, call_602075.host, call_602075.base,
-                         call_602075.route, valid.getOrDefault("path"),
+  let url = call_606275.url(scheme.get, call_606275.host, call_606275.base,
+                         call_606275.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602075, url, valid)
+  result = atozHook(call_606275, url, valid)
 
-proc call*(call_602076: Call_CreateNodegroup_602063; name: string; body: JsonNode): Recallable =
+proc call*(call_606276: Call_CreateNodegroup_606263; name: string; body: JsonNode): Recallable =
   ## createNodegroup
   ## <p>Creates a managed worker node group for an Amazon EKS cluster. You can only create a node group for your cluster that is equal to the current Kubernetes version for the cluster. All node groups are created with the latest AMI release version for the respective minor Kubernetes version of the cluster.</p> <p>An Amazon EKS managed node group is an Amazon EC2 Auto Scaling group and associated Amazon EC2 instances that are managed by AWS for an Amazon EKS cluster. Each node group uses a version of the Amazon EKS-optimized Amazon Linux 2 AMI. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/managed-node-groups.html">Managed Node Groups</a> in the <i>Amazon EKS User Guide</i>. </p>
   ##   name: string (required)
   ##       : The name of the cluster to create the node group in.
   ##   body: JObject (required)
-  var path_602077 = newJObject()
-  var body_602078 = newJObject()
-  add(path_602077, "name", newJString(name))
+  var path_606277 = newJObject()
+  var body_606278 = newJObject()
+  add(path_606277, "name", newJString(name))
   if body != nil:
-    body_602078 = body
-  result = call_602076.call(path_602077, nil, nil, nil, body_602078)
+    body_606278 = body
+  result = call_606276.call(path_606277, nil, nil, nil, body_606278)
 
-var createNodegroup* = Call_CreateNodegroup_602063(name: "createNodegroup",
+var createNodegroup* = Call_CreateNodegroup_606263(name: "createNodegroup",
     meth: HttpMethod.HttpPost, host: "eks.amazonaws.com",
-    route: "/clusters/{name}/node-groups", validator: validate_CreateNodegroup_602064,
-    base: "/", url: url_CreateNodegroup_602065, schemes: {Scheme.Https, Scheme.Http})
+    route: "/clusters/{name}/node-groups", validator: validate_CreateNodegroup_606264,
+    base: "/", url: url_CreateNodegroup_606265, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListNodegroups_602046 = ref object of OpenApiRestCall_601390
-proc url_ListNodegroups_602048(protocol: Scheme; host: string; base: string;
+  Call_ListNodegroups_606246 = ref object of OpenApiRestCall_605590
+proc url_ListNodegroups_606248(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -790,7 +790,7 @@ proc url_ListNodegroups_602048(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListNodegroups_602047(path: JsonNode; query: JsonNode;
+proc validate_ListNodegroups_606247(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Lists the Amazon EKS node groups associated with the specified cluster in your AWS account in the specified Region.
@@ -802,11 +802,11 @@ proc validate_ListNodegroups_602047(path: JsonNode; query: JsonNode;
   ##       : The name of the Amazon EKS cluster that you would like to list node groups in.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602049 = path.getOrDefault("name")
-  valid_602049 = validateParameter(valid_602049, JString, required = true,
+  var valid_606249 = path.getOrDefault("name")
+  valid_606249 = validateParameter(valid_606249, JString, required = true,
                                  default = nil)
-  if valid_602049 != nil:
-    section.add "name", valid_602049
+  if valid_606249 != nil:
+    section.add "name", valid_606249
   result.add "path", section
   ## parameters in `query` object:
   ##   nextToken: JString
@@ -814,15 +814,15 @@ proc validate_ListNodegroups_602047(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             : The maximum number of node group results returned by <code>ListNodegroups</code> in paginated output. When you use this parameter, <code>ListNodegroups</code> returns only <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. You can see the remaining results of the initial request by sending another <code>ListNodegroups</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If you don't use this parameter, <code>ListNodegroups</code> returns up to 100 results and a <code>nextToken</code> value if applicable.
   section = newJObject()
-  var valid_602050 = query.getOrDefault("nextToken")
-  valid_602050 = validateParameter(valid_602050, JString, required = false,
+  var valid_606250 = query.getOrDefault("nextToken")
+  valid_606250 = validateParameter(valid_606250, JString, required = false,
                                  default = nil)
-  if valid_602050 != nil:
-    section.add "nextToken", valid_602050
-  var valid_602051 = query.getOrDefault("maxResults")
-  valid_602051 = validateParameter(valid_602051, JInt, required = false, default = nil)
-  if valid_602051 != nil:
-    section.add "maxResults", valid_602051
+  if valid_606250 != nil:
+    section.add "nextToken", valid_606250
+  var valid_606251 = query.getOrDefault("maxResults")
+  valid_606251 = validateParameter(valid_606251, JInt, required = false, default = nil)
+  if valid_606251 != nil:
+    section.add "maxResults", valid_606251
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -833,61 +833,61 @@ proc validate_ListNodegroups_602047(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602052 = header.getOrDefault("X-Amz-Signature")
-  valid_602052 = validateParameter(valid_602052, JString, required = false,
+  var valid_606252 = header.getOrDefault("X-Amz-Signature")
+  valid_606252 = validateParameter(valid_606252, JString, required = false,
                                  default = nil)
-  if valid_602052 != nil:
-    section.add "X-Amz-Signature", valid_602052
-  var valid_602053 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602053 = validateParameter(valid_602053, JString, required = false,
+  if valid_606252 != nil:
+    section.add "X-Amz-Signature", valid_606252
+  var valid_606253 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606253 = validateParameter(valid_606253, JString, required = false,
                                  default = nil)
-  if valid_602053 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602053
-  var valid_602054 = header.getOrDefault("X-Amz-Date")
-  valid_602054 = validateParameter(valid_602054, JString, required = false,
+  if valid_606253 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606253
+  var valid_606254 = header.getOrDefault("X-Amz-Date")
+  valid_606254 = validateParameter(valid_606254, JString, required = false,
                                  default = nil)
-  if valid_602054 != nil:
-    section.add "X-Amz-Date", valid_602054
-  var valid_602055 = header.getOrDefault("X-Amz-Credential")
-  valid_602055 = validateParameter(valid_602055, JString, required = false,
+  if valid_606254 != nil:
+    section.add "X-Amz-Date", valid_606254
+  var valid_606255 = header.getOrDefault("X-Amz-Credential")
+  valid_606255 = validateParameter(valid_606255, JString, required = false,
                                  default = nil)
-  if valid_602055 != nil:
-    section.add "X-Amz-Credential", valid_602055
-  var valid_602056 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602056 = validateParameter(valid_602056, JString, required = false,
+  if valid_606255 != nil:
+    section.add "X-Amz-Credential", valid_606255
+  var valid_606256 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606256 = validateParameter(valid_606256, JString, required = false,
                                  default = nil)
-  if valid_602056 != nil:
-    section.add "X-Amz-Security-Token", valid_602056
-  var valid_602057 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602057 = validateParameter(valid_602057, JString, required = false,
+  if valid_606256 != nil:
+    section.add "X-Amz-Security-Token", valid_606256
+  var valid_606257 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606257 = validateParameter(valid_606257, JString, required = false,
                                  default = nil)
-  if valid_602057 != nil:
-    section.add "X-Amz-Algorithm", valid_602057
-  var valid_602058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602058 = validateParameter(valid_602058, JString, required = false,
+  if valid_606257 != nil:
+    section.add "X-Amz-Algorithm", valid_606257
+  var valid_606258 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606258 = validateParameter(valid_606258, JString, required = false,
                                  default = nil)
-  if valid_602058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602058
+  if valid_606258 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606258
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602059: Call_ListNodegroups_602046; path: JsonNode; query: JsonNode;
+proc call*(call_606259: Call_ListNodegroups_606246; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the Amazon EKS node groups associated with the specified cluster in your AWS account in the specified Region.
   ## 
-  let valid = call_602059.validator(path, query, header, formData, body)
-  let scheme = call_602059.pickScheme
+  let valid = call_606259.validator(path, query, header, formData, body)
+  let scheme = call_606259.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602059.url(scheme.get, call_602059.host, call_602059.base,
-                         call_602059.route, valid.getOrDefault("path"),
+  let url = call_606259.url(scheme.get, call_606259.host, call_606259.base,
+                         call_606259.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602059, url, valid)
+  result = atozHook(call_606259, url, valid)
 
-proc call*(call_602060: Call_ListNodegroups_602046; name: string;
+proc call*(call_606260: Call_ListNodegroups_606246; name: string;
           nextToken: string = ""; maxResults: int = 0): Recallable =
   ## listNodegroups
   ## Lists the Amazon EKS node groups associated with the specified cluster in your AWS account in the specified Region.
@@ -897,20 +897,20 @@ proc call*(call_602060: Call_ListNodegroups_602046; name: string;
   ##       : The name of the Amazon EKS cluster that you would like to list node groups in.
   ##   maxResults: int
   ##             : The maximum number of node group results returned by <code>ListNodegroups</code> in paginated output. When you use this parameter, <code>ListNodegroups</code> returns only <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. You can see the remaining results of the initial request by sending another <code>ListNodegroups</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If you don't use this parameter, <code>ListNodegroups</code> returns up to 100 results and a <code>nextToken</code> value if applicable.
-  var path_602061 = newJObject()
-  var query_602062 = newJObject()
-  add(query_602062, "nextToken", newJString(nextToken))
-  add(path_602061, "name", newJString(name))
-  add(query_602062, "maxResults", newJInt(maxResults))
-  result = call_602060.call(path_602061, query_602062, nil, nil, nil)
+  var path_606261 = newJObject()
+  var query_606262 = newJObject()
+  add(query_606262, "nextToken", newJString(nextToken))
+  add(path_606261, "name", newJString(name))
+  add(query_606262, "maxResults", newJInt(maxResults))
+  result = call_606260.call(path_606261, query_606262, nil, nil, nil)
 
-var listNodegroups* = Call_ListNodegroups_602046(name: "listNodegroups",
+var listNodegroups* = Call_ListNodegroups_606246(name: "listNodegroups",
     meth: HttpMethod.HttpGet, host: "eks.amazonaws.com",
-    route: "/clusters/{name}/node-groups", validator: validate_ListNodegroups_602047,
-    base: "/", url: url_ListNodegroups_602048, schemes: {Scheme.Https, Scheme.Http})
+    route: "/clusters/{name}/node-groups", validator: validate_ListNodegroups_606247,
+    base: "/", url: url_ListNodegroups_606248, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCluster_602079 = ref object of OpenApiRestCall_601390
-proc url_DescribeCluster_602081(protocol: Scheme; host: string; base: string;
+  Call_DescribeCluster_606279 = ref object of OpenApiRestCall_605590
+proc url_DescribeCluster_606281(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -930,7 +930,7 @@ proc url_DescribeCluster_602081(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeCluster_602080(path: JsonNode; query: JsonNode;
+proc validate_DescribeCluster_606280(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Returns descriptive information about an Amazon EKS cluster.</p> <p>The API server endpoint and certificate authority data returned by this operation are required for <code>kubelet</code> and <code>kubectl</code> to communicate with your Kubernetes API server. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html">Create a kubeconfig for Amazon EKS</a>.</p> <note> <p>The API server endpoint and certificate authority data aren't available until the cluster reaches the <code>ACTIVE</code> state.</p> </note>
@@ -942,11 +942,11 @@ proc validate_DescribeCluster_602080(path: JsonNode; query: JsonNode;
   ##       : The name of the cluster to describe.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602082 = path.getOrDefault("name")
-  valid_602082 = validateParameter(valid_602082, JString, required = true,
+  var valid_606282 = path.getOrDefault("name")
+  valid_606282 = validateParameter(valid_606282, JString, required = true,
                                  default = nil)
-  if valid_602082 != nil:
-    section.add "name", valid_602082
+  if valid_606282 != nil:
+    section.add "name", valid_606282
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -959,76 +959,76 @@ proc validate_DescribeCluster_602080(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602083 = header.getOrDefault("X-Amz-Signature")
-  valid_602083 = validateParameter(valid_602083, JString, required = false,
+  var valid_606283 = header.getOrDefault("X-Amz-Signature")
+  valid_606283 = validateParameter(valid_606283, JString, required = false,
                                  default = nil)
-  if valid_602083 != nil:
-    section.add "X-Amz-Signature", valid_602083
-  var valid_602084 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602084 = validateParameter(valid_602084, JString, required = false,
+  if valid_606283 != nil:
+    section.add "X-Amz-Signature", valid_606283
+  var valid_606284 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606284 = validateParameter(valid_606284, JString, required = false,
                                  default = nil)
-  if valid_602084 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602084
-  var valid_602085 = header.getOrDefault("X-Amz-Date")
-  valid_602085 = validateParameter(valid_602085, JString, required = false,
+  if valid_606284 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606284
+  var valid_606285 = header.getOrDefault("X-Amz-Date")
+  valid_606285 = validateParameter(valid_606285, JString, required = false,
                                  default = nil)
-  if valid_602085 != nil:
-    section.add "X-Amz-Date", valid_602085
-  var valid_602086 = header.getOrDefault("X-Amz-Credential")
-  valid_602086 = validateParameter(valid_602086, JString, required = false,
+  if valid_606285 != nil:
+    section.add "X-Amz-Date", valid_606285
+  var valid_606286 = header.getOrDefault("X-Amz-Credential")
+  valid_606286 = validateParameter(valid_606286, JString, required = false,
                                  default = nil)
-  if valid_602086 != nil:
-    section.add "X-Amz-Credential", valid_602086
-  var valid_602087 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602087 = validateParameter(valid_602087, JString, required = false,
+  if valid_606286 != nil:
+    section.add "X-Amz-Credential", valid_606286
+  var valid_606287 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606287 = validateParameter(valid_606287, JString, required = false,
                                  default = nil)
-  if valid_602087 != nil:
-    section.add "X-Amz-Security-Token", valid_602087
-  var valid_602088 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602088 = validateParameter(valid_602088, JString, required = false,
+  if valid_606287 != nil:
+    section.add "X-Amz-Security-Token", valid_606287
+  var valid_606288 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606288 = validateParameter(valid_606288, JString, required = false,
                                  default = nil)
-  if valid_602088 != nil:
-    section.add "X-Amz-Algorithm", valid_602088
-  var valid_602089 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602089 = validateParameter(valid_602089, JString, required = false,
+  if valid_606288 != nil:
+    section.add "X-Amz-Algorithm", valid_606288
+  var valid_606289 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606289 = validateParameter(valid_606289, JString, required = false,
                                  default = nil)
-  if valid_602089 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602089
+  if valid_606289 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606289
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602090: Call_DescribeCluster_602079; path: JsonNode; query: JsonNode;
+proc call*(call_606290: Call_DescribeCluster_606279; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns descriptive information about an Amazon EKS cluster.</p> <p>The API server endpoint and certificate authority data returned by this operation are required for <code>kubelet</code> and <code>kubectl</code> to communicate with your Kubernetes API server. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html">Create a kubeconfig for Amazon EKS</a>.</p> <note> <p>The API server endpoint and certificate authority data aren't available until the cluster reaches the <code>ACTIVE</code> state.</p> </note>
   ## 
-  let valid = call_602090.validator(path, query, header, formData, body)
-  let scheme = call_602090.pickScheme
+  let valid = call_606290.validator(path, query, header, formData, body)
+  let scheme = call_606290.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602090.url(scheme.get, call_602090.host, call_602090.base,
-                         call_602090.route, valid.getOrDefault("path"),
+  let url = call_606290.url(scheme.get, call_606290.host, call_606290.base,
+                         call_606290.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602090, url, valid)
+  result = atozHook(call_606290, url, valid)
 
-proc call*(call_602091: Call_DescribeCluster_602079; name: string): Recallable =
+proc call*(call_606291: Call_DescribeCluster_606279; name: string): Recallable =
   ## describeCluster
   ## <p>Returns descriptive information about an Amazon EKS cluster.</p> <p>The API server endpoint and certificate authority data returned by this operation are required for <code>kubelet</code> and <code>kubectl</code> to communicate with your Kubernetes API server. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/create-kubeconfig.html">Create a kubeconfig for Amazon EKS</a>.</p> <note> <p>The API server endpoint and certificate authority data aren't available until the cluster reaches the <code>ACTIVE</code> state.</p> </note>
   ##   name: string (required)
   ##       : The name of the cluster to describe.
-  var path_602092 = newJObject()
-  add(path_602092, "name", newJString(name))
-  result = call_602091.call(path_602092, nil, nil, nil, nil)
+  var path_606292 = newJObject()
+  add(path_606292, "name", newJString(name))
+  result = call_606291.call(path_606292, nil, nil, nil, nil)
 
-var describeCluster* = Call_DescribeCluster_602079(name: "describeCluster",
+var describeCluster* = Call_DescribeCluster_606279(name: "describeCluster",
     meth: HttpMethod.HttpGet, host: "eks.amazonaws.com", route: "/clusters/{name}",
-    validator: validate_DescribeCluster_602080, base: "/", url: url_DescribeCluster_602081,
+    validator: validate_DescribeCluster_606280, base: "/", url: url_DescribeCluster_606281,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteCluster_602093 = ref object of OpenApiRestCall_601390
-proc url_DeleteCluster_602095(protocol: Scheme; host: string; base: string;
+  Call_DeleteCluster_606293 = ref object of OpenApiRestCall_605590
+proc url_DeleteCluster_606295(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1048,7 +1048,7 @@ proc url_DeleteCluster_602095(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteCluster_602094(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteCluster_606294(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the Amazon EKS cluster control plane.</p> <p>If you have active services in your cluster that are associated with a load balancer, you must delete those services before deleting the cluster so that the load balancers are deleted properly. Otherwise, you can have orphaned resources in your VPC that prevent you from being able to delete the VPC. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html">Deleting a Cluster</a> in the <i>Amazon EKS User Guide</i>.</p> <p>If you have managed node groups or Fargate profiles attached to the cluster, you must delete them first. For more information, see <a>DeleteNodegroup</a> and<a>DeleteFargateProfile</a>.</p>
   ## 
@@ -1059,11 +1059,11 @@ proc validate_DeleteCluster_602094(path: JsonNode; query: JsonNode; header: Json
   ##       : The name of the cluster to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602096 = path.getOrDefault("name")
-  valid_602096 = validateParameter(valid_602096, JString, required = true,
+  var valid_606296 = path.getOrDefault("name")
+  valid_606296 = validateParameter(valid_606296, JString, required = true,
                                  default = nil)
-  if valid_602096 != nil:
-    section.add "name", valid_602096
+  if valid_606296 != nil:
+    section.add "name", valid_606296
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1076,76 +1076,76 @@ proc validate_DeleteCluster_602094(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602097 = header.getOrDefault("X-Amz-Signature")
-  valid_602097 = validateParameter(valid_602097, JString, required = false,
+  var valid_606297 = header.getOrDefault("X-Amz-Signature")
+  valid_606297 = validateParameter(valid_606297, JString, required = false,
                                  default = nil)
-  if valid_602097 != nil:
-    section.add "X-Amz-Signature", valid_602097
-  var valid_602098 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602098 = validateParameter(valid_602098, JString, required = false,
+  if valid_606297 != nil:
+    section.add "X-Amz-Signature", valid_606297
+  var valid_606298 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606298 = validateParameter(valid_606298, JString, required = false,
                                  default = nil)
-  if valid_602098 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602098
-  var valid_602099 = header.getOrDefault("X-Amz-Date")
-  valid_602099 = validateParameter(valid_602099, JString, required = false,
+  if valid_606298 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606298
+  var valid_606299 = header.getOrDefault("X-Amz-Date")
+  valid_606299 = validateParameter(valid_606299, JString, required = false,
                                  default = nil)
-  if valid_602099 != nil:
-    section.add "X-Amz-Date", valid_602099
-  var valid_602100 = header.getOrDefault("X-Amz-Credential")
-  valid_602100 = validateParameter(valid_602100, JString, required = false,
+  if valid_606299 != nil:
+    section.add "X-Amz-Date", valid_606299
+  var valid_606300 = header.getOrDefault("X-Amz-Credential")
+  valid_606300 = validateParameter(valid_606300, JString, required = false,
                                  default = nil)
-  if valid_602100 != nil:
-    section.add "X-Amz-Credential", valid_602100
-  var valid_602101 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602101 = validateParameter(valid_602101, JString, required = false,
+  if valid_606300 != nil:
+    section.add "X-Amz-Credential", valid_606300
+  var valid_606301 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606301 = validateParameter(valid_606301, JString, required = false,
                                  default = nil)
-  if valid_602101 != nil:
-    section.add "X-Amz-Security-Token", valid_602101
-  var valid_602102 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602102 = validateParameter(valid_602102, JString, required = false,
+  if valid_606301 != nil:
+    section.add "X-Amz-Security-Token", valid_606301
+  var valid_606302 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606302 = validateParameter(valid_606302, JString, required = false,
                                  default = nil)
-  if valid_602102 != nil:
-    section.add "X-Amz-Algorithm", valid_602102
-  var valid_602103 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602103 = validateParameter(valid_602103, JString, required = false,
+  if valid_606302 != nil:
+    section.add "X-Amz-Algorithm", valid_606302
+  var valid_606303 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606303 = validateParameter(valid_606303, JString, required = false,
                                  default = nil)
-  if valid_602103 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602103
+  if valid_606303 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606303
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602104: Call_DeleteCluster_602093; path: JsonNode; query: JsonNode;
+proc call*(call_606304: Call_DeleteCluster_606293; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the Amazon EKS cluster control plane.</p> <p>If you have active services in your cluster that are associated with a load balancer, you must delete those services before deleting the cluster so that the load balancers are deleted properly. Otherwise, you can have orphaned resources in your VPC that prevent you from being able to delete the VPC. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html">Deleting a Cluster</a> in the <i>Amazon EKS User Guide</i>.</p> <p>If you have managed node groups or Fargate profiles attached to the cluster, you must delete them first. For more information, see <a>DeleteNodegroup</a> and<a>DeleteFargateProfile</a>.</p>
   ## 
-  let valid = call_602104.validator(path, query, header, formData, body)
-  let scheme = call_602104.pickScheme
+  let valid = call_606304.validator(path, query, header, formData, body)
+  let scheme = call_606304.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602104.url(scheme.get, call_602104.host, call_602104.base,
-                         call_602104.route, valid.getOrDefault("path"),
+  let url = call_606304.url(scheme.get, call_606304.host, call_606304.base,
+                         call_606304.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602104, url, valid)
+  result = atozHook(call_606304, url, valid)
 
-proc call*(call_602105: Call_DeleteCluster_602093; name: string): Recallable =
+proc call*(call_606305: Call_DeleteCluster_606293; name: string): Recallable =
   ## deleteCluster
   ## <p>Deletes the Amazon EKS cluster control plane.</p> <p>If you have active services in your cluster that are associated with a load balancer, you must delete those services before deleting the cluster so that the load balancers are deleted properly. Otherwise, you can have orphaned resources in your VPC that prevent you from being able to delete the VPC. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/delete-cluster.html">Deleting a Cluster</a> in the <i>Amazon EKS User Guide</i>.</p> <p>If you have managed node groups or Fargate profiles attached to the cluster, you must delete them first. For more information, see <a>DeleteNodegroup</a> and<a>DeleteFargateProfile</a>.</p>
   ##   name: string (required)
   ##       : The name of the cluster to delete.
-  var path_602106 = newJObject()
-  add(path_602106, "name", newJString(name))
-  result = call_602105.call(path_602106, nil, nil, nil, nil)
+  var path_606306 = newJObject()
+  add(path_606306, "name", newJString(name))
+  result = call_606305.call(path_606306, nil, nil, nil, nil)
 
-var deleteCluster* = Call_DeleteCluster_602093(name: "deleteCluster",
+var deleteCluster* = Call_DeleteCluster_606293(name: "deleteCluster",
     meth: HttpMethod.HttpDelete, host: "eks.amazonaws.com",
-    route: "/clusters/{name}", validator: validate_DeleteCluster_602094, base: "/",
-    url: url_DeleteCluster_602095, schemes: {Scheme.Https, Scheme.Http})
+    route: "/clusters/{name}", validator: validate_DeleteCluster_606294, base: "/",
+    url: url_DeleteCluster_606295, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeFargateProfile_602107 = ref object of OpenApiRestCall_601390
-proc url_DescribeFargateProfile_602109(protocol: Scheme; host: string; base: string;
+  Call_DescribeFargateProfile_606307 = ref object of OpenApiRestCall_605590
+proc url_DescribeFargateProfile_606309(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1169,7 +1169,7 @@ proc url_DescribeFargateProfile_602109(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeFargateProfile_602108(path: JsonNode; query: JsonNode;
+proc validate_DescribeFargateProfile_606308(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns descriptive information about an AWS Fargate profile.
   ## 
@@ -1182,16 +1182,16 @@ proc validate_DescribeFargateProfile_602108(path: JsonNode; query: JsonNode;
   ##                     : The name of the Fargate profile to describe.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602110 = path.getOrDefault("name")
-  valid_602110 = validateParameter(valid_602110, JString, required = true,
+  var valid_606310 = path.getOrDefault("name")
+  valid_606310 = validateParameter(valid_606310, JString, required = true,
                                  default = nil)
-  if valid_602110 != nil:
-    section.add "name", valid_602110
-  var valid_602111 = path.getOrDefault("fargateProfileName")
-  valid_602111 = validateParameter(valid_602111, JString, required = true,
+  if valid_606310 != nil:
+    section.add "name", valid_606310
+  var valid_606311 = path.getOrDefault("fargateProfileName")
+  valid_606311 = validateParameter(valid_606311, JString, required = true,
                                  default = nil)
-  if valid_602111 != nil:
-    section.add "fargateProfileName", valid_602111
+  if valid_606311 != nil:
+    section.add "fargateProfileName", valid_606311
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1204,61 +1204,61 @@ proc validate_DescribeFargateProfile_602108(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602112 = header.getOrDefault("X-Amz-Signature")
-  valid_602112 = validateParameter(valid_602112, JString, required = false,
+  var valid_606312 = header.getOrDefault("X-Amz-Signature")
+  valid_606312 = validateParameter(valid_606312, JString, required = false,
                                  default = nil)
-  if valid_602112 != nil:
-    section.add "X-Amz-Signature", valid_602112
-  var valid_602113 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602113 = validateParameter(valid_602113, JString, required = false,
+  if valid_606312 != nil:
+    section.add "X-Amz-Signature", valid_606312
+  var valid_606313 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606313 = validateParameter(valid_606313, JString, required = false,
                                  default = nil)
-  if valid_602113 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602113
-  var valid_602114 = header.getOrDefault("X-Amz-Date")
-  valid_602114 = validateParameter(valid_602114, JString, required = false,
+  if valid_606313 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606313
+  var valid_606314 = header.getOrDefault("X-Amz-Date")
+  valid_606314 = validateParameter(valid_606314, JString, required = false,
                                  default = nil)
-  if valid_602114 != nil:
-    section.add "X-Amz-Date", valid_602114
-  var valid_602115 = header.getOrDefault("X-Amz-Credential")
-  valid_602115 = validateParameter(valid_602115, JString, required = false,
+  if valid_606314 != nil:
+    section.add "X-Amz-Date", valid_606314
+  var valid_606315 = header.getOrDefault("X-Amz-Credential")
+  valid_606315 = validateParameter(valid_606315, JString, required = false,
                                  default = nil)
-  if valid_602115 != nil:
-    section.add "X-Amz-Credential", valid_602115
-  var valid_602116 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602116 = validateParameter(valid_602116, JString, required = false,
+  if valid_606315 != nil:
+    section.add "X-Amz-Credential", valid_606315
+  var valid_606316 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606316 = validateParameter(valid_606316, JString, required = false,
                                  default = nil)
-  if valid_602116 != nil:
-    section.add "X-Amz-Security-Token", valid_602116
-  var valid_602117 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602117 = validateParameter(valid_602117, JString, required = false,
+  if valid_606316 != nil:
+    section.add "X-Amz-Security-Token", valid_606316
+  var valid_606317 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606317 = validateParameter(valid_606317, JString, required = false,
                                  default = nil)
-  if valid_602117 != nil:
-    section.add "X-Amz-Algorithm", valid_602117
-  var valid_602118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602118 = validateParameter(valid_602118, JString, required = false,
+  if valid_606317 != nil:
+    section.add "X-Amz-Algorithm", valid_606317
+  var valid_606318 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606318 = validateParameter(valid_606318, JString, required = false,
                                  default = nil)
-  if valid_602118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602118
+  if valid_606318 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606318
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602119: Call_DescribeFargateProfile_602107; path: JsonNode;
+proc call*(call_606319: Call_DescribeFargateProfile_606307; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns descriptive information about an AWS Fargate profile.
   ## 
-  let valid = call_602119.validator(path, query, header, formData, body)
-  let scheme = call_602119.pickScheme
+  let valid = call_606319.validator(path, query, header, formData, body)
+  let scheme = call_606319.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602119.url(scheme.get, call_602119.host, call_602119.base,
-                         call_602119.route, valid.getOrDefault("path"),
+  let url = call_606319.url(scheme.get, call_606319.host, call_606319.base,
+                         call_606319.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602119, url, valid)
+  result = atozHook(call_606319, url, valid)
 
-proc call*(call_602120: Call_DescribeFargateProfile_602107; name: string;
+proc call*(call_606320: Call_DescribeFargateProfile_606307; name: string;
           fargateProfileName: string): Recallable =
   ## describeFargateProfile
   ## Returns descriptive information about an AWS Fargate profile.
@@ -1266,20 +1266,20 @@ proc call*(call_602120: Call_DescribeFargateProfile_602107; name: string;
   ##       : The name of the Amazon EKS cluster associated with the Fargate profile.
   ##   fargateProfileName: string (required)
   ##                     : The name of the Fargate profile to describe.
-  var path_602121 = newJObject()
-  add(path_602121, "name", newJString(name))
-  add(path_602121, "fargateProfileName", newJString(fargateProfileName))
-  result = call_602120.call(path_602121, nil, nil, nil, nil)
+  var path_606321 = newJObject()
+  add(path_606321, "name", newJString(name))
+  add(path_606321, "fargateProfileName", newJString(fargateProfileName))
+  result = call_606320.call(path_606321, nil, nil, nil, nil)
 
-var describeFargateProfile* = Call_DescribeFargateProfile_602107(
+var describeFargateProfile* = Call_DescribeFargateProfile_606307(
     name: "describeFargateProfile", meth: HttpMethod.HttpGet,
     host: "eks.amazonaws.com",
     route: "/clusters/{name}/fargate-profiles/{fargateProfileName}",
-    validator: validate_DescribeFargateProfile_602108, base: "/",
-    url: url_DescribeFargateProfile_602109, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeFargateProfile_606308, base: "/",
+    url: url_DescribeFargateProfile_606309, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteFargateProfile_602122 = ref object of OpenApiRestCall_601390
-proc url_DeleteFargateProfile_602124(protocol: Scheme; host: string; base: string;
+  Call_DeleteFargateProfile_606322 = ref object of OpenApiRestCall_605590
+proc url_DeleteFargateProfile_606324(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1303,7 +1303,7 @@ proc url_DeleteFargateProfile_602124(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteFargateProfile_602123(path: JsonNode; query: JsonNode;
+proc validate_DeleteFargateProfile_606323(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes an AWS Fargate profile.</p> <p>When you delete a Fargate profile, any pods running on Fargate that were created with the profile are deleted. If those pods match another Fargate profile, then they are scheduled on Fargate with that profile. If they no longer match any Fargate profiles, then they are not scheduled on Fargate and they may remain in a pending state.</p> <p>Only one Fargate profile in a cluster can be in the <code>DELETING</code> status at a time. You must wait for a Fargate profile to finish deleting before you can delete any other profiles in that cluster.</p>
   ## 
@@ -1316,16 +1316,16 @@ proc validate_DeleteFargateProfile_602123(path: JsonNode; query: JsonNode;
   ##                     : The name of the Fargate profile to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602125 = path.getOrDefault("name")
-  valid_602125 = validateParameter(valid_602125, JString, required = true,
+  var valid_606325 = path.getOrDefault("name")
+  valid_606325 = validateParameter(valid_606325, JString, required = true,
                                  default = nil)
-  if valid_602125 != nil:
-    section.add "name", valid_602125
-  var valid_602126 = path.getOrDefault("fargateProfileName")
-  valid_602126 = validateParameter(valid_602126, JString, required = true,
+  if valid_606325 != nil:
+    section.add "name", valid_606325
+  var valid_606326 = path.getOrDefault("fargateProfileName")
+  valid_606326 = validateParameter(valid_606326, JString, required = true,
                                  default = nil)
-  if valid_602126 != nil:
-    section.add "fargateProfileName", valid_602126
+  if valid_606326 != nil:
+    section.add "fargateProfileName", valid_606326
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1338,61 +1338,61 @@ proc validate_DeleteFargateProfile_602123(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602127 = header.getOrDefault("X-Amz-Signature")
-  valid_602127 = validateParameter(valid_602127, JString, required = false,
+  var valid_606327 = header.getOrDefault("X-Amz-Signature")
+  valid_606327 = validateParameter(valid_606327, JString, required = false,
                                  default = nil)
-  if valid_602127 != nil:
-    section.add "X-Amz-Signature", valid_602127
-  var valid_602128 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602128 = validateParameter(valid_602128, JString, required = false,
+  if valid_606327 != nil:
+    section.add "X-Amz-Signature", valid_606327
+  var valid_606328 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606328 = validateParameter(valid_606328, JString, required = false,
                                  default = nil)
-  if valid_602128 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602128
-  var valid_602129 = header.getOrDefault("X-Amz-Date")
-  valid_602129 = validateParameter(valid_602129, JString, required = false,
+  if valid_606328 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606328
+  var valid_606329 = header.getOrDefault("X-Amz-Date")
+  valid_606329 = validateParameter(valid_606329, JString, required = false,
                                  default = nil)
-  if valid_602129 != nil:
-    section.add "X-Amz-Date", valid_602129
-  var valid_602130 = header.getOrDefault("X-Amz-Credential")
-  valid_602130 = validateParameter(valid_602130, JString, required = false,
+  if valid_606329 != nil:
+    section.add "X-Amz-Date", valid_606329
+  var valid_606330 = header.getOrDefault("X-Amz-Credential")
+  valid_606330 = validateParameter(valid_606330, JString, required = false,
                                  default = nil)
-  if valid_602130 != nil:
-    section.add "X-Amz-Credential", valid_602130
-  var valid_602131 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602131 = validateParameter(valid_602131, JString, required = false,
+  if valid_606330 != nil:
+    section.add "X-Amz-Credential", valid_606330
+  var valid_606331 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606331 = validateParameter(valid_606331, JString, required = false,
                                  default = nil)
-  if valid_602131 != nil:
-    section.add "X-Amz-Security-Token", valid_602131
-  var valid_602132 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602132 = validateParameter(valid_602132, JString, required = false,
+  if valid_606331 != nil:
+    section.add "X-Amz-Security-Token", valid_606331
+  var valid_606332 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606332 = validateParameter(valid_606332, JString, required = false,
                                  default = nil)
-  if valid_602132 != nil:
-    section.add "X-Amz-Algorithm", valid_602132
-  var valid_602133 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602133 = validateParameter(valid_602133, JString, required = false,
+  if valid_606332 != nil:
+    section.add "X-Amz-Algorithm", valid_606332
+  var valid_606333 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606333 = validateParameter(valid_606333, JString, required = false,
                                  default = nil)
-  if valid_602133 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602133
+  if valid_606333 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606333
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602134: Call_DeleteFargateProfile_602122; path: JsonNode;
+proc call*(call_606334: Call_DeleteFargateProfile_606322; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes an AWS Fargate profile.</p> <p>When you delete a Fargate profile, any pods running on Fargate that were created with the profile are deleted. If those pods match another Fargate profile, then they are scheduled on Fargate with that profile. If they no longer match any Fargate profiles, then they are not scheduled on Fargate and they may remain in a pending state.</p> <p>Only one Fargate profile in a cluster can be in the <code>DELETING</code> status at a time. You must wait for a Fargate profile to finish deleting before you can delete any other profiles in that cluster.</p>
   ## 
-  let valid = call_602134.validator(path, query, header, formData, body)
-  let scheme = call_602134.pickScheme
+  let valid = call_606334.validator(path, query, header, formData, body)
+  let scheme = call_606334.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602134.url(scheme.get, call_602134.host, call_602134.base,
-                         call_602134.route, valid.getOrDefault("path"),
+  let url = call_606334.url(scheme.get, call_606334.host, call_606334.base,
+                         call_606334.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602134, url, valid)
+  result = atozHook(call_606334, url, valid)
 
-proc call*(call_602135: Call_DeleteFargateProfile_602122; name: string;
+proc call*(call_606335: Call_DeleteFargateProfile_606322; name: string;
           fargateProfileName: string): Recallable =
   ## deleteFargateProfile
   ## <p>Deletes an AWS Fargate profile.</p> <p>When you delete a Fargate profile, any pods running on Fargate that were created with the profile are deleted. If those pods match another Fargate profile, then they are scheduled on Fargate with that profile. If they no longer match any Fargate profiles, then they are not scheduled on Fargate and they may remain in a pending state.</p> <p>Only one Fargate profile in a cluster can be in the <code>DELETING</code> status at a time. You must wait for a Fargate profile to finish deleting before you can delete any other profiles in that cluster.</p>
@@ -1400,20 +1400,20 @@ proc call*(call_602135: Call_DeleteFargateProfile_602122; name: string;
   ##       : The name of the Amazon EKS cluster associated with the Fargate profile to delete.
   ##   fargateProfileName: string (required)
   ##                     : The name of the Fargate profile to delete.
-  var path_602136 = newJObject()
-  add(path_602136, "name", newJString(name))
-  add(path_602136, "fargateProfileName", newJString(fargateProfileName))
-  result = call_602135.call(path_602136, nil, nil, nil, nil)
+  var path_606336 = newJObject()
+  add(path_606336, "name", newJString(name))
+  add(path_606336, "fargateProfileName", newJString(fargateProfileName))
+  result = call_606335.call(path_606336, nil, nil, nil, nil)
 
-var deleteFargateProfile* = Call_DeleteFargateProfile_602122(
+var deleteFargateProfile* = Call_DeleteFargateProfile_606322(
     name: "deleteFargateProfile", meth: HttpMethod.HttpDelete,
     host: "eks.amazonaws.com",
     route: "/clusters/{name}/fargate-profiles/{fargateProfileName}",
-    validator: validate_DeleteFargateProfile_602123, base: "/",
-    url: url_DeleteFargateProfile_602124, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteFargateProfile_606323, base: "/",
+    url: url_DeleteFargateProfile_606324, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeNodegroup_602137 = ref object of OpenApiRestCall_601390
-proc url_DescribeNodegroup_602139(protocol: Scheme; host: string; base: string;
+  Call_DescribeNodegroup_606337 = ref object of OpenApiRestCall_605590
+proc url_DescribeNodegroup_606339(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1436,7 +1436,7 @@ proc url_DescribeNodegroup_602139(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeNodegroup_602138(path: JsonNode; query: JsonNode;
+proc validate_DescribeNodegroup_606338(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Returns descriptive information about an Amazon EKS node group.
@@ -1450,16 +1450,16 @@ proc validate_DescribeNodegroup_602138(path: JsonNode; query: JsonNode;
   ##                : The name of the node group to describe.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602140 = path.getOrDefault("name")
-  valid_602140 = validateParameter(valid_602140, JString, required = true,
+  var valid_606340 = path.getOrDefault("name")
+  valid_606340 = validateParameter(valid_606340, JString, required = true,
                                  default = nil)
-  if valid_602140 != nil:
-    section.add "name", valid_602140
-  var valid_602141 = path.getOrDefault("nodegroupName")
-  valid_602141 = validateParameter(valid_602141, JString, required = true,
+  if valid_606340 != nil:
+    section.add "name", valid_606340
+  var valid_606341 = path.getOrDefault("nodegroupName")
+  valid_606341 = validateParameter(valid_606341, JString, required = true,
                                  default = nil)
-  if valid_602141 != nil:
-    section.add "nodegroupName", valid_602141
+  if valid_606341 != nil:
+    section.add "nodegroupName", valid_606341
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1472,61 +1472,61 @@ proc validate_DescribeNodegroup_602138(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602142 = header.getOrDefault("X-Amz-Signature")
-  valid_602142 = validateParameter(valid_602142, JString, required = false,
+  var valid_606342 = header.getOrDefault("X-Amz-Signature")
+  valid_606342 = validateParameter(valid_606342, JString, required = false,
                                  default = nil)
-  if valid_602142 != nil:
-    section.add "X-Amz-Signature", valid_602142
-  var valid_602143 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602143 = validateParameter(valid_602143, JString, required = false,
+  if valid_606342 != nil:
+    section.add "X-Amz-Signature", valid_606342
+  var valid_606343 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606343 = validateParameter(valid_606343, JString, required = false,
                                  default = nil)
-  if valid_602143 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602143
-  var valid_602144 = header.getOrDefault("X-Amz-Date")
-  valid_602144 = validateParameter(valid_602144, JString, required = false,
+  if valid_606343 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606343
+  var valid_606344 = header.getOrDefault("X-Amz-Date")
+  valid_606344 = validateParameter(valid_606344, JString, required = false,
                                  default = nil)
-  if valid_602144 != nil:
-    section.add "X-Amz-Date", valid_602144
-  var valid_602145 = header.getOrDefault("X-Amz-Credential")
-  valid_602145 = validateParameter(valid_602145, JString, required = false,
+  if valid_606344 != nil:
+    section.add "X-Amz-Date", valid_606344
+  var valid_606345 = header.getOrDefault("X-Amz-Credential")
+  valid_606345 = validateParameter(valid_606345, JString, required = false,
                                  default = nil)
-  if valid_602145 != nil:
-    section.add "X-Amz-Credential", valid_602145
-  var valid_602146 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602146 = validateParameter(valid_602146, JString, required = false,
+  if valid_606345 != nil:
+    section.add "X-Amz-Credential", valid_606345
+  var valid_606346 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606346 = validateParameter(valid_606346, JString, required = false,
                                  default = nil)
-  if valid_602146 != nil:
-    section.add "X-Amz-Security-Token", valid_602146
-  var valid_602147 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602147 = validateParameter(valid_602147, JString, required = false,
+  if valid_606346 != nil:
+    section.add "X-Amz-Security-Token", valid_606346
+  var valid_606347 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606347 = validateParameter(valid_606347, JString, required = false,
                                  default = nil)
-  if valid_602147 != nil:
-    section.add "X-Amz-Algorithm", valid_602147
-  var valid_602148 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602148 = validateParameter(valid_602148, JString, required = false,
+  if valid_606347 != nil:
+    section.add "X-Amz-Algorithm", valid_606347
+  var valid_606348 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606348 = validateParameter(valid_606348, JString, required = false,
                                  default = nil)
-  if valid_602148 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602148
+  if valid_606348 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606348
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602149: Call_DescribeNodegroup_602137; path: JsonNode;
+proc call*(call_606349: Call_DescribeNodegroup_606337; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns descriptive information about an Amazon EKS node group.
   ## 
-  let valid = call_602149.validator(path, query, header, formData, body)
-  let scheme = call_602149.pickScheme
+  let valid = call_606349.validator(path, query, header, formData, body)
+  let scheme = call_606349.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602149.url(scheme.get, call_602149.host, call_602149.base,
-                         call_602149.route, valid.getOrDefault("path"),
+  let url = call_606349.url(scheme.get, call_606349.host, call_606349.base,
+                         call_606349.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602149, url, valid)
+  result = atozHook(call_606349, url, valid)
 
-proc call*(call_602150: Call_DescribeNodegroup_602137; name: string;
+proc call*(call_606350: Call_DescribeNodegroup_606337; name: string;
           nodegroupName: string): Recallable =
   ## describeNodegroup
   ## Returns descriptive information about an Amazon EKS node group.
@@ -1534,19 +1534,19 @@ proc call*(call_602150: Call_DescribeNodegroup_602137; name: string;
   ##       : The name of the Amazon EKS cluster associated with the node group.
   ##   nodegroupName: string (required)
   ##                : The name of the node group to describe.
-  var path_602151 = newJObject()
-  add(path_602151, "name", newJString(name))
-  add(path_602151, "nodegroupName", newJString(nodegroupName))
-  result = call_602150.call(path_602151, nil, nil, nil, nil)
+  var path_606351 = newJObject()
+  add(path_606351, "name", newJString(name))
+  add(path_606351, "nodegroupName", newJString(nodegroupName))
+  result = call_606350.call(path_606351, nil, nil, nil, nil)
 
-var describeNodegroup* = Call_DescribeNodegroup_602137(name: "describeNodegroup",
+var describeNodegroup* = Call_DescribeNodegroup_606337(name: "describeNodegroup",
     meth: HttpMethod.HttpGet, host: "eks.amazonaws.com",
     route: "/clusters/{name}/node-groups/{nodegroupName}",
-    validator: validate_DescribeNodegroup_602138, base: "/",
-    url: url_DescribeNodegroup_602139, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeNodegroup_606338, base: "/",
+    url: url_DescribeNodegroup_606339, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteNodegroup_602152 = ref object of OpenApiRestCall_601390
-proc url_DeleteNodegroup_602154(protocol: Scheme; host: string; base: string;
+  Call_DeleteNodegroup_606352 = ref object of OpenApiRestCall_605590
+proc url_DeleteNodegroup_606354(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1569,7 +1569,7 @@ proc url_DeleteNodegroup_602154(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteNodegroup_602153(path: JsonNode; query: JsonNode;
+proc validate_DeleteNodegroup_606353(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Deletes an Amazon EKS node group for a cluster.
@@ -1583,16 +1583,16 @@ proc validate_DeleteNodegroup_602153(path: JsonNode; query: JsonNode;
   ##                : The name of the node group to delete.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602155 = path.getOrDefault("name")
-  valid_602155 = validateParameter(valid_602155, JString, required = true,
+  var valid_606355 = path.getOrDefault("name")
+  valid_606355 = validateParameter(valid_606355, JString, required = true,
                                  default = nil)
-  if valid_602155 != nil:
-    section.add "name", valid_602155
-  var valid_602156 = path.getOrDefault("nodegroupName")
-  valid_602156 = validateParameter(valid_602156, JString, required = true,
+  if valid_606355 != nil:
+    section.add "name", valid_606355
+  var valid_606356 = path.getOrDefault("nodegroupName")
+  valid_606356 = validateParameter(valid_606356, JString, required = true,
                                  default = nil)
-  if valid_602156 != nil:
-    section.add "nodegroupName", valid_602156
+  if valid_606356 != nil:
+    section.add "nodegroupName", valid_606356
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1605,61 +1605,61 @@ proc validate_DeleteNodegroup_602153(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602157 = header.getOrDefault("X-Amz-Signature")
-  valid_602157 = validateParameter(valid_602157, JString, required = false,
+  var valid_606357 = header.getOrDefault("X-Amz-Signature")
+  valid_606357 = validateParameter(valid_606357, JString, required = false,
                                  default = nil)
-  if valid_602157 != nil:
-    section.add "X-Amz-Signature", valid_602157
-  var valid_602158 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602158 = validateParameter(valid_602158, JString, required = false,
+  if valid_606357 != nil:
+    section.add "X-Amz-Signature", valid_606357
+  var valid_606358 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606358 = validateParameter(valid_606358, JString, required = false,
                                  default = nil)
-  if valid_602158 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602158
-  var valid_602159 = header.getOrDefault("X-Amz-Date")
-  valid_602159 = validateParameter(valid_602159, JString, required = false,
+  if valid_606358 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606358
+  var valid_606359 = header.getOrDefault("X-Amz-Date")
+  valid_606359 = validateParameter(valid_606359, JString, required = false,
                                  default = nil)
-  if valid_602159 != nil:
-    section.add "X-Amz-Date", valid_602159
-  var valid_602160 = header.getOrDefault("X-Amz-Credential")
-  valid_602160 = validateParameter(valid_602160, JString, required = false,
+  if valid_606359 != nil:
+    section.add "X-Amz-Date", valid_606359
+  var valid_606360 = header.getOrDefault("X-Amz-Credential")
+  valid_606360 = validateParameter(valid_606360, JString, required = false,
                                  default = nil)
-  if valid_602160 != nil:
-    section.add "X-Amz-Credential", valid_602160
-  var valid_602161 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602161 = validateParameter(valid_602161, JString, required = false,
+  if valid_606360 != nil:
+    section.add "X-Amz-Credential", valid_606360
+  var valid_606361 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606361 = validateParameter(valid_606361, JString, required = false,
                                  default = nil)
-  if valid_602161 != nil:
-    section.add "X-Amz-Security-Token", valid_602161
-  var valid_602162 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602162 = validateParameter(valid_602162, JString, required = false,
+  if valid_606361 != nil:
+    section.add "X-Amz-Security-Token", valid_606361
+  var valid_606362 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606362 = validateParameter(valid_606362, JString, required = false,
                                  default = nil)
-  if valid_602162 != nil:
-    section.add "X-Amz-Algorithm", valid_602162
-  var valid_602163 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602163 = validateParameter(valid_602163, JString, required = false,
+  if valid_606362 != nil:
+    section.add "X-Amz-Algorithm", valid_606362
+  var valid_606363 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606363 = validateParameter(valid_606363, JString, required = false,
                                  default = nil)
-  if valid_602163 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602163
+  if valid_606363 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606363
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602164: Call_DeleteNodegroup_602152; path: JsonNode; query: JsonNode;
+proc call*(call_606364: Call_DeleteNodegroup_606352; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes an Amazon EKS node group for a cluster.
   ## 
-  let valid = call_602164.validator(path, query, header, formData, body)
-  let scheme = call_602164.pickScheme
+  let valid = call_606364.validator(path, query, header, formData, body)
+  let scheme = call_606364.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602164.url(scheme.get, call_602164.host, call_602164.base,
-                         call_602164.route, valid.getOrDefault("path"),
+  let url = call_606364.url(scheme.get, call_606364.host, call_606364.base,
+                         call_606364.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602164, url, valid)
+  result = atozHook(call_606364, url, valid)
 
-proc call*(call_602165: Call_DeleteNodegroup_602152; name: string;
+proc call*(call_606365: Call_DeleteNodegroup_606352; name: string;
           nodegroupName: string): Recallable =
   ## deleteNodegroup
   ## Deletes an Amazon EKS node group for a cluster.
@@ -1667,19 +1667,19 @@ proc call*(call_602165: Call_DeleteNodegroup_602152; name: string;
   ##       : The name of the Amazon EKS cluster that is associated with your node group.
   ##   nodegroupName: string (required)
   ##                : The name of the node group to delete.
-  var path_602166 = newJObject()
-  add(path_602166, "name", newJString(name))
-  add(path_602166, "nodegroupName", newJString(nodegroupName))
-  result = call_602165.call(path_602166, nil, nil, nil, nil)
+  var path_606366 = newJObject()
+  add(path_606366, "name", newJString(name))
+  add(path_606366, "nodegroupName", newJString(nodegroupName))
+  result = call_606365.call(path_606366, nil, nil, nil, nil)
 
-var deleteNodegroup* = Call_DeleteNodegroup_602152(name: "deleteNodegroup",
+var deleteNodegroup* = Call_DeleteNodegroup_606352(name: "deleteNodegroup",
     meth: HttpMethod.HttpDelete, host: "eks.amazonaws.com",
     route: "/clusters/{name}/node-groups/{nodegroupName}",
-    validator: validate_DeleteNodegroup_602153, base: "/", url: url_DeleteNodegroup_602154,
+    validator: validate_DeleteNodegroup_606353, base: "/", url: url_DeleteNodegroup_606354,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeUpdate_602167 = ref object of OpenApiRestCall_601390
-proc url_DescribeUpdate_602169(protocol: Scheme; host: string; base: string;
+  Call_DescribeUpdate_606367 = ref object of OpenApiRestCall_605590
+proc url_DescribeUpdate_606369(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1702,7 +1702,7 @@ proc url_DescribeUpdate_602169(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeUpdate_602168(path: JsonNode; query: JsonNode;
+proc validate_DescribeUpdate_606368(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns descriptive information about an update against your Amazon EKS cluster or associated managed node group.</p> <p>When the status of the update is <code>Succeeded</code>, the update is complete. If an update fails, the status is <code>Failed</code>, and an error detail explains the reason for the failure.</p>
@@ -1716,26 +1716,26 @@ proc validate_DescribeUpdate_602168(path: JsonNode; query: JsonNode;
   ##       : The name of the Amazon EKS cluster associated with the update.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `updateId` field"
-  var valid_602170 = path.getOrDefault("updateId")
-  valid_602170 = validateParameter(valid_602170, JString, required = true,
+  var valid_606370 = path.getOrDefault("updateId")
+  valid_606370 = validateParameter(valid_606370, JString, required = true,
                                  default = nil)
-  if valid_602170 != nil:
-    section.add "updateId", valid_602170
-  var valid_602171 = path.getOrDefault("name")
-  valid_602171 = validateParameter(valid_602171, JString, required = true,
+  if valid_606370 != nil:
+    section.add "updateId", valid_606370
+  var valid_606371 = path.getOrDefault("name")
+  valid_606371 = validateParameter(valid_606371, JString, required = true,
                                  default = nil)
-  if valid_602171 != nil:
-    section.add "name", valid_602171
+  if valid_606371 != nil:
+    section.add "name", valid_606371
   result.add "path", section
   ## parameters in `query` object:
   ##   nodegroupName: JString
   ##                : The name of the Amazon EKS node group associated with the update.
   section = newJObject()
-  var valid_602172 = query.getOrDefault("nodegroupName")
-  valid_602172 = validateParameter(valid_602172, JString, required = false,
+  var valid_606372 = query.getOrDefault("nodegroupName")
+  valid_606372 = validateParameter(valid_606372, JString, required = false,
                                  default = nil)
-  if valid_602172 != nil:
-    section.add "nodegroupName", valid_602172
+  if valid_606372 != nil:
+    section.add "nodegroupName", valid_606372
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1746,61 +1746,61 @@ proc validate_DescribeUpdate_602168(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602173 = header.getOrDefault("X-Amz-Signature")
-  valid_602173 = validateParameter(valid_602173, JString, required = false,
+  var valid_606373 = header.getOrDefault("X-Amz-Signature")
+  valid_606373 = validateParameter(valid_606373, JString, required = false,
                                  default = nil)
-  if valid_602173 != nil:
-    section.add "X-Amz-Signature", valid_602173
-  var valid_602174 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602174 = validateParameter(valid_602174, JString, required = false,
+  if valid_606373 != nil:
+    section.add "X-Amz-Signature", valid_606373
+  var valid_606374 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606374 = validateParameter(valid_606374, JString, required = false,
                                  default = nil)
-  if valid_602174 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602174
-  var valid_602175 = header.getOrDefault("X-Amz-Date")
-  valid_602175 = validateParameter(valid_602175, JString, required = false,
+  if valid_606374 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606374
+  var valid_606375 = header.getOrDefault("X-Amz-Date")
+  valid_606375 = validateParameter(valid_606375, JString, required = false,
                                  default = nil)
-  if valid_602175 != nil:
-    section.add "X-Amz-Date", valid_602175
-  var valid_602176 = header.getOrDefault("X-Amz-Credential")
-  valid_602176 = validateParameter(valid_602176, JString, required = false,
+  if valid_606375 != nil:
+    section.add "X-Amz-Date", valid_606375
+  var valid_606376 = header.getOrDefault("X-Amz-Credential")
+  valid_606376 = validateParameter(valid_606376, JString, required = false,
                                  default = nil)
-  if valid_602176 != nil:
-    section.add "X-Amz-Credential", valid_602176
-  var valid_602177 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602177 = validateParameter(valid_602177, JString, required = false,
+  if valid_606376 != nil:
+    section.add "X-Amz-Credential", valid_606376
+  var valid_606377 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606377 = validateParameter(valid_606377, JString, required = false,
                                  default = nil)
-  if valid_602177 != nil:
-    section.add "X-Amz-Security-Token", valid_602177
-  var valid_602178 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602178 = validateParameter(valid_602178, JString, required = false,
+  if valid_606377 != nil:
+    section.add "X-Amz-Security-Token", valid_606377
+  var valid_606378 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606378 = validateParameter(valid_606378, JString, required = false,
                                  default = nil)
-  if valid_602178 != nil:
-    section.add "X-Amz-Algorithm", valid_602178
-  var valid_602179 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602179 = validateParameter(valid_602179, JString, required = false,
+  if valid_606378 != nil:
+    section.add "X-Amz-Algorithm", valid_606378
+  var valid_606379 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606379 = validateParameter(valid_606379, JString, required = false,
                                  default = nil)
-  if valid_602179 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602179
+  if valid_606379 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606379
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602180: Call_DescribeUpdate_602167; path: JsonNode; query: JsonNode;
+proc call*(call_606380: Call_DescribeUpdate_606367; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns descriptive information about an update against your Amazon EKS cluster or associated managed node group.</p> <p>When the status of the update is <code>Succeeded</code>, the update is complete. If an update fails, the status is <code>Failed</code>, and an error detail explains the reason for the failure.</p>
   ## 
-  let valid = call_602180.validator(path, query, header, formData, body)
-  let scheme = call_602180.pickScheme
+  let valid = call_606380.validator(path, query, header, formData, body)
+  let scheme = call_606380.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602180.url(scheme.get, call_602180.host, call_602180.base,
-                         call_602180.route, valid.getOrDefault("path"),
+  let url = call_606380.url(scheme.get, call_606380.host, call_606380.base,
+                         call_606380.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602180, url, valid)
+  result = atozHook(call_606380, url, valid)
 
-proc call*(call_602181: Call_DescribeUpdate_602167; updateId: string; name: string;
+proc call*(call_606381: Call_DescribeUpdate_606367; updateId: string; name: string;
           nodegroupName: string = ""): Recallable =
   ## describeUpdate
   ## <p>Returns descriptive information about an update against your Amazon EKS cluster or associated managed node group.</p> <p>When the status of the update is <code>Succeeded</code>, the update is complete. If an update fails, the status is <code>Failed</code>, and an error detail explains the reason for the failure.</p>
@@ -1810,21 +1810,21 @@ proc call*(call_602181: Call_DescribeUpdate_602167; updateId: string; name: stri
   ##       : The name of the Amazon EKS cluster associated with the update.
   ##   nodegroupName: string
   ##                : The name of the Amazon EKS node group associated with the update.
-  var path_602182 = newJObject()
-  var query_602183 = newJObject()
-  add(path_602182, "updateId", newJString(updateId))
-  add(path_602182, "name", newJString(name))
-  add(query_602183, "nodegroupName", newJString(nodegroupName))
-  result = call_602181.call(path_602182, query_602183, nil, nil, nil)
+  var path_606382 = newJObject()
+  var query_606383 = newJObject()
+  add(path_606382, "updateId", newJString(updateId))
+  add(path_606382, "name", newJString(name))
+  add(query_606383, "nodegroupName", newJString(nodegroupName))
+  result = call_606381.call(path_606382, query_606383, nil, nil, nil)
 
-var describeUpdate* = Call_DescribeUpdate_602167(name: "describeUpdate",
+var describeUpdate* = Call_DescribeUpdate_606367(name: "describeUpdate",
     meth: HttpMethod.HttpGet, host: "eks.amazonaws.com",
     route: "/clusters/{name}/updates/{updateId}",
-    validator: validate_DescribeUpdate_602168, base: "/", url: url_DescribeUpdate_602169,
+    validator: validate_DescribeUpdate_606368, base: "/", url: url_DescribeUpdate_606369,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_602198 = ref object of OpenApiRestCall_601390
-proc url_TagResource_602200(protocol: Scheme; host: string; base: string;
+  Call_TagResource_606398 = ref object of OpenApiRestCall_605590
+proc url_TagResource_606400(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1844,7 +1844,7 @@ proc url_TagResource_602200(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_TagResource_602199(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_606399(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Associates the specified tags to a resource with the specified <code>resourceArn</code>. If existing tags on a resource are not specified in the request parameters, they are not changed. When a resource is deleted, the tags associated with that resource are deleted as well. Tags that you create for Amazon EKS resources do not propagate to any other resources associated with the cluster. For example, if you tag a cluster with this operation, that tag does not automatically propagate to the subnets and worker nodes associated with the cluster.
   ## 
@@ -1856,11 +1856,11 @@ proc validate_TagResource_602199(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_602201 = path.getOrDefault("resourceArn")
-  valid_602201 = validateParameter(valid_602201, JString, required = true,
+  var valid_606401 = path.getOrDefault("resourceArn")
+  valid_606401 = validateParameter(valid_606401, JString, required = true,
                                  default = nil)
-  if valid_602201 != nil:
-    section.add "resourceArn", valid_602201
+  if valid_606401 != nil:
+    section.add "resourceArn", valid_606401
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1873,41 +1873,41 @@ proc validate_TagResource_602199(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602202 = header.getOrDefault("X-Amz-Signature")
-  valid_602202 = validateParameter(valid_602202, JString, required = false,
+  var valid_606402 = header.getOrDefault("X-Amz-Signature")
+  valid_606402 = validateParameter(valid_606402, JString, required = false,
                                  default = nil)
-  if valid_602202 != nil:
-    section.add "X-Amz-Signature", valid_602202
-  var valid_602203 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602203 = validateParameter(valid_602203, JString, required = false,
+  if valid_606402 != nil:
+    section.add "X-Amz-Signature", valid_606402
+  var valid_606403 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606403 = validateParameter(valid_606403, JString, required = false,
                                  default = nil)
-  if valid_602203 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602203
-  var valid_602204 = header.getOrDefault("X-Amz-Date")
-  valid_602204 = validateParameter(valid_602204, JString, required = false,
+  if valid_606403 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606403
+  var valid_606404 = header.getOrDefault("X-Amz-Date")
+  valid_606404 = validateParameter(valid_606404, JString, required = false,
                                  default = nil)
-  if valid_602204 != nil:
-    section.add "X-Amz-Date", valid_602204
-  var valid_602205 = header.getOrDefault("X-Amz-Credential")
-  valid_602205 = validateParameter(valid_602205, JString, required = false,
+  if valid_606404 != nil:
+    section.add "X-Amz-Date", valid_606404
+  var valid_606405 = header.getOrDefault("X-Amz-Credential")
+  valid_606405 = validateParameter(valid_606405, JString, required = false,
                                  default = nil)
-  if valid_602205 != nil:
-    section.add "X-Amz-Credential", valid_602205
-  var valid_602206 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602206 = validateParameter(valid_602206, JString, required = false,
+  if valid_606405 != nil:
+    section.add "X-Amz-Credential", valid_606405
+  var valid_606406 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606406 = validateParameter(valid_606406, JString, required = false,
                                  default = nil)
-  if valid_602206 != nil:
-    section.add "X-Amz-Security-Token", valid_602206
-  var valid_602207 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602207 = validateParameter(valid_602207, JString, required = false,
+  if valid_606406 != nil:
+    section.add "X-Amz-Security-Token", valid_606406
+  var valid_606407 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606407 = validateParameter(valid_606407, JString, required = false,
                                  default = nil)
-  if valid_602207 != nil:
-    section.add "X-Amz-Algorithm", valid_602207
-  var valid_602208 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602208 = validateParameter(valid_602208, JString, required = false,
+  if valid_606407 != nil:
+    section.add "X-Amz-Algorithm", valid_606407
+  var valid_606408 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606408 = validateParameter(valid_606408, JString, required = false,
                                  default = nil)
-  if valid_602208 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602208
+  if valid_606408 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606408
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1918,42 +1918,42 @@ proc validate_TagResource_602199(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_602210: Call_TagResource_602198; path: JsonNode; query: JsonNode;
+proc call*(call_606410: Call_TagResource_606398; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Associates the specified tags to a resource with the specified <code>resourceArn</code>. If existing tags on a resource are not specified in the request parameters, they are not changed. When a resource is deleted, the tags associated with that resource are deleted as well. Tags that you create for Amazon EKS resources do not propagate to any other resources associated with the cluster. For example, if you tag a cluster with this operation, that tag does not automatically propagate to the subnets and worker nodes associated with the cluster.
   ## 
-  let valid = call_602210.validator(path, query, header, formData, body)
-  let scheme = call_602210.pickScheme
+  let valid = call_606410.validator(path, query, header, formData, body)
+  let scheme = call_606410.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602210.url(scheme.get, call_602210.host, call_602210.base,
-                         call_602210.route, valid.getOrDefault("path"),
+  let url = call_606410.url(scheme.get, call_606410.host, call_606410.base,
+                         call_606410.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602210, url, valid)
+  result = atozHook(call_606410, url, valid)
 
-proc call*(call_602211: Call_TagResource_602198; resourceArn: string; body: JsonNode): Recallable =
+proc call*(call_606411: Call_TagResource_606398; resourceArn: string; body: JsonNode): Recallable =
   ## tagResource
   ## Associates the specified tags to a resource with the specified <code>resourceArn</code>. If existing tags on a resource are not specified in the request parameters, they are not changed. When a resource is deleted, the tags associated with that resource are deleted as well. Tags that you create for Amazon EKS resources do not propagate to any other resources associated with the cluster. For example, if you tag a cluster with this operation, that tag does not automatically propagate to the subnets and worker nodes associated with the cluster.
   ##   resourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) of the resource to which to add tags. Currently, the supported resources are Amazon EKS clusters and managed node groups.
   ##   body: JObject (required)
-  var path_602212 = newJObject()
-  var body_602213 = newJObject()
-  add(path_602212, "resourceArn", newJString(resourceArn))
+  var path_606412 = newJObject()
+  var body_606413 = newJObject()
+  add(path_606412, "resourceArn", newJString(resourceArn))
   if body != nil:
-    body_602213 = body
-  result = call_602211.call(path_602212, nil, nil, nil, body_602213)
+    body_606413 = body
+  result = call_606411.call(path_606412, nil, nil, nil, body_606413)
 
-var tagResource* = Call_TagResource_602198(name: "tagResource",
+var tagResource* = Call_TagResource_606398(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "eks.amazonaws.com",
                                         route: "/tags/{resourceArn}",
-                                        validator: validate_TagResource_602199,
-                                        base: "/", url: url_TagResource_602200,
+                                        validator: validate_TagResource_606399,
+                                        base: "/", url: url_TagResource_606400,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_602184 = ref object of OpenApiRestCall_601390
-proc url_ListTagsForResource_602186(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_606384 = ref object of OpenApiRestCall_605590
+proc url_ListTagsForResource_606386(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1973,7 +1973,7 @@ proc url_ListTagsForResource_602186(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_ListTagsForResource_602185(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_606385(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## List the tags for an Amazon EKS resource.
@@ -1986,11 +1986,11 @@ proc validate_ListTagsForResource_602185(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_602187 = path.getOrDefault("resourceArn")
-  valid_602187 = validateParameter(valid_602187, JString, required = true,
+  var valid_606387 = path.getOrDefault("resourceArn")
+  valid_606387 = validateParameter(valid_606387, JString, required = true,
                                  default = nil)
-  if valid_602187 != nil:
-    section.add "resourceArn", valid_602187
+  if valid_606387 != nil:
+    section.add "resourceArn", valid_606387
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2003,77 +2003,77 @@ proc validate_ListTagsForResource_602185(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602188 = header.getOrDefault("X-Amz-Signature")
-  valid_602188 = validateParameter(valid_602188, JString, required = false,
+  var valid_606388 = header.getOrDefault("X-Amz-Signature")
+  valid_606388 = validateParameter(valid_606388, JString, required = false,
                                  default = nil)
-  if valid_602188 != nil:
-    section.add "X-Amz-Signature", valid_602188
-  var valid_602189 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602189 = validateParameter(valid_602189, JString, required = false,
+  if valid_606388 != nil:
+    section.add "X-Amz-Signature", valid_606388
+  var valid_606389 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606389 = validateParameter(valid_606389, JString, required = false,
                                  default = nil)
-  if valid_602189 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602189
-  var valid_602190 = header.getOrDefault("X-Amz-Date")
-  valid_602190 = validateParameter(valid_602190, JString, required = false,
+  if valid_606389 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606389
+  var valid_606390 = header.getOrDefault("X-Amz-Date")
+  valid_606390 = validateParameter(valid_606390, JString, required = false,
                                  default = nil)
-  if valid_602190 != nil:
-    section.add "X-Amz-Date", valid_602190
-  var valid_602191 = header.getOrDefault("X-Amz-Credential")
-  valid_602191 = validateParameter(valid_602191, JString, required = false,
+  if valid_606390 != nil:
+    section.add "X-Amz-Date", valid_606390
+  var valid_606391 = header.getOrDefault("X-Amz-Credential")
+  valid_606391 = validateParameter(valid_606391, JString, required = false,
                                  default = nil)
-  if valid_602191 != nil:
-    section.add "X-Amz-Credential", valid_602191
-  var valid_602192 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602192 = validateParameter(valid_602192, JString, required = false,
+  if valid_606391 != nil:
+    section.add "X-Amz-Credential", valid_606391
+  var valid_606392 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606392 = validateParameter(valid_606392, JString, required = false,
                                  default = nil)
-  if valid_602192 != nil:
-    section.add "X-Amz-Security-Token", valid_602192
-  var valid_602193 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602193 = validateParameter(valid_602193, JString, required = false,
+  if valid_606392 != nil:
+    section.add "X-Amz-Security-Token", valid_606392
+  var valid_606393 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606393 = validateParameter(valid_606393, JString, required = false,
                                  default = nil)
-  if valid_602193 != nil:
-    section.add "X-Amz-Algorithm", valid_602193
-  var valid_602194 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602194 = validateParameter(valid_602194, JString, required = false,
+  if valid_606393 != nil:
+    section.add "X-Amz-Algorithm", valid_606393
+  var valid_606394 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606394 = validateParameter(valid_606394, JString, required = false,
                                  default = nil)
-  if valid_602194 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602194
+  if valid_606394 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606394
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602195: Call_ListTagsForResource_602184; path: JsonNode;
+proc call*(call_606395: Call_ListTagsForResource_606384; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List the tags for an Amazon EKS resource.
   ## 
-  let valid = call_602195.validator(path, query, header, formData, body)
-  let scheme = call_602195.pickScheme
+  let valid = call_606395.validator(path, query, header, formData, body)
+  let scheme = call_606395.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602195.url(scheme.get, call_602195.host, call_602195.base,
-                         call_602195.route, valid.getOrDefault("path"),
+  let url = call_606395.url(scheme.get, call_606395.host, call_606395.base,
+                         call_606395.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602195, url, valid)
+  result = atozHook(call_606395, url, valid)
 
-proc call*(call_602196: Call_ListTagsForResource_602184; resourceArn: string): Recallable =
+proc call*(call_606396: Call_ListTagsForResource_606384; resourceArn: string): Recallable =
   ## listTagsForResource
   ## List the tags for an Amazon EKS resource.
   ##   resourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) that identifies the resource for which to list the tags. Currently, the supported resources are Amazon EKS clusters and managed node groups.
-  var path_602197 = newJObject()
-  add(path_602197, "resourceArn", newJString(resourceArn))
-  result = call_602196.call(path_602197, nil, nil, nil, nil)
+  var path_606397 = newJObject()
+  add(path_606397, "resourceArn", newJString(resourceArn))
+  result = call_606396.call(path_606397, nil, nil, nil, nil)
 
-var listTagsForResource* = Call_ListTagsForResource_602184(
+var listTagsForResource* = Call_ListTagsForResource_606384(
     name: "listTagsForResource", meth: HttpMethod.HttpGet,
     host: "eks.amazonaws.com", route: "/tags/{resourceArn}",
-    validator: validate_ListTagsForResource_602185, base: "/",
-    url: url_ListTagsForResource_602186, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_606385, base: "/",
+    url: url_ListTagsForResource_606386, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateClusterVersion_602232 = ref object of OpenApiRestCall_601390
-proc url_UpdateClusterVersion_602234(protocol: Scheme; host: string; base: string;
+  Call_UpdateClusterVersion_606432 = ref object of OpenApiRestCall_605590
+proc url_UpdateClusterVersion_606434(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2094,7 +2094,7 @@ proc url_UpdateClusterVersion_602234(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateClusterVersion_602233(path: JsonNode; query: JsonNode;
+proc validate_UpdateClusterVersion_606433(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates an Amazon EKS cluster to the specified Kubernetes version. Your cluster continues to function during the update. The response output includes an update ID that you can use to track the status of your cluster update with the <a>DescribeUpdate</a> API operation.</p> <p>Cluster updates are asynchronous, and they should finish within a few minutes. During an update, the cluster status moves to <code>UPDATING</code> (this status transition is eventually consistent). When the update is complete (either <code>Failed</code> or <code>Successful</code>), the cluster status moves to <code>Active</code>.</p> <p>If your cluster has managed node groups attached to it, all of your node groups’ Kubernetes versions must match the cluster’s Kubernetes version in order to update the cluster to a new Kubernetes version.</p>
   ## 
@@ -2105,11 +2105,11 @@ proc validate_UpdateClusterVersion_602233(path: JsonNode; query: JsonNode;
   ##       : The name of the Amazon EKS cluster to update.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602235 = path.getOrDefault("name")
-  valid_602235 = validateParameter(valid_602235, JString, required = true,
+  var valid_606435 = path.getOrDefault("name")
+  valid_606435 = validateParameter(valid_606435, JString, required = true,
                                  default = nil)
-  if valid_602235 != nil:
-    section.add "name", valid_602235
+  if valid_606435 != nil:
+    section.add "name", valid_606435
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2122,41 +2122,41 @@ proc validate_UpdateClusterVersion_602233(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602236 = header.getOrDefault("X-Amz-Signature")
-  valid_602236 = validateParameter(valid_602236, JString, required = false,
+  var valid_606436 = header.getOrDefault("X-Amz-Signature")
+  valid_606436 = validateParameter(valid_606436, JString, required = false,
                                  default = nil)
-  if valid_602236 != nil:
-    section.add "X-Amz-Signature", valid_602236
-  var valid_602237 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602237 = validateParameter(valid_602237, JString, required = false,
+  if valid_606436 != nil:
+    section.add "X-Amz-Signature", valid_606436
+  var valid_606437 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606437 = validateParameter(valid_606437, JString, required = false,
                                  default = nil)
-  if valid_602237 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602237
-  var valid_602238 = header.getOrDefault("X-Amz-Date")
-  valid_602238 = validateParameter(valid_602238, JString, required = false,
+  if valid_606437 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606437
+  var valid_606438 = header.getOrDefault("X-Amz-Date")
+  valid_606438 = validateParameter(valid_606438, JString, required = false,
                                  default = nil)
-  if valid_602238 != nil:
-    section.add "X-Amz-Date", valid_602238
-  var valid_602239 = header.getOrDefault("X-Amz-Credential")
-  valid_602239 = validateParameter(valid_602239, JString, required = false,
+  if valid_606438 != nil:
+    section.add "X-Amz-Date", valid_606438
+  var valid_606439 = header.getOrDefault("X-Amz-Credential")
+  valid_606439 = validateParameter(valid_606439, JString, required = false,
                                  default = nil)
-  if valid_602239 != nil:
-    section.add "X-Amz-Credential", valid_602239
-  var valid_602240 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602240 = validateParameter(valid_602240, JString, required = false,
+  if valid_606439 != nil:
+    section.add "X-Amz-Credential", valid_606439
+  var valid_606440 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606440 = validateParameter(valid_606440, JString, required = false,
                                  default = nil)
-  if valid_602240 != nil:
-    section.add "X-Amz-Security-Token", valid_602240
-  var valid_602241 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602241 = validateParameter(valid_602241, JString, required = false,
+  if valid_606440 != nil:
+    section.add "X-Amz-Security-Token", valid_606440
+  var valid_606441 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606441 = validateParameter(valid_606441, JString, required = false,
                                  default = nil)
-  if valid_602241 != nil:
-    section.add "X-Amz-Algorithm", valid_602241
-  var valid_602242 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602242 = validateParameter(valid_602242, JString, required = false,
+  if valid_606441 != nil:
+    section.add "X-Amz-Algorithm", valid_606441
+  var valid_606442 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606442 = validateParameter(valid_606442, JString, required = false,
                                  default = nil)
-  if valid_602242 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602242
+  if valid_606442 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606442
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2167,41 +2167,41 @@ proc validate_UpdateClusterVersion_602233(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602244: Call_UpdateClusterVersion_602232; path: JsonNode;
+proc call*(call_606444: Call_UpdateClusterVersion_606432; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates an Amazon EKS cluster to the specified Kubernetes version. Your cluster continues to function during the update. The response output includes an update ID that you can use to track the status of your cluster update with the <a>DescribeUpdate</a> API operation.</p> <p>Cluster updates are asynchronous, and they should finish within a few minutes. During an update, the cluster status moves to <code>UPDATING</code> (this status transition is eventually consistent). When the update is complete (either <code>Failed</code> or <code>Successful</code>), the cluster status moves to <code>Active</code>.</p> <p>If your cluster has managed node groups attached to it, all of your node groups’ Kubernetes versions must match the cluster’s Kubernetes version in order to update the cluster to a new Kubernetes version.</p>
   ## 
-  let valid = call_602244.validator(path, query, header, formData, body)
-  let scheme = call_602244.pickScheme
+  let valid = call_606444.validator(path, query, header, formData, body)
+  let scheme = call_606444.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602244.url(scheme.get, call_602244.host, call_602244.base,
-                         call_602244.route, valid.getOrDefault("path"),
+  let url = call_606444.url(scheme.get, call_606444.host, call_606444.base,
+                         call_606444.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602244, url, valid)
+  result = atozHook(call_606444, url, valid)
 
-proc call*(call_602245: Call_UpdateClusterVersion_602232; name: string;
+proc call*(call_606445: Call_UpdateClusterVersion_606432; name: string;
           body: JsonNode): Recallable =
   ## updateClusterVersion
   ## <p>Updates an Amazon EKS cluster to the specified Kubernetes version. Your cluster continues to function during the update. The response output includes an update ID that you can use to track the status of your cluster update with the <a>DescribeUpdate</a> API operation.</p> <p>Cluster updates are asynchronous, and they should finish within a few minutes. During an update, the cluster status moves to <code>UPDATING</code> (this status transition is eventually consistent). When the update is complete (either <code>Failed</code> or <code>Successful</code>), the cluster status moves to <code>Active</code>.</p> <p>If your cluster has managed node groups attached to it, all of your node groups’ Kubernetes versions must match the cluster’s Kubernetes version in order to update the cluster to a new Kubernetes version.</p>
   ##   name: string (required)
   ##       : The name of the Amazon EKS cluster to update.
   ##   body: JObject (required)
-  var path_602246 = newJObject()
-  var body_602247 = newJObject()
-  add(path_602246, "name", newJString(name))
+  var path_606446 = newJObject()
+  var body_606447 = newJObject()
+  add(path_606446, "name", newJString(name))
   if body != nil:
-    body_602247 = body
-  result = call_602245.call(path_602246, nil, nil, nil, body_602247)
+    body_606447 = body
+  result = call_606445.call(path_606446, nil, nil, nil, body_606447)
 
-var updateClusterVersion* = Call_UpdateClusterVersion_602232(
+var updateClusterVersion* = Call_UpdateClusterVersion_606432(
     name: "updateClusterVersion", meth: HttpMethod.HttpPost,
     host: "eks.amazonaws.com", route: "/clusters/{name}/updates",
-    validator: validate_UpdateClusterVersion_602233, base: "/",
-    url: url_UpdateClusterVersion_602234, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateClusterVersion_606433, base: "/",
+    url: url_UpdateClusterVersion_606434, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListUpdates_602214 = ref object of OpenApiRestCall_601390
-proc url_ListUpdates_602216(protocol: Scheme; host: string; base: string;
+  Call_ListUpdates_606414 = ref object of OpenApiRestCall_605590
+proc url_ListUpdates_606416(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2222,7 +2222,7 @@ proc url_ListUpdates_602216(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListUpdates_602215(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListUpdates_606415(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the updates associated with an Amazon EKS cluster or managed node group in your AWS account, in the specified Region.
   ## 
@@ -2233,11 +2233,11 @@ proc validate_ListUpdates_602215(path: JsonNode; query: JsonNode; header: JsonNo
   ##       : The name of the Amazon EKS cluster to list updates for.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602217 = path.getOrDefault("name")
-  valid_602217 = validateParameter(valid_602217, JString, required = true,
+  var valid_606417 = path.getOrDefault("name")
+  valid_606417 = validateParameter(valid_606417, JString, required = true,
                                  default = nil)
-  if valid_602217 != nil:
-    section.add "name", valid_602217
+  if valid_606417 != nil:
+    section.add "name", valid_606417
   result.add "path", section
   ## parameters in `query` object:
   ##   nextToken: JString
@@ -2247,20 +2247,20 @@ proc validate_ListUpdates_602215(path: JsonNode; query: JsonNode; header: JsonNo
   ##   maxResults: JInt
   ##             : The maximum number of update results returned by <code>ListUpdates</code> in paginated output. When you use this parameter, <code>ListUpdates</code> returns only <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. You can see the remaining results of the initial request by sending another <code>ListUpdates</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If you don't use this parameter, <code>ListUpdates</code> returns up to 100 results and a <code>nextToken</code> value if applicable.
   section = newJObject()
-  var valid_602218 = query.getOrDefault("nextToken")
-  valid_602218 = validateParameter(valid_602218, JString, required = false,
+  var valid_606418 = query.getOrDefault("nextToken")
+  valid_606418 = validateParameter(valid_606418, JString, required = false,
                                  default = nil)
-  if valid_602218 != nil:
-    section.add "nextToken", valid_602218
-  var valid_602219 = query.getOrDefault("nodegroupName")
-  valid_602219 = validateParameter(valid_602219, JString, required = false,
+  if valid_606418 != nil:
+    section.add "nextToken", valid_606418
+  var valid_606419 = query.getOrDefault("nodegroupName")
+  valid_606419 = validateParameter(valid_606419, JString, required = false,
                                  default = nil)
-  if valid_602219 != nil:
-    section.add "nodegroupName", valid_602219
-  var valid_602220 = query.getOrDefault("maxResults")
-  valid_602220 = validateParameter(valid_602220, JInt, required = false, default = nil)
-  if valid_602220 != nil:
-    section.add "maxResults", valid_602220
+  if valid_606419 != nil:
+    section.add "nodegroupName", valid_606419
+  var valid_606420 = query.getOrDefault("maxResults")
+  valid_606420 = validateParameter(valid_606420, JInt, required = false, default = nil)
+  if valid_606420 != nil:
+    section.add "maxResults", valid_606420
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2271,61 +2271,61 @@ proc validate_ListUpdates_602215(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602221 = header.getOrDefault("X-Amz-Signature")
-  valid_602221 = validateParameter(valid_602221, JString, required = false,
+  var valid_606421 = header.getOrDefault("X-Amz-Signature")
+  valid_606421 = validateParameter(valid_606421, JString, required = false,
                                  default = nil)
-  if valid_602221 != nil:
-    section.add "X-Amz-Signature", valid_602221
-  var valid_602222 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602222 = validateParameter(valid_602222, JString, required = false,
+  if valid_606421 != nil:
+    section.add "X-Amz-Signature", valid_606421
+  var valid_606422 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606422 = validateParameter(valid_606422, JString, required = false,
                                  default = nil)
-  if valid_602222 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602222
-  var valid_602223 = header.getOrDefault("X-Amz-Date")
-  valid_602223 = validateParameter(valid_602223, JString, required = false,
+  if valid_606422 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606422
+  var valid_606423 = header.getOrDefault("X-Amz-Date")
+  valid_606423 = validateParameter(valid_606423, JString, required = false,
                                  default = nil)
-  if valid_602223 != nil:
-    section.add "X-Amz-Date", valid_602223
-  var valid_602224 = header.getOrDefault("X-Amz-Credential")
-  valid_602224 = validateParameter(valid_602224, JString, required = false,
+  if valid_606423 != nil:
+    section.add "X-Amz-Date", valid_606423
+  var valid_606424 = header.getOrDefault("X-Amz-Credential")
+  valid_606424 = validateParameter(valid_606424, JString, required = false,
                                  default = nil)
-  if valid_602224 != nil:
-    section.add "X-Amz-Credential", valid_602224
-  var valid_602225 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602225 = validateParameter(valid_602225, JString, required = false,
+  if valid_606424 != nil:
+    section.add "X-Amz-Credential", valid_606424
+  var valid_606425 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606425 = validateParameter(valid_606425, JString, required = false,
                                  default = nil)
-  if valid_602225 != nil:
-    section.add "X-Amz-Security-Token", valid_602225
-  var valid_602226 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602226 = validateParameter(valid_602226, JString, required = false,
+  if valid_606425 != nil:
+    section.add "X-Amz-Security-Token", valid_606425
+  var valid_606426 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606426 = validateParameter(valid_606426, JString, required = false,
                                  default = nil)
-  if valid_602226 != nil:
-    section.add "X-Amz-Algorithm", valid_602226
-  var valid_602227 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602227 = validateParameter(valid_602227, JString, required = false,
+  if valid_606426 != nil:
+    section.add "X-Amz-Algorithm", valid_606426
+  var valid_606427 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606427 = validateParameter(valid_606427, JString, required = false,
                                  default = nil)
-  if valid_602227 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602227
+  if valid_606427 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606427
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602228: Call_ListUpdates_602214; path: JsonNode; query: JsonNode;
+proc call*(call_606428: Call_ListUpdates_606414; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the updates associated with an Amazon EKS cluster or managed node group in your AWS account, in the specified Region.
   ## 
-  let valid = call_602228.validator(path, query, header, formData, body)
-  let scheme = call_602228.pickScheme
+  let valid = call_606428.validator(path, query, header, formData, body)
+  let scheme = call_606428.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602228.url(scheme.get, call_602228.host, call_602228.base,
-                         call_602228.route, valid.getOrDefault("path"),
+  let url = call_606428.url(scheme.get, call_606428.host, call_606428.base,
+                         call_606428.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602228, url, valid)
+  result = atozHook(call_606428, url, valid)
 
-proc call*(call_602229: Call_ListUpdates_602214; name: string;
+proc call*(call_606429: Call_ListUpdates_606414; name: string;
           nextToken: string = ""; nodegroupName: string = ""; maxResults: int = 0): Recallable =
   ## listUpdates
   ## Lists the updates associated with an Amazon EKS cluster or managed node group in your AWS account, in the specified Region.
@@ -2337,24 +2337,24 @@ proc call*(call_602229: Call_ListUpdates_602214; name: string;
   ##                : The name of the Amazon EKS managed node group to list updates for.
   ##   maxResults: int
   ##             : The maximum number of update results returned by <code>ListUpdates</code> in paginated output. When you use this parameter, <code>ListUpdates</code> returns only <code>maxResults</code> results in a single page along with a <code>nextToken</code> response element. You can see the remaining results of the initial request by sending another <code>ListUpdates</code> request with the returned <code>nextToken</code> value. This value can be between 1 and 100. If you don't use this parameter, <code>ListUpdates</code> returns up to 100 results and a <code>nextToken</code> value if applicable.
-  var path_602230 = newJObject()
-  var query_602231 = newJObject()
-  add(query_602231, "nextToken", newJString(nextToken))
-  add(path_602230, "name", newJString(name))
-  add(query_602231, "nodegroupName", newJString(nodegroupName))
-  add(query_602231, "maxResults", newJInt(maxResults))
-  result = call_602229.call(path_602230, query_602231, nil, nil, nil)
+  var path_606430 = newJObject()
+  var query_606431 = newJObject()
+  add(query_606431, "nextToken", newJString(nextToken))
+  add(path_606430, "name", newJString(name))
+  add(query_606431, "nodegroupName", newJString(nodegroupName))
+  add(query_606431, "maxResults", newJInt(maxResults))
+  result = call_606429.call(path_606430, query_606431, nil, nil, nil)
 
-var listUpdates* = Call_ListUpdates_602214(name: "listUpdates",
+var listUpdates* = Call_ListUpdates_606414(name: "listUpdates",
                                         meth: HttpMethod.HttpGet,
                                         host: "eks.amazonaws.com",
                                         route: "/clusters/{name}/updates",
-                                        validator: validate_ListUpdates_602215,
-                                        base: "/", url: url_ListUpdates_602216,
+                                        validator: validate_ListUpdates_606415,
+                                        base: "/", url: url_ListUpdates_606416,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_602248 = ref object of OpenApiRestCall_601390
-proc url_UntagResource_602250(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_606448 = ref object of OpenApiRestCall_605590
+proc url_UntagResource_606450(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2375,7 +2375,7 @@ proc url_UntagResource_602250(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UntagResource_602249(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_606449(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes specified tags from a resource.
   ## 
@@ -2387,21 +2387,21 @@ proc validate_UntagResource_602249(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_602251 = path.getOrDefault("resourceArn")
-  valid_602251 = validateParameter(valid_602251, JString, required = true,
+  var valid_606451 = path.getOrDefault("resourceArn")
+  valid_606451 = validateParameter(valid_606451, JString, required = true,
                                  default = nil)
-  if valid_602251 != nil:
-    section.add "resourceArn", valid_602251
+  if valid_606451 != nil:
+    section.add "resourceArn", valid_606451
   result.add "path", section
   ## parameters in `query` object:
   ##   tagKeys: JArray (required)
   ##          : The keys of the tags to be removed.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `tagKeys` field"
-  var valid_602252 = query.getOrDefault("tagKeys")
-  valid_602252 = validateParameter(valid_602252, JArray, required = true, default = nil)
-  if valid_602252 != nil:
-    section.add "tagKeys", valid_602252
+  var valid_606452 = query.getOrDefault("tagKeys")
+  valid_606452 = validateParameter(valid_606452, JArray, required = true, default = nil)
+  if valid_606452 != nil:
+    section.add "tagKeys", valid_606452
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2412,61 +2412,61 @@ proc validate_UntagResource_602249(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602253 = header.getOrDefault("X-Amz-Signature")
-  valid_602253 = validateParameter(valid_602253, JString, required = false,
+  var valid_606453 = header.getOrDefault("X-Amz-Signature")
+  valid_606453 = validateParameter(valid_606453, JString, required = false,
                                  default = nil)
-  if valid_602253 != nil:
-    section.add "X-Amz-Signature", valid_602253
-  var valid_602254 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602254 = validateParameter(valid_602254, JString, required = false,
+  if valid_606453 != nil:
+    section.add "X-Amz-Signature", valid_606453
+  var valid_606454 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606454 = validateParameter(valid_606454, JString, required = false,
                                  default = nil)
-  if valid_602254 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602254
-  var valid_602255 = header.getOrDefault("X-Amz-Date")
-  valid_602255 = validateParameter(valid_602255, JString, required = false,
+  if valid_606454 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606454
+  var valid_606455 = header.getOrDefault("X-Amz-Date")
+  valid_606455 = validateParameter(valid_606455, JString, required = false,
                                  default = nil)
-  if valid_602255 != nil:
-    section.add "X-Amz-Date", valid_602255
-  var valid_602256 = header.getOrDefault("X-Amz-Credential")
-  valid_602256 = validateParameter(valid_602256, JString, required = false,
+  if valid_606455 != nil:
+    section.add "X-Amz-Date", valid_606455
+  var valid_606456 = header.getOrDefault("X-Amz-Credential")
+  valid_606456 = validateParameter(valid_606456, JString, required = false,
                                  default = nil)
-  if valid_602256 != nil:
-    section.add "X-Amz-Credential", valid_602256
-  var valid_602257 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602257 = validateParameter(valid_602257, JString, required = false,
+  if valid_606456 != nil:
+    section.add "X-Amz-Credential", valid_606456
+  var valid_606457 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606457 = validateParameter(valid_606457, JString, required = false,
                                  default = nil)
-  if valid_602257 != nil:
-    section.add "X-Amz-Security-Token", valid_602257
-  var valid_602258 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602258 = validateParameter(valid_602258, JString, required = false,
+  if valid_606457 != nil:
+    section.add "X-Amz-Security-Token", valid_606457
+  var valid_606458 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606458 = validateParameter(valid_606458, JString, required = false,
                                  default = nil)
-  if valid_602258 != nil:
-    section.add "X-Amz-Algorithm", valid_602258
-  var valid_602259 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602259 = validateParameter(valid_602259, JString, required = false,
+  if valid_606458 != nil:
+    section.add "X-Amz-Algorithm", valid_606458
+  var valid_606459 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606459 = validateParameter(valid_606459, JString, required = false,
                                  default = nil)
-  if valid_602259 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602259
+  if valid_606459 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606459
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602260: Call_UntagResource_602248; path: JsonNode; query: JsonNode;
+proc call*(call_606460: Call_UntagResource_606448; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes specified tags from a resource.
   ## 
-  let valid = call_602260.validator(path, query, header, formData, body)
-  let scheme = call_602260.pickScheme
+  let valid = call_606460.validator(path, query, header, formData, body)
+  let scheme = call_606460.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602260.url(scheme.get, call_602260.host, call_602260.base,
-                         call_602260.route, valid.getOrDefault("path"),
+  let url = call_606460.url(scheme.get, call_606460.host, call_606460.base,
+                         call_606460.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602260, url, valid)
+  result = atozHook(call_606460, url, valid)
 
-proc call*(call_602261: Call_UntagResource_602248; resourceArn: string;
+proc call*(call_606461: Call_UntagResource_606448; resourceArn: string;
           tagKeys: JsonNode): Recallable =
   ## untagResource
   ## Deletes specified tags from a resource.
@@ -2474,20 +2474,20 @@ proc call*(call_602261: Call_UntagResource_602248; resourceArn: string;
   ##              : The Amazon Resource Name (ARN) of the resource from which to delete tags. Currently, the supported resources are Amazon EKS clusters and managed node groups.
   ##   tagKeys: JArray (required)
   ##          : The keys of the tags to be removed.
-  var path_602262 = newJObject()
-  var query_602263 = newJObject()
-  add(path_602262, "resourceArn", newJString(resourceArn))
+  var path_606462 = newJObject()
+  var query_606463 = newJObject()
+  add(path_606462, "resourceArn", newJString(resourceArn))
   if tagKeys != nil:
-    query_602263.add "tagKeys", tagKeys
-  result = call_602261.call(path_602262, query_602263, nil, nil, nil)
+    query_606463.add "tagKeys", tagKeys
+  result = call_606461.call(path_606462, query_606463, nil, nil, nil)
 
-var untagResource* = Call_UntagResource_602248(name: "untagResource",
+var untagResource* = Call_UntagResource_606448(name: "untagResource",
     meth: HttpMethod.HttpDelete, host: "eks.amazonaws.com",
-    route: "/tags/{resourceArn}#tagKeys", validator: validate_UntagResource_602249,
-    base: "/", url: url_UntagResource_602250, schemes: {Scheme.Https, Scheme.Http})
+    route: "/tags/{resourceArn}#tagKeys", validator: validate_UntagResource_606449,
+    base: "/", url: url_UntagResource_606450, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateClusterConfig_602264 = ref object of OpenApiRestCall_601390
-proc url_UpdateClusterConfig_602266(protocol: Scheme; host: string; base: string;
+  Call_UpdateClusterConfig_606464 = ref object of OpenApiRestCall_605590
+proc url_UpdateClusterConfig_606466(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2508,7 +2508,7 @@ proc url_UpdateClusterConfig_602266(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateClusterConfig_602265(path: JsonNode; query: JsonNode;
+proc validate_UpdateClusterConfig_606465(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Updates an Amazon EKS cluster configuration. Your cluster continues to function during the update. The response output includes an update ID that you can use to track the status of your cluster update with the <a>DescribeUpdate</a> API operation.</p> <p>You can use this API operation to enable or disable exporting the Kubernetes control plane logs for your cluster to CloudWatch Logs. By default, cluster control plane logs aren't exported to CloudWatch Logs. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html">Amazon EKS Cluster Control Plane Logs</a> in the <i> <i>Amazon EKS User Guide</i> </i>.</p> <note> <p>CloudWatch Logs ingestion, archive storage, and data scanning rates apply to exported control plane logs. For more information, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </note> <p>You can also use this API operation to enable or disable public and private access to your cluster's Kubernetes API server endpoint. By default, public access is enabled, and private access is disabled. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html">Amazon EKS Cluster Endpoint Access Control</a> in the <i> <i>Amazon EKS User Guide</i> </i>. </p> <important> <p>At this time, you can not update the subnets or security group IDs for an existing cluster.</p> </important> <p>Cluster updates are asynchronous, and they should finish within a few minutes. During an update, the cluster status moves to <code>UPDATING</code> (this status transition is eventually consistent). When the update is complete (either <code>Failed</code> or <code>Successful</code>), the cluster status moves to <code>Active</code>.</p>
@@ -2520,11 +2520,11 @@ proc validate_UpdateClusterConfig_602265(path: JsonNode; query: JsonNode;
   ##       : The name of the Amazon EKS cluster to update.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602267 = path.getOrDefault("name")
-  valid_602267 = validateParameter(valid_602267, JString, required = true,
+  var valid_606467 = path.getOrDefault("name")
+  valid_606467 = validateParameter(valid_606467, JString, required = true,
                                  default = nil)
-  if valid_602267 != nil:
-    section.add "name", valid_602267
+  if valid_606467 != nil:
+    section.add "name", valid_606467
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2537,41 +2537,41 @@ proc validate_UpdateClusterConfig_602265(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602268 = header.getOrDefault("X-Amz-Signature")
-  valid_602268 = validateParameter(valid_602268, JString, required = false,
+  var valid_606468 = header.getOrDefault("X-Amz-Signature")
+  valid_606468 = validateParameter(valid_606468, JString, required = false,
                                  default = nil)
-  if valid_602268 != nil:
-    section.add "X-Amz-Signature", valid_602268
-  var valid_602269 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602269 = validateParameter(valid_602269, JString, required = false,
+  if valid_606468 != nil:
+    section.add "X-Amz-Signature", valid_606468
+  var valid_606469 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606469 = validateParameter(valid_606469, JString, required = false,
                                  default = nil)
-  if valid_602269 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602269
-  var valid_602270 = header.getOrDefault("X-Amz-Date")
-  valid_602270 = validateParameter(valid_602270, JString, required = false,
+  if valid_606469 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606469
+  var valid_606470 = header.getOrDefault("X-Amz-Date")
+  valid_606470 = validateParameter(valid_606470, JString, required = false,
                                  default = nil)
-  if valid_602270 != nil:
-    section.add "X-Amz-Date", valid_602270
-  var valid_602271 = header.getOrDefault("X-Amz-Credential")
-  valid_602271 = validateParameter(valid_602271, JString, required = false,
+  if valid_606470 != nil:
+    section.add "X-Amz-Date", valid_606470
+  var valid_606471 = header.getOrDefault("X-Amz-Credential")
+  valid_606471 = validateParameter(valid_606471, JString, required = false,
                                  default = nil)
-  if valid_602271 != nil:
-    section.add "X-Amz-Credential", valid_602271
-  var valid_602272 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602272 = validateParameter(valid_602272, JString, required = false,
+  if valid_606471 != nil:
+    section.add "X-Amz-Credential", valid_606471
+  var valid_606472 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606472 = validateParameter(valid_606472, JString, required = false,
                                  default = nil)
-  if valid_602272 != nil:
-    section.add "X-Amz-Security-Token", valid_602272
-  var valid_602273 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602273 = validateParameter(valid_602273, JString, required = false,
+  if valid_606472 != nil:
+    section.add "X-Amz-Security-Token", valid_606472
+  var valid_606473 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606473 = validateParameter(valid_606473, JString, required = false,
                                  default = nil)
-  if valid_602273 != nil:
-    section.add "X-Amz-Algorithm", valid_602273
-  var valid_602274 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602274 = validateParameter(valid_602274, JString, required = false,
+  if valid_606473 != nil:
+    section.add "X-Amz-Algorithm", valid_606473
+  var valid_606474 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606474 = validateParameter(valid_606474, JString, required = false,
                                  default = nil)
-  if valid_602274 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602274
+  if valid_606474 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606474
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2582,40 +2582,40 @@ proc validate_UpdateClusterConfig_602265(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602276: Call_UpdateClusterConfig_602264; path: JsonNode;
+proc call*(call_606476: Call_UpdateClusterConfig_606464; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates an Amazon EKS cluster configuration. Your cluster continues to function during the update. The response output includes an update ID that you can use to track the status of your cluster update with the <a>DescribeUpdate</a> API operation.</p> <p>You can use this API operation to enable or disable exporting the Kubernetes control plane logs for your cluster to CloudWatch Logs. By default, cluster control plane logs aren't exported to CloudWatch Logs. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html">Amazon EKS Cluster Control Plane Logs</a> in the <i> <i>Amazon EKS User Guide</i> </i>.</p> <note> <p>CloudWatch Logs ingestion, archive storage, and data scanning rates apply to exported control plane logs. For more information, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </note> <p>You can also use this API operation to enable or disable public and private access to your cluster's Kubernetes API server endpoint. By default, public access is enabled, and private access is disabled. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html">Amazon EKS Cluster Endpoint Access Control</a> in the <i> <i>Amazon EKS User Guide</i> </i>. </p> <important> <p>At this time, you can not update the subnets or security group IDs for an existing cluster.</p> </important> <p>Cluster updates are asynchronous, and they should finish within a few minutes. During an update, the cluster status moves to <code>UPDATING</code> (this status transition is eventually consistent). When the update is complete (either <code>Failed</code> or <code>Successful</code>), the cluster status moves to <code>Active</code>.</p>
   ## 
-  let valid = call_602276.validator(path, query, header, formData, body)
-  let scheme = call_602276.pickScheme
+  let valid = call_606476.validator(path, query, header, formData, body)
+  let scheme = call_606476.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602276.url(scheme.get, call_602276.host, call_602276.base,
-                         call_602276.route, valid.getOrDefault("path"),
+  let url = call_606476.url(scheme.get, call_606476.host, call_606476.base,
+                         call_606476.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602276, url, valid)
+  result = atozHook(call_606476, url, valid)
 
-proc call*(call_602277: Call_UpdateClusterConfig_602264; name: string; body: JsonNode): Recallable =
+proc call*(call_606477: Call_UpdateClusterConfig_606464; name: string; body: JsonNode): Recallable =
   ## updateClusterConfig
   ## <p>Updates an Amazon EKS cluster configuration. Your cluster continues to function during the update. The response output includes an update ID that you can use to track the status of your cluster update with the <a>DescribeUpdate</a> API operation.</p> <p>You can use this API operation to enable or disable exporting the Kubernetes control plane logs for your cluster to CloudWatch Logs. By default, cluster control plane logs aren't exported to CloudWatch Logs. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html">Amazon EKS Cluster Control Plane Logs</a> in the <i> <i>Amazon EKS User Guide</i> </i>.</p> <note> <p>CloudWatch Logs ingestion, archive storage, and data scanning rates apply to exported control plane logs. For more information, see <a href="http://aws.amazon.com/cloudwatch/pricing/">Amazon CloudWatch Pricing</a>.</p> </note> <p>You can also use this API operation to enable or disable public and private access to your cluster's Kubernetes API server endpoint. By default, public access is enabled, and private access is disabled. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/cluster-endpoint.html">Amazon EKS Cluster Endpoint Access Control</a> in the <i> <i>Amazon EKS User Guide</i> </i>. </p> <important> <p>At this time, you can not update the subnets or security group IDs for an existing cluster.</p> </important> <p>Cluster updates are asynchronous, and they should finish within a few minutes. During an update, the cluster status moves to <code>UPDATING</code> (this status transition is eventually consistent). When the update is complete (either <code>Failed</code> or <code>Successful</code>), the cluster status moves to <code>Active</code>.</p>
   ##   name: string (required)
   ##       : The name of the Amazon EKS cluster to update.
   ##   body: JObject (required)
-  var path_602278 = newJObject()
-  var body_602279 = newJObject()
-  add(path_602278, "name", newJString(name))
+  var path_606478 = newJObject()
+  var body_606479 = newJObject()
+  add(path_606478, "name", newJString(name))
   if body != nil:
-    body_602279 = body
-  result = call_602277.call(path_602278, nil, nil, nil, body_602279)
+    body_606479 = body
+  result = call_606477.call(path_606478, nil, nil, nil, body_606479)
 
-var updateClusterConfig* = Call_UpdateClusterConfig_602264(
+var updateClusterConfig* = Call_UpdateClusterConfig_606464(
     name: "updateClusterConfig", meth: HttpMethod.HttpPost,
     host: "eks.amazonaws.com", route: "/clusters/{name}/update-config",
-    validator: validate_UpdateClusterConfig_602265, base: "/",
-    url: url_UpdateClusterConfig_602266, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateClusterConfig_606465, base: "/",
+    url: url_UpdateClusterConfig_606466, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateNodegroupConfig_602280 = ref object of OpenApiRestCall_601390
-proc url_UpdateNodegroupConfig_602282(protocol: Scheme; host: string; base: string;
+  Call_UpdateNodegroupConfig_606480 = ref object of OpenApiRestCall_605590
+proc url_UpdateNodegroupConfig_606482(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2639,7 +2639,7 @@ proc url_UpdateNodegroupConfig_602282(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateNodegroupConfig_602281(path: JsonNode; query: JsonNode;
+proc validate_UpdateNodegroupConfig_606481(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates an Amazon EKS managed node group configuration. Your node group continues to function during the update. The response output includes an update ID that you can use to track the status of your node group update with the <a>DescribeUpdate</a> API operation. Currently you can update the Kubernetes labels for a node group or the scaling configuration.
   ## 
@@ -2652,16 +2652,16 @@ proc validate_UpdateNodegroupConfig_602281(path: JsonNode; query: JsonNode;
   ##                : The name of the managed node group to update.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602283 = path.getOrDefault("name")
-  valid_602283 = validateParameter(valid_602283, JString, required = true,
+  var valid_606483 = path.getOrDefault("name")
+  valid_606483 = validateParameter(valid_606483, JString, required = true,
                                  default = nil)
-  if valid_602283 != nil:
-    section.add "name", valid_602283
-  var valid_602284 = path.getOrDefault("nodegroupName")
-  valid_602284 = validateParameter(valid_602284, JString, required = true,
+  if valid_606483 != nil:
+    section.add "name", valid_606483
+  var valid_606484 = path.getOrDefault("nodegroupName")
+  valid_606484 = validateParameter(valid_606484, JString, required = true,
                                  default = nil)
-  if valid_602284 != nil:
-    section.add "nodegroupName", valid_602284
+  if valid_606484 != nil:
+    section.add "nodegroupName", valid_606484
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2674,41 +2674,41 @@ proc validate_UpdateNodegroupConfig_602281(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602285 = header.getOrDefault("X-Amz-Signature")
-  valid_602285 = validateParameter(valid_602285, JString, required = false,
+  var valid_606485 = header.getOrDefault("X-Amz-Signature")
+  valid_606485 = validateParameter(valid_606485, JString, required = false,
                                  default = nil)
-  if valid_602285 != nil:
-    section.add "X-Amz-Signature", valid_602285
-  var valid_602286 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602286 = validateParameter(valid_602286, JString, required = false,
+  if valid_606485 != nil:
+    section.add "X-Amz-Signature", valid_606485
+  var valid_606486 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606486 = validateParameter(valid_606486, JString, required = false,
                                  default = nil)
-  if valid_602286 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602286
-  var valid_602287 = header.getOrDefault("X-Amz-Date")
-  valid_602287 = validateParameter(valid_602287, JString, required = false,
+  if valid_606486 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606486
+  var valid_606487 = header.getOrDefault("X-Amz-Date")
+  valid_606487 = validateParameter(valid_606487, JString, required = false,
                                  default = nil)
-  if valid_602287 != nil:
-    section.add "X-Amz-Date", valid_602287
-  var valid_602288 = header.getOrDefault("X-Amz-Credential")
-  valid_602288 = validateParameter(valid_602288, JString, required = false,
+  if valid_606487 != nil:
+    section.add "X-Amz-Date", valid_606487
+  var valid_606488 = header.getOrDefault("X-Amz-Credential")
+  valid_606488 = validateParameter(valid_606488, JString, required = false,
                                  default = nil)
-  if valid_602288 != nil:
-    section.add "X-Amz-Credential", valid_602288
-  var valid_602289 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602289 = validateParameter(valid_602289, JString, required = false,
+  if valid_606488 != nil:
+    section.add "X-Amz-Credential", valid_606488
+  var valid_606489 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606489 = validateParameter(valid_606489, JString, required = false,
                                  default = nil)
-  if valid_602289 != nil:
-    section.add "X-Amz-Security-Token", valid_602289
-  var valid_602290 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602290 = validateParameter(valid_602290, JString, required = false,
+  if valid_606489 != nil:
+    section.add "X-Amz-Security-Token", valid_606489
+  var valid_606490 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606490 = validateParameter(valid_606490, JString, required = false,
                                  default = nil)
-  if valid_602290 != nil:
-    section.add "X-Amz-Algorithm", valid_602290
-  var valid_602291 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602291 = validateParameter(valid_602291, JString, required = false,
+  if valid_606490 != nil:
+    section.add "X-Amz-Algorithm", valid_606490
+  var valid_606491 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606491 = validateParameter(valid_606491, JString, required = false,
                                  default = nil)
-  if valid_602291 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602291
+  if valid_606491 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606491
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2719,20 +2719,20 @@ proc validate_UpdateNodegroupConfig_602281(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602293: Call_UpdateNodegroupConfig_602280; path: JsonNode;
+proc call*(call_606493: Call_UpdateNodegroupConfig_606480; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates an Amazon EKS managed node group configuration. Your node group continues to function during the update. The response output includes an update ID that you can use to track the status of your node group update with the <a>DescribeUpdate</a> API operation. Currently you can update the Kubernetes labels for a node group or the scaling configuration.
   ## 
-  let valid = call_602293.validator(path, query, header, formData, body)
-  let scheme = call_602293.pickScheme
+  let valid = call_606493.validator(path, query, header, formData, body)
+  let scheme = call_606493.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602293.url(scheme.get, call_602293.host, call_602293.base,
-                         call_602293.route, valid.getOrDefault("path"),
+  let url = call_606493.url(scheme.get, call_606493.host, call_606493.base,
+                         call_606493.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602293, url, valid)
+  result = atozHook(call_606493, url, valid)
 
-proc call*(call_602294: Call_UpdateNodegroupConfig_602280; name: string;
+proc call*(call_606494: Call_UpdateNodegroupConfig_606480; name: string;
           body: JsonNode; nodegroupName: string): Recallable =
   ## updateNodegroupConfig
   ## Updates an Amazon EKS managed node group configuration. Your node group continues to function during the update. The response output includes an update ID that you can use to track the status of your node group update with the <a>DescribeUpdate</a> API operation. Currently you can update the Kubernetes labels for a node group or the scaling configuration.
@@ -2741,23 +2741,23 @@ proc call*(call_602294: Call_UpdateNodegroupConfig_602280; name: string;
   ##   body: JObject (required)
   ##   nodegroupName: string (required)
   ##                : The name of the managed node group to update.
-  var path_602295 = newJObject()
-  var body_602296 = newJObject()
-  add(path_602295, "name", newJString(name))
+  var path_606495 = newJObject()
+  var body_606496 = newJObject()
+  add(path_606495, "name", newJString(name))
   if body != nil:
-    body_602296 = body
-  add(path_602295, "nodegroupName", newJString(nodegroupName))
-  result = call_602294.call(path_602295, nil, nil, nil, body_602296)
+    body_606496 = body
+  add(path_606495, "nodegroupName", newJString(nodegroupName))
+  result = call_606494.call(path_606495, nil, nil, nil, body_606496)
 
-var updateNodegroupConfig* = Call_UpdateNodegroupConfig_602280(
+var updateNodegroupConfig* = Call_UpdateNodegroupConfig_606480(
     name: "updateNodegroupConfig", meth: HttpMethod.HttpPost,
     host: "eks.amazonaws.com",
     route: "/clusters/{name}/node-groups/{nodegroupName}/update-config",
-    validator: validate_UpdateNodegroupConfig_602281, base: "/",
-    url: url_UpdateNodegroupConfig_602282, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateNodegroupConfig_606481, base: "/",
+    url: url_UpdateNodegroupConfig_606482, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateNodegroupVersion_602297 = ref object of OpenApiRestCall_601390
-proc url_UpdateNodegroupVersion_602299(protocol: Scheme; host: string; base: string;
+  Call_UpdateNodegroupVersion_606497 = ref object of OpenApiRestCall_605590
+proc url_UpdateNodegroupVersion_606499(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2781,7 +2781,7 @@ proc url_UpdateNodegroupVersion_602299(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateNodegroupVersion_602298(path: JsonNode; query: JsonNode;
+proc validate_UpdateNodegroupVersion_606498(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the Kubernetes version or AMI version of an Amazon EKS managed node group.</p> <p>You can update to the latest available AMI version of a node group's current Kubernetes version by not specifying a Kubernetes version in the request. You can update to the latest AMI version of your cluster's current Kubernetes version by specifying your cluster's Kubernetes version in the request. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/eks-linux-ami-versions.html">Amazon EKS-Optimized Linux AMI Versions</a> in the <i>Amazon EKS User Guide</i>.</p> <p>You cannot roll back a node group to an earlier Kubernetes version or AMI version.</p> <p>When a node in a managed node group is terminated due to a scaling action or update, the pods in that node are drained first. Amazon EKS attempts to drain the nodes gracefully and will fail if it is unable to do so. You can <code>force</code> the update if Amazon EKS is unable to drain the nodes as a result of a pod disruption budget issue.</p>
   ## 
@@ -2794,16 +2794,16 @@ proc validate_UpdateNodegroupVersion_602298(path: JsonNode; query: JsonNode;
   ##                : The name of the managed node group to update.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `name` field"
-  var valid_602300 = path.getOrDefault("name")
-  valid_602300 = validateParameter(valid_602300, JString, required = true,
+  var valid_606500 = path.getOrDefault("name")
+  valid_606500 = validateParameter(valid_606500, JString, required = true,
                                  default = nil)
-  if valid_602300 != nil:
-    section.add "name", valid_602300
-  var valid_602301 = path.getOrDefault("nodegroupName")
-  valid_602301 = validateParameter(valid_602301, JString, required = true,
+  if valid_606500 != nil:
+    section.add "name", valid_606500
+  var valid_606501 = path.getOrDefault("nodegroupName")
+  valid_606501 = validateParameter(valid_606501, JString, required = true,
                                  default = nil)
-  if valid_602301 != nil:
-    section.add "nodegroupName", valid_602301
+  if valid_606501 != nil:
+    section.add "nodegroupName", valid_606501
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2816,41 +2816,41 @@ proc validate_UpdateNodegroupVersion_602298(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602302 = header.getOrDefault("X-Amz-Signature")
-  valid_602302 = validateParameter(valid_602302, JString, required = false,
+  var valid_606502 = header.getOrDefault("X-Amz-Signature")
+  valid_606502 = validateParameter(valid_606502, JString, required = false,
                                  default = nil)
-  if valid_602302 != nil:
-    section.add "X-Amz-Signature", valid_602302
-  var valid_602303 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602303 = validateParameter(valid_602303, JString, required = false,
+  if valid_606502 != nil:
+    section.add "X-Amz-Signature", valid_606502
+  var valid_606503 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606503 = validateParameter(valid_606503, JString, required = false,
                                  default = nil)
-  if valid_602303 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602303
-  var valid_602304 = header.getOrDefault("X-Amz-Date")
-  valid_602304 = validateParameter(valid_602304, JString, required = false,
+  if valid_606503 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606503
+  var valid_606504 = header.getOrDefault("X-Amz-Date")
+  valid_606504 = validateParameter(valid_606504, JString, required = false,
                                  default = nil)
-  if valid_602304 != nil:
-    section.add "X-Amz-Date", valid_602304
-  var valid_602305 = header.getOrDefault("X-Amz-Credential")
-  valid_602305 = validateParameter(valid_602305, JString, required = false,
+  if valid_606504 != nil:
+    section.add "X-Amz-Date", valid_606504
+  var valid_606505 = header.getOrDefault("X-Amz-Credential")
+  valid_606505 = validateParameter(valid_606505, JString, required = false,
                                  default = nil)
-  if valid_602305 != nil:
-    section.add "X-Amz-Credential", valid_602305
-  var valid_602306 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602306 = validateParameter(valid_602306, JString, required = false,
+  if valid_606505 != nil:
+    section.add "X-Amz-Credential", valid_606505
+  var valid_606506 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606506 = validateParameter(valid_606506, JString, required = false,
                                  default = nil)
-  if valid_602306 != nil:
-    section.add "X-Amz-Security-Token", valid_602306
-  var valid_602307 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602307 = validateParameter(valid_602307, JString, required = false,
+  if valid_606506 != nil:
+    section.add "X-Amz-Security-Token", valid_606506
+  var valid_606507 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606507 = validateParameter(valid_606507, JString, required = false,
                                  default = nil)
-  if valid_602307 != nil:
-    section.add "X-Amz-Algorithm", valid_602307
-  var valid_602308 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602308 = validateParameter(valid_602308, JString, required = false,
+  if valid_606507 != nil:
+    section.add "X-Amz-Algorithm", valid_606507
+  var valid_606508 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606508 = validateParameter(valid_606508, JString, required = false,
                                  default = nil)
-  if valid_602308 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602308
+  if valid_606508 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606508
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2861,20 +2861,20 @@ proc validate_UpdateNodegroupVersion_602298(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602310: Call_UpdateNodegroupVersion_602297; path: JsonNode;
+proc call*(call_606510: Call_UpdateNodegroupVersion_606497; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the Kubernetes version or AMI version of an Amazon EKS managed node group.</p> <p>You can update to the latest available AMI version of a node group's current Kubernetes version by not specifying a Kubernetes version in the request. You can update to the latest AMI version of your cluster's current Kubernetes version by specifying your cluster's Kubernetes version in the request. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/eks-linux-ami-versions.html">Amazon EKS-Optimized Linux AMI Versions</a> in the <i>Amazon EKS User Guide</i>.</p> <p>You cannot roll back a node group to an earlier Kubernetes version or AMI version.</p> <p>When a node in a managed node group is terminated due to a scaling action or update, the pods in that node are drained first. Amazon EKS attempts to drain the nodes gracefully and will fail if it is unable to do so. You can <code>force</code> the update if Amazon EKS is unable to drain the nodes as a result of a pod disruption budget issue.</p>
   ## 
-  let valid = call_602310.validator(path, query, header, formData, body)
-  let scheme = call_602310.pickScheme
+  let valid = call_606510.validator(path, query, header, formData, body)
+  let scheme = call_606510.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602310.url(scheme.get, call_602310.host, call_602310.base,
-                         call_602310.route, valid.getOrDefault("path"),
+  let url = call_606510.url(scheme.get, call_606510.host, call_606510.base,
+                         call_606510.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602310, url, valid)
+  result = atozHook(call_606510, url, valid)
 
-proc call*(call_602311: Call_UpdateNodegroupVersion_602297; name: string;
+proc call*(call_606511: Call_UpdateNodegroupVersion_606497; name: string;
           body: JsonNode; nodegroupName: string): Recallable =
   ## updateNodegroupVersion
   ## <p>Updates the Kubernetes version or AMI version of an Amazon EKS managed node group.</p> <p>You can update to the latest available AMI version of a node group's current Kubernetes version by not specifying a Kubernetes version in the request. You can update to the latest AMI version of your cluster's current Kubernetes version by specifying your cluster's Kubernetes version in the request. For more information, see <a href="https://docs.aws.amazon.com/eks/latest/userguide/eks-linux-ami-versions.html">Amazon EKS-Optimized Linux AMI Versions</a> in the <i>Amazon EKS User Guide</i>.</p> <p>You cannot roll back a node group to an earlier Kubernetes version or AMI version.</p> <p>When a node in a managed node group is terminated due to a scaling action or update, the pods in that node are drained first. Amazon EKS attempts to drain the nodes gracefully and will fail if it is unable to do so. You can <code>force</code> the update if Amazon EKS is unable to drain the nodes as a result of a pod disruption budget issue.</p>
@@ -2883,20 +2883,20 @@ proc call*(call_602311: Call_UpdateNodegroupVersion_602297; name: string;
   ##   body: JObject (required)
   ##   nodegroupName: string (required)
   ##                : The name of the managed node group to update.
-  var path_602312 = newJObject()
-  var body_602313 = newJObject()
-  add(path_602312, "name", newJString(name))
+  var path_606512 = newJObject()
+  var body_606513 = newJObject()
+  add(path_606512, "name", newJString(name))
   if body != nil:
-    body_602313 = body
-  add(path_602312, "nodegroupName", newJString(nodegroupName))
-  result = call_602311.call(path_602312, nil, nil, nil, body_602313)
+    body_606513 = body
+  add(path_606512, "nodegroupName", newJString(nodegroupName))
+  result = call_606511.call(path_606512, nil, nil, nil, body_606513)
 
-var updateNodegroupVersion* = Call_UpdateNodegroupVersion_602297(
+var updateNodegroupVersion* = Call_UpdateNodegroupVersion_606497(
     name: "updateNodegroupVersion", meth: HttpMethod.HttpPost,
     host: "eks.amazonaws.com",
     route: "/clusters/{name}/node-groups/{nodegroupName}/update-version",
-    validator: validate_UpdateNodegroupVersion_602298, base: "/",
-    url: url_UpdateNodegroupVersion_602299, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateNodegroupVersion_606498, base: "/",
+    url: url_UpdateNodegroupVersion_606499, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -2941,5 +2941,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)

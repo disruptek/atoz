@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_601389 = ref object of OpenApiRestCall
+  OpenApiRestCall_605589 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,8 +134,8 @@ const
   awsServiceName = "marketplace-catalog"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CancelChangeSet_601727 = ref object of OpenApiRestCall_601389
-proc url_CancelChangeSet_601729(protocol: Scheme; host: string; base: string;
+  Call_CancelChangeSet_605927 = ref object of OpenApiRestCall_605589
+proc url_CancelChangeSet_605929(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -147,7 +147,7 @@ proc url_CancelChangeSet_601729(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CancelChangeSet_601728(path: JsonNode; query: JsonNode;
+proc validate_CancelChangeSet_605928(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Used to cancel an open change request. Must be sent before the status of the request changes to <code>APPLYING</code>, the final stage of completing your change request. You can describe a change during the 60-day request history retention period for API calls.
@@ -163,16 +163,16 @@ proc validate_CancelChangeSet_601728(path: JsonNode; query: JsonNode;
   ##              : Required. The unique identifier of the <code>StartChangeSet</code> request that you want to cancel.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `catalog` field"
-  var valid_601841 = query.getOrDefault("catalog")
-  valid_601841 = validateParameter(valid_601841, JString, required = true,
+  var valid_606041 = query.getOrDefault("catalog")
+  valid_606041 = validateParameter(valid_606041, JString, required = true,
                                  default = nil)
-  if valid_601841 != nil:
-    section.add "catalog", valid_601841
-  var valid_601842 = query.getOrDefault("changeSetId")
-  valid_601842 = validateParameter(valid_601842, JString, required = true,
+  if valid_606041 != nil:
+    section.add "catalog", valid_606041
+  var valid_606042 = query.getOrDefault("changeSetId")
+  valid_606042 = validateParameter(valid_606042, JString, required = true,
                                  default = nil)
-  if valid_601842 != nil:
-    section.add "changeSetId", valid_601842
+  if valid_606042 != nil:
+    section.add "changeSetId", valid_606042
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -183,61 +183,61 @@ proc validate_CancelChangeSet_601728(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601843 = header.getOrDefault("X-Amz-Signature")
-  valid_601843 = validateParameter(valid_601843, JString, required = false,
+  var valid_606043 = header.getOrDefault("X-Amz-Signature")
+  valid_606043 = validateParameter(valid_606043, JString, required = false,
                                  default = nil)
-  if valid_601843 != nil:
-    section.add "X-Amz-Signature", valid_601843
-  var valid_601844 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601844 = validateParameter(valid_601844, JString, required = false,
+  if valid_606043 != nil:
+    section.add "X-Amz-Signature", valid_606043
+  var valid_606044 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606044 = validateParameter(valid_606044, JString, required = false,
                                  default = nil)
-  if valid_601844 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601844
-  var valid_601845 = header.getOrDefault("X-Amz-Date")
-  valid_601845 = validateParameter(valid_601845, JString, required = false,
+  if valid_606044 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606044
+  var valid_606045 = header.getOrDefault("X-Amz-Date")
+  valid_606045 = validateParameter(valid_606045, JString, required = false,
                                  default = nil)
-  if valid_601845 != nil:
-    section.add "X-Amz-Date", valid_601845
-  var valid_601846 = header.getOrDefault("X-Amz-Credential")
-  valid_601846 = validateParameter(valid_601846, JString, required = false,
+  if valid_606045 != nil:
+    section.add "X-Amz-Date", valid_606045
+  var valid_606046 = header.getOrDefault("X-Amz-Credential")
+  valid_606046 = validateParameter(valid_606046, JString, required = false,
                                  default = nil)
-  if valid_601846 != nil:
-    section.add "X-Amz-Credential", valid_601846
-  var valid_601847 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601847 = validateParameter(valid_601847, JString, required = false,
+  if valid_606046 != nil:
+    section.add "X-Amz-Credential", valid_606046
+  var valid_606047 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606047 = validateParameter(valid_606047, JString, required = false,
                                  default = nil)
-  if valid_601847 != nil:
-    section.add "X-Amz-Security-Token", valid_601847
-  var valid_601848 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601848 = validateParameter(valid_601848, JString, required = false,
+  if valid_606047 != nil:
+    section.add "X-Amz-Security-Token", valid_606047
+  var valid_606048 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606048 = validateParameter(valid_606048, JString, required = false,
                                  default = nil)
-  if valid_601848 != nil:
-    section.add "X-Amz-Algorithm", valid_601848
-  var valid_601849 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601849 = validateParameter(valid_601849, JString, required = false,
+  if valid_606048 != nil:
+    section.add "X-Amz-Algorithm", valid_606048
+  var valid_606049 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606049 = validateParameter(valid_606049, JString, required = false,
                                  default = nil)
-  if valid_601849 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601849
+  if valid_606049 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606049
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601872: Call_CancelChangeSet_601727; path: JsonNode; query: JsonNode;
+proc call*(call_606072: Call_CancelChangeSet_605927; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Used to cancel an open change request. Must be sent before the status of the request changes to <code>APPLYING</code>, the final stage of completing your change request. You can describe a change during the 60-day request history retention period for API calls.
   ## 
-  let valid = call_601872.validator(path, query, header, formData, body)
-  let scheme = call_601872.pickScheme
+  let valid = call_606072.validator(path, query, header, formData, body)
+  let scheme = call_606072.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601872.url(scheme.get, call_601872.host, call_601872.base,
-                         call_601872.route, valid.getOrDefault("path"),
+  let url = call_606072.url(scheme.get, call_606072.host, call_606072.base,
+                         call_606072.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601872, url, valid)
+  result = atozHook(call_606072, url, valid)
 
-proc call*(call_601943: Call_CancelChangeSet_601727; catalog: string;
+proc call*(call_606143: Call_CancelChangeSet_605927; catalog: string;
           changeSetId: string): Recallable =
   ## cancelChangeSet
   ## Used to cancel an open change request. Must be sent before the status of the request changes to <code>APPLYING</code>, the final stage of completing your change request. You can describe a change during the 60-day request history retention period for API calls.
@@ -245,19 +245,19 @@ proc call*(call_601943: Call_CancelChangeSet_601727; catalog: string;
   ##          : Required. The catalog related to the request. Fixed value: <code>AWSMarketplace</code>.
   ##   changeSetId: string (required)
   ##              : Required. The unique identifier of the <code>StartChangeSet</code> request that you want to cancel.
-  var query_601944 = newJObject()
-  add(query_601944, "catalog", newJString(catalog))
-  add(query_601944, "changeSetId", newJString(changeSetId))
-  result = call_601943.call(nil, query_601944, nil, nil, nil)
+  var query_606144 = newJObject()
+  add(query_606144, "catalog", newJString(catalog))
+  add(query_606144, "changeSetId", newJString(changeSetId))
+  result = call_606143.call(nil, query_606144, nil, nil, nil)
 
-var cancelChangeSet* = Call_CancelChangeSet_601727(name: "cancelChangeSet",
+var cancelChangeSet* = Call_CancelChangeSet_605927(name: "cancelChangeSet",
     meth: HttpMethod.HttpPatch, host: "catalog.marketplace.amazonaws.com",
     route: "/CancelChangeSet#catalog&changeSetId",
-    validator: validate_CancelChangeSet_601728, base: "/", url: url_CancelChangeSet_601729,
+    validator: validate_CancelChangeSet_605928, base: "/", url: url_CancelChangeSet_605929,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeChangeSet_601984 = ref object of OpenApiRestCall_601389
-proc url_DescribeChangeSet_601986(protocol: Scheme; host: string; base: string;
+  Call_DescribeChangeSet_606184 = ref object of OpenApiRestCall_605589
+proc url_DescribeChangeSet_606186(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -269,7 +269,7 @@ proc url_DescribeChangeSet_601986(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeChangeSet_601985(path: JsonNode; query: JsonNode;
+proc validate_DescribeChangeSet_606185(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Provides information about a given change set.
@@ -285,16 +285,16 @@ proc validate_DescribeChangeSet_601985(path: JsonNode; query: JsonNode;
   ##              : Required. The unique identifier for the <code>StartChangeSet</code> request that you want to describe the details for.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `catalog` field"
-  var valid_601987 = query.getOrDefault("catalog")
-  valid_601987 = validateParameter(valid_601987, JString, required = true,
+  var valid_606187 = query.getOrDefault("catalog")
+  valid_606187 = validateParameter(valid_606187, JString, required = true,
                                  default = nil)
-  if valid_601987 != nil:
-    section.add "catalog", valid_601987
-  var valid_601988 = query.getOrDefault("changeSetId")
-  valid_601988 = validateParameter(valid_601988, JString, required = true,
+  if valid_606187 != nil:
+    section.add "catalog", valid_606187
+  var valid_606188 = query.getOrDefault("changeSetId")
+  valid_606188 = validateParameter(valid_606188, JString, required = true,
                                  default = nil)
-  if valid_601988 != nil:
-    section.add "changeSetId", valid_601988
+  if valid_606188 != nil:
+    section.add "changeSetId", valid_606188
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -305,61 +305,61 @@ proc validate_DescribeChangeSet_601985(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601989 = header.getOrDefault("X-Amz-Signature")
-  valid_601989 = validateParameter(valid_601989, JString, required = false,
+  var valid_606189 = header.getOrDefault("X-Amz-Signature")
+  valid_606189 = validateParameter(valid_606189, JString, required = false,
                                  default = nil)
-  if valid_601989 != nil:
-    section.add "X-Amz-Signature", valid_601989
-  var valid_601990 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601990 = validateParameter(valid_601990, JString, required = false,
+  if valid_606189 != nil:
+    section.add "X-Amz-Signature", valid_606189
+  var valid_606190 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606190 = validateParameter(valid_606190, JString, required = false,
                                  default = nil)
-  if valid_601990 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601990
-  var valid_601991 = header.getOrDefault("X-Amz-Date")
-  valid_601991 = validateParameter(valid_601991, JString, required = false,
+  if valid_606190 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606190
+  var valid_606191 = header.getOrDefault("X-Amz-Date")
+  valid_606191 = validateParameter(valid_606191, JString, required = false,
                                  default = nil)
-  if valid_601991 != nil:
-    section.add "X-Amz-Date", valid_601991
-  var valid_601992 = header.getOrDefault("X-Amz-Credential")
-  valid_601992 = validateParameter(valid_601992, JString, required = false,
+  if valid_606191 != nil:
+    section.add "X-Amz-Date", valid_606191
+  var valid_606192 = header.getOrDefault("X-Amz-Credential")
+  valid_606192 = validateParameter(valid_606192, JString, required = false,
                                  default = nil)
-  if valid_601992 != nil:
-    section.add "X-Amz-Credential", valid_601992
-  var valid_601993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601993 = validateParameter(valid_601993, JString, required = false,
+  if valid_606192 != nil:
+    section.add "X-Amz-Credential", valid_606192
+  var valid_606193 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606193 = validateParameter(valid_606193, JString, required = false,
                                  default = nil)
-  if valid_601993 != nil:
-    section.add "X-Amz-Security-Token", valid_601993
-  var valid_601994 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601994 = validateParameter(valid_601994, JString, required = false,
+  if valid_606193 != nil:
+    section.add "X-Amz-Security-Token", valid_606193
+  var valid_606194 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606194 = validateParameter(valid_606194, JString, required = false,
                                  default = nil)
-  if valid_601994 != nil:
-    section.add "X-Amz-Algorithm", valid_601994
-  var valid_601995 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601995 = validateParameter(valid_601995, JString, required = false,
+  if valid_606194 != nil:
+    section.add "X-Amz-Algorithm", valid_606194
+  var valid_606195 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606195 = validateParameter(valid_606195, JString, required = false,
                                  default = nil)
-  if valid_601995 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601995
+  if valid_606195 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606195
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601996: Call_DescribeChangeSet_601984; path: JsonNode;
+proc call*(call_606196: Call_DescribeChangeSet_606184; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Provides information about a given change set.
   ## 
-  let valid = call_601996.validator(path, query, header, formData, body)
-  let scheme = call_601996.pickScheme
+  let valid = call_606196.validator(path, query, header, formData, body)
+  let scheme = call_606196.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601996.url(scheme.get, call_601996.host, call_601996.base,
-                         call_601996.route, valid.getOrDefault("path"),
+  let url = call_606196.url(scheme.get, call_606196.host, call_606196.base,
+                         call_606196.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601996, url, valid)
+  result = atozHook(call_606196, url, valid)
 
-proc call*(call_601997: Call_DescribeChangeSet_601984; catalog: string;
+proc call*(call_606197: Call_DescribeChangeSet_606184; catalog: string;
           changeSetId: string): Recallable =
   ## describeChangeSet
   ## Provides information about a given change set.
@@ -367,19 +367,19 @@ proc call*(call_601997: Call_DescribeChangeSet_601984; catalog: string;
   ##          : Required. The catalog related to the request. Fixed value: <code>AWSMarketplace</code> 
   ##   changeSetId: string (required)
   ##              : Required. The unique identifier for the <code>StartChangeSet</code> request that you want to describe the details for.
-  var query_601998 = newJObject()
-  add(query_601998, "catalog", newJString(catalog))
-  add(query_601998, "changeSetId", newJString(changeSetId))
-  result = call_601997.call(nil, query_601998, nil, nil, nil)
+  var query_606198 = newJObject()
+  add(query_606198, "catalog", newJString(catalog))
+  add(query_606198, "changeSetId", newJString(changeSetId))
+  result = call_606197.call(nil, query_606198, nil, nil, nil)
 
-var describeChangeSet* = Call_DescribeChangeSet_601984(name: "describeChangeSet",
+var describeChangeSet* = Call_DescribeChangeSet_606184(name: "describeChangeSet",
     meth: HttpMethod.HttpGet, host: "catalog.marketplace.amazonaws.com",
     route: "/DescribeChangeSet#catalog&changeSetId",
-    validator: validate_DescribeChangeSet_601985, base: "/",
-    url: url_DescribeChangeSet_601986, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeChangeSet_606185, base: "/",
+    url: url_DescribeChangeSet_606186, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEntity_601999 = ref object of OpenApiRestCall_601389
-proc url_DescribeEntity_602001(protocol: Scheme; host: string; base: string;
+  Call_DescribeEntity_606199 = ref object of OpenApiRestCall_605589
+proc url_DescribeEntity_606201(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -391,7 +391,7 @@ proc url_DescribeEntity_602001(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeEntity_602000(path: JsonNode; query: JsonNode;
+proc validate_DescribeEntity_606200(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns the metadata and content of the entity.
@@ -408,16 +408,16 @@ proc validate_DescribeEntity_602000(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `entityId` field"
-  var valid_602002 = query.getOrDefault("entityId")
-  valid_602002 = validateParameter(valid_602002, JString, required = true,
+  var valid_606202 = query.getOrDefault("entityId")
+  valid_606202 = validateParameter(valid_606202, JString, required = true,
                                  default = nil)
-  if valid_602002 != nil:
-    section.add "entityId", valid_602002
-  var valid_602003 = query.getOrDefault("catalog")
-  valid_602003 = validateParameter(valid_602003, JString, required = true,
+  if valid_606202 != nil:
+    section.add "entityId", valid_606202
+  var valid_606203 = query.getOrDefault("catalog")
+  valid_606203 = validateParameter(valid_606203, JString, required = true,
                                  default = nil)
-  if valid_602003 != nil:
-    section.add "catalog", valid_602003
+  if valid_606203 != nil:
+    section.add "catalog", valid_606203
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -428,79 +428,79 @@ proc validate_DescribeEntity_602000(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602004 = header.getOrDefault("X-Amz-Signature")
-  valid_602004 = validateParameter(valid_602004, JString, required = false,
+  var valid_606204 = header.getOrDefault("X-Amz-Signature")
+  valid_606204 = validateParameter(valid_606204, JString, required = false,
                                  default = nil)
-  if valid_602004 != nil:
-    section.add "X-Amz-Signature", valid_602004
-  var valid_602005 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602005 = validateParameter(valid_602005, JString, required = false,
+  if valid_606204 != nil:
+    section.add "X-Amz-Signature", valid_606204
+  var valid_606205 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606205 = validateParameter(valid_606205, JString, required = false,
                                  default = nil)
-  if valid_602005 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602005
-  var valid_602006 = header.getOrDefault("X-Amz-Date")
-  valid_602006 = validateParameter(valid_602006, JString, required = false,
+  if valid_606205 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606205
+  var valid_606206 = header.getOrDefault("X-Amz-Date")
+  valid_606206 = validateParameter(valid_606206, JString, required = false,
                                  default = nil)
-  if valid_602006 != nil:
-    section.add "X-Amz-Date", valid_602006
-  var valid_602007 = header.getOrDefault("X-Amz-Credential")
-  valid_602007 = validateParameter(valid_602007, JString, required = false,
+  if valid_606206 != nil:
+    section.add "X-Amz-Date", valid_606206
+  var valid_606207 = header.getOrDefault("X-Amz-Credential")
+  valid_606207 = validateParameter(valid_606207, JString, required = false,
                                  default = nil)
-  if valid_602007 != nil:
-    section.add "X-Amz-Credential", valid_602007
-  var valid_602008 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602008 = validateParameter(valid_602008, JString, required = false,
+  if valid_606207 != nil:
+    section.add "X-Amz-Credential", valid_606207
+  var valid_606208 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606208 = validateParameter(valid_606208, JString, required = false,
                                  default = nil)
-  if valid_602008 != nil:
-    section.add "X-Amz-Security-Token", valid_602008
-  var valid_602009 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602009 = validateParameter(valid_602009, JString, required = false,
+  if valid_606208 != nil:
+    section.add "X-Amz-Security-Token", valid_606208
+  var valid_606209 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606209 = validateParameter(valid_606209, JString, required = false,
                                  default = nil)
-  if valid_602009 != nil:
-    section.add "X-Amz-Algorithm", valid_602009
-  var valid_602010 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602010 = validateParameter(valid_602010, JString, required = false,
+  if valid_606209 != nil:
+    section.add "X-Amz-Algorithm", valid_606209
+  var valid_606210 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606210 = validateParameter(valid_606210, JString, required = false,
                                  default = nil)
-  if valid_602010 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602010
+  if valid_606210 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606210
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602011: Call_DescribeEntity_601999; path: JsonNode; query: JsonNode;
+proc call*(call_606211: Call_DescribeEntity_606199; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the metadata and content of the entity.
   ## 
-  let valid = call_602011.validator(path, query, header, formData, body)
-  let scheme = call_602011.pickScheme
+  let valid = call_606211.validator(path, query, header, formData, body)
+  let scheme = call_606211.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602011.url(scheme.get, call_602011.host, call_602011.base,
-                         call_602011.route, valid.getOrDefault("path"),
+  let url = call_606211.url(scheme.get, call_606211.host, call_606211.base,
+                         call_606211.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602011, url, valid)
+  result = atozHook(call_606211, url, valid)
 
-proc call*(call_602012: Call_DescribeEntity_601999; entityId: string; catalog: string): Recallable =
+proc call*(call_606212: Call_DescribeEntity_606199; entityId: string; catalog: string): Recallable =
   ## describeEntity
   ## Returns the metadata and content of the entity.
   ##   entityId: string (required)
   ##           : Required. The unique ID of the entity to describe.
   ##   catalog: string (required)
   ##          : Required. The catalog related to the request. Fixed value: <code>AWSMarketplace</code> 
-  var query_602013 = newJObject()
-  add(query_602013, "entityId", newJString(entityId))
-  add(query_602013, "catalog", newJString(catalog))
-  result = call_602012.call(nil, query_602013, nil, nil, nil)
+  var query_606213 = newJObject()
+  add(query_606213, "entityId", newJString(entityId))
+  add(query_606213, "catalog", newJString(catalog))
+  result = call_606212.call(nil, query_606213, nil, nil, nil)
 
-var describeEntity* = Call_DescribeEntity_601999(name: "describeEntity",
+var describeEntity* = Call_DescribeEntity_606199(name: "describeEntity",
     meth: HttpMethod.HttpGet, host: "catalog.marketplace.amazonaws.com",
-    route: "/DescribeEntity#catalog&entityId", validator: validate_DescribeEntity_602000,
-    base: "/", url: url_DescribeEntity_602001, schemes: {Scheme.Https, Scheme.Http})
+    route: "/DescribeEntity#catalog&entityId", validator: validate_DescribeEntity_606200,
+    base: "/", url: url_DescribeEntity_606201, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListChangeSets_602014 = ref object of OpenApiRestCall_601389
-proc url_ListChangeSets_602016(protocol: Scheme; host: string; base: string;
+  Call_ListChangeSets_606214 = ref object of OpenApiRestCall_605589
+proc url_ListChangeSets_606216(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -512,7 +512,7 @@ proc url_ListChangeSets_602016(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListChangeSets_602015(path: JsonNode; query: JsonNode;
+proc validate_ListChangeSets_606215(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns the list of change sets owned by the account being used to make the call. You can filter this list by providing any combination of <code>entityId</code>, <code>ChangeSetName</code>, and status. If you provide more than one filter, the API operation applies a logical AND between the filters.</p> <p>You can describe a change during the 60-day request history retention period for API calls.</p>
@@ -527,16 +527,16 @@ proc validate_ListChangeSets_602015(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_602017 = query.getOrDefault("MaxResults")
-  valid_602017 = validateParameter(valid_602017, JString, required = false,
+  var valid_606217 = query.getOrDefault("MaxResults")
+  valid_606217 = validateParameter(valid_606217, JString, required = false,
                                  default = nil)
-  if valid_602017 != nil:
-    section.add "MaxResults", valid_602017
-  var valid_602018 = query.getOrDefault("NextToken")
-  valid_602018 = validateParameter(valid_602018, JString, required = false,
+  if valid_606217 != nil:
+    section.add "MaxResults", valid_606217
+  var valid_606218 = query.getOrDefault("NextToken")
+  valid_606218 = validateParameter(valid_606218, JString, required = false,
                                  default = nil)
-  if valid_602018 != nil:
-    section.add "NextToken", valid_602018
+  if valid_606218 != nil:
+    section.add "NextToken", valid_606218
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -547,41 +547,41 @@ proc validate_ListChangeSets_602015(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602019 = header.getOrDefault("X-Amz-Signature")
-  valid_602019 = validateParameter(valid_602019, JString, required = false,
+  var valid_606219 = header.getOrDefault("X-Amz-Signature")
+  valid_606219 = validateParameter(valid_606219, JString, required = false,
                                  default = nil)
-  if valid_602019 != nil:
-    section.add "X-Amz-Signature", valid_602019
-  var valid_602020 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602020 = validateParameter(valid_602020, JString, required = false,
+  if valid_606219 != nil:
+    section.add "X-Amz-Signature", valid_606219
+  var valid_606220 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606220 = validateParameter(valid_606220, JString, required = false,
                                  default = nil)
-  if valid_602020 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602020
-  var valid_602021 = header.getOrDefault("X-Amz-Date")
-  valid_602021 = validateParameter(valid_602021, JString, required = false,
+  if valid_606220 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606220
+  var valid_606221 = header.getOrDefault("X-Amz-Date")
+  valid_606221 = validateParameter(valid_606221, JString, required = false,
                                  default = nil)
-  if valid_602021 != nil:
-    section.add "X-Amz-Date", valid_602021
-  var valid_602022 = header.getOrDefault("X-Amz-Credential")
-  valid_602022 = validateParameter(valid_602022, JString, required = false,
+  if valid_606221 != nil:
+    section.add "X-Amz-Date", valid_606221
+  var valid_606222 = header.getOrDefault("X-Amz-Credential")
+  valid_606222 = validateParameter(valid_606222, JString, required = false,
                                  default = nil)
-  if valid_602022 != nil:
-    section.add "X-Amz-Credential", valid_602022
-  var valid_602023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602023 = validateParameter(valid_602023, JString, required = false,
+  if valid_606222 != nil:
+    section.add "X-Amz-Credential", valid_606222
+  var valid_606223 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606223 = validateParameter(valid_606223, JString, required = false,
                                  default = nil)
-  if valid_602023 != nil:
-    section.add "X-Amz-Security-Token", valid_602023
-  var valid_602024 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602024 = validateParameter(valid_602024, JString, required = false,
+  if valid_606223 != nil:
+    section.add "X-Amz-Security-Token", valid_606223
+  var valid_606224 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606224 = validateParameter(valid_606224, JString, required = false,
                                  default = nil)
-  if valid_602024 != nil:
-    section.add "X-Amz-Algorithm", valid_602024
-  var valid_602025 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602025 = validateParameter(valid_602025, JString, required = false,
+  if valid_606224 != nil:
+    section.add "X-Amz-Algorithm", valid_606224
+  var valid_606225 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606225 = validateParameter(valid_606225, JString, required = false,
                                  default = nil)
-  if valid_602025 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602025
+  if valid_606225 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606225
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -592,20 +592,20 @@ proc validate_ListChangeSets_602015(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602027: Call_ListChangeSets_602014; path: JsonNode; query: JsonNode;
+proc call*(call_606227: Call_ListChangeSets_606214; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the list of change sets owned by the account being used to make the call. You can filter this list by providing any combination of <code>entityId</code>, <code>ChangeSetName</code>, and status. If you provide more than one filter, the API operation applies a logical AND between the filters.</p> <p>You can describe a change during the 60-day request history retention period for API calls.</p>
   ## 
-  let valid = call_602027.validator(path, query, header, formData, body)
-  let scheme = call_602027.pickScheme
+  let valid = call_606227.validator(path, query, header, formData, body)
+  let scheme = call_606227.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602027.url(scheme.get, call_602027.host, call_602027.base,
-                         call_602027.route, valid.getOrDefault("path"),
+  let url = call_606227.url(scheme.get, call_606227.host, call_606227.base,
+                         call_606227.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602027, url, valid)
+  result = atozHook(call_606227, url, valid)
 
-proc call*(call_602028: Call_ListChangeSets_602014; body: JsonNode;
+proc call*(call_606228: Call_ListChangeSets_606214; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listChangeSets
   ## <p>Returns the list of change sets owned by the account being used to make the call. You can filter this list by providing any combination of <code>entityId</code>, <code>ChangeSetName</code>, and status. If you provide more than one filter, the API operation applies a logical AND between the filters.</p> <p>You can describe a change during the 60-day request history retention period for API calls.</p>
@@ -614,21 +614,21 @@ proc call*(call_602028: Call_ListChangeSets_602014; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_602029 = newJObject()
-  var body_602030 = newJObject()
-  add(query_602029, "MaxResults", newJString(MaxResults))
-  add(query_602029, "NextToken", newJString(NextToken))
+  var query_606229 = newJObject()
+  var body_606230 = newJObject()
+  add(query_606229, "MaxResults", newJString(MaxResults))
+  add(query_606229, "NextToken", newJString(NextToken))
   if body != nil:
-    body_602030 = body
-  result = call_602028.call(nil, query_602029, nil, nil, body_602030)
+    body_606230 = body
+  result = call_606228.call(nil, query_606229, nil, nil, body_606230)
 
-var listChangeSets* = Call_ListChangeSets_602014(name: "listChangeSets",
+var listChangeSets* = Call_ListChangeSets_606214(name: "listChangeSets",
     meth: HttpMethod.HttpPost, host: "catalog.marketplace.amazonaws.com",
-    route: "/ListChangeSets", validator: validate_ListChangeSets_602015, base: "/",
-    url: url_ListChangeSets_602016, schemes: {Scheme.Https, Scheme.Http})
+    route: "/ListChangeSets", validator: validate_ListChangeSets_606215, base: "/",
+    url: url_ListChangeSets_606216, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListEntities_602031 = ref object of OpenApiRestCall_601389
-proc url_ListEntities_602033(protocol: Scheme; host: string; base: string;
+  Call_ListEntities_606231 = ref object of OpenApiRestCall_605589
+proc url_ListEntities_606233(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -640,7 +640,7 @@ proc url_ListEntities_602033(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListEntities_602032(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListEntities_606232(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Provides the list of entities of a given type.
   ## 
@@ -654,16 +654,16 @@ proc validate_ListEntities_602032(path: JsonNode; query: JsonNode; header: JsonN
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_602034 = query.getOrDefault("MaxResults")
-  valid_602034 = validateParameter(valid_602034, JString, required = false,
+  var valid_606234 = query.getOrDefault("MaxResults")
+  valid_606234 = validateParameter(valid_606234, JString, required = false,
                                  default = nil)
-  if valid_602034 != nil:
-    section.add "MaxResults", valid_602034
-  var valid_602035 = query.getOrDefault("NextToken")
-  valid_602035 = validateParameter(valid_602035, JString, required = false,
+  if valid_606234 != nil:
+    section.add "MaxResults", valid_606234
+  var valid_606235 = query.getOrDefault("NextToken")
+  valid_606235 = validateParameter(valid_606235, JString, required = false,
                                  default = nil)
-  if valid_602035 != nil:
-    section.add "NextToken", valid_602035
+  if valid_606235 != nil:
+    section.add "NextToken", valid_606235
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -674,41 +674,41 @@ proc validate_ListEntities_602032(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602036 = header.getOrDefault("X-Amz-Signature")
-  valid_602036 = validateParameter(valid_602036, JString, required = false,
+  var valid_606236 = header.getOrDefault("X-Amz-Signature")
+  valid_606236 = validateParameter(valid_606236, JString, required = false,
                                  default = nil)
-  if valid_602036 != nil:
-    section.add "X-Amz-Signature", valid_602036
-  var valid_602037 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602037 = validateParameter(valid_602037, JString, required = false,
+  if valid_606236 != nil:
+    section.add "X-Amz-Signature", valid_606236
+  var valid_606237 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606237 = validateParameter(valid_606237, JString, required = false,
                                  default = nil)
-  if valid_602037 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602037
-  var valid_602038 = header.getOrDefault("X-Amz-Date")
-  valid_602038 = validateParameter(valid_602038, JString, required = false,
+  if valid_606237 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606237
+  var valid_606238 = header.getOrDefault("X-Amz-Date")
+  valid_606238 = validateParameter(valid_606238, JString, required = false,
                                  default = nil)
-  if valid_602038 != nil:
-    section.add "X-Amz-Date", valid_602038
-  var valid_602039 = header.getOrDefault("X-Amz-Credential")
-  valid_602039 = validateParameter(valid_602039, JString, required = false,
+  if valid_606238 != nil:
+    section.add "X-Amz-Date", valid_606238
+  var valid_606239 = header.getOrDefault("X-Amz-Credential")
+  valid_606239 = validateParameter(valid_606239, JString, required = false,
                                  default = nil)
-  if valid_602039 != nil:
-    section.add "X-Amz-Credential", valid_602039
-  var valid_602040 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602040 = validateParameter(valid_602040, JString, required = false,
+  if valid_606239 != nil:
+    section.add "X-Amz-Credential", valid_606239
+  var valid_606240 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606240 = validateParameter(valid_606240, JString, required = false,
                                  default = nil)
-  if valid_602040 != nil:
-    section.add "X-Amz-Security-Token", valid_602040
-  var valid_602041 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602041 = validateParameter(valid_602041, JString, required = false,
+  if valid_606240 != nil:
+    section.add "X-Amz-Security-Token", valid_606240
+  var valid_606241 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606241 = validateParameter(valid_606241, JString, required = false,
                                  default = nil)
-  if valid_602041 != nil:
-    section.add "X-Amz-Algorithm", valid_602041
-  var valid_602042 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602042 = validateParameter(valid_602042, JString, required = false,
+  if valid_606241 != nil:
+    section.add "X-Amz-Algorithm", valid_606241
+  var valid_606242 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606242 = validateParameter(valid_606242, JString, required = false,
                                  default = nil)
-  if valid_602042 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602042
+  if valid_606242 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606242
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -719,20 +719,20 @@ proc validate_ListEntities_602032(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_602044: Call_ListEntities_602031; path: JsonNode; query: JsonNode;
+proc call*(call_606244: Call_ListEntities_606231; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Provides the list of entities of a given type.
   ## 
-  let valid = call_602044.validator(path, query, header, formData, body)
-  let scheme = call_602044.pickScheme
+  let valid = call_606244.validator(path, query, header, formData, body)
+  let scheme = call_606244.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602044.url(scheme.get, call_602044.host, call_602044.base,
-                         call_602044.route, valid.getOrDefault("path"),
+  let url = call_606244.url(scheme.get, call_606244.host, call_606244.base,
+                         call_606244.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602044, url, valid)
+  result = atozHook(call_606244, url, valid)
 
-proc call*(call_602045: Call_ListEntities_602031; body: JsonNode;
+proc call*(call_606245: Call_ListEntities_606231; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listEntities
   ## Provides the list of entities of a given type.
@@ -741,21 +741,21 @@ proc call*(call_602045: Call_ListEntities_602031; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_602046 = newJObject()
-  var body_602047 = newJObject()
-  add(query_602046, "MaxResults", newJString(MaxResults))
-  add(query_602046, "NextToken", newJString(NextToken))
+  var query_606246 = newJObject()
+  var body_606247 = newJObject()
+  add(query_606246, "MaxResults", newJString(MaxResults))
+  add(query_606246, "NextToken", newJString(NextToken))
   if body != nil:
-    body_602047 = body
-  result = call_602045.call(nil, query_602046, nil, nil, body_602047)
+    body_606247 = body
+  result = call_606245.call(nil, query_606246, nil, nil, body_606247)
 
-var listEntities* = Call_ListEntities_602031(name: "listEntities",
+var listEntities* = Call_ListEntities_606231(name: "listEntities",
     meth: HttpMethod.HttpPost, host: "catalog.marketplace.amazonaws.com",
-    route: "/ListEntities", validator: validate_ListEntities_602032, base: "/",
-    url: url_ListEntities_602033, schemes: {Scheme.Https, Scheme.Http})
+    route: "/ListEntities", validator: validate_ListEntities_606232, base: "/",
+    url: url_ListEntities_606233, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartChangeSet_602048 = ref object of OpenApiRestCall_601389
-proc url_StartChangeSet_602050(protocol: Scheme; host: string; base: string;
+  Call_StartChangeSet_606248 = ref object of OpenApiRestCall_605589
+proc url_StartChangeSet_606250(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -767,7 +767,7 @@ proc url_StartChangeSet_602050(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StartChangeSet_602049(path: JsonNode; query: JsonNode;
+proc validate_StartChangeSet_606249(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## This operation allows you to request changes in your entities.
@@ -787,41 +787,41 @@ proc validate_StartChangeSet_602049(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602051 = header.getOrDefault("X-Amz-Signature")
-  valid_602051 = validateParameter(valid_602051, JString, required = false,
+  var valid_606251 = header.getOrDefault("X-Amz-Signature")
+  valid_606251 = validateParameter(valid_606251, JString, required = false,
                                  default = nil)
-  if valid_602051 != nil:
-    section.add "X-Amz-Signature", valid_602051
-  var valid_602052 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602052 = validateParameter(valid_602052, JString, required = false,
+  if valid_606251 != nil:
+    section.add "X-Amz-Signature", valid_606251
+  var valid_606252 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606252 = validateParameter(valid_606252, JString, required = false,
                                  default = nil)
-  if valid_602052 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602052
-  var valid_602053 = header.getOrDefault("X-Amz-Date")
-  valid_602053 = validateParameter(valid_602053, JString, required = false,
+  if valid_606252 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606252
+  var valid_606253 = header.getOrDefault("X-Amz-Date")
+  valid_606253 = validateParameter(valid_606253, JString, required = false,
                                  default = nil)
-  if valid_602053 != nil:
-    section.add "X-Amz-Date", valid_602053
-  var valid_602054 = header.getOrDefault("X-Amz-Credential")
-  valid_602054 = validateParameter(valid_602054, JString, required = false,
+  if valid_606253 != nil:
+    section.add "X-Amz-Date", valid_606253
+  var valid_606254 = header.getOrDefault("X-Amz-Credential")
+  valid_606254 = validateParameter(valid_606254, JString, required = false,
                                  default = nil)
-  if valid_602054 != nil:
-    section.add "X-Amz-Credential", valid_602054
-  var valid_602055 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602055 = validateParameter(valid_602055, JString, required = false,
+  if valid_606254 != nil:
+    section.add "X-Amz-Credential", valid_606254
+  var valid_606255 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606255 = validateParameter(valid_606255, JString, required = false,
                                  default = nil)
-  if valid_602055 != nil:
-    section.add "X-Amz-Security-Token", valid_602055
-  var valid_602056 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602056 = validateParameter(valid_602056, JString, required = false,
+  if valid_606255 != nil:
+    section.add "X-Amz-Security-Token", valid_606255
+  var valid_606256 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606256 = validateParameter(valid_606256, JString, required = false,
                                  default = nil)
-  if valid_602056 != nil:
-    section.add "X-Amz-Algorithm", valid_602056
-  var valid_602057 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602057 = validateParameter(valid_602057, JString, required = false,
+  if valid_606256 != nil:
+    section.add "X-Amz-Algorithm", valid_606256
+  var valid_606257 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606257 = validateParameter(valid_606257, JString, required = false,
                                  default = nil)
-  if valid_602057 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602057
+  if valid_606257 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606257
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -832,32 +832,32 @@ proc validate_StartChangeSet_602049(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602059: Call_StartChangeSet_602048; path: JsonNode; query: JsonNode;
+proc call*(call_606259: Call_StartChangeSet_606248; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation allows you to request changes in your entities.
   ## 
-  let valid = call_602059.validator(path, query, header, formData, body)
-  let scheme = call_602059.pickScheme
+  let valid = call_606259.validator(path, query, header, formData, body)
+  let scheme = call_606259.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602059.url(scheme.get, call_602059.host, call_602059.base,
-                         call_602059.route, valid.getOrDefault("path"),
+  let url = call_606259.url(scheme.get, call_606259.host, call_606259.base,
+                         call_606259.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602059, url, valid)
+  result = atozHook(call_606259, url, valid)
 
-proc call*(call_602060: Call_StartChangeSet_602048; body: JsonNode): Recallable =
+proc call*(call_606260: Call_StartChangeSet_606248; body: JsonNode): Recallable =
   ## startChangeSet
   ## This operation allows you to request changes in your entities.
   ##   body: JObject (required)
-  var body_602061 = newJObject()
+  var body_606261 = newJObject()
   if body != nil:
-    body_602061 = body
-  result = call_602060.call(nil, nil, nil, nil, body_602061)
+    body_606261 = body
+  result = call_606260.call(nil, nil, nil, nil, body_606261)
 
-var startChangeSet* = Call_StartChangeSet_602048(name: "startChangeSet",
+var startChangeSet* = Call_StartChangeSet_606248(name: "startChangeSet",
     meth: HttpMethod.HttpPost, host: "catalog.marketplace.amazonaws.com",
-    route: "/StartChangeSet", validator: validate_StartChangeSet_602049, base: "/",
-    url: url_StartChangeSet_602050, schemes: {Scheme.Https, Scheme.Http})
+    route: "/StartChangeSet", validator: validate_StartChangeSet_606249, base: "/",
+    url: url_StartChangeSet_606250, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -902,5 +902,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)

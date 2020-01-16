@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_601380 = ref object of OpenApiRestCall
+  OpenApiRestCall_605580 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_601380](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605580](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_601380): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605580): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -149,8 +149,8 @@ const
   awsServiceName = "ebs"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GetSnapshotBlock_601718 = ref object of OpenApiRestCall_601380
-proc url_GetSnapshotBlock_601720(protocol: Scheme; host: string; base: string;
+  Call_GetSnapshotBlock_605918 = ref object of OpenApiRestCall_605580
+proc url_GetSnapshotBlock_605920(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -174,7 +174,7 @@ proc url_GetSnapshotBlock_601720(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_GetSnapshotBlock_601719(path: JsonNode; query: JsonNode;
+proc validate_GetSnapshotBlock_605919(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the data in a block in an Amazon Elastic Block Store snapshot.
@@ -189,15 +189,15 @@ proc validate_GetSnapshotBlock_601719(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `snapshotId` field"
-  var valid_601846 = path.getOrDefault("snapshotId")
-  valid_601846 = validateParameter(valid_601846, JString, required = true,
+  var valid_606046 = path.getOrDefault("snapshotId")
+  valid_606046 = validateParameter(valid_606046, JString, required = true,
                                  default = nil)
-  if valid_601846 != nil:
-    section.add "snapshotId", valid_601846
-  var valid_601847 = path.getOrDefault("blockIndex")
-  valid_601847 = validateParameter(valid_601847, JInt, required = true, default = nil)
-  if valid_601847 != nil:
-    section.add "blockIndex", valid_601847
+  if valid_606046 != nil:
+    section.add "snapshotId", valid_606046
+  var valid_606047 = path.getOrDefault("blockIndex")
+  valid_606047 = validateParameter(valid_606047, JInt, required = true, default = nil)
+  if valid_606047 != nil:
+    section.add "blockIndex", valid_606047
   result.add "path", section
   ## parameters in `query` object:
   ##   blockToken: JString (required)
@@ -205,11 +205,11 @@ proc validate_GetSnapshotBlock_601719(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `blockToken` field"
-  var valid_601848 = query.getOrDefault("blockToken")
-  valid_601848 = validateParameter(valid_601848, JString, required = true,
+  var valid_606048 = query.getOrDefault("blockToken")
+  valid_606048 = validateParameter(valid_606048, JString, required = true,
                                  default = nil)
-  if valid_601848 != nil:
-    section.add "blockToken", valid_601848
+  if valid_606048 != nil:
+    section.add "blockToken", valid_606048
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -220,61 +220,61 @@ proc validate_GetSnapshotBlock_601719(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_601849 = header.getOrDefault("X-Amz-Signature")
-  valid_601849 = validateParameter(valid_601849, JString, required = false,
+  var valid_606049 = header.getOrDefault("X-Amz-Signature")
+  valid_606049 = validateParameter(valid_606049, JString, required = false,
                                  default = nil)
-  if valid_601849 != nil:
-    section.add "X-Amz-Signature", valid_601849
-  var valid_601850 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601850 = validateParameter(valid_601850, JString, required = false,
+  if valid_606049 != nil:
+    section.add "X-Amz-Signature", valid_606049
+  var valid_606050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606050 = validateParameter(valid_606050, JString, required = false,
                                  default = nil)
-  if valid_601850 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601850
-  var valid_601851 = header.getOrDefault("X-Amz-Date")
-  valid_601851 = validateParameter(valid_601851, JString, required = false,
+  if valid_606050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606050
+  var valid_606051 = header.getOrDefault("X-Amz-Date")
+  valid_606051 = validateParameter(valid_606051, JString, required = false,
                                  default = nil)
-  if valid_601851 != nil:
-    section.add "X-Amz-Date", valid_601851
-  var valid_601852 = header.getOrDefault("X-Amz-Credential")
-  valid_601852 = validateParameter(valid_601852, JString, required = false,
+  if valid_606051 != nil:
+    section.add "X-Amz-Date", valid_606051
+  var valid_606052 = header.getOrDefault("X-Amz-Credential")
+  valid_606052 = validateParameter(valid_606052, JString, required = false,
                                  default = nil)
-  if valid_601852 != nil:
-    section.add "X-Amz-Credential", valid_601852
-  var valid_601853 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601853 = validateParameter(valid_601853, JString, required = false,
+  if valid_606052 != nil:
+    section.add "X-Amz-Credential", valid_606052
+  var valid_606053 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606053 = validateParameter(valid_606053, JString, required = false,
                                  default = nil)
-  if valid_601853 != nil:
-    section.add "X-Amz-Security-Token", valid_601853
-  var valid_601854 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601854 = validateParameter(valid_601854, JString, required = false,
+  if valid_606053 != nil:
+    section.add "X-Amz-Security-Token", valid_606053
+  var valid_606054 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606054 = validateParameter(valid_606054, JString, required = false,
                                  default = nil)
-  if valid_601854 != nil:
-    section.add "X-Amz-Algorithm", valid_601854
-  var valid_601855 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601855 = validateParameter(valid_601855, JString, required = false,
+  if valid_606054 != nil:
+    section.add "X-Amz-Algorithm", valid_606054
+  var valid_606055 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606055 = validateParameter(valid_606055, JString, required = false,
                                  default = nil)
-  if valid_601855 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601855
+  if valid_606055 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606055
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601878: Call_GetSnapshotBlock_601718; path: JsonNode;
+proc call*(call_606078: Call_GetSnapshotBlock_605918; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the data in a block in an Amazon Elastic Block Store snapshot.
   ## 
-  let valid = call_601878.validator(path, query, header, formData, body)
-  let scheme = call_601878.pickScheme
+  let valid = call_606078.validator(path, query, header, formData, body)
+  let scheme = call_606078.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601878.url(scheme.get, call_601878.host, call_601878.base,
-                         call_601878.route, valid.getOrDefault("path"),
+  let url = call_606078.url(scheme.get, call_606078.host, call_606078.base,
+                         call_606078.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601878, url, valid)
+  result = atozHook(call_606078, url, valid)
 
-proc call*(call_601949: Call_GetSnapshotBlock_601718; snapshotId: string;
+proc call*(call_606149: Call_GetSnapshotBlock_605918; snapshotId: string;
           blockIndex: int; blockToken: string): Recallable =
   ## getSnapshotBlock
   ## Returns the data in a block in an Amazon Elastic Block Store snapshot.
@@ -284,21 +284,21 @@ proc call*(call_601949: Call_GetSnapshotBlock_601718; snapshotId: string;
   ##             : <p>The block index of the block from which to get data.</p> <p>Obtain the <code>block index</code> by running the <code>list changed blocks</code> or <code>list snapshot blocks</code> operations.</p>
   ##   blockToken: string (required)
   ##             : <p>The block token of the block from which to get data.</p> <p>Obtain the <code>block token</code> by running the <code>list changed blocks</code> or <code>list snapshot blocks</code> operations.</p>
-  var path_601950 = newJObject()
-  var query_601952 = newJObject()
-  add(path_601950, "snapshotId", newJString(snapshotId))
-  add(path_601950, "blockIndex", newJInt(blockIndex))
-  add(query_601952, "blockToken", newJString(blockToken))
-  result = call_601949.call(path_601950, query_601952, nil, nil, nil)
+  var path_606150 = newJObject()
+  var query_606152 = newJObject()
+  add(path_606150, "snapshotId", newJString(snapshotId))
+  add(path_606150, "blockIndex", newJInt(blockIndex))
+  add(query_606152, "blockToken", newJString(blockToken))
+  result = call_606149.call(path_606150, query_606152, nil, nil, nil)
 
-var getSnapshotBlock* = Call_GetSnapshotBlock_601718(name: "getSnapshotBlock",
+var getSnapshotBlock* = Call_GetSnapshotBlock_605918(name: "getSnapshotBlock",
     meth: HttpMethod.HttpGet, host: "ebs.amazonaws.com",
     route: "/snapshots/{snapshotId}/blocks/{blockIndex}#blockToken",
-    validator: validate_GetSnapshotBlock_601719, base: "/",
-    url: url_GetSnapshotBlock_601720, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSnapshotBlock_605919, base: "/",
+    url: url_GetSnapshotBlock_605920, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListChangedBlocks_601991 = ref object of OpenApiRestCall_601380
-proc url_ListChangedBlocks_601993(protocol: Scheme; host: string; base: string;
+  Call_ListChangedBlocks_606191 = ref object of OpenApiRestCall_605580
+proc url_ListChangedBlocks_606193(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -320,7 +320,7 @@ proc url_ListChangedBlocks_601993(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListChangedBlocks_601992(path: JsonNode; query: JsonNode;
+proc validate_ListChangedBlocks_606192(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Returns the block indexes and block tokens for blocks that are different between two Amazon Elastic Block Store snapshots of the same volume/snapshot lineage.
@@ -333,11 +333,11 @@ proc validate_ListChangedBlocks_601992(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `secondSnapshotId` field"
-  var valid_601994 = path.getOrDefault("secondSnapshotId")
-  valid_601994 = validateParameter(valid_601994, JString, required = true,
+  var valid_606194 = path.getOrDefault("secondSnapshotId")
+  valid_606194 = validateParameter(valid_606194, JString, required = true,
                                  default = nil)
-  if valid_601994 != nil:
-    section.add "secondSnapshotId", valid_601994
+  if valid_606194 != nil:
+    section.add "secondSnapshotId", valid_606194
   result.add "path", section
   ## parameters in `query` object:
   ##   MaxResults: JString
@@ -353,34 +353,34 @@ proc validate_ListChangedBlocks_601992(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             : The number of results to return.
   section = newJObject()
-  var valid_601995 = query.getOrDefault("MaxResults")
-  valid_601995 = validateParameter(valid_601995, JString, required = false,
+  var valid_606195 = query.getOrDefault("MaxResults")
+  valid_606195 = validateParameter(valid_606195, JString, required = false,
                                  default = nil)
-  if valid_601995 != nil:
-    section.add "MaxResults", valid_601995
-  var valid_601996 = query.getOrDefault("NextToken")
-  valid_601996 = validateParameter(valid_601996, JString, required = false,
+  if valid_606195 != nil:
+    section.add "MaxResults", valid_606195
+  var valid_606196 = query.getOrDefault("NextToken")
+  valid_606196 = validateParameter(valid_606196, JString, required = false,
                                  default = nil)
-  if valid_601996 != nil:
-    section.add "NextToken", valid_601996
-  var valid_601997 = query.getOrDefault("pageToken")
-  valid_601997 = validateParameter(valid_601997, JString, required = false,
+  if valid_606196 != nil:
+    section.add "NextToken", valid_606196
+  var valid_606197 = query.getOrDefault("pageToken")
+  valid_606197 = validateParameter(valid_606197, JString, required = false,
                                  default = nil)
-  if valid_601997 != nil:
-    section.add "pageToken", valid_601997
-  var valid_601998 = query.getOrDefault("startingBlockIndex")
-  valid_601998 = validateParameter(valid_601998, JInt, required = false, default = nil)
-  if valid_601998 != nil:
-    section.add "startingBlockIndex", valid_601998
-  var valid_601999 = query.getOrDefault("firstSnapshotId")
-  valid_601999 = validateParameter(valid_601999, JString, required = false,
+  if valid_606197 != nil:
+    section.add "pageToken", valid_606197
+  var valid_606198 = query.getOrDefault("startingBlockIndex")
+  valid_606198 = validateParameter(valid_606198, JInt, required = false, default = nil)
+  if valid_606198 != nil:
+    section.add "startingBlockIndex", valid_606198
+  var valid_606199 = query.getOrDefault("firstSnapshotId")
+  valid_606199 = validateParameter(valid_606199, JString, required = false,
                                  default = nil)
-  if valid_601999 != nil:
-    section.add "firstSnapshotId", valid_601999
-  var valid_602000 = query.getOrDefault("maxResults")
-  valid_602000 = validateParameter(valid_602000, JInt, required = false, default = nil)
-  if valid_602000 != nil:
-    section.add "maxResults", valid_602000
+  if valid_606199 != nil:
+    section.add "firstSnapshotId", valid_606199
+  var valid_606200 = query.getOrDefault("maxResults")
+  valid_606200 = validateParameter(valid_606200, JInt, required = false, default = nil)
+  if valid_606200 != nil:
+    section.add "maxResults", valid_606200
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -391,61 +391,61 @@ proc validate_ListChangedBlocks_601992(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602001 = header.getOrDefault("X-Amz-Signature")
-  valid_602001 = validateParameter(valid_602001, JString, required = false,
+  var valid_606201 = header.getOrDefault("X-Amz-Signature")
+  valid_606201 = validateParameter(valid_606201, JString, required = false,
                                  default = nil)
-  if valid_602001 != nil:
-    section.add "X-Amz-Signature", valid_602001
-  var valid_602002 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602002 = validateParameter(valid_602002, JString, required = false,
+  if valid_606201 != nil:
+    section.add "X-Amz-Signature", valid_606201
+  var valid_606202 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606202 = validateParameter(valid_606202, JString, required = false,
                                  default = nil)
-  if valid_602002 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602002
-  var valid_602003 = header.getOrDefault("X-Amz-Date")
-  valid_602003 = validateParameter(valid_602003, JString, required = false,
+  if valid_606202 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606202
+  var valid_606203 = header.getOrDefault("X-Amz-Date")
+  valid_606203 = validateParameter(valid_606203, JString, required = false,
                                  default = nil)
-  if valid_602003 != nil:
-    section.add "X-Amz-Date", valid_602003
-  var valid_602004 = header.getOrDefault("X-Amz-Credential")
-  valid_602004 = validateParameter(valid_602004, JString, required = false,
+  if valid_606203 != nil:
+    section.add "X-Amz-Date", valid_606203
+  var valid_606204 = header.getOrDefault("X-Amz-Credential")
+  valid_606204 = validateParameter(valid_606204, JString, required = false,
                                  default = nil)
-  if valid_602004 != nil:
-    section.add "X-Amz-Credential", valid_602004
-  var valid_602005 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602005 = validateParameter(valid_602005, JString, required = false,
+  if valid_606204 != nil:
+    section.add "X-Amz-Credential", valid_606204
+  var valid_606205 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606205 = validateParameter(valid_606205, JString, required = false,
                                  default = nil)
-  if valid_602005 != nil:
-    section.add "X-Amz-Security-Token", valid_602005
-  var valid_602006 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602006 = validateParameter(valid_602006, JString, required = false,
+  if valid_606205 != nil:
+    section.add "X-Amz-Security-Token", valid_606205
+  var valid_606206 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606206 = validateParameter(valid_606206, JString, required = false,
                                  default = nil)
-  if valid_602006 != nil:
-    section.add "X-Amz-Algorithm", valid_602006
-  var valid_602007 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602007 = validateParameter(valid_602007, JString, required = false,
+  if valid_606206 != nil:
+    section.add "X-Amz-Algorithm", valid_606206
+  var valid_606207 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606207 = validateParameter(valid_606207, JString, required = false,
                                  default = nil)
-  if valid_602007 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602007
+  if valid_606207 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606207
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602008: Call_ListChangedBlocks_601991; path: JsonNode;
+proc call*(call_606208: Call_ListChangedBlocks_606191; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the block indexes and block tokens for blocks that are different between two Amazon Elastic Block Store snapshots of the same volume/snapshot lineage.
   ## 
-  let valid = call_602008.validator(path, query, header, formData, body)
-  let scheme = call_602008.pickScheme
+  let valid = call_606208.validator(path, query, header, formData, body)
+  let scheme = call_606208.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602008.url(scheme.get, call_602008.host, call_602008.base,
-                         call_602008.route, valid.getOrDefault("path"),
+  let url = call_606208.url(scheme.get, call_606208.host, call_606208.base,
+                         call_606208.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602008, url, valid)
+  result = atozHook(call_606208, url, valid)
 
-proc call*(call_602009: Call_ListChangedBlocks_601991; secondSnapshotId: string;
+proc call*(call_606209: Call_ListChangedBlocks_606191; secondSnapshotId: string;
           MaxResults: string = ""; NextToken: string = ""; pageToken: string = "";
           startingBlockIndex: int = 0; firstSnapshotId: string = ""; maxResults: int = 0): Recallable =
   ## listChangedBlocks
@@ -464,25 +464,25 @@ proc call*(call_602009: Call_ListChangedBlocks_601991; secondSnapshotId: string;
   ##                  : The ID of the first snapshot to use for the comparison.
   ##   maxResults: int
   ##             : The number of results to return.
-  var path_602010 = newJObject()
-  var query_602011 = newJObject()
-  add(query_602011, "MaxResults", newJString(MaxResults))
-  add(query_602011, "NextToken", newJString(NextToken))
-  add(path_602010, "secondSnapshotId", newJString(secondSnapshotId))
-  add(query_602011, "pageToken", newJString(pageToken))
-  add(query_602011, "startingBlockIndex", newJInt(startingBlockIndex))
-  add(query_602011, "firstSnapshotId", newJString(firstSnapshotId))
-  add(query_602011, "maxResults", newJInt(maxResults))
-  result = call_602009.call(path_602010, query_602011, nil, nil, nil)
+  var path_606210 = newJObject()
+  var query_606211 = newJObject()
+  add(query_606211, "MaxResults", newJString(MaxResults))
+  add(query_606211, "NextToken", newJString(NextToken))
+  add(path_606210, "secondSnapshotId", newJString(secondSnapshotId))
+  add(query_606211, "pageToken", newJString(pageToken))
+  add(query_606211, "startingBlockIndex", newJInt(startingBlockIndex))
+  add(query_606211, "firstSnapshotId", newJString(firstSnapshotId))
+  add(query_606211, "maxResults", newJInt(maxResults))
+  result = call_606209.call(path_606210, query_606211, nil, nil, nil)
 
-var listChangedBlocks* = Call_ListChangedBlocks_601991(name: "listChangedBlocks",
+var listChangedBlocks* = Call_ListChangedBlocks_606191(name: "listChangedBlocks",
     meth: HttpMethod.HttpGet, host: "ebs.amazonaws.com",
     route: "/snapshots/{secondSnapshotId}/changedblocks",
-    validator: validate_ListChangedBlocks_601992, base: "/",
-    url: url_ListChangedBlocks_601993, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListChangedBlocks_606192, base: "/",
+    url: url_ListChangedBlocks_606193, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSnapshotBlocks_602012 = ref object of OpenApiRestCall_601380
-proc url_ListSnapshotBlocks_602014(protocol: Scheme; host: string; base: string;
+  Call_ListSnapshotBlocks_606212 = ref object of OpenApiRestCall_605580
+proc url_ListSnapshotBlocks_606214(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -503,7 +503,7 @@ proc url_ListSnapshotBlocks_602014(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ListSnapshotBlocks_602013(path: JsonNode; query: JsonNode;
+proc validate_ListSnapshotBlocks_606213(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns the block indexes and block tokens for blocks in an Amazon Elastic Block Store snapshot.
@@ -516,11 +516,11 @@ proc validate_ListSnapshotBlocks_602013(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `snapshotId` field"
-  var valid_602015 = path.getOrDefault("snapshotId")
-  valid_602015 = validateParameter(valid_602015, JString, required = true,
+  var valid_606215 = path.getOrDefault("snapshotId")
+  valid_606215 = validateParameter(valid_606215, JString, required = true,
                                  default = nil)
-  if valid_602015 != nil:
-    section.add "snapshotId", valid_602015
+  if valid_606215 != nil:
+    section.add "snapshotId", valid_606215
   result.add "path", section
   ## parameters in `query` object:
   ##   MaxResults: JString
@@ -534,29 +534,29 @@ proc validate_ListSnapshotBlocks_602013(path: JsonNode; query: JsonNode;
   ##   maxResults: JInt
   ##             : The number of results to return.
   section = newJObject()
-  var valid_602016 = query.getOrDefault("MaxResults")
-  valid_602016 = validateParameter(valid_602016, JString, required = false,
+  var valid_606216 = query.getOrDefault("MaxResults")
+  valid_606216 = validateParameter(valid_606216, JString, required = false,
                                  default = nil)
-  if valid_602016 != nil:
-    section.add "MaxResults", valid_602016
-  var valid_602017 = query.getOrDefault("NextToken")
-  valid_602017 = validateParameter(valid_602017, JString, required = false,
+  if valid_606216 != nil:
+    section.add "MaxResults", valid_606216
+  var valid_606217 = query.getOrDefault("NextToken")
+  valid_606217 = validateParameter(valid_606217, JString, required = false,
                                  default = nil)
-  if valid_602017 != nil:
-    section.add "NextToken", valid_602017
-  var valid_602018 = query.getOrDefault("pageToken")
-  valid_602018 = validateParameter(valid_602018, JString, required = false,
+  if valid_606217 != nil:
+    section.add "NextToken", valid_606217
+  var valid_606218 = query.getOrDefault("pageToken")
+  valid_606218 = validateParameter(valid_606218, JString, required = false,
                                  default = nil)
-  if valid_602018 != nil:
-    section.add "pageToken", valid_602018
-  var valid_602019 = query.getOrDefault("startingBlockIndex")
-  valid_602019 = validateParameter(valid_602019, JInt, required = false, default = nil)
-  if valid_602019 != nil:
-    section.add "startingBlockIndex", valid_602019
-  var valid_602020 = query.getOrDefault("maxResults")
-  valid_602020 = validateParameter(valid_602020, JInt, required = false, default = nil)
-  if valid_602020 != nil:
-    section.add "maxResults", valid_602020
+  if valid_606218 != nil:
+    section.add "pageToken", valid_606218
+  var valid_606219 = query.getOrDefault("startingBlockIndex")
+  valid_606219 = validateParameter(valid_606219, JInt, required = false, default = nil)
+  if valid_606219 != nil:
+    section.add "startingBlockIndex", valid_606219
+  var valid_606220 = query.getOrDefault("maxResults")
+  valid_606220 = validateParameter(valid_606220, JInt, required = false, default = nil)
+  if valid_606220 != nil:
+    section.add "maxResults", valid_606220
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -567,61 +567,61 @@ proc validate_ListSnapshotBlocks_602013(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_602021 = header.getOrDefault("X-Amz-Signature")
-  valid_602021 = validateParameter(valid_602021, JString, required = false,
+  var valid_606221 = header.getOrDefault("X-Amz-Signature")
+  valid_606221 = validateParameter(valid_606221, JString, required = false,
                                  default = nil)
-  if valid_602021 != nil:
-    section.add "X-Amz-Signature", valid_602021
-  var valid_602022 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602022 = validateParameter(valid_602022, JString, required = false,
+  if valid_606221 != nil:
+    section.add "X-Amz-Signature", valid_606221
+  var valid_606222 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606222 = validateParameter(valid_606222, JString, required = false,
                                  default = nil)
-  if valid_602022 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602022
-  var valid_602023 = header.getOrDefault("X-Amz-Date")
-  valid_602023 = validateParameter(valid_602023, JString, required = false,
+  if valid_606222 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606222
+  var valid_606223 = header.getOrDefault("X-Amz-Date")
+  valid_606223 = validateParameter(valid_606223, JString, required = false,
                                  default = nil)
-  if valid_602023 != nil:
-    section.add "X-Amz-Date", valid_602023
-  var valid_602024 = header.getOrDefault("X-Amz-Credential")
-  valid_602024 = validateParameter(valid_602024, JString, required = false,
+  if valid_606223 != nil:
+    section.add "X-Amz-Date", valid_606223
+  var valid_606224 = header.getOrDefault("X-Amz-Credential")
+  valid_606224 = validateParameter(valid_606224, JString, required = false,
                                  default = nil)
-  if valid_602024 != nil:
-    section.add "X-Amz-Credential", valid_602024
-  var valid_602025 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602025 = validateParameter(valid_602025, JString, required = false,
+  if valid_606224 != nil:
+    section.add "X-Amz-Credential", valid_606224
+  var valid_606225 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606225 = validateParameter(valid_606225, JString, required = false,
                                  default = nil)
-  if valid_602025 != nil:
-    section.add "X-Amz-Security-Token", valid_602025
-  var valid_602026 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602026 = validateParameter(valid_602026, JString, required = false,
+  if valid_606225 != nil:
+    section.add "X-Amz-Security-Token", valid_606225
+  var valid_606226 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606226 = validateParameter(valid_606226, JString, required = false,
                                  default = nil)
-  if valid_602026 != nil:
-    section.add "X-Amz-Algorithm", valid_602026
-  var valid_602027 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602027 = validateParameter(valid_602027, JString, required = false,
+  if valid_606226 != nil:
+    section.add "X-Amz-Algorithm", valid_606226
+  var valid_606227 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606227 = validateParameter(valid_606227, JString, required = false,
                                  default = nil)
-  if valid_602027 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602027
+  if valid_606227 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606227
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602028: Call_ListSnapshotBlocks_602012; path: JsonNode;
+proc call*(call_606228: Call_ListSnapshotBlocks_606212; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the block indexes and block tokens for blocks in an Amazon Elastic Block Store snapshot.
   ## 
-  let valid = call_602028.validator(path, query, header, formData, body)
-  let scheme = call_602028.pickScheme
+  let valid = call_606228.validator(path, query, header, formData, body)
+  let scheme = call_606228.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602028.url(scheme.get, call_602028.host, call_602028.base,
-                         call_602028.route, valid.getOrDefault("path"),
+  let url = call_606228.url(scheme.get, call_606228.host, call_606228.base,
+                         call_606228.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602028, url, valid)
+  result = atozHook(call_606228, url, valid)
 
-proc call*(call_602029: Call_ListSnapshotBlocks_602012; snapshotId: string;
+proc call*(call_606229: Call_ListSnapshotBlocks_606212; snapshotId: string;
           MaxResults: string = ""; NextToken: string = ""; pageToken: string = "";
           startingBlockIndex: int = 0; maxResults: int = 0): Recallable =
   ## listSnapshotBlocks
@@ -638,21 +638,21 @@ proc call*(call_602029: Call_ListSnapshotBlocks_602012; snapshotId: string;
   ##                     : The block index from which the list should start. The list in the response will start from this block index or the next valid block index in the snapshot.
   ##   maxResults: int
   ##             : The number of results to return.
-  var path_602030 = newJObject()
-  var query_602031 = newJObject()
-  add(path_602030, "snapshotId", newJString(snapshotId))
-  add(query_602031, "MaxResults", newJString(MaxResults))
-  add(query_602031, "NextToken", newJString(NextToken))
-  add(query_602031, "pageToken", newJString(pageToken))
-  add(query_602031, "startingBlockIndex", newJInt(startingBlockIndex))
-  add(query_602031, "maxResults", newJInt(maxResults))
-  result = call_602029.call(path_602030, query_602031, nil, nil, nil)
+  var path_606230 = newJObject()
+  var query_606231 = newJObject()
+  add(path_606230, "snapshotId", newJString(snapshotId))
+  add(query_606231, "MaxResults", newJString(MaxResults))
+  add(query_606231, "NextToken", newJString(NextToken))
+  add(query_606231, "pageToken", newJString(pageToken))
+  add(query_606231, "startingBlockIndex", newJInt(startingBlockIndex))
+  add(query_606231, "maxResults", newJInt(maxResults))
+  result = call_606229.call(path_606230, query_606231, nil, nil, nil)
 
-var listSnapshotBlocks* = Call_ListSnapshotBlocks_602012(
+var listSnapshotBlocks* = Call_ListSnapshotBlocks_606212(
     name: "listSnapshotBlocks", meth: HttpMethod.HttpGet, host: "ebs.amazonaws.com",
     route: "/snapshots/{snapshotId}/blocks",
-    validator: validate_ListSnapshotBlocks_602013, base: "/",
-    url: url_ListSnapshotBlocks_602014, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSnapshotBlocks_606213, base: "/",
+    url: url_ListSnapshotBlocks_606214, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -697,5 +697,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)

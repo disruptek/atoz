@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_601389 = ref object of OpenApiRestCall
+  OpenApiRestCall_605589 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_601389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_601389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -144,8 +144,8 @@ const
   awsServiceName = "translate"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_DeleteTerminology_601727 = ref object of OpenApiRestCall_601389
-proc url_DeleteTerminology_601729(protocol: Scheme; host: string; base: string;
+  Call_DeleteTerminology_605927 = ref object of OpenApiRestCall_605589
+proc url_DeleteTerminology_605929(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -157,7 +157,7 @@ proc url_DeleteTerminology_601729(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteTerminology_601728(path: JsonNode; query: JsonNode;
+proc validate_DeleteTerminology_605928(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## A synchronous action that deletes a custom terminology.
@@ -180,46 +180,46 @@ proc validate_DeleteTerminology_601728(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601854 = header.getOrDefault("X-Amz-Target")
-  valid_601854 = validateParameter(valid_601854, JString, required = true, default = newJString(
+  var valid_606054 = header.getOrDefault("X-Amz-Target")
+  valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.DeleteTerminology"))
-  if valid_601854 != nil:
-    section.add "X-Amz-Target", valid_601854
-  var valid_601855 = header.getOrDefault("X-Amz-Signature")
-  valid_601855 = validateParameter(valid_601855, JString, required = false,
+  if valid_606054 != nil:
+    section.add "X-Amz-Target", valid_606054
+  var valid_606055 = header.getOrDefault("X-Amz-Signature")
+  valid_606055 = validateParameter(valid_606055, JString, required = false,
                                  default = nil)
-  if valid_601855 != nil:
-    section.add "X-Amz-Signature", valid_601855
-  var valid_601856 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_601856 = validateParameter(valid_601856, JString, required = false,
+  if valid_606055 != nil:
+    section.add "X-Amz-Signature", valid_606055
+  var valid_606056 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606056 = validateParameter(valid_606056, JString, required = false,
                                  default = nil)
-  if valid_601856 != nil:
-    section.add "X-Amz-Content-Sha256", valid_601856
-  var valid_601857 = header.getOrDefault("X-Amz-Date")
-  valid_601857 = validateParameter(valid_601857, JString, required = false,
+  if valid_606056 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606056
+  var valid_606057 = header.getOrDefault("X-Amz-Date")
+  valid_606057 = validateParameter(valid_606057, JString, required = false,
                                  default = nil)
-  if valid_601857 != nil:
-    section.add "X-Amz-Date", valid_601857
-  var valid_601858 = header.getOrDefault("X-Amz-Credential")
-  valid_601858 = validateParameter(valid_601858, JString, required = false,
+  if valid_606057 != nil:
+    section.add "X-Amz-Date", valid_606057
+  var valid_606058 = header.getOrDefault("X-Amz-Credential")
+  valid_606058 = validateParameter(valid_606058, JString, required = false,
                                  default = nil)
-  if valid_601858 != nil:
-    section.add "X-Amz-Credential", valid_601858
-  var valid_601859 = header.getOrDefault("X-Amz-Security-Token")
-  valid_601859 = validateParameter(valid_601859, JString, required = false,
+  if valid_606058 != nil:
+    section.add "X-Amz-Credential", valid_606058
+  var valid_606059 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606059 = validateParameter(valid_606059, JString, required = false,
                                  default = nil)
-  if valid_601859 != nil:
-    section.add "X-Amz-Security-Token", valid_601859
-  var valid_601860 = header.getOrDefault("X-Amz-Algorithm")
-  valid_601860 = validateParameter(valid_601860, JString, required = false,
+  if valid_606059 != nil:
+    section.add "X-Amz-Security-Token", valid_606059
+  var valid_606060 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606060 = validateParameter(valid_606060, JString, required = false,
                                  default = nil)
-  if valid_601860 != nil:
-    section.add "X-Amz-Algorithm", valid_601860
-  var valid_601861 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_601861 = validateParameter(valid_601861, JString, required = false,
+  if valid_606060 != nil:
+    section.add "X-Amz-Algorithm", valid_606060
+  var valid_606061 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606061 = validateParameter(valid_606061, JString, required = false,
                                  default = nil)
-  if valid_601861 != nil:
-    section.add "X-Amz-SignedHeaders", valid_601861
+  if valid_606061 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606061
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -230,36 +230,36 @@ proc validate_DeleteTerminology_601728(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_601885: Call_DeleteTerminology_601727; path: JsonNode;
+proc call*(call_606085: Call_DeleteTerminology_605927; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## A synchronous action that deletes a custom terminology.
   ## 
-  let valid = call_601885.validator(path, query, header, formData, body)
-  let scheme = call_601885.pickScheme
+  let valid = call_606085.validator(path, query, header, formData, body)
+  let scheme = call_606085.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601885.url(scheme.get, call_601885.host, call_601885.base,
-                         call_601885.route, valid.getOrDefault("path"),
+  let url = call_606085.url(scheme.get, call_606085.host, call_606085.base,
+                         call_606085.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601885, url, valid)
+  result = atozHook(call_606085, url, valid)
 
-proc call*(call_601956: Call_DeleteTerminology_601727; body: JsonNode): Recallable =
+proc call*(call_606156: Call_DeleteTerminology_605927; body: JsonNode): Recallable =
   ## deleteTerminology
   ## A synchronous action that deletes a custom terminology.
   ##   body: JObject (required)
-  var body_601957 = newJObject()
+  var body_606157 = newJObject()
   if body != nil:
-    body_601957 = body
-  result = call_601956.call(nil, nil, nil, nil, body_601957)
+    body_606157 = body
+  result = call_606156.call(nil, nil, nil, nil, body_606157)
 
-var deleteTerminology* = Call_DeleteTerminology_601727(name: "deleteTerminology",
+var deleteTerminology* = Call_DeleteTerminology_605927(name: "deleteTerminology",
     meth: HttpMethod.HttpPost, host: "translate.amazonaws.com",
     route: "/#X-Amz-Target=AWSShineFrontendService_20170701.DeleteTerminology",
-    validator: validate_DeleteTerminology_601728, base: "/",
-    url: url_DeleteTerminology_601729, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteTerminology_605928, base: "/",
+    url: url_DeleteTerminology_605929, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTextTranslationJob_601996 = ref object of OpenApiRestCall_601389
-proc url_DescribeTextTranslationJob_601998(protocol: Scheme; host: string;
+  Call_DescribeTextTranslationJob_606196 = ref object of OpenApiRestCall_605589
+proc url_DescribeTextTranslationJob_606198(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -271,7 +271,7 @@ proc url_DescribeTextTranslationJob_601998(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeTextTranslationJob_601997(path: JsonNode; query: JsonNode;
+proc validate_DescribeTextTranslationJob_606197(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets the properties associated with an asycnhronous batch translation job including name, ID, status, source and target languages, input/output S3 buckets, and so on.
   ## 
@@ -293,46 +293,46 @@ proc validate_DescribeTextTranslationJob_601997(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_601999 = header.getOrDefault("X-Amz-Target")
-  valid_601999 = validateParameter(valid_601999, JString, required = true, default = newJString(
+  var valid_606199 = header.getOrDefault("X-Amz-Target")
+  valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.DescribeTextTranslationJob"))
-  if valid_601999 != nil:
-    section.add "X-Amz-Target", valid_601999
-  var valid_602000 = header.getOrDefault("X-Amz-Signature")
-  valid_602000 = validateParameter(valid_602000, JString, required = false,
+  if valid_606199 != nil:
+    section.add "X-Amz-Target", valid_606199
+  var valid_606200 = header.getOrDefault("X-Amz-Signature")
+  valid_606200 = validateParameter(valid_606200, JString, required = false,
                                  default = nil)
-  if valid_602000 != nil:
-    section.add "X-Amz-Signature", valid_602000
-  var valid_602001 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602001 = validateParameter(valid_602001, JString, required = false,
+  if valid_606200 != nil:
+    section.add "X-Amz-Signature", valid_606200
+  var valid_606201 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606201 = validateParameter(valid_606201, JString, required = false,
                                  default = nil)
-  if valid_602001 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602001
-  var valid_602002 = header.getOrDefault("X-Amz-Date")
-  valid_602002 = validateParameter(valid_602002, JString, required = false,
+  if valid_606201 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606201
+  var valid_606202 = header.getOrDefault("X-Amz-Date")
+  valid_606202 = validateParameter(valid_606202, JString, required = false,
                                  default = nil)
-  if valid_602002 != nil:
-    section.add "X-Amz-Date", valid_602002
-  var valid_602003 = header.getOrDefault("X-Amz-Credential")
-  valid_602003 = validateParameter(valid_602003, JString, required = false,
+  if valid_606202 != nil:
+    section.add "X-Amz-Date", valid_606202
+  var valid_606203 = header.getOrDefault("X-Amz-Credential")
+  valid_606203 = validateParameter(valid_606203, JString, required = false,
                                  default = nil)
-  if valid_602003 != nil:
-    section.add "X-Amz-Credential", valid_602003
-  var valid_602004 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602004 = validateParameter(valid_602004, JString, required = false,
+  if valid_606203 != nil:
+    section.add "X-Amz-Credential", valid_606203
+  var valid_606204 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606204 = validateParameter(valid_606204, JString, required = false,
                                  default = nil)
-  if valid_602004 != nil:
-    section.add "X-Amz-Security-Token", valid_602004
-  var valid_602005 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602005 = validateParameter(valid_602005, JString, required = false,
+  if valid_606204 != nil:
+    section.add "X-Amz-Security-Token", valid_606204
+  var valid_606205 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606205 = validateParameter(valid_606205, JString, required = false,
                                  default = nil)
-  if valid_602005 != nil:
-    section.add "X-Amz-Algorithm", valid_602005
-  var valid_602006 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602006 = validateParameter(valid_602006, JString, required = false,
+  if valid_606205 != nil:
+    section.add "X-Amz-Algorithm", valid_606205
+  var valid_606206 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606206 = validateParameter(valid_606206, JString, required = false,
                                  default = nil)
-  if valid_602006 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602006
+  if valid_606206 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606206
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -343,37 +343,37 @@ proc validate_DescribeTextTranslationJob_601997(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602008: Call_DescribeTextTranslationJob_601996; path: JsonNode;
+proc call*(call_606208: Call_DescribeTextTranslationJob_606196; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets the properties associated with an asycnhronous batch translation job including name, ID, status, source and target languages, input/output S3 buckets, and so on.
   ## 
-  let valid = call_602008.validator(path, query, header, formData, body)
-  let scheme = call_602008.pickScheme
+  let valid = call_606208.validator(path, query, header, formData, body)
+  let scheme = call_606208.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602008.url(scheme.get, call_602008.host, call_602008.base,
-                         call_602008.route, valid.getOrDefault("path"),
+  let url = call_606208.url(scheme.get, call_606208.host, call_606208.base,
+                         call_606208.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602008, url, valid)
+  result = atozHook(call_606208, url, valid)
 
-proc call*(call_602009: Call_DescribeTextTranslationJob_601996; body: JsonNode): Recallable =
+proc call*(call_606209: Call_DescribeTextTranslationJob_606196; body: JsonNode): Recallable =
   ## describeTextTranslationJob
   ## Gets the properties associated with an asycnhronous batch translation job including name, ID, status, source and target languages, input/output S3 buckets, and so on.
   ##   body: JObject (required)
-  var body_602010 = newJObject()
+  var body_606210 = newJObject()
   if body != nil:
-    body_602010 = body
-  result = call_602009.call(nil, nil, nil, nil, body_602010)
+    body_606210 = body
+  result = call_606209.call(nil, nil, nil, nil, body_606210)
 
-var describeTextTranslationJob* = Call_DescribeTextTranslationJob_601996(
+var describeTextTranslationJob* = Call_DescribeTextTranslationJob_606196(
     name: "describeTextTranslationJob", meth: HttpMethod.HttpPost,
     host: "translate.amazonaws.com", route: "/#X-Amz-Target=AWSShineFrontendService_20170701.DescribeTextTranslationJob",
-    validator: validate_DescribeTextTranslationJob_601997, base: "/",
-    url: url_DescribeTextTranslationJob_601998,
+    validator: validate_DescribeTextTranslationJob_606197, base: "/",
+    url: url_DescribeTextTranslationJob_606198,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTerminology_602011 = ref object of OpenApiRestCall_601389
-proc url_GetTerminology_602013(protocol: Scheme; host: string; base: string;
+  Call_GetTerminology_606211 = ref object of OpenApiRestCall_605589
+proc url_GetTerminology_606213(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -385,7 +385,7 @@ proc url_GetTerminology_602013(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetTerminology_602012(path: JsonNode; query: JsonNode;
+proc validate_GetTerminology_606212(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Retrieves a custom terminology.
@@ -408,46 +408,46 @@ proc validate_GetTerminology_602012(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602014 = header.getOrDefault("X-Amz-Target")
-  valid_602014 = validateParameter(valid_602014, JString, required = true, default = newJString(
+  var valid_606214 = header.getOrDefault("X-Amz-Target")
+  valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.GetTerminology"))
-  if valid_602014 != nil:
-    section.add "X-Amz-Target", valid_602014
-  var valid_602015 = header.getOrDefault("X-Amz-Signature")
-  valid_602015 = validateParameter(valid_602015, JString, required = false,
+  if valid_606214 != nil:
+    section.add "X-Amz-Target", valid_606214
+  var valid_606215 = header.getOrDefault("X-Amz-Signature")
+  valid_606215 = validateParameter(valid_606215, JString, required = false,
                                  default = nil)
-  if valid_602015 != nil:
-    section.add "X-Amz-Signature", valid_602015
-  var valid_602016 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602016 = validateParameter(valid_602016, JString, required = false,
+  if valid_606215 != nil:
+    section.add "X-Amz-Signature", valid_606215
+  var valid_606216 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606216 = validateParameter(valid_606216, JString, required = false,
                                  default = nil)
-  if valid_602016 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602016
-  var valid_602017 = header.getOrDefault("X-Amz-Date")
-  valid_602017 = validateParameter(valid_602017, JString, required = false,
+  if valid_606216 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606216
+  var valid_606217 = header.getOrDefault("X-Amz-Date")
+  valid_606217 = validateParameter(valid_606217, JString, required = false,
                                  default = nil)
-  if valid_602017 != nil:
-    section.add "X-Amz-Date", valid_602017
-  var valid_602018 = header.getOrDefault("X-Amz-Credential")
-  valid_602018 = validateParameter(valid_602018, JString, required = false,
+  if valid_606217 != nil:
+    section.add "X-Amz-Date", valid_606217
+  var valid_606218 = header.getOrDefault("X-Amz-Credential")
+  valid_606218 = validateParameter(valid_606218, JString, required = false,
                                  default = nil)
-  if valid_602018 != nil:
-    section.add "X-Amz-Credential", valid_602018
-  var valid_602019 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602019 = validateParameter(valid_602019, JString, required = false,
+  if valid_606218 != nil:
+    section.add "X-Amz-Credential", valid_606218
+  var valid_606219 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606219 = validateParameter(valid_606219, JString, required = false,
                                  default = nil)
-  if valid_602019 != nil:
-    section.add "X-Amz-Security-Token", valid_602019
-  var valid_602020 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602020 = validateParameter(valid_602020, JString, required = false,
+  if valid_606219 != nil:
+    section.add "X-Amz-Security-Token", valid_606219
+  var valid_606220 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606220 = validateParameter(valid_606220, JString, required = false,
                                  default = nil)
-  if valid_602020 != nil:
-    section.add "X-Amz-Algorithm", valid_602020
-  var valid_602021 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602021 = validateParameter(valid_602021, JString, required = false,
+  if valid_606220 != nil:
+    section.add "X-Amz-Algorithm", valid_606220
+  var valid_606221 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606221 = validateParameter(valid_606221, JString, required = false,
                                  default = nil)
-  if valid_602021 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602021
+  if valid_606221 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606221
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -458,36 +458,36 @@ proc validate_GetTerminology_602012(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602023: Call_GetTerminology_602011; path: JsonNode; query: JsonNode;
+proc call*(call_606223: Call_GetTerminology_606211; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a custom terminology.
   ## 
-  let valid = call_602023.validator(path, query, header, formData, body)
-  let scheme = call_602023.pickScheme
+  let valid = call_606223.validator(path, query, header, formData, body)
+  let scheme = call_606223.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602023.url(scheme.get, call_602023.host, call_602023.base,
-                         call_602023.route, valid.getOrDefault("path"),
+  let url = call_606223.url(scheme.get, call_606223.host, call_606223.base,
+                         call_606223.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602023, url, valid)
+  result = atozHook(call_606223, url, valid)
 
-proc call*(call_602024: Call_GetTerminology_602011; body: JsonNode): Recallable =
+proc call*(call_606224: Call_GetTerminology_606211; body: JsonNode): Recallable =
   ## getTerminology
   ## Retrieves a custom terminology.
   ##   body: JObject (required)
-  var body_602025 = newJObject()
+  var body_606225 = newJObject()
   if body != nil:
-    body_602025 = body
-  result = call_602024.call(nil, nil, nil, nil, body_602025)
+    body_606225 = body
+  result = call_606224.call(nil, nil, nil, nil, body_606225)
 
-var getTerminology* = Call_GetTerminology_602011(name: "getTerminology",
+var getTerminology* = Call_GetTerminology_606211(name: "getTerminology",
     meth: HttpMethod.HttpPost, host: "translate.amazonaws.com",
     route: "/#X-Amz-Target=AWSShineFrontendService_20170701.GetTerminology",
-    validator: validate_GetTerminology_602012, base: "/", url: url_GetTerminology_602013,
+    validator: validate_GetTerminology_606212, base: "/", url: url_GetTerminology_606213,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ImportTerminology_602026 = ref object of OpenApiRestCall_601389
-proc url_ImportTerminology_602028(protocol: Scheme; host: string; base: string;
+  Call_ImportTerminology_606226 = ref object of OpenApiRestCall_605589
+proc url_ImportTerminology_606228(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -499,7 +499,7 @@ proc url_ImportTerminology_602028(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ImportTerminology_602027(path: JsonNode; query: JsonNode;
+proc validate_ImportTerminology_606227(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Creates or updates a custom terminology, depending on whether or not one already exists for the given terminology name. Importing a terminology with the same name as an existing one will merge the terminologies based on the chosen merge strategy. Currently, the only supported merge strategy is OVERWRITE, and so the imported terminology will overwrite an existing terminology of the same name.</p> <p>If you import a terminology that overwrites an existing one, the new terminology take up to 10 minutes to fully propagate and be available for use in a translation due to cache policies with the DataPlane service that performs the translations.</p>
@@ -522,46 +522,46 @@ proc validate_ImportTerminology_602027(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602029 = header.getOrDefault("X-Amz-Target")
-  valid_602029 = validateParameter(valid_602029, JString, required = true, default = newJString(
+  var valid_606229 = header.getOrDefault("X-Amz-Target")
+  valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.ImportTerminology"))
-  if valid_602029 != nil:
-    section.add "X-Amz-Target", valid_602029
-  var valid_602030 = header.getOrDefault("X-Amz-Signature")
-  valid_602030 = validateParameter(valid_602030, JString, required = false,
+  if valid_606229 != nil:
+    section.add "X-Amz-Target", valid_606229
+  var valid_606230 = header.getOrDefault("X-Amz-Signature")
+  valid_606230 = validateParameter(valid_606230, JString, required = false,
                                  default = nil)
-  if valid_602030 != nil:
-    section.add "X-Amz-Signature", valid_602030
-  var valid_602031 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602031 = validateParameter(valid_602031, JString, required = false,
+  if valid_606230 != nil:
+    section.add "X-Amz-Signature", valid_606230
+  var valid_606231 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606231 = validateParameter(valid_606231, JString, required = false,
                                  default = nil)
-  if valid_602031 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602031
-  var valid_602032 = header.getOrDefault("X-Amz-Date")
-  valid_602032 = validateParameter(valid_602032, JString, required = false,
+  if valid_606231 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606231
+  var valid_606232 = header.getOrDefault("X-Amz-Date")
+  valid_606232 = validateParameter(valid_606232, JString, required = false,
                                  default = nil)
-  if valid_602032 != nil:
-    section.add "X-Amz-Date", valid_602032
-  var valid_602033 = header.getOrDefault("X-Amz-Credential")
-  valid_602033 = validateParameter(valid_602033, JString, required = false,
+  if valid_606232 != nil:
+    section.add "X-Amz-Date", valid_606232
+  var valid_606233 = header.getOrDefault("X-Amz-Credential")
+  valid_606233 = validateParameter(valid_606233, JString, required = false,
                                  default = nil)
-  if valid_602033 != nil:
-    section.add "X-Amz-Credential", valid_602033
-  var valid_602034 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602034 = validateParameter(valid_602034, JString, required = false,
+  if valid_606233 != nil:
+    section.add "X-Amz-Credential", valid_606233
+  var valid_606234 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606234 = validateParameter(valid_606234, JString, required = false,
                                  default = nil)
-  if valid_602034 != nil:
-    section.add "X-Amz-Security-Token", valid_602034
-  var valid_602035 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602035 = validateParameter(valid_602035, JString, required = false,
+  if valid_606234 != nil:
+    section.add "X-Amz-Security-Token", valid_606234
+  var valid_606235 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606235 = validateParameter(valid_606235, JString, required = false,
                                  default = nil)
-  if valid_602035 != nil:
-    section.add "X-Amz-Algorithm", valid_602035
-  var valid_602036 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602036 = validateParameter(valid_602036, JString, required = false,
+  if valid_606235 != nil:
+    section.add "X-Amz-Algorithm", valid_606235
+  var valid_606236 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606236 = validateParameter(valid_606236, JString, required = false,
                                  default = nil)
-  if valid_602036 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602036
+  if valid_606236 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606236
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -572,36 +572,36 @@ proc validate_ImportTerminology_602027(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602038: Call_ImportTerminology_602026; path: JsonNode;
+proc call*(call_606238: Call_ImportTerminology_606226; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates or updates a custom terminology, depending on whether or not one already exists for the given terminology name. Importing a terminology with the same name as an existing one will merge the terminologies based on the chosen merge strategy. Currently, the only supported merge strategy is OVERWRITE, and so the imported terminology will overwrite an existing terminology of the same name.</p> <p>If you import a terminology that overwrites an existing one, the new terminology take up to 10 minutes to fully propagate and be available for use in a translation due to cache policies with the DataPlane service that performs the translations.</p>
   ## 
-  let valid = call_602038.validator(path, query, header, formData, body)
-  let scheme = call_602038.pickScheme
+  let valid = call_606238.validator(path, query, header, formData, body)
+  let scheme = call_606238.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602038.url(scheme.get, call_602038.host, call_602038.base,
-                         call_602038.route, valid.getOrDefault("path"),
+  let url = call_606238.url(scheme.get, call_606238.host, call_606238.base,
+                         call_606238.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602038, url, valid)
+  result = atozHook(call_606238, url, valid)
 
-proc call*(call_602039: Call_ImportTerminology_602026; body: JsonNode): Recallable =
+proc call*(call_606239: Call_ImportTerminology_606226; body: JsonNode): Recallable =
   ## importTerminology
   ## <p>Creates or updates a custom terminology, depending on whether or not one already exists for the given terminology name. Importing a terminology with the same name as an existing one will merge the terminologies based on the chosen merge strategy. Currently, the only supported merge strategy is OVERWRITE, and so the imported terminology will overwrite an existing terminology of the same name.</p> <p>If you import a terminology that overwrites an existing one, the new terminology take up to 10 minutes to fully propagate and be available for use in a translation due to cache policies with the DataPlane service that performs the translations.</p>
   ##   body: JObject (required)
-  var body_602040 = newJObject()
+  var body_606240 = newJObject()
   if body != nil:
-    body_602040 = body
-  result = call_602039.call(nil, nil, nil, nil, body_602040)
+    body_606240 = body
+  result = call_606239.call(nil, nil, nil, nil, body_606240)
 
-var importTerminology* = Call_ImportTerminology_602026(name: "importTerminology",
+var importTerminology* = Call_ImportTerminology_606226(name: "importTerminology",
     meth: HttpMethod.HttpPost, host: "translate.amazonaws.com",
     route: "/#X-Amz-Target=AWSShineFrontendService_20170701.ImportTerminology",
-    validator: validate_ImportTerminology_602027, base: "/",
-    url: url_ImportTerminology_602028, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ImportTerminology_606227, base: "/",
+    url: url_ImportTerminology_606228, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTerminologies_602041 = ref object of OpenApiRestCall_601389
-proc url_ListTerminologies_602043(protocol: Scheme; host: string; base: string;
+  Call_ListTerminologies_606241 = ref object of OpenApiRestCall_605589
+proc url_ListTerminologies_606243(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -613,7 +613,7 @@ proc url_ListTerminologies_602043(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListTerminologies_602042(path: JsonNode; query: JsonNode;
+proc validate_ListTerminologies_606242(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Provides a list of custom terminologies associated with your account.
@@ -628,16 +628,16 @@ proc validate_ListTerminologies_602042(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_602044 = query.getOrDefault("MaxResults")
-  valid_602044 = validateParameter(valid_602044, JString, required = false,
+  var valid_606244 = query.getOrDefault("MaxResults")
+  valid_606244 = validateParameter(valid_606244, JString, required = false,
                                  default = nil)
-  if valid_602044 != nil:
-    section.add "MaxResults", valid_602044
-  var valid_602045 = query.getOrDefault("NextToken")
-  valid_602045 = validateParameter(valid_602045, JString, required = false,
+  if valid_606244 != nil:
+    section.add "MaxResults", valid_606244
+  var valid_606245 = query.getOrDefault("NextToken")
+  valid_606245 = validateParameter(valid_606245, JString, required = false,
                                  default = nil)
-  if valid_602045 != nil:
-    section.add "NextToken", valid_602045
+  if valid_606245 != nil:
+    section.add "NextToken", valid_606245
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -651,46 +651,46 @@ proc validate_ListTerminologies_602042(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602046 = header.getOrDefault("X-Amz-Target")
-  valid_602046 = validateParameter(valid_602046, JString, required = true, default = newJString(
+  var valid_606246 = header.getOrDefault("X-Amz-Target")
+  valid_606246 = validateParameter(valid_606246, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.ListTerminologies"))
-  if valid_602046 != nil:
-    section.add "X-Amz-Target", valid_602046
-  var valid_602047 = header.getOrDefault("X-Amz-Signature")
-  valid_602047 = validateParameter(valid_602047, JString, required = false,
+  if valid_606246 != nil:
+    section.add "X-Amz-Target", valid_606246
+  var valid_606247 = header.getOrDefault("X-Amz-Signature")
+  valid_606247 = validateParameter(valid_606247, JString, required = false,
                                  default = nil)
-  if valid_602047 != nil:
-    section.add "X-Amz-Signature", valid_602047
-  var valid_602048 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602048 = validateParameter(valid_602048, JString, required = false,
+  if valid_606247 != nil:
+    section.add "X-Amz-Signature", valid_606247
+  var valid_606248 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606248 = validateParameter(valid_606248, JString, required = false,
                                  default = nil)
-  if valid_602048 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602048
-  var valid_602049 = header.getOrDefault("X-Amz-Date")
-  valid_602049 = validateParameter(valid_602049, JString, required = false,
+  if valid_606248 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606248
+  var valid_606249 = header.getOrDefault("X-Amz-Date")
+  valid_606249 = validateParameter(valid_606249, JString, required = false,
                                  default = nil)
-  if valid_602049 != nil:
-    section.add "X-Amz-Date", valid_602049
-  var valid_602050 = header.getOrDefault("X-Amz-Credential")
-  valid_602050 = validateParameter(valid_602050, JString, required = false,
+  if valid_606249 != nil:
+    section.add "X-Amz-Date", valid_606249
+  var valid_606250 = header.getOrDefault("X-Amz-Credential")
+  valid_606250 = validateParameter(valid_606250, JString, required = false,
                                  default = nil)
-  if valid_602050 != nil:
-    section.add "X-Amz-Credential", valid_602050
-  var valid_602051 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602051 = validateParameter(valid_602051, JString, required = false,
+  if valid_606250 != nil:
+    section.add "X-Amz-Credential", valid_606250
+  var valid_606251 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606251 = validateParameter(valid_606251, JString, required = false,
                                  default = nil)
-  if valid_602051 != nil:
-    section.add "X-Amz-Security-Token", valid_602051
-  var valid_602052 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602052 = validateParameter(valid_602052, JString, required = false,
+  if valid_606251 != nil:
+    section.add "X-Amz-Security-Token", valid_606251
+  var valid_606252 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606252 = validateParameter(valid_606252, JString, required = false,
                                  default = nil)
-  if valid_602052 != nil:
-    section.add "X-Amz-Algorithm", valid_602052
-  var valid_602053 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602053 = validateParameter(valid_602053, JString, required = false,
+  if valid_606252 != nil:
+    section.add "X-Amz-Algorithm", valid_606252
+  var valid_606253 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606253 = validateParameter(valid_606253, JString, required = false,
                                  default = nil)
-  if valid_602053 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602053
+  if valid_606253 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606253
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -701,20 +701,20 @@ proc validate_ListTerminologies_602042(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602055: Call_ListTerminologies_602041; path: JsonNode;
+proc call*(call_606255: Call_ListTerminologies_606241; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Provides a list of custom terminologies associated with your account.
   ## 
-  let valid = call_602055.validator(path, query, header, formData, body)
-  let scheme = call_602055.pickScheme
+  let valid = call_606255.validator(path, query, header, formData, body)
+  let scheme = call_606255.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602055.url(scheme.get, call_602055.host, call_602055.base,
-                         call_602055.route, valid.getOrDefault("path"),
+  let url = call_606255.url(scheme.get, call_606255.host, call_606255.base,
+                         call_606255.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602055, url, valid)
+  result = atozHook(call_606255, url, valid)
 
-proc call*(call_602056: Call_ListTerminologies_602041; body: JsonNode;
+proc call*(call_606256: Call_ListTerminologies_606241; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTerminologies
   ## Provides a list of custom terminologies associated with your account.
@@ -723,22 +723,22 @@ proc call*(call_602056: Call_ListTerminologies_602041; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_602057 = newJObject()
-  var body_602058 = newJObject()
-  add(query_602057, "MaxResults", newJString(MaxResults))
-  add(query_602057, "NextToken", newJString(NextToken))
+  var query_606257 = newJObject()
+  var body_606258 = newJObject()
+  add(query_606257, "MaxResults", newJString(MaxResults))
+  add(query_606257, "NextToken", newJString(NextToken))
   if body != nil:
-    body_602058 = body
-  result = call_602056.call(nil, query_602057, nil, nil, body_602058)
+    body_606258 = body
+  result = call_606256.call(nil, query_606257, nil, nil, body_606258)
 
-var listTerminologies* = Call_ListTerminologies_602041(name: "listTerminologies",
+var listTerminologies* = Call_ListTerminologies_606241(name: "listTerminologies",
     meth: HttpMethod.HttpPost, host: "translate.amazonaws.com",
     route: "/#X-Amz-Target=AWSShineFrontendService_20170701.ListTerminologies",
-    validator: validate_ListTerminologies_602042, base: "/",
-    url: url_ListTerminologies_602043, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTerminologies_606242, base: "/",
+    url: url_ListTerminologies_606243, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTextTranslationJobs_602060 = ref object of OpenApiRestCall_601389
-proc url_ListTextTranslationJobs_602062(protocol: Scheme; host: string; base: string;
+  Call_ListTextTranslationJobs_606260 = ref object of OpenApiRestCall_605589
+proc url_ListTextTranslationJobs_606262(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -751,7 +751,7 @@ proc url_ListTextTranslationJobs_602062(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_ListTextTranslationJobs_602061(path: JsonNode; query: JsonNode;
+proc validate_ListTextTranslationJobs_606261(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of the batch translation jobs that you have submitted.
   ## 
@@ -765,16 +765,16 @@ proc validate_ListTextTranslationJobs_602061(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_602063 = query.getOrDefault("MaxResults")
-  valid_602063 = validateParameter(valid_602063, JString, required = false,
+  var valid_606263 = query.getOrDefault("MaxResults")
+  valid_606263 = validateParameter(valid_606263, JString, required = false,
                                  default = nil)
-  if valid_602063 != nil:
-    section.add "MaxResults", valid_602063
-  var valid_602064 = query.getOrDefault("NextToken")
-  valid_602064 = validateParameter(valid_602064, JString, required = false,
+  if valid_606263 != nil:
+    section.add "MaxResults", valid_606263
+  var valid_606264 = query.getOrDefault("NextToken")
+  valid_606264 = validateParameter(valid_606264, JString, required = false,
                                  default = nil)
-  if valid_602064 != nil:
-    section.add "NextToken", valid_602064
+  if valid_606264 != nil:
+    section.add "NextToken", valid_606264
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -788,46 +788,46 @@ proc validate_ListTextTranslationJobs_602061(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602065 = header.getOrDefault("X-Amz-Target")
-  valid_602065 = validateParameter(valid_602065, JString, required = true, default = newJString(
+  var valid_606265 = header.getOrDefault("X-Amz-Target")
+  valid_606265 = validateParameter(valid_606265, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.ListTextTranslationJobs"))
-  if valid_602065 != nil:
-    section.add "X-Amz-Target", valid_602065
-  var valid_602066 = header.getOrDefault("X-Amz-Signature")
-  valid_602066 = validateParameter(valid_602066, JString, required = false,
+  if valid_606265 != nil:
+    section.add "X-Amz-Target", valid_606265
+  var valid_606266 = header.getOrDefault("X-Amz-Signature")
+  valid_606266 = validateParameter(valid_606266, JString, required = false,
                                  default = nil)
-  if valid_602066 != nil:
-    section.add "X-Amz-Signature", valid_602066
-  var valid_602067 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602067 = validateParameter(valid_602067, JString, required = false,
+  if valid_606266 != nil:
+    section.add "X-Amz-Signature", valid_606266
+  var valid_606267 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606267 = validateParameter(valid_606267, JString, required = false,
                                  default = nil)
-  if valid_602067 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602067
-  var valid_602068 = header.getOrDefault("X-Amz-Date")
-  valid_602068 = validateParameter(valid_602068, JString, required = false,
+  if valid_606267 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606267
+  var valid_606268 = header.getOrDefault("X-Amz-Date")
+  valid_606268 = validateParameter(valid_606268, JString, required = false,
                                  default = nil)
-  if valid_602068 != nil:
-    section.add "X-Amz-Date", valid_602068
-  var valid_602069 = header.getOrDefault("X-Amz-Credential")
-  valid_602069 = validateParameter(valid_602069, JString, required = false,
+  if valid_606268 != nil:
+    section.add "X-Amz-Date", valid_606268
+  var valid_606269 = header.getOrDefault("X-Amz-Credential")
+  valid_606269 = validateParameter(valid_606269, JString, required = false,
                                  default = nil)
-  if valid_602069 != nil:
-    section.add "X-Amz-Credential", valid_602069
-  var valid_602070 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602070 = validateParameter(valid_602070, JString, required = false,
+  if valid_606269 != nil:
+    section.add "X-Amz-Credential", valid_606269
+  var valid_606270 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606270 = validateParameter(valid_606270, JString, required = false,
                                  default = nil)
-  if valid_602070 != nil:
-    section.add "X-Amz-Security-Token", valid_602070
-  var valid_602071 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602071 = validateParameter(valid_602071, JString, required = false,
+  if valid_606270 != nil:
+    section.add "X-Amz-Security-Token", valid_606270
+  var valid_606271 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606271 = validateParameter(valid_606271, JString, required = false,
                                  default = nil)
-  if valid_602071 != nil:
-    section.add "X-Amz-Algorithm", valid_602071
-  var valid_602072 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602072 = validateParameter(valid_602072, JString, required = false,
+  if valid_606271 != nil:
+    section.add "X-Amz-Algorithm", valid_606271
+  var valid_606272 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606272 = validateParameter(valid_606272, JString, required = false,
                                  default = nil)
-  if valid_602072 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602072
+  if valid_606272 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606272
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -838,20 +838,20 @@ proc validate_ListTextTranslationJobs_602061(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602074: Call_ListTextTranslationJobs_602060; path: JsonNode;
+proc call*(call_606274: Call_ListTextTranslationJobs_606260; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of the batch translation jobs that you have submitted.
   ## 
-  let valid = call_602074.validator(path, query, header, formData, body)
-  let scheme = call_602074.pickScheme
+  let valid = call_606274.validator(path, query, header, formData, body)
+  let scheme = call_606274.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602074.url(scheme.get, call_602074.host, call_602074.base,
-                         call_602074.route, valid.getOrDefault("path"),
+  let url = call_606274.url(scheme.get, call_606274.host, call_606274.base,
+                         call_606274.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602074, url, valid)
+  result = atozHook(call_606274, url, valid)
 
-proc call*(call_602075: Call_ListTextTranslationJobs_602060; body: JsonNode;
+proc call*(call_606275: Call_ListTextTranslationJobs_606260; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTextTranslationJobs
   ## Gets a list of the batch translation jobs that you have submitted.
@@ -860,22 +860,22 @@ proc call*(call_602075: Call_ListTextTranslationJobs_602060; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_602076 = newJObject()
-  var body_602077 = newJObject()
-  add(query_602076, "MaxResults", newJString(MaxResults))
-  add(query_602076, "NextToken", newJString(NextToken))
+  var query_606276 = newJObject()
+  var body_606277 = newJObject()
+  add(query_606276, "MaxResults", newJString(MaxResults))
+  add(query_606276, "NextToken", newJString(NextToken))
   if body != nil:
-    body_602077 = body
-  result = call_602075.call(nil, query_602076, nil, nil, body_602077)
+    body_606277 = body
+  result = call_606275.call(nil, query_606276, nil, nil, body_606277)
 
-var listTextTranslationJobs* = Call_ListTextTranslationJobs_602060(
+var listTextTranslationJobs* = Call_ListTextTranslationJobs_606260(
     name: "listTextTranslationJobs", meth: HttpMethod.HttpPost,
     host: "translate.amazonaws.com", route: "/#X-Amz-Target=AWSShineFrontendService_20170701.ListTextTranslationJobs",
-    validator: validate_ListTextTranslationJobs_602061, base: "/",
-    url: url_ListTextTranslationJobs_602062, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTextTranslationJobs_606261, base: "/",
+    url: url_ListTextTranslationJobs_606262, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartTextTranslationJob_602078 = ref object of OpenApiRestCall_601389
-proc url_StartTextTranslationJob_602080(protocol: Scheme; host: string; base: string;
+  Call_StartTextTranslationJob_606278 = ref object of OpenApiRestCall_605589
+proc url_StartTextTranslationJob_606280(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -888,7 +888,7 @@ proc url_StartTextTranslationJob_602080(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_StartTextTranslationJob_602079(path: JsonNode; query: JsonNode;
+proc validate_StartTextTranslationJob_606279(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts an asynchronous batch translation job. Batch translation jobs can be used to translate large volumes of text across multiple documents at once. For more information, see <a>async</a>.</p> <p>Batch translation jobs can be described with the <a>DescribeTextTranslationJob</a> operation, listed with the <a>ListTextTranslationJobs</a> operation, and stopped with the <a>StopTextTranslationJob</a> operation.</p> <note> <p>Amazon Translate does not support batch translation of multiple source languages at once.</p> </note>
   ## 
@@ -910,46 +910,46 @@ proc validate_StartTextTranslationJob_602079(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602081 = header.getOrDefault("X-Amz-Target")
-  valid_602081 = validateParameter(valid_602081, JString, required = true, default = newJString(
+  var valid_606281 = header.getOrDefault("X-Amz-Target")
+  valid_606281 = validateParameter(valid_606281, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.StartTextTranslationJob"))
-  if valid_602081 != nil:
-    section.add "X-Amz-Target", valid_602081
-  var valid_602082 = header.getOrDefault("X-Amz-Signature")
-  valid_602082 = validateParameter(valid_602082, JString, required = false,
+  if valid_606281 != nil:
+    section.add "X-Amz-Target", valid_606281
+  var valid_606282 = header.getOrDefault("X-Amz-Signature")
+  valid_606282 = validateParameter(valid_606282, JString, required = false,
                                  default = nil)
-  if valid_602082 != nil:
-    section.add "X-Amz-Signature", valid_602082
-  var valid_602083 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602083 = validateParameter(valid_602083, JString, required = false,
+  if valid_606282 != nil:
+    section.add "X-Amz-Signature", valid_606282
+  var valid_606283 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606283 = validateParameter(valid_606283, JString, required = false,
                                  default = nil)
-  if valid_602083 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602083
-  var valid_602084 = header.getOrDefault("X-Amz-Date")
-  valid_602084 = validateParameter(valid_602084, JString, required = false,
+  if valid_606283 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606283
+  var valid_606284 = header.getOrDefault("X-Amz-Date")
+  valid_606284 = validateParameter(valid_606284, JString, required = false,
                                  default = nil)
-  if valid_602084 != nil:
-    section.add "X-Amz-Date", valid_602084
-  var valid_602085 = header.getOrDefault("X-Amz-Credential")
-  valid_602085 = validateParameter(valid_602085, JString, required = false,
+  if valid_606284 != nil:
+    section.add "X-Amz-Date", valid_606284
+  var valid_606285 = header.getOrDefault("X-Amz-Credential")
+  valid_606285 = validateParameter(valid_606285, JString, required = false,
                                  default = nil)
-  if valid_602085 != nil:
-    section.add "X-Amz-Credential", valid_602085
-  var valid_602086 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602086 = validateParameter(valid_602086, JString, required = false,
+  if valid_606285 != nil:
+    section.add "X-Amz-Credential", valid_606285
+  var valid_606286 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606286 = validateParameter(valid_606286, JString, required = false,
                                  default = nil)
-  if valid_602086 != nil:
-    section.add "X-Amz-Security-Token", valid_602086
-  var valid_602087 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602087 = validateParameter(valid_602087, JString, required = false,
+  if valid_606286 != nil:
+    section.add "X-Amz-Security-Token", valid_606286
+  var valid_606287 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606287 = validateParameter(valid_606287, JString, required = false,
                                  default = nil)
-  if valid_602087 != nil:
-    section.add "X-Amz-Algorithm", valid_602087
-  var valid_602088 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602088 = validateParameter(valid_602088, JString, required = false,
+  if valid_606287 != nil:
+    section.add "X-Amz-Algorithm", valid_606287
+  var valid_606288 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606288 = validateParameter(valid_606288, JString, required = false,
                                  default = nil)
-  if valid_602088 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602088
+  if valid_606288 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606288
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -960,36 +960,36 @@ proc validate_StartTextTranslationJob_602079(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602090: Call_StartTextTranslationJob_602078; path: JsonNode;
+proc call*(call_606290: Call_StartTextTranslationJob_606278; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts an asynchronous batch translation job. Batch translation jobs can be used to translate large volumes of text across multiple documents at once. For more information, see <a>async</a>.</p> <p>Batch translation jobs can be described with the <a>DescribeTextTranslationJob</a> operation, listed with the <a>ListTextTranslationJobs</a> operation, and stopped with the <a>StopTextTranslationJob</a> operation.</p> <note> <p>Amazon Translate does not support batch translation of multiple source languages at once.</p> </note>
   ## 
-  let valid = call_602090.validator(path, query, header, formData, body)
-  let scheme = call_602090.pickScheme
+  let valid = call_606290.validator(path, query, header, formData, body)
+  let scheme = call_606290.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602090.url(scheme.get, call_602090.host, call_602090.base,
-                         call_602090.route, valid.getOrDefault("path"),
+  let url = call_606290.url(scheme.get, call_606290.host, call_606290.base,
+                         call_606290.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602090, url, valid)
+  result = atozHook(call_606290, url, valid)
 
-proc call*(call_602091: Call_StartTextTranslationJob_602078; body: JsonNode): Recallable =
+proc call*(call_606291: Call_StartTextTranslationJob_606278; body: JsonNode): Recallable =
   ## startTextTranslationJob
   ## <p>Starts an asynchronous batch translation job. Batch translation jobs can be used to translate large volumes of text across multiple documents at once. For more information, see <a>async</a>.</p> <p>Batch translation jobs can be described with the <a>DescribeTextTranslationJob</a> operation, listed with the <a>ListTextTranslationJobs</a> operation, and stopped with the <a>StopTextTranslationJob</a> operation.</p> <note> <p>Amazon Translate does not support batch translation of multiple source languages at once.</p> </note>
   ##   body: JObject (required)
-  var body_602092 = newJObject()
+  var body_606292 = newJObject()
   if body != nil:
-    body_602092 = body
-  result = call_602091.call(nil, nil, nil, nil, body_602092)
+    body_606292 = body
+  result = call_606291.call(nil, nil, nil, nil, body_606292)
 
-var startTextTranslationJob* = Call_StartTextTranslationJob_602078(
+var startTextTranslationJob* = Call_StartTextTranslationJob_606278(
     name: "startTextTranslationJob", meth: HttpMethod.HttpPost,
     host: "translate.amazonaws.com", route: "/#X-Amz-Target=AWSShineFrontendService_20170701.StartTextTranslationJob",
-    validator: validate_StartTextTranslationJob_602079, base: "/",
-    url: url_StartTextTranslationJob_602080, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartTextTranslationJob_606279, base: "/",
+    url: url_StartTextTranslationJob_606280, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopTextTranslationJob_602093 = ref object of OpenApiRestCall_601389
-proc url_StopTextTranslationJob_602095(protocol: Scheme; host: string; base: string;
+  Call_StopTextTranslationJob_606293 = ref object of OpenApiRestCall_605589
+proc url_StopTextTranslationJob_606295(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1001,7 +1001,7 @@ proc url_StopTextTranslationJob_602095(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_StopTextTranslationJob_602094(path: JsonNode; query: JsonNode;
+proc validate_StopTextTranslationJob_606294(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Stops an asynchronous batch translation job that is in progress.</p> <p>If the job's state is <code>IN_PROGRESS</code>, the job will be marked for termination and put into the <code>STOP_REQUESTED</code> state. If the job completes before it can be stopped, it is put into the <code>COMPLETED</code> state. Otherwise, the job is put into the <code>STOPPED</code> state.</p> <p>Asynchronous batch translation jobs are started with the <a>StartTextTranslationJob</a> operation. You can use the <a>DescribeTextTranslationJob</a> or <a>ListTextTranslationJobs</a> operations to get a batch translation job's <code>JobId</code>.</p>
   ## 
@@ -1023,46 +1023,46 @@ proc validate_StopTextTranslationJob_602094(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602096 = header.getOrDefault("X-Amz-Target")
-  valid_602096 = validateParameter(valid_602096, JString, required = true, default = newJString(
+  var valid_606296 = header.getOrDefault("X-Amz-Target")
+  valid_606296 = validateParameter(valid_606296, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.StopTextTranslationJob"))
-  if valid_602096 != nil:
-    section.add "X-Amz-Target", valid_602096
-  var valid_602097 = header.getOrDefault("X-Amz-Signature")
-  valid_602097 = validateParameter(valid_602097, JString, required = false,
+  if valid_606296 != nil:
+    section.add "X-Amz-Target", valid_606296
+  var valid_606297 = header.getOrDefault("X-Amz-Signature")
+  valid_606297 = validateParameter(valid_606297, JString, required = false,
                                  default = nil)
-  if valid_602097 != nil:
-    section.add "X-Amz-Signature", valid_602097
-  var valid_602098 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602098 = validateParameter(valid_602098, JString, required = false,
+  if valid_606297 != nil:
+    section.add "X-Amz-Signature", valid_606297
+  var valid_606298 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606298 = validateParameter(valid_606298, JString, required = false,
                                  default = nil)
-  if valid_602098 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602098
-  var valid_602099 = header.getOrDefault("X-Amz-Date")
-  valid_602099 = validateParameter(valid_602099, JString, required = false,
+  if valid_606298 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606298
+  var valid_606299 = header.getOrDefault("X-Amz-Date")
+  valid_606299 = validateParameter(valid_606299, JString, required = false,
                                  default = nil)
-  if valid_602099 != nil:
-    section.add "X-Amz-Date", valid_602099
-  var valid_602100 = header.getOrDefault("X-Amz-Credential")
-  valid_602100 = validateParameter(valid_602100, JString, required = false,
+  if valid_606299 != nil:
+    section.add "X-Amz-Date", valid_606299
+  var valid_606300 = header.getOrDefault("X-Amz-Credential")
+  valid_606300 = validateParameter(valid_606300, JString, required = false,
                                  default = nil)
-  if valid_602100 != nil:
-    section.add "X-Amz-Credential", valid_602100
-  var valid_602101 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602101 = validateParameter(valid_602101, JString, required = false,
+  if valid_606300 != nil:
+    section.add "X-Amz-Credential", valid_606300
+  var valid_606301 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606301 = validateParameter(valid_606301, JString, required = false,
                                  default = nil)
-  if valid_602101 != nil:
-    section.add "X-Amz-Security-Token", valid_602101
-  var valid_602102 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602102 = validateParameter(valid_602102, JString, required = false,
+  if valid_606301 != nil:
+    section.add "X-Amz-Security-Token", valid_606301
+  var valid_606302 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606302 = validateParameter(valid_606302, JString, required = false,
                                  default = nil)
-  if valid_602102 != nil:
-    section.add "X-Amz-Algorithm", valid_602102
-  var valid_602103 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602103 = validateParameter(valid_602103, JString, required = false,
+  if valid_606302 != nil:
+    section.add "X-Amz-Algorithm", valid_606302
+  var valid_606303 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606303 = validateParameter(valid_606303, JString, required = false,
                                  default = nil)
-  if valid_602103 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602103
+  if valid_606303 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606303
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1073,36 +1073,36 @@ proc validate_StopTextTranslationJob_602094(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602105: Call_StopTextTranslationJob_602093; path: JsonNode;
+proc call*(call_606305: Call_StopTextTranslationJob_606293; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stops an asynchronous batch translation job that is in progress.</p> <p>If the job's state is <code>IN_PROGRESS</code>, the job will be marked for termination and put into the <code>STOP_REQUESTED</code> state. If the job completes before it can be stopped, it is put into the <code>COMPLETED</code> state. Otherwise, the job is put into the <code>STOPPED</code> state.</p> <p>Asynchronous batch translation jobs are started with the <a>StartTextTranslationJob</a> operation. You can use the <a>DescribeTextTranslationJob</a> or <a>ListTextTranslationJobs</a> operations to get a batch translation job's <code>JobId</code>.</p>
   ## 
-  let valid = call_602105.validator(path, query, header, formData, body)
-  let scheme = call_602105.pickScheme
+  let valid = call_606305.validator(path, query, header, formData, body)
+  let scheme = call_606305.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602105.url(scheme.get, call_602105.host, call_602105.base,
-                         call_602105.route, valid.getOrDefault("path"),
+  let url = call_606305.url(scheme.get, call_606305.host, call_606305.base,
+                         call_606305.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602105, url, valid)
+  result = atozHook(call_606305, url, valid)
 
-proc call*(call_602106: Call_StopTextTranslationJob_602093; body: JsonNode): Recallable =
+proc call*(call_606306: Call_StopTextTranslationJob_606293; body: JsonNode): Recallable =
   ## stopTextTranslationJob
   ## <p>Stops an asynchronous batch translation job that is in progress.</p> <p>If the job's state is <code>IN_PROGRESS</code>, the job will be marked for termination and put into the <code>STOP_REQUESTED</code> state. If the job completes before it can be stopped, it is put into the <code>COMPLETED</code> state. Otherwise, the job is put into the <code>STOPPED</code> state.</p> <p>Asynchronous batch translation jobs are started with the <a>StartTextTranslationJob</a> operation. You can use the <a>DescribeTextTranslationJob</a> or <a>ListTextTranslationJobs</a> operations to get a batch translation job's <code>JobId</code>.</p>
   ##   body: JObject (required)
-  var body_602107 = newJObject()
+  var body_606307 = newJObject()
   if body != nil:
-    body_602107 = body
-  result = call_602106.call(nil, nil, nil, nil, body_602107)
+    body_606307 = body
+  result = call_606306.call(nil, nil, nil, nil, body_606307)
 
-var stopTextTranslationJob* = Call_StopTextTranslationJob_602093(
+var stopTextTranslationJob* = Call_StopTextTranslationJob_606293(
     name: "stopTextTranslationJob", meth: HttpMethod.HttpPost,
     host: "translate.amazonaws.com", route: "/#X-Amz-Target=AWSShineFrontendService_20170701.StopTextTranslationJob",
-    validator: validate_StopTextTranslationJob_602094, base: "/",
-    url: url_StopTextTranslationJob_602095, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StopTextTranslationJob_606294, base: "/",
+    url: url_StopTextTranslationJob_606295, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TranslateText_602108 = ref object of OpenApiRestCall_601389
-proc url_TranslateText_602110(protocol: Scheme; host: string; base: string;
+  Call_TranslateText_606308 = ref object of OpenApiRestCall_605589
+proc url_TranslateText_606310(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1114,7 +1114,7 @@ proc url_TranslateText_602110(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TranslateText_602109(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TranslateText_606309(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Translates input text from the source language to the target language. For a list of available languages and language codes, see <a>what-is-languages</a>.
   ## 
@@ -1136,46 +1136,46 @@ proc validate_TranslateText_602109(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_602111 = header.getOrDefault("X-Amz-Target")
-  valid_602111 = validateParameter(valid_602111, JString, required = true, default = newJString(
+  var valid_606311 = header.getOrDefault("X-Amz-Target")
+  valid_606311 = validateParameter(valid_606311, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.TranslateText"))
-  if valid_602111 != nil:
-    section.add "X-Amz-Target", valid_602111
-  var valid_602112 = header.getOrDefault("X-Amz-Signature")
-  valid_602112 = validateParameter(valid_602112, JString, required = false,
+  if valid_606311 != nil:
+    section.add "X-Amz-Target", valid_606311
+  var valid_606312 = header.getOrDefault("X-Amz-Signature")
+  valid_606312 = validateParameter(valid_606312, JString, required = false,
                                  default = nil)
-  if valid_602112 != nil:
-    section.add "X-Amz-Signature", valid_602112
-  var valid_602113 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_602113 = validateParameter(valid_602113, JString, required = false,
+  if valid_606312 != nil:
+    section.add "X-Amz-Signature", valid_606312
+  var valid_606313 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606313 = validateParameter(valid_606313, JString, required = false,
                                  default = nil)
-  if valid_602113 != nil:
-    section.add "X-Amz-Content-Sha256", valid_602113
-  var valid_602114 = header.getOrDefault("X-Amz-Date")
-  valid_602114 = validateParameter(valid_602114, JString, required = false,
+  if valid_606313 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606313
+  var valid_606314 = header.getOrDefault("X-Amz-Date")
+  valid_606314 = validateParameter(valid_606314, JString, required = false,
                                  default = nil)
-  if valid_602114 != nil:
-    section.add "X-Amz-Date", valid_602114
-  var valid_602115 = header.getOrDefault("X-Amz-Credential")
-  valid_602115 = validateParameter(valid_602115, JString, required = false,
+  if valid_606314 != nil:
+    section.add "X-Amz-Date", valid_606314
+  var valid_606315 = header.getOrDefault("X-Amz-Credential")
+  valid_606315 = validateParameter(valid_606315, JString, required = false,
                                  default = nil)
-  if valid_602115 != nil:
-    section.add "X-Amz-Credential", valid_602115
-  var valid_602116 = header.getOrDefault("X-Amz-Security-Token")
-  valid_602116 = validateParameter(valid_602116, JString, required = false,
+  if valid_606315 != nil:
+    section.add "X-Amz-Credential", valid_606315
+  var valid_606316 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606316 = validateParameter(valid_606316, JString, required = false,
                                  default = nil)
-  if valid_602116 != nil:
-    section.add "X-Amz-Security-Token", valid_602116
-  var valid_602117 = header.getOrDefault("X-Amz-Algorithm")
-  valid_602117 = validateParameter(valid_602117, JString, required = false,
+  if valid_606316 != nil:
+    section.add "X-Amz-Security-Token", valid_606316
+  var valid_606317 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606317 = validateParameter(valid_606317, JString, required = false,
                                  default = nil)
-  if valid_602117 != nil:
-    section.add "X-Amz-Algorithm", valid_602117
-  var valid_602118 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_602118 = validateParameter(valid_602118, JString, required = false,
+  if valid_606317 != nil:
+    section.add "X-Amz-Algorithm", valid_606317
+  var valid_606318 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606318 = validateParameter(valid_606318, JString, required = false,
                                  default = nil)
-  if valid_602118 != nil:
-    section.add "X-Amz-SignedHeaders", valid_602118
+  if valid_606318 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606318
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1186,32 +1186,32 @@ proc validate_TranslateText_602109(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_602120: Call_TranslateText_602108; path: JsonNode; query: JsonNode;
+proc call*(call_606320: Call_TranslateText_606308; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Translates input text from the source language to the target language. For a list of available languages and language codes, see <a>what-is-languages</a>.
   ## 
-  let valid = call_602120.validator(path, query, header, formData, body)
-  let scheme = call_602120.pickScheme
+  let valid = call_606320.validator(path, query, header, formData, body)
+  let scheme = call_606320.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602120.url(scheme.get, call_602120.host, call_602120.base,
-                         call_602120.route, valid.getOrDefault("path"),
+  let url = call_606320.url(scheme.get, call_606320.host, call_606320.base,
+                         call_606320.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602120, url, valid)
+  result = atozHook(call_606320, url, valid)
 
-proc call*(call_602121: Call_TranslateText_602108; body: JsonNode): Recallable =
+proc call*(call_606321: Call_TranslateText_606308; body: JsonNode): Recallable =
   ## translateText
   ## Translates input text from the source language to the target language. For a list of available languages and language codes, see <a>what-is-languages</a>.
   ##   body: JObject (required)
-  var body_602122 = newJObject()
+  var body_606322 = newJObject()
   if body != nil:
-    body_602122 = body
-  result = call_602121.call(nil, nil, nil, nil, body_602122)
+    body_606322 = body
+  result = call_606321.call(nil, nil, nil, nil, body_606322)
 
-var translateText* = Call_TranslateText_602108(name: "translateText",
+var translateText* = Call_TranslateText_606308(name: "translateText",
     meth: HttpMethod.HttpPost, host: "translate.amazonaws.com",
     route: "/#X-Amz-Target=AWSShineFrontendService_20170701.TranslateText",
-    validator: validate_TranslateText_602109, base: "/", url: url_TranslateText_602110,
+    validator: validate_TranslateText_606309, base: "/", url: url_TranslateText_606310,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -1257,5 +1257,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)

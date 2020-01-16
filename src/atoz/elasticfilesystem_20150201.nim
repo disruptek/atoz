@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_604389 = ref object of OpenApiRestCall
+  OpenApiRestCall_605589 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_604389](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_604389): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,8 +134,8 @@ const
   awsServiceName = "elasticfilesystem"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateAccessPoint_604986 = ref object of OpenApiRestCall_604389
-proc url_CreateAccessPoint_604988(protocol: Scheme; host: string; base: string;
+  Call_CreateAccessPoint_606186 = ref object of OpenApiRestCall_605589
+proc url_CreateAccessPoint_606188(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -147,7 +147,7 @@ proc url_CreateAccessPoint_604988(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateAccessPoint_604987(path: JsonNode; query: JsonNode;
+proc validate_CreateAccessPoint_606187(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Creates an EFS access point. An access point is an application-specific view into an EFS file system that applies an operating system user and group, and a file system path, to any file system request made through the access point. The operating system user and group override any identity information provided by the NFS client. The file system path is exposed as the access point's root directory. Applications using the access point can only access data in its own directory and below. To learn more, see <a href="https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html">Mounting a File System Using EFS Access Points</a>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:CreateAccessPoint</code> action.</p>
@@ -167,41 +167,41 @@ proc validate_CreateAccessPoint_604987(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604989 = header.getOrDefault("X-Amz-Signature")
-  valid_604989 = validateParameter(valid_604989, JString, required = false,
+  var valid_606189 = header.getOrDefault("X-Amz-Signature")
+  valid_606189 = validateParameter(valid_606189, JString, required = false,
                                  default = nil)
-  if valid_604989 != nil:
-    section.add "X-Amz-Signature", valid_604989
-  var valid_604990 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604990 = validateParameter(valid_604990, JString, required = false,
+  if valid_606189 != nil:
+    section.add "X-Amz-Signature", valid_606189
+  var valid_606190 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606190 = validateParameter(valid_606190, JString, required = false,
                                  default = nil)
-  if valid_604990 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604990
-  var valid_604991 = header.getOrDefault("X-Amz-Date")
-  valid_604991 = validateParameter(valid_604991, JString, required = false,
+  if valid_606190 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606190
+  var valid_606191 = header.getOrDefault("X-Amz-Date")
+  valid_606191 = validateParameter(valid_606191, JString, required = false,
                                  default = nil)
-  if valid_604991 != nil:
-    section.add "X-Amz-Date", valid_604991
-  var valid_604992 = header.getOrDefault("X-Amz-Credential")
-  valid_604992 = validateParameter(valid_604992, JString, required = false,
+  if valid_606191 != nil:
+    section.add "X-Amz-Date", valid_606191
+  var valid_606192 = header.getOrDefault("X-Amz-Credential")
+  valid_606192 = validateParameter(valid_606192, JString, required = false,
                                  default = nil)
-  if valid_604992 != nil:
-    section.add "X-Amz-Credential", valid_604992
-  var valid_604993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604993 = validateParameter(valid_604993, JString, required = false,
+  if valid_606192 != nil:
+    section.add "X-Amz-Credential", valid_606192
+  var valid_606193 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606193 = validateParameter(valid_606193, JString, required = false,
                                  default = nil)
-  if valid_604993 != nil:
-    section.add "X-Amz-Security-Token", valid_604993
-  var valid_604994 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604994 = validateParameter(valid_604994, JString, required = false,
+  if valid_606193 != nil:
+    section.add "X-Amz-Security-Token", valid_606193
+  var valid_606194 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606194 = validateParameter(valid_606194, JString, required = false,
                                  default = nil)
-  if valid_604994 != nil:
-    section.add "X-Amz-Algorithm", valid_604994
-  var valid_604995 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604995 = validateParameter(valid_604995, JString, required = false,
+  if valid_606194 != nil:
+    section.add "X-Amz-Algorithm", valid_606194
+  var valid_606195 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606195 = validateParameter(valid_606195, JString, required = false,
                                  default = nil)
-  if valid_604995 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604995
+  if valid_606195 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606195
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -212,36 +212,36 @@ proc validate_CreateAccessPoint_604987(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_604997: Call_CreateAccessPoint_604986; path: JsonNode;
+proc call*(call_606197: Call_CreateAccessPoint_606186; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an EFS access point. An access point is an application-specific view into an EFS file system that applies an operating system user and group, and a file system path, to any file system request made through the access point. The operating system user and group override any identity information provided by the NFS client. The file system path is exposed as the access point's root directory. Applications using the access point can only access data in its own directory and below. To learn more, see <a href="https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html">Mounting a File System Using EFS Access Points</a>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:CreateAccessPoint</code> action.</p>
   ## 
-  let valid = call_604997.validator(path, query, header, formData, body)
-  let scheme = call_604997.pickScheme
+  let valid = call_606197.validator(path, query, header, formData, body)
+  let scheme = call_606197.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604997.url(scheme.get, call_604997.host, call_604997.base,
-                         call_604997.route, valid.getOrDefault("path"),
+  let url = call_606197.url(scheme.get, call_606197.host, call_606197.base,
+                         call_606197.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_604997, url, valid)
+  result = atozHook(call_606197, url, valid)
 
-proc call*(call_604998: Call_CreateAccessPoint_604986; body: JsonNode): Recallable =
+proc call*(call_606198: Call_CreateAccessPoint_606186; body: JsonNode): Recallable =
   ## createAccessPoint
   ## <p>Creates an EFS access point. An access point is an application-specific view into an EFS file system that applies an operating system user and group, and a file system path, to any file system request made through the access point. The operating system user and group override any identity information provided by the NFS client. The file system path is exposed as the access point's root directory. Applications using the access point can only access data in its own directory and below. To learn more, see <a href="https://docs.aws.amazon.com/efs/latest/ug/efs-access-points.html">Mounting a File System Using EFS Access Points</a>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:CreateAccessPoint</code> action.</p>
   ##   body: JObject (required)
-  var body_604999 = newJObject()
+  var body_606199 = newJObject()
   if body != nil:
-    body_604999 = body
-  result = call_604998.call(nil, nil, nil, nil, body_604999)
+    body_606199 = body
+  result = call_606198.call(nil, nil, nil, nil, body_606199)
 
-var createAccessPoint* = Call_CreateAccessPoint_604986(name: "createAccessPoint",
+var createAccessPoint* = Call_CreateAccessPoint_606186(name: "createAccessPoint",
     meth: HttpMethod.HttpPost, host: "elasticfilesystem.amazonaws.com",
-    route: "/2015-02-01/access-points", validator: validate_CreateAccessPoint_604987,
-    base: "/", url: url_CreateAccessPoint_604988,
+    route: "/2015-02-01/access-points", validator: validate_CreateAccessPoint_606187,
+    base: "/", url: url_CreateAccessPoint_606188,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeAccessPoints_604727 = ref object of OpenApiRestCall_604389
-proc url_DescribeAccessPoints_604729(protocol: Scheme; host: string; base: string;
+  Call_DescribeAccessPoints_605927 = ref object of OpenApiRestCall_605589
+proc url_DescribeAccessPoints_605929(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -253,7 +253,7 @@ proc url_DescribeAccessPoints_604729(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_DescribeAccessPoints_604728(path: JsonNode; query: JsonNode;
+proc validate_DescribeAccessPoints_605928(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the description of a specific Amazon EFS access point if the <code>AccessPointId</code> is provided. If you provide an EFS <code>FileSystemId</code>, it returns descriptions of all access points for that file system. You can provide either an <code>AccessPointId</code> or a <code>FileSystemId</code> in the request, but not both. </p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeAccessPoints</code> action.</p>
   ## 
@@ -271,25 +271,25 @@ proc validate_DescribeAccessPoints_604728(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            :  <code>NextToken</code> is present if the response is paginated. You can use <code>NextMarker</code> in the subsequent request to fetch the next page of access point descriptions.
   section = newJObject()
-  var valid_604841 = query.getOrDefault("FileSystemId")
-  valid_604841 = validateParameter(valid_604841, JString, required = false,
+  var valid_606041 = query.getOrDefault("FileSystemId")
+  valid_606041 = validateParameter(valid_606041, JString, required = false,
                                  default = nil)
-  if valid_604841 != nil:
-    section.add "FileSystemId", valid_604841
-  var valid_604842 = query.getOrDefault("MaxResults")
-  valid_604842 = validateParameter(valid_604842, JInt, required = false, default = nil)
-  if valid_604842 != nil:
-    section.add "MaxResults", valid_604842
-  var valid_604843 = query.getOrDefault("AccessPointId")
-  valid_604843 = validateParameter(valid_604843, JString, required = false,
+  if valid_606041 != nil:
+    section.add "FileSystemId", valid_606041
+  var valid_606042 = query.getOrDefault("MaxResults")
+  valid_606042 = validateParameter(valid_606042, JInt, required = false, default = nil)
+  if valid_606042 != nil:
+    section.add "MaxResults", valid_606042
+  var valid_606043 = query.getOrDefault("AccessPointId")
+  valid_606043 = validateParameter(valid_606043, JString, required = false,
                                  default = nil)
-  if valid_604843 != nil:
-    section.add "AccessPointId", valid_604843
-  var valid_604844 = query.getOrDefault("NextToken")
-  valid_604844 = validateParameter(valid_604844, JString, required = false,
+  if valid_606043 != nil:
+    section.add "AccessPointId", valid_606043
+  var valid_606044 = query.getOrDefault("NextToken")
+  valid_606044 = validateParameter(valid_606044, JString, required = false,
                                  default = nil)
-  if valid_604844 != nil:
-    section.add "NextToken", valid_604844
+  if valid_606044 != nil:
+    section.add "NextToken", valid_606044
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -300,61 +300,61 @@ proc validate_DescribeAccessPoints_604728(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_604845 = header.getOrDefault("X-Amz-Signature")
-  valid_604845 = validateParameter(valid_604845, JString, required = false,
+  var valid_606045 = header.getOrDefault("X-Amz-Signature")
+  valid_606045 = validateParameter(valid_606045, JString, required = false,
                                  default = nil)
-  if valid_604845 != nil:
-    section.add "X-Amz-Signature", valid_604845
-  var valid_604846 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_604846 = validateParameter(valid_604846, JString, required = false,
+  if valid_606045 != nil:
+    section.add "X-Amz-Signature", valid_606045
+  var valid_606046 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606046 = validateParameter(valid_606046, JString, required = false,
                                  default = nil)
-  if valid_604846 != nil:
-    section.add "X-Amz-Content-Sha256", valid_604846
-  var valid_604847 = header.getOrDefault("X-Amz-Date")
-  valid_604847 = validateParameter(valid_604847, JString, required = false,
+  if valid_606046 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606046
+  var valid_606047 = header.getOrDefault("X-Amz-Date")
+  valid_606047 = validateParameter(valid_606047, JString, required = false,
                                  default = nil)
-  if valid_604847 != nil:
-    section.add "X-Amz-Date", valid_604847
-  var valid_604848 = header.getOrDefault("X-Amz-Credential")
-  valid_604848 = validateParameter(valid_604848, JString, required = false,
+  if valid_606047 != nil:
+    section.add "X-Amz-Date", valid_606047
+  var valid_606048 = header.getOrDefault("X-Amz-Credential")
+  valid_606048 = validateParameter(valid_606048, JString, required = false,
                                  default = nil)
-  if valid_604848 != nil:
-    section.add "X-Amz-Credential", valid_604848
-  var valid_604849 = header.getOrDefault("X-Amz-Security-Token")
-  valid_604849 = validateParameter(valid_604849, JString, required = false,
+  if valid_606048 != nil:
+    section.add "X-Amz-Credential", valid_606048
+  var valid_606049 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606049 = validateParameter(valid_606049, JString, required = false,
                                  default = nil)
-  if valid_604849 != nil:
-    section.add "X-Amz-Security-Token", valid_604849
-  var valid_604850 = header.getOrDefault("X-Amz-Algorithm")
-  valid_604850 = validateParameter(valid_604850, JString, required = false,
+  if valid_606049 != nil:
+    section.add "X-Amz-Security-Token", valid_606049
+  var valid_606050 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606050 = validateParameter(valid_606050, JString, required = false,
                                  default = nil)
-  if valid_604850 != nil:
-    section.add "X-Amz-Algorithm", valid_604850
-  var valid_604851 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_604851 = validateParameter(valid_604851, JString, required = false,
+  if valid_606050 != nil:
+    section.add "X-Amz-Algorithm", valid_606050
+  var valid_606051 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606051 = validateParameter(valid_606051, JString, required = false,
                                  default = nil)
-  if valid_604851 != nil:
-    section.add "X-Amz-SignedHeaders", valid_604851
+  if valid_606051 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606051
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_604874: Call_DescribeAccessPoints_604727; path: JsonNode;
+proc call*(call_606074: Call_DescribeAccessPoints_605927; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the description of a specific Amazon EFS access point if the <code>AccessPointId</code> is provided. If you provide an EFS <code>FileSystemId</code>, it returns descriptions of all access points for that file system. You can provide either an <code>AccessPointId</code> or a <code>FileSystemId</code> in the request, but not both. </p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeAccessPoints</code> action.</p>
   ## 
-  let valid = call_604874.validator(path, query, header, formData, body)
-  let scheme = call_604874.pickScheme
+  let valid = call_606074.validator(path, query, header, formData, body)
+  let scheme = call_606074.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_604874.url(scheme.get, call_604874.host, call_604874.base,
-                         call_604874.route, valid.getOrDefault("path"),
+  let url = call_606074.url(scheme.get, call_606074.host, call_606074.base,
+                         call_606074.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_604874, url, valid)
+  result = atozHook(call_606074, url, valid)
 
-proc call*(call_604945: Call_DescribeAccessPoints_604727;
+proc call*(call_606145: Call_DescribeAccessPoints_605927;
           FileSystemId: string = ""; MaxResults: int = 0; AccessPointId: string = "";
           NextToken: string = ""): Recallable =
   ## describeAccessPoints
@@ -367,21 +367,21 @@ proc call*(call_604945: Call_DescribeAccessPoints_604727;
   ##                : (Optional) Specifies an EFS access point to describe in the response; mutually exclusive with <code>FileSystemId</code>.
   ##   NextToken: string
   ##            :  <code>NextToken</code> is present if the response is paginated. You can use <code>NextMarker</code> in the subsequent request to fetch the next page of access point descriptions.
-  var query_604946 = newJObject()
-  add(query_604946, "FileSystemId", newJString(FileSystemId))
-  add(query_604946, "MaxResults", newJInt(MaxResults))
-  add(query_604946, "AccessPointId", newJString(AccessPointId))
-  add(query_604946, "NextToken", newJString(NextToken))
-  result = call_604945.call(nil, query_604946, nil, nil, nil)
+  var query_606146 = newJObject()
+  add(query_606146, "FileSystemId", newJString(FileSystemId))
+  add(query_606146, "MaxResults", newJInt(MaxResults))
+  add(query_606146, "AccessPointId", newJString(AccessPointId))
+  add(query_606146, "NextToken", newJString(NextToken))
+  result = call_606145.call(nil, query_606146, nil, nil, nil)
 
-var describeAccessPoints* = Call_DescribeAccessPoints_604727(
+var describeAccessPoints* = Call_DescribeAccessPoints_605927(
     name: "describeAccessPoints", meth: HttpMethod.HttpGet,
     host: "elasticfilesystem.amazonaws.com", route: "/2015-02-01/access-points",
-    validator: validate_DescribeAccessPoints_604728, base: "/",
-    url: url_DescribeAccessPoints_604729, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeAccessPoints_605928, base: "/",
+    url: url_DescribeAccessPoints_605929, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateFileSystem_605017 = ref object of OpenApiRestCall_604389
-proc url_CreateFileSystem_605019(protocol: Scheme; host: string; base: string;
+  Call_CreateFileSystem_606217 = ref object of OpenApiRestCall_605589
+proc url_CreateFileSystem_606219(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -393,7 +393,7 @@ proc url_CreateFileSystem_605019(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateFileSystem_605018(path: JsonNode; query: JsonNode;
+proc validate_CreateFileSystem_606218(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates a new, empty file system. The operation requires a creation token in the request that Amazon EFS uses to ensure idempotent creation (calling the operation with same creation token has no effect). If a file system does not currently exist that is owned by the caller's AWS account with the specified creation token, this operation does the following:</p> <ul> <li> <p>Creates a new, empty file system. The file system will have an Amazon EFS assigned ID, and an initial lifecycle state <code>creating</code>.</p> </li> <li> <p>Returns with the description of the created file system.</p> </li> </ul> <p>Otherwise, this operation returns a <code>FileSystemAlreadyExists</code> error with the ID of the existing file system.</p> <note> <p>For basic use cases, you can use a randomly generated UUID for the creation token.</p> </note> <p> The idempotent operation allows you to retry a <code>CreateFileSystem</code> call without risk of creating an extra file system. This can happen when an initial call fails in a way that leaves it uncertain whether or not a file system was actually created. An example might be that a transport level timeout occurred or your connection was reset. As long as you use the same creation token, if the initial call had succeeded in creating a file system, the client can learn of its existence from the <code>FileSystemAlreadyExists</code> error.</p> <note> <p>The <code>CreateFileSystem</code> call returns while the file system's lifecycle state is still <code>creating</code>. You can check the file system creation status by calling the <a>DescribeFileSystems</a> operation, which among other things returns the file system state.</p> </note> <p>This operation also takes an optional <code>PerformanceMode</code> parameter that you choose for your file system. We recommend <code>generalPurpose</code> performance mode for most file systems. File systems using the <code>maxIO</code> performance mode can scale to higher levels of aggregate throughput and operations per second with a tradeoff of slightly higher latencies for most file operations. The performance mode can't be changed after the file system has been created. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/performance.html#performancemodes.html">Amazon EFS: Performance Modes</a>.</p> <p>After the file system is fully created, Amazon EFS sets its lifecycle state to <code>available</code>, at which point you can create one or more mount targets for the file system in your VPC. For more information, see <a>CreateMountTarget</a>. You mount your Amazon EFS file system on an EC2 instances in your VPC by using the mount target. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html">Amazon EFS: How it Works</a>. </p> <p> This operation requires permissions for the <code>elasticfilesystem:CreateFileSystem</code> action. </p>
@@ -413,41 +413,41 @@ proc validate_CreateFileSystem_605018(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605020 = header.getOrDefault("X-Amz-Signature")
-  valid_605020 = validateParameter(valid_605020, JString, required = false,
+  var valid_606220 = header.getOrDefault("X-Amz-Signature")
+  valid_606220 = validateParameter(valid_606220, JString, required = false,
                                  default = nil)
-  if valid_605020 != nil:
-    section.add "X-Amz-Signature", valid_605020
-  var valid_605021 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605021 = validateParameter(valid_605021, JString, required = false,
+  if valid_606220 != nil:
+    section.add "X-Amz-Signature", valid_606220
+  var valid_606221 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606221 = validateParameter(valid_606221, JString, required = false,
                                  default = nil)
-  if valid_605021 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605021
-  var valid_605022 = header.getOrDefault("X-Amz-Date")
-  valid_605022 = validateParameter(valid_605022, JString, required = false,
+  if valid_606221 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606221
+  var valid_606222 = header.getOrDefault("X-Amz-Date")
+  valid_606222 = validateParameter(valid_606222, JString, required = false,
                                  default = nil)
-  if valid_605022 != nil:
-    section.add "X-Amz-Date", valid_605022
-  var valid_605023 = header.getOrDefault("X-Amz-Credential")
-  valid_605023 = validateParameter(valid_605023, JString, required = false,
+  if valid_606222 != nil:
+    section.add "X-Amz-Date", valid_606222
+  var valid_606223 = header.getOrDefault("X-Amz-Credential")
+  valid_606223 = validateParameter(valid_606223, JString, required = false,
                                  default = nil)
-  if valid_605023 != nil:
-    section.add "X-Amz-Credential", valid_605023
-  var valid_605024 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605024 = validateParameter(valid_605024, JString, required = false,
+  if valid_606223 != nil:
+    section.add "X-Amz-Credential", valid_606223
+  var valid_606224 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606224 = validateParameter(valid_606224, JString, required = false,
                                  default = nil)
-  if valid_605024 != nil:
-    section.add "X-Amz-Security-Token", valid_605024
-  var valid_605025 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605025 = validateParameter(valid_605025, JString, required = false,
+  if valid_606224 != nil:
+    section.add "X-Amz-Security-Token", valid_606224
+  var valid_606225 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606225 = validateParameter(valid_606225, JString, required = false,
                                  default = nil)
-  if valid_605025 != nil:
-    section.add "X-Amz-Algorithm", valid_605025
-  var valid_605026 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605026 = validateParameter(valid_605026, JString, required = false,
+  if valid_606225 != nil:
+    section.add "X-Amz-Algorithm", valid_606225
+  var valid_606226 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606226 = validateParameter(valid_606226, JString, required = false,
                                  default = nil)
-  if valid_605026 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605026
+  if valid_606226 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606226
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -458,36 +458,36 @@ proc validate_CreateFileSystem_605018(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605028: Call_CreateFileSystem_605017; path: JsonNode;
+proc call*(call_606228: Call_CreateFileSystem_606217; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new, empty file system. The operation requires a creation token in the request that Amazon EFS uses to ensure idempotent creation (calling the operation with same creation token has no effect). If a file system does not currently exist that is owned by the caller's AWS account with the specified creation token, this operation does the following:</p> <ul> <li> <p>Creates a new, empty file system. The file system will have an Amazon EFS assigned ID, and an initial lifecycle state <code>creating</code>.</p> </li> <li> <p>Returns with the description of the created file system.</p> </li> </ul> <p>Otherwise, this operation returns a <code>FileSystemAlreadyExists</code> error with the ID of the existing file system.</p> <note> <p>For basic use cases, you can use a randomly generated UUID for the creation token.</p> </note> <p> The idempotent operation allows you to retry a <code>CreateFileSystem</code> call without risk of creating an extra file system. This can happen when an initial call fails in a way that leaves it uncertain whether or not a file system was actually created. An example might be that a transport level timeout occurred or your connection was reset. As long as you use the same creation token, if the initial call had succeeded in creating a file system, the client can learn of its existence from the <code>FileSystemAlreadyExists</code> error.</p> <note> <p>The <code>CreateFileSystem</code> call returns while the file system's lifecycle state is still <code>creating</code>. You can check the file system creation status by calling the <a>DescribeFileSystems</a> operation, which among other things returns the file system state.</p> </note> <p>This operation also takes an optional <code>PerformanceMode</code> parameter that you choose for your file system. We recommend <code>generalPurpose</code> performance mode for most file systems. File systems using the <code>maxIO</code> performance mode can scale to higher levels of aggregate throughput and operations per second with a tradeoff of slightly higher latencies for most file operations. The performance mode can't be changed after the file system has been created. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/performance.html#performancemodes.html">Amazon EFS: Performance Modes</a>.</p> <p>After the file system is fully created, Amazon EFS sets its lifecycle state to <code>available</code>, at which point you can create one or more mount targets for the file system in your VPC. For more information, see <a>CreateMountTarget</a>. You mount your Amazon EFS file system on an EC2 instances in your VPC by using the mount target. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html">Amazon EFS: How it Works</a>. </p> <p> This operation requires permissions for the <code>elasticfilesystem:CreateFileSystem</code> action. </p>
   ## 
-  let valid = call_605028.validator(path, query, header, formData, body)
-  let scheme = call_605028.pickScheme
+  let valid = call_606228.validator(path, query, header, formData, body)
+  let scheme = call_606228.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605028.url(scheme.get, call_605028.host, call_605028.base,
-                         call_605028.route, valid.getOrDefault("path"),
+  let url = call_606228.url(scheme.get, call_606228.host, call_606228.base,
+                         call_606228.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605028, url, valid)
+  result = atozHook(call_606228, url, valid)
 
-proc call*(call_605029: Call_CreateFileSystem_605017; body: JsonNode): Recallable =
+proc call*(call_606229: Call_CreateFileSystem_606217; body: JsonNode): Recallable =
   ## createFileSystem
   ## <p>Creates a new, empty file system. The operation requires a creation token in the request that Amazon EFS uses to ensure idempotent creation (calling the operation with same creation token has no effect). If a file system does not currently exist that is owned by the caller's AWS account with the specified creation token, this operation does the following:</p> <ul> <li> <p>Creates a new, empty file system. The file system will have an Amazon EFS assigned ID, and an initial lifecycle state <code>creating</code>.</p> </li> <li> <p>Returns with the description of the created file system.</p> </li> </ul> <p>Otherwise, this operation returns a <code>FileSystemAlreadyExists</code> error with the ID of the existing file system.</p> <note> <p>For basic use cases, you can use a randomly generated UUID for the creation token.</p> </note> <p> The idempotent operation allows you to retry a <code>CreateFileSystem</code> call without risk of creating an extra file system. This can happen when an initial call fails in a way that leaves it uncertain whether or not a file system was actually created. An example might be that a transport level timeout occurred or your connection was reset. As long as you use the same creation token, if the initial call had succeeded in creating a file system, the client can learn of its existence from the <code>FileSystemAlreadyExists</code> error.</p> <note> <p>The <code>CreateFileSystem</code> call returns while the file system's lifecycle state is still <code>creating</code>. You can check the file system creation status by calling the <a>DescribeFileSystems</a> operation, which among other things returns the file system state.</p> </note> <p>This operation also takes an optional <code>PerformanceMode</code> parameter that you choose for your file system. We recommend <code>generalPurpose</code> performance mode for most file systems. File systems using the <code>maxIO</code> performance mode can scale to higher levels of aggregate throughput and operations per second with a tradeoff of slightly higher latencies for most file operations. The performance mode can't be changed after the file system has been created. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/performance.html#performancemodes.html">Amazon EFS: Performance Modes</a>.</p> <p>After the file system is fully created, Amazon EFS sets its lifecycle state to <code>available</code>, at which point you can create one or more mount targets for the file system in your VPC. For more information, see <a>CreateMountTarget</a>. You mount your Amazon EFS file system on an EC2 instances in your VPC by using the mount target. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html">Amazon EFS: How it Works</a>. </p> <p> This operation requires permissions for the <code>elasticfilesystem:CreateFileSystem</code> action. </p>
   ##   body: JObject (required)
-  var body_605030 = newJObject()
+  var body_606230 = newJObject()
   if body != nil:
-    body_605030 = body
-  result = call_605029.call(nil, nil, nil, nil, body_605030)
+    body_606230 = body
+  result = call_606229.call(nil, nil, nil, nil, body_606230)
 
-var createFileSystem* = Call_CreateFileSystem_605017(name: "createFileSystem",
+var createFileSystem* = Call_CreateFileSystem_606217(name: "createFileSystem",
     meth: HttpMethod.HttpPost, host: "elasticfilesystem.amazonaws.com",
-    route: "/2015-02-01/file-systems", validator: validate_CreateFileSystem_605018,
-    base: "/", url: url_CreateFileSystem_605019,
+    route: "/2015-02-01/file-systems", validator: validate_CreateFileSystem_606218,
+    base: "/", url: url_CreateFileSystem_606219,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeFileSystems_605000 = ref object of OpenApiRestCall_604389
-proc url_DescribeFileSystems_605002(protocol: Scheme; host: string; base: string;
+  Call_DescribeFileSystems_606200 = ref object of OpenApiRestCall_605589
+proc url_DescribeFileSystems_606202(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -499,7 +499,7 @@ proc url_DescribeFileSystems_605002(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_DescribeFileSystems_605001(path: JsonNode; query: JsonNode;
+proc validate_DescribeFileSystems_606201(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Returns the description of a specific Amazon EFS file system if either the file system <code>CreationToken</code> or the <code>FileSystemId</code> is provided. Otherwise, it returns descriptions of all file systems owned by the caller's AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all file system descriptions, you can optionally specify the <code>MaxItems</code> parameter to limit the number of descriptions in a response. Currently, this number is automatically set to 10. If more file system descriptions remain, Amazon EFS returns a <code>NextMarker</code>, an opaque token, in the response. In this case, you should send a subsequent request with the <code>Marker</code> request parameter set to the value of <code>NextMarker</code>. </p> <p>To retrieve a list of your file system descriptions, this operation is used in an iterative process, where <code>DescribeFileSystems</code> is called first without the <code>Marker</code> and then the operation continues to call it with the <code>Marker</code> parameter set to the value of the <code>NextMarker</code> from the previous response until the response has no <code>NextMarker</code>. </p> <p> The order of file systems returned in the response of one <code>DescribeFileSystems</code> call and the order of file systems returned across the responses of a multi-call iteration is unspecified. </p> <p> This operation requires permissions for the <code>elasticfilesystem:DescribeFileSystems</code> action. </p>
@@ -518,25 +518,25 @@ proc validate_DescribeFileSystems_605001(path: JsonNode; query: JsonNode;
   ##   CreationToken: JString
   ##                : (Optional) Restricts the list to the file system with this creation token (String). You specify a creation token when you create an Amazon EFS file system.
   section = newJObject()
-  var valid_605003 = query.getOrDefault("FileSystemId")
-  valid_605003 = validateParameter(valid_605003, JString, required = false,
+  var valid_606203 = query.getOrDefault("FileSystemId")
+  valid_606203 = validateParameter(valid_606203, JString, required = false,
                                  default = nil)
-  if valid_605003 != nil:
-    section.add "FileSystemId", valid_605003
-  var valid_605004 = query.getOrDefault("Marker")
-  valid_605004 = validateParameter(valid_605004, JString, required = false,
+  if valid_606203 != nil:
+    section.add "FileSystemId", valid_606203
+  var valid_606204 = query.getOrDefault("Marker")
+  valid_606204 = validateParameter(valid_606204, JString, required = false,
                                  default = nil)
-  if valid_605004 != nil:
-    section.add "Marker", valid_605004
-  var valid_605005 = query.getOrDefault("MaxItems")
-  valid_605005 = validateParameter(valid_605005, JInt, required = false, default = nil)
-  if valid_605005 != nil:
-    section.add "MaxItems", valid_605005
-  var valid_605006 = query.getOrDefault("CreationToken")
-  valid_605006 = validateParameter(valid_605006, JString, required = false,
+  if valid_606204 != nil:
+    section.add "Marker", valid_606204
+  var valid_606205 = query.getOrDefault("MaxItems")
+  valid_606205 = validateParameter(valid_606205, JInt, required = false, default = nil)
+  if valid_606205 != nil:
+    section.add "MaxItems", valid_606205
+  var valid_606206 = query.getOrDefault("CreationToken")
+  valid_606206 = validateParameter(valid_606206, JString, required = false,
                                  default = nil)
-  if valid_605006 != nil:
-    section.add "CreationToken", valid_605006
+  if valid_606206 != nil:
+    section.add "CreationToken", valid_606206
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -547,61 +547,61 @@ proc validate_DescribeFileSystems_605001(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605007 = header.getOrDefault("X-Amz-Signature")
-  valid_605007 = validateParameter(valid_605007, JString, required = false,
+  var valid_606207 = header.getOrDefault("X-Amz-Signature")
+  valid_606207 = validateParameter(valid_606207, JString, required = false,
                                  default = nil)
-  if valid_605007 != nil:
-    section.add "X-Amz-Signature", valid_605007
-  var valid_605008 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605008 = validateParameter(valid_605008, JString, required = false,
+  if valid_606207 != nil:
+    section.add "X-Amz-Signature", valid_606207
+  var valid_606208 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606208 = validateParameter(valid_606208, JString, required = false,
                                  default = nil)
-  if valid_605008 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605008
-  var valid_605009 = header.getOrDefault("X-Amz-Date")
-  valid_605009 = validateParameter(valid_605009, JString, required = false,
+  if valid_606208 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606208
+  var valid_606209 = header.getOrDefault("X-Amz-Date")
+  valid_606209 = validateParameter(valid_606209, JString, required = false,
                                  default = nil)
-  if valid_605009 != nil:
-    section.add "X-Amz-Date", valid_605009
-  var valid_605010 = header.getOrDefault("X-Amz-Credential")
-  valid_605010 = validateParameter(valid_605010, JString, required = false,
+  if valid_606209 != nil:
+    section.add "X-Amz-Date", valid_606209
+  var valid_606210 = header.getOrDefault("X-Amz-Credential")
+  valid_606210 = validateParameter(valid_606210, JString, required = false,
                                  default = nil)
-  if valid_605010 != nil:
-    section.add "X-Amz-Credential", valid_605010
-  var valid_605011 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605011 = validateParameter(valid_605011, JString, required = false,
+  if valid_606210 != nil:
+    section.add "X-Amz-Credential", valid_606210
+  var valid_606211 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606211 = validateParameter(valid_606211, JString, required = false,
                                  default = nil)
-  if valid_605011 != nil:
-    section.add "X-Amz-Security-Token", valid_605011
-  var valid_605012 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605012 = validateParameter(valid_605012, JString, required = false,
+  if valid_606211 != nil:
+    section.add "X-Amz-Security-Token", valid_606211
+  var valid_606212 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606212 = validateParameter(valid_606212, JString, required = false,
                                  default = nil)
-  if valid_605012 != nil:
-    section.add "X-Amz-Algorithm", valid_605012
-  var valid_605013 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605013 = validateParameter(valid_605013, JString, required = false,
+  if valid_606212 != nil:
+    section.add "X-Amz-Algorithm", valid_606212
+  var valid_606213 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606213 = validateParameter(valid_606213, JString, required = false,
                                  default = nil)
-  if valid_605013 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605013
+  if valid_606213 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606213
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605014: Call_DescribeFileSystems_605000; path: JsonNode;
+proc call*(call_606214: Call_DescribeFileSystems_606200; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the description of a specific Amazon EFS file system if either the file system <code>CreationToken</code> or the <code>FileSystemId</code> is provided. Otherwise, it returns descriptions of all file systems owned by the caller's AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all file system descriptions, you can optionally specify the <code>MaxItems</code> parameter to limit the number of descriptions in a response. Currently, this number is automatically set to 10. If more file system descriptions remain, Amazon EFS returns a <code>NextMarker</code>, an opaque token, in the response. In this case, you should send a subsequent request with the <code>Marker</code> request parameter set to the value of <code>NextMarker</code>. </p> <p>To retrieve a list of your file system descriptions, this operation is used in an iterative process, where <code>DescribeFileSystems</code> is called first without the <code>Marker</code> and then the operation continues to call it with the <code>Marker</code> parameter set to the value of the <code>NextMarker</code> from the previous response until the response has no <code>NextMarker</code>. </p> <p> The order of file systems returned in the response of one <code>DescribeFileSystems</code> call and the order of file systems returned across the responses of a multi-call iteration is unspecified. </p> <p> This operation requires permissions for the <code>elasticfilesystem:DescribeFileSystems</code> action. </p>
   ## 
-  let valid = call_605014.validator(path, query, header, formData, body)
-  let scheme = call_605014.pickScheme
+  let valid = call_606214.validator(path, query, header, formData, body)
+  let scheme = call_606214.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605014.url(scheme.get, call_605014.host, call_605014.base,
-                         call_605014.route, valid.getOrDefault("path"),
+  let url = call_606214.url(scheme.get, call_606214.host, call_606214.base,
+                         call_606214.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605014, url, valid)
+  result = atozHook(call_606214, url, valid)
 
-proc call*(call_605015: Call_DescribeFileSystems_605000; FileSystemId: string = "";
+proc call*(call_606215: Call_DescribeFileSystems_606200; FileSystemId: string = "";
           Marker: string = ""; MaxItems: int = 0; CreationToken: string = ""): Recallable =
   ## describeFileSystems
   ## <p>Returns the description of a specific Amazon EFS file system if either the file system <code>CreationToken</code> or the <code>FileSystemId</code> is provided. Otherwise, it returns descriptions of all file systems owned by the caller's AWS account in the AWS Region of the endpoint that you're calling.</p> <p>When retrieving all file system descriptions, you can optionally specify the <code>MaxItems</code> parameter to limit the number of descriptions in a response. Currently, this number is automatically set to 10. If more file system descriptions remain, Amazon EFS returns a <code>NextMarker</code>, an opaque token, in the response. In this case, you should send a subsequent request with the <code>Marker</code> request parameter set to the value of <code>NextMarker</code>. </p> <p>To retrieve a list of your file system descriptions, this operation is used in an iterative process, where <code>DescribeFileSystems</code> is called first without the <code>Marker</code> and then the operation continues to call it with the <code>Marker</code> parameter set to the value of the <code>NextMarker</code> from the previous response until the response has no <code>NextMarker</code>. </p> <p> The order of file systems returned in the response of one <code>DescribeFileSystems</code> call and the order of file systems returned across the responses of a multi-call iteration is unspecified. </p> <p> This operation requires permissions for the <code>elasticfilesystem:DescribeFileSystems</code> action. </p>
@@ -613,21 +613,21 @@ proc call*(call_605015: Call_DescribeFileSystems_605000; FileSystemId: string = 
   ##           : (Optional) Specifies the maximum number of file systems to return in the response (integer). This number is automatically set to 100. The response is paginated at 100 per page if you have more than 100 file systems. 
   ##   CreationToken: string
   ##                : (Optional) Restricts the list to the file system with this creation token (String). You specify a creation token when you create an Amazon EFS file system.
-  var query_605016 = newJObject()
-  add(query_605016, "FileSystemId", newJString(FileSystemId))
-  add(query_605016, "Marker", newJString(Marker))
-  add(query_605016, "MaxItems", newJInt(MaxItems))
-  add(query_605016, "CreationToken", newJString(CreationToken))
-  result = call_605015.call(nil, query_605016, nil, nil, nil)
+  var query_606216 = newJObject()
+  add(query_606216, "FileSystemId", newJString(FileSystemId))
+  add(query_606216, "Marker", newJString(Marker))
+  add(query_606216, "MaxItems", newJInt(MaxItems))
+  add(query_606216, "CreationToken", newJString(CreationToken))
+  result = call_606215.call(nil, query_606216, nil, nil, nil)
 
-var describeFileSystems* = Call_DescribeFileSystems_605000(
+var describeFileSystems* = Call_DescribeFileSystems_606200(
     name: "describeFileSystems", meth: HttpMethod.HttpGet,
     host: "elasticfilesystem.amazonaws.com", route: "/2015-02-01/file-systems",
-    validator: validate_DescribeFileSystems_605001, base: "/",
-    url: url_DescribeFileSystems_605002, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeFileSystems_606201, base: "/",
+    url: url_DescribeFileSystems_606202, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateMountTarget_605049 = ref object of OpenApiRestCall_604389
-proc url_CreateMountTarget_605051(protocol: Scheme; host: string; base: string;
+  Call_CreateMountTarget_606249 = ref object of OpenApiRestCall_605589
+proc url_CreateMountTarget_606251(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -639,7 +639,7 @@ proc url_CreateMountTarget_605051(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateMountTarget_605050(path: JsonNode; query: JsonNode;
+proc validate_CreateMountTarget_606250(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Creates a mount target for a file system. You can then mount the file system on EC2 instances by using the mount target.</p> <p>You can create one mount target in each Availability Zone in your VPC. All EC2 instances in a VPC within a given Availability Zone share a single mount target for a given file system. If you have multiple subnets in an Availability Zone, you create a mount target in one of the subnets. EC2 instances do not need to be in the same subnet as the mount target in order to access their file system. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html">Amazon EFS: How it Works</a>. </p> <p>In the request, you also specify a file system ID for which you are creating the mount target and the file system's lifecycle state must be <code>available</code>. For more information, see <a>DescribeFileSystems</a>.</p> <p>In the request, you also provide a subnet ID, which determines the following:</p> <ul> <li> <p>VPC in which Amazon EFS creates the mount target</p> </li> <li> <p>Availability Zone in which Amazon EFS creates the mount target</p> </li> <li> <p>IP address range from which Amazon EFS selects the IP address of the mount target (if you don't specify an IP address in the request)</p> </li> </ul> <p>After creating the mount target, Amazon EFS returns a response that includes, a <code>MountTargetId</code> and an <code>IpAddress</code>. You use this IP address when mounting the file system in an EC2 instance. You can also use the mount target's DNS name when mounting the file system. The EC2 instance on which you mount the file system by using the mount target can resolve the mount target's DNS name to its IP address. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html#how-it-works-implementation">How it Works: Implementation Overview</a>. </p> <p>Note that you can create mount targets for a file system in only one VPC, and there can be only one mount target per Availability Zone. That is, if the file system already has one or more mount targets created for it, the subnet specified in the request to add another mount target must meet the following requirements:</p> <ul> <li> <p>Must belong to the same VPC as the subnets of the existing mount targets</p> </li> <li> <p>Must not be in the same Availability Zone as any of the subnets of the existing mount targets</p> </li> </ul> <p>If the request satisfies the requirements, Amazon EFS does the following:</p> <ul> <li> <p>Creates a new mount target in the specified subnet.</p> </li> <li> <p>Also creates a new network interface in the subnet as follows:</p> <ul> <li> <p>If the request provides an <code>IpAddress</code>, Amazon EFS assigns that IP address to the network interface. Otherwise, Amazon EFS assigns a free address in the subnet (in the same way that the Amazon EC2 <code>CreateNetworkInterface</code> call does when a request does not specify a primary private IP address).</p> </li> <li> <p>If the request provides <code>SecurityGroups</code>, this network interface is associated with those security groups. Otherwise, it belongs to the default security group for the subnet's VPC.</p> </li> <li> <p>Assigns the description <code>Mount target <i>fsmt-id</i> for file system <i>fs-id</i> </code> where <code> <i>fsmt-id</i> </code> is the mount target ID, and <code> <i>fs-id</i> </code> is the <code>FileSystemId</code>.</p> </li> <li> <p>Sets the <code>requesterManaged</code> property of the network interface to <code>true</code>, and the <code>requesterId</code> value to <code>EFS</code>.</p> </li> </ul> <p>Each Amazon EFS mount target has one corresponding requester-managed EC2 network interface. After the network interface is created, Amazon EFS sets the <code>NetworkInterfaceId</code> field in the mount target's description to the network interface ID, and the <code>IpAddress</code> field to its address. If network interface creation fails, the entire <code>CreateMountTarget</code> operation fails.</p> </li> </ul> <note> <p>The <code>CreateMountTarget</code> call returns only after creating the network interface, but while the mount target state is still <code>creating</code>, you can check the mount target creation status by calling the <a>DescribeMountTargets</a> operation, which among other things returns the mount target state.</p> </note> <p>We recommend that you create a mount target in each of the Availability Zones. There are cost considerations for using a file system in an Availability Zone through a mount target created in another Availability Zone. For more information, see <a href="http://aws.amazon.com/efs/">Amazon EFS</a>. In addition, by always using a mount target local to the instance's Availability Zone, you eliminate a partial failure scenario. If the Availability Zone in which your mount target is created goes down, then you can't access your file system through that mount target. </p> <p>This operation requires permissions for the following action on the file system:</p> <ul> <li> <p> <code>elasticfilesystem:CreateMountTarget</code> </p> </li> </ul> <p>This operation also requires permissions for the following Amazon EC2 actions:</p> <ul> <li> <p> <code>ec2:DescribeSubnets</code> </p> </li> <li> <p> <code>ec2:DescribeNetworkInterfaces</code> </p> </li> <li> <p> <code>ec2:CreateNetworkInterface</code> </p> </li> </ul>
@@ -659,41 +659,41 @@ proc validate_CreateMountTarget_605050(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605052 = header.getOrDefault("X-Amz-Signature")
-  valid_605052 = validateParameter(valid_605052, JString, required = false,
+  var valid_606252 = header.getOrDefault("X-Amz-Signature")
+  valid_606252 = validateParameter(valid_606252, JString, required = false,
                                  default = nil)
-  if valid_605052 != nil:
-    section.add "X-Amz-Signature", valid_605052
-  var valid_605053 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605053 = validateParameter(valid_605053, JString, required = false,
+  if valid_606252 != nil:
+    section.add "X-Amz-Signature", valid_606252
+  var valid_606253 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606253 = validateParameter(valid_606253, JString, required = false,
                                  default = nil)
-  if valid_605053 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605053
-  var valid_605054 = header.getOrDefault("X-Amz-Date")
-  valid_605054 = validateParameter(valid_605054, JString, required = false,
+  if valid_606253 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606253
+  var valid_606254 = header.getOrDefault("X-Amz-Date")
+  valid_606254 = validateParameter(valid_606254, JString, required = false,
                                  default = nil)
-  if valid_605054 != nil:
-    section.add "X-Amz-Date", valid_605054
-  var valid_605055 = header.getOrDefault("X-Amz-Credential")
-  valid_605055 = validateParameter(valid_605055, JString, required = false,
+  if valid_606254 != nil:
+    section.add "X-Amz-Date", valid_606254
+  var valid_606255 = header.getOrDefault("X-Amz-Credential")
+  valid_606255 = validateParameter(valid_606255, JString, required = false,
                                  default = nil)
-  if valid_605055 != nil:
-    section.add "X-Amz-Credential", valid_605055
-  var valid_605056 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605056 = validateParameter(valid_605056, JString, required = false,
+  if valid_606255 != nil:
+    section.add "X-Amz-Credential", valid_606255
+  var valid_606256 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606256 = validateParameter(valid_606256, JString, required = false,
                                  default = nil)
-  if valid_605056 != nil:
-    section.add "X-Amz-Security-Token", valid_605056
-  var valid_605057 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605057 = validateParameter(valid_605057, JString, required = false,
+  if valid_606256 != nil:
+    section.add "X-Amz-Security-Token", valid_606256
+  var valid_606257 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606257 = validateParameter(valid_606257, JString, required = false,
                                  default = nil)
-  if valid_605057 != nil:
-    section.add "X-Amz-Algorithm", valid_605057
-  var valid_605058 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605058 = validateParameter(valid_605058, JString, required = false,
+  if valid_606257 != nil:
+    section.add "X-Amz-Algorithm", valid_606257
+  var valid_606258 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606258 = validateParameter(valid_606258, JString, required = false,
                                  default = nil)
-  if valid_605058 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605058
+  if valid_606258 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606258
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -704,36 +704,36 @@ proc validate_CreateMountTarget_605050(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605060: Call_CreateMountTarget_605049; path: JsonNode;
+proc call*(call_606260: Call_CreateMountTarget_606249; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a mount target for a file system. You can then mount the file system on EC2 instances by using the mount target.</p> <p>You can create one mount target in each Availability Zone in your VPC. All EC2 instances in a VPC within a given Availability Zone share a single mount target for a given file system. If you have multiple subnets in an Availability Zone, you create a mount target in one of the subnets. EC2 instances do not need to be in the same subnet as the mount target in order to access their file system. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html">Amazon EFS: How it Works</a>. </p> <p>In the request, you also specify a file system ID for which you are creating the mount target and the file system's lifecycle state must be <code>available</code>. For more information, see <a>DescribeFileSystems</a>.</p> <p>In the request, you also provide a subnet ID, which determines the following:</p> <ul> <li> <p>VPC in which Amazon EFS creates the mount target</p> </li> <li> <p>Availability Zone in which Amazon EFS creates the mount target</p> </li> <li> <p>IP address range from which Amazon EFS selects the IP address of the mount target (if you don't specify an IP address in the request)</p> </li> </ul> <p>After creating the mount target, Amazon EFS returns a response that includes, a <code>MountTargetId</code> and an <code>IpAddress</code>. You use this IP address when mounting the file system in an EC2 instance. You can also use the mount target's DNS name when mounting the file system. The EC2 instance on which you mount the file system by using the mount target can resolve the mount target's DNS name to its IP address. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html#how-it-works-implementation">How it Works: Implementation Overview</a>. </p> <p>Note that you can create mount targets for a file system in only one VPC, and there can be only one mount target per Availability Zone. That is, if the file system already has one or more mount targets created for it, the subnet specified in the request to add another mount target must meet the following requirements:</p> <ul> <li> <p>Must belong to the same VPC as the subnets of the existing mount targets</p> </li> <li> <p>Must not be in the same Availability Zone as any of the subnets of the existing mount targets</p> </li> </ul> <p>If the request satisfies the requirements, Amazon EFS does the following:</p> <ul> <li> <p>Creates a new mount target in the specified subnet.</p> </li> <li> <p>Also creates a new network interface in the subnet as follows:</p> <ul> <li> <p>If the request provides an <code>IpAddress</code>, Amazon EFS assigns that IP address to the network interface. Otherwise, Amazon EFS assigns a free address in the subnet (in the same way that the Amazon EC2 <code>CreateNetworkInterface</code> call does when a request does not specify a primary private IP address).</p> </li> <li> <p>If the request provides <code>SecurityGroups</code>, this network interface is associated with those security groups. Otherwise, it belongs to the default security group for the subnet's VPC.</p> </li> <li> <p>Assigns the description <code>Mount target <i>fsmt-id</i> for file system <i>fs-id</i> </code> where <code> <i>fsmt-id</i> </code> is the mount target ID, and <code> <i>fs-id</i> </code> is the <code>FileSystemId</code>.</p> </li> <li> <p>Sets the <code>requesterManaged</code> property of the network interface to <code>true</code>, and the <code>requesterId</code> value to <code>EFS</code>.</p> </li> </ul> <p>Each Amazon EFS mount target has one corresponding requester-managed EC2 network interface. After the network interface is created, Amazon EFS sets the <code>NetworkInterfaceId</code> field in the mount target's description to the network interface ID, and the <code>IpAddress</code> field to its address. If network interface creation fails, the entire <code>CreateMountTarget</code> operation fails.</p> </li> </ul> <note> <p>The <code>CreateMountTarget</code> call returns only after creating the network interface, but while the mount target state is still <code>creating</code>, you can check the mount target creation status by calling the <a>DescribeMountTargets</a> operation, which among other things returns the mount target state.</p> </note> <p>We recommend that you create a mount target in each of the Availability Zones. There are cost considerations for using a file system in an Availability Zone through a mount target created in another Availability Zone. For more information, see <a href="http://aws.amazon.com/efs/">Amazon EFS</a>. In addition, by always using a mount target local to the instance's Availability Zone, you eliminate a partial failure scenario. If the Availability Zone in which your mount target is created goes down, then you can't access your file system through that mount target. </p> <p>This operation requires permissions for the following action on the file system:</p> <ul> <li> <p> <code>elasticfilesystem:CreateMountTarget</code> </p> </li> </ul> <p>This operation also requires permissions for the following Amazon EC2 actions:</p> <ul> <li> <p> <code>ec2:DescribeSubnets</code> </p> </li> <li> <p> <code>ec2:DescribeNetworkInterfaces</code> </p> </li> <li> <p> <code>ec2:CreateNetworkInterface</code> </p> </li> </ul>
   ## 
-  let valid = call_605060.validator(path, query, header, formData, body)
-  let scheme = call_605060.pickScheme
+  let valid = call_606260.validator(path, query, header, formData, body)
+  let scheme = call_606260.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605060.url(scheme.get, call_605060.host, call_605060.base,
-                         call_605060.route, valid.getOrDefault("path"),
+  let url = call_606260.url(scheme.get, call_606260.host, call_606260.base,
+                         call_606260.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605060, url, valid)
+  result = atozHook(call_606260, url, valid)
 
-proc call*(call_605061: Call_CreateMountTarget_605049; body: JsonNode): Recallable =
+proc call*(call_606261: Call_CreateMountTarget_606249; body: JsonNode): Recallable =
   ## createMountTarget
   ## <p>Creates a mount target for a file system. You can then mount the file system on EC2 instances by using the mount target.</p> <p>You can create one mount target in each Availability Zone in your VPC. All EC2 instances in a VPC within a given Availability Zone share a single mount target for a given file system. If you have multiple subnets in an Availability Zone, you create a mount target in one of the subnets. EC2 instances do not need to be in the same subnet as the mount target in order to access their file system. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html">Amazon EFS: How it Works</a>. </p> <p>In the request, you also specify a file system ID for which you are creating the mount target and the file system's lifecycle state must be <code>available</code>. For more information, see <a>DescribeFileSystems</a>.</p> <p>In the request, you also provide a subnet ID, which determines the following:</p> <ul> <li> <p>VPC in which Amazon EFS creates the mount target</p> </li> <li> <p>Availability Zone in which Amazon EFS creates the mount target</p> </li> <li> <p>IP address range from which Amazon EFS selects the IP address of the mount target (if you don't specify an IP address in the request)</p> </li> </ul> <p>After creating the mount target, Amazon EFS returns a response that includes, a <code>MountTargetId</code> and an <code>IpAddress</code>. You use this IP address when mounting the file system in an EC2 instance. You can also use the mount target's DNS name when mounting the file system. The EC2 instance on which you mount the file system by using the mount target can resolve the mount target's DNS name to its IP address. For more information, see <a href="https://docs.aws.amazon.com/efs/latest/ug/how-it-works.html#how-it-works-implementation">How it Works: Implementation Overview</a>. </p> <p>Note that you can create mount targets for a file system in only one VPC, and there can be only one mount target per Availability Zone. That is, if the file system already has one or more mount targets created for it, the subnet specified in the request to add another mount target must meet the following requirements:</p> <ul> <li> <p>Must belong to the same VPC as the subnets of the existing mount targets</p> </li> <li> <p>Must not be in the same Availability Zone as any of the subnets of the existing mount targets</p> </li> </ul> <p>If the request satisfies the requirements, Amazon EFS does the following:</p> <ul> <li> <p>Creates a new mount target in the specified subnet.</p> </li> <li> <p>Also creates a new network interface in the subnet as follows:</p> <ul> <li> <p>If the request provides an <code>IpAddress</code>, Amazon EFS assigns that IP address to the network interface. Otherwise, Amazon EFS assigns a free address in the subnet (in the same way that the Amazon EC2 <code>CreateNetworkInterface</code> call does when a request does not specify a primary private IP address).</p> </li> <li> <p>If the request provides <code>SecurityGroups</code>, this network interface is associated with those security groups. Otherwise, it belongs to the default security group for the subnet's VPC.</p> </li> <li> <p>Assigns the description <code>Mount target <i>fsmt-id</i> for file system <i>fs-id</i> </code> where <code> <i>fsmt-id</i> </code> is the mount target ID, and <code> <i>fs-id</i> </code> is the <code>FileSystemId</code>.</p> </li> <li> <p>Sets the <code>requesterManaged</code> property of the network interface to <code>true</code>, and the <code>requesterId</code> value to <code>EFS</code>.</p> </li> </ul> <p>Each Amazon EFS mount target has one corresponding requester-managed EC2 network interface. After the network interface is created, Amazon EFS sets the <code>NetworkInterfaceId</code> field in the mount target's description to the network interface ID, and the <code>IpAddress</code> field to its address. If network interface creation fails, the entire <code>CreateMountTarget</code> operation fails.</p> </li> </ul> <note> <p>The <code>CreateMountTarget</code> call returns only after creating the network interface, but while the mount target state is still <code>creating</code>, you can check the mount target creation status by calling the <a>DescribeMountTargets</a> operation, which among other things returns the mount target state.</p> </note> <p>We recommend that you create a mount target in each of the Availability Zones. There are cost considerations for using a file system in an Availability Zone through a mount target created in another Availability Zone. For more information, see <a href="http://aws.amazon.com/efs/">Amazon EFS</a>. In addition, by always using a mount target local to the instance's Availability Zone, you eliminate a partial failure scenario. If the Availability Zone in which your mount target is created goes down, then you can't access your file system through that mount target. </p> <p>This operation requires permissions for the following action on the file system:</p> <ul> <li> <p> <code>elasticfilesystem:CreateMountTarget</code> </p> </li> </ul> <p>This operation also requires permissions for the following Amazon EC2 actions:</p> <ul> <li> <p> <code>ec2:DescribeSubnets</code> </p> </li> <li> <p> <code>ec2:DescribeNetworkInterfaces</code> </p> </li> <li> <p> <code>ec2:CreateNetworkInterface</code> </p> </li> </ul>
   ##   body: JObject (required)
-  var body_605062 = newJObject()
+  var body_606262 = newJObject()
   if body != nil:
-    body_605062 = body
-  result = call_605061.call(nil, nil, nil, nil, body_605062)
+    body_606262 = body
+  result = call_606261.call(nil, nil, nil, nil, body_606262)
 
-var createMountTarget* = Call_CreateMountTarget_605049(name: "createMountTarget",
+var createMountTarget* = Call_CreateMountTarget_606249(name: "createMountTarget",
     meth: HttpMethod.HttpPost, host: "elasticfilesystem.amazonaws.com",
-    route: "/2015-02-01/mount-targets", validator: validate_CreateMountTarget_605050,
-    base: "/", url: url_CreateMountTarget_605051,
+    route: "/2015-02-01/mount-targets", validator: validate_CreateMountTarget_606250,
+    base: "/", url: url_CreateMountTarget_606251,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeMountTargets_605031 = ref object of OpenApiRestCall_604389
-proc url_DescribeMountTargets_605033(protocol: Scheme; host: string; base: string;
+  Call_DescribeMountTargets_606231 = ref object of OpenApiRestCall_605589
+proc url_DescribeMountTargets_606233(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -745,7 +745,7 @@ proc url_DescribeMountTargets_605033(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_DescribeMountTargets_605032(path: JsonNode; query: JsonNode;
+proc validate_DescribeMountTargets_606232(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the descriptions of all the current mount targets, or a specific mount target, for a file system. When requesting all of the current mount targets, the order of mount targets returned in the response is unspecified.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeMountTargets</code> action, on either the file system ID that you specify in <code>FileSystemId</code>, or on the file system of the mount target that you specify in <code>MountTargetId</code>.</p>
   ## 
@@ -765,30 +765,30 @@ proc validate_DescribeMountTargets_605032(path: JsonNode; query: JsonNode;
   ##   MountTargetId: JString
   ##                : (Optional) ID of the mount target that you want to have described (String). It must be included in your request if <code>FileSystemId</code> is not included. Accepts either a mount target ID or ARN as input.
   section = newJObject()
-  var valid_605034 = query.getOrDefault("FileSystemId")
-  valid_605034 = validateParameter(valid_605034, JString, required = false,
+  var valid_606234 = query.getOrDefault("FileSystemId")
+  valid_606234 = validateParameter(valid_606234, JString, required = false,
                                  default = nil)
-  if valid_605034 != nil:
-    section.add "FileSystemId", valid_605034
-  var valid_605035 = query.getOrDefault("Marker")
-  valid_605035 = validateParameter(valid_605035, JString, required = false,
+  if valid_606234 != nil:
+    section.add "FileSystemId", valid_606234
+  var valid_606235 = query.getOrDefault("Marker")
+  valid_606235 = validateParameter(valid_606235, JString, required = false,
                                  default = nil)
-  if valid_605035 != nil:
-    section.add "Marker", valid_605035
-  var valid_605036 = query.getOrDefault("MaxItems")
-  valid_605036 = validateParameter(valid_605036, JInt, required = false, default = nil)
-  if valid_605036 != nil:
-    section.add "MaxItems", valid_605036
-  var valid_605037 = query.getOrDefault("AccessPointId")
-  valid_605037 = validateParameter(valid_605037, JString, required = false,
+  if valid_606235 != nil:
+    section.add "Marker", valid_606235
+  var valid_606236 = query.getOrDefault("MaxItems")
+  valid_606236 = validateParameter(valid_606236, JInt, required = false, default = nil)
+  if valid_606236 != nil:
+    section.add "MaxItems", valid_606236
+  var valid_606237 = query.getOrDefault("AccessPointId")
+  valid_606237 = validateParameter(valid_606237, JString, required = false,
                                  default = nil)
-  if valid_605037 != nil:
-    section.add "AccessPointId", valid_605037
-  var valid_605038 = query.getOrDefault("MountTargetId")
-  valid_605038 = validateParameter(valid_605038, JString, required = false,
+  if valid_606237 != nil:
+    section.add "AccessPointId", valid_606237
+  var valid_606238 = query.getOrDefault("MountTargetId")
+  valid_606238 = validateParameter(valid_606238, JString, required = false,
                                  default = nil)
-  if valid_605038 != nil:
-    section.add "MountTargetId", valid_605038
+  if valid_606238 != nil:
+    section.add "MountTargetId", valid_606238
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -799,61 +799,61 @@ proc validate_DescribeMountTargets_605032(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605039 = header.getOrDefault("X-Amz-Signature")
-  valid_605039 = validateParameter(valid_605039, JString, required = false,
+  var valid_606239 = header.getOrDefault("X-Amz-Signature")
+  valid_606239 = validateParameter(valid_606239, JString, required = false,
                                  default = nil)
-  if valid_605039 != nil:
-    section.add "X-Amz-Signature", valid_605039
-  var valid_605040 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605040 = validateParameter(valid_605040, JString, required = false,
+  if valid_606239 != nil:
+    section.add "X-Amz-Signature", valid_606239
+  var valid_606240 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606240 = validateParameter(valid_606240, JString, required = false,
                                  default = nil)
-  if valid_605040 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605040
-  var valid_605041 = header.getOrDefault("X-Amz-Date")
-  valid_605041 = validateParameter(valid_605041, JString, required = false,
+  if valid_606240 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606240
+  var valid_606241 = header.getOrDefault("X-Amz-Date")
+  valid_606241 = validateParameter(valid_606241, JString, required = false,
                                  default = nil)
-  if valid_605041 != nil:
-    section.add "X-Amz-Date", valid_605041
-  var valid_605042 = header.getOrDefault("X-Amz-Credential")
-  valid_605042 = validateParameter(valid_605042, JString, required = false,
+  if valid_606241 != nil:
+    section.add "X-Amz-Date", valid_606241
+  var valid_606242 = header.getOrDefault("X-Amz-Credential")
+  valid_606242 = validateParameter(valid_606242, JString, required = false,
                                  default = nil)
-  if valid_605042 != nil:
-    section.add "X-Amz-Credential", valid_605042
-  var valid_605043 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605043 = validateParameter(valid_605043, JString, required = false,
+  if valid_606242 != nil:
+    section.add "X-Amz-Credential", valid_606242
+  var valid_606243 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606243 = validateParameter(valid_606243, JString, required = false,
                                  default = nil)
-  if valid_605043 != nil:
-    section.add "X-Amz-Security-Token", valid_605043
-  var valid_605044 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605044 = validateParameter(valid_605044, JString, required = false,
+  if valid_606243 != nil:
+    section.add "X-Amz-Security-Token", valid_606243
+  var valid_606244 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606244 = validateParameter(valid_606244, JString, required = false,
                                  default = nil)
-  if valid_605044 != nil:
-    section.add "X-Amz-Algorithm", valid_605044
-  var valid_605045 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605045 = validateParameter(valid_605045, JString, required = false,
+  if valid_606244 != nil:
+    section.add "X-Amz-Algorithm", valid_606244
+  var valid_606245 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606245 = validateParameter(valid_606245, JString, required = false,
                                  default = nil)
-  if valid_605045 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605045
+  if valid_606245 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606245
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605046: Call_DescribeMountTargets_605031; path: JsonNode;
+proc call*(call_606246: Call_DescribeMountTargets_606231; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the descriptions of all the current mount targets, or a specific mount target, for a file system. When requesting all of the current mount targets, the order of mount targets returned in the response is unspecified.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeMountTargets</code> action, on either the file system ID that you specify in <code>FileSystemId</code>, or on the file system of the mount target that you specify in <code>MountTargetId</code>.</p>
   ## 
-  let valid = call_605046.validator(path, query, header, formData, body)
-  let scheme = call_605046.pickScheme
+  let valid = call_606246.validator(path, query, header, formData, body)
+  let scheme = call_606246.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605046.url(scheme.get, call_605046.host, call_605046.base,
-                         call_605046.route, valid.getOrDefault("path"),
+  let url = call_606246.url(scheme.get, call_606246.host, call_606246.base,
+                         call_606246.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605046, url, valid)
+  result = atozHook(call_606246, url, valid)
 
-proc call*(call_605047: Call_DescribeMountTargets_605031;
+proc call*(call_606247: Call_DescribeMountTargets_606231;
           FileSystemId: string = ""; Marker: string = ""; MaxItems: int = 0;
           AccessPointId: string = ""; MountTargetId: string = ""): Recallable =
   ## describeMountTargets
@@ -868,22 +868,22 @@ proc call*(call_605047: Call_DescribeMountTargets_605031;
   ##                : (Optional) The ID of the access point whose mount targets that you want to list. It must be included in your request if a <code>FileSystemId</code> or <code>MountTargetId</code> is not included in your request. Accepts either an access point ID or ARN as input.
   ##   MountTargetId: string
   ##                : (Optional) ID of the mount target that you want to have described (String). It must be included in your request if <code>FileSystemId</code> is not included. Accepts either a mount target ID or ARN as input.
-  var query_605048 = newJObject()
-  add(query_605048, "FileSystemId", newJString(FileSystemId))
-  add(query_605048, "Marker", newJString(Marker))
-  add(query_605048, "MaxItems", newJInt(MaxItems))
-  add(query_605048, "AccessPointId", newJString(AccessPointId))
-  add(query_605048, "MountTargetId", newJString(MountTargetId))
-  result = call_605047.call(nil, query_605048, nil, nil, nil)
+  var query_606248 = newJObject()
+  add(query_606248, "FileSystemId", newJString(FileSystemId))
+  add(query_606248, "Marker", newJString(Marker))
+  add(query_606248, "MaxItems", newJInt(MaxItems))
+  add(query_606248, "AccessPointId", newJString(AccessPointId))
+  add(query_606248, "MountTargetId", newJString(MountTargetId))
+  result = call_606247.call(nil, query_606248, nil, nil, nil)
 
-var describeMountTargets* = Call_DescribeMountTargets_605031(
+var describeMountTargets* = Call_DescribeMountTargets_606231(
     name: "describeMountTargets", meth: HttpMethod.HttpGet,
     host: "elasticfilesystem.amazonaws.com", route: "/2015-02-01/mount-targets",
-    validator: validate_DescribeMountTargets_605032, base: "/",
-    url: url_DescribeMountTargets_605033, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeMountTargets_606232, base: "/",
+    url: url_DescribeMountTargets_606233, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTags_605063 = ref object of OpenApiRestCall_604389
-proc url_CreateTags_605065(protocol: Scheme; host: string; base: string; route: string;
+  Call_CreateTags_606263 = ref object of OpenApiRestCall_605589
+proc url_CreateTags_606265(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -903,7 +903,7 @@ proc url_CreateTags_605065(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & hydrated.get
 
-proc validate_CreateTags_605064(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateTags_606264(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates or overwrites tags associated with a file system. Each tag is a key-value pair. If a tag key specified in the request already exists on the file system, this operation overwrites its value with the value provided in the request. If you add the <code>Name</code> tag to your file system, Amazon EFS returns it in the response to the <a>DescribeFileSystems</a> operation. </p> <p>This operation requires permission for the <code>elasticfilesystem:CreateTags</code> action.</p>
   ## 
@@ -915,11 +915,11 @@ proc validate_CreateTags_605064(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605080 = path.getOrDefault("FileSystemId")
-  valid_605080 = validateParameter(valid_605080, JString, required = true,
+  var valid_606280 = path.getOrDefault("FileSystemId")
+  valid_606280 = validateParameter(valid_606280, JString, required = true,
                                  default = nil)
-  if valid_605080 != nil:
-    section.add "FileSystemId", valid_605080
+  if valid_606280 != nil:
+    section.add "FileSystemId", valid_606280
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -932,41 +932,41 @@ proc validate_CreateTags_605064(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605081 = header.getOrDefault("X-Amz-Signature")
-  valid_605081 = validateParameter(valid_605081, JString, required = false,
+  var valid_606281 = header.getOrDefault("X-Amz-Signature")
+  valid_606281 = validateParameter(valid_606281, JString, required = false,
                                  default = nil)
-  if valid_605081 != nil:
-    section.add "X-Amz-Signature", valid_605081
-  var valid_605082 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605082 = validateParameter(valid_605082, JString, required = false,
+  if valid_606281 != nil:
+    section.add "X-Amz-Signature", valid_606281
+  var valid_606282 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606282 = validateParameter(valid_606282, JString, required = false,
                                  default = nil)
-  if valid_605082 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605082
-  var valid_605083 = header.getOrDefault("X-Amz-Date")
-  valid_605083 = validateParameter(valid_605083, JString, required = false,
+  if valid_606282 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606282
+  var valid_606283 = header.getOrDefault("X-Amz-Date")
+  valid_606283 = validateParameter(valid_606283, JString, required = false,
                                  default = nil)
-  if valid_605083 != nil:
-    section.add "X-Amz-Date", valid_605083
-  var valid_605084 = header.getOrDefault("X-Amz-Credential")
-  valid_605084 = validateParameter(valid_605084, JString, required = false,
+  if valid_606283 != nil:
+    section.add "X-Amz-Date", valid_606283
+  var valid_606284 = header.getOrDefault("X-Amz-Credential")
+  valid_606284 = validateParameter(valid_606284, JString, required = false,
                                  default = nil)
-  if valid_605084 != nil:
-    section.add "X-Amz-Credential", valid_605084
-  var valid_605085 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605085 = validateParameter(valid_605085, JString, required = false,
+  if valid_606284 != nil:
+    section.add "X-Amz-Credential", valid_606284
+  var valid_606285 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606285 = validateParameter(valid_606285, JString, required = false,
                                  default = nil)
-  if valid_605085 != nil:
-    section.add "X-Amz-Security-Token", valid_605085
-  var valid_605086 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605086 = validateParameter(valid_605086, JString, required = false,
+  if valid_606285 != nil:
+    section.add "X-Amz-Security-Token", valid_606285
+  var valid_606286 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606286 = validateParameter(valid_606286, JString, required = false,
                                  default = nil)
-  if valid_605086 != nil:
-    section.add "X-Amz-Algorithm", valid_605086
-  var valid_605087 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605087 = validateParameter(valid_605087, JString, required = false,
+  if valid_606286 != nil:
+    section.add "X-Amz-Algorithm", valid_606286
+  var valid_606287 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606287 = validateParameter(valid_606287, JString, required = false,
                                  default = nil)
-  if valid_605087 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605087
+  if valid_606287 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606287
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -977,41 +977,41 @@ proc validate_CreateTags_605064(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_605089: Call_CreateTags_605063; path: JsonNode; query: JsonNode;
+proc call*(call_606289: Call_CreateTags_606263; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates or overwrites tags associated with a file system. Each tag is a key-value pair. If a tag key specified in the request already exists on the file system, this operation overwrites its value with the value provided in the request. If you add the <code>Name</code> tag to your file system, Amazon EFS returns it in the response to the <a>DescribeFileSystems</a> operation. </p> <p>This operation requires permission for the <code>elasticfilesystem:CreateTags</code> action.</p>
   ## 
-  let valid = call_605089.validator(path, query, header, formData, body)
-  let scheme = call_605089.pickScheme
+  let valid = call_606289.validator(path, query, header, formData, body)
+  let scheme = call_606289.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605089.url(scheme.get, call_605089.host, call_605089.base,
-                         call_605089.route, valid.getOrDefault("path"),
+  let url = call_606289.url(scheme.get, call_606289.host, call_606289.base,
+                         call_606289.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605089, url, valid)
+  result = atozHook(call_606289, url, valid)
 
-proc call*(call_605090: Call_CreateTags_605063; FileSystemId: string; body: JsonNode): Recallable =
+proc call*(call_606290: Call_CreateTags_606263; FileSystemId: string; body: JsonNode): Recallable =
   ## createTags
   ## <p>Creates or overwrites tags associated with a file system. Each tag is a key-value pair. If a tag key specified in the request already exists on the file system, this operation overwrites its value with the value provided in the request. If you add the <code>Name</code> tag to your file system, Amazon EFS returns it in the response to the <a>DescribeFileSystems</a> operation. </p> <p>This operation requires permission for the <code>elasticfilesystem:CreateTags</code> action.</p>
   ##   FileSystemId: string (required)
   ##               : The ID of the file system whose tags you want to modify (String). This operation modifies the tags only, not the file system.
   ##   body: JObject (required)
-  var path_605091 = newJObject()
-  var body_605092 = newJObject()
-  add(path_605091, "FileSystemId", newJString(FileSystemId))
+  var path_606291 = newJObject()
+  var body_606292 = newJObject()
+  add(path_606291, "FileSystemId", newJString(FileSystemId))
   if body != nil:
-    body_605092 = body
-  result = call_605090.call(path_605091, nil, nil, nil, body_605092)
+    body_606292 = body
+  result = call_606290.call(path_606291, nil, nil, nil, body_606292)
 
-var createTags* = Call_CreateTags_605063(name: "createTags",
+var createTags* = Call_CreateTags_606263(name: "createTags",
                                       meth: HttpMethod.HttpPost,
                                       host: "elasticfilesystem.amazonaws.com", route: "/2015-02-01/create-tags/{FileSystemId}",
-                                      validator: validate_CreateTags_605064,
-                                      base: "/", url: url_CreateTags_605065,
+                                      validator: validate_CreateTags_606264,
+                                      base: "/", url: url_CreateTags_606265,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteAccessPoint_605093 = ref object of OpenApiRestCall_604389
-proc url_DeleteAccessPoint_605095(protocol: Scheme; host: string; base: string;
+  Call_DeleteAccessPoint_606293 = ref object of OpenApiRestCall_605589
+proc url_DeleteAccessPoint_606295(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1031,7 +1031,7 @@ proc url_DeleteAccessPoint_605095(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteAccessPoint_605094(path: JsonNode; query: JsonNode;
+proc validate_DeleteAccessPoint_606294(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes the specified access point. After deletion is complete, new clients can no longer connect to the access points. Clients connected to the access point at the time of deletion will continue to function until they terminate their connection.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteAccessPoint</code> action.</p>
@@ -1044,11 +1044,11 @@ proc validate_DeleteAccessPoint_605094(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `AccessPointId` field"
-  var valid_605096 = path.getOrDefault("AccessPointId")
-  valid_605096 = validateParameter(valid_605096, JString, required = true,
+  var valid_606296 = path.getOrDefault("AccessPointId")
+  valid_606296 = validateParameter(valid_606296, JString, required = true,
                                  default = nil)
-  if valid_605096 != nil:
-    section.add "AccessPointId", valid_605096
+  if valid_606296 != nil:
+    section.add "AccessPointId", valid_606296
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1061,77 +1061,77 @@ proc validate_DeleteAccessPoint_605094(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605097 = header.getOrDefault("X-Amz-Signature")
-  valid_605097 = validateParameter(valid_605097, JString, required = false,
+  var valid_606297 = header.getOrDefault("X-Amz-Signature")
+  valid_606297 = validateParameter(valid_606297, JString, required = false,
                                  default = nil)
-  if valid_605097 != nil:
-    section.add "X-Amz-Signature", valid_605097
-  var valid_605098 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605098 = validateParameter(valid_605098, JString, required = false,
+  if valid_606297 != nil:
+    section.add "X-Amz-Signature", valid_606297
+  var valid_606298 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606298 = validateParameter(valid_606298, JString, required = false,
                                  default = nil)
-  if valid_605098 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605098
-  var valid_605099 = header.getOrDefault("X-Amz-Date")
-  valid_605099 = validateParameter(valid_605099, JString, required = false,
+  if valid_606298 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606298
+  var valid_606299 = header.getOrDefault("X-Amz-Date")
+  valid_606299 = validateParameter(valid_606299, JString, required = false,
                                  default = nil)
-  if valid_605099 != nil:
-    section.add "X-Amz-Date", valid_605099
-  var valid_605100 = header.getOrDefault("X-Amz-Credential")
-  valid_605100 = validateParameter(valid_605100, JString, required = false,
+  if valid_606299 != nil:
+    section.add "X-Amz-Date", valid_606299
+  var valid_606300 = header.getOrDefault("X-Amz-Credential")
+  valid_606300 = validateParameter(valid_606300, JString, required = false,
                                  default = nil)
-  if valid_605100 != nil:
-    section.add "X-Amz-Credential", valid_605100
-  var valid_605101 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605101 = validateParameter(valid_605101, JString, required = false,
+  if valid_606300 != nil:
+    section.add "X-Amz-Credential", valid_606300
+  var valid_606301 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606301 = validateParameter(valid_606301, JString, required = false,
                                  default = nil)
-  if valid_605101 != nil:
-    section.add "X-Amz-Security-Token", valid_605101
-  var valid_605102 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605102 = validateParameter(valid_605102, JString, required = false,
+  if valid_606301 != nil:
+    section.add "X-Amz-Security-Token", valid_606301
+  var valid_606302 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606302 = validateParameter(valid_606302, JString, required = false,
                                  default = nil)
-  if valid_605102 != nil:
-    section.add "X-Amz-Algorithm", valid_605102
-  var valid_605103 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605103 = validateParameter(valid_605103, JString, required = false,
+  if valid_606302 != nil:
+    section.add "X-Amz-Algorithm", valid_606302
+  var valid_606303 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606303 = validateParameter(valid_606303, JString, required = false,
                                  default = nil)
-  if valid_605103 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605103
+  if valid_606303 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606303
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605104: Call_DeleteAccessPoint_605093; path: JsonNode;
+proc call*(call_606304: Call_DeleteAccessPoint_606293; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified access point. After deletion is complete, new clients can no longer connect to the access points. Clients connected to the access point at the time of deletion will continue to function until they terminate their connection.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteAccessPoint</code> action.</p>
   ## 
-  let valid = call_605104.validator(path, query, header, formData, body)
-  let scheme = call_605104.pickScheme
+  let valid = call_606304.validator(path, query, header, formData, body)
+  let scheme = call_606304.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605104.url(scheme.get, call_605104.host, call_605104.base,
-                         call_605104.route, valid.getOrDefault("path"),
+  let url = call_606304.url(scheme.get, call_606304.host, call_606304.base,
+                         call_606304.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605104, url, valid)
+  result = atozHook(call_606304, url, valid)
 
-proc call*(call_605105: Call_DeleteAccessPoint_605093; AccessPointId: string): Recallable =
+proc call*(call_606305: Call_DeleteAccessPoint_606293; AccessPointId: string): Recallable =
   ## deleteAccessPoint
   ## <p>Deletes the specified access point. After deletion is complete, new clients can no longer connect to the access points. Clients connected to the access point at the time of deletion will continue to function until they terminate their connection.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteAccessPoint</code> action.</p>
   ##   AccessPointId: string (required)
   ##                : The ID of the access point that you want to delete.
-  var path_605106 = newJObject()
-  add(path_605106, "AccessPointId", newJString(AccessPointId))
-  result = call_605105.call(path_605106, nil, nil, nil, nil)
+  var path_606306 = newJObject()
+  add(path_606306, "AccessPointId", newJString(AccessPointId))
+  result = call_606305.call(path_606306, nil, nil, nil, nil)
 
-var deleteAccessPoint* = Call_DeleteAccessPoint_605093(name: "deleteAccessPoint",
+var deleteAccessPoint* = Call_DeleteAccessPoint_606293(name: "deleteAccessPoint",
     meth: HttpMethod.HttpDelete, host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/access-points/{AccessPointId}",
-    validator: validate_DeleteAccessPoint_605094, base: "/",
-    url: url_DeleteAccessPoint_605095, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteAccessPoint_606294, base: "/",
+    url: url_DeleteAccessPoint_606295, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateFileSystem_605107 = ref object of OpenApiRestCall_604389
-proc url_UpdateFileSystem_605109(protocol: Scheme; host: string; base: string;
+  Call_UpdateFileSystem_606307 = ref object of OpenApiRestCall_605589
+proc url_UpdateFileSystem_606309(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1151,7 +1151,7 @@ proc url_UpdateFileSystem_605109(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UpdateFileSystem_605108(path: JsonNode; query: JsonNode;
+proc validate_UpdateFileSystem_606308(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Updates the throughput mode or the amount of provisioned throughput of an existing file system.
@@ -1164,11 +1164,11 @@ proc validate_UpdateFileSystem_605108(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605110 = path.getOrDefault("FileSystemId")
-  valid_605110 = validateParameter(valid_605110, JString, required = true,
+  var valid_606310 = path.getOrDefault("FileSystemId")
+  valid_606310 = validateParameter(valid_606310, JString, required = true,
                                  default = nil)
-  if valid_605110 != nil:
-    section.add "FileSystemId", valid_605110
+  if valid_606310 != nil:
+    section.add "FileSystemId", valid_606310
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1181,41 +1181,41 @@ proc validate_UpdateFileSystem_605108(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605111 = header.getOrDefault("X-Amz-Signature")
-  valid_605111 = validateParameter(valid_605111, JString, required = false,
+  var valid_606311 = header.getOrDefault("X-Amz-Signature")
+  valid_606311 = validateParameter(valid_606311, JString, required = false,
                                  default = nil)
-  if valid_605111 != nil:
-    section.add "X-Amz-Signature", valid_605111
-  var valid_605112 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605112 = validateParameter(valid_605112, JString, required = false,
+  if valid_606311 != nil:
+    section.add "X-Amz-Signature", valid_606311
+  var valid_606312 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606312 = validateParameter(valid_606312, JString, required = false,
                                  default = nil)
-  if valid_605112 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605112
-  var valid_605113 = header.getOrDefault("X-Amz-Date")
-  valid_605113 = validateParameter(valid_605113, JString, required = false,
+  if valid_606312 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606312
+  var valid_606313 = header.getOrDefault("X-Amz-Date")
+  valid_606313 = validateParameter(valid_606313, JString, required = false,
                                  default = nil)
-  if valid_605113 != nil:
-    section.add "X-Amz-Date", valid_605113
-  var valid_605114 = header.getOrDefault("X-Amz-Credential")
-  valid_605114 = validateParameter(valid_605114, JString, required = false,
+  if valid_606313 != nil:
+    section.add "X-Amz-Date", valid_606313
+  var valid_606314 = header.getOrDefault("X-Amz-Credential")
+  valid_606314 = validateParameter(valid_606314, JString, required = false,
                                  default = nil)
-  if valid_605114 != nil:
-    section.add "X-Amz-Credential", valid_605114
-  var valid_605115 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605115 = validateParameter(valid_605115, JString, required = false,
+  if valid_606314 != nil:
+    section.add "X-Amz-Credential", valid_606314
+  var valid_606315 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606315 = validateParameter(valid_606315, JString, required = false,
                                  default = nil)
-  if valid_605115 != nil:
-    section.add "X-Amz-Security-Token", valid_605115
-  var valid_605116 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605116 = validateParameter(valid_605116, JString, required = false,
+  if valid_606315 != nil:
+    section.add "X-Amz-Security-Token", valid_606315
+  var valid_606316 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606316 = validateParameter(valid_606316, JString, required = false,
                                  default = nil)
-  if valid_605116 != nil:
-    section.add "X-Amz-Algorithm", valid_605116
-  var valid_605117 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605117 = validateParameter(valid_605117, JString, required = false,
+  if valid_606316 != nil:
+    section.add "X-Amz-Algorithm", valid_606316
+  var valid_606317 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606317 = validateParameter(valid_606317, JString, required = false,
                                  default = nil)
-  if valid_605117 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605117
+  if valid_606317 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606317
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1226,41 +1226,41 @@ proc validate_UpdateFileSystem_605108(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605119: Call_UpdateFileSystem_605107; path: JsonNode;
+proc call*(call_606319: Call_UpdateFileSystem_606307; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the throughput mode or the amount of provisioned throughput of an existing file system.
   ## 
-  let valid = call_605119.validator(path, query, header, formData, body)
-  let scheme = call_605119.pickScheme
+  let valid = call_606319.validator(path, query, header, formData, body)
+  let scheme = call_606319.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605119.url(scheme.get, call_605119.host, call_605119.base,
-                         call_605119.route, valid.getOrDefault("path"),
+  let url = call_606319.url(scheme.get, call_606319.host, call_606319.base,
+                         call_606319.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605119, url, valid)
+  result = atozHook(call_606319, url, valid)
 
-proc call*(call_605120: Call_UpdateFileSystem_605107; FileSystemId: string;
+proc call*(call_606320: Call_UpdateFileSystem_606307; FileSystemId: string;
           body: JsonNode): Recallable =
   ## updateFileSystem
   ## Updates the throughput mode or the amount of provisioned throughput of an existing file system.
   ##   FileSystemId: string (required)
   ##               : The ID of the file system that you want to update.
   ##   body: JObject (required)
-  var path_605121 = newJObject()
-  var body_605122 = newJObject()
-  add(path_605121, "FileSystemId", newJString(FileSystemId))
+  var path_606321 = newJObject()
+  var body_606322 = newJObject()
+  add(path_606321, "FileSystemId", newJString(FileSystemId))
   if body != nil:
-    body_605122 = body
-  result = call_605120.call(path_605121, nil, nil, nil, body_605122)
+    body_606322 = body
+  result = call_606320.call(path_606321, nil, nil, nil, body_606322)
 
-var updateFileSystem* = Call_UpdateFileSystem_605107(name: "updateFileSystem",
+var updateFileSystem* = Call_UpdateFileSystem_606307(name: "updateFileSystem",
     meth: HttpMethod.HttpPut, host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/file-systems/{FileSystemId}",
-    validator: validate_UpdateFileSystem_605108, base: "/",
-    url: url_UpdateFileSystem_605109, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateFileSystem_606308, base: "/",
+    url: url_UpdateFileSystem_606309, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteFileSystem_605123 = ref object of OpenApiRestCall_604389
-proc url_DeleteFileSystem_605125(protocol: Scheme; host: string; base: string;
+  Call_DeleteFileSystem_606323 = ref object of OpenApiRestCall_605589
+proc url_DeleteFileSystem_606325(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1280,7 +1280,7 @@ proc url_DeleteFileSystem_605125(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteFileSystem_605124(path: JsonNode; query: JsonNode;
+proc validate_DeleteFileSystem_606324(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deletes a file system, permanently severing access to its contents. Upon return, the file system no longer exists and you can't access any contents of the deleted file system.</p> <p> You can't delete a file system that is in use. That is, if the file system has any mount targets, you must first delete them. For more information, see <a>DescribeMountTargets</a> and <a>DeleteMountTarget</a>. </p> <note> <p>The <code>DeleteFileSystem</code> call returns while the file system state is still <code>deleting</code>. You can check the file system deletion status by calling the <a>DescribeFileSystems</a> operation, which returns a list of file systems in your account. If you pass file system ID or creation token for the deleted file system, the <a>DescribeFileSystems</a> returns a <code>404 FileSystemNotFound</code> error.</p> </note> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteFileSystem</code> action.</p>
@@ -1293,11 +1293,11 @@ proc validate_DeleteFileSystem_605124(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605126 = path.getOrDefault("FileSystemId")
-  valid_605126 = validateParameter(valid_605126, JString, required = true,
+  var valid_606326 = path.getOrDefault("FileSystemId")
+  valid_606326 = validateParameter(valid_606326, JString, required = true,
                                  default = nil)
-  if valid_605126 != nil:
-    section.add "FileSystemId", valid_605126
+  if valid_606326 != nil:
+    section.add "FileSystemId", valid_606326
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1310,77 +1310,77 @@ proc validate_DeleteFileSystem_605124(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605127 = header.getOrDefault("X-Amz-Signature")
-  valid_605127 = validateParameter(valid_605127, JString, required = false,
+  var valid_606327 = header.getOrDefault("X-Amz-Signature")
+  valid_606327 = validateParameter(valid_606327, JString, required = false,
                                  default = nil)
-  if valid_605127 != nil:
-    section.add "X-Amz-Signature", valid_605127
-  var valid_605128 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605128 = validateParameter(valid_605128, JString, required = false,
+  if valid_606327 != nil:
+    section.add "X-Amz-Signature", valid_606327
+  var valid_606328 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606328 = validateParameter(valid_606328, JString, required = false,
                                  default = nil)
-  if valid_605128 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605128
-  var valid_605129 = header.getOrDefault("X-Amz-Date")
-  valid_605129 = validateParameter(valid_605129, JString, required = false,
+  if valid_606328 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606328
+  var valid_606329 = header.getOrDefault("X-Amz-Date")
+  valid_606329 = validateParameter(valid_606329, JString, required = false,
                                  default = nil)
-  if valid_605129 != nil:
-    section.add "X-Amz-Date", valid_605129
-  var valid_605130 = header.getOrDefault("X-Amz-Credential")
-  valid_605130 = validateParameter(valid_605130, JString, required = false,
+  if valid_606329 != nil:
+    section.add "X-Amz-Date", valid_606329
+  var valid_606330 = header.getOrDefault("X-Amz-Credential")
+  valid_606330 = validateParameter(valid_606330, JString, required = false,
                                  default = nil)
-  if valid_605130 != nil:
-    section.add "X-Amz-Credential", valid_605130
-  var valid_605131 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605131 = validateParameter(valid_605131, JString, required = false,
+  if valid_606330 != nil:
+    section.add "X-Amz-Credential", valid_606330
+  var valid_606331 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606331 = validateParameter(valid_606331, JString, required = false,
                                  default = nil)
-  if valid_605131 != nil:
-    section.add "X-Amz-Security-Token", valid_605131
-  var valid_605132 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605132 = validateParameter(valid_605132, JString, required = false,
+  if valid_606331 != nil:
+    section.add "X-Amz-Security-Token", valid_606331
+  var valid_606332 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606332 = validateParameter(valid_606332, JString, required = false,
                                  default = nil)
-  if valid_605132 != nil:
-    section.add "X-Amz-Algorithm", valid_605132
-  var valid_605133 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605133 = validateParameter(valid_605133, JString, required = false,
+  if valid_606332 != nil:
+    section.add "X-Amz-Algorithm", valid_606332
+  var valid_606333 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606333 = validateParameter(valid_606333, JString, required = false,
                                  default = nil)
-  if valid_605133 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605133
+  if valid_606333 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606333
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605134: Call_DeleteFileSystem_605123; path: JsonNode;
+proc call*(call_606334: Call_DeleteFileSystem_606323; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a file system, permanently severing access to its contents. Upon return, the file system no longer exists and you can't access any contents of the deleted file system.</p> <p> You can't delete a file system that is in use. That is, if the file system has any mount targets, you must first delete them. For more information, see <a>DescribeMountTargets</a> and <a>DeleteMountTarget</a>. </p> <note> <p>The <code>DeleteFileSystem</code> call returns while the file system state is still <code>deleting</code>. You can check the file system deletion status by calling the <a>DescribeFileSystems</a> operation, which returns a list of file systems in your account. If you pass file system ID or creation token for the deleted file system, the <a>DescribeFileSystems</a> returns a <code>404 FileSystemNotFound</code> error.</p> </note> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteFileSystem</code> action.</p>
   ## 
-  let valid = call_605134.validator(path, query, header, formData, body)
-  let scheme = call_605134.pickScheme
+  let valid = call_606334.validator(path, query, header, formData, body)
+  let scheme = call_606334.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605134.url(scheme.get, call_605134.host, call_605134.base,
-                         call_605134.route, valid.getOrDefault("path"),
+  let url = call_606334.url(scheme.get, call_606334.host, call_606334.base,
+                         call_606334.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605134, url, valid)
+  result = atozHook(call_606334, url, valid)
 
-proc call*(call_605135: Call_DeleteFileSystem_605123; FileSystemId: string): Recallable =
+proc call*(call_606335: Call_DeleteFileSystem_606323; FileSystemId: string): Recallable =
   ## deleteFileSystem
   ## <p>Deletes a file system, permanently severing access to its contents. Upon return, the file system no longer exists and you can't access any contents of the deleted file system.</p> <p> You can't delete a file system that is in use. That is, if the file system has any mount targets, you must first delete them. For more information, see <a>DescribeMountTargets</a> and <a>DeleteMountTarget</a>. </p> <note> <p>The <code>DeleteFileSystem</code> call returns while the file system state is still <code>deleting</code>. You can check the file system deletion status by calling the <a>DescribeFileSystems</a> operation, which returns a list of file systems in your account. If you pass file system ID or creation token for the deleted file system, the <a>DescribeFileSystems</a> returns a <code>404 FileSystemNotFound</code> error.</p> </note> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteFileSystem</code> action.</p>
   ##   FileSystemId: string (required)
   ##               : The ID of the file system you want to delete.
-  var path_605136 = newJObject()
-  add(path_605136, "FileSystemId", newJString(FileSystemId))
-  result = call_605135.call(path_605136, nil, nil, nil, nil)
+  var path_606336 = newJObject()
+  add(path_606336, "FileSystemId", newJString(FileSystemId))
+  result = call_606335.call(path_606336, nil, nil, nil, nil)
 
-var deleteFileSystem* = Call_DeleteFileSystem_605123(name: "deleteFileSystem",
+var deleteFileSystem* = Call_DeleteFileSystem_606323(name: "deleteFileSystem",
     meth: HttpMethod.HttpDelete, host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/file-systems/{FileSystemId}",
-    validator: validate_DeleteFileSystem_605124, base: "/",
-    url: url_DeleteFileSystem_605125, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteFileSystem_606324, base: "/",
+    url: url_DeleteFileSystem_606325, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutFileSystemPolicy_605151 = ref object of OpenApiRestCall_604389
-proc url_PutFileSystemPolicy_605153(protocol: Scheme; host: string; base: string;
+  Call_PutFileSystemPolicy_606351 = ref object of OpenApiRestCall_605589
+proc url_PutFileSystemPolicy_606353(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1401,7 +1401,7 @@ proc url_PutFileSystemPolicy_605153(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_PutFileSystemPolicy_605152(path: JsonNode; query: JsonNode;
+proc validate_PutFileSystemPolicy_606352(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Applies an Amazon EFS <code>FileSystemPolicy</code> to an Amazon EFS file system. A file system policy is an IAM resource-based policy and can contain multiple policy statements. A file system always has exactly one file system policy, which can be the default policy or an explicit policy set or updated using this API operation. When an explicit policy is set, it overrides the default policy. For more information about the default file system policy, see <a href="https://docs.aws.amazon.com/efs/latest/ug/res-based-policies-efs.html">Using Resource-based Policies with EFS</a>. </p> <p>This operation requires permissions for the <code>elasticfilesystem:PutFileSystemPolicy</code> action.</p>
@@ -1414,11 +1414,11 @@ proc validate_PutFileSystemPolicy_605152(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605154 = path.getOrDefault("FileSystemId")
-  valid_605154 = validateParameter(valid_605154, JString, required = true,
+  var valid_606354 = path.getOrDefault("FileSystemId")
+  valid_606354 = validateParameter(valid_606354, JString, required = true,
                                  default = nil)
-  if valid_605154 != nil:
-    section.add "FileSystemId", valid_605154
+  if valid_606354 != nil:
+    section.add "FileSystemId", valid_606354
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1431,41 +1431,41 @@ proc validate_PutFileSystemPolicy_605152(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605155 = header.getOrDefault("X-Amz-Signature")
-  valid_605155 = validateParameter(valid_605155, JString, required = false,
+  var valid_606355 = header.getOrDefault("X-Amz-Signature")
+  valid_606355 = validateParameter(valid_606355, JString, required = false,
                                  default = nil)
-  if valid_605155 != nil:
-    section.add "X-Amz-Signature", valid_605155
-  var valid_605156 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605156 = validateParameter(valid_605156, JString, required = false,
+  if valid_606355 != nil:
+    section.add "X-Amz-Signature", valid_606355
+  var valid_606356 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606356 = validateParameter(valid_606356, JString, required = false,
                                  default = nil)
-  if valid_605156 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605156
-  var valid_605157 = header.getOrDefault("X-Amz-Date")
-  valid_605157 = validateParameter(valid_605157, JString, required = false,
+  if valid_606356 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606356
+  var valid_606357 = header.getOrDefault("X-Amz-Date")
+  valid_606357 = validateParameter(valid_606357, JString, required = false,
                                  default = nil)
-  if valid_605157 != nil:
-    section.add "X-Amz-Date", valid_605157
-  var valid_605158 = header.getOrDefault("X-Amz-Credential")
-  valid_605158 = validateParameter(valid_605158, JString, required = false,
+  if valid_606357 != nil:
+    section.add "X-Amz-Date", valid_606357
+  var valid_606358 = header.getOrDefault("X-Amz-Credential")
+  valid_606358 = validateParameter(valid_606358, JString, required = false,
                                  default = nil)
-  if valid_605158 != nil:
-    section.add "X-Amz-Credential", valid_605158
-  var valid_605159 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605159 = validateParameter(valid_605159, JString, required = false,
+  if valid_606358 != nil:
+    section.add "X-Amz-Credential", valid_606358
+  var valid_606359 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606359 = validateParameter(valid_606359, JString, required = false,
                                  default = nil)
-  if valid_605159 != nil:
-    section.add "X-Amz-Security-Token", valid_605159
-  var valid_605160 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605160 = validateParameter(valid_605160, JString, required = false,
+  if valid_606359 != nil:
+    section.add "X-Amz-Security-Token", valid_606359
+  var valid_606360 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606360 = validateParameter(valid_606360, JString, required = false,
                                  default = nil)
-  if valid_605160 != nil:
-    section.add "X-Amz-Algorithm", valid_605160
-  var valid_605161 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605161 = validateParameter(valid_605161, JString, required = false,
+  if valid_606360 != nil:
+    section.add "X-Amz-Algorithm", valid_606360
+  var valid_606361 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606361 = validateParameter(valid_606361, JString, required = false,
                                  default = nil)
-  if valid_605161 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605161
+  if valid_606361 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606361
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1476,42 +1476,42 @@ proc validate_PutFileSystemPolicy_605152(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605163: Call_PutFileSystemPolicy_605151; path: JsonNode;
+proc call*(call_606363: Call_PutFileSystemPolicy_606351; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Applies an Amazon EFS <code>FileSystemPolicy</code> to an Amazon EFS file system. A file system policy is an IAM resource-based policy and can contain multiple policy statements. A file system always has exactly one file system policy, which can be the default policy or an explicit policy set or updated using this API operation. When an explicit policy is set, it overrides the default policy. For more information about the default file system policy, see <a href="https://docs.aws.amazon.com/efs/latest/ug/res-based-policies-efs.html">Using Resource-based Policies with EFS</a>. </p> <p>This operation requires permissions for the <code>elasticfilesystem:PutFileSystemPolicy</code> action.</p>
   ## 
-  let valid = call_605163.validator(path, query, header, formData, body)
-  let scheme = call_605163.pickScheme
+  let valid = call_606363.validator(path, query, header, formData, body)
+  let scheme = call_606363.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605163.url(scheme.get, call_605163.host, call_605163.base,
-                         call_605163.route, valid.getOrDefault("path"),
+  let url = call_606363.url(scheme.get, call_606363.host, call_606363.base,
+                         call_606363.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605163, url, valid)
+  result = atozHook(call_606363, url, valid)
 
-proc call*(call_605164: Call_PutFileSystemPolicy_605151; FileSystemId: string;
+proc call*(call_606364: Call_PutFileSystemPolicy_606351; FileSystemId: string;
           body: JsonNode): Recallable =
   ## putFileSystemPolicy
   ## <p>Applies an Amazon EFS <code>FileSystemPolicy</code> to an Amazon EFS file system. A file system policy is an IAM resource-based policy and can contain multiple policy statements. A file system always has exactly one file system policy, which can be the default policy or an explicit policy set or updated using this API operation. When an explicit policy is set, it overrides the default policy. For more information about the default file system policy, see <a href="https://docs.aws.amazon.com/efs/latest/ug/res-based-policies-efs.html">Using Resource-based Policies with EFS</a>. </p> <p>This operation requires permissions for the <code>elasticfilesystem:PutFileSystemPolicy</code> action.</p>
   ##   FileSystemId: string (required)
   ##               : The ID of the EFS file system that you want to create or update the <code>FileSystemPolicy</code> for.
   ##   body: JObject (required)
-  var path_605165 = newJObject()
-  var body_605166 = newJObject()
-  add(path_605165, "FileSystemId", newJString(FileSystemId))
+  var path_606365 = newJObject()
+  var body_606366 = newJObject()
+  add(path_606365, "FileSystemId", newJString(FileSystemId))
   if body != nil:
-    body_605166 = body
-  result = call_605164.call(path_605165, nil, nil, nil, body_605166)
+    body_606366 = body
+  result = call_606364.call(path_606365, nil, nil, nil, body_606366)
 
-var putFileSystemPolicy* = Call_PutFileSystemPolicy_605151(
+var putFileSystemPolicy* = Call_PutFileSystemPolicy_606351(
     name: "putFileSystemPolicy", meth: HttpMethod.HttpPut,
     host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/file-systems/{FileSystemId}/policy",
-    validator: validate_PutFileSystemPolicy_605152, base: "/",
-    url: url_PutFileSystemPolicy_605153, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutFileSystemPolicy_606352, base: "/",
+    url: url_PutFileSystemPolicy_606353, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeFileSystemPolicy_605137 = ref object of OpenApiRestCall_604389
-proc url_DescribeFileSystemPolicy_605139(protocol: Scheme; host: string;
+  Call_DescribeFileSystemPolicy_606337 = ref object of OpenApiRestCall_605589
+proc url_DescribeFileSystemPolicy_606339(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1533,7 +1533,7 @@ proc url_DescribeFileSystemPolicy_605139(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeFileSystemPolicy_605138(path: JsonNode; query: JsonNode;
+proc validate_DescribeFileSystemPolicy_606338(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the <code>FileSystemPolicy</code> for the specified EFS file system.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeFileSystemPolicy</code> action.</p>
   ## 
@@ -1545,11 +1545,11 @@ proc validate_DescribeFileSystemPolicy_605138(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605140 = path.getOrDefault("FileSystemId")
-  valid_605140 = validateParameter(valid_605140, JString, required = true,
+  var valid_606340 = path.getOrDefault("FileSystemId")
+  valid_606340 = validateParameter(valid_606340, JString, required = true,
                                  default = nil)
-  if valid_605140 != nil:
-    section.add "FileSystemId", valid_605140
+  if valid_606340 != nil:
+    section.add "FileSystemId", valid_606340
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1562,78 +1562,78 @@ proc validate_DescribeFileSystemPolicy_605138(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605141 = header.getOrDefault("X-Amz-Signature")
-  valid_605141 = validateParameter(valid_605141, JString, required = false,
+  var valid_606341 = header.getOrDefault("X-Amz-Signature")
+  valid_606341 = validateParameter(valid_606341, JString, required = false,
                                  default = nil)
-  if valid_605141 != nil:
-    section.add "X-Amz-Signature", valid_605141
-  var valid_605142 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605142 = validateParameter(valid_605142, JString, required = false,
+  if valid_606341 != nil:
+    section.add "X-Amz-Signature", valid_606341
+  var valid_606342 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606342 = validateParameter(valid_606342, JString, required = false,
                                  default = nil)
-  if valid_605142 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605142
-  var valid_605143 = header.getOrDefault("X-Amz-Date")
-  valid_605143 = validateParameter(valid_605143, JString, required = false,
+  if valid_606342 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606342
+  var valid_606343 = header.getOrDefault("X-Amz-Date")
+  valid_606343 = validateParameter(valid_606343, JString, required = false,
                                  default = nil)
-  if valid_605143 != nil:
-    section.add "X-Amz-Date", valid_605143
-  var valid_605144 = header.getOrDefault("X-Amz-Credential")
-  valid_605144 = validateParameter(valid_605144, JString, required = false,
+  if valid_606343 != nil:
+    section.add "X-Amz-Date", valid_606343
+  var valid_606344 = header.getOrDefault("X-Amz-Credential")
+  valid_606344 = validateParameter(valid_606344, JString, required = false,
                                  default = nil)
-  if valid_605144 != nil:
-    section.add "X-Amz-Credential", valid_605144
-  var valid_605145 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605145 = validateParameter(valid_605145, JString, required = false,
+  if valid_606344 != nil:
+    section.add "X-Amz-Credential", valid_606344
+  var valid_606345 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606345 = validateParameter(valid_606345, JString, required = false,
                                  default = nil)
-  if valid_605145 != nil:
-    section.add "X-Amz-Security-Token", valid_605145
-  var valid_605146 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605146 = validateParameter(valid_605146, JString, required = false,
+  if valid_606345 != nil:
+    section.add "X-Amz-Security-Token", valid_606345
+  var valid_606346 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606346 = validateParameter(valid_606346, JString, required = false,
                                  default = nil)
-  if valid_605146 != nil:
-    section.add "X-Amz-Algorithm", valid_605146
-  var valid_605147 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605147 = validateParameter(valid_605147, JString, required = false,
+  if valid_606346 != nil:
+    section.add "X-Amz-Algorithm", valid_606346
+  var valid_606347 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606347 = validateParameter(valid_606347, JString, required = false,
                                  default = nil)
-  if valid_605147 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605147
+  if valid_606347 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606347
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605148: Call_DescribeFileSystemPolicy_605137; path: JsonNode;
+proc call*(call_606348: Call_DescribeFileSystemPolicy_606337; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the <code>FileSystemPolicy</code> for the specified EFS file system.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeFileSystemPolicy</code> action.</p>
   ## 
-  let valid = call_605148.validator(path, query, header, formData, body)
-  let scheme = call_605148.pickScheme
+  let valid = call_606348.validator(path, query, header, formData, body)
+  let scheme = call_606348.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605148.url(scheme.get, call_605148.host, call_605148.base,
-                         call_605148.route, valid.getOrDefault("path"),
+  let url = call_606348.url(scheme.get, call_606348.host, call_606348.base,
+                         call_606348.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605148, url, valid)
+  result = atozHook(call_606348, url, valid)
 
-proc call*(call_605149: Call_DescribeFileSystemPolicy_605137; FileSystemId: string): Recallable =
+proc call*(call_606349: Call_DescribeFileSystemPolicy_606337; FileSystemId: string): Recallable =
   ## describeFileSystemPolicy
   ## <p>Returns the <code>FileSystemPolicy</code> for the specified EFS file system.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeFileSystemPolicy</code> action.</p>
   ##   FileSystemId: string (required)
   ##               : Specifies which EFS file system to retrieve the <code>FileSystemPolicy</code> for.
-  var path_605150 = newJObject()
-  add(path_605150, "FileSystemId", newJString(FileSystemId))
-  result = call_605149.call(path_605150, nil, nil, nil, nil)
+  var path_606350 = newJObject()
+  add(path_606350, "FileSystemId", newJString(FileSystemId))
+  result = call_606349.call(path_606350, nil, nil, nil, nil)
 
-var describeFileSystemPolicy* = Call_DescribeFileSystemPolicy_605137(
+var describeFileSystemPolicy* = Call_DescribeFileSystemPolicy_606337(
     name: "describeFileSystemPolicy", meth: HttpMethod.HttpGet,
     host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/file-systems/{FileSystemId}/policy",
-    validator: validate_DescribeFileSystemPolicy_605138, base: "/",
-    url: url_DescribeFileSystemPolicy_605139, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeFileSystemPolicy_606338, base: "/",
+    url: url_DescribeFileSystemPolicy_606339, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteFileSystemPolicy_605167 = ref object of OpenApiRestCall_604389
-proc url_DeleteFileSystemPolicy_605169(protocol: Scheme; host: string; base: string;
+  Call_DeleteFileSystemPolicy_606367 = ref object of OpenApiRestCall_605589
+proc url_DeleteFileSystemPolicy_606369(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1654,7 +1654,7 @@ proc url_DeleteFileSystemPolicy_605169(protocol: Scheme; host: string; base: str
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteFileSystemPolicy_605168(path: JsonNode; query: JsonNode;
+proc validate_DeleteFileSystemPolicy_606368(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the <code>FileSystemPolicy</code> for the specified file system. The default <code>FileSystemPolicy</code> goes into effect once the existing policy is deleted. For more information about the default file system policy, see <a href="https://docs.aws.amazon.com/efs/latest/ug/res-based-policies-efs.html">Using Resource-based Policies with EFS</a>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteFileSystemPolicy</code> action.</p>
   ## 
@@ -1666,11 +1666,11 @@ proc validate_DeleteFileSystemPolicy_605168(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605170 = path.getOrDefault("FileSystemId")
-  valid_605170 = validateParameter(valid_605170, JString, required = true,
+  var valid_606370 = path.getOrDefault("FileSystemId")
+  valid_606370 = validateParameter(valid_606370, JString, required = true,
                                  default = nil)
-  if valid_605170 != nil:
-    section.add "FileSystemId", valid_605170
+  if valid_606370 != nil:
+    section.add "FileSystemId", valid_606370
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1683,78 +1683,78 @@ proc validate_DeleteFileSystemPolicy_605168(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605171 = header.getOrDefault("X-Amz-Signature")
-  valid_605171 = validateParameter(valid_605171, JString, required = false,
+  var valid_606371 = header.getOrDefault("X-Amz-Signature")
+  valid_606371 = validateParameter(valid_606371, JString, required = false,
                                  default = nil)
-  if valid_605171 != nil:
-    section.add "X-Amz-Signature", valid_605171
-  var valid_605172 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605172 = validateParameter(valid_605172, JString, required = false,
+  if valid_606371 != nil:
+    section.add "X-Amz-Signature", valid_606371
+  var valid_606372 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606372 = validateParameter(valid_606372, JString, required = false,
                                  default = nil)
-  if valid_605172 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605172
-  var valid_605173 = header.getOrDefault("X-Amz-Date")
-  valid_605173 = validateParameter(valid_605173, JString, required = false,
+  if valid_606372 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606372
+  var valid_606373 = header.getOrDefault("X-Amz-Date")
+  valid_606373 = validateParameter(valid_606373, JString, required = false,
                                  default = nil)
-  if valid_605173 != nil:
-    section.add "X-Amz-Date", valid_605173
-  var valid_605174 = header.getOrDefault("X-Amz-Credential")
-  valid_605174 = validateParameter(valid_605174, JString, required = false,
+  if valid_606373 != nil:
+    section.add "X-Amz-Date", valid_606373
+  var valid_606374 = header.getOrDefault("X-Amz-Credential")
+  valid_606374 = validateParameter(valid_606374, JString, required = false,
                                  default = nil)
-  if valid_605174 != nil:
-    section.add "X-Amz-Credential", valid_605174
-  var valid_605175 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605175 = validateParameter(valid_605175, JString, required = false,
+  if valid_606374 != nil:
+    section.add "X-Amz-Credential", valid_606374
+  var valid_606375 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606375 = validateParameter(valid_606375, JString, required = false,
                                  default = nil)
-  if valid_605175 != nil:
-    section.add "X-Amz-Security-Token", valid_605175
-  var valid_605176 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605176 = validateParameter(valid_605176, JString, required = false,
+  if valid_606375 != nil:
+    section.add "X-Amz-Security-Token", valid_606375
+  var valid_606376 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606376 = validateParameter(valid_606376, JString, required = false,
                                  default = nil)
-  if valid_605176 != nil:
-    section.add "X-Amz-Algorithm", valid_605176
-  var valid_605177 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605177 = validateParameter(valid_605177, JString, required = false,
+  if valid_606376 != nil:
+    section.add "X-Amz-Algorithm", valid_606376
+  var valid_606377 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606377 = validateParameter(valid_606377, JString, required = false,
                                  default = nil)
-  if valid_605177 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605177
+  if valid_606377 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606377
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605178: Call_DeleteFileSystemPolicy_605167; path: JsonNode;
+proc call*(call_606378: Call_DeleteFileSystemPolicy_606367; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the <code>FileSystemPolicy</code> for the specified file system. The default <code>FileSystemPolicy</code> goes into effect once the existing policy is deleted. For more information about the default file system policy, see <a href="https://docs.aws.amazon.com/efs/latest/ug/res-based-policies-efs.html">Using Resource-based Policies with EFS</a>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteFileSystemPolicy</code> action.</p>
   ## 
-  let valid = call_605178.validator(path, query, header, formData, body)
-  let scheme = call_605178.pickScheme
+  let valid = call_606378.validator(path, query, header, formData, body)
+  let scheme = call_606378.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605178.url(scheme.get, call_605178.host, call_605178.base,
-                         call_605178.route, valid.getOrDefault("path"),
+  let url = call_606378.url(scheme.get, call_606378.host, call_606378.base,
+                         call_606378.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605178, url, valid)
+  result = atozHook(call_606378, url, valid)
 
-proc call*(call_605179: Call_DeleteFileSystemPolicy_605167; FileSystemId: string): Recallable =
+proc call*(call_606379: Call_DeleteFileSystemPolicy_606367; FileSystemId: string): Recallable =
   ## deleteFileSystemPolicy
   ## <p>Deletes the <code>FileSystemPolicy</code> for the specified file system. The default <code>FileSystemPolicy</code> goes into effect once the existing policy is deleted. For more information about the default file system policy, see <a href="https://docs.aws.amazon.com/efs/latest/ug/res-based-policies-efs.html">Using Resource-based Policies with EFS</a>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteFileSystemPolicy</code> action.</p>
   ##   FileSystemId: string (required)
   ##               : Specifies the EFS file system for which to delete the <code>FileSystemPolicy</code>.
-  var path_605180 = newJObject()
-  add(path_605180, "FileSystemId", newJString(FileSystemId))
-  result = call_605179.call(path_605180, nil, nil, nil, nil)
+  var path_606380 = newJObject()
+  add(path_606380, "FileSystemId", newJString(FileSystemId))
+  result = call_606379.call(path_606380, nil, nil, nil, nil)
 
-var deleteFileSystemPolicy* = Call_DeleteFileSystemPolicy_605167(
+var deleteFileSystemPolicy* = Call_DeleteFileSystemPolicy_606367(
     name: "deleteFileSystemPolicy", meth: HttpMethod.HttpDelete,
     host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/file-systems/{FileSystemId}/policy",
-    validator: validate_DeleteFileSystemPolicy_605168, base: "/",
-    url: url_DeleteFileSystemPolicy_605169, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteFileSystemPolicy_606368, base: "/",
+    url: url_DeleteFileSystemPolicy_606369, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteMountTarget_605181 = ref object of OpenApiRestCall_604389
-proc url_DeleteMountTarget_605183(protocol: Scheme; host: string; base: string;
+  Call_DeleteMountTarget_606381 = ref object of OpenApiRestCall_605589
+proc url_DeleteMountTarget_606383(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1774,7 +1774,7 @@ proc url_DeleteMountTarget_605183(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteMountTarget_605182(path: JsonNode; query: JsonNode;
+proc validate_DeleteMountTarget_606382(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes the specified mount target.</p> <p>This operation forcibly breaks any mounts of the file system by using the mount target that is being deleted, which might disrupt instances or applications using those mounts. To avoid applications getting cut off abruptly, you might consider unmounting any mounts of the mount target, if feasible. The operation also deletes the associated network interface. Uncommitted writes might be lost, but breaking a mount target using this operation does not corrupt the file system itself. The file system you created remains. You can mount an EC2 instance in your VPC by using another mount target.</p> <p>This operation requires permissions for the following action on the file system:</p> <ul> <li> <p> <code>elasticfilesystem:DeleteMountTarget</code> </p> </li> </ul> <note> <p>The <code>DeleteMountTarget</code> call returns while the mount target state is still <code>deleting</code>. You can check the mount target deletion by calling the <a>DescribeMountTargets</a> operation, which returns a list of mount target descriptions for the given file system. </p> </note> <p>The operation also requires permissions for the following Amazon EC2 action on the mount target's network interface:</p> <ul> <li> <p> <code>ec2:DeleteNetworkInterface</code> </p> </li> </ul>
@@ -1787,11 +1787,11 @@ proc validate_DeleteMountTarget_605182(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `MountTargetId` field"
-  var valid_605184 = path.getOrDefault("MountTargetId")
-  valid_605184 = validateParameter(valid_605184, JString, required = true,
+  var valid_606384 = path.getOrDefault("MountTargetId")
+  valid_606384 = validateParameter(valid_606384, JString, required = true,
                                  default = nil)
-  if valid_605184 != nil:
-    section.add "MountTargetId", valid_605184
+  if valid_606384 != nil:
+    section.add "MountTargetId", valid_606384
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1804,77 +1804,77 @@ proc validate_DeleteMountTarget_605182(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605185 = header.getOrDefault("X-Amz-Signature")
-  valid_605185 = validateParameter(valid_605185, JString, required = false,
+  var valid_606385 = header.getOrDefault("X-Amz-Signature")
+  valid_606385 = validateParameter(valid_606385, JString, required = false,
                                  default = nil)
-  if valid_605185 != nil:
-    section.add "X-Amz-Signature", valid_605185
-  var valid_605186 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605186 = validateParameter(valid_605186, JString, required = false,
+  if valid_606385 != nil:
+    section.add "X-Amz-Signature", valid_606385
+  var valid_606386 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606386 = validateParameter(valid_606386, JString, required = false,
                                  default = nil)
-  if valid_605186 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605186
-  var valid_605187 = header.getOrDefault("X-Amz-Date")
-  valid_605187 = validateParameter(valid_605187, JString, required = false,
+  if valid_606386 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606386
+  var valid_606387 = header.getOrDefault("X-Amz-Date")
+  valid_606387 = validateParameter(valid_606387, JString, required = false,
                                  default = nil)
-  if valid_605187 != nil:
-    section.add "X-Amz-Date", valid_605187
-  var valid_605188 = header.getOrDefault("X-Amz-Credential")
-  valid_605188 = validateParameter(valid_605188, JString, required = false,
+  if valid_606387 != nil:
+    section.add "X-Amz-Date", valid_606387
+  var valid_606388 = header.getOrDefault("X-Amz-Credential")
+  valid_606388 = validateParameter(valid_606388, JString, required = false,
                                  default = nil)
-  if valid_605188 != nil:
-    section.add "X-Amz-Credential", valid_605188
-  var valid_605189 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605189 = validateParameter(valid_605189, JString, required = false,
+  if valid_606388 != nil:
+    section.add "X-Amz-Credential", valid_606388
+  var valid_606389 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606389 = validateParameter(valid_606389, JString, required = false,
                                  default = nil)
-  if valid_605189 != nil:
-    section.add "X-Amz-Security-Token", valid_605189
-  var valid_605190 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605190 = validateParameter(valid_605190, JString, required = false,
+  if valid_606389 != nil:
+    section.add "X-Amz-Security-Token", valid_606389
+  var valid_606390 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606390 = validateParameter(valid_606390, JString, required = false,
                                  default = nil)
-  if valid_605190 != nil:
-    section.add "X-Amz-Algorithm", valid_605190
-  var valid_605191 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605191 = validateParameter(valid_605191, JString, required = false,
+  if valid_606390 != nil:
+    section.add "X-Amz-Algorithm", valid_606390
+  var valid_606391 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606391 = validateParameter(valid_606391, JString, required = false,
                                  default = nil)
-  if valid_605191 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605191
+  if valid_606391 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606391
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605192: Call_DeleteMountTarget_605181; path: JsonNode;
+proc call*(call_606392: Call_DeleteMountTarget_606381; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified mount target.</p> <p>This operation forcibly breaks any mounts of the file system by using the mount target that is being deleted, which might disrupt instances or applications using those mounts. To avoid applications getting cut off abruptly, you might consider unmounting any mounts of the mount target, if feasible. The operation also deletes the associated network interface. Uncommitted writes might be lost, but breaking a mount target using this operation does not corrupt the file system itself. The file system you created remains. You can mount an EC2 instance in your VPC by using another mount target.</p> <p>This operation requires permissions for the following action on the file system:</p> <ul> <li> <p> <code>elasticfilesystem:DeleteMountTarget</code> </p> </li> </ul> <note> <p>The <code>DeleteMountTarget</code> call returns while the mount target state is still <code>deleting</code>. You can check the mount target deletion by calling the <a>DescribeMountTargets</a> operation, which returns a list of mount target descriptions for the given file system. </p> </note> <p>The operation also requires permissions for the following Amazon EC2 action on the mount target's network interface:</p> <ul> <li> <p> <code>ec2:DeleteNetworkInterface</code> </p> </li> </ul>
   ## 
-  let valid = call_605192.validator(path, query, header, formData, body)
-  let scheme = call_605192.pickScheme
+  let valid = call_606392.validator(path, query, header, formData, body)
+  let scheme = call_606392.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605192.url(scheme.get, call_605192.host, call_605192.base,
-                         call_605192.route, valid.getOrDefault("path"),
+  let url = call_606392.url(scheme.get, call_606392.host, call_606392.base,
+                         call_606392.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605192, url, valid)
+  result = atozHook(call_606392, url, valid)
 
-proc call*(call_605193: Call_DeleteMountTarget_605181; MountTargetId: string): Recallable =
+proc call*(call_606393: Call_DeleteMountTarget_606381; MountTargetId: string): Recallable =
   ## deleteMountTarget
   ## <p>Deletes the specified mount target.</p> <p>This operation forcibly breaks any mounts of the file system by using the mount target that is being deleted, which might disrupt instances or applications using those mounts. To avoid applications getting cut off abruptly, you might consider unmounting any mounts of the mount target, if feasible. The operation also deletes the associated network interface. Uncommitted writes might be lost, but breaking a mount target using this operation does not corrupt the file system itself. The file system you created remains. You can mount an EC2 instance in your VPC by using another mount target.</p> <p>This operation requires permissions for the following action on the file system:</p> <ul> <li> <p> <code>elasticfilesystem:DeleteMountTarget</code> </p> </li> </ul> <note> <p>The <code>DeleteMountTarget</code> call returns while the mount target state is still <code>deleting</code>. You can check the mount target deletion by calling the <a>DescribeMountTargets</a> operation, which returns a list of mount target descriptions for the given file system. </p> </note> <p>The operation also requires permissions for the following Amazon EC2 action on the mount target's network interface:</p> <ul> <li> <p> <code>ec2:DeleteNetworkInterface</code> </p> </li> </ul>
   ##   MountTargetId: string (required)
   ##                : The ID of the mount target to delete (String).
-  var path_605194 = newJObject()
-  add(path_605194, "MountTargetId", newJString(MountTargetId))
-  result = call_605193.call(path_605194, nil, nil, nil, nil)
+  var path_606394 = newJObject()
+  add(path_606394, "MountTargetId", newJString(MountTargetId))
+  result = call_606393.call(path_606394, nil, nil, nil, nil)
 
-var deleteMountTarget* = Call_DeleteMountTarget_605181(name: "deleteMountTarget",
+var deleteMountTarget* = Call_DeleteMountTarget_606381(name: "deleteMountTarget",
     meth: HttpMethod.HttpDelete, host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/mount-targets/{MountTargetId}",
-    validator: validate_DeleteMountTarget_605182, base: "/",
-    url: url_DeleteMountTarget_605183, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteMountTarget_606382, base: "/",
+    url: url_DeleteMountTarget_606383, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTags_605195 = ref object of OpenApiRestCall_604389
-proc url_DeleteTags_605197(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteTags_606395 = ref object of OpenApiRestCall_605589
+proc url_DeleteTags_606397(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1894,7 +1894,7 @@ proc url_DeleteTags_605197(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteTags_605196(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteTags_606396(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified tags from a file system. If the <code>DeleteTags</code> request includes a tag key that doesn't exist, Amazon EFS ignores it and doesn't cause an error. For more information about tags and related restrictions, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteTags</code> action.</p>
   ## 
@@ -1906,11 +1906,11 @@ proc validate_DeleteTags_605196(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605198 = path.getOrDefault("FileSystemId")
-  valid_605198 = validateParameter(valid_605198, JString, required = true,
+  var valid_606398 = path.getOrDefault("FileSystemId")
+  valid_606398 = validateParameter(valid_606398, JString, required = true,
                                  default = nil)
-  if valid_605198 != nil:
-    section.add "FileSystemId", valid_605198
+  if valid_606398 != nil:
+    section.add "FileSystemId", valid_606398
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -1923,41 +1923,41 @@ proc validate_DeleteTags_605196(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605199 = header.getOrDefault("X-Amz-Signature")
-  valid_605199 = validateParameter(valid_605199, JString, required = false,
+  var valid_606399 = header.getOrDefault("X-Amz-Signature")
+  valid_606399 = validateParameter(valid_606399, JString, required = false,
                                  default = nil)
-  if valid_605199 != nil:
-    section.add "X-Amz-Signature", valid_605199
-  var valid_605200 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605200 = validateParameter(valid_605200, JString, required = false,
+  if valid_606399 != nil:
+    section.add "X-Amz-Signature", valid_606399
+  var valid_606400 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606400 = validateParameter(valid_606400, JString, required = false,
                                  default = nil)
-  if valid_605200 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605200
-  var valid_605201 = header.getOrDefault("X-Amz-Date")
-  valid_605201 = validateParameter(valid_605201, JString, required = false,
+  if valid_606400 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606400
+  var valid_606401 = header.getOrDefault("X-Amz-Date")
+  valid_606401 = validateParameter(valid_606401, JString, required = false,
                                  default = nil)
-  if valid_605201 != nil:
-    section.add "X-Amz-Date", valid_605201
-  var valid_605202 = header.getOrDefault("X-Amz-Credential")
-  valid_605202 = validateParameter(valid_605202, JString, required = false,
+  if valid_606401 != nil:
+    section.add "X-Amz-Date", valid_606401
+  var valid_606402 = header.getOrDefault("X-Amz-Credential")
+  valid_606402 = validateParameter(valid_606402, JString, required = false,
                                  default = nil)
-  if valid_605202 != nil:
-    section.add "X-Amz-Credential", valid_605202
-  var valid_605203 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605203 = validateParameter(valid_605203, JString, required = false,
+  if valid_606402 != nil:
+    section.add "X-Amz-Credential", valid_606402
+  var valid_606403 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606403 = validateParameter(valid_606403, JString, required = false,
                                  default = nil)
-  if valid_605203 != nil:
-    section.add "X-Amz-Security-Token", valid_605203
-  var valid_605204 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605204 = validateParameter(valid_605204, JString, required = false,
+  if valid_606403 != nil:
+    section.add "X-Amz-Security-Token", valid_606403
+  var valid_606404 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606404 = validateParameter(valid_606404, JString, required = false,
                                  default = nil)
-  if valid_605204 != nil:
-    section.add "X-Amz-Algorithm", valid_605204
-  var valid_605205 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605205 = validateParameter(valid_605205, JString, required = false,
+  if valid_606404 != nil:
+    section.add "X-Amz-Algorithm", valid_606404
+  var valid_606405 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606405 = validateParameter(valid_606405, JString, required = false,
                                  default = nil)
-  if valid_605205 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605205
+  if valid_606405 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606405
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1968,41 +1968,41 @@ proc validate_DeleteTags_605196(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_605207: Call_DeleteTags_605195; path: JsonNode; query: JsonNode;
+proc call*(call_606407: Call_DeleteTags_606395; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified tags from a file system. If the <code>DeleteTags</code> request includes a tag key that doesn't exist, Amazon EFS ignores it and doesn't cause an error. For more information about tags and related restrictions, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteTags</code> action.</p>
   ## 
-  let valid = call_605207.validator(path, query, header, formData, body)
-  let scheme = call_605207.pickScheme
+  let valid = call_606407.validator(path, query, header, formData, body)
+  let scheme = call_606407.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605207.url(scheme.get, call_605207.host, call_605207.base,
-                         call_605207.route, valid.getOrDefault("path"),
+  let url = call_606407.url(scheme.get, call_606407.host, call_606407.base,
+                         call_606407.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605207, url, valid)
+  result = atozHook(call_606407, url, valid)
 
-proc call*(call_605208: Call_DeleteTags_605195; FileSystemId: string; body: JsonNode): Recallable =
+proc call*(call_606408: Call_DeleteTags_606395; FileSystemId: string; body: JsonNode): Recallable =
   ## deleteTags
   ## <p>Deletes the specified tags from a file system. If the <code>DeleteTags</code> request includes a tag key that doesn't exist, Amazon EFS ignores it and doesn't cause an error. For more information about tags and related restrictions, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DeleteTags</code> action.</p>
   ##   FileSystemId: string (required)
   ##               : The ID of the file system whose tags you want to delete (String).
   ##   body: JObject (required)
-  var path_605209 = newJObject()
-  var body_605210 = newJObject()
-  add(path_605209, "FileSystemId", newJString(FileSystemId))
+  var path_606409 = newJObject()
+  var body_606410 = newJObject()
+  add(path_606409, "FileSystemId", newJString(FileSystemId))
   if body != nil:
-    body_605210 = body
-  result = call_605208.call(path_605209, nil, nil, nil, body_605210)
+    body_606410 = body
+  result = call_606408.call(path_606409, nil, nil, nil, body_606410)
 
-var deleteTags* = Call_DeleteTags_605195(name: "deleteTags",
+var deleteTags* = Call_DeleteTags_606395(name: "deleteTags",
                                       meth: HttpMethod.HttpPost,
                                       host: "elasticfilesystem.amazonaws.com", route: "/2015-02-01/delete-tags/{FileSystemId}",
-                                      validator: validate_DeleteTags_605196,
-                                      base: "/", url: url_DeleteTags_605197,
+                                      validator: validate_DeleteTags_606396,
+                                      base: "/", url: url_DeleteTags_606397,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutLifecycleConfiguration_605225 = ref object of OpenApiRestCall_604389
-proc url_PutLifecycleConfiguration_605227(protocol: Scheme; host: string;
+  Call_PutLifecycleConfiguration_606425 = ref object of OpenApiRestCall_605589
+proc url_PutLifecycleConfiguration_606427(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2023,7 +2023,7 @@ proc url_PutLifecycleConfiguration_605227(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_PutLifecycleConfiguration_605226(path: JsonNode; query: JsonNode;
+proc validate_PutLifecycleConfiguration_606426(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Enables lifecycle management by creating a new <code>LifecycleConfiguration</code> object. A <code>LifecycleConfiguration</code> object defines when files in an Amazon EFS file system are automatically transitioned to the lower-cost EFS Infrequent Access (IA) storage class. A <code>LifecycleConfiguration</code> applies to all files in a file system.</p> <p>Each Amazon EFS file system supports one lifecycle configuration, which applies to all files in the file system. If a <code>LifecycleConfiguration</code> object already exists for the specified file system, a <code>PutLifecycleConfiguration</code> call modifies the existing configuration. A <code>PutLifecycleConfiguration</code> call with an empty <code>LifecyclePolicies</code> array in the request body deletes any existing <code>LifecycleConfiguration</code> and disables lifecycle management.</p> <p>In the request, specify the following: </p> <ul> <li> <p>The ID for the file system for which you are enabling, disabling, or modifying lifecycle management.</p> </li> <li> <p>A <code>LifecyclePolicies</code> array of <code>LifecyclePolicy</code> objects that define when files are moved to the IA storage class. The array can contain only one <code>LifecyclePolicy</code> item.</p> </li> </ul> <p>This operation requires permissions for the <code>elasticfilesystem:PutLifecycleConfiguration</code> operation.</p> <p>To apply a <code>LifecycleConfiguration</code> object to an encrypted file system, you need the same AWS Key Management Service (AWS KMS) permissions as when you created the encrypted file system. </p>
   ## 
@@ -2035,11 +2035,11 @@ proc validate_PutLifecycleConfiguration_605226(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605228 = path.getOrDefault("FileSystemId")
-  valid_605228 = validateParameter(valid_605228, JString, required = true,
+  var valid_606428 = path.getOrDefault("FileSystemId")
+  valid_606428 = validateParameter(valid_606428, JString, required = true,
                                  default = nil)
-  if valid_605228 != nil:
-    section.add "FileSystemId", valid_605228
+  if valid_606428 != nil:
+    section.add "FileSystemId", valid_606428
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2052,41 +2052,41 @@ proc validate_PutLifecycleConfiguration_605226(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605229 = header.getOrDefault("X-Amz-Signature")
-  valid_605229 = validateParameter(valid_605229, JString, required = false,
+  var valid_606429 = header.getOrDefault("X-Amz-Signature")
+  valid_606429 = validateParameter(valid_606429, JString, required = false,
                                  default = nil)
-  if valid_605229 != nil:
-    section.add "X-Amz-Signature", valid_605229
-  var valid_605230 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605230 = validateParameter(valid_605230, JString, required = false,
+  if valid_606429 != nil:
+    section.add "X-Amz-Signature", valid_606429
+  var valid_606430 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606430 = validateParameter(valid_606430, JString, required = false,
                                  default = nil)
-  if valid_605230 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605230
-  var valid_605231 = header.getOrDefault("X-Amz-Date")
-  valid_605231 = validateParameter(valid_605231, JString, required = false,
+  if valid_606430 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606430
+  var valid_606431 = header.getOrDefault("X-Amz-Date")
+  valid_606431 = validateParameter(valid_606431, JString, required = false,
                                  default = nil)
-  if valid_605231 != nil:
-    section.add "X-Amz-Date", valid_605231
-  var valid_605232 = header.getOrDefault("X-Amz-Credential")
-  valid_605232 = validateParameter(valid_605232, JString, required = false,
+  if valid_606431 != nil:
+    section.add "X-Amz-Date", valid_606431
+  var valid_606432 = header.getOrDefault("X-Amz-Credential")
+  valid_606432 = validateParameter(valid_606432, JString, required = false,
                                  default = nil)
-  if valid_605232 != nil:
-    section.add "X-Amz-Credential", valid_605232
-  var valid_605233 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605233 = validateParameter(valid_605233, JString, required = false,
+  if valid_606432 != nil:
+    section.add "X-Amz-Credential", valid_606432
+  var valid_606433 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606433 = validateParameter(valid_606433, JString, required = false,
                                  default = nil)
-  if valid_605233 != nil:
-    section.add "X-Amz-Security-Token", valid_605233
-  var valid_605234 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605234 = validateParameter(valid_605234, JString, required = false,
+  if valid_606433 != nil:
+    section.add "X-Amz-Security-Token", valid_606433
+  var valid_606434 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606434 = validateParameter(valid_606434, JString, required = false,
                                  default = nil)
-  if valid_605234 != nil:
-    section.add "X-Amz-Algorithm", valid_605234
-  var valid_605235 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605235 = validateParameter(valid_605235, JString, required = false,
+  if valid_606434 != nil:
+    section.add "X-Amz-Algorithm", valid_606434
+  var valid_606435 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606435 = validateParameter(valid_606435, JString, required = false,
                                  default = nil)
-  if valid_605235 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605235
+  if valid_606435 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606435
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2097,43 +2097,43 @@ proc validate_PutLifecycleConfiguration_605226(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605237: Call_PutLifecycleConfiguration_605225; path: JsonNode;
+proc call*(call_606437: Call_PutLifecycleConfiguration_606425; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Enables lifecycle management by creating a new <code>LifecycleConfiguration</code> object. A <code>LifecycleConfiguration</code> object defines when files in an Amazon EFS file system are automatically transitioned to the lower-cost EFS Infrequent Access (IA) storage class. A <code>LifecycleConfiguration</code> applies to all files in a file system.</p> <p>Each Amazon EFS file system supports one lifecycle configuration, which applies to all files in the file system. If a <code>LifecycleConfiguration</code> object already exists for the specified file system, a <code>PutLifecycleConfiguration</code> call modifies the existing configuration. A <code>PutLifecycleConfiguration</code> call with an empty <code>LifecyclePolicies</code> array in the request body deletes any existing <code>LifecycleConfiguration</code> and disables lifecycle management.</p> <p>In the request, specify the following: </p> <ul> <li> <p>The ID for the file system for which you are enabling, disabling, or modifying lifecycle management.</p> </li> <li> <p>A <code>LifecyclePolicies</code> array of <code>LifecyclePolicy</code> objects that define when files are moved to the IA storage class. The array can contain only one <code>LifecyclePolicy</code> item.</p> </li> </ul> <p>This operation requires permissions for the <code>elasticfilesystem:PutLifecycleConfiguration</code> operation.</p> <p>To apply a <code>LifecycleConfiguration</code> object to an encrypted file system, you need the same AWS Key Management Service (AWS KMS) permissions as when you created the encrypted file system. </p>
   ## 
-  let valid = call_605237.validator(path, query, header, formData, body)
-  let scheme = call_605237.pickScheme
+  let valid = call_606437.validator(path, query, header, formData, body)
+  let scheme = call_606437.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605237.url(scheme.get, call_605237.host, call_605237.base,
-                         call_605237.route, valid.getOrDefault("path"),
+  let url = call_606437.url(scheme.get, call_606437.host, call_606437.base,
+                         call_606437.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605237, url, valid)
+  result = atozHook(call_606437, url, valid)
 
-proc call*(call_605238: Call_PutLifecycleConfiguration_605225;
+proc call*(call_606438: Call_PutLifecycleConfiguration_606425;
           FileSystemId: string; body: JsonNode): Recallable =
   ## putLifecycleConfiguration
   ## <p>Enables lifecycle management by creating a new <code>LifecycleConfiguration</code> object. A <code>LifecycleConfiguration</code> object defines when files in an Amazon EFS file system are automatically transitioned to the lower-cost EFS Infrequent Access (IA) storage class. A <code>LifecycleConfiguration</code> applies to all files in a file system.</p> <p>Each Amazon EFS file system supports one lifecycle configuration, which applies to all files in the file system. If a <code>LifecycleConfiguration</code> object already exists for the specified file system, a <code>PutLifecycleConfiguration</code> call modifies the existing configuration. A <code>PutLifecycleConfiguration</code> call with an empty <code>LifecyclePolicies</code> array in the request body deletes any existing <code>LifecycleConfiguration</code> and disables lifecycle management.</p> <p>In the request, specify the following: </p> <ul> <li> <p>The ID for the file system for which you are enabling, disabling, or modifying lifecycle management.</p> </li> <li> <p>A <code>LifecyclePolicies</code> array of <code>LifecyclePolicy</code> objects that define when files are moved to the IA storage class. The array can contain only one <code>LifecyclePolicy</code> item.</p> </li> </ul> <p>This operation requires permissions for the <code>elasticfilesystem:PutLifecycleConfiguration</code> operation.</p> <p>To apply a <code>LifecycleConfiguration</code> object to an encrypted file system, you need the same AWS Key Management Service (AWS KMS) permissions as when you created the encrypted file system. </p>
   ##   FileSystemId: string (required)
   ##               : The ID of the file system for which you are creating the <code>LifecycleConfiguration</code> object (String).
   ##   body: JObject (required)
-  var path_605239 = newJObject()
-  var body_605240 = newJObject()
-  add(path_605239, "FileSystemId", newJString(FileSystemId))
+  var path_606439 = newJObject()
+  var body_606440 = newJObject()
+  add(path_606439, "FileSystemId", newJString(FileSystemId))
   if body != nil:
-    body_605240 = body
-  result = call_605238.call(path_605239, nil, nil, nil, body_605240)
+    body_606440 = body
+  result = call_606438.call(path_606439, nil, nil, nil, body_606440)
 
-var putLifecycleConfiguration* = Call_PutLifecycleConfiguration_605225(
+var putLifecycleConfiguration* = Call_PutLifecycleConfiguration_606425(
     name: "putLifecycleConfiguration", meth: HttpMethod.HttpPut,
     host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/file-systems/{FileSystemId}/lifecycle-configuration",
-    validator: validate_PutLifecycleConfiguration_605226, base: "/",
-    url: url_PutLifecycleConfiguration_605227,
+    validator: validate_PutLifecycleConfiguration_606426, base: "/",
+    url: url_PutLifecycleConfiguration_606427,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeLifecycleConfiguration_605211 = ref object of OpenApiRestCall_604389
-proc url_DescribeLifecycleConfiguration_605213(protocol: Scheme; host: string;
+  Call_DescribeLifecycleConfiguration_606411 = ref object of OpenApiRestCall_605589
+proc url_DescribeLifecycleConfiguration_606413(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2154,7 +2154,7 @@ proc url_DescribeLifecycleConfiguration_605213(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeLifecycleConfiguration_605212(path: JsonNode;
+proc validate_DescribeLifecycleConfiguration_606412(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the current <code>LifecycleConfiguration</code> object for the specified Amazon EFS file system. EFS lifecycle management uses the <code>LifecycleConfiguration</code> object to identify which files to move to the EFS Infrequent Access (IA) storage class. For a file system without a <code>LifecycleConfiguration</code> object, the call returns an empty array in the response.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeLifecycleConfiguration</code> operation.</p>
   ## 
@@ -2166,11 +2166,11 @@ proc validate_DescribeLifecycleConfiguration_605212(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605214 = path.getOrDefault("FileSystemId")
-  valid_605214 = validateParameter(valid_605214, JString, required = true,
+  var valid_606414 = path.getOrDefault("FileSystemId")
+  valid_606414 = validateParameter(valid_606414, JString, required = true,
                                  default = nil)
-  if valid_605214 != nil:
-    section.add "FileSystemId", valid_605214
+  if valid_606414 != nil:
+    section.add "FileSystemId", valid_606414
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2183,80 +2183,80 @@ proc validate_DescribeLifecycleConfiguration_605212(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605215 = header.getOrDefault("X-Amz-Signature")
-  valid_605215 = validateParameter(valid_605215, JString, required = false,
+  var valid_606415 = header.getOrDefault("X-Amz-Signature")
+  valid_606415 = validateParameter(valid_606415, JString, required = false,
                                  default = nil)
-  if valid_605215 != nil:
-    section.add "X-Amz-Signature", valid_605215
-  var valid_605216 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605216 = validateParameter(valid_605216, JString, required = false,
+  if valid_606415 != nil:
+    section.add "X-Amz-Signature", valid_606415
+  var valid_606416 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606416 = validateParameter(valid_606416, JString, required = false,
                                  default = nil)
-  if valid_605216 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605216
-  var valid_605217 = header.getOrDefault("X-Amz-Date")
-  valid_605217 = validateParameter(valid_605217, JString, required = false,
+  if valid_606416 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606416
+  var valid_606417 = header.getOrDefault("X-Amz-Date")
+  valid_606417 = validateParameter(valid_606417, JString, required = false,
                                  default = nil)
-  if valid_605217 != nil:
-    section.add "X-Amz-Date", valid_605217
-  var valid_605218 = header.getOrDefault("X-Amz-Credential")
-  valid_605218 = validateParameter(valid_605218, JString, required = false,
+  if valid_606417 != nil:
+    section.add "X-Amz-Date", valid_606417
+  var valid_606418 = header.getOrDefault("X-Amz-Credential")
+  valid_606418 = validateParameter(valid_606418, JString, required = false,
                                  default = nil)
-  if valid_605218 != nil:
-    section.add "X-Amz-Credential", valid_605218
-  var valid_605219 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605219 = validateParameter(valid_605219, JString, required = false,
+  if valid_606418 != nil:
+    section.add "X-Amz-Credential", valid_606418
+  var valid_606419 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606419 = validateParameter(valid_606419, JString, required = false,
                                  default = nil)
-  if valid_605219 != nil:
-    section.add "X-Amz-Security-Token", valid_605219
-  var valid_605220 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605220 = validateParameter(valid_605220, JString, required = false,
+  if valid_606419 != nil:
+    section.add "X-Amz-Security-Token", valid_606419
+  var valid_606420 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606420 = validateParameter(valid_606420, JString, required = false,
                                  default = nil)
-  if valid_605220 != nil:
-    section.add "X-Amz-Algorithm", valid_605220
-  var valid_605221 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605221 = validateParameter(valid_605221, JString, required = false,
+  if valid_606420 != nil:
+    section.add "X-Amz-Algorithm", valid_606420
+  var valid_606421 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606421 = validateParameter(valid_606421, JString, required = false,
                                  default = nil)
-  if valid_605221 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605221
+  if valid_606421 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606421
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605222: Call_DescribeLifecycleConfiguration_605211; path: JsonNode;
+proc call*(call_606422: Call_DescribeLifecycleConfiguration_606411; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the current <code>LifecycleConfiguration</code> object for the specified Amazon EFS file system. EFS lifecycle management uses the <code>LifecycleConfiguration</code> object to identify which files to move to the EFS Infrequent Access (IA) storage class. For a file system without a <code>LifecycleConfiguration</code> object, the call returns an empty array in the response.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeLifecycleConfiguration</code> operation.</p>
   ## 
-  let valid = call_605222.validator(path, query, header, formData, body)
-  let scheme = call_605222.pickScheme
+  let valid = call_606422.validator(path, query, header, formData, body)
+  let scheme = call_606422.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605222.url(scheme.get, call_605222.host, call_605222.base,
-                         call_605222.route, valid.getOrDefault("path"),
+  let url = call_606422.url(scheme.get, call_606422.host, call_606422.base,
+                         call_606422.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605222, url, valid)
+  result = atozHook(call_606422, url, valid)
 
-proc call*(call_605223: Call_DescribeLifecycleConfiguration_605211;
+proc call*(call_606423: Call_DescribeLifecycleConfiguration_606411;
           FileSystemId: string): Recallable =
   ## describeLifecycleConfiguration
   ## <p>Returns the current <code>LifecycleConfiguration</code> object for the specified Amazon EFS file system. EFS lifecycle management uses the <code>LifecycleConfiguration</code> object to identify which files to move to the EFS Infrequent Access (IA) storage class. For a file system without a <code>LifecycleConfiguration</code> object, the call returns an empty array in the response.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeLifecycleConfiguration</code> operation.</p>
   ##   FileSystemId: string (required)
   ##               : The ID of the file system whose <code>LifecycleConfiguration</code> object you want to retrieve (String).
-  var path_605224 = newJObject()
-  add(path_605224, "FileSystemId", newJString(FileSystemId))
-  result = call_605223.call(path_605224, nil, nil, nil, nil)
+  var path_606424 = newJObject()
+  add(path_606424, "FileSystemId", newJString(FileSystemId))
+  result = call_606423.call(path_606424, nil, nil, nil, nil)
 
-var describeLifecycleConfiguration* = Call_DescribeLifecycleConfiguration_605211(
+var describeLifecycleConfiguration* = Call_DescribeLifecycleConfiguration_606411(
     name: "describeLifecycleConfiguration", meth: HttpMethod.HttpGet,
     host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/file-systems/{FileSystemId}/lifecycle-configuration",
-    validator: validate_DescribeLifecycleConfiguration_605212, base: "/",
-    url: url_DescribeLifecycleConfiguration_605213,
+    validator: validate_DescribeLifecycleConfiguration_606412, base: "/",
+    url: url_DescribeLifecycleConfiguration_606413,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyMountTargetSecurityGroups_605255 = ref object of OpenApiRestCall_604389
-proc url_ModifyMountTargetSecurityGroups_605257(protocol: Scheme; host: string;
+  Call_ModifyMountTargetSecurityGroups_606455 = ref object of OpenApiRestCall_605589
+proc url_ModifyMountTargetSecurityGroups_606457(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2277,7 +2277,7 @@ proc url_ModifyMountTargetSecurityGroups_605257(protocol: Scheme; host: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_ModifyMountTargetSecurityGroups_605256(path: JsonNode;
+proc validate_ModifyMountTargetSecurityGroups_606456(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Modifies the set of security groups in effect for a mount target.</p> <p>When you create a mount target, Amazon EFS also creates a new network interface. For more information, see <a>CreateMountTarget</a>. This operation replaces the security groups in effect for the network interface associated with a mount target, with the <code>SecurityGroups</code> provided in the request. This operation requires that the network interface of the mount target has been created and the lifecycle state of the mount target is not <code>deleted</code>. </p> <p>The operation requires permissions for the following actions:</p> <ul> <li> <p> <code>elasticfilesystem:ModifyMountTargetSecurityGroups</code> action on the mount target's file system. </p> </li> <li> <p> <code>ec2:ModifyNetworkInterfaceAttribute</code> action on the mount target's network interface. </p> </li> </ul>
   ## 
@@ -2289,11 +2289,11 @@ proc validate_ModifyMountTargetSecurityGroups_605256(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `MountTargetId` field"
-  var valid_605258 = path.getOrDefault("MountTargetId")
-  valid_605258 = validateParameter(valid_605258, JString, required = true,
+  var valid_606458 = path.getOrDefault("MountTargetId")
+  valid_606458 = validateParameter(valid_606458, JString, required = true,
                                  default = nil)
-  if valid_605258 != nil:
-    section.add "MountTargetId", valid_605258
+  if valid_606458 != nil:
+    section.add "MountTargetId", valid_606458
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2306,41 +2306,41 @@ proc validate_ModifyMountTargetSecurityGroups_605256(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605259 = header.getOrDefault("X-Amz-Signature")
-  valid_605259 = validateParameter(valid_605259, JString, required = false,
+  var valid_606459 = header.getOrDefault("X-Amz-Signature")
+  valid_606459 = validateParameter(valid_606459, JString, required = false,
                                  default = nil)
-  if valid_605259 != nil:
-    section.add "X-Amz-Signature", valid_605259
-  var valid_605260 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605260 = validateParameter(valid_605260, JString, required = false,
+  if valid_606459 != nil:
+    section.add "X-Amz-Signature", valid_606459
+  var valid_606460 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606460 = validateParameter(valid_606460, JString, required = false,
                                  default = nil)
-  if valid_605260 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605260
-  var valid_605261 = header.getOrDefault("X-Amz-Date")
-  valid_605261 = validateParameter(valid_605261, JString, required = false,
+  if valid_606460 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606460
+  var valid_606461 = header.getOrDefault("X-Amz-Date")
+  valid_606461 = validateParameter(valid_606461, JString, required = false,
                                  default = nil)
-  if valid_605261 != nil:
-    section.add "X-Amz-Date", valid_605261
-  var valid_605262 = header.getOrDefault("X-Amz-Credential")
-  valid_605262 = validateParameter(valid_605262, JString, required = false,
+  if valid_606461 != nil:
+    section.add "X-Amz-Date", valid_606461
+  var valid_606462 = header.getOrDefault("X-Amz-Credential")
+  valid_606462 = validateParameter(valid_606462, JString, required = false,
                                  default = nil)
-  if valid_605262 != nil:
-    section.add "X-Amz-Credential", valid_605262
-  var valid_605263 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605263 = validateParameter(valid_605263, JString, required = false,
+  if valid_606462 != nil:
+    section.add "X-Amz-Credential", valid_606462
+  var valid_606463 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606463 = validateParameter(valid_606463, JString, required = false,
                                  default = nil)
-  if valid_605263 != nil:
-    section.add "X-Amz-Security-Token", valid_605263
-  var valid_605264 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605264 = validateParameter(valid_605264, JString, required = false,
+  if valid_606463 != nil:
+    section.add "X-Amz-Security-Token", valid_606463
+  var valid_606464 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606464 = validateParameter(valid_606464, JString, required = false,
                                  default = nil)
-  if valid_605264 != nil:
-    section.add "X-Amz-Algorithm", valid_605264
-  var valid_605265 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605265 = validateParameter(valid_605265, JString, required = false,
+  if valid_606464 != nil:
+    section.add "X-Amz-Algorithm", valid_606464
+  var valid_606465 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606465 = validateParameter(valid_606465, JString, required = false,
                                  default = nil)
-  if valid_605265 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605265
+  if valid_606465 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606465
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2351,44 +2351,44 @@ proc validate_ModifyMountTargetSecurityGroups_605256(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605267: Call_ModifyMountTargetSecurityGroups_605255;
+proc call*(call_606467: Call_ModifyMountTargetSecurityGroups_606455;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Modifies the set of security groups in effect for a mount target.</p> <p>When you create a mount target, Amazon EFS also creates a new network interface. For more information, see <a>CreateMountTarget</a>. This operation replaces the security groups in effect for the network interface associated with a mount target, with the <code>SecurityGroups</code> provided in the request. This operation requires that the network interface of the mount target has been created and the lifecycle state of the mount target is not <code>deleted</code>. </p> <p>The operation requires permissions for the following actions:</p> <ul> <li> <p> <code>elasticfilesystem:ModifyMountTargetSecurityGroups</code> action on the mount target's file system. </p> </li> <li> <p> <code>ec2:ModifyNetworkInterfaceAttribute</code> action on the mount target's network interface. </p> </li> </ul>
   ## 
-  let valid = call_605267.validator(path, query, header, formData, body)
-  let scheme = call_605267.pickScheme
+  let valid = call_606467.validator(path, query, header, formData, body)
+  let scheme = call_606467.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605267.url(scheme.get, call_605267.host, call_605267.base,
-                         call_605267.route, valid.getOrDefault("path"),
+  let url = call_606467.url(scheme.get, call_606467.host, call_606467.base,
+                         call_606467.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605267, url, valid)
+  result = atozHook(call_606467, url, valid)
 
-proc call*(call_605268: Call_ModifyMountTargetSecurityGroups_605255;
+proc call*(call_606468: Call_ModifyMountTargetSecurityGroups_606455;
           MountTargetId: string; body: JsonNode): Recallable =
   ## modifyMountTargetSecurityGroups
   ## <p>Modifies the set of security groups in effect for a mount target.</p> <p>When you create a mount target, Amazon EFS also creates a new network interface. For more information, see <a>CreateMountTarget</a>. This operation replaces the security groups in effect for the network interface associated with a mount target, with the <code>SecurityGroups</code> provided in the request. This operation requires that the network interface of the mount target has been created and the lifecycle state of the mount target is not <code>deleted</code>. </p> <p>The operation requires permissions for the following actions:</p> <ul> <li> <p> <code>elasticfilesystem:ModifyMountTargetSecurityGroups</code> action on the mount target's file system. </p> </li> <li> <p> <code>ec2:ModifyNetworkInterfaceAttribute</code> action on the mount target's network interface. </p> </li> </ul>
   ##   MountTargetId: string (required)
   ##                : The ID of the mount target whose security groups you want to modify.
   ##   body: JObject (required)
-  var path_605269 = newJObject()
-  var body_605270 = newJObject()
-  add(path_605269, "MountTargetId", newJString(MountTargetId))
+  var path_606469 = newJObject()
+  var body_606470 = newJObject()
+  add(path_606469, "MountTargetId", newJString(MountTargetId))
   if body != nil:
-    body_605270 = body
-  result = call_605268.call(path_605269, nil, nil, nil, body_605270)
+    body_606470 = body
+  result = call_606468.call(path_606469, nil, nil, nil, body_606470)
 
-var modifyMountTargetSecurityGroups* = Call_ModifyMountTargetSecurityGroups_605255(
+var modifyMountTargetSecurityGroups* = Call_ModifyMountTargetSecurityGroups_606455(
     name: "modifyMountTargetSecurityGroups", meth: HttpMethod.HttpPut,
     host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/mount-targets/{MountTargetId}/security-groups",
-    validator: validate_ModifyMountTargetSecurityGroups_605256, base: "/",
-    url: url_ModifyMountTargetSecurityGroups_605257,
+    validator: validate_ModifyMountTargetSecurityGroups_606456, base: "/",
+    url: url_ModifyMountTargetSecurityGroups_606457,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeMountTargetSecurityGroups_605241 = ref object of OpenApiRestCall_604389
-proc url_DescribeMountTargetSecurityGroups_605243(protocol: Scheme; host: string;
+  Call_DescribeMountTargetSecurityGroups_606441 = ref object of OpenApiRestCall_605589
+proc url_DescribeMountTargetSecurityGroups_606443(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2409,7 +2409,7 @@ proc url_DescribeMountTargetSecurityGroups_605243(protocol: Scheme; host: string
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeMountTargetSecurityGroups_605242(path: JsonNode;
+proc validate_DescribeMountTargetSecurityGroups_606442(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the security groups currently in effect for a mount target. This operation requires that the network interface of the mount target has been created and the lifecycle state of the mount target is not <code>deleted</code>.</p> <p>This operation requires permissions for the following actions:</p> <ul> <li> <p> <code>elasticfilesystem:DescribeMountTargetSecurityGroups</code> action on the mount target's file system. </p> </li> <li> <p> <code>ec2:DescribeNetworkInterfaceAttribute</code> action on the mount target's network interface. </p> </li> </ul>
   ## 
@@ -2421,11 +2421,11 @@ proc validate_DescribeMountTargetSecurityGroups_605242(path: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `MountTargetId` field"
-  var valid_605244 = path.getOrDefault("MountTargetId")
-  valid_605244 = validateParameter(valid_605244, JString, required = true,
+  var valid_606444 = path.getOrDefault("MountTargetId")
+  valid_606444 = validateParameter(valid_606444, JString, required = true,
                                  default = nil)
-  if valid_605244 != nil:
-    section.add "MountTargetId", valid_605244
+  if valid_606444 != nil:
+    section.add "MountTargetId", valid_606444
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2438,81 +2438,81 @@ proc validate_DescribeMountTargetSecurityGroups_605242(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605245 = header.getOrDefault("X-Amz-Signature")
-  valid_605245 = validateParameter(valid_605245, JString, required = false,
+  var valid_606445 = header.getOrDefault("X-Amz-Signature")
+  valid_606445 = validateParameter(valid_606445, JString, required = false,
                                  default = nil)
-  if valid_605245 != nil:
-    section.add "X-Amz-Signature", valid_605245
-  var valid_605246 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605246 = validateParameter(valid_605246, JString, required = false,
+  if valid_606445 != nil:
+    section.add "X-Amz-Signature", valid_606445
+  var valid_606446 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606446 = validateParameter(valid_606446, JString, required = false,
                                  default = nil)
-  if valid_605246 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605246
-  var valid_605247 = header.getOrDefault("X-Amz-Date")
-  valid_605247 = validateParameter(valid_605247, JString, required = false,
+  if valid_606446 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606446
+  var valid_606447 = header.getOrDefault("X-Amz-Date")
+  valid_606447 = validateParameter(valid_606447, JString, required = false,
                                  default = nil)
-  if valid_605247 != nil:
-    section.add "X-Amz-Date", valid_605247
-  var valid_605248 = header.getOrDefault("X-Amz-Credential")
-  valid_605248 = validateParameter(valid_605248, JString, required = false,
+  if valid_606447 != nil:
+    section.add "X-Amz-Date", valid_606447
+  var valid_606448 = header.getOrDefault("X-Amz-Credential")
+  valid_606448 = validateParameter(valid_606448, JString, required = false,
                                  default = nil)
-  if valid_605248 != nil:
-    section.add "X-Amz-Credential", valid_605248
-  var valid_605249 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605249 = validateParameter(valid_605249, JString, required = false,
+  if valid_606448 != nil:
+    section.add "X-Amz-Credential", valid_606448
+  var valid_606449 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606449 = validateParameter(valid_606449, JString, required = false,
                                  default = nil)
-  if valid_605249 != nil:
-    section.add "X-Amz-Security-Token", valid_605249
-  var valid_605250 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605250 = validateParameter(valid_605250, JString, required = false,
+  if valid_606449 != nil:
+    section.add "X-Amz-Security-Token", valid_606449
+  var valid_606450 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606450 = validateParameter(valid_606450, JString, required = false,
                                  default = nil)
-  if valid_605250 != nil:
-    section.add "X-Amz-Algorithm", valid_605250
-  var valid_605251 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605251 = validateParameter(valid_605251, JString, required = false,
+  if valid_606450 != nil:
+    section.add "X-Amz-Algorithm", valid_606450
+  var valid_606451 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606451 = validateParameter(valid_606451, JString, required = false,
                                  default = nil)
-  if valid_605251 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605251
+  if valid_606451 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606451
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605252: Call_DescribeMountTargetSecurityGroups_605241;
+proc call*(call_606452: Call_DescribeMountTargetSecurityGroups_606441;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Returns the security groups currently in effect for a mount target. This operation requires that the network interface of the mount target has been created and the lifecycle state of the mount target is not <code>deleted</code>.</p> <p>This operation requires permissions for the following actions:</p> <ul> <li> <p> <code>elasticfilesystem:DescribeMountTargetSecurityGroups</code> action on the mount target's file system. </p> </li> <li> <p> <code>ec2:DescribeNetworkInterfaceAttribute</code> action on the mount target's network interface. </p> </li> </ul>
   ## 
-  let valid = call_605252.validator(path, query, header, formData, body)
-  let scheme = call_605252.pickScheme
+  let valid = call_606452.validator(path, query, header, formData, body)
+  let scheme = call_606452.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605252.url(scheme.get, call_605252.host, call_605252.base,
-                         call_605252.route, valid.getOrDefault("path"),
+  let url = call_606452.url(scheme.get, call_606452.host, call_606452.base,
+                         call_606452.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605252, url, valid)
+  result = atozHook(call_606452, url, valid)
 
-proc call*(call_605253: Call_DescribeMountTargetSecurityGroups_605241;
+proc call*(call_606453: Call_DescribeMountTargetSecurityGroups_606441;
           MountTargetId: string): Recallable =
   ## describeMountTargetSecurityGroups
   ## <p>Returns the security groups currently in effect for a mount target. This operation requires that the network interface of the mount target has been created and the lifecycle state of the mount target is not <code>deleted</code>.</p> <p>This operation requires permissions for the following actions:</p> <ul> <li> <p> <code>elasticfilesystem:DescribeMountTargetSecurityGroups</code> action on the mount target's file system. </p> </li> <li> <p> <code>ec2:DescribeNetworkInterfaceAttribute</code> action on the mount target's network interface. </p> </li> </ul>
   ##   MountTargetId: string (required)
   ##                : The ID of the mount target whose security groups you want to retrieve.
-  var path_605254 = newJObject()
-  add(path_605254, "MountTargetId", newJString(MountTargetId))
-  result = call_605253.call(path_605254, nil, nil, nil, nil)
+  var path_606454 = newJObject()
+  add(path_606454, "MountTargetId", newJString(MountTargetId))
+  result = call_606453.call(path_606454, nil, nil, nil, nil)
 
-var describeMountTargetSecurityGroups* = Call_DescribeMountTargetSecurityGroups_605241(
+var describeMountTargetSecurityGroups* = Call_DescribeMountTargetSecurityGroups_606441(
     name: "describeMountTargetSecurityGroups", meth: HttpMethod.HttpGet,
     host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/mount-targets/{MountTargetId}/security-groups",
-    validator: validate_DescribeMountTargetSecurityGroups_605242, base: "/",
-    url: url_DescribeMountTargetSecurityGroups_605243,
+    validator: validate_DescribeMountTargetSecurityGroups_606442, base: "/",
+    url: url_DescribeMountTargetSecurityGroups_606443,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTags_605271 = ref object of OpenApiRestCall_604389
-proc url_DescribeTags_605273(protocol: Scheme; host: string; base: string;
+  Call_DescribeTags_606471 = ref object of OpenApiRestCall_605589
+proc url_DescribeTags_606473(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2533,7 +2533,7 @@ proc url_DescribeTags_605273(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeTags_605272(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeTags_606472(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the tags associated with a file system. The order of tags returned in the response of one <code>DescribeTags</code> call and the order of tags returned across the responses of a multiple-call iteration (when using pagination) is unspecified. </p> <p> This operation requires permissions for the <code>elasticfilesystem:DescribeTags</code> action. </p>
   ## 
@@ -2545,11 +2545,11 @@ proc validate_DescribeTags_605272(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `FileSystemId` field"
-  var valid_605274 = path.getOrDefault("FileSystemId")
-  valid_605274 = validateParameter(valid_605274, JString, required = true,
+  var valid_606474 = path.getOrDefault("FileSystemId")
+  valid_606474 = validateParameter(valid_606474, JString, required = true,
                                  default = nil)
-  if valid_605274 != nil:
-    section.add "FileSystemId", valid_605274
+  if valid_606474 != nil:
+    section.add "FileSystemId", valid_606474
   result.add "path", section
   ## parameters in `query` object:
   ##   Marker: JString
@@ -2557,15 +2557,15 @@ proc validate_DescribeTags_605272(path: JsonNode; query: JsonNode; header: JsonN
   ##   MaxItems: JInt
   ##           : (Optional) The maximum number of file system tags to return in the response. Currently, this number is automatically set to 100, and other values are ignored. The response is paginated at 100 per page if you have more than 100 tags.
   section = newJObject()
-  var valid_605275 = query.getOrDefault("Marker")
-  valid_605275 = validateParameter(valid_605275, JString, required = false,
+  var valid_606475 = query.getOrDefault("Marker")
+  valid_606475 = validateParameter(valid_606475, JString, required = false,
                                  default = nil)
-  if valid_605275 != nil:
-    section.add "Marker", valid_605275
-  var valid_605276 = query.getOrDefault("MaxItems")
-  valid_605276 = validateParameter(valid_605276, JInt, required = false, default = nil)
-  if valid_605276 != nil:
-    section.add "MaxItems", valid_605276
+  if valid_606475 != nil:
+    section.add "Marker", valid_606475
+  var valid_606476 = query.getOrDefault("MaxItems")
+  valid_606476 = validateParameter(valid_606476, JInt, required = false, default = nil)
+  if valid_606476 != nil:
+    section.add "MaxItems", valid_606476
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2576,61 +2576,61 @@ proc validate_DescribeTags_605272(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605277 = header.getOrDefault("X-Amz-Signature")
-  valid_605277 = validateParameter(valid_605277, JString, required = false,
+  var valid_606477 = header.getOrDefault("X-Amz-Signature")
+  valid_606477 = validateParameter(valid_606477, JString, required = false,
                                  default = nil)
-  if valid_605277 != nil:
-    section.add "X-Amz-Signature", valid_605277
-  var valid_605278 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605278 = validateParameter(valid_605278, JString, required = false,
+  if valid_606477 != nil:
+    section.add "X-Amz-Signature", valid_606477
+  var valid_606478 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606478 = validateParameter(valid_606478, JString, required = false,
                                  default = nil)
-  if valid_605278 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605278
-  var valid_605279 = header.getOrDefault("X-Amz-Date")
-  valid_605279 = validateParameter(valid_605279, JString, required = false,
+  if valid_606478 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606478
+  var valid_606479 = header.getOrDefault("X-Amz-Date")
+  valid_606479 = validateParameter(valid_606479, JString, required = false,
                                  default = nil)
-  if valid_605279 != nil:
-    section.add "X-Amz-Date", valid_605279
-  var valid_605280 = header.getOrDefault("X-Amz-Credential")
-  valid_605280 = validateParameter(valid_605280, JString, required = false,
+  if valid_606479 != nil:
+    section.add "X-Amz-Date", valid_606479
+  var valid_606480 = header.getOrDefault("X-Amz-Credential")
+  valid_606480 = validateParameter(valid_606480, JString, required = false,
                                  default = nil)
-  if valid_605280 != nil:
-    section.add "X-Amz-Credential", valid_605280
-  var valid_605281 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605281 = validateParameter(valid_605281, JString, required = false,
+  if valid_606480 != nil:
+    section.add "X-Amz-Credential", valid_606480
+  var valid_606481 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606481 = validateParameter(valid_606481, JString, required = false,
                                  default = nil)
-  if valid_605281 != nil:
-    section.add "X-Amz-Security-Token", valid_605281
-  var valid_605282 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605282 = validateParameter(valid_605282, JString, required = false,
+  if valid_606481 != nil:
+    section.add "X-Amz-Security-Token", valid_606481
+  var valid_606482 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606482 = validateParameter(valid_606482, JString, required = false,
                                  default = nil)
-  if valid_605282 != nil:
-    section.add "X-Amz-Algorithm", valid_605282
-  var valid_605283 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605283 = validateParameter(valid_605283, JString, required = false,
+  if valid_606482 != nil:
+    section.add "X-Amz-Algorithm", valid_606482
+  var valid_606483 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606483 = validateParameter(valid_606483, JString, required = false,
                                  default = nil)
-  if valid_605283 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605283
+  if valid_606483 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606483
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605284: Call_DescribeTags_605271; path: JsonNode; query: JsonNode;
+proc call*(call_606484: Call_DescribeTags_606471; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the tags associated with a file system. The order of tags returned in the response of one <code>DescribeTags</code> call and the order of tags returned across the responses of a multiple-call iteration (when using pagination) is unspecified. </p> <p> This operation requires permissions for the <code>elasticfilesystem:DescribeTags</code> action. </p>
   ## 
-  let valid = call_605284.validator(path, query, header, formData, body)
-  let scheme = call_605284.pickScheme
+  let valid = call_606484.validator(path, query, header, formData, body)
+  let scheme = call_606484.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605284.url(scheme.get, call_605284.host, call_605284.base,
-                         call_605284.route, valid.getOrDefault("path"),
+  let url = call_606484.url(scheme.get, call_606484.host, call_606484.base,
+                         call_606484.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605284, url, valid)
+  result = atozHook(call_606484, url, valid)
 
-proc call*(call_605285: Call_DescribeTags_605271; FileSystemId: string;
+proc call*(call_606485: Call_DescribeTags_606471; FileSystemId: string;
           Marker: string = ""; MaxItems: int = 0): Recallable =
   ## describeTags
   ## <p>Returns the tags associated with a file system. The order of tags returned in the response of one <code>DescribeTags</code> call and the order of tags returned across the responses of a multiple-call iteration (when using pagination) is unspecified. </p> <p> This operation requires permissions for the <code>elasticfilesystem:DescribeTags</code> action. </p>
@@ -2640,20 +2640,20 @@ proc call*(call_605285: Call_DescribeTags_605271; FileSystemId: string;
   ##           : (Optional) The maximum number of file system tags to return in the response. Currently, this number is automatically set to 100, and other values are ignored. The response is paginated at 100 per page if you have more than 100 tags.
   ##   FileSystemId: string (required)
   ##               : The ID of the file system whose tag set you want to retrieve.
-  var path_605286 = newJObject()
-  var query_605287 = newJObject()
-  add(query_605287, "Marker", newJString(Marker))
-  add(query_605287, "MaxItems", newJInt(MaxItems))
-  add(path_605286, "FileSystemId", newJString(FileSystemId))
-  result = call_605285.call(path_605286, query_605287, nil, nil, nil)
+  var path_606486 = newJObject()
+  var query_606487 = newJObject()
+  add(query_606487, "Marker", newJString(Marker))
+  add(query_606487, "MaxItems", newJInt(MaxItems))
+  add(path_606486, "FileSystemId", newJString(FileSystemId))
+  result = call_606485.call(path_606486, query_606487, nil, nil, nil)
 
-var describeTags* = Call_DescribeTags_605271(name: "describeTags",
+var describeTags* = Call_DescribeTags_606471(name: "describeTags",
     meth: HttpMethod.HttpGet, host: "elasticfilesystem.amazonaws.com",
-    route: "/2015-02-01/tags/{FileSystemId}/", validator: validate_DescribeTags_605272,
-    base: "/", url: url_DescribeTags_605273, schemes: {Scheme.Https, Scheme.Http})
+    route: "/2015-02-01/tags/{FileSystemId}/", validator: validate_DescribeTags_606472,
+    base: "/", url: url_DescribeTags_606473, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_605305 = ref object of OpenApiRestCall_604389
-proc url_TagResource_605307(protocol: Scheme; host: string; base: string;
+  Call_TagResource_606505 = ref object of OpenApiRestCall_605589
+proc url_TagResource_606507(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2673,7 +2673,7 @@ proc url_TagResource_605307(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_TagResource_605306(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_606506(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a tag for an EFS resource. You can create tags for EFS file systems and access points using this API operation.</p> <p>This operation requires permissions for the <code>elasticfilesystem:TagResource</code> action.</p>
   ## 
@@ -2685,11 +2685,11 @@ proc validate_TagResource_605306(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceId` field"
-  var valid_605308 = path.getOrDefault("ResourceId")
-  valid_605308 = validateParameter(valid_605308, JString, required = true,
+  var valid_606508 = path.getOrDefault("ResourceId")
+  valid_606508 = validateParameter(valid_606508, JString, required = true,
                                  default = nil)
-  if valid_605308 != nil:
-    section.add "ResourceId", valid_605308
+  if valid_606508 != nil:
+    section.add "ResourceId", valid_606508
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2702,41 +2702,41 @@ proc validate_TagResource_605306(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605309 = header.getOrDefault("X-Amz-Signature")
-  valid_605309 = validateParameter(valid_605309, JString, required = false,
+  var valid_606509 = header.getOrDefault("X-Amz-Signature")
+  valid_606509 = validateParameter(valid_606509, JString, required = false,
                                  default = nil)
-  if valid_605309 != nil:
-    section.add "X-Amz-Signature", valid_605309
-  var valid_605310 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605310 = validateParameter(valid_605310, JString, required = false,
+  if valid_606509 != nil:
+    section.add "X-Amz-Signature", valid_606509
+  var valid_606510 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606510 = validateParameter(valid_606510, JString, required = false,
                                  default = nil)
-  if valid_605310 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605310
-  var valid_605311 = header.getOrDefault("X-Amz-Date")
-  valid_605311 = validateParameter(valid_605311, JString, required = false,
+  if valid_606510 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606510
+  var valid_606511 = header.getOrDefault("X-Amz-Date")
+  valid_606511 = validateParameter(valid_606511, JString, required = false,
                                  default = nil)
-  if valid_605311 != nil:
-    section.add "X-Amz-Date", valid_605311
-  var valid_605312 = header.getOrDefault("X-Amz-Credential")
-  valid_605312 = validateParameter(valid_605312, JString, required = false,
+  if valid_606511 != nil:
+    section.add "X-Amz-Date", valid_606511
+  var valid_606512 = header.getOrDefault("X-Amz-Credential")
+  valid_606512 = validateParameter(valid_606512, JString, required = false,
                                  default = nil)
-  if valid_605312 != nil:
-    section.add "X-Amz-Credential", valid_605312
-  var valid_605313 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605313 = validateParameter(valid_605313, JString, required = false,
+  if valid_606512 != nil:
+    section.add "X-Amz-Credential", valid_606512
+  var valid_606513 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606513 = validateParameter(valid_606513, JString, required = false,
                                  default = nil)
-  if valid_605313 != nil:
-    section.add "X-Amz-Security-Token", valid_605313
-  var valid_605314 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605314 = validateParameter(valid_605314, JString, required = false,
+  if valid_606513 != nil:
+    section.add "X-Amz-Security-Token", valid_606513
+  var valid_606514 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606514 = validateParameter(valid_606514, JString, required = false,
                                  default = nil)
-  if valid_605314 != nil:
-    section.add "X-Amz-Algorithm", valid_605314
-  var valid_605315 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605315 = validateParameter(valid_605315, JString, required = false,
+  if valid_606514 != nil:
+    section.add "X-Amz-Algorithm", valid_606514
+  var valid_606515 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606515 = validateParameter(valid_606515, JString, required = false,
                                  default = nil)
-  if valid_605315 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605315
+  if valid_606515 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606515
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2747,40 +2747,40 @@ proc validate_TagResource_605306(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_605317: Call_TagResource_605305; path: JsonNode; query: JsonNode;
+proc call*(call_606517: Call_TagResource_606505; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a tag for an EFS resource. You can create tags for EFS file systems and access points using this API operation.</p> <p>This operation requires permissions for the <code>elasticfilesystem:TagResource</code> action.</p>
   ## 
-  let valid = call_605317.validator(path, query, header, formData, body)
-  let scheme = call_605317.pickScheme
+  let valid = call_606517.validator(path, query, header, formData, body)
+  let scheme = call_606517.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605317.url(scheme.get, call_605317.host, call_605317.base,
-                         call_605317.route, valid.getOrDefault("path"),
+  let url = call_606517.url(scheme.get, call_606517.host, call_606517.base,
+                         call_606517.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605317, url, valid)
+  result = atozHook(call_606517, url, valid)
 
-proc call*(call_605318: Call_TagResource_605305; ResourceId: string; body: JsonNode): Recallable =
+proc call*(call_606518: Call_TagResource_606505; ResourceId: string; body: JsonNode): Recallable =
   ## tagResource
   ## <p>Creates a tag for an EFS resource. You can create tags for EFS file systems and access points using this API operation.</p> <p>This operation requires permissions for the <code>elasticfilesystem:TagResource</code> action.</p>
   ##   ResourceId: string (required)
   ##             : The ID specifying the EFS resource that you want to create a tag for. 
   ##   body: JObject (required)
-  var path_605319 = newJObject()
-  var body_605320 = newJObject()
-  add(path_605319, "ResourceId", newJString(ResourceId))
+  var path_606519 = newJObject()
+  var body_606520 = newJObject()
+  add(path_606519, "ResourceId", newJString(ResourceId))
   if body != nil:
-    body_605320 = body
-  result = call_605318.call(path_605319, nil, nil, nil, body_605320)
+    body_606520 = body
+  result = call_606518.call(path_606519, nil, nil, nil, body_606520)
 
-var tagResource* = Call_TagResource_605305(name: "tagResource",
+var tagResource* = Call_TagResource_606505(name: "tagResource",
                                         meth: HttpMethod.HttpPost, host: "elasticfilesystem.amazonaws.com", route: "/2015-02-01/resource-tags/{ResourceId}",
-                                        validator: validate_TagResource_605306,
-                                        base: "/", url: url_TagResource_605307,
+                                        validator: validate_TagResource_606506,
+                                        base: "/", url: url_TagResource_606507,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_605288 = ref object of OpenApiRestCall_604389
-proc url_ListTagsForResource_605290(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_606488 = ref object of OpenApiRestCall_605589
+proc url_ListTagsForResource_606490(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2800,7 +2800,7 @@ proc url_ListTagsForResource_605290(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_ListTagsForResource_605289(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_606489(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Lists all tags for a top-level EFS resource. You must provide the ID of the resource that you want to retrieve the tags for.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeAccessPoints</code> action.</p>
@@ -2813,11 +2813,11 @@ proc validate_ListTagsForResource_605289(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceId` field"
-  var valid_605291 = path.getOrDefault("ResourceId")
-  valid_605291 = validateParameter(valid_605291, JString, required = true,
+  var valid_606491 = path.getOrDefault("ResourceId")
+  valid_606491 = validateParameter(valid_606491, JString, required = true,
                                  default = nil)
-  if valid_605291 != nil:
-    section.add "ResourceId", valid_605291
+  if valid_606491 != nil:
+    section.add "ResourceId", valid_606491
   result.add "path", section
   ## parameters in `query` object:
   ##   MaxResults: JInt
@@ -2825,15 +2825,15 @@ proc validate_ListTagsForResource_605289(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : You can use <code>NextToken</code> in a subsequent request to fetch the next page of access point descriptions if the response payload was paginated.
   section = newJObject()
-  var valid_605292 = query.getOrDefault("MaxResults")
-  valid_605292 = validateParameter(valid_605292, JInt, required = false, default = nil)
-  if valid_605292 != nil:
-    section.add "MaxResults", valid_605292
-  var valid_605293 = query.getOrDefault("NextToken")
-  valid_605293 = validateParameter(valid_605293, JString, required = false,
+  var valid_606492 = query.getOrDefault("MaxResults")
+  valid_606492 = validateParameter(valid_606492, JInt, required = false, default = nil)
+  if valid_606492 != nil:
+    section.add "MaxResults", valid_606492
+  var valid_606493 = query.getOrDefault("NextToken")
+  valid_606493 = validateParameter(valid_606493, JString, required = false,
                                  default = nil)
-  if valid_605293 != nil:
-    section.add "NextToken", valid_605293
+  if valid_606493 != nil:
+    section.add "NextToken", valid_606493
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2844,61 +2844,61 @@ proc validate_ListTagsForResource_605289(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605294 = header.getOrDefault("X-Amz-Signature")
-  valid_605294 = validateParameter(valid_605294, JString, required = false,
+  var valid_606494 = header.getOrDefault("X-Amz-Signature")
+  valid_606494 = validateParameter(valid_606494, JString, required = false,
                                  default = nil)
-  if valid_605294 != nil:
-    section.add "X-Amz-Signature", valid_605294
-  var valid_605295 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605295 = validateParameter(valid_605295, JString, required = false,
+  if valid_606494 != nil:
+    section.add "X-Amz-Signature", valid_606494
+  var valid_606495 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606495 = validateParameter(valid_606495, JString, required = false,
                                  default = nil)
-  if valid_605295 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605295
-  var valid_605296 = header.getOrDefault("X-Amz-Date")
-  valid_605296 = validateParameter(valid_605296, JString, required = false,
+  if valid_606495 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606495
+  var valid_606496 = header.getOrDefault("X-Amz-Date")
+  valid_606496 = validateParameter(valid_606496, JString, required = false,
                                  default = nil)
-  if valid_605296 != nil:
-    section.add "X-Amz-Date", valid_605296
-  var valid_605297 = header.getOrDefault("X-Amz-Credential")
-  valid_605297 = validateParameter(valid_605297, JString, required = false,
+  if valid_606496 != nil:
+    section.add "X-Amz-Date", valid_606496
+  var valid_606497 = header.getOrDefault("X-Amz-Credential")
+  valid_606497 = validateParameter(valid_606497, JString, required = false,
                                  default = nil)
-  if valid_605297 != nil:
-    section.add "X-Amz-Credential", valid_605297
-  var valid_605298 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605298 = validateParameter(valid_605298, JString, required = false,
+  if valid_606497 != nil:
+    section.add "X-Amz-Credential", valid_606497
+  var valid_606498 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606498 = validateParameter(valid_606498, JString, required = false,
                                  default = nil)
-  if valid_605298 != nil:
-    section.add "X-Amz-Security-Token", valid_605298
-  var valid_605299 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605299 = validateParameter(valid_605299, JString, required = false,
+  if valid_606498 != nil:
+    section.add "X-Amz-Security-Token", valid_606498
+  var valid_606499 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606499 = validateParameter(valid_606499, JString, required = false,
                                  default = nil)
-  if valid_605299 != nil:
-    section.add "X-Amz-Algorithm", valid_605299
-  var valid_605300 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605300 = validateParameter(valid_605300, JString, required = false,
+  if valid_606499 != nil:
+    section.add "X-Amz-Algorithm", valid_606499
+  var valid_606500 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606500 = validateParameter(valid_606500, JString, required = false,
                                  default = nil)
-  if valid_605300 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605300
+  if valid_606500 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606500
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_605301: Call_ListTagsForResource_605288; path: JsonNode;
+proc call*(call_606501: Call_ListTagsForResource_606488; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists all tags for a top-level EFS resource. You must provide the ID of the resource that you want to retrieve the tags for.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeAccessPoints</code> action.</p>
   ## 
-  let valid = call_605301.validator(path, query, header, formData, body)
-  let scheme = call_605301.pickScheme
+  let valid = call_606501.validator(path, query, header, formData, body)
+  let scheme = call_606501.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605301.url(scheme.get, call_605301.host, call_605301.base,
-                         call_605301.route, valid.getOrDefault("path"),
+  let url = call_606501.url(scheme.get, call_606501.host, call_606501.base,
+                         call_606501.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605301, url, valid)
+  result = atozHook(call_606501, url, valid)
 
-proc call*(call_605302: Call_ListTagsForResource_605288; ResourceId: string;
+proc call*(call_606502: Call_ListTagsForResource_606488; ResourceId: string;
           MaxResults: int = 0; NextToken: string = ""): Recallable =
   ## listTagsForResource
   ## <p>Lists all tags for a top-level EFS resource. You must provide the ID of the resource that you want to retrieve the tags for.</p> <p>This operation requires permissions for the <code>elasticfilesystem:DescribeAccessPoints</code> action.</p>
@@ -2908,22 +2908,22 @@ proc call*(call_605302: Call_ListTagsForResource_605288; ResourceId: string;
   ##             : Specifies the EFS resource you want to retrieve tags for. You can retrieve tags for EFS file systems and access points using this API endpoint.
   ##   NextToken: string
   ##            : You can use <code>NextToken</code> in a subsequent request to fetch the next page of access point descriptions if the response payload was paginated.
-  var path_605303 = newJObject()
-  var query_605304 = newJObject()
-  add(query_605304, "MaxResults", newJInt(MaxResults))
-  add(path_605303, "ResourceId", newJString(ResourceId))
-  add(query_605304, "NextToken", newJString(NextToken))
-  result = call_605302.call(path_605303, query_605304, nil, nil, nil)
+  var path_606503 = newJObject()
+  var query_606504 = newJObject()
+  add(query_606504, "MaxResults", newJInt(MaxResults))
+  add(path_606503, "ResourceId", newJString(ResourceId))
+  add(query_606504, "NextToken", newJString(NextToken))
+  result = call_606502.call(path_606503, query_606504, nil, nil, nil)
 
-var listTagsForResource* = Call_ListTagsForResource_605288(
+var listTagsForResource* = Call_ListTagsForResource_606488(
     name: "listTagsForResource", meth: HttpMethod.HttpGet,
     host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/resource-tags/{ResourceId}",
-    validator: validate_ListTagsForResource_605289, base: "/",
-    url: url_ListTagsForResource_605290, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_606489, base: "/",
+    url: url_ListTagsForResource_606490, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_605321 = ref object of OpenApiRestCall_604389
-proc url_UntagResource_605323(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_606521 = ref object of OpenApiRestCall_605589
+proc url_UntagResource_606523(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2943,7 +2943,7 @@ proc url_UntagResource_605323(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UntagResource_605322(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_606522(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes tags from an EFS resource. You can remove tags from EFS file systems and access points using this API operation.</p> <p>This operation requires permissions for the <code>elasticfilesystem:UntagResource</code> action.</p>
   ## 
@@ -2955,11 +2955,11 @@ proc validate_UntagResource_605322(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `ResourceId` field"
-  var valid_605324 = path.getOrDefault("ResourceId")
-  valid_605324 = validateParameter(valid_605324, JString, required = true,
+  var valid_606524 = path.getOrDefault("ResourceId")
+  valid_606524 = validateParameter(valid_606524, JString, required = true,
                                  default = nil)
-  if valid_605324 != nil:
-    section.add "ResourceId", valid_605324
+  if valid_606524 != nil:
+    section.add "ResourceId", valid_606524
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -2972,41 +2972,41 @@ proc validate_UntagResource_605322(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605325 = header.getOrDefault("X-Amz-Signature")
-  valid_605325 = validateParameter(valid_605325, JString, required = false,
+  var valid_606525 = header.getOrDefault("X-Amz-Signature")
+  valid_606525 = validateParameter(valid_606525, JString, required = false,
                                  default = nil)
-  if valid_605325 != nil:
-    section.add "X-Amz-Signature", valid_605325
-  var valid_605326 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605326 = validateParameter(valid_605326, JString, required = false,
+  if valid_606525 != nil:
+    section.add "X-Amz-Signature", valid_606525
+  var valid_606526 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_606526 = validateParameter(valid_606526, JString, required = false,
                                  default = nil)
-  if valid_605326 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605326
-  var valid_605327 = header.getOrDefault("X-Amz-Date")
-  valid_605327 = validateParameter(valid_605327, JString, required = false,
+  if valid_606526 != nil:
+    section.add "X-Amz-Content-Sha256", valid_606526
+  var valid_606527 = header.getOrDefault("X-Amz-Date")
+  valid_606527 = validateParameter(valid_606527, JString, required = false,
                                  default = nil)
-  if valid_605327 != nil:
-    section.add "X-Amz-Date", valid_605327
-  var valid_605328 = header.getOrDefault("X-Amz-Credential")
-  valid_605328 = validateParameter(valid_605328, JString, required = false,
+  if valid_606527 != nil:
+    section.add "X-Amz-Date", valid_606527
+  var valid_606528 = header.getOrDefault("X-Amz-Credential")
+  valid_606528 = validateParameter(valid_606528, JString, required = false,
                                  default = nil)
-  if valid_605328 != nil:
-    section.add "X-Amz-Credential", valid_605328
-  var valid_605329 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605329 = validateParameter(valid_605329, JString, required = false,
+  if valid_606528 != nil:
+    section.add "X-Amz-Credential", valid_606528
+  var valid_606529 = header.getOrDefault("X-Amz-Security-Token")
+  valid_606529 = validateParameter(valid_606529, JString, required = false,
                                  default = nil)
-  if valid_605329 != nil:
-    section.add "X-Amz-Security-Token", valid_605329
-  var valid_605330 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605330 = validateParameter(valid_605330, JString, required = false,
+  if valid_606529 != nil:
+    section.add "X-Amz-Security-Token", valid_606529
+  var valid_606530 = header.getOrDefault("X-Amz-Algorithm")
+  valid_606530 = validateParameter(valid_606530, JString, required = false,
                                  default = nil)
-  if valid_605330 != nil:
-    section.add "X-Amz-Algorithm", valid_605330
-  var valid_605331 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605331 = validateParameter(valid_605331, JString, required = false,
+  if valid_606530 != nil:
+    section.add "X-Amz-Algorithm", valid_606530
+  var valid_606531 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_606531 = validateParameter(valid_606531, JString, required = false,
                                  default = nil)
-  if valid_605331 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605331
+  if valid_606531 != nil:
+    section.add "X-Amz-SignedHeaders", valid_606531
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3017,36 +3017,36 @@ proc validate_UntagResource_605322(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_605333: Call_UntagResource_605321; path: JsonNode; query: JsonNode;
+proc call*(call_606533: Call_UntagResource_606521; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes tags from an EFS resource. You can remove tags from EFS file systems and access points using this API operation.</p> <p>This operation requires permissions for the <code>elasticfilesystem:UntagResource</code> action.</p>
   ## 
-  let valid = call_605333.validator(path, query, header, formData, body)
-  let scheme = call_605333.pickScheme
+  let valid = call_606533.validator(path, query, header, formData, body)
+  let scheme = call_606533.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605333.url(scheme.get, call_605333.host, call_605333.base,
-                         call_605333.route, valid.getOrDefault("path"),
+  let url = call_606533.url(scheme.get, call_606533.host, call_606533.base,
+                         call_606533.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605333, url, valid)
+  result = atozHook(call_606533, url, valid)
 
-proc call*(call_605334: Call_UntagResource_605321; ResourceId: string; body: JsonNode): Recallable =
+proc call*(call_606534: Call_UntagResource_606521; ResourceId: string; body: JsonNode): Recallable =
   ## untagResource
   ## <p>Removes tags from an EFS resource. You can remove tags from EFS file systems and access points using this API operation.</p> <p>This operation requires permissions for the <code>elasticfilesystem:UntagResource</code> action.</p>
   ##   ResourceId: string (required)
   ##             : Specifies the EFS resource that you want to remove tags from.
   ##   body: JObject (required)
-  var path_605335 = newJObject()
-  var body_605336 = newJObject()
-  add(path_605335, "ResourceId", newJString(ResourceId))
+  var path_606535 = newJObject()
+  var body_606536 = newJObject()
+  add(path_606535, "ResourceId", newJString(ResourceId))
   if body != nil:
-    body_605336 = body
-  result = call_605334.call(path_605335, nil, nil, nil, body_605336)
+    body_606536 = body
+  result = call_606534.call(path_606535, nil, nil, nil, body_606536)
 
-var untagResource* = Call_UntagResource_605321(name: "untagResource",
+var untagResource* = Call_UntagResource_606521(name: "untagResource",
     meth: HttpMethod.HttpDelete, host: "elasticfilesystem.amazonaws.com",
     route: "/2015-02-01/resource-tags/{ResourceId}",
-    validator: validate_UntagResource_605322, base: "/", url: url_UntagResource_605323,
+    validator: validate_UntagResource_606522, base: "/", url: url_UntagResource_606523,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -3092,5 +3092,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)

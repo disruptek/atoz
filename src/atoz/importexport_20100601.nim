@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_601373 = ref object of OpenApiRestCall
+  OpenApiRestCall_605573 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_601373](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_605573](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_601373): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_605573): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -115,8 +115,8 @@ const
   awsServiceName = "importexport"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_PostCancelJob_601982 = ref object of OpenApiRestCall_601373
-proc url_PostCancelJob_601984(protocol: Scheme; host: string; base: string;
+  Call_PostCancelJob_606182 = ref object of OpenApiRestCall_605573
+proc url_PostCancelJob_606184(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -128,7 +128,7 @@ proc url_PostCancelJob_601984(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostCancelJob_601983(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostCancelJob_606183(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
   ## 
@@ -148,46 +148,46 @@ proc validate_PostCancelJob_601983(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_601985 = query.getOrDefault("Signature")
-  valid_601985 = validateParameter(valid_601985, JString, required = true,
+  var valid_606185 = query.getOrDefault("Signature")
+  valid_606185 = validateParameter(valid_606185, JString, required = true,
                                  default = nil)
-  if valid_601985 != nil:
-    section.add "Signature", valid_601985
-  var valid_601986 = query.getOrDefault("AWSAccessKeyId")
-  valid_601986 = validateParameter(valid_601986, JString, required = true,
+  if valid_606185 != nil:
+    section.add "Signature", valid_606185
+  var valid_606186 = query.getOrDefault("AWSAccessKeyId")
+  valid_606186 = validateParameter(valid_606186, JString, required = true,
                                  default = nil)
-  if valid_601986 != nil:
-    section.add "AWSAccessKeyId", valid_601986
-  var valid_601987 = query.getOrDefault("SignatureMethod")
-  valid_601987 = validateParameter(valid_601987, JString, required = true,
+  if valid_606186 != nil:
+    section.add "AWSAccessKeyId", valid_606186
+  var valid_606187 = query.getOrDefault("SignatureMethod")
+  valid_606187 = validateParameter(valid_606187, JString, required = true,
                                  default = nil)
-  if valid_601987 != nil:
-    section.add "SignatureMethod", valid_601987
-  var valid_601988 = query.getOrDefault("Timestamp")
-  valid_601988 = validateParameter(valid_601988, JString, required = true,
+  if valid_606187 != nil:
+    section.add "SignatureMethod", valid_606187
+  var valid_606188 = query.getOrDefault("Timestamp")
+  valid_606188 = validateParameter(valid_606188, JString, required = true,
                                  default = nil)
-  if valid_601988 != nil:
-    section.add "Timestamp", valid_601988
-  var valid_601989 = query.getOrDefault("Action")
-  valid_601989 = validateParameter(valid_601989, JString, required = true,
+  if valid_606188 != nil:
+    section.add "Timestamp", valid_606188
+  var valid_606189 = query.getOrDefault("Action")
+  valid_606189 = validateParameter(valid_606189, JString, required = true,
                                  default = newJString("CancelJob"))
-  if valid_601989 != nil:
-    section.add "Action", valid_601989
-  var valid_601990 = query.getOrDefault("Operation")
-  valid_601990 = validateParameter(valid_601990, JString, required = true,
+  if valid_606189 != nil:
+    section.add "Action", valid_606189
+  var valid_606190 = query.getOrDefault("Operation")
+  valid_606190 = validateParameter(valid_606190, JString, required = true,
                                  default = newJString("CancelJob"))
-  if valid_601990 != nil:
-    section.add "Operation", valid_601990
-  var valid_601991 = query.getOrDefault("Version")
-  valid_601991 = validateParameter(valid_601991, JString, required = true,
+  if valid_606190 != nil:
+    section.add "Operation", valid_606190
+  var valid_606191 = query.getOrDefault("Version")
+  valid_606191 = validateParameter(valid_606191, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_601991 != nil:
-    section.add "Version", valid_601991
-  var valid_601992 = query.getOrDefault("SignatureVersion")
-  valid_601992 = validateParameter(valid_601992, JString, required = true,
+  if valid_606191 != nil:
+    section.add "Version", valid_606191
+  var valid_606192 = query.getOrDefault("SignatureVersion")
+  valid_606192 = validateParameter(valid_606192, JString, required = true,
                                  default = nil)
-  if valid_601992 != nil:
-    section.add "SignatureVersion", valid_601992
+  if valid_606192 != nil:
+    section.add "SignatureVersion", valid_606192
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -197,36 +197,36 @@ proc validate_PostCancelJob_601983(path: JsonNode; query: JsonNode; header: Json
   ##   JobId: JString (required)
   ##        : A unique identifier which refers to a particular job.
   section = newJObject()
-  var valid_601993 = formData.getOrDefault("APIVersion")
-  valid_601993 = validateParameter(valid_601993, JString, required = false,
+  var valid_606193 = formData.getOrDefault("APIVersion")
+  valid_606193 = validateParameter(valid_606193, JString, required = false,
                                  default = nil)
-  if valid_601993 != nil:
-    section.add "APIVersion", valid_601993
+  if valid_606193 != nil:
+    section.add "APIVersion", valid_606193
   assert formData != nil,
         "formData argument is necessary due to required `JobId` field"
-  var valid_601994 = formData.getOrDefault("JobId")
-  valid_601994 = validateParameter(valid_601994, JString, required = true,
+  var valid_606194 = formData.getOrDefault("JobId")
+  valid_606194 = validateParameter(valid_606194, JString, required = true,
                                  default = nil)
-  if valid_601994 != nil:
-    section.add "JobId", valid_601994
+  if valid_606194 != nil:
+    section.add "JobId", valid_606194
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_601995: Call_PostCancelJob_601982; path: JsonNode; query: JsonNode;
+proc call*(call_606195: Call_PostCancelJob_606182; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
   ## 
-  let valid = call_601995.validator(path, query, header, formData, body)
-  let scheme = call_601995.pickScheme
+  let valid = call_606195.validator(path, query, header, formData, body)
+  let scheme = call_606195.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601995.url(scheme.get, call_601995.host, call_601995.base,
-                         call_601995.route, valid.getOrDefault("path"),
+  let url = call_606195.url(scheme.get, call_606195.host, call_606195.base,
+                         call_606195.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601995, url, valid)
+  result = atozHook(call_606195, url, valid)
 
-proc call*(call_601996: Call_PostCancelJob_601982; Signature: string;
+proc call*(call_606196: Call_PostCancelJob_606182; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Timestamp: string;
           JobId: string; SignatureVersion: string; APIVersion: string = "";
           Action: string = "CancelJob"; Operation: string = "CancelJob";
@@ -245,28 +245,28 @@ proc call*(call_601996: Call_PostCancelJob_601982; Signature: string;
   ##        : A unique identifier which refers to a particular job.
   ##   Version: string (required)
   ##   SignatureVersion: string (required)
-  var query_601997 = newJObject()
-  var formData_601998 = newJObject()
-  add(query_601997, "Signature", newJString(Signature))
-  add(query_601997, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601997, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_601998, "APIVersion", newJString(APIVersion))
-  add(query_601997, "Timestamp", newJString(Timestamp))
-  add(query_601997, "Action", newJString(Action))
-  add(query_601997, "Operation", newJString(Operation))
-  add(formData_601998, "JobId", newJString(JobId))
-  add(query_601997, "Version", newJString(Version))
-  add(query_601997, "SignatureVersion", newJString(SignatureVersion))
-  result = call_601996.call(nil, query_601997, nil, formData_601998, nil)
+  var query_606197 = newJObject()
+  var formData_606198 = newJObject()
+  add(query_606197, "Signature", newJString(Signature))
+  add(query_606197, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606197, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_606198, "APIVersion", newJString(APIVersion))
+  add(query_606197, "Timestamp", newJString(Timestamp))
+  add(query_606197, "Action", newJString(Action))
+  add(query_606197, "Operation", newJString(Operation))
+  add(formData_606198, "JobId", newJString(JobId))
+  add(query_606197, "Version", newJString(Version))
+  add(query_606197, "SignatureVersion", newJString(SignatureVersion))
+  result = call_606196.call(nil, query_606197, nil, formData_606198, nil)
 
-var postCancelJob* = Call_PostCancelJob_601982(name: "postCancelJob",
+var postCancelJob* = Call_PostCancelJob_606182(name: "postCancelJob",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=CancelJob&Action=CancelJob",
-    validator: validate_PostCancelJob_601983, base: "/", url: url_PostCancelJob_601984,
+    validator: validate_PostCancelJob_606183, base: "/", url: url_PostCancelJob_606184,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCancelJob_601711 = ref object of OpenApiRestCall_601373
-proc url_GetCancelJob_601713(protocol: Scheme; host: string; base: string;
+  Call_GetCancelJob_605911 = ref object of OpenApiRestCall_605573
+proc url_GetCancelJob_605913(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -278,7 +278,7 @@ proc url_GetCancelJob_601713(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetCancelJob_601712(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetCancelJob_605912(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
   ## 
@@ -302,56 +302,56 @@ proc validate_GetCancelJob_601712(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_601825 = query.getOrDefault("Signature")
-  valid_601825 = validateParameter(valid_601825, JString, required = true,
+  var valid_606025 = query.getOrDefault("Signature")
+  valid_606025 = validateParameter(valid_606025, JString, required = true,
                                  default = nil)
-  if valid_601825 != nil:
-    section.add "Signature", valid_601825
-  var valid_601826 = query.getOrDefault("AWSAccessKeyId")
-  valid_601826 = validateParameter(valid_601826, JString, required = true,
+  if valid_606025 != nil:
+    section.add "Signature", valid_606025
+  var valid_606026 = query.getOrDefault("AWSAccessKeyId")
+  valid_606026 = validateParameter(valid_606026, JString, required = true,
                                  default = nil)
-  if valid_601826 != nil:
-    section.add "AWSAccessKeyId", valid_601826
-  var valid_601827 = query.getOrDefault("SignatureMethod")
-  valid_601827 = validateParameter(valid_601827, JString, required = true,
+  if valid_606026 != nil:
+    section.add "AWSAccessKeyId", valid_606026
+  var valid_606027 = query.getOrDefault("SignatureMethod")
+  valid_606027 = validateParameter(valid_606027, JString, required = true,
                                  default = nil)
-  if valid_601827 != nil:
-    section.add "SignatureMethod", valid_601827
-  var valid_601828 = query.getOrDefault("Timestamp")
-  valid_601828 = validateParameter(valid_601828, JString, required = true,
+  if valid_606027 != nil:
+    section.add "SignatureMethod", valid_606027
+  var valid_606028 = query.getOrDefault("Timestamp")
+  valid_606028 = validateParameter(valid_606028, JString, required = true,
                                  default = nil)
-  if valid_601828 != nil:
-    section.add "Timestamp", valid_601828
-  var valid_601842 = query.getOrDefault("Action")
-  valid_601842 = validateParameter(valid_601842, JString, required = true,
+  if valid_606028 != nil:
+    section.add "Timestamp", valid_606028
+  var valid_606042 = query.getOrDefault("Action")
+  valid_606042 = validateParameter(valid_606042, JString, required = true,
                                  default = newJString("CancelJob"))
-  if valid_601842 != nil:
-    section.add "Action", valid_601842
-  var valid_601843 = query.getOrDefault("Operation")
-  valid_601843 = validateParameter(valid_601843, JString, required = true,
+  if valid_606042 != nil:
+    section.add "Action", valid_606042
+  var valid_606043 = query.getOrDefault("Operation")
+  valid_606043 = validateParameter(valid_606043, JString, required = true,
                                  default = newJString("CancelJob"))
-  if valid_601843 != nil:
-    section.add "Operation", valid_601843
-  var valid_601844 = query.getOrDefault("APIVersion")
-  valid_601844 = validateParameter(valid_601844, JString, required = false,
+  if valid_606043 != nil:
+    section.add "Operation", valid_606043
+  var valid_606044 = query.getOrDefault("APIVersion")
+  valid_606044 = validateParameter(valid_606044, JString, required = false,
                                  default = nil)
-  if valid_601844 != nil:
-    section.add "APIVersion", valid_601844
-  var valid_601845 = query.getOrDefault("Version")
-  valid_601845 = validateParameter(valid_601845, JString, required = true,
+  if valid_606044 != nil:
+    section.add "APIVersion", valid_606044
+  var valid_606045 = query.getOrDefault("Version")
+  valid_606045 = validateParameter(valid_606045, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_601845 != nil:
-    section.add "Version", valid_601845
-  var valid_601846 = query.getOrDefault("JobId")
-  valid_601846 = validateParameter(valid_601846, JString, required = true,
+  if valid_606045 != nil:
+    section.add "Version", valid_606045
+  var valid_606046 = query.getOrDefault("JobId")
+  valid_606046 = validateParameter(valid_606046, JString, required = true,
                                  default = nil)
-  if valid_601846 != nil:
-    section.add "JobId", valid_601846
-  var valid_601847 = query.getOrDefault("SignatureVersion")
-  valid_601847 = validateParameter(valid_601847, JString, required = true,
+  if valid_606046 != nil:
+    section.add "JobId", valid_606046
+  var valid_606047 = query.getOrDefault("SignatureVersion")
+  valid_606047 = validateParameter(valid_606047, JString, required = true,
                                  default = nil)
-  if valid_601847 != nil:
-    section.add "SignatureVersion", valid_601847
+  if valid_606047 != nil:
+    section.add "SignatureVersion", valid_606047
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -360,20 +360,20 @@ proc validate_GetCancelJob_601712(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_601870: Call_GetCancelJob_601711; path: JsonNode; query: JsonNode;
+proc call*(call_606070: Call_GetCancelJob_605911; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation cancels a specified job. Only the job owner can cancel it. The operation fails if the job has already started or is complete.
   ## 
-  let valid = call_601870.validator(path, query, header, formData, body)
-  let scheme = call_601870.pickScheme
+  let valid = call_606070.validator(path, query, header, formData, body)
+  let scheme = call_606070.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_601870.url(scheme.get, call_601870.host, call_601870.base,
-                         call_601870.route, valid.getOrDefault("path"),
+  let url = call_606070.url(scheme.get, call_606070.host, call_606070.base,
+                         call_606070.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_601870, url, valid)
+  result = atozHook(call_606070, url, valid)
 
-proc call*(call_601941: Call_GetCancelJob_601711; Signature: string;
+proc call*(call_606141: Call_GetCancelJob_605911; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Timestamp: string;
           JobId: string; SignatureVersion: string; Action: string = "CancelJob";
           Operation: string = "CancelJob"; APIVersion: string = "";
@@ -392,27 +392,27 @@ proc call*(call_601941: Call_GetCancelJob_601711; Signature: string;
   ##   JobId: string (required)
   ##        : A unique identifier which refers to a particular job.
   ##   SignatureVersion: string (required)
-  var query_601942 = newJObject()
-  add(query_601942, "Signature", newJString(Signature))
-  add(query_601942, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_601942, "SignatureMethod", newJString(SignatureMethod))
-  add(query_601942, "Timestamp", newJString(Timestamp))
-  add(query_601942, "Action", newJString(Action))
-  add(query_601942, "Operation", newJString(Operation))
-  add(query_601942, "APIVersion", newJString(APIVersion))
-  add(query_601942, "Version", newJString(Version))
-  add(query_601942, "JobId", newJString(JobId))
-  add(query_601942, "SignatureVersion", newJString(SignatureVersion))
-  result = call_601941.call(nil, query_601942, nil, nil, nil)
+  var query_606142 = newJObject()
+  add(query_606142, "Signature", newJString(Signature))
+  add(query_606142, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606142, "SignatureMethod", newJString(SignatureMethod))
+  add(query_606142, "Timestamp", newJString(Timestamp))
+  add(query_606142, "Action", newJString(Action))
+  add(query_606142, "Operation", newJString(Operation))
+  add(query_606142, "APIVersion", newJString(APIVersion))
+  add(query_606142, "Version", newJString(Version))
+  add(query_606142, "JobId", newJString(JobId))
+  add(query_606142, "SignatureVersion", newJString(SignatureVersion))
+  result = call_606141.call(nil, query_606142, nil, nil, nil)
 
-var getCancelJob* = Call_GetCancelJob_601711(name: "getCancelJob",
+var getCancelJob* = Call_GetCancelJob_605911(name: "getCancelJob",
     meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
     route: "/#Operation=CancelJob&Action=CancelJob",
-    validator: validate_GetCancelJob_601712, base: "/", url: url_GetCancelJob_601713,
+    validator: validate_GetCancelJob_605912, base: "/", url: url_GetCancelJob_605913,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostCreateJob_602018 = ref object of OpenApiRestCall_601373
-proc url_PostCreateJob_602020(protocol: Scheme; host: string; base: string;
+  Call_PostCreateJob_606218 = ref object of OpenApiRestCall_605573
+proc url_PostCreateJob_606220(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -424,7 +424,7 @@ proc url_PostCreateJob_602020(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostCreateJob_602019(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostCreateJob_606219(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
   ## 
@@ -444,46 +444,46 @@ proc validate_PostCreateJob_602019(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602021 = query.getOrDefault("Signature")
-  valid_602021 = validateParameter(valid_602021, JString, required = true,
+  var valid_606221 = query.getOrDefault("Signature")
+  valid_606221 = validateParameter(valid_606221, JString, required = true,
                                  default = nil)
-  if valid_602021 != nil:
-    section.add "Signature", valid_602021
-  var valid_602022 = query.getOrDefault("AWSAccessKeyId")
-  valid_602022 = validateParameter(valid_602022, JString, required = true,
+  if valid_606221 != nil:
+    section.add "Signature", valid_606221
+  var valid_606222 = query.getOrDefault("AWSAccessKeyId")
+  valid_606222 = validateParameter(valid_606222, JString, required = true,
                                  default = nil)
-  if valid_602022 != nil:
-    section.add "AWSAccessKeyId", valid_602022
-  var valid_602023 = query.getOrDefault("SignatureMethod")
-  valid_602023 = validateParameter(valid_602023, JString, required = true,
+  if valid_606222 != nil:
+    section.add "AWSAccessKeyId", valid_606222
+  var valid_606223 = query.getOrDefault("SignatureMethod")
+  valid_606223 = validateParameter(valid_606223, JString, required = true,
                                  default = nil)
-  if valid_602023 != nil:
-    section.add "SignatureMethod", valid_602023
-  var valid_602024 = query.getOrDefault("Timestamp")
-  valid_602024 = validateParameter(valid_602024, JString, required = true,
+  if valid_606223 != nil:
+    section.add "SignatureMethod", valid_606223
+  var valid_606224 = query.getOrDefault("Timestamp")
+  valid_606224 = validateParameter(valid_606224, JString, required = true,
                                  default = nil)
-  if valid_602024 != nil:
-    section.add "Timestamp", valid_602024
-  var valid_602025 = query.getOrDefault("Action")
-  valid_602025 = validateParameter(valid_602025, JString, required = true,
+  if valid_606224 != nil:
+    section.add "Timestamp", valid_606224
+  var valid_606225 = query.getOrDefault("Action")
+  valid_606225 = validateParameter(valid_606225, JString, required = true,
                                  default = newJString("CreateJob"))
-  if valid_602025 != nil:
-    section.add "Action", valid_602025
-  var valid_602026 = query.getOrDefault("Operation")
-  valid_602026 = validateParameter(valid_602026, JString, required = true,
+  if valid_606225 != nil:
+    section.add "Action", valid_606225
+  var valid_606226 = query.getOrDefault("Operation")
+  valid_606226 = validateParameter(valid_606226, JString, required = true,
                                  default = newJString("CreateJob"))
-  if valid_602026 != nil:
-    section.add "Operation", valid_602026
-  var valid_602027 = query.getOrDefault("Version")
-  valid_602027 = validateParameter(valid_602027, JString, required = true,
+  if valid_606226 != nil:
+    section.add "Operation", valid_606226
+  var valid_606227 = query.getOrDefault("Version")
+  valid_606227 = validateParameter(valid_606227, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602027 != nil:
-    section.add "Version", valid_602027
-  var valid_602028 = query.getOrDefault("SignatureVersion")
-  valid_602028 = validateParameter(valid_602028, JString, required = true,
+  if valid_606227 != nil:
+    section.add "Version", valid_606227
+  var valid_606228 = query.getOrDefault("SignatureVersion")
+  valid_606228 = validateParameter(valid_606228, JString, required = true,
                                  default = nil)
-  if valid_602028 != nil:
-    section.add "SignatureVersion", valid_602028
+  if valid_606228 != nil:
+    section.add "SignatureVersion", valid_606228
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -501,48 +501,48 @@ proc validate_PostCreateJob_602019(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `ValidateOnly` field"
-  var valid_602029 = formData.getOrDefault("ValidateOnly")
-  valid_602029 = validateParameter(valid_602029, JBool, required = true, default = nil)
-  if valid_602029 != nil:
-    section.add "ValidateOnly", valid_602029
-  var valid_602030 = formData.getOrDefault("APIVersion")
-  valid_602030 = validateParameter(valid_602030, JString, required = false,
+  var valid_606229 = formData.getOrDefault("ValidateOnly")
+  valid_606229 = validateParameter(valid_606229, JBool, required = true, default = nil)
+  if valid_606229 != nil:
+    section.add "ValidateOnly", valid_606229
+  var valid_606230 = formData.getOrDefault("APIVersion")
+  valid_606230 = validateParameter(valid_606230, JString, required = false,
                                  default = nil)
-  if valid_602030 != nil:
-    section.add "APIVersion", valid_602030
-  var valid_602031 = formData.getOrDefault("ManifestAddendum")
-  valid_602031 = validateParameter(valid_602031, JString, required = false,
+  if valid_606230 != nil:
+    section.add "APIVersion", valid_606230
+  var valid_606231 = formData.getOrDefault("ManifestAddendum")
+  valid_606231 = validateParameter(valid_606231, JString, required = false,
                                  default = nil)
-  if valid_602031 != nil:
-    section.add "ManifestAddendum", valid_602031
-  var valid_602032 = formData.getOrDefault("JobType")
-  valid_602032 = validateParameter(valid_602032, JString, required = true,
+  if valid_606231 != nil:
+    section.add "ManifestAddendum", valid_606231
+  var valid_606232 = formData.getOrDefault("JobType")
+  valid_606232 = validateParameter(valid_606232, JString, required = true,
                                  default = newJString("Import"))
-  if valid_602032 != nil:
-    section.add "JobType", valid_602032
-  var valid_602033 = formData.getOrDefault("Manifest")
-  valid_602033 = validateParameter(valid_602033, JString, required = true,
+  if valid_606232 != nil:
+    section.add "JobType", valid_606232
+  var valid_606233 = formData.getOrDefault("Manifest")
+  valid_606233 = validateParameter(valid_606233, JString, required = true,
                                  default = nil)
-  if valid_602033 != nil:
-    section.add "Manifest", valid_602033
+  if valid_606233 != nil:
+    section.add "Manifest", valid_606233
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602034: Call_PostCreateJob_602018; path: JsonNode; query: JsonNode;
+proc call*(call_606234: Call_PostCreateJob_606218; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
   ## 
-  let valid = call_602034.validator(path, query, header, formData, body)
-  let scheme = call_602034.pickScheme
+  let valid = call_606234.validator(path, query, header, formData, body)
+  let scheme = call_606234.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602034.url(scheme.get, call_602034.host, call_602034.base,
-                         call_602034.route, valid.getOrDefault("path"),
+  let url = call_606234.url(scheme.get, call_606234.host, call_606234.base,
+                         call_606234.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602034, url, valid)
+  result = atozHook(call_606234, url, valid)
 
-proc call*(call_602035: Call_PostCreateJob_602018; Signature: string;
+proc call*(call_606235: Call_PostCreateJob_606218; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; ValidateOnly: bool;
           Timestamp: string; SignatureVersion: string; Manifest: string;
           APIVersion: string = ""; Action: string = "CreateJob";
@@ -568,31 +568,31 @@ proc call*(call_602035: Call_PostCreateJob_602018; Signature: string;
   ##   SignatureVersion: string (required)
   ##   Manifest: string (required)
   ##           : The UTF-8 encoded text of the manifest file.
-  var query_602036 = newJObject()
-  var formData_602037 = newJObject()
-  add(query_602036, "Signature", newJString(Signature))
-  add(query_602036, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602036, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_602037, "ValidateOnly", newJBool(ValidateOnly))
-  add(formData_602037, "APIVersion", newJString(APIVersion))
-  add(query_602036, "Timestamp", newJString(Timestamp))
-  add(query_602036, "Action", newJString(Action))
-  add(formData_602037, "ManifestAddendum", newJString(ManifestAddendum))
-  add(query_602036, "Operation", newJString(Operation))
-  add(query_602036, "Version", newJString(Version))
-  add(formData_602037, "JobType", newJString(JobType))
-  add(query_602036, "SignatureVersion", newJString(SignatureVersion))
-  add(formData_602037, "Manifest", newJString(Manifest))
-  result = call_602035.call(nil, query_602036, nil, formData_602037, nil)
+  var query_606236 = newJObject()
+  var formData_606237 = newJObject()
+  add(query_606236, "Signature", newJString(Signature))
+  add(query_606236, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606236, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_606237, "ValidateOnly", newJBool(ValidateOnly))
+  add(formData_606237, "APIVersion", newJString(APIVersion))
+  add(query_606236, "Timestamp", newJString(Timestamp))
+  add(query_606236, "Action", newJString(Action))
+  add(formData_606237, "ManifestAddendum", newJString(ManifestAddendum))
+  add(query_606236, "Operation", newJString(Operation))
+  add(query_606236, "Version", newJString(Version))
+  add(formData_606237, "JobType", newJString(JobType))
+  add(query_606236, "SignatureVersion", newJString(SignatureVersion))
+  add(formData_606237, "Manifest", newJString(Manifest))
+  result = call_606235.call(nil, query_606236, nil, formData_606237, nil)
 
-var postCreateJob* = Call_PostCreateJob_602018(name: "postCreateJob",
+var postCreateJob* = Call_PostCreateJob_606218(name: "postCreateJob",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=CreateJob&Action=CreateJob",
-    validator: validate_PostCreateJob_602019, base: "/", url: url_PostCreateJob_602020,
+    validator: validate_PostCreateJob_606219, base: "/", url: url_PostCreateJob_606220,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCreateJob_601999 = ref object of OpenApiRestCall_601373
-proc url_GetCreateJob_602001(protocol: Scheme; host: string; base: string;
+  Call_GetCreateJob_606199 = ref object of OpenApiRestCall_605573
+proc url_GetCreateJob_606201(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -604,7 +604,7 @@ proc url_GetCreateJob_602001(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetCreateJob_602000(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetCreateJob_606200(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
   ## 
@@ -634,70 +634,70 @@ proc validate_GetCreateJob_602000(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602002 = query.getOrDefault("Signature")
-  valid_602002 = validateParameter(valid_602002, JString, required = true,
+  var valid_606202 = query.getOrDefault("Signature")
+  valid_606202 = validateParameter(valid_606202, JString, required = true,
                                  default = nil)
-  if valid_602002 != nil:
-    section.add "Signature", valid_602002
-  var valid_602003 = query.getOrDefault("JobType")
-  valid_602003 = validateParameter(valid_602003, JString, required = true,
+  if valid_606202 != nil:
+    section.add "Signature", valid_606202
+  var valid_606203 = query.getOrDefault("JobType")
+  valid_606203 = validateParameter(valid_606203, JString, required = true,
                                  default = newJString("Import"))
-  if valid_602003 != nil:
-    section.add "JobType", valid_602003
-  var valid_602004 = query.getOrDefault("AWSAccessKeyId")
-  valid_602004 = validateParameter(valid_602004, JString, required = true,
+  if valid_606203 != nil:
+    section.add "JobType", valid_606203
+  var valid_606204 = query.getOrDefault("AWSAccessKeyId")
+  valid_606204 = validateParameter(valid_606204, JString, required = true,
                                  default = nil)
-  if valid_602004 != nil:
-    section.add "AWSAccessKeyId", valid_602004
-  var valid_602005 = query.getOrDefault("SignatureMethod")
-  valid_602005 = validateParameter(valid_602005, JString, required = true,
+  if valid_606204 != nil:
+    section.add "AWSAccessKeyId", valid_606204
+  var valid_606205 = query.getOrDefault("SignatureMethod")
+  valid_606205 = validateParameter(valid_606205, JString, required = true,
                                  default = nil)
-  if valid_602005 != nil:
-    section.add "SignatureMethod", valid_602005
-  var valid_602006 = query.getOrDefault("Manifest")
-  valid_602006 = validateParameter(valid_602006, JString, required = true,
+  if valid_606205 != nil:
+    section.add "SignatureMethod", valid_606205
+  var valid_606206 = query.getOrDefault("Manifest")
+  valid_606206 = validateParameter(valid_606206, JString, required = true,
                                  default = nil)
-  if valid_602006 != nil:
-    section.add "Manifest", valid_602006
-  var valid_602007 = query.getOrDefault("ValidateOnly")
-  valid_602007 = validateParameter(valid_602007, JBool, required = true, default = nil)
-  if valid_602007 != nil:
-    section.add "ValidateOnly", valid_602007
-  var valid_602008 = query.getOrDefault("Timestamp")
-  valid_602008 = validateParameter(valid_602008, JString, required = true,
+  if valid_606206 != nil:
+    section.add "Manifest", valid_606206
+  var valid_606207 = query.getOrDefault("ValidateOnly")
+  valid_606207 = validateParameter(valid_606207, JBool, required = true, default = nil)
+  if valid_606207 != nil:
+    section.add "ValidateOnly", valid_606207
+  var valid_606208 = query.getOrDefault("Timestamp")
+  valid_606208 = validateParameter(valid_606208, JString, required = true,
                                  default = nil)
-  if valid_602008 != nil:
-    section.add "Timestamp", valid_602008
-  var valid_602009 = query.getOrDefault("Action")
-  valid_602009 = validateParameter(valid_602009, JString, required = true,
+  if valid_606208 != nil:
+    section.add "Timestamp", valid_606208
+  var valid_606209 = query.getOrDefault("Action")
+  valid_606209 = validateParameter(valid_606209, JString, required = true,
                                  default = newJString("CreateJob"))
-  if valid_602009 != nil:
-    section.add "Action", valid_602009
-  var valid_602010 = query.getOrDefault("ManifestAddendum")
-  valid_602010 = validateParameter(valid_602010, JString, required = false,
+  if valid_606209 != nil:
+    section.add "Action", valid_606209
+  var valid_606210 = query.getOrDefault("ManifestAddendum")
+  valid_606210 = validateParameter(valid_606210, JString, required = false,
                                  default = nil)
-  if valid_602010 != nil:
-    section.add "ManifestAddendum", valid_602010
-  var valid_602011 = query.getOrDefault("Operation")
-  valid_602011 = validateParameter(valid_602011, JString, required = true,
+  if valid_606210 != nil:
+    section.add "ManifestAddendum", valid_606210
+  var valid_606211 = query.getOrDefault("Operation")
+  valid_606211 = validateParameter(valid_606211, JString, required = true,
                                  default = newJString("CreateJob"))
-  if valid_602011 != nil:
-    section.add "Operation", valid_602011
-  var valid_602012 = query.getOrDefault("APIVersion")
-  valid_602012 = validateParameter(valid_602012, JString, required = false,
+  if valid_606211 != nil:
+    section.add "Operation", valid_606211
+  var valid_606212 = query.getOrDefault("APIVersion")
+  valid_606212 = validateParameter(valid_606212, JString, required = false,
                                  default = nil)
-  if valid_602012 != nil:
-    section.add "APIVersion", valid_602012
-  var valid_602013 = query.getOrDefault("Version")
-  valid_602013 = validateParameter(valid_602013, JString, required = true,
+  if valid_606212 != nil:
+    section.add "APIVersion", valid_606212
+  var valid_606213 = query.getOrDefault("Version")
+  valid_606213 = validateParameter(valid_606213, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602013 != nil:
-    section.add "Version", valid_602013
-  var valid_602014 = query.getOrDefault("SignatureVersion")
-  valid_602014 = validateParameter(valid_602014, JString, required = true,
+  if valid_606213 != nil:
+    section.add "Version", valid_606213
+  var valid_606214 = query.getOrDefault("SignatureVersion")
+  valid_606214 = validateParameter(valid_606214, JString, required = true,
                                  default = nil)
-  if valid_602014 != nil:
-    section.add "SignatureVersion", valid_602014
+  if valid_606214 != nil:
+    section.add "SignatureVersion", valid_606214
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -706,20 +706,20 @@ proc validate_GetCreateJob_602000(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_602015: Call_GetCreateJob_601999; path: JsonNode; query: JsonNode;
+proc call*(call_606215: Call_GetCreateJob_606199; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation initiates the process of scheduling an upload or download of your data. You include in the request a manifest that describes the data transfer specifics. The response to the request includes a job ID, which you can use in other operations, a signature that you use to identify your storage device, and the address where you should ship your storage device.
   ## 
-  let valid = call_602015.validator(path, query, header, formData, body)
-  let scheme = call_602015.pickScheme
+  let valid = call_606215.validator(path, query, header, formData, body)
+  let scheme = call_606215.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602015.url(scheme.get, call_602015.host, call_602015.base,
-                         call_602015.route, valid.getOrDefault("path"),
+  let url = call_606215.url(scheme.get, call_606215.host, call_606215.base,
+                         call_606215.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602015, url, valid)
+  result = atozHook(call_606215, url, valid)
 
-proc call*(call_602016: Call_GetCreateJob_601999; Signature: string;
+proc call*(call_606216: Call_GetCreateJob_606199; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Manifest: string;
           ValidateOnly: bool; Timestamp: string; SignatureVersion: string;
           JobType: string = "Import"; Action: string = "CreateJob";
@@ -745,30 +745,30 @@ proc call*(call_602016: Call_GetCreateJob_601999; Signature: string;
   ##             : Specifies the version of the client tool.
   ##   Version: string (required)
   ##   SignatureVersion: string (required)
-  var query_602017 = newJObject()
-  add(query_602017, "Signature", newJString(Signature))
-  add(query_602017, "JobType", newJString(JobType))
-  add(query_602017, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602017, "SignatureMethod", newJString(SignatureMethod))
-  add(query_602017, "Manifest", newJString(Manifest))
-  add(query_602017, "ValidateOnly", newJBool(ValidateOnly))
-  add(query_602017, "Timestamp", newJString(Timestamp))
-  add(query_602017, "Action", newJString(Action))
-  add(query_602017, "ManifestAddendum", newJString(ManifestAddendum))
-  add(query_602017, "Operation", newJString(Operation))
-  add(query_602017, "APIVersion", newJString(APIVersion))
-  add(query_602017, "Version", newJString(Version))
-  add(query_602017, "SignatureVersion", newJString(SignatureVersion))
-  result = call_602016.call(nil, query_602017, nil, nil, nil)
+  var query_606217 = newJObject()
+  add(query_606217, "Signature", newJString(Signature))
+  add(query_606217, "JobType", newJString(JobType))
+  add(query_606217, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606217, "SignatureMethod", newJString(SignatureMethod))
+  add(query_606217, "Manifest", newJString(Manifest))
+  add(query_606217, "ValidateOnly", newJBool(ValidateOnly))
+  add(query_606217, "Timestamp", newJString(Timestamp))
+  add(query_606217, "Action", newJString(Action))
+  add(query_606217, "ManifestAddendum", newJString(ManifestAddendum))
+  add(query_606217, "Operation", newJString(Operation))
+  add(query_606217, "APIVersion", newJString(APIVersion))
+  add(query_606217, "Version", newJString(Version))
+  add(query_606217, "SignatureVersion", newJString(SignatureVersion))
+  result = call_606216.call(nil, query_606217, nil, nil, nil)
 
-var getCreateJob* = Call_GetCreateJob_601999(name: "getCreateJob",
+var getCreateJob* = Call_GetCreateJob_606199(name: "getCreateJob",
     meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
     route: "/#Operation=CreateJob&Action=CreateJob",
-    validator: validate_GetCreateJob_602000, base: "/", url: url_GetCreateJob_602001,
+    validator: validate_GetCreateJob_606200, base: "/", url: url_GetCreateJob_606201,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostGetShippingLabel_602064 = ref object of OpenApiRestCall_601373
-proc url_PostGetShippingLabel_602066(protocol: Scheme; host: string; base: string;
+  Call_PostGetShippingLabel_606264 = ref object of OpenApiRestCall_605573
+proc url_PostGetShippingLabel_606266(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -780,7 +780,7 @@ proc url_PostGetShippingLabel_602066(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_PostGetShippingLabel_602065(path: JsonNode; query: JsonNode;
+proc validate_PostGetShippingLabel_606265(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
   ## 
@@ -800,46 +800,46 @@ proc validate_PostGetShippingLabel_602065(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602067 = query.getOrDefault("Signature")
-  valid_602067 = validateParameter(valid_602067, JString, required = true,
+  var valid_606267 = query.getOrDefault("Signature")
+  valid_606267 = validateParameter(valid_606267, JString, required = true,
                                  default = nil)
-  if valid_602067 != nil:
-    section.add "Signature", valid_602067
-  var valid_602068 = query.getOrDefault("AWSAccessKeyId")
-  valid_602068 = validateParameter(valid_602068, JString, required = true,
+  if valid_606267 != nil:
+    section.add "Signature", valid_606267
+  var valid_606268 = query.getOrDefault("AWSAccessKeyId")
+  valid_606268 = validateParameter(valid_606268, JString, required = true,
                                  default = nil)
-  if valid_602068 != nil:
-    section.add "AWSAccessKeyId", valid_602068
-  var valid_602069 = query.getOrDefault("SignatureMethod")
-  valid_602069 = validateParameter(valid_602069, JString, required = true,
+  if valid_606268 != nil:
+    section.add "AWSAccessKeyId", valid_606268
+  var valid_606269 = query.getOrDefault("SignatureMethod")
+  valid_606269 = validateParameter(valid_606269, JString, required = true,
                                  default = nil)
-  if valid_602069 != nil:
-    section.add "SignatureMethod", valid_602069
-  var valid_602070 = query.getOrDefault("Timestamp")
-  valid_602070 = validateParameter(valid_602070, JString, required = true,
+  if valid_606269 != nil:
+    section.add "SignatureMethod", valid_606269
+  var valid_606270 = query.getOrDefault("Timestamp")
+  valid_606270 = validateParameter(valid_606270, JString, required = true,
                                  default = nil)
-  if valid_602070 != nil:
-    section.add "Timestamp", valid_602070
-  var valid_602071 = query.getOrDefault("Action")
-  valid_602071 = validateParameter(valid_602071, JString, required = true,
+  if valid_606270 != nil:
+    section.add "Timestamp", valid_606270
+  var valid_606271 = query.getOrDefault("Action")
+  valid_606271 = validateParameter(valid_606271, JString, required = true,
                                  default = newJString("GetShippingLabel"))
-  if valid_602071 != nil:
-    section.add "Action", valid_602071
-  var valid_602072 = query.getOrDefault("Operation")
-  valid_602072 = validateParameter(valid_602072, JString, required = true,
+  if valid_606271 != nil:
+    section.add "Action", valid_606271
+  var valid_606272 = query.getOrDefault("Operation")
+  valid_606272 = validateParameter(valid_606272, JString, required = true,
                                  default = newJString("GetShippingLabel"))
-  if valid_602072 != nil:
-    section.add "Operation", valid_602072
-  var valid_602073 = query.getOrDefault("Version")
-  valid_602073 = validateParameter(valid_602073, JString, required = true,
+  if valid_606272 != nil:
+    section.add "Operation", valid_606272
+  var valid_606273 = query.getOrDefault("Version")
+  valid_606273 = validateParameter(valid_606273, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602073 != nil:
-    section.add "Version", valid_602073
-  var valid_602074 = query.getOrDefault("SignatureVersion")
-  valid_602074 = validateParameter(valid_602074, JString, required = true,
+  if valid_606273 != nil:
+    section.add "Version", valid_606273
+  var valid_606274 = query.getOrDefault("SignatureVersion")
+  valid_606274 = validateParameter(valid_606274, JString, required = true,
                                  default = nil)
-  if valid_602074 != nil:
-    section.add "SignatureVersion", valid_602074
+  if valid_606274 != nil:
+    section.add "SignatureVersion", valid_606274
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -868,85 +868,85 @@ proc validate_PostGetShippingLabel_602065(path: JsonNode; query: JsonNode;
   ##   name: JString
   ##       : Specifies the name of the person responsible for shipping this package.
   section = newJObject()
-  var valid_602075 = formData.getOrDefault("street1")
-  valid_602075 = validateParameter(valid_602075, JString, required = false,
+  var valid_606275 = formData.getOrDefault("street1")
+  valid_606275 = validateParameter(valid_606275, JString, required = false,
                                  default = nil)
-  if valid_602075 != nil:
-    section.add "street1", valid_602075
-  var valid_602076 = formData.getOrDefault("stateOrProvince")
-  valid_602076 = validateParameter(valid_602076, JString, required = false,
+  if valid_606275 != nil:
+    section.add "street1", valid_606275
+  var valid_606276 = formData.getOrDefault("stateOrProvince")
+  valid_606276 = validateParameter(valid_606276, JString, required = false,
                                  default = nil)
-  if valid_602076 != nil:
-    section.add "stateOrProvince", valid_602076
-  var valid_602077 = formData.getOrDefault("street3")
-  valid_602077 = validateParameter(valid_602077, JString, required = false,
+  if valid_606276 != nil:
+    section.add "stateOrProvince", valid_606276
+  var valid_606277 = formData.getOrDefault("street3")
+  valid_606277 = validateParameter(valid_606277, JString, required = false,
                                  default = nil)
-  if valid_602077 != nil:
-    section.add "street3", valid_602077
-  var valid_602078 = formData.getOrDefault("phoneNumber")
-  valid_602078 = validateParameter(valid_602078, JString, required = false,
+  if valid_606277 != nil:
+    section.add "street3", valid_606277
+  var valid_606278 = formData.getOrDefault("phoneNumber")
+  valid_606278 = validateParameter(valid_606278, JString, required = false,
                                  default = nil)
-  if valid_602078 != nil:
-    section.add "phoneNumber", valid_602078
-  var valid_602079 = formData.getOrDefault("postalCode")
-  valid_602079 = validateParameter(valid_602079, JString, required = false,
+  if valid_606278 != nil:
+    section.add "phoneNumber", valid_606278
+  var valid_606279 = formData.getOrDefault("postalCode")
+  valid_606279 = validateParameter(valid_606279, JString, required = false,
                                  default = nil)
-  if valid_602079 != nil:
-    section.add "postalCode", valid_602079
+  if valid_606279 != nil:
+    section.add "postalCode", valid_606279
   assert formData != nil,
         "formData argument is necessary due to required `jobIds` field"
-  var valid_602080 = formData.getOrDefault("jobIds")
-  valid_602080 = validateParameter(valid_602080, JArray, required = true, default = nil)
-  if valid_602080 != nil:
-    section.add "jobIds", valid_602080
-  var valid_602081 = formData.getOrDefault("APIVersion")
-  valid_602081 = validateParameter(valid_602081, JString, required = false,
+  var valid_606280 = formData.getOrDefault("jobIds")
+  valid_606280 = validateParameter(valid_606280, JArray, required = true, default = nil)
+  if valid_606280 != nil:
+    section.add "jobIds", valid_606280
+  var valid_606281 = formData.getOrDefault("APIVersion")
+  valid_606281 = validateParameter(valid_606281, JString, required = false,
                                  default = nil)
-  if valid_602081 != nil:
-    section.add "APIVersion", valid_602081
-  var valid_602082 = formData.getOrDefault("country")
-  valid_602082 = validateParameter(valid_602082, JString, required = false,
+  if valid_606281 != nil:
+    section.add "APIVersion", valid_606281
+  var valid_606282 = formData.getOrDefault("country")
+  valid_606282 = validateParameter(valid_606282, JString, required = false,
                                  default = nil)
-  if valid_602082 != nil:
-    section.add "country", valid_602082
-  var valid_602083 = formData.getOrDefault("city")
-  valid_602083 = validateParameter(valid_602083, JString, required = false,
+  if valid_606282 != nil:
+    section.add "country", valid_606282
+  var valid_606283 = formData.getOrDefault("city")
+  valid_606283 = validateParameter(valid_606283, JString, required = false,
                                  default = nil)
-  if valid_602083 != nil:
-    section.add "city", valid_602083
-  var valid_602084 = formData.getOrDefault("street2")
-  valid_602084 = validateParameter(valid_602084, JString, required = false,
+  if valid_606283 != nil:
+    section.add "city", valid_606283
+  var valid_606284 = formData.getOrDefault("street2")
+  valid_606284 = validateParameter(valid_606284, JString, required = false,
                                  default = nil)
-  if valid_602084 != nil:
-    section.add "street2", valid_602084
-  var valid_602085 = formData.getOrDefault("company")
-  valid_602085 = validateParameter(valid_602085, JString, required = false,
+  if valid_606284 != nil:
+    section.add "street2", valid_606284
+  var valid_606285 = formData.getOrDefault("company")
+  valid_606285 = validateParameter(valid_606285, JString, required = false,
                                  default = nil)
-  if valid_602085 != nil:
-    section.add "company", valid_602085
-  var valid_602086 = formData.getOrDefault("name")
-  valid_602086 = validateParameter(valid_602086, JString, required = false,
+  if valid_606285 != nil:
+    section.add "company", valid_606285
+  var valid_606286 = formData.getOrDefault("name")
+  valid_606286 = validateParameter(valid_606286, JString, required = false,
                                  default = nil)
-  if valid_602086 != nil:
-    section.add "name", valid_602086
+  if valid_606286 != nil:
+    section.add "name", valid_606286
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602087: Call_PostGetShippingLabel_602064; path: JsonNode;
+proc call*(call_606287: Call_PostGetShippingLabel_606264; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
   ## 
-  let valid = call_602087.validator(path, query, header, formData, body)
-  let scheme = call_602087.pickScheme
+  let valid = call_606287.validator(path, query, header, formData, body)
+  let scheme = call_606287.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602087.url(scheme.get, call_602087.host, call_602087.base,
-                         call_602087.route, valid.getOrDefault("path"),
+  let url = call_606287.url(scheme.get, call_606287.host, call_606287.base,
+                         call_606287.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602087, url, valid)
+  result = atozHook(call_606287, url, valid)
 
-proc call*(call_602088: Call_PostGetShippingLabel_602064; Signature: string;
+proc call*(call_606288: Call_PostGetShippingLabel_606264; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; jobIds: JsonNode;
           Timestamp: string; SignatureVersion: string; street1: string = "";
           stateOrProvince: string = ""; street3: string = ""; phoneNumber: string = "";
@@ -987,40 +987,40 @@ proc call*(call_602088: Call_PostGetShippingLabel_602064; Signature: string;
   ##   SignatureVersion: string (required)
   ##   name: string
   ##       : Specifies the name of the person responsible for shipping this package.
-  var query_602089 = newJObject()
-  var formData_602090 = newJObject()
-  add(query_602089, "Signature", newJString(Signature))
-  add(query_602089, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(formData_602090, "street1", newJString(street1))
-  add(query_602089, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_602090, "stateOrProvince", newJString(stateOrProvince))
-  add(formData_602090, "street3", newJString(street3))
-  add(formData_602090, "phoneNumber", newJString(phoneNumber))
-  add(formData_602090, "postalCode", newJString(postalCode))
+  var query_606289 = newJObject()
+  var formData_606290 = newJObject()
+  add(query_606289, "Signature", newJString(Signature))
+  add(query_606289, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(formData_606290, "street1", newJString(street1))
+  add(query_606289, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_606290, "stateOrProvince", newJString(stateOrProvince))
+  add(formData_606290, "street3", newJString(street3))
+  add(formData_606290, "phoneNumber", newJString(phoneNumber))
+  add(formData_606290, "postalCode", newJString(postalCode))
   if jobIds != nil:
-    formData_602090.add "jobIds", jobIds
-  add(formData_602090, "APIVersion", newJString(APIVersion))
-  add(formData_602090, "country", newJString(country))
-  add(formData_602090, "city", newJString(city))
-  add(formData_602090, "street2", newJString(street2))
-  add(query_602089, "Timestamp", newJString(Timestamp))
-  add(query_602089, "Action", newJString(Action))
-  add(query_602089, "Operation", newJString(Operation))
-  add(formData_602090, "company", newJString(company))
-  add(query_602089, "Version", newJString(Version))
-  add(query_602089, "SignatureVersion", newJString(SignatureVersion))
-  add(formData_602090, "name", newJString(name))
-  result = call_602088.call(nil, query_602089, nil, formData_602090, nil)
+    formData_606290.add "jobIds", jobIds
+  add(formData_606290, "APIVersion", newJString(APIVersion))
+  add(formData_606290, "country", newJString(country))
+  add(formData_606290, "city", newJString(city))
+  add(formData_606290, "street2", newJString(street2))
+  add(query_606289, "Timestamp", newJString(Timestamp))
+  add(query_606289, "Action", newJString(Action))
+  add(query_606289, "Operation", newJString(Operation))
+  add(formData_606290, "company", newJString(company))
+  add(query_606289, "Version", newJString(Version))
+  add(query_606289, "SignatureVersion", newJString(SignatureVersion))
+  add(formData_606290, "name", newJString(name))
+  result = call_606288.call(nil, query_606289, nil, formData_606290, nil)
 
-var postGetShippingLabel* = Call_PostGetShippingLabel_602064(
+var postGetShippingLabel* = Call_PostGetShippingLabel_606264(
     name: "postGetShippingLabel", meth: HttpMethod.HttpPost,
     host: "importexport.amazonaws.com",
     route: "/#Operation=GetShippingLabel&Action=GetShippingLabel",
-    validator: validate_PostGetShippingLabel_602065, base: "/",
-    url: url_PostGetShippingLabel_602066, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostGetShippingLabel_606265, base: "/",
+    url: url_PostGetShippingLabel_606266, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGetShippingLabel_602038 = ref object of OpenApiRestCall_601373
-proc url_GetGetShippingLabel_602040(protocol: Scheme; host: string; base: string;
+  Call_GetGetShippingLabel_606238 = ref object of OpenApiRestCall_605573
+proc url_GetGetShippingLabel_606240(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1032,7 +1032,7 @@ proc url_GetGetShippingLabel_602040(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_GetGetShippingLabel_602039(path: JsonNode; query: JsonNode;
+proc validate_GetGetShippingLabel_606239(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
@@ -1076,105 +1076,105 @@ proc validate_GetGetShippingLabel_602039(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602041 = query.getOrDefault("Signature")
-  valid_602041 = validateParameter(valid_602041, JString, required = true,
+  var valid_606241 = query.getOrDefault("Signature")
+  valid_606241 = validateParameter(valid_606241, JString, required = true,
                                  default = nil)
-  if valid_602041 != nil:
-    section.add "Signature", valid_602041
-  var valid_602042 = query.getOrDefault("name")
-  valid_602042 = validateParameter(valid_602042, JString, required = false,
+  if valid_606241 != nil:
+    section.add "Signature", valid_606241
+  var valid_606242 = query.getOrDefault("name")
+  valid_606242 = validateParameter(valid_606242, JString, required = false,
                                  default = nil)
-  if valid_602042 != nil:
-    section.add "name", valid_602042
-  var valid_602043 = query.getOrDefault("street2")
-  valid_602043 = validateParameter(valid_602043, JString, required = false,
+  if valid_606242 != nil:
+    section.add "name", valid_606242
+  var valid_606243 = query.getOrDefault("street2")
+  valid_606243 = validateParameter(valid_606243, JString, required = false,
                                  default = nil)
-  if valid_602043 != nil:
-    section.add "street2", valid_602043
-  var valid_602044 = query.getOrDefault("street3")
-  valid_602044 = validateParameter(valid_602044, JString, required = false,
+  if valid_606243 != nil:
+    section.add "street2", valid_606243
+  var valid_606244 = query.getOrDefault("street3")
+  valid_606244 = validateParameter(valid_606244, JString, required = false,
                                  default = nil)
-  if valid_602044 != nil:
-    section.add "street3", valid_602044
-  var valid_602045 = query.getOrDefault("AWSAccessKeyId")
-  valid_602045 = validateParameter(valid_602045, JString, required = true,
+  if valid_606244 != nil:
+    section.add "street3", valid_606244
+  var valid_606245 = query.getOrDefault("AWSAccessKeyId")
+  valid_606245 = validateParameter(valid_606245, JString, required = true,
                                  default = nil)
-  if valid_602045 != nil:
-    section.add "AWSAccessKeyId", valid_602045
-  var valid_602046 = query.getOrDefault("SignatureMethod")
-  valid_602046 = validateParameter(valid_602046, JString, required = true,
+  if valid_606245 != nil:
+    section.add "AWSAccessKeyId", valid_606245
+  var valid_606246 = query.getOrDefault("SignatureMethod")
+  valid_606246 = validateParameter(valid_606246, JString, required = true,
                                  default = nil)
-  if valid_602046 != nil:
-    section.add "SignatureMethod", valid_602046
-  var valid_602047 = query.getOrDefault("phoneNumber")
-  valid_602047 = validateParameter(valid_602047, JString, required = false,
+  if valid_606246 != nil:
+    section.add "SignatureMethod", valid_606246
+  var valid_606247 = query.getOrDefault("phoneNumber")
+  valid_606247 = validateParameter(valid_606247, JString, required = false,
                                  default = nil)
-  if valid_602047 != nil:
-    section.add "phoneNumber", valid_602047
-  var valid_602048 = query.getOrDefault("postalCode")
-  valid_602048 = validateParameter(valid_602048, JString, required = false,
+  if valid_606247 != nil:
+    section.add "phoneNumber", valid_606247
+  var valid_606248 = query.getOrDefault("postalCode")
+  valid_606248 = validateParameter(valid_606248, JString, required = false,
                                  default = nil)
-  if valid_602048 != nil:
-    section.add "postalCode", valid_602048
-  var valid_602049 = query.getOrDefault("street1")
-  valid_602049 = validateParameter(valid_602049, JString, required = false,
+  if valid_606248 != nil:
+    section.add "postalCode", valid_606248
+  var valid_606249 = query.getOrDefault("street1")
+  valid_606249 = validateParameter(valid_606249, JString, required = false,
                                  default = nil)
-  if valid_602049 != nil:
-    section.add "street1", valid_602049
-  var valid_602050 = query.getOrDefault("city")
-  valid_602050 = validateParameter(valid_602050, JString, required = false,
+  if valid_606249 != nil:
+    section.add "street1", valid_606249
+  var valid_606250 = query.getOrDefault("city")
+  valid_606250 = validateParameter(valid_606250, JString, required = false,
                                  default = nil)
-  if valid_602050 != nil:
-    section.add "city", valid_602050
-  var valid_602051 = query.getOrDefault("country")
-  valid_602051 = validateParameter(valid_602051, JString, required = false,
+  if valid_606250 != nil:
+    section.add "city", valid_606250
+  var valid_606251 = query.getOrDefault("country")
+  valid_606251 = validateParameter(valid_606251, JString, required = false,
                                  default = nil)
-  if valid_602051 != nil:
-    section.add "country", valid_602051
-  var valid_602052 = query.getOrDefault("Timestamp")
-  valid_602052 = validateParameter(valid_602052, JString, required = true,
+  if valid_606251 != nil:
+    section.add "country", valid_606251
+  var valid_606252 = query.getOrDefault("Timestamp")
+  valid_606252 = validateParameter(valid_606252, JString, required = true,
                                  default = nil)
-  if valid_602052 != nil:
-    section.add "Timestamp", valid_602052
-  var valid_602053 = query.getOrDefault("Action")
-  valid_602053 = validateParameter(valid_602053, JString, required = true,
+  if valid_606252 != nil:
+    section.add "Timestamp", valid_606252
+  var valid_606253 = query.getOrDefault("Action")
+  valid_606253 = validateParameter(valid_606253, JString, required = true,
                                  default = newJString("GetShippingLabel"))
-  if valid_602053 != nil:
-    section.add "Action", valid_602053
-  var valid_602054 = query.getOrDefault("jobIds")
-  valid_602054 = validateParameter(valid_602054, JArray, required = true, default = nil)
-  if valid_602054 != nil:
-    section.add "jobIds", valid_602054
-  var valid_602055 = query.getOrDefault("Operation")
-  valid_602055 = validateParameter(valid_602055, JString, required = true,
+  if valid_606253 != nil:
+    section.add "Action", valid_606253
+  var valid_606254 = query.getOrDefault("jobIds")
+  valid_606254 = validateParameter(valid_606254, JArray, required = true, default = nil)
+  if valid_606254 != nil:
+    section.add "jobIds", valid_606254
+  var valid_606255 = query.getOrDefault("Operation")
+  valid_606255 = validateParameter(valid_606255, JString, required = true,
                                  default = newJString("GetShippingLabel"))
-  if valid_602055 != nil:
-    section.add "Operation", valid_602055
-  var valid_602056 = query.getOrDefault("APIVersion")
-  valid_602056 = validateParameter(valid_602056, JString, required = false,
+  if valid_606255 != nil:
+    section.add "Operation", valid_606255
+  var valid_606256 = query.getOrDefault("APIVersion")
+  valid_606256 = validateParameter(valid_606256, JString, required = false,
                                  default = nil)
-  if valid_602056 != nil:
-    section.add "APIVersion", valid_602056
-  var valid_602057 = query.getOrDefault("Version")
-  valid_602057 = validateParameter(valid_602057, JString, required = true,
+  if valid_606256 != nil:
+    section.add "APIVersion", valid_606256
+  var valid_606257 = query.getOrDefault("Version")
+  valid_606257 = validateParameter(valid_606257, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602057 != nil:
-    section.add "Version", valid_602057
-  var valid_602058 = query.getOrDefault("stateOrProvince")
-  valid_602058 = validateParameter(valid_602058, JString, required = false,
+  if valid_606257 != nil:
+    section.add "Version", valid_606257
+  var valid_606258 = query.getOrDefault("stateOrProvince")
+  valid_606258 = validateParameter(valid_606258, JString, required = false,
                                  default = nil)
-  if valid_602058 != nil:
-    section.add "stateOrProvince", valid_602058
-  var valid_602059 = query.getOrDefault("SignatureVersion")
-  valid_602059 = validateParameter(valid_602059, JString, required = true,
+  if valid_606258 != nil:
+    section.add "stateOrProvince", valid_606258
+  var valid_606259 = query.getOrDefault("SignatureVersion")
+  valid_606259 = validateParameter(valid_606259, JString, required = true,
                                  default = nil)
-  if valid_602059 != nil:
-    section.add "SignatureVersion", valid_602059
-  var valid_602060 = query.getOrDefault("company")
-  valid_602060 = validateParameter(valid_602060, JString, required = false,
+  if valid_606259 != nil:
+    section.add "SignatureVersion", valid_606259
+  var valid_606260 = query.getOrDefault("company")
+  valid_606260 = validateParameter(valid_606260, JString, required = false,
                                  default = nil)
-  if valid_602060 != nil:
-    section.add "company", valid_602060
+  if valid_606260 != nil:
+    section.add "company", valid_606260
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1183,20 +1183,20 @@ proc validate_GetGetShippingLabel_602039(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_602061: Call_GetGetShippingLabel_602038; path: JsonNode;
+proc call*(call_606261: Call_GetGetShippingLabel_606238; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation generates a pre-paid UPS shipping label that you will use to ship your device to AWS for processing.
   ## 
-  let valid = call_602061.validator(path, query, header, formData, body)
-  let scheme = call_602061.pickScheme
+  let valid = call_606261.validator(path, query, header, formData, body)
+  let scheme = call_606261.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602061.url(scheme.get, call_602061.host, call_602061.base,
-                         call_602061.route, valid.getOrDefault("path"),
+  let url = call_606261.url(scheme.get, call_606261.host, call_606261.base,
+                         call_606261.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602061, url, valid)
+  result = atozHook(call_606261, url, valid)
 
-proc call*(call_602062: Call_GetGetShippingLabel_602038; Signature: string;
+proc call*(call_606262: Call_GetGetShippingLabel_606238; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Timestamp: string;
           jobIds: JsonNode; SignatureVersion: string; name: string = "";
           street2: string = ""; street3: string = ""; phoneNumber: string = "";
@@ -1238,39 +1238,39 @@ proc call*(call_602062: Call_GetGetShippingLabel_602038; Signature: string;
   ##   SignatureVersion: string (required)
   ##   company: string
   ##          : Specifies the name of the company that will ship this package.
-  var query_602063 = newJObject()
-  add(query_602063, "Signature", newJString(Signature))
-  add(query_602063, "name", newJString(name))
-  add(query_602063, "street2", newJString(street2))
-  add(query_602063, "street3", newJString(street3))
-  add(query_602063, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602063, "SignatureMethod", newJString(SignatureMethod))
-  add(query_602063, "phoneNumber", newJString(phoneNumber))
-  add(query_602063, "postalCode", newJString(postalCode))
-  add(query_602063, "street1", newJString(street1))
-  add(query_602063, "city", newJString(city))
-  add(query_602063, "country", newJString(country))
-  add(query_602063, "Timestamp", newJString(Timestamp))
-  add(query_602063, "Action", newJString(Action))
+  var query_606263 = newJObject()
+  add(query_606263, "Signature", newJString(Signature))
+  add(query_606263, "name", newJString(name))
+  add(query_606263, "street2", newJString(street2))
+  add(query_606263, "street3", newJString(street3))
+  add(query_606263, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606263, "SignatureMethod", newJString(SignatureMethod))
+  add(query_606263, "phoneNumber", newJString(phoneNumber))
+  add(query_606263, "postalCode", newJString(postalCode))
+  add(query_606263, "street1", newJString(street1))
+  add(query_606263, "city", newJString(city))
+  add(query_606263, "country", newJString(country))
+  add(query_606263, "Timestamp", newJString(Timestamp))
+  add(query_606263, "Action", newJString(Action))
   if jobIds != nil:
-    query_602063.add "jobIds", jobIds
-  add(query_602063, "Operation", newJString(Operation))
-  add(query_602063, "APIVersion", newJString(APIVersion))
-  add(query_602063, "Version", newJString(Version))
-  add(query_602063, "stateOrProvince", newJString(stateOrProvince))
-  add(query_602063, "SignatureVersion", newJString(SignatureVersion))
-  add(query_602063, "company", newJString(company))
-  result = call_602062.call(nil, query_602063, nil, nil, nil)
+    query_606263.add "jobIds", jobIds
+  add(query_606263, "Operation", newJString(Operation))
+  add(query_606263, "APIVersion", newJString(APIVersion))
+  add(query_606263, "Version", newJString(Version))
+  add(query_606263, "stateOrProvince", newJString(stateOrProvince))
+  add(query_606263, "SignatureVersion", newJString(SignatureVersion))
+  add(query_606263, "company", newJString(company))
+  result = call_606262.call(nil, query_606263, nil, nil, nil)
 
-var getGetShippingLabel* = Call_GetGetShippingLabel_602038(
+var getGetShippingLabel* = Call_GetGetShippingLabel_606238(
     name: "getGetShippingLabel", meth: HttpMethod.HttpGet,
     host: "importexport.amazonaws.com",
     route: "/#Operation=GetShippingLabel&Action=GetShippingLabel",
-    validator: validate_GetGetShippingLabel_602039, base: "/",
-    url: url_GetGetShippingLabel_602040, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetGetShippingLabel_606239, base: "/",
+    url: url_GetGetShippingLabel_606240, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostGetStatus_602107 = ref object of OpenApiRestCall_601373
-proc url_PostGetStatus_602109(protocol: Scheme; host: string; base: string;
+  Call_PostGetStatus_606307 = ref object of OpenApiRestCall_605573
+proc url_PostGetStatus_606309(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1282,7 +1282,7 @@ proc url_PostGetStatus_602109(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostGetStatus_602108(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostGetStatus_606308(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
   ## 
@@ -1302,46 +1302,46 @@ proc validate_PostGetStatus_602108(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602110 = query.getOrDefault("Signature")
-  valid_602110 = validateParameter(valid_602110, JString, required = true,
+  var valid_606310 = query.getOrDefault("Signature")
+  valid_606310 = validateParameter(valid_606310, JString, required = true,
                                  default = nil)
-  if valid_602110 != nil:
-    section.add "Signature", valid_602110
-  var valid_602111 = query.getOrDefault("AWSAccessKeyId")
-  valid_602111 = validateParameter(valid_602111, JString, required = true,
+  if valid_606310 != nil:
+    section.add "Signature", valid_606310
+  var valid_606311 = query.getOrDefault("AWSAccessKeyId")
+  valid_606311 = validateParameter(valid_606311, JString, required = true,
                                  default = nil)
-  if valid_602111 != nil:
-    section.add "AWSAccessKeyId", valid_602111
-  var valid_602112 = query.getOrDefault("SignatureMethod")
-  valid_602112 = validateParameter(valid_602112, JString, required = true,
+  if valid_606311 != nil:
+    section.add "AWSAccessKeyId", valid_606311
+  var valid_606312 = query.getOrDefault("SignatureMethod")
+  valid_606312 = validateParameter(valid_606312, JString, required = true,
                                  default = nil)
-  if valid_602112 != nil:
-    section.add "SignatureMethod", valid_602112
-  var valid_602113 = query.getOrDefault("Timestamp")
-  valid_602113 = validateParameter(valid_602113, JString, required = true,
+  if valid_606312 != nil:
+    section.add "SignatureMethod", valid_606312
+  var valid_606313 = query.getOrDefault("Timestamp")
+  valid_606313 = validateParameter(valid_606313, JString, required = true,
                                  default = nil)
-  if valid_602113 != nil:
-    section.add "Timestamp", valid_602113
-  var valid_602114 = query.getOrDefault("Action")
-  valid_602114 = validateParameter(valid_602114, JString, required = true,
+  if valid_606313 != nil:
+    section.add "Timestamp", valid_606313
+  var valid_606314 = query.getOrDefault("Action")
+  valid_606314 = validateParameter(valid_606314, JString, required = true,
                                  default = newJString("GetStatus"))
-  if valid_602114 != nil:
-    section.add "Action", valid_602114
-  var valid_602115 = query.getOrDefault("Operation")
-  valid_602115 = validateParameter(valid_602115, JString, required = true,
+  if valid_606314 != nil:
+    section.add "Action", valid_606314
+  var valid_606315 = query.getOrDefault("Operation")
+  valid_606315 = validateParameter(valid_606315, JString, required = true,
                                  default = newJString("GetStatus"))
-  if valid_602115 != nil:
-    section.add "Operation", valid_602115
-  var valid_602116 = query.getOrDefault("Version")
-  valid_602116 = validateParameter(valid_602116, JString, required = true,
+  if valid_606315 != nil:
+    section.add "Operation", valid_606315
+  var valid_606316 = query.getOrDefault("Version")
+  valid_606316 = validateParameter(valid_606316, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602116 != nil:
-    section.add "Version", valid_602116
-  var valid_602117 = query.getOrDefault("SignatureVersion")
-  valid_602117 = validateParameter(valid_602117, JString, required = true,
+  if valid_606316 != nil:
+    section.add "Version", valid_606316
+  var valid_606317 = query.getOrDefault("SignatureVersion")
+  valid_606317 = validateParameter(valid_606317, JString, required = true,
                                  default = nil)
-  if valid_602117 != nil:
-    section.add "SignatureVersion", valid_602117
+  if valid_606317 != nil:
+    section.add "SignatureVersion", valid_606317
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1351,36 +1351,36 @@ proc validate_PostGetStatus_602108(path: JsonNode; query: JsonNode; header: Json
   ##   JobId: JString (required)
   ##        : A unique identifier which refers to a particular job.
   section = newJObject()
-  var valid_602118 = formData.getOrDefault("APIVersion")
-  valid_602118 = validateParameter(valid_602118, JString, required = false,
+  var valid_606318 = formData.getOrDefault("APIVersion")
+  valid_606318 = validateParameter(valid_606318, JString, required = false,
                                  default = nil)
-  if valid_602118 != nil:
-    section.add "APIVersion", valid_602118
+  if valid_606318 != nil:
+    section.add "APIVersion", valid_606318
   assert formData != nil,
         "formData argument is necessary due to required `JobId` field"
-  var valid_602119 = formData.getOrDefault("JobId")
-  valid_602119 = validateParameter(valid_602119, JString, required = true,
+  var valid_606319 = formData.getOrDefault("JobId")
+  valid_606319 = validateParameter(valid_606319, JString, required = true,
                                  default = nil)
-  if valid_602119 != nil:
-    section.add "JobId", valid_602119
+  if valid_606319 != nil:
+    section.add "JobId", valid_606319
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602120: Call_PostGetStatus_602107; path: JsonNode; query: JsonNode;
+proc call*(call_606320: Call_PostGetStatus_606307; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
   ## 
-  let valid = call_602120.validator(path, query, header, formData, body)
-  let scheme = call_602120.pickScheme
+  let valid = call_606320.validator(path, query, header, formData, body)
+  let scheme = call_606320.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602120.url(scheme.get, call_602120.host, call_602120.base,
-                         call_602120.route, valid.getOrDefault("path"),
+  let url = call_606320.url(scheme.get, call_606320.host, call_606320.base,
+                         call_606320.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602120, url, valid)
+  result = atozHook(call_606320, url, valid)
 
-proc call*(call_602121: Call_PostGetStatus_602107; Signature: string;
+proc call*(call_606321: Call_PostGetStatus_606307; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Timestamp: string;
           JobId: string; SignatureVersion: string; APIVersion: string = "";
           Action: string = "GetStatus"; Operation: string = "GetStatus";
@@ -1399,28 +1399,28 @@ proc call*(call_602121: Call_PostGetStatus_602107; Signature: string;
   ##        : A unique identifier which refers to a particular job.
   ##   Version: string (required)
   ##   SignatureVersion: string (required)
-  var query_602122 = newJObject()
-  var formData_602123 = newJObject()
-  add(query_602122, "Signature", newJString(Signature))
-  add(query_602122, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602122, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_602123, "APIVersion", newJString(APIVersion))
-  add(query_602122, "Timestamp", newJString(Timestamp))
-  add(query_602122, "Action", newJString(Action))
-  add(query_602122, "Operation", newJString(Operation))
-  add(formData_602123, "JobId", newJString(JobId))
-  add(query_602122, "Version", newJString(Version))
-  add(query_602122, "SignatureVersion", newJString(SignatureVersion))
-  result = call_602121.call(nil, query_602122, nil, formData_602123, nil)
+  var query_606322 = newJObject()
+  var formData_606323 = newJObject()
+  add(query_606322, "Signature", newJString(Signature))
+  add(query_606322, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606322, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_606323, "APIVersion", newJString(APIVersion))
+  add(query_606322, "Timestamp", newJString(Timestamp))
+  add(query_606322, "Action", newJString(Action))
+  add(query_606322, "Operation", newJString(Operation))
+  add(formData_606323, "JobId", newJString(JobId))
+  add(query_606322, "Version", newJString(Version))
+  add(query_606322, "SignatureVersion", newJString(SignatureVersion))
+  result = call_606321.call(nil, query_606322, nil, formData_606323, nil)
 
-var postGetStatus* = Call_PostGetStatus_602107(name: "postGetStatus",
+var postGetStatus* = Call_PostGetStatus_606307(name: "postGetStatus",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=GetStatus&Action=GetStatus",
-    validator: validate_PostGetStatus_602108, base: "/", url: url_PostGetStatus_602109,
+    validator: validate_PostGetStatus_606308, base: "/", url: url_PostGetStatus_606309,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGetStatus_602091 = ref object of OpenApiRestCall_601373
-proc url_GetGetStatus_602093(protocol: Scheme; host: string; base: string;
+  Call_GetGetStatus_606291 = ref object of OpenApiRestCall_605573
+proc url_GetGetStatus_606293(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1432,7 +1432,7 @@ proc url_GetGetStatus_602093(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetGetStatus_602092(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetGetStatus_606292(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
   ## 
@@ -1456,56 +1456,56 @@ proc validate_GetGetStatus_602092(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602094 = query.getOrDefault("Signature")
-  valid_602094 = validateParameter(valid_602094, JString, required = true,
+  var valid_606294 = query.getOrDefault("Signature")
+  valid_606294 = validateParameter(valid_606294, JString, required = true,
                                  default = nil)
-  if valid_602094 != nil:
-    section.add "Signature", valid_602094
-  var valid_602095 = query.getOrDefault("AWSAccessKeyId")
-  valid_602095 = validateParameter(valid_602095, JString, required = true,
+  if valid_606294 != nil:
+    section.add "Signature", valid_606294
+  var valid_606295 = query.getOrDefault("AWSAccessKeyId")
+  valid_606295 = validateParameter(valid_606295, JString, required = true,
                                  default = nil)
-  if valid_602095 != nil:
-    section.add "AWSAccessKeyId", valid_602095
-  var valid_602096 = query.getOrDefault("SignatureMethod")
-  valid_602096 = validateParameter(valid_602096, JString, required = true,
+  if valid_606295 != nil:
+    section.add "AWSAccessKeyId", valid_606295
+  var valid_606296 = query.getOrDefault("SignatureMethod")
+  valid_606296 = validateParameter(valid_606296, JString, required = true,
                                  default = nil)
-  if valid_602096 != nil:
-    section.add "SignatureMethod", valid_602096
-  var valid_602097 = query.getOrDefault("Timestamp")
-  valid_602097 = validateParameter(valid_602097, JString, required = true,
+  if valid_606296 != nil:
+    section.add "SignatureMethod", valid_606296
+  var valid_606297 = query.getOrDefault("Timestamp")
+  valid_606297 = validateParameter(valid_606297, JString, required = true,
                                  default = nil)
-  if valid_602097 != nil:
-    section.add "Timestamp", valid_602097
-  var valid_602098 = query.getOrDefault("Action")
-  valid_602098 = validateParameter(valid_602098, JString, required = true,
+  if valid_606297 != nil:
+    section.add "Timestamp", valid_606297
+  var valid_606298 = query.getOrDefault("Action")
+  valid_606298 = validateParameter(valid_606298, JString, required = true,
                                  default = newJString("GetStatus"))
-  if valid_602098 != nil:
-    section.add "Action", valid_602098
-  var valid_602099 = query.getOrDefault("Operation")
-  valid_602099 = validateParameter(valid_602099, JString, required = true,
+  if valid_606298 != nil:
+    section.add "Action", valid_606298
+  var valid_606299 = query.getOrDefault("Operation")
+  valid_606299 = validateParameter(valid_606299, JString, required = true,
                                  default = newJString("GetStatus"))
-  if valid_602099 != nil:
-    section.add "Operation", valid_602099
-  var valid_602100 = query.getOrDefault("APIVersion")
-  valid_602100 = validateParameter(valid_602100, JString, required = false,
+  if valid_606299 != nil:
+    section.add "Operation", valid_606299
+  var valid_606300 = query.getOrDefault("APIVersion")
+  valid_606300 = validateParameter(valid_606300, JString, required = false,
                                  default = nil)
-  if valid_602100 != nil:
-    section.add "APIVersion", valid_602100
-  var valid_602101 = query.getOrDefault("Version")
-  valid_602101 = validateParameter(valid_602101, JString, required = true,
+  if valid_606300 != nil:
+    section.add "APIVersion", valid_606300
+  var valid_606301 = query.getOrDefault("Version")
+  valid_606301 = validateParameter(valid_606301, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602101 != nil:
-    section.add "Version", valid_602101
-  var valid_602102 = query.getOrDefault("JobId")
-  valid_602102 = validateParameter(valid_602102, JString, required = true,
+  if valid_606301 != nil:
+    section.add "Version", valid_606301
+  var valid_606302 = query.getOrDefault("JobId")
+  valid_606302 = validateParameter(valid_606302, JString, required = true,
                                  default = nil)
-  if valid_602102 != nil:
-    section.add "JobId", valid_602102
-  var valid_602103 = query.getOrDefault("SignatureVersion")
-  valid_602103 = validateParameter(valid_602103, JString, required = true,
+  if valid_606302 != nil:
+    section.add "JobId", valid_606302
+  var valid_606303 = query.getOrDefault("SignatureVersion")
+  valid_606303 = validateParameter(valid_606303, JString, required = true,
                                  default = nil)
-  if valid_602103 != nil:
-    section.add "SignatureVersion", valid_602103
+  if valid_606303 != nil:
+    section.add "SignatureVersion", valid_606303
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1514,20 +1514,20 @@ proc validate_GetGetStatus_602092(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_602104: Call_GetGetStatus_602091; path: JsonNode; query: JsonNode;
+proc call*(call_606304: Call_GetGetStatus_606291; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns information about a job, including where the job is in the processing pipeline, the status of the results, and the signature value associated with the job. You can only return information about jobs you own.
   ## 
-  let valid = call_602104.validator(path, query, header, formData, body)
-  let scheme = call_602104.pickScheme
+  let valid = call_606304.validator(path, query, header, formData, body)
+  let scheme = call_606304.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602104.url(scheme.get, call_602104.host, call_602104.base,
-                         call_602104.route, valid.getOrDefault("path"),
+  let url = call_606304.url(scheme.get, call_606304.host, call_606304.base,
+                         call_606304.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602104, url, valid)
+  result = atozHook(call_606304, url, valid)
 
-proc call*(call_602105: Call_GetGetStatus_602091; Signature: string;
+proc call*(call_606305: Call_GetGetStatus_606291; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Timestamp: string;
           JobId: string; SignatureVersion: string; Action: string = "GetStatus";
           Operation: string = "GetStatus"; APIVersion: string = "";
@@ -1546,27 +1546,27 @@ proc call*(call_602105: Call_GetGetStatus_602091; Signature: string;
   ##   JobId: string (required)
   ##        : A unique identifier which refers to a particular job.
   ##   SignatureVersion: string (required)
-  var query_602106 = newJObject()
-  add(query_602106, "Signature", newJString(Signature))
-  add(query_602106, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602106, "SignatureMethod", newJString(SignatureMethod))
-  add(query_602106, "Timestamp", newJString(Timestamp))
-  add(query_602106, "Action", newJString(Action))
-  add(query_602106, "Operation", newJString(Operation))
-  add(query_602106, "APIVersion", newJString(APIVersion))
-  add(query_602106, "Version", newJString(Version))
-  add(query_602106, "JobId", newJString(JobId))
-  add(query_602106, "SignatureVersion", newJString(SignatureVersion))
-  result = call_602105.call(nil, query_602106, nil, nil, nil)
+  var query_606306 = newJObject()
+  add(query_606306, "Signature", newJString(Signature))
+  add(query_606306, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606306, "SignatureMethod", newJString(SignatureMethod))
+  add(query_606306, "Timestamp", newJString(Timestamp))
+  add(query_606306, "Action", newJString(Action))
+  add(query_606306, "Operation", newJString(Operation))
+  add(query_606306, "APIVersion", newJString(APIVersion))
+  add(query_606306, "Version", newJString(Version))
+  add(query_606306, "JobId", newJString(JobId))
+  add(query_606306, "SignatureVersion", newJString(SignatureVersion))
+  result = call_606305.call(nil, query_606306, nil, nil, nil)
 
-var getGetStatus* = Call_GetGetStatus_602091(name: "getGetStatus",
+var getGetStatus* = Call_GetGetStatus_606291(name: "getGetStatus",
     meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
     route: "/#Operation=GetStatus&Action=GetStatus",
-    validator: validate_GetGetStatus_602092, base: "/", url: url_GetGetStatus_602093,
+    validator: validate_GetGetStatus_606292, base: "/", url: url_GetGetStatus_606293,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostListJobs_602141 = ref object of OpenApiRestCall_601373
-proc url_PostListJobs_602143(protocol: Scheme; host: string; base: string;
+  Call_PostListJobs_606341 = ref object of OpenApiRestCall_605573
+proc url_PostListJobs_606343(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1578,7 +1578,7 @@ proc url_PostListJobs_602143(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostListJobs_602142(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostListJobs_606342(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
   ## 
@@ -1598,46 +1598,46 @@ proc validate_PostListJobs_602142(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602144 = query.getOrDefault("Signature")
-  valid_602144 = validateParameter(valid_602144, JString, required = true,
+  var valid_606344 = query.getOrDefault("Signature")
+  valid_606344 = validateParameter(valid_606344, JString, required = true,
                                  default = nil)
-  if valid_602144 != nil:
-    section.add "Signature", valid_602144
-  var valid_602145 = query.getOrDefault("AWSAccessKeyId")
-  valid_602145 = validateParameter(valid_602145, JString, required = true,
+  if valid_606344 != nil:
+    section.add "Signature", valid_606344
+  var valid_606345 = query.getOrDefault("AWSAccessKeyId")
+  valid_606345 = validateParameter(valid_606345, JString, required = true,
                                  default = nil)
-  if valid_602145 != nil:
-    section.add "AWSAccessKeyId", valid_602145
-  var valid_602146 = query.getOrDefault("SignatureMethod")
-  valid_602146 = validateParameter(valid_602146, JString, required = true,
+  if valid_606345 != nil:
+    section.add "AWSAccessKeyId", valid_606345
+  var valid_606346 = query.getOrDefault("SignatureMethod")
+  valid_606346 = validateParameter(valid_606346, JString, required = true,
                                  default = nil)
-  if valid_602146 != nil:
-    section.add "SignatureMethod", valid_602146
-  var valid_602147 = query.getOrDefault("Timestamp")
-  valid_602147 = validateParameter(valid_602147, JString, required = true,
+  if valid_606346 != nil:
+    section.add "SignatureMethod", valid_606346
+  var valid_606347 = query.getOrDefault("Timestamp")
+  valid_606347 = validateParameter(valid_606347, JString, required = true,
                                  default = nil)
-  if valid_602147 != nil:
-    section.add "Timestamp", valid_602147
-  var valid_602148 = query.getOrDefault("Action")
-  valid_602148 = validateParameter(valid_602148, JString, required = true,
+  if valid_606347 != nil:
+    section.add "Timestamp", valid_606347
+  var valid_606348 = query.getOrDefault("Action")
+  valid_606348 = validateParameter(valid_606348, JString, required = true,
                                  default = newJString("ListJobs"))
-  if valid_602148 != nil:
-    section.add "Action", valid_602148
-  var valid_602149 = query.getOrDefault("Operation")
-  valid_602149 = validateParameter(valid_602149, JString, required = true,
+  if valid_606348 != nil:
+    section.add "Action", valid_606348
+  var valid_606349 = query.getOrDefault("Operation")
+  valid_606349 = validateParameter(valid_606349, JString, required = true,
                                  default = newJString("ListJobs"))
-  if valid_602149 != nil:
-    section.add "Operation", valid_602149
-  var valid_602150 = query.getOrDefault("Version")
-  valid_602150 = validateParameter(valid_602150, JString, required = true,
+  if valid_606349 != nil:
+    section.add "Operation", valid_606349
+  var valid_606350 = query.getOrDefault("Version")
+  valid_606350 = validateParameter(valid_606350, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602150 != nil:
-    section.add "Version", valid_602150
-  var valid_602151 = query.getOrDefault("SignatureVersion")
-  valid_602151 = validateParameter(valid_602151, JString, required = true,
+  if valid_606350 != nil:
+    section.add "Version", valid_606350
+  var valid_606351 = query.getOrDefault("SignatureVersion")
+  valid_606351 = validateParameter(valid_606351, JString, required = true,
                                  default = nil)
-  if valid_602151 != nil:
-    section.add "SignatureVersion", valid_602151
+  if valid_606351 != nil:
+    section.add "SignatureVersion", valid_606351
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1649,38 +1649,38 @@ proc validate_PostListJobs_602142(path: JsonNode; query: JsonNode; header: JsonN
   ##   APIVersion: JString
   ##             : Specifies the version of the client tool.
   section = newJObject()
-  var valid_602152 = formData.getOrDefault("MaxJobs")
-  valid_602152 = validateParameter(valid_602152, JInt, required = false, default = nil)
-  if valid_602152 != nil:
-    section.add "MaxJobs", valid_602152
-  var valid_602153 = formData.getOrDefault("Marker")
-  valid_602153 = validateParameter(valid_602153, JString, required = false,
+  var valid_606352 = formData.getOrDefault("MaxJobs")
+  valid_606352 = validateParameter(valid_606352, JInt, required = false, default = nil)
+  if valid_606352 != nil:
+    section.add "MaxJobs", valid_606352
+  var valid_606353 = formData.getOrDefault("Marker")
+  valid_606353 = validateParameter(valid_606353, JString, required = false,
                                  default = nil)
-  if valid_602153 != nil:
-    section.add "Marker", valid_602153
-  var valid_602154 = formData.getOrDefault("APIVersion")
-  valid_602154 = validateParameter(valid_602154, JString, required = false,
+  if valid_606353 != nil:
+    section.add "Marker", valid_606353
+  var valid_606354 = formData.getOrDefault("APIVersion")
+  valid_606354 = validateParameter(valid_606354, JString, required = false,
                                  default = nil)
-  if valid_602154 != nil:
-    section.add "APIVersion", valid_602154
+  if valid_606354 != nil:
+    section.add "APIVersion", valid_606354
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602155: Call_PostListJobs_602141; path: JsonNode; query: JsonNode;
+proc call*(call_606355: Call_PostListJobs_606341; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
   ## 
-  let valid = call_602155.validator(path, query, header, formData, body)
-  let scheme = call_602155.pickScheme
+  let valid = call_606355.validator(path, query, header, formData, body)
+  let scheme = call_606355.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602155.url(scheme.get, call_602155.host, call_602155.base,
-                         call_602155.route, valid.getOrDefault("path"),
+  let url = call_606355.url(scheme.get, call_606355.host, call_606355.base,
+                         call_606355.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602155, url, valid)
+  result = atozHook(call_606355, url, valid)
 
-proc call*(call_602156: Call_PostListJobs_602141; Signature: string;
+proc call*(call_606356: Call_PostListJobs_606341; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Timestamp: string;
           SignatureVersion: string; MaxJobs: int = 0; Marker: string = "";
           APIVersion: string = ""; Action: string = "ListJobs";
@@ -1701,29 +1701,29 @@ proc call*(call_602156: Call_PostListJobs_602141; Signature: string;
   ##   Operation: string (required)
   ##   Version: string (required)
   ##   SignatureVersion: string (required)
-  var query_602157 = newJObject()
-  var formData_602158 = newJObject()
-  add(query_602157, "Signature", newJString(Signature))
-  add(formData_602158, "MaxJobs", newJInt(MaxJobs))
-  add(query_602157, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602157, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_602158, "Marker", newJString(Marker))
-  add(formData_602158, "APIVersion", newJString(APIVersion))
-  add(query_602157, "Timestamp", newJString(Timestamp))
-  add(query_602157, "Action", newJString(Action))
-  add(query_602157, "Operation", newJString(Operation))
-  add(query_602157, "Version", newJString(Version))
-  add(query_602157, "SignatureVersion", newJString(SignatureVersion))
-  result = call_602156.call(nil, query_602157, nil, formData_602158, nil)
+  var query_606357 = newJObject()
+  var formData_606358 = newJObject()
+  add(query_606357, "Signature", newJString(Signature))
+  add(formData_606358, "MaxJobs", newJInt(MaxJobs))
+  add(query_606357, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606357, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_606358, "Marker", newJString(Marker))
+  add(formData_606358, "APIVersion", newJString(APIVersion))
+  add(query_606357, "Timestamp", newJString(Timestamp))
+  add(query_606357, "Action", newJString(Action))
+  add(query_606357, "Operation", newJString(Operation))
+  add(query_606357, "Version", newJString(Version))
+  add(query_606357, "SignatureVersion", newJString(SignatureVersion))
+  result = call_606356.call(nil, query_606357, nil, formData_606358, nil)
 
-var postListJobs* = Call_PostListJobs_602141(name: "postListJobs",
+var postListJobs* = Call_PostListJobs_606341(name: "postListJobs",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=ListJobs&Action=ListJobs",
-    validator: validate_PostListJobs_602142, base: "/", url: url_PostListJobs_602143,
+    validator: validate_PostListJobs_606342, base: "/", url: url_PostListJobs_606343,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetListJobs_602124 = ref object of OpenApiRestCall_601373
-proc url_GetListJobs_602126(protocol: Scheme; host: string; base: string;
+  Call_GetListJobs_606324 = ref object of OpenApiRestCall_605573
+proc url_GetListJobs_606326(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1735,7 +1735,7 @@ proc url_GetListJobs_602126(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetListJobs_602125(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetListJobs_606325(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
   ## 
@@ -1759,62 +1759,62 @@ proc validate_GetListJobs_602125(path: JsonNode; query: JsonNode; header: JsonNo
   ##   Version: JString (required)
   ##   SignatureVersion: JString (required)
   section = newJObject()
-  var valid_602127 = query.getOrDefault("MaxJobs")
-  valid_602127 = validateParameter(valid_602127, JInt, required = false, default = nil)
-  if valid_602127 != nil:
-    section.add "MaxJobs", valid_602127
-  var valid_602128 = query.getOrDefault("Marker")
-  valid_602128 = validateParameter(valid_602128, JString, required = false,
+  var valid_606327 = query.getOrDefault("MaxJobs")
+  valid_606327 = validateParameter(valid_606327, JInt, required = false, default = nil)
+  if valid_606327 != nil:
+    section.add "MaxJobs", valid_606327
+  var valid_606328 = query.getOrDefault("Marker")
+  valid_606328 = validateParameter(valid_606328, JString, required = false,
                                  default = nil)
-  if valid_602128 != nil:
-    section.add "Marker", valid_602128
+  if valid_606328 != nil:
+    section.add "Marker", valid_606328
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602129 = query.getOrDefault("Signature")
-  valid_602129 = validateParameter(valid_602129, JString, required = true,
+  var valid_606329 = query.getOrDefault("Signature")
+  valid_606329 = validateParameter(valid_606329, JString, required = true,
                                  default = nil)
-  if valid_602129 != nil:
-    section.add "Signature", valid_602129
-  var valid_602130 = query.getOrDefault("AWSAccessKeyId")
-  valid_602130 = validateParameter(valid_602130, JString, required = true,
+  if valid_606329 != nil:
+    section.add "Signature", valid_606329
+  var valid_606330 = query.getOrDefault("AWSAccessKeyId")
+  valid_606330 = validateParameter(valid_606330, JString, required = true,
                                  default = nil)
-  if valid_602130 != nil:
-    section.add "AWSAccessKeyId", valid_602130
-  var valid_602131 = query.getOrDefault("SignatureMethod")
-  valid_602131 = validateParameter(valid_602131, JString, required = true,
+  if valid_606330 != nil:
+    section.add "AWSAccessKeyId", valid_606330
+  var valid_606331 = query.getOrDefault("SignatureMethod")
+  valid_606331 = validateParameter(valid_606331, JString, required = true,
                                  default = nil)
-  if valid_602131 != nil:
-    section.add "SignatureMethod", valid_602131
-  var valid_602132 = query.getOrDefault("Timestamp")
-  valid_602132 = validateParameter(valid_602132, JString, required = true,
+  if valid_606331 != nil:
+    section.add "SignatureMethod", valid_606331
+  var valid_606332 = query.getOrDefault("Timestamp")
+  valid_606332 = validateParameter(valid_606332, JString, required = true,
                                  default = nil)
-  if valid_602132 != nil:
-    section.add "Timestamp", valid_602132
-  var valid_602133 = query.getOrDefault("Action")
-  valid_602133 = validateParameter(valid_602133, JString, required = true,
+  if valid_606332 != nil:
+    section.add "Timestamp", valid_606332
+  var valid_606333 = query.getOrDefault("Action")
+  valid_606333 = validateParameter(valid_606333, JString, required = true,
                                  default = newJString("ListJobs"))
-  if valid_602133 != nil:
-    section.add "Action", valid_602133
-  var valid_602134 = query.getOrDefault("Operation")
-  valid_602134 = validateParameter(valid_602134, JString, required = true,
+  if valid_606333 != nil:
+    section.add "Action", valid_606333
+  var valid_606334 = query.getOrDefault("Operation")
+  valid_606334 = validateParameter(valid_606334, JString, required = true,
                                  default = newJString("ListJobs"))
-  if valid_602134 != nil:
-    section.add "Operation", valid_602134
-  var valid_602135 = query.getOrDefault("APIVersion")
-  valid_602135 = validateParameter(valid_602135, JString, required = false,
+  if valid_606334 != nil:
+    section.add "Operation", valid_606334
+  var valid_606335 = query.getOrDefault("APIVersion")
+  valid_606335 = validateParameter(valid_606335, JString, required = false,
                                  default = nil)
-  if valid_602135 != nil:
-    section.add "APIVersion", valid_602135
-  var valid_602136 = query.getOrDefault("Version")
-  valid_602136 = validateParameter(valid_602136, JString, required = true,
+  if valid_606335 != nil:
+    section.add "APIVersion", valid_606335
+  var valid_606336 = query.getOrDefault("Version")
+  valid_606336 = validateParameter(valid_606336, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602136 != nil:
-    section.add "Version", valid_602136
-  var valid_602137 = query.getOrDefault("SignatureVersion")
-  valid_602137 = validateParameter(valid_602137, JString, required = true,
+  if valid_606336 != nil:
+    section.add "Version", valid_606336
+  var valid_606337 = query.getOrDefault("SignatureVersion")
+  valid_606337 = validateParameter(valid_606337, JString, required = true,
                                  default = nil)
-  if valid_602137 != nil:
-    section.add "SignatureVersion", valid_602137
+  if valid_606337 != nil:
+    section.add "SignatureVersion", valid_606337
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1823,20 +1823,20 @@ proc validate_GetListJobs_602125(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_602138: Call_GetListJobs_602124; path: JsonNode; query: JsonNode;
+proc call*(call_606338: Call_GetListJobs_606324; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns the jobs associated with the requester. AWS Import/Export lists the jobs in reverse chronological order based on the date of creation. For example if Job Test1 was created 2009Dec30 and Test2 was created 2010Feb05, the ListJobs operation would return Test2 followed by Test1.
   ## 
-  let valid = call_602138.validator(path, query, header, formData, body)
-  let scheme = call_602138.pickScheme
+  let valid = call_606338.validator(path, query, header, formData, body)
+  let scheme = call_606338.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602138.url(scheme.get, call_602138.host, call_602138.base,
-                         call_602138.route, valid.getOrDefault("path"),
+  let url = call_606338.url(scheme.get, call_606338.host, call_606338.base,
+                         call_606338.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602138, url, valid)
+  result = atozHook(call_606338, url, valid)
 
-proc call*(call_602139: Call_GetListJobs_602124; Signature: string;
+proc call*(call_606339: Call_GetListJobs_606324; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Timestamp: string;
           SignatureVersion: string; MaxJobs: int = 0; Marker: string = "";
           Action: string = "ListJobs"; Operation: string = "ListJobs";
@@ -1857,29 +1857,29 @@ proc call*(call_602139: Call_GetListJobs_602124; Signature: string;
   ##             : Specifies the version of the client tool.
   ##   Version: string (required)
   ##   SignatureVersion: string (required)
-  var query_602140 = newJObject()
-  add(query_602140, "MaxJobs", newJInt(MaxJobs))
-  add(query_602140, "Marker", newJString(Marker))
-  add(query_602140, "Signature", newJString(Signature))
-  add(query_602140, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602140, "SignatureMethod", newJString(SignatureMethod))
-  add(query_602140, "Timestamp", newJString(Timestamp))
-  add(query_602140, "Action", newJString(Action))
-  add(query_602140, "Operation", newJString(Operation))
-  add(query_602140, "APIVersion", newJString(APIVersion))
-  add(query_602140, "Version", newJString(Version))
-  add(query_602140, "SignatureVersion", newJString(SignatureVersion))
-  result = call_602139.call(nil, query_602140, nil, nil, nil)
+  var query_606340 = newJObject()
+  add(query_606340, "MaxJobs", newJInt(MaxJobs))
+  add(query_606340, "Marker", newJString(Marker))
+  add(query_606340, "Signature", newJString(Signature))
+  add(query_606340, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606340, "SignatureMethod", newJString(SignatureMethod))
+  add(query_606340, "Timestamp", newJString(Timestamp))
+  add(query_606340, "Action", newJString(Action))
+  add(query_606340, "Operation", newJString(Operation))
+  add(query_606340, "APIVersion", newJString(APIVersion))
+  add(query_606340, "Version", newJString(Version))
+  add(query_606340, "SignatureVersion", newJString(SignatureVersion))
+  result = call_606339.call(nil, query_606340, nil, nil, nil)
 
-var getListJobs* = Call_GetListJobs_602124(name: "getListJobs",
+var getListJobs* = Call_GetListJobs_606324(name: "getListJobs",
                                         meth: HttpMethod.HttpGet,
                                         host: "importexport.amazonaws.com", route: "/#Operation=ListJobs&Action=ListJobs",
-                                        validator: validate_GetListJobs_602125,
-                                        base: "/", url: url_GetListJobs_602126,
+                                        validator: validate_GetListJobs_606325,
+                                        base: "/", url: url_GetListJobs_606326,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostUpdateJob_602178 = ref object of OpenApiRestCall_601373
-proc url_PostUpdateJob_602180(protocol: Scheme; host: string; base: string;
+  Call_PostUpdateJob_606378 = ref object of OpenApiRestCall_605573
+proc url_PostUpdateJob_606380(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1891,7 +1891,7 @@ proc url_PostUpdateJob_602180(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PostUpdateJob_602179(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostUpdateJob_606379(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
   ## 
@@ -1911,46 +1911,46 @@ proc validate_PostUpdateJob_602179(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602181 = query.getOrDefault("Signature")
-  valid_602181 = validateParameter(valid_602181, JString, required = true,
+  var valid_606381 = query.getOrDefault("Signature")
+  valid_606381 = validateParameter(valid_606381, JString, required = true,
                                  default = nil)
-  if valid_602181 != nil:
-    section.add "Signature", valid_602181
-  var valid_602182 = query.getOrDefault("AWSAccessKeyId")
-  valid_602182 = validateParameter(valid_602182, JString, required = true,
+  if valid_606381 != nil:
+    section.add "Signature", valid_606381
+  var valid_606382 = query.getOrDefault("AWSAccessKeyId")
+  valid_606382 = validateParameter(valid_606382, JString, required = true,
                                  default = nil)
-  if valid_602182 != nil:
-    section.add "AWSAccessKeyId", valid_602182
-  var valid_602183 = query.getOrDefault("SignatureMethod")
-  valid_602183 = validateParameter(valid_602183, JString, required = true,
+  if valid_606382 != nil:
+    section.add "AWSAccessKeyId", valid_606382
+  var valid_606383 = query.getOrDefault("SignatureMethod")
+  valid_606383 = validateParameter(valid_606383, JString, required = true,
                                  default = nil)
-  if valid_602183 != nil:
-    section.add "SignatureMethod", valid_602183
-  var valid_602184 = query.getOrDefault("Timestamp")
-  valid_602184 = validateParameter(valid_602184, JString, required = true,
+  if valid_606383 != nil:
+    section.add "SignatureMethod", valid_606383
+  var valid_606384 = query.getOrDefault("Timestamp")
+  valid_606384 = validateParameter(valid_606384, JString, required = true,
                                  default = nil)
-  if valid_602184 != nil:
-    section.add "Timestamp", valid_602184
-  var valid_602185 = query.getOrDefault("Action")
-  valid_602185 = validateParameter(valid_602185, JString, required = true,
+  if valid_606384 != nil:
+    section.add "Timestamp", valid_606384
+  var valid_606385 = query.getOrDefault("Action")
+  valid_606385 = validateParameter(valid_606385, JString, required = true,
                                  default = newJString("UpdateJob"))
-  if valid_602185 != nil:
-    section.add "Action", valid_602185
-  var valid_602186 = query.getOrDefault("Operation")
-  valid_602186 = validateParameter(valid_602186, JString, required = true,
+  if valid_606385 != nil:
+    section.add "Action", valid_606385
+  var valid_606386 = query.getOrDefault("Operation")
+  valid_606386 = validateParameter(valid_606386, JString, required = true,
                                  default = newJString("UpdateJob"))
-  if valid_602186 != nil:
-    section.add "Operation", valid_602186
-  var valid_602187 = query.getOrDefault("Version")
-  valid_602187 = validateParameter(valid_602187, JString, required = true,
+  if valid_606386 != nil:
+    section.add "Operation", valid_606386
+  var valid_606387 = query.getOrDefault("Version")
+  valid_606387 = validateParameter(valid_606387, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602187 != nil:
-    section.add "Version", valid_602187
-  var valid_602188 = query.getOrDefault("SignatureVersion")
-  valid_602188 = validateParameter(valid_602188, JString, required = true,
+  if valid_606387 != nil:
+    section.add "Version", valid_606387
+  var valid_606388 = query.getOrDefault("SignatureVersion")
+  valid_606388 = validateParameter(valid_606388, JString, required = true,
                                  default = nil)
-  if valid_602188 != nil:
-    section.add "SignatureVersion", valid_602188
+  if valid_606388 != nil:
+    section.add "SignatureVersion", valid_606388
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -1968,48 +1968,48 @@ proc validate_PostUpdateJob_602179(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `ValidateOnly` field"
-  var valid_602189 = formData.getOrDefault("ValidateOnly")
-  valid_602189 = validateParameter(valid_602189, JBool, required = true, default = nil)
-  if valid_602189 != nil:
-    section.add "ValidateOnly", valid_602189
-  var valid_602190 = formData.getOrDefault("APIVersion")
-  valid_602190 = validateParameter(valid_602190, JString, required = false,
+  var valid_606389 = formData.getOrDefault("ValidateOnly")
+  valid_606389 = validateParameter(valid_606389, JBool, required = true, default = nil)
+  if valid_606389 != nil:
+    section.add "ValidateOnly", valid_606389
+  var valid_606390 = formData.getOrDefault("APIVersion")
+  valid_606390 = validateParameter(valid_606390, JString, required = false,
                                  default = nil)
-  if valid_602190 != nil:
-    section.add "APIVersion", valid_602190
-  var valid_602191 = formData.getOrDefault("JobId")
-  valid_602191 = validateParameter(valid_602191, JString, required = true,
+  if valid_606390 != nil:
+    section.add "APIVersion", valid_606390
+  var valid_606391 = formData.getOrDefault("JobId")
+  valid_606391 = validateParameter(valid_606391, JString, required = true,
                                  default = nil)
-  if valid_602191 != nil:
-    section.add "JobId", valid_602191
-  var valid_602192 = formData.getOrDefault("JobType")
-  valid_602192 = validateParameter(valid_602192, JString, required = true,
+  if valid_606391 != nil:
+    section.add "JobId", valid_606391
+  var valid_606392 = formData.getOrDefault("JobType")
+  valid_606392 = validateParameter(valid_606392, JString, required = true,
                                  default = newJString("Import"))
-  if valid_602192 != nil:
-    section.add "JobType", valid_602192
-  var valid_602193 = formData.getOrDefault("Manifest")
-  valid_602193 = validateParameter(valid_602193, JString, required = true,
+  if valid_606392 != nil:
+    section.add "JobType", valid_606392
+  var valid_606393 = formData.getOrDefault("Manifest")
+  valid_606393 = validateParameter(valid_606393, JString, required = true,
                                  default = nil)
-  if valid_602193 != nil:
-    section.add "Manifest", valid_602193
+  if valid_606393 != nil:
+    section.add "Manifest", valid_606393
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_602194: Call_PostUpdateJob_602178; path: JsonNode; query: JsonNode;
+proc call*(call_606394: Call_PostUpdateJob_606378; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
   ## 
-  let valid = call_602194.validator(path, query, header, formData, body)
-  let scheme = call_602194.pickScheme
+  let valid = call_606394.validator(path, query, header, formData, body)
+  let scheme = call_606394.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602194.url(scheme.get, call_602194.host, call_602194.base,
-                         call_602194.route, valid.getOrDefault("path"),
+  let url = call_606394.url(scheme.get, call_606394.host, call_606394.base,
+                         call_606394.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602194, url, valid)
+  result = atozHook(call_606394, url, valid)
 
-proc call*(call_602195: Call_PostUpdateJob_602178; Signature: string;
+proc call*(call_606395: Call_PostUpdateJob_606378; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; ValidateOnly: bool;
           Timestamp: string; JobId: string; SignatureVersion: string;
           Manifest: string; APIVersion: string = ""; Action: string = "UpdateJob";
@@ -2035,31 +2035,31 @@ proc call*(call_602195: Call_PostUpdateJob_602178; Signature: string;
   ##   SignatureVersion: string (required)
   ##   Manifest: string (required)
   ##           : The UTF-8 encoded text of the manifest file.
-  var query_602196 = newJObject()
-  var formData_602197 = newJObject()
-  add(query_602196, "Signature", newJString(Signature))
-  add(query_602196, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602196, "SignatureMethod", newJString(SignatureMethod))
-  add(formData_602197, "ValidateOnly", newJBool(ValidateOnly))
-  add(formData_602197, "APIVersion", newJString(APIVersion))
-  add(query_602196, "Timestamp", newJString(Timestamp))
-  add(query_602196, "Action", newJString(Action))
-  add(query_602196, "Operation", newJString(Operation))
-  add(formData_602197, "JobId", newJString(JobId))
-  add(query_602196, "Version", newJString(Version))
-  add(formData_602197, "JobType", newJString(JobType))
-  add(query_602196, "SignatureVersion", newJString(SignatureVersion))
-  add(formData_602197, "Manifest", newJString(Manifest))
-  result = call_602195.call(nil, query_602196, nil, formData_602197, nil)
+  var query_606396 = newJObject()
+  var formData_606397 = newJObject()
+  add(query_606396, "Signature", newJString(Signature))
+  add(query_606396, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606396, "SignatureMethod", newJString(SignatureMethod))
+  add(formData_606397, "ValidateOnly", newJBool(ValidateOnly))
+  add(formData_606397, "APIVersion", newJString(APIVersion))
+  add(query_606396, "Timestamp", newJString(Timestamp))
+  add(query_606396, "Action", newJString(Action))
+  add(query_606396, "Operation", newJString(Operation))
+  add(formData_606397, "JobId", newJString(JobId))
+  add(query_606396, "Version", newJString(Version))
+  add(formData_606397, "JobType", newJString(JobType))
+  add(query_606396, "SignatureVersion", newJString(SignatureVersion))
+  add(formData_606397, "Manifest", newJString(Manifest))
+  result = call_606395.call(nil, query_606396, nil, formData_606397, nil)
 
-var postUpdateJob* = Call_PostUpdateJob_602178(name: "postUpdateJob",
+var postUpdateJob* = Call_PostUpdateJob_606378(name: "postUpdateJob",
     meth: HttpMethod.HttpPost, host: "importexport.amazonaws.com",
     route: "/#Operation=UpdateJob&Action=UpdateJob",
-    validator: validate_PostUpdateJob_602179, base: "/", url: url_PostUpdateJob_602180,
+    validator: validate_PostUpdateJob_606379, base: "/", url: url_PostUpdateJob_606380,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetUpdateJob_602159 = ref object of OpenApiRestCall_601373
-proc url_GetUpdateJob_602161(protocol: Scheme; host: string; base: string;
+  Call_GetUpdateJob_606359 = ref object of OpenApiRestCall_605573
+proc url_GetUpdateJob_606361(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2071,7 +2071,7 @@ proc url_GetUpdateJob_602161(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetUpdateJob_602160(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetUpdateJob_606360(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
   ## 
@@ -2101,70 +2101,70 @@ proc validate_GetUpdateJob_602160(path: JsonNode; query: JsonNode; header: JsonN
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `Signature` field"
-  var valid_602162 = query.getOrDefault("Signature")
-  valid_602162 = validateParameter(valid_602162, JString, required = true,
+  var valid_606362 = query.getOrDefault("Signature")
+  valid_606362 = validateParameter(valid_606362, JString, required = true,
                                  default = nil)
-  if valid_602162 != nil:
-    section.add "Signature", valid_602162
-  var valid_602163 = query.getOrDefault("JobType")
-  valid_602163 = validateParameter(valid_602163, JString, required = true,
+  if valid_606362 != nil:
+    section.add "Signature", valid_606362
+  var valid_606363 = query.getOrDefault("JobType")
+  valid_606363 = validateParameter(valid_606363, JString, required = true,
                                  default = newJString("Import"))
-  if valid_602163 != nil:
-    section.add "JobType", valid_602163
-  var valid_602164 = query.getOrDefault("AWSAccessKeyId")
-  valid_602164 = validateParameter(valid_602164, JString, required = true,
+  if valid_606363 != nil:
+    section.add "JobType", valid_606363
+  var valid_606364 = query.getOrDefault("AWSAccessKeyId")
+  valid_606364 = validateParameter(valid_606364, JString, required = true,
                                  default = nil)
-  if valid_602164 != nil:
-    section.add "AWSAccessKeyId", valid_602164
-  var valid_602165 = query.getOrDefault("SignatureMethod")
-  valid_602165 = validateParameter(valid_602165, JString, required = true,
+  if valid_606364 != nil:
+    section.add "AWSAccessKeyId", valid_606364
+  var valid_606365 = query.getOrDefault("SignatureMethod")
+  valid_606365 = validateParameter(valid_606365, JString, required = true,
                                  default = nil)
-  if valid_602165 != nil:
-    section.add "SignatureMethod", valid_602165
-  var valid_602166 = query.getOrDefault("Manifest")
-  valid_602166 = validateParameter(valid_602166, JString, required = true,
+  if valid_606365 != nil:
+    section.add "SignatureMethod", valid_606365
+  var valid_606366 = query.getOrDefault("Manifest")
+  valid_606366 = validateParameter(valid_606366, JString, required = true,
                                  default = nil)
-  if valid_602166 != nil:
-    section.add "Manifest", valid_602166
-  var valid_602167 = query.getOrDefault("ValidateOnly")
-  valid_602167 = validateParameter(valid_602167, JBool, required = true, default = nil)
-  if valid_602167 != nil:
-    section.add "ValidateOnly", valid_602167
-  var valid_602168 = query.getOrDefault("Timestamp")
-  valid_602168 = validateParameter(valid_602168, JString, required = true,
+  if valid_606366 != nil:
+    section.add "Manifest", valid_606366
+  var valid_606367 = query.getOrDefault("ValidateOnly")
+  valid_606367 = validateParameter(valid_606367, JBool, required = true, default = nil)
+  if valid_606367 != nil:
+    section.add "ValidateOnly", valid_606367
+  var valid_606368 = query.getOrDefault("Timestamp")
+  valid_606368 = validateParameter(valid_606368, JString, required = true,
                                  default = nil)
-  if valid_602168 != nil:
-    section.add "Timestamp", valid_602168
-  var valid_602169 = query.getOrDefault("Action")
-  valid_602169 = validateParameter(valid_602169, JString, required = true,
+  if valid_606368 != nil:
+    section.add "Timestamp", valid_606368
+  var valid_606369 = query.getOrDefault("Action")
+  valid_606369 = validateParameter(valid_606369, JString, required = true,
                                  default = newJString("UpdateJob"))
-  if valid_602169 != nil:
-    section.add "Action", valid_602169
-  var valid_602170 = query.getOrDefault("Operation")
-  valid_602170 = validateParameter(valid_602170, JString, required = true,
+  if valid_606369 != nil:
+    section.add "Action", valid_606369
+  var valid_606370 = query.getOrDefault("Operation")
+  valid_606370 = validateParameter(valid_606370, JString, required = true,
                                  default = newJString("UpdateJob"))
-  if valid_602170 != nil:
-    section.add "Operation", valid_602170
-  var valid_602171 = query.getOrDefault("APIVersion")
-  valid_602171 = validateParameter(valid_602171, JString, required = false,
+  if valid_606370 != nil:
+    section.add "Operation", valid_606370
+  var valid_606371 = query.getOrDefault("APIVersion")
+  valid_606371 = validateParameter(valid_606371, JString, required = false,
                                  default = nil)
-  if valid_602171 != nil:
-    section.add "APIVersion", valid_602171
-  var valid_602172 = query.getOrDefault("Version")
-  valid_602172 = validateParameter(valid_602172, JString, required = true,
+  if valid_606371 != nil:
+    section.add "APIVersion", valid_606371
+  var valid_606372 = query.getOrDefault("Version")
+  valid_606372 = validateParameter(valid_606372, JString, required = true,
                                  default = newJString("2010-06-01"))
-  if valid_602172 != nil:
-    section.add "Version", valid_602172
-  var valid_602173 = query.getOrDefault("JobId")
-  valid_602173 = validateParameter(valid_602173, JString, required = true,
+  if valid_606372 != nil:
+    section.add "Version", valid_606372
+  var valid_606373 = query.getOrDefault("JobId")
+  valid_606373 = validateParameter(valid_606373, JString, required = true,
                                  default = nil)
-  if valid_602173 != nil:
-    section.add "JobId", valid_602173
-  var valid_602174 = query.getOrDefault("SignatureVersion")
-  valid_602174 = validateParameter(valid_602174, JString, required = true,
+  if valid_606373 != nil:
+    section.add "JobId", valid_606373
+  var valid_606374 = query.getOrDefault("SignatureVersion")
+  valid_606374 = validateParameter(valid_606374, JString, required = true,
                                  default = nil)
-  if valid_602174 != nil:
-    section.add "SignatureVersion", valid_602174
+  if valid_606374 != nil:
+    section.add "SignatureVersion", valid_606374
   result.add "query", section
   section = newJObject()
   result.add "header", section
@@ -2173,20 +2173,20 @@ proc validate_GetUpdateJob_602160(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_602175: Call_GetUpdateJob_602159; path: JsonNode; query: JsonNode;
+proc call*(call_606375: Call_GetUpdateJob_606359; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## You use this operation to change the parameters specified in the original manifest file by supplying a new manifest file. The manifest file attached to this request replaces the original manifest file. You can only use the operation after a CreateJob request but before the data transfer starts and you can only use it on jobs you own.
   ## 
-  let valid = call_602175.validator(path, query, header, formData, body)
-  let scheme = call_602175.pickScheme
+  let valid = call_606375.validator(path, query, header, formData, body)
+  let scheme = call_606375.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_602175.url(scheme.get, call_602175.host, call_602175.base,
-                         call_602175.route, valid.getOrDefault("path"),
+  let url = call_606375.url(scheme.get, call_606375.host, call_606375.base,
+                         call_606375.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_602175, url, valid)
+  result = atozHook(call_606375, url, valid)
 
-proc call*(call_602176: Call_GetUpdateJob_602159; Signature: string;
+proc call*(call_606376: Call_GetUpdateJob_606359; Signature: string;
           AWSAccessKeyId: string; SignatureMethod: string; Manifest: string;
           ValidateOnly: bool; Timestamp: string; JobId: string;
           SignatureVersion: string; JobType: string = "Import";
@@ -2212,26 +2212,26 @@ proc call*(call_602176: Call_GetUpdateJob_602159; Signature: string;
   ##   JobId: string (required)
   ##        : A unique identifier which refers to a particular job.
   ##   SignatureVersion: string (required)
-  var query_602177 = newJObject()
-  add(query_602177, "Signature", newJString(Signature))
-  add(query_602177, "JobType", newJString(JobType))
-  add(query_602177, "AWSAccessKeyId", newJString(AWSAccessKeyId))
-  add(query_602177, "SignatureMethod", newJString(SignatureMethod))
-  add(query_602177, "Manifest", newJString(Manifest))
-  add(query_602177, "ValidateOnly", newJBool(ValidateOnly))
-  add(query_602177, "Timestamp", newJString(Timestamp))
-  add(query_602177, "Action", newJString(Action))
-  add(query_602177, "Operation", newJString(Operation))
-  add(query_602177, "APIVersion", newJString(APIVersion))
-  add(query_602177, "Version", newJString(Version))
-  add(query_602177, "JobId", newJString(JobId))
-  add(query_602177, "SignatureVersion", newJString(SignatureVersion))
-  result = call_602176.call(nil, query_602177, nil, nil, nil)
+  var query_606377 = newJObject()
+  add(query_606377, "Signature", newJString(Signature))
+  add(query_606377, "JobType", newJString(JobType))
+  add(query_606377, "AWSAccessKeyId", newJString(AWSAccessKeyId))
+  add(query_606377, "SignatureMethod", newJString(SignatureMethod))
+  add(query_606377, "Manifest", newJString(Manifest))
+  add(query_606377, "ValidateOnly", newJBool(ValidateOnly))
+  add(query_606377, "Timestamp", newJString(Timestamp))
+  add(query_606377, "Action", newJString(Action))
+  add(query_606377, "Operation", newJString(Operation))
+  add(query_606377, "APIVersion", newJString(APIVersion))
+  add(query_606377, "Version", newJString(Version))
+  add(query_606377, "JobId", newJString(JobId))
+  add(query_606377, "SignatureVersion", newJString(SignatureVersion))
+  result = call_606376.call(nil, query_606377, nil, nil, nil)
 
-var getUpdateJob* = Call_GetUpdateJob_602159(name: "getUpdateJob",
+var getUpdateJob* = Call_GetUpdateJob_606359(name: "getUpdateJob",
     meth: HttpMethod.HttpGet, host: "importexport.amazonaws.com",
     route: "/#Operation=UpdateJob&Action=UpdateJob",
-    validator: validate_GetUpdateJob_602160, base: "/", url: url_GetUpdateJob_602161,
+    validator: validate_GetUpdateJob_606360, base: "/", url: url_GetUpdateJob_606361,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -2277,5 +2277,5 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, input.getOrDefault("body").getStr)
+  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
   result.atozSign(input.getOrDefault("query"), SHA256)
