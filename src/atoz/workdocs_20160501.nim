@@ -6083,15 +6083,41 @@ var removeResourcePermission* = Call_RemoveResourcePermission_606892(
 export
   rest
 
+type
+  EnvKind = enum
+    BakeIntoBinary = "Baking $1 into the binary",
+    FetchFromEnv = "Fetch $1 from the environment"
+template sloppyConst(via: EnvKind; name: untyped): untyped =
+  import
+    macros
+
+  const
+    name {.strdefine.}: string = case via
+    of BakeIntoBinary:
+      getEnv(astToStr(name), "")
+    of FetchFromEnv:
+      ""
+  static :
+    let msg = block:
+      if name == "":
+        "Missing $1 in the environment"
+      else:
+        $via
+    warning msg % [astToStr(name)]
+
+sloppyConst FetchFromEnv, AWS_ACCESS_KEY_ID
+sloppyConst FetchFromEnv, AWS_SECRET_ACCESS_KEY
+sloppyConst BakeIntoBinary, AWS_REGION
+sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
 proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
-    access = os.getEnv("AWS_ACCESS_KEY_ID", "")
-    secret = os.getEnv("AWS_SECRET_ACCESS_KEY", "")
-    region = os.getEnv("AWS_REGION", "")
-  assert secret != "", "need secret key in env"
-  assert access != "", "need access key in env"
-  assert region != "", "need region in env"
+    access = os.getEnv("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID)
+    secret = os.getEnv("AWS_SECRET_ACCESS_KEY", AWS_SECRET_ACCESS_KEY)
+    region = os.getEnv("AWS_REGION", AWS_REGION)
+  assert secret != "", "need $AWS_SECRET_ACCESS_KEY in environment"
+  assert access != "", "need $AWS_ACCESS_KEY_ID in environment"
+  assert region != "", "need $AWS_REGION in environment"
   var
     normal: PathNormal
     url = normalizeUrl(recall.url, query, normalize = normal)
@@ -6123,6 +6149,16 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.url = $url
 
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
-  let headers = massageHeaders(input.getOrDefault("header"))
-  result = newRecallable(call, url, headers, $input.getOrDefault("body"))
+  ## the hook is a terrible earworm
+  var headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
+  let
+    body = input.getOrDefault("body")
+    text = if body == nil:
+      "" elif body.kind == JString:
+      body.getStr else:
+      $body
+  if body != nil and body.kind != JString:
+    if not headers.hasKey("content-type"):
+      headers["content-type"] = "application/x-amz-json-1.0"
+  result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)
