@@ -509,7 +509,7 @@ proc url_CreateActivation_606228(protocol: Scheme; host: string; base: string;
 proc validate_CreateActivation_606227(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## Registers your on-premises server or virtual machine with Amazon EC2 so that you can manage these resources using Run Command. An on-premises server or virtual machine that has been registered with EC2 is called a managed instance. For more information about activations, see <a href="http://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html">Setting Up AWS Systems Manager for Hybrid Environments</a>.
+  ## <p>Generates an activation code and activation ID you can use to register your on-premises server or virtual machine (VM) with Systems Manager. Registering these machines with Systems Manager makes it possible to manage them using Systems Manager capabilities. You use the activation code and ID when installing SSM Agent on machines in your hybrid environment. For more information about requirements for managing on-premises instances and VMs using Systems Manager, see <a href="http://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html">Setting Up AWS Systems Manager for Hybrid Environments</a> in the <i>AWS Systems Manager User Guide</i>. </p> <note> <p>On-premises servers or VMs that are registered with Systems Manager and Amazon EC2 instances that you manage with Systems Manager are all called <i>managed instances</i>.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -581,7 +581,7 @@ proc validate_CreateActivation_606227(path: JsonNode; query: JsonNode;
 
 proc call*(call_606238: Call_CreateActivation_606226; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Registers your on-premises server or virtual machine with Amazon EC2 so that you can manage these resources using Run Command. An on-premises server or virtual machine that has been registered with EC2 is called a managed instance. For more information about activations, see <a href="http://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html">Setting Up AWS Systems Manager for Hybrid Environments</a>.
+  ## <p>Generates an activation code and activation ID you can use to register your on-premises server or virtual machine (VM) with Systems Manager. Registering these machines with Systems Manager makes it possible to manage them using Systems Manager capabilities. You use the activation code and ID when installing SSM Agent on machines in your hybrid environment. For more information about requirements for managing on-premises instances and VMs using Systems Manager, see <a href="http://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html">Setting Up AWS Systems Manager for Hybrid Environments</a> in the <i>AWS Systems Manager User Guide</i>. </p> <note> <p>On-premises servers or VMs that are registered with Systems Manager and Amazon EC2 instances that you manage with Systems Manager are all called <i>managed instances</i>.</p> </note>
   ## 
   let valid = call_606238.validator(path, query, header, formData, body)
   let scheme = call_606238.pickScheme
@@ -594,7 +594,7 @@ proc call*(call_606238: Call_CreateActivation_606226; path: JsonNode;
 
 proc call*(call_606239: Call_CreateActivation_606226; body: JsonNode): Recallable =
   ## createActivation
-  ## Registers your on-premises server or virtual machine with Amazon EC2 so that you can manage these resources using Run Command. An on-premises server or virtual machine that has been registered with EC2 is called a managed instance. For more information about activations, see <a href="http://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html">Setting Up AWS Systems Manager for Hybrid Environments</a>.
+  ## <p>Generates an activation code and activation ID you can use to register your on-premises server or virtual machine (VM) with Systems Manager. Registering these machines with Systems Manager makes it possible to manage them using Systems Manager capabilities. You use the activation code and ID when installing SSM Agent on machines in your hybrid environment. For more information about requirements for managing on-premises instances and VMs using Systems Manager, see <a href="http://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-managedinstances.html">Setting Up AWS Systems Manager for Hybrid Environments</a> in the <i>AWS Systems Manager User Guide</i>. </p> <note> <p>On-premises servers or VMs that are registered with Systems Manager and Amazon EC2 instances that you manage with Systems Manager are all called <i>managed instances</i>.</p> </note>
   ##   body: JObject (required)
   var body_606240 = newJObject()
   if body != nil:
@@ -9595,7 +9595,7 @@ proc url_ListAssociations_607414(protocol: Scheme; host: string; base: string;
 proc validate_ListAssociations_607413(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## Lists the associations for the specified Systems Manager document or instance.
+  ## Returns all State Manager associations in the current AWS account and Region. You can limit the results to a specific State Manager association document or instance by specifying a filter.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -9682,7 +9682,7 @@ proc validate_ListAssociations_607413(path: JsonNode; query: JsonNode;
 
 proc call*(call_607426: Call_ListAssociations_607412; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Lists the associations for the specified Systems Manager document or instance.
+  ## Returns all State Manager associations in the current AWS account and Region. You can limit the results to a specific State Manager association document or instance by specifying a filter.
   ## 
   let valid = call_607426.validator(path, query, header, formData, body)
   let scheme = call_607426.pickScheme
@@ -9696,7 +9696,7 @@ proc call*(call_607426: Call_ListAssociations_607412; path: JsonNode;
 proc call*(call_607427: Call_ListAssociations_607412; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listAssociations
-  ## Lists the associations for the specified Systems Manager document or instance.
+  ## Returns all State Manager associations in the current AWS account and Region. You can limit the results to a specific State Manager association document or instance by specifying a filter.
   ##   MaxResults: string
   ##             : Pagination limit
   ##   NextToken: string
@@ -10348,7 +10348,7 @@ proc url_ListDocuments_607513(protocol: Scheme; host: string; base: string;
 
 proc validate_ListDocuments_607512(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes one or more of your Systems Manager documents.
+  ## Returns all Systems Manager (SSM) documents in the current AWS account and Region. You can limit the results of this request by using a filter.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -10435,7 +10435,7 @@ proc validate_ListDocuments_607512(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_607525: Call_ListDocuments_607511; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes one or more of your Systems Manager documents.
+  ## Returns all Systems Manager (SSM) documents in the current AWS account and Region. You can limit the results of this request by using a filter.
   ## 
   let valid = call_607525.validator(path, query, header, formData, body)
   let scheme = call_607525.pickScheme
@@ -10449,7 +10449,7 @@ proc call*(call_607525: Call_ListDocuments_607511; path: JsonNode; query: JsonNo
 proc call*(call_607526: Call_ListDocuments_607511; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listDocuments
-  ## Describes one or more of your Systems Manager documents.
+  ## Returns all Systems Manager (SSM) documents in the current AWS account and Region. You can limit the results of this request by using a filter.
   ##   MaxResults: string
   ##             : Pagination limit
   ##   NextToken: string
@@ -14444,5 +14444,11 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
+  const
+    XAmzSecurityToken = "X-Amz-Security-Token"
+  if not headers.hasKey(XAmzSecurityToken):
+    let session = getEnv("AWS_SESSION_TOKEN", "")
+    if session != "":
+      headers[XAmzSecurityToken] = session
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

@@ -10,7 +10,7 @@ import
 ##     name: Apache 2.0 License
 ##     url: http://www.apache.org/licenses/
 ## 
-## For more information about AWS CloudHSM, see <a href="http://aws.amazon.com/cloudhsm/">AWS CloudHSM</a> and the <a href="http://docs.aws.amazon.com/cloudhsm/latest/userguide/">AWS CloudHSM User Guide</a>.
+## For more information about AWS CloudHSM, see <a href="http://aws.amazon.com/cloudhsm/">AWS CloudHSM</a> and the <a href="https://docs.aws.amazon.com/cloudhsm/latest/userguide/">AWS CloudHSM User Guide</a>.
 ## 
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/cloudhsmv2/
@@ -500,7 +500,7 @@ proc url_DeleteBackup_606228(protocol: Scheme; host: string; base: string;
 
 proc validate_DeleteBackup_606227(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request. For more information on restoring a backup, see <a>RestoreBackup</a> 
+  ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request is made. For more information on restoring a backup, see <a>RestoreBackup</a>.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -572,7 +572,7 @@ proc validate_DeleteBackup_606227(path: JsonNode; query: JsonNode; header: JsonN
 
 proc call*(call_606238: Call_DeleteBackup_606226; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request. For more information on restoring a backup, see <a>RestoreBackup</a> 
+  ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request is made. For more information on restoring a backup, see <a>RestoreBackup</a>.
   ## 
   let valid = call_606238.validator(path, query, header, formData, body)
   let scheme = call_606238.pickScheme
@@ -585,7 +585,7 @@ proc call*(call_606238: Call_DeleteBackup_606226; path: JsonNode; query: JsonNod
 
 proc call*(call_606239: Call_DeleteBackup_606226; body: JsonNode): Recallable =
   ## deleteBackup
-  ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request. For more information on restoring a backup, see <a>RestoreBackup</a> 
+  ## Deletes a specified AWS CloudHSM backup. A backup can be restored up to 7 days after the DeleteBackup request is made. For more information on restoring a backup, see <a>RestoreBackup</a>.
   ##   body: JObject (required)
   var body_606240 = newJObject()
   if body != nil:
@@ -1363,7 +1363,7 @@ proc url_RestoreBackup_606343(protocol: Scheme; host: string; base: string;
 
 proc validate_RestoreBackup_606342(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For more information on deleting a backup, see <a>DeleteBackup</a>.
+  ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For mor information on deleting a backup, see <a>DeleteBackup</a>.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1435,7 +1435,7 @@ proc validate_RestoreBackup_606342(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_606353: Call_RestoreBackup_606341; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For more information on deleting a backup, see <a>DeleteBackup</a>.
+  ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For mor information on deleting a backup, see <a>DeleteBackup</a>.
   ## 
   let valid = call_606353.validator(path, query, header, formData, body)
   let scheme = call_606353.pickScheme
@@ -1448,7 +1448,7 @@ proc call*(call_606353: Call_RestoreBackup_606341; path: JsonNode; query: JsonNo
 
 proc call*(call_606354: Call_RestoreBackup_606341; body: JsonNode): Recallable =
   ## restoreBackup
-  ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For more information on deleting a backup, see <a>DeleteBackup</a>.
+  ## Restores a specified AWS CloudHSM backup that is in the <code>PENDING_DELETION</code> state. For mor information on deleting a backup, see <a>DeleteBackup</a>.
   ##   body: JObject (required)
   var body_606355 = newJObject()
   if body != nil:
@@ -1767,5 +1767,11 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
+  const
+    XAmzSecurityToken = "X-Amz-Security-Token"
+  if not headers.hasKey(XAmzSecurityToken):
+    let session = getEnv("AWS_SESSION_TOKEN", "")
+    if session != "":
+      headers[XAmzSecurityToken] = session
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

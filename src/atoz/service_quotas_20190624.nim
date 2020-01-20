@@ -2192,5 +2192,11 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
+  const
+    XAmzSecurityToken = "X-Amz-Security-Token"
+  if not headers.hasKey(XAmzSecurityToken):
+    let session = getEnv("AWS_SESSION_TOKEN", "")
+    if session != "":
+      headers[XAmzSecurityToken] = session
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

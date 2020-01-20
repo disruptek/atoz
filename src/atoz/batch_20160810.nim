@@ -691,7 +691,7 @@ proc url_DeregisterJobDefinition_606240(protocol: Scheme; host: string; base: st
 
 proc validate_DeregisterJobDefinition_606239(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deregisters an AWS Batch job definition.
+  ## Deregisters an AWS Batch job definition. Job definitions will be permanently deleted after 180 days.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -755,7 +755,7 @@ proc validate_DeregisterJobDefinition_606239(path: JsonNode; query: JsonNode;
 
 proc call*(call_606249: Call_DeregisterJobDefinition_606238; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deregisters an AWS Batch job definition.
+  ## Deregisters an AWS Batch job definition. Job definitions will be permanently deleted after 180 days.
   ## 
   let valid = call_606249.validator(path, query, header, formData, body)
   let scheme = call_606249.pickScheme
@@ -768,7 +768,7 @@ proc call*(call_606249: Call_DeregisterJobDefinition_606238; path: JsonNode;
 
 proc call*(call_606250: Call_DeregisterJobDefinition_606238; body: JsonNode): Recallable =
   ## deregisterJobDefinition
-  ## Deregisters an AWS Batch job definition.
+  ## Deregisters an AWS Batch job definition. Job definitions will be permanently deleted after 180 days.
   ##   body: JObject (required)
   var body_606251 = newJObject()
   if body != nil:
@@ -2005,5 +2005,11 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
+  const
+    XAmzSecurityToken = "X-Amz-Security-Token"
+  if not headers.hasKey(XAmzSecurityToken):
+    let session = getEnv("AWS_SESSION_TOKEN", "")
+    if session != "":
+      headers[XAmzSecurityToken] = session
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

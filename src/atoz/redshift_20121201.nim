@@ -1347,7 +1347,7 @@ proc url_PostBatchModifyClusterSnapshots_606330(protocol: Scheme; host: string;
 
 proc validate_PostBatchModifyClusterSnapshots_606329(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the settings for a list of snapshots.
+  ## Modifies the settings for a set of cluster snapshots.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1442,7 +1442,7 @@ proc validate_PostBatchModifyClusterSnapshots_606329(path: JsonNode;
 proc call*(call_606343: Call_PostBatchModifyClusterSnapshots_606328;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ## Modifies the settings for a list of snapshots.
+  ## Modifies the settings for a set of cluster snapshots.
   ## 
   let valid = call_606343.validator(path, query, header, formData, body)
   let scheme = call_606343.pickScheme
@@ -1458,7 +1458,7 @@ proc call*(call_606344: Call_PostBatchModifyClusterSnapshots_606328;
           Action: string = "BatchModifyClusterSnapshots";
           Version: string = "2012-12-01"; ManualSnapshotRetentionPeriod: int = 0): Recallable =
   ## postBatchModifyClusterSnapshots
-  ## Modifies the settings for a list of snapshots.
+  ## Modifies the settings for a set of cluster snapshots.
   ##   Force: bool
   ##        : A boolean value indicating whether to override an exception if the retention period has passed. 
   ##   SnapshotIdentifierList: JArray (required)
@@ -1500,7 +1500,7 @@ proc url_GetBatchModifyClusterSnapshots_606312(protocol: Scheme; host: string;
 
 proc validate_GetBatchModifyClusterSnapshots_606311(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the settings for a list of snapshots.
+  ## Modifies the settings for a set of cluster snapshots.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1592,7 +1592,7 @@ proc validate_GetBatchModifyClusterSnapshots_606311(path: JsonNode;
 
 proc call*(call_606325: Call_GetBatchModifyClusterSnapshots_606310; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modifies the settings for a list of snapshots.
+  ## Modifies the settings for a set of cluster snapshots.
   ## 
   let valid = call_606325.validator(path, query, header, formData, body)
   let scheme = call_606325.pickScheme
@@ -1609,7 +1609,7 @@ proc call*(call_606326: Call_GetBatchModifyClusterSnapshots_606310;
           Action: string = "BatchModifyClusterSnapshots";
           Version: string = "2012-12-01"): Recallable =
   ## getBatchModifyClusterSnapshots
-  ## Modifies the settings for a list of snapshots.
+  ## Modifies the settings for a set of cluster snapshots.
   ##   ManualSnapshotRetentionPeriod: int
   ##                                : <p>The number of days that a manual snapshot is retained. If you specify the value -1, the manual snapshot is retained indefinitely.</p> <p>The number must be either -1 or an integer between 1 and 3,653.</p> <p>If you decrease the manual snapshot retention period from its current value, existing manual snapshots that fall outside of the new retention period will return an error. If you want to suppress the errors and delete the snapshots, use the force option. </p>
   ##   Force: bool
@@ -1651,7 +1651,7 @@ proc url_PostCancelResize_606365(protocol: Scheme; host: string; base: string;
 proc validate_PostCancelResize_606364(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## Cancels a resize operation.
+  ## Cancels a resize operation for a cluster.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1734,7 +1734,7 @@ proc validate_PostCancelResize_606364(path: JsonNode; query: JsonNode;
 
 proc call*(call_606376: Call_PostCancelResize_606363; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Cancels a resize operation.
+  ## Cancels a resize operation for a cluster.
   ## 
   let valid = call_606376.validator(path, query, header, formData, body)
   let scheme = call_606376.pickScheme
@@ -1748,7 +1748,7 @@ proc call*(call_606376: Call_PostCancelResize_606363; path: JsonNode;
 proc call*(call_606377: Call_PostCancelResize_606363; ClusterIdentifier: string;
           Action: string = "CancelResize"; Version: string = "2012-12-01"): Recallable =
   ## postCancelResize
-  ## Cancels a resize operation.
+  ## Cancels a resize operation for a cluster.
   ##   ClusterIdentifier: string (required)
   ##                    : The unique identifier for the cluster that you want to cancel a resize operation for.
   ##   Action: string (required)
@@ -1782,7 +1782,7 @@ proc url_GetCancelResize_606349(protocol: Scheme; host: string; base: string;
 proc validate_GetCancelResize_606348(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## Cancels a resize operation.
+  ## Cancels a resize operation for a cluster.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1863,7 +1863,7 @@ proc validate_GetCancelResize_606348(path: JsonNode; query: JsonNode;
 
 proc call*(call_606360: Call_GetCancelResize_606347; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Cancels a resize operation.
+  ## Cancels a resize operation for a cluster.
   ## 
   let valid = call_606360.validator(path, query, header, formData, body)
   let scheme = call_606360.pickScheme
@@ -1877,7 +1877,7 @@ proc call*(call_606360: Call_GetCancelResize_606347; path: JsonNode; query: Json
 proc call*(call_606361: Call_GetCancelResize_606347; ClusterIdentifier: string;
           Action: string = "CancelResize"; Version: string = "2012-12-01"): Recallable =
   ## getCancelResize
-  ## Cancels a resize operation.
+  ## Cancels a resize operation for a cluster.
   ##   Action: string (required)
   ##   ClusterIdentifier: string (required)
   ##                    : The unique identifier for the cluster that you want to cancel a resize operation for.
@@ -2239,7 +2239,7 @@ proc url_PostCreateCluster_606466(protocol: Scheme; host: string; base: string;
 proc validate_PostCreateCluster_606465(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
-  ## <p>Creates a new cluster.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Creates a new cluster with the specified parameters.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2333,7 +2333,7 @@ proc validate_PostCreateCluster_606465(path: JsonNode; query: JsonNode;
   ##   AutomatedSnapshotRetentionPeriod: JInt
   ##                                   : <p>The number of days that automated snapshots are retained. If the value is 0, automated snapshots are disabled. Even if automated snapshots are disabled, you can still create manual snapshots when you want with <a>CreateClusterSnapshot</a>. </p> <p>Default: <code>1</code> </p> <p>Constraints: Must be a value from 0 to 35.</p>
   ##   AvailabilityZone: JString
-  ##                   : <p>The EC2 Availability Zone (AZ) in which you want Amazon Redshift to provision the cluster. For example, if you have several EC2 instances running in a specific Availability Zone, then you might want the cluster to be provisioned in the same zone in order to decrease network latency.</p> <p>Default: A random, system-chosen Availability Zone in the region that is specified by the endpoint.</p> <p>Example: <code>us-east-1d</code> </p> <p>Constraint: The specified Availability Zone must be in the same region as the current endpoint.</p>
+  ##                   : <p>The EC2 Availability Zone (AZ) in which you want Amazon Redshift to provision the cluster. For example, if you have several EC2 instances running in a specific Availability Zone, then you might want the cluster to be provisioned in the same zone in order to decrease network latency.</p> <p>Default: A random, system-chosen Availability Zone in the region that is specified by the endpoint.</p> <p>Example: <code>us-east-2d</code> </p> <p>Constraint: The specified Availability Zone must be in the same region as the current endpoint.</p>
   ##   NumberOfNodes: JInt
   ##                : <p>The number of compute nodes in the cluster. This parameter is required when the <b>ClusterType</b> parameter is specified as <code>multi-node</code>. </p> <p>For information about determining how many nodes you need, go to <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html#how-many-nodes"> Working with Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>. </p> <p>If you don't specify this parameter, you get a single-node cluster. When requesting a multi-node cluster, you must specify the number of nodes that you want in the cluster.</p> <p>Default: <code>1</code> </p> <p>Constraints: Value must be at least 1 and no more than 100.</p>
@@ -2527,7 +2527,7 @@ proc validate_PostCreateCluster_606465(path: JsonNode; query: JsonNode;
 
 proc call*(call_606506: Call_PostCreateCluster_606464; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a new cluster.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Creates a new cluster with the specified parameters.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   let valid = call_606506.validator(path, query, header, formData, body)
   let scheme = call_606506.pickScheme
@@ -2557,7 +2557,7 @@ proc call*(call_606507: Call_PostCreateCluster_606464; NodeType: string;
           HsmConfigurationIdentifier: string = "";
           ManualSnapshotRetentionPeriod: int = 0): Recallable =
   ## postCreateCluster
-  ## <p>Creates a new cluster.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Creates a new cluster with the specified parameters.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ##   PreferredMaintenanceWindow: string
   ##                             : <p>The weekly time range (in UTC) during which automated cluster maintenance can occur.</p> <p> Format: <code>ddd:hh24:mi-ddd:hh24:mi</code> </p> <p> Default: A 30-minute window selected at random from an 8-hour block of time per region, occurring on a random day of the week. For more information about the time blocks for each region, see <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html#rs-maintenance-windows">Maintenance Windows</a> in Amazon Redshift Cluster Management Guide.</p> <p>Valid Days: Mon | Tue | Wed | Thu | Fri | Sat | Sun</p> <p>Constraints: Minimum 30-minute window.</p>
@@ -2584,7 +2584,7 @@ proc call*(call_606507: Call_PostCreateCluster_606464; NodeType: string;
   ##   AutomatedSnapshotRetentionPeriod: int
   ##                                   : <p>The number of days that automated snapshots are retained. If the value is 0, automated snapshots are disabled. Even if automated snapshots are disabled, you can still create manual snapshots when you want with <a>CreateClusterSnapshot</a>. </p> <p>Default: <code>1</code> </p> <p>Constraints: Must be a value from 0 to 35.</p>
   ##   AvailabilityZone: string
-  ##                   : <p>The EC2 Availability Zone (AZ) in which you want Amazon Redshift to provision the cluster. For example, if you have several EC2 instances running in a specific Availability Zone, then you might want the cluster to be provisioned in the same zone in order to decrease network latency.</p> <p>Default: A random, system-chosen Availability Zone in the region that is specified by the endpoint.</p> <p>Example: <code>us-east-1d</code> </p> <p>Constraint: The specified Availability Zone must be in the same region as the current endpoint.</p>
+  ##                   : <p>The EC2 Availability Zone (AZ) in which you want Amazon Redshift to provision the cluster. For example, if you have several EC2 instances running in a specific Availability Zone, then you might want the cluster to be provisioned in the same zone in order to decrease network latency.</p> <p>Default: A random, system-chosen Availability Zone in the region that is specified by the endpoint.</p> <p>Example: <code>us-east-2d</code> </p> <p>Constraint: The specified Availability Zone must be in the same region as the current endpoint.</p>
   ##   NumberOfNodes: int
   ##                : <p>The number of compute nodes in the cluster. This parameter is required when the <b>ClusterType</b> parameter is specified as <code>multi-node</code>. </p> <p>For information about determining how many nodes you need, go to <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html#how-many-nodes"> Working with Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>. </p> <p>If you don't specify this parameter, you get a single-node cluster. When requesting a multi-node cluster, you must specify the number of nodes that you want in the cluster.</p> <p>Default: <code>1</code> </p> <p>Constraints: Value must be at least 1 and no more than 100.</p>
@@ -2699,7 +2699,7 @@ proc url_GetCreateCluster_606421(protocol: Scheme; host: string; base: string;
 proc validate_GetCreateCluster_606420(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Creates a new cluster.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Creates a new cluster with the specified parameters.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2768,7 +2768,7 @@ proc validate_GetCreateCluster_606420(path: JsonNode; query: JsonNode;
   ##   MasterUserPassword: JString (required)
   ##                     : <p>The password associated with the master user account for the cluster that is being created.</p> <p>Constraints:</p> <ul> <li> <p>Must be between 8 and 64 characters in length.</p> </li> <li> <p>Must contain at least one uppercase letter.</p> </li> <li> <p>Must contain at least one lowercase letter.</p> </li> <li> <p>Must contain one number.</p> </li> <li> <p>Can be any printable ASCII character (ASCII code 33 to 126) except ' (single quote), " (double quote), \, /, @, or space.</p> </li> </ul>
   ##   AvailabilityZone: JString
-  ##                   : <p>The EC2 Availability Zone (AZ) in which you want Amazon Redshift to provision the cluster. For example, if you have several EC2 instances running in a specific Availability Zone, then you might want the cluster to be provisioned in the same zone in order to decrease network latency.</p> <p>Default: A random, system-chosen Availability Zone in the region that is specified by the endpoint.</p> <p>Example: <code>us-east-1d</code> </p> <p>Constraint: The specified Availability Zone must be in the same region as the current endpoint.</p>
+  ##                   : <p>The EC2 Availability Zone (AZ) in which you want Amazon Redshift to provision the cluster. For example, if you have several EC2 instances running in a specific Availability Zone, then you might want the cluster to be provisioned in the same zone in order to decrease network latency.</p> <p>Default: A random, system-chosen Availability Zone in the region that is specified by the endpoint.</p> <p>Example: <code>us-east-2d</code> </p> <p>Constraint: The specified Availability Zone must be in the same region as the current endpoint.</p>
   ##   HsmConfigurationIdentifier: JString
   ##                             : Specifies the name of the HSM configuration that contains the information the Amazon Redshift cluster can use to retrieve and store keys in an HSM.
   ##   Version: JString (required)
@@ -2985,7 +2985,7 @@ proc validate_GetCreateCluster_606420(path: JsonNode; query: JsonNode;
 
 proc call*(call_606461: Call_GetCreateCluster_606419; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a new cluster.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Creates a new cluster with the specified parameters.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   let valid = call_606461.validator(path, query, header, formData, body)
   let scheme = call_606461.pickScheme
@@ -3015,7 +3015,7 @@ proc call*(call_606462: Call_GetCreateCluster_606419; NodeType: string;
           Version: string = "2012-12-01"; PreferredMaintenanceWindow: string = "";
           PubliclyAccessible: bool = false): Recallable =
   ## getCreateCluster
-  ## <p>Creates a new cluster.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Creates a new cluster with the specified parameters.</p> <p>To create a cluster in Virtual Private Cloud (VPC), you must provide a cluster subnet group name. The cluster subnet group identifies the subnets of your VPC that Amazon Redshift uses when creating the cluster. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ##   ClusterSubnetGroupName: string
   ##                         : <p>The name of a cluster subnet group to be associated with this cluster.</p> <p>If this parameter is not provided the resulting cluster will be deployed outside virtual private cloud (VPC).</p>
   ##   MaintenanceTrackName: string
@@ -3078,7 +3078,7 @@ proc call*(call_606462: Call_GetCreateCluster_606419; NodeType: string;
   ##   MasterUserPassword: string (required)
   ##                     : <p>The password associated with the master user account for the cluster that is being created.</p> <p>Constraints:</p> <ul> <li> <p>Must be between 8 and 64 characters in length.</p> </li> <li> <p>Must contain at least one uppercase letter.</p> </li> <li> <p>Must contain at least one lowercase letter.</p> </li> <li> <p>Must contain one number.</p> </li> <li> <p>Can be any printable ASCII character (ASCII code 33 to 126) except ' (single quote), " (double quote), \, /, @, or space.</p> </li> </ul>
   ##   AvailabilityZone: string
-  ##                   : <p>The EC2 Availability Zone (AZ) in which you want Amazon Redshift to provision the cluster. For example, if you have several EC2 instances running in a specific Availability Zone, then you might want the cluster to be provisioned in the same zone in order to decrease network latency.</p> <p>Default: A random, system-chosen Availability Zone in the region that is specified by the endpoint.</p> <p>Example: <code>us-east-1d</code> </p> <p>Constraint: The specified Availability Zone must be in the same region as the current endpoint.</p>
+  ##                   : <p>The EC2 Availability Zone (AZ) in which you want Amazon Redshift to provision the cluster. For example, if you have several EC2 instances running in a specific Availability Zone, then you might want the cluster to be provisioned in the same zone in order to decrease network latency.</p> <p>Default: A random, system-chosen Availability Zone in the region that is specified by the endpoint.</p> <p>Example: <code>us-east-2d</code> </p> <p>Constraint: The specified Availability Zone must be in the same region as the current endpoint.</p>
   ##   HsmConfigurationIdentifier: string
   ##                             : Specifies the name of the HSM configuration that contains the information the Amazon Redshift cluster can use to retrieve and store keys in an HSM.
   ##   Version: string (required)
@@ -4519,7 +4519,7 @@ proc validate_PostCreateEventSubscription_606688(path: JsonNode; query: JsonNode
   ##   SubscriptionName: JString (required)
   ##                   : <p>The name of the event subscription to be created.</p> <p>Constraints:</p> <ul> <li> <p>Cannot be null, empty, or blank.</p> </li> <li> <p>Must contain from 1 to 255 alphanumeric characters or hyphens.</p> </li> <li> <p>First character must be a letter.</p> </li> <li> <p>Cannot end with a hyphen or contain two consecutive hyphens.</p> </li> </ul>
   ##   SourceType: JString
-  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, and cluster-snapshot.</p>
+  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, cluster-snapshot, and scheduled-action.</p>
   ##   Severity: JString
   ##           : <p>Specifies the Amazon Redshift event severity to be published by the event notification subscription.</p> <p>Values: ERROR, INFO</p>
   ##   EventCategories: JArray
@@ -4602,7 +4602,7 @@ proc call*(call_606708: Call_PostCreateEventSubscription_606687;
   ##   SubscriptionName: string (required)
   ##                   : <p>The name of the event subscription to be created.</p> <p>Constraints:</p> <ul> <li> <p>Cannot be null, empty, or blank.</p> </li> <li> <p>Must contain from 1 to 255 alphanumeric characters or hyphens.</p> </li> <li> <p>First character must be a letter.</p> </li> <li> <p>Cannot end with a hyphen or contain two consecutive hyphens.</p> </li> </ul>
   ##   SourceType: string
-  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, and cluster-snapshot.</p>
+  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, cluster-snapshot, and scheduled-action.</p>
   ##   Severity: string
   ##           : <p>Specifies the Amazon Redshift event severity to be published by the event notification subscription.</p> <p>Values: ERROR, INFO</p>
   ##   EventCategories: JArray
@@ -4660,7 +4660,7 @@ proc validate_GetCreateEventSubscription_606665(path: JsonNode; query: JsonNode;
   ##   Tags: JArray
   ##       : A list of tag instances.
   ##   SourceType: JString
-  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, and cluster-snapshot.</p>
+  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, cluster-snapshot, and scheduled-action.</p>
   ##   Enabled: JBool
   ##          : A boolean value; set to <code>true</code> to activate the subscription, and set to <code>false</code> to create the subscription but not activate it. 
   ##   Severity: JString
@@ -4801,7 +4801,7 @@ proc call*(call_606685: Call_GetCreateEventSubscription_606664;
   ##   Tags: JArray
   ##       : A list of tag instances.
   ##   SourceType: string
-  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, and cluster-snapshot.</p>
+  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, cluster-snapshot, and scheduled-action.</p>
   ##   Enabled: bool
   ##          : A boolean value; set to <code>true</code> to activate the subscription, and set to <code>false</code> to create the subscription but not activate it. 
   ##   Severity: string
@@ -6254,7 +6254,7 @@ proc url_PostCreateSnapshotSchedule_606898(protocol: Scheme; host: string;
 
 proc validate_PostCreateSnapshotSchedule_606897(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a new snapshot schedule.
+  ## Creates a snapshot schedule with the rate of every 12 hours.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6369,7 +6369,7 @@ proc validate_PostCreateSnapshotSchedule_606897(path: JsonNode; query: JsonNode;
 
 proc call*(call_606914: Call_PostCreateSnapshotSchedule_606896; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a new snapshot schedule.
+  ## Creates a snapshot schedule with the rate of every 12 hours.
   ## 
   let valid = call_606914.validator(path, query, header, formData, body)
   let scheme = call_606914.pickScheme
@@ -6386,7 +6386,7 @@ proc call*(call_606915: Call_PostCreateSnapshotSchedule_606896;
           Action: string = "CreateSnapshotSchedule"; Tags: JsonNode = nil;
           ScheduleIdentifier: string = ""; Version: string = "2012-12-01"): Recallable =
   ## postCreateSnapshotSchedule
-  ## Creates a new snapshot schedule.
+  ## Creates a snapshot schedule with the rate of every 12 hours.
   ##   ScheduleDefinitions: JArray
   ##                      : The definition of the snapshot schedule. The definition is made up of schedule expressions, for example "cron(30 12 *)" or "rate(12 hours)". 
   ##   ScheduleDescription: string
@@ -6437,7 +6437,7 @@ proc url_GetCreateSnapshotSchedule_606877(protocol: Scheme; host: string;
 
 proc validate_GetCreateSnapshotSchedule_606876(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a new snapshot schedule.
+  ## Creates a snapshot schedule with the rate of every 12 hours.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6551,7 +6551,7 @@ proc validate_GetCreateSnapshotSchedule_606876(path: JsonNode; query: JsonNode;
 
 proc call*(call_606893: Call_GetCreateSnapshotSchedule_606875; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a new snapshot schedule.
+  ## Creates a snapshot schedule with the rate of every 12 hours.
   ## 
   let valid = call_606893.validator(path, query, header, formData, body)
   let scheme = call_606893.pickScheme
@@ -6568,7 +6568,7 @@ proc call*(call_606894: Call_GetCreateSnapshotSchedule_606875;
           ScheduleDescription: string = "";
           Action: string = "CreateSnapshotSchedule"; Version: string = "2012-12-01"): Recallable =
   ## getCreateSnapshotSchedule
-  ## Creates a new snapshot schedule.
+  ## Creates a snapshot schedule with the rate of every 12 hours.
   ##   Tags: JArray
   ##       : An optional set of tags you can use to search for the schedule.
   ##   ScheduleIdentifier: string
@@ -6619,7 +6619,7 @@ proc url_PostCreateTags_606937(protocol: Scheme; host: string; base: string;
 proc validate_PostCreateTags_606936(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ## <p>Adds one or more tags to a specified resource.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
+  ## <p>Adds tags to a cluster.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6690,7 +6690,7 @@ proc validate_PostCreateTags_606936(path: JsonNode; query: JsonNode;
   ##   Tags: JArray (required)
   ##       : One or more name/value pairs to add as tags to the specified resource. Each tag name is passed in with the parameter <code>Key</code> and the corresponding value is passed in with the parameter <code>Value</code>. The <code>Key</code> and <code>Value</code> parameters are separated by a comma (,). Separate multiple tags with a space. For example, <code>--tags "Key"="owner","Value"="admin" "Key"="environment","Value"="test" "Key"="version","Value"="1.0"</code>. 
   ##   ResourceName: JString (required)
-  ##               : The Amazon Resource Name (ARN) to which you want to add the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) to which you want to add the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `Tags` field"
@@ -6709,7 +6709,7 @@ proc validate_PostCreateTags_606936(path: JsonNode; query: JsonNode;
 
 proc call*(call_606949: Call_PostCreateTags_606935; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Adds one or more tags to a specified resource.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
+  ## <p>Adds tags to a cluster.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
   ## 
   let valid = call_606949.validator(path, query, header, formData, body)
   let scheme = call_606949.pickScheme
@@ -6724,13 +6724,13 @@ proc call*(call_606950: Call_PostCreateTags_606935; Tags: JsonNode;
           ResourceName: string; Action: string = "CreateTags";
           Version: string = "2012-12-01"): Recallable =
   ## postCreateTags
-  ## <p>Adds one or more tags to a specified resource.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
+  ## <p>Adds tags to a cluster.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
   ##   Action: string (required)
   ##   Tags: JArray (required)
   ##       : One or more name/value pairs to add as tags to the specified resource. Each tag name is passed in with the parameter <code>Key</code> and the corresponding value is passed in with the parameter <code>Value</code>. The <code>Key</code> and <code>Value</code> parameters are separated by a comma (,). Separate multiple tags with a space. For example, <code>--tags "Key"="owner","Value"="admin" "Key"="environment","Value"="test" "Key"="version","Value"="1.0"</code>. 
   ##   Version: string (required)
   ##   ResourceName: string (required)
-  ##               : The Amazon Resource Name (ARN) to which you want to add the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) to which you want to add the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   var query_606951 = newJObject()
   var formData_606952 = newJObject()
   add(query_606951, "Action", newJString(Action))
@@ -6760,7 +6760,7 @@ proc url_GetCreateTags_606920(protocol: Scheme; host: string; base: string;
 
 proc validate_GetCreateTags_606919(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Adds one or more tags to a specified resource.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
+  ## <p>Adds tags to a cluster.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -6770,7 +6770,7 @@ proc validate_GetCreateTags_606919(path: JsonNode; query: JsonNode; header: Json
   ##   Tags: JArray (required)
   ##       : One or more name/value pairs to add as tags to the specified resource. Each tag name is passed in with the parameter <code>Key</code> and the corresponding value is passed in with the parameter <code>Value</code>. The <code>Key</code> and <code>Value</code> parameters are separated by a comma (,). Separate multiple tags with a space. For example, <code>--tags "Key"="owner","Value"="admin" "Key"="environment","Value"="test" "Key"="version","Value"="1.0"</code>. 
   ##   ResourceName: JString (required)
-  ##               : The Amazon Resource Name (ARN) to which you want to add the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) to which you want to add the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
@@ -6847,7 +6847,7 @@ proc validate_GetCreateTags_606919(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_606932: Call_GetCreateTags_606918; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Adds one or more tags to a specified resource.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
+  ## <p>Adds tags to a cluster.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
   ## 
   let valid = call_606932.validator(path, query, header, formData, body)
   let scheme = call_606932.pickScheme
@@ -6862,11 +6862,11 @@ proc call*(call_606933: Call_GetCreateTags_606918; Tags: JsonNode;
           ResourceName: string; Action: string = "CreateTags";
           Version: string = "2012-12-01"): Recallable =
   ## getCreateTags
-  ## <p>Adds one or more tags to a specified resource.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
+  ## <p>Adds tags to a cluster.</p> <p>A resource can have up to 50 tags. If you try to create more than 50 tags for a resource, you will receive an error and the attempt will fail.</p> <p>If you specify a key that already exists for the resource, the value for that key will be updated with the new value.</p>
   ##   Tags: JArray (required)
   ##       : One or more name/value pairs to add as tags to the specified resource. Each tag name is passed in with the parameter <code>Key</code> and the corresponding value is passed in with the parameter <code>Value</code>. The <code>Key</code> and <code>Value</code> parameters are separated by a comma (,). Separate multiple tags with a space. For example, <code>--tags "Key"="owner","Value"="admin" "Key"="environment","Value"="test" "Key"="version","Value"="1.0"</code>. 
   ##   ResourceName: string (required)
-  ##               : The Amazon Resource Name (ARN) to which you want to add the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) to which you want to add the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   ##   Action: string (required)
   ##   Version: string (required)
   var query_606934 = newJObject()
@@ -6898,7 +6898,7 @@ proc url_PostDeleteCluster_606974(protocol: Scheme; host: string; base: string;
 proc validate_PostDeleteCluster_606973(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
-  ## <p>Deletes a previously provisioned cluster. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Deletes a previously provisioned cluster without its final snapshot being created. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7000,7 +7000,7 @@ proc validate_PostDeleteCluster_606973(path: JsonNode; query: JsonNode;
 
 proc call*(call_606988: Call_PostDeleteCluster_606972; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes a previously provisioned cluster. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Deletes a previously provisioned cluster without its final snapshot being created. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   let valid = call_606988.validator(path, query, header, formData, body)
   let scheme = call_606988.pickScheme
@@ -7017,7 +7017,7 @@ proc call*(call_606989: Call_PostDeleteCluster_606972; ClusterIdentifier: string
           FinalClusterSnapshotRetentionPeriod: int = 0;
           Version: string = "2012-12-01"; SkipFinalClusterSnapshot: bool = false): Recallable =
   ## postDeleteCluster
-  ## <p>Deletes a previously provisioned cluster. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Deletes a previously provisioned cluster without its final snapshot being created. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ##   ClusterIdentifier: string (required)
   ##                    : <p>The identifier of the cluster to be deleted.</p> <p>Constraints:</p> <ul> <li> <p>Must contain lowercase characters.</p> </li> <li> <p>Must contain from 1 to 63 alphanumeric characters or hyphens.</p> </li> <li> <p>First character must be a letter.</p> </li> <li> <p>Cannot end with a hyphen or contain two consecutive hyphens.</p> </li> </ul>
   ##   FinalClusterSnapshotIdentifier: string
@@ -7063,7 +7063,7 @@ proc url_GetDeleteCluster_606955(protocol: Scheme; host: string; base: string;
 proc validate_GetDeleteCluster_606954(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Deletes a previously provisioned cluster. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Deletes a previously provisioned cluster without its final snapshot being created. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -7163,7 +7163,7 @@ proc validate_GetDeleteCluster_606954(path: JsonNode; query: JsonNode;
 
 proc call*(call_606969: Call_GetDeleteCluster_606953; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes a previously provisioned cluster. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Deletes a previously provisioned cluster without its final snapshot being created. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   let valid = call_606969.validator(path, query, header, formData, body)
   let scheme = call_606969.pickScheme
@@ -7180,7 +7180,7 @@ proc call*(call_606970: Call_GetDeleteCluster_606953; ClusterIdentifier: string;
           FinalClusterSnapshotIdentifier: string = "";
           FinalClusterSnapshotRetentionPeriod: int = 0): Recallable =
   ## getDeleteCluster
-  ## <p>Deletes a previously provisioned cluster. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
+  ## <p>Deletes a previously provisioned cluster without its final snapshot being created. A successful response from the web service indicates that the request was received correctly. Use <a>DescribeClusters</a> to monitor the status of the deletion. The delete operation cannot be canceled or reverted once submitted. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>If you want to shut down the cluster and retain it for future use, set <i>SkipFinalClusterSnapshot</i> to <code>false</code> and specify a name for <i>FinalClusterSnapshotIdentifier</i>. You can later restore this snapshot to resume using the cluster. If a final cluster snapshot is requested, the status of the cluster will be "final-snapshot" while the snapshot is being taken, then it's "deleting" once Amazon Redshift begins deleting the cluster. </p> <p> For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ##   Action: string (required)
   ##   SkipFinalClusterSnapshot: bool
   ##                           : <p>Determines whether a final snapshot of the cluster is created before Amazon Redshift deletes the cluster. If <code>true</code>, a final cluster snapshot is not created. If <code>false</code>, a final cluster snapshot is created before the cluster is deleted. </p> <note> <p>The <i>FinalClusterSnapshotIdentifier</i> parameter must be specified if <i>SkipFinalClusterSnapshot</i> is <code>false</code>.</p> </note> <p>Default: <code>false</code> </p>
@@ -9873,7 +9873,7 @@ proc url_PostDeleteTags_607343(protocol: Scheme; host: string; base: string;
 proc validate_PostDeleteTags_607342(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ## Deletes a tag or tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
+  ## Deletes tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -9944,7 +9944,7 @@ proc validate_PostDeleteTags_607342(path: JsonNode; query: JsonNode;
   ##   TagKeys: JArray (required)
   ##          : The tag key that you want to delete.
   ##   ResourceName: JString (required)
-  ##               : The Amazon Resource Name (ARN) from which you want to remove the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) from which you want to remove the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   section = newJObject()
   assert formData != nil,
         "formData argument is necessary due to required `TagKeys` field"
@@ -9963,7 +9963,7 @@ proc validate_PostDeleteTags_607342(path: JsonNode; query: JsonNode;
 
 proc call*(call_607355: Call_PostDeleteTags_607341; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a tag or tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
+  ## Deletes tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
   ## 
   let valid = call_607355.validator(path, query, header, formData, body)
   let scheme = call_607355.pickScheme
@@ -9978,13 +9978,13 @@ proc call*(call_607356: Call_PostDeleteTags_607341; TagKeys: JsonNode;
           ResourceName: string; Action: string = "DeleteTags";
           Version: string = "2012-12-01"): Recallable =
   ## postDeleteTags
-  ## Deletes a tag or tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
+  ## Deletes tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
   ##   TagKeys: JArray (required)
   ##          : The tag key that you want to delete.
   ##   Action: string (required)
   ##   Version: string (required)
   ##   ResourceName: string (required)
-  ##               : The Amazon Resource Name (ARN) from which you want to remove the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) from which you want to remove the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   var query_607357 = newJObject()
   var formData_607358 = newJObject()
   if TagKeys != nil:
@@ -10014,7 +10014,7 @@ proc url_GetDeleteTags_607326(protocol: Scheme; host: string; base: string;
 
 proc validate_GetDeleteTags_607325(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes a tag or tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
+  ## Deletes tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -10022,7 +10022,7 @@ proc validate_GetDeleteTags_607325(path: JsonNode; query: JsonNode; header: Json
   result.add "path", section
   ## parameters in `query` object:
   ##   ResourceName: JString (required)
-  ##               : The Amazon Resource Name (ARN) from which you want to remove the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) from which you want to remove the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   ##   TagKeys: JArray (required)
   ##          : The tag key that you want to delete.
   ##   Action: JString (required)
@@ -10102,7 +10102,7 @@ proc validate_GetDeleteTags_607325(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_607338: Call_GetDeleteTags_607324; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a tag or tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
+  ## Deletes tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
   ## 
   let valid = call_607338.validator(path, query, header, formData, body)
   let scheme = call_607338.pickScheme
@@ -10117,9 +10117,9 @@ proc call*(call_607339: Call_GetDeleteTags_607324; ResourceName: string;
           TagKeys: JsonNode; Action: string = "DeleteTags";
           Version: string = "2012-12-01"): Recallable =
   ## getDeleteTags
-  ## Deletes a tag or tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
+  ## Deletes tags from a resource. You must provide the ARN of the resource from which you want to delete the tag or tags.
   ##   ResourceName: string (required)
-  ##               : The Amazon Resource Name (ARN) from which you want to remove the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) from which you want to remove the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   ##   TagKeys: JArray (required)
   ##          : The tag key that you want to delete.
   ##   Action: string (required)
@@ -13915,7 +13915,7 @@ proc validate_PostDescribeEventCategories_607817(path: JsonNode; query: JsonNode
   result.add "header", section
   ## parameters in `formData` object:
   ##   SourceType: JString
-  ##             : <p>The source type, such as cluster or parameter group, to which the described event categories apply.</p> <p>Valid values: cluster, cluster-snapshot, cluster-parameter-group, and cluster-security-group.</p>
+  ##             : <p>The source type, such as cluster or parameter group, to which the described event categories apply.</p> <p>Valid values: cluster, cluster-snapshot, cluster-parameter-group, cluster-security-group, and scheduled-action.</p>
   section = newJObject()
   var valid_607828 = formData.getOrDefault("SourceType")
   valid_607828 = validateParameter(valid_607828, JString, required = false,
@@ -13945,7 +13945,7 @@ proc call*(call_607830: Call_PostDescribeEventCategories_607816;
   ## postDescribeEventCategories
   ## Displays a list of event categories for all event source types, or for a specified source type. For a list of the event categories and source types, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-event-notifications.html">Amazon Redshift Event Notifications</a>.
   ##   SourceType: string
-  ##             : <p>The source type, such as cluster or parameter group, to which the described event categories apply.</p> <p>Valid values: cluster, cluster-snapshot, cluster-parameter-group, and cluster-security-group.</p>
+  ##             : <p>The source type, such as cluster or parameter group, to which the described event categories apply.</p> <p>Valid values: cluster, cluster-snapshot, cluster-parameter-group, cluster-security-group, and scheduled-action.</p>
   ##   Action: string (required)
   ##   Version: string (required)
   var query_607831 = newJObject()
@@ -13985,7 +13985,7 @@ proc validate_GetDescribeEventCategories_607801(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   SourceType: JString
-  ##             : <p>The source type, such as cluster or parameter group, to which the described event categories apply.</p> <p>Valid values: cluster, cluster-snapshot, cluster-parameter-group, and cluster-security-group.</p>
+  ##             : <p>The source type, such as cluster or parameter group, to which the described event categories apply.</p> <p>Valid values: cluster, cluster-snapshot, cluster-parameter-group, cluster-security-group, and scheduled-action.</p>
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
@@ -14075,7 +14075,7 @@ proc call*(call_607814: Call_GetDescribeEventCategories_607800;
   ## getDescribeEventCategories
   ## Displays a list of event categories for all event source types, or for a specified source type. For a list of the event categories and source types, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-event-notifications.html">Amazon Redshift Event Notifications</a>.
   ##   SourceType: string
-  ##             : <p>The source type, such as cluster or parameter group, to which the described event categories apply.</p> <p>Valid values: cluster, cluster-snapshot, cluster-parameter-group, and cluster-security-group.</p>
+  ##             : <p>The source type, such as cluster or parameter group, to which the described event categories apply.</p> <p>Valid values: cluster, cluster-snapshot, cluster-parameter-group, cluster-security-group, and scheduled-action.</p>
   ##   Action: string (required)
   ##   Version: string (required)
   var query_607815 = newJObject()
@@ -18486,7 +18486,7 @@ proc url_PostDescribeStorage_608373(protocol: Scheme; host: string; base: string
 proc validate_PostDescribeStorage_608372(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## Returns the total amount of snapshot usage and provisioned storage in megabytes.
+  ## Returns account level backups storage size and provisional storage.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -18560,7 +18560,7 @@ proc validate_PostDescribeStorage_608372(path: JsonNode; query: JsonNode;
 
 proc call*(call_608383: Call_PostDescribeStorage_608371; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns the total amount of snapshot usage and provisioned storage in megabytes.
+  ## Returns account level backups storage size and provisional storage.
   ## 
   let valid = call_608383.validator(path, query, header, formData, body)
   let scheme = call_608383.pickScheme
@@ -18574,7 +18574,7 @@ proc call*(call_608383: Call_PostDescribeStorage_608371; path: JsonNode;
 proc call*(call_608384: Call_PostDescribeStorage_608371;
           Action: string = "DescribeStorage"; Version: string = "2012-12-01"): Recallable =
   ## postDescribeStorage
-  ## Returns the total amount of snapshot usage and provisioned storage in megabytes.
+  ## Returns account level backups storage size and provisional storage.
   ##   Action: string (required)
   ##   Version: string (required)
   var query_608385 = newJObject()
@@ -18604,7 +18604,7 @@ proc url_GetDescribeStorage_608358(protocol: Scheme; host: string; base: string;
 proc validate_GetDescribeStorage_608357(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
-  ## Returns the total amount of snapshot usage and provisioned storage in megabytes.
+  ## Returns account level backups storage size and provisional storage.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -18678,7 +18678,7 @@ proc validate_GetDescribeStorage_608357(path: JsonNode; query: JsonNode;
 
 proc call*(call_608368: Call_GetDescribeStorage_608356; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns the total amount of snapshot usage and provisioned storage in megabytes.
+  ## Returns account level backups storage size and provisional storage.
   ## 
   let valid = call_608368.validator(path, query, header, formData, body)
   let scheme = call_608368.pickScheme
@@ -18692,7 +18692,7 @@ proc call*(call_608368: Call_GetDescribeStorage_608356; path: JsonNode;
 proc call*(call_608369: Call_GetDescribeStorage_608356;
           Action: string = "DescribeStorage"; Version: string = "2012-12-01"): Recallable =
   ## getDescribeStorage
-  ## Returns the total amount of snapshot usage and provisioned storage in megabytes.
+  ## Returns account level backups storage size and provisional storage.
   ##   Action: string (required)
   ##   Version: string (required)
   var query_608370 = newJObject()
@@ -19123,7 +19123,7 @@ proc validate_PostDescribeTags_608447(path: JsonNode; query: JsonNode;
   ##   TagValues: JArray
   ##            : A tag value or values for which you want to return all matching resources that are associated with the specified value or values. For example, suppose that you have resources tagged with values called <code>admin</code> and <code>test</code>. If you specify both of these tag values in the request, Amazon Redshift returns a response with all resources that have either or both of these tag values associated with them.
   ##   ResourceName: JString
-  ##               : The Amazon Resource Name (ARN) for which you want to describe the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) for which you want to describe the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   section = newJObject()
   var valid_608458 = formData.getOrDefault("TagKeys")
   valid_608458 = validateParameter(valid_608458, JArray, required = false,
@@ -19191,7 +19191,7 @@ proc call*(call_608465: Call_PostDescribeTags_608446; TagKeys: JsonNode = nil;
   ##   Action: string (required)
   ##   Version: string (required)
   ##   ResourceName: string
-  ##               : The Amazon Resource Name (ARN) for which you want to describe the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) for which you want to describe the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   var query_608466 = newJObject()
   var formData_608467 = newJObject()
   if TagKeys != nil:
@@ -19238,7 +19238,7 @@ proc validate_GetDescribeTags_608426(path: JsonNode; query: JsonNode;
   ##   Marker: JString
   ##         : A value that indicates the starting point for the next set of response records in a subsequent request. If a value is returned in a response, you can retrieve the next set of records by providing this returned marker value in the <code>marker</code> parameter and retrying the command. If the <code>marker</code> field is empty, all response records have been retrieved for the request. 
   ##   ResourceName: JString
-  ##               : The Amazon Resource Name (ARN) for which you want to describe the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) for which you want to describe the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   ##   ResourceType: JString
   ##               : <p>The type of resource with which you want to view tags. Valid resource types are: </p> <ul> <li> <p>Cluster</p> </li> <li> <p>CIDR/IP</p> </li> <li> <p>EC2 security group</p> </li> <li> <p>Snapshot</p> </li> <li> <p>Cluster security group</p> </li> <li> <p>Subnet group</p> </li> <li> <p>HSM connection</p> </li> <li> <p>HSM certificate</p> </li> <li> <p>Parameter group</p> </li> <li> <p>Snapshot copy grant</p> </li> </ul> <p>For more information about Amazon Redshift resource types and constructing ARNs, go to <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-access-control-overview.html#redshift-iam-access-control-specify-actions">Specifying Policy Elements: Actions, Effects, Resources, and Principals</a> in the Amazon Redshift Cluster Management Guide. </p>
@@ -19364,7 +19364,7 @@ proc call*(call_608444: Call_GetDescribeTags_608425; Marker: string = "";
   ##   Marker: string
   ##         : A value that indicates the starting point for the next set of response records in a subsequent request. If a value is returned in a response, you can retrieve the next set of records by providing this returned marker value in the <code>marker</code> parameter and retrying the command. If the <code>marker</code> field is empty, all response records have been retrieved for the request. 
   ##   ResourceName: string
-  ##               : The Amazon Resource Name (ARN) for which you want to describe the tag or tags. For example, <code>arn:aws:redshift:us-east-1:123456789:cluster:t1</code>. 
+  ##               : The Amazon Resource Name (ARN) for which you want to describe the tag or tags. For example, <code>arn:aws:redshift:us-east-2:123456789:cluster:t1</code>. 
   ##   ResourceType: string
   ##               : <p>The type of resource with which you want to view tags. Valid resource types are: </p> <ul> <li> <p>Cluster</p> </li> <li> <p>CIDR/IP</p> </li> <li> <p>EC2 security group</p> </li> <li> <p>Snapshot</p> </li> <li> <p>Cluster security group</p> </li> <li> <p>Subnet group</p> </li> <li> <p>HSM connection</p> </li> <li> <p>HSM certificate</p> </li> <li> <p>Parameter group</p> </li> <li> <p>Snapshot copy grant</p> </li> </ul> <p>For more information about Amazon Redshift resource types and constructing ARNs, go to <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/redshift-iam-access-control-overview.html#redshift-iam-access-control-specify-actions">Specifying Policy Elements: Actions, Effects, Resources, and Principals</a> in the Amazon Redshift Cluster Management Guide. </p>
@@ -21261,7 +21261,7 @@ proc url_PostModifyCluster_608731(protocol: Scheme; host: string; base: string;
 proc validate_PostModifyCluster_608730(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
-  ## <p>Modifies the settings for a cluster. For example, you can add another security or parameter group, update the preferred maintenance window, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p>
+  ## <p>Modifies the settings for a cluster.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p> <p>You can add another security or parameter group, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -21332,7 +21332,8 @@ proc validate_PostModifyCluster_608730(path: JsonNode; query: JsonNode;
   ##   PreferredMaintenanceWindow: JString
   ##                             : <p>The weekly time range (in UTC) during which system maintenance can occur, if necessary. If system maintenance is necessary during the window, it may result in an outage.</p> <p>This maintenance window change is made immediately. If the new maintenance window indicates the current time, there must be at least 120 minutes between the current time and end of the window in order to ensure that pending changes are applied.</p> <p>Default: Uses existing setting.</p> <p>Format: ddd:hh24:mi-ddd:hh24:mi, for example <code>wed:07:30-wed:08:00</code>.</p> <p>Valid Days: Mon | Tue | Wed | Thu | Fri | Sat | Sun</p> <p>Constraints: Must be at least 30 minutes.</p>
   ##   NodeType: JString
-  ##           : <p>The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.</p> <p>When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: <code>ds2.xlarge</code> | <code>ds2.8xlarge</code> | <code>dc1.large</code> | <code>dc1.8xlarge</code> | <code>dc2.large</code> | <code>dc2.8xlarge</code> | <code>ra3.16xlarge</code> </p>
+  ##           : <p>The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.</p> <p> For more information about resizing clusters, go to <a 
+  ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/rs-resize-tutorial.html">Resizing Clusters in Amazon Redshift</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Valid Values: <code>ds2.xlarge</code> | <code>ds2.8xlarge</code> | <code>dc1.large</code> | <code>dc1.8xlarge</code> | <code>dc2.large</code> | <code>dc2.8xlarge</code> | <code>ra3.16xlarge</code> </p>
   ##   ClusterIdentifier: JString (required)
   ##                    : <p>The unique identifier of the cluster to be modified.</p> <p>Example: <code>examplecluster</code> </p>
   ##   MasterUserPassword: JString
@@ -21342,7 +21343,8 @@ proc validate_PostModifyCluster_608730(path: JsonNode; query: JsonNode;
   ##   ClusterSecurityGroups: JArray
   ##                        : <p>A list of cluster security groups to be authorized on this cluster. This change is asynchronously applied as soon as possible.</p> <p>Security groups currently associated with the cluster, and not in the list of groups to apply, will be revoked from the cluster.</p> <p>Constraints:</p> <ul> <li> <p>Must be 1 to 255 alphanumeric characters or hyphens</p> </li> <li> <p>First character must be a letter</p> </li> <li> <p>Cannot end with a hyphen or contain two consecutive hyphens</p> </li> </ul>
   ##   NumberOfNodes: JInt
-  ##                : <p>The new number of nodes of the cluster. If you specify a new number of nodes, you must also specify the node type parameter.</p> <p>When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: Integer greater than <code>0</code>.</p>
+  ##                : <p>The new number of nodes of the cluster. If you specify a new number of nodes, you must also specify the node type parameter.</p> <p> For more information about resizing clusters, go to <a 
+  ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/rs-resize-tutorial.html">Resizing Clusters in Amazon Redshift</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Valid Values: Integer greater than <code>0</code>.</p>
   ##   VpcSecurityGroupIds: JArray
   ##                      : A list of virtual private cloud (VPC) security groups to be associated with the cluster. This change is asynchronously applied as soon as possible.
   ##   AutomatedSnapshotRetentionPeriod: JInt
@@ -21368,7 +21370,7 @@ proc validate_PostModifyCluster_608730(path: JsonNode; query: JsonNode;
   ##   HsmClientCertificateIdentifier: JString
   ##                                 : Specifies the name of the HSM client certificate the Amazon Redshift cluster uses to retrieve the data encryption keys stored in an HSM.
   ##   Encrypted: JBool
-  ##            : Indicates whether the cluster is encrypted. If the cluster is encrypted and you provide a value for the <code>KmsKeyId</code> parameter, we will encrypt the cluster with the provided <code>KmsKeyId</code>. If you don't provide a <code>KmsKeyId</code>, we will encrypt with the default key. In the China region we will use legacy encryption if you specify that the cluster is encrypted.
+  ##            : <p>Indicates whether the cluster is encrypted. If the value is encrypted (true) and you provide a value for the <code>KmsKeyId</code> parameter, we encrypt the cluster with the provided <code>KmsKeyId</code>. If you don't provide a <code>KmsKeyId</code>, we encrypt with the default key. In the China region we use legacy encryption if you specify that the cluster is encrypted.</p> <p>If the value is not encrypted (false), then the cluster is decrypted. </p>
   ##   ElasticIp: JString
   ##            : <p>The Elastic IP (EIP) address for the cluster.</p> <p>Constraints: The cluster must be provisioned in EC2-VPC and publicly-accessible through an Internet gateway. For more information about provisioning clusters in EC2-VPC, go to <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html#cluster-platforms">Supported Platforms to Launch Your Cluster</a> in the Amazon Redshift Cluster Management Guide.</p>
@@ -21487,7 +21489,7 @@ proc validate_PostModifyCluster_608730(path: JsonNode; query: JsonNode;
 
 proc call*(call_608763: Call_PostModifyCluster_608729; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Modifies the settings for a cluster. For example, you can add another security or parameter group, update the preferred maintenance window, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p>
+  ## <p>Modifies the settings for a cluster.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p> <p>You can add another security or parameter group, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   let valid = call_608763.validator(path, query, header, formData, body)
   let scheme = call_608763.pickScheme
@@ -21513,11 +21515,12 @@ proc call*(call_608764: Call_PostModifyCluster_608729; ClusterIdentifier: string
           ElasticIp: string = ""; HsmConfigurationIdentifier: string = "";
           ManualSnapshotRetentionPeriod: int = 0): Recallable =
   ## postModifyCluster
-  ## <p>Modifies the settings for a cluster. For example, you can add another security or parameter group, update the preferred maintenance window, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p>
+  ## <p>Modifies the settings for a cluster.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p> <p>You can add another security or parameter group, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ##   PreferredMaintenanceWindow: string
   ##                             : <p>The weekly time range (in UTC) during which system maintenance can occur, if necessary. If system maintenance is necessary during the window, it may result in an outage.</p> <p>This maintenance window change is made immediately. If the new maintenance window indicates the current time, there must be at least 120 minutes between the current time and end of the window in order to ensure that pending changes are applied.</p> <p>Default: Uses existing setting.</p> <p>Format: ddd:hh24:mi-ddd:hh24:mi, for example <code>wed:07:30-wed:08:00</code>.</p> <p>Valid Days: Mon | Tue | Wed | Thu | Fri | Sat | Sun</p> <p>Constraints: Must be at least 30 minutes.</p>
   ##   NodeType: string
-  ##           : <p>The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.</p> <p>When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: <code>ds2.xlarge</code> | <code>ds2.8xlarge</code> | <code>dc1.large</code> | <code>dc1.8xlarge</code> | <code>dc2.large</code> | <code>dc2.8xlarge</code> | <code>ra3.16xlarge</code> </p>
+  ##           : <p>The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.</p> <p> For more information about resizing clusters, go to <a 
+  ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/rs-resize-tutorial.html">Resizing Clusters in Amazon Redshift</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Valid Values: <code>ds2.xlarge</code> | <code>ds2.8xlarge</code> | <code>dc1.large</code> | <code>dc1.8xlarge</code> | <code>dc2.large</code> | <code>dc2.8xlarge</code> | <code>ra3.16xlarge</code> </p>
   ##   ClusterIdentifier: string (required)
   ##                    : <p>The unique identifier of the cluster to be modified.</p> <p>Example: <code>examplecluster</code> </p>
   ##   MasterUserPassword: string
@@ -21527,7 +21530,8 @@ proc call*(call_608764: Call_PostModifyCluster_608729; ClusterIdentifier: string
   ##   ClusterSecurityGroups: JArray
   ##                        : <p>A list of cluster security groups to be authorized on this cluster. This change is asynchronously applied as soon as possible.</p> <p>Security groups currently associated with the cluster, and not in the list of groups to apply, will be revoked from the cluster.</p> <p>Constraints:</p> <ul> <li> <p>Must be 1 to 255 alphanumeric characters or hyphens</p> </li> <li> <p>First character must be a letter</p> </li> <li> <p>Cannot end with a hyphen or contain two consecutive hyphens</p> </li> </ul>
   ##   NumberOfNodes: int
-  ##                : <p>The new number of nodes of the cluster. If you specify a new number of nodes, you must also specify the node type parameter.</p> <p>When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: Integer greater than <code>0</code>.</p>
+  ##                : <p>The new number of nodes of the cluster. If you specify a new number of nodes, you must also specify the node type parameter.</p> <p> For more information about resizing clusters, go to <a 
+  ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/rs-resize-tutorial.html">Resizing Clusters in Amazon Redshift</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Valid Values: Integer greater than <code>0</code>.</p>
   ##   VpcSecurityGroupIds: JArray
   ##                      : A list of virtual private cloud (VPC) security groups to be associated with the cluster. This change is asynchronously applied as soon as possible.
   ##   AutomatedSnapshotRetentionPeriod: int
@@ -21554,7 +21558,7 @@ proc call*(call_608764: Call_PostModifyCluster_608729; ClusterIdentifier: string
   ##   HsmClientCertificateIdentifier: string
   ##                                 : Specifies the name of the HSM client certificate the Amazon Redshift cluster uses to retrieve the data encryption keys stored in an HSM.
   ##   Encrypted: bool
-  ##            : Indicates whether the cluster is encrypted. If the cluster is encrypted and you provide a value for the <code>KmsKeyId</code> parameter, we will encrypt the cluster with the provided <code>KmsKeyId</code>. If you don't provide a <code>KmsKeyId</code>, we will encrypt with the default key. In the China region we will use legacy encryption if you specify that the cluster is encrypted.
+  ##            : <p>Indicates whether the cluster is encrypted. If the value is encrypted (true) and you provide a value for the <code>KmsKeyId</code> parameter, we encrypt the cluster with the provided <code>KmsKeyId</code>. If you don't provide a <code>KmsKeyId</code>, we encrypt with the default key. In the China region we use legacy encryption if you specify that the cluster is encrypted.</p> <p>If the value is not encrypted (false), then the cluster is decrypted. </p>
   ##   Version: string (required)
   ##   ElasticIp: string
   ##            : <p>The Elastic IP (EIP) address for the cluster.</p> <p>Constraints: The cluster must be provisioned in EC2-VPC and publicly-accessible through an Internet gateway. For more information about provisioning clusters in EC2-VPC, go to <a 
@@ -21621,7 +21625,7 @@ proc url_GetModifyCluster_608694(protocol: Scheme; host: string; base: string;
 proc validate_GetModifyCluster_608693(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Modifies the settings for a cluster. For example, you can add another security or parameter group, update the preferred maintenance window, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p>
+  ## <p>Modifies the settings for a cluster.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p> <p>You can add another security or parameter group, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -21631,7 +21635,7 @@ proc validate_GetModifyCluster_608693(path: JsonNode; query: JsonNode;
   ##   MaintenanceTrackName: JString
   ##                       : The name for the maintenance track that you want to assign for the cluster. This name change is asynchronous. The new track name stays in the <code>PendingModifiedValues</code> for the cluster until the next maintenance window. When the maintenance track changes, the cluster is switched to the latest cluster release available for the maintenance track. At this point, the maintenance track name is applied.
   ##   Encrypted: JBool
-  ##            : Indicates whether the cluster is encrypted. If the cluster is encrypted and you provide a value for the <code>KmsKeyId</code> parameter, we will encrypt the cluster with the provided <code>KmsKeyId</code>. If you don't provide a <code>KmsKeyId</code>, we will encrypt with the default key. In the China region we will use legacy encryption if you specify that the cluster is encrypted.
+  ##            : <p>Indicates whether the cluster is encrypted. If the value is encrypted (true) and you provide a value for the <code>KmsKeyId</code> parameter, we encrypt the cluster with the provided <code>KmsKeyId</code>. If you don't provide a <code>KmsKeyId</code>, we encrypt with the default key. In the China region we use legacy encryption if you specify that the cluster is encrypted.</p> <p>If the value is not encrypted (false), then the cluster is decrypted. </p>
   ##   ManualSnapshotRetentionPeriod: JInt
   ##                                : <p>The default for number of days that a newly created manual snapshot is retained. If the value is -1, the manual snapshot is retained indefinitely. This value doesn't retroactively change the retention periods of existing manual snapshots.</p> <p>The value must be either -1 or an integer between 1 and 3,653.</p> <p>The default value is -1.</p>
   ##   HsmClientCertificateIdentifier: JString
@@ -21643,14 +21647,16 @@ proc validate_GetModifyCluster_608693(path: JsonNode; query: JsonNode;
   ##   ClusterParameterGroupName: JString
   ##                            : <p>The name of the cluster parameter group to apply to this cluster. This change is applied only after the cluster is rebooted. To reboot a cluster use <a>RebootCluster</a>. </p> <p>Default: Uses existing setting.</p> <p>Constraints: The cluster parameter group must be in the same parameter group family that matches the cluster version.</p>
   ##   NodeType: JString
-  ##           : <p>The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.</p> <p>When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: <code>ds2.xlarge</code> | <code>ds2.8xlarge</code> | <code>dc1.large</code> | <code>dc1.8xlarge</code> | <code>dc2.large</code> | <code>dc2.8xlarge</code> | <code>ra3.16xlarge</code> </p>
+  ##           : <p>The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.</p> <p> For more information about resizing clusters, go to <a 
+  ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/rs-resize-tutorial.html">Resizing Clusters in Amazon Redshift</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Valid Values: <code>ds2.xlarge</code> | <code>ds2.8xlarge</code> | <code>dc1.large</code> | <code>dc1.8xlarge</code> | <code>dc2.large</code> | <code>dc2.8xlarge</code> | <code>ra3.16xlarge</code> </p>
   ##   ClusterVersion: JString
   ##                 : <p>The new version number of the Amazon Redshift engine to upgrade to.</p> <p>For major version upgrades, if a non-default cluster parameter group is currently in use, a new cluster parameter group in the cluster parameter group family for the new version must be specified. The new cluster parameter group can be the default for that cluster parameter group family. For more information about parameters and parameter groups, go to <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-parameter-groups.html">Amazon Redshift Parameter Groups</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Example: <code>1.0</code> </p>
   ##   ClusterType: JString
   ##              : <p>The new cluster type.</p> <p>When you submit your cluster resize request, your existing cluster goes into a read-only mode. After Amazon Redshift provisions a new cluster based on your resize requirements, there will be outage for a period while the old cluster is deleted and your connection is switched to the new cluster. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: <code> multi-node | single-node </code> </p>
   ##   NumberOfNodes: JInt
-  ##                : <p>The new number of nodes of the cluster. If you specify a new number of nodes, you must also specify the node type parameter.</p> <p>When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: Integer greater than <code>0</code>.</p>
+  ##                : <p>The new number of nodes of the cluster. If you specify a new number of nodes, you must also specify the node type parameter.</p> <p> For more information about resizing clusters, go to <a 
+  ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/rs-resize-tutorial.html">Resizing Clusters in Amazon Redshift</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Valid Values: Integer greater than <code>0</code>.</p>
   ##   AllowVersionUpgrade: JBool
   ##                      : <p>If <code>true</code>, major version upgrades will be applied automatically to the cluster during the maintenance window. </p> <p>Default: <code>false</code> </p>
   ##   ElasticIp: JString
@@ -21845,7 +21851,7 @@ proc validate_GetModifyCluster_608693(path: JsonNode; query: JsonNode;
 
 proc call*(call_608726: Call_GetModifyCluster_608692; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Modifies the settings for a cluster. For example, you can add another security or parameter group, update the preferred maintenance window, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p>
+  ## <p>Modifies the settings for a cluster.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p> <p>You can add another security or parameter group, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ## 
   let valid = call_608726.validator(path, query, header, formData, body)
   let scheme = call_608726.pickScheme
@@ -21871,11 +21877,11 @@ proc call*(call_608727: Call_GetModifyCluster_608692; ClusterIdentifier: string;
           Version: string = "2012-12-01"; PreferredMaintenanceWindow: string = "";
           PubliclyAccessible: bool = false): Recallable =
   ## getModifyCluster
-  ## <p>Modifies the settings for a cluster. For example, you can add another security or parameter group, update the preferred maintenance window, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p>
+  ## <p>Modifies the settings for a cluster.</p> <p>You can also change node type and the number of nodes to scale up or down the cluster. When resizing a cluster, you must specify both the number of nodes and the node type even if one of the parameters does not change.</p> <p>You can add another security or parameter group, or change the master user password. Resetting a cluster password or modifying the security groups associated with a cluster do not need a reboot. However, modifying a parameter group requires a reboot for parameters to take effect. For more information about managing clusters, go to <a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-clusters.html">Amazon Redshift Clusters</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p>
   ##   MaintenanceTrackName: string
   ##                       : The name for the maintenance track that you want to assign for the cluster. This name change is asynchronous. The new track name stays in the <code>PendingModifiedValues</code> for the cluster until the next maintenance window. When the maintenance track changes, the cluster is switched to the latest cluster release available for the maintenance track. At this point, the maintenance track name is applied.
   ##   Encrypted: bool
-  ##            : Indicates whether the cluster is encrypted. If the cluster is encrypted and you provide a value for the <code>KmsKeyId</code> parameter, we will encrypt the cluster with the provided <code>KmsKeyId</code>. If you don't provide a <code>KmsKeyId</code>, we will encrypt with the default key. In the China region we will use legacy encryption if you specify that the cluster is encrypted.
+  ##            : <p>Indicates whether the cluster is encrypted. If the value is encrypted (true) and you provide a value for the <code>KmsKeyId</code> parameter, we encrypt the cluster with the provided <code>KmsKeyId</code>. If you don't provide a <code>KmsKeyId</code>, we encrypt with the default key. In the China region we use legacy encryption if you specify that the cluster is encrypted.</p> <p>If the value is not encrypted (false), then the cluster is decrypted. </p>
   ##   ManualSnapshotRetentionPeriod: int
   ##                                : <p>The default for number of days that a newly created manual snapshot is retained. If the value is -1, the manual snapshot is retained indefinitely. This value doesn't retroactively change the retention periods of existing manual snapshots.</p> <p>The value must be either -1 or an integer between 1 and 3,653.</p> <p>The default value is -1.</p>
   ##   HsmClientCertificateIdentifier: string
@@ -21887,14 +21893,16 @@ proc call*(call_608727: Call_GetModifyCluster_608692; ClusterIdentifier: string;
   ##   ClusterParameterGroupName: string
   ##                            : <p>The name of the cluster parameter group to apply to this cluster. This change is applied only after the cluster is rebooted. To reboot a cluster use <a>RebootCluster</a>. </p> <p>Default: Uses existing setting.</p> <p>Constraints: The cluster parameter group must be in the same parameter group family that matches the cluster version.</p>
   ##   NodeType: string
-  ##           : <p>The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.</p> <p>When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: <code>ds2.xlarge</code> | <code>ds2.8xlarge</code> | <code>dc1.large</code> | <code>dc1.8xlarge</code> | <code>dc2.large</code> | <code>dc2.8xlarge</code> | <code>ra3.16xlarge</code> </p>
+  ##           : <p>The new node type of the cluster. If you specify a new node type, you must also specify the number of nodes parameter.</p> <p> For more information about resizing clusters, go to <a 
+  ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/rs-resize-tutorial.html">Resizing Clusters in Amazon Redshift</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Valid Values: <code>ds2.xlarge</code> | <code>ds2.8xlarge</code> | <code>dc1.large</code> | <code>dc1.8xlarge</code> | <code>dc2.large</code> | <code>dc2.8xlarge</code> | <code>ra3.16xlarge</code> </p>
   ##   ClusterVersion: string
   ##                 : <p>The new version number of the Amazon Redshift engine to upgrade to.</p> <p>For major version upgrades, if a non-default cluster parameter group is currently in use, a new cluster parameter group in the cluster parameter group family for the new version must be specified. The new cluster parameter group can be the default for that cluster parameter group family. For more information about parameters and parameter groups, go to <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-parameter-groups.html">Amazon Redshift Parameter Groups</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Example: <code>1.0</code> </p>
   ##   ClusterType: string
   ##              : <p>The new cluster type.</p> <p>When you submit your cluster resize request, your existing cluster goes into a read-only mode. After Amazon Redshift provisions a new cluster based on your resize requirements, there will be outage for a period while the old cluster is deleted and your connection is switched to the new cluster. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: <code> multi-node | single-node </code> </p>
   ##   NumberOfNodes: int
-  ##                : <p>The new number of nodes of the cluster. If you specify a new number of nodes, you must also specify the node type parameter.</p> <p>When you submit your request to resize a cluster, Amazon Redshift sets access permissions for the cluster to read-only. After Amazon Redshift provisions a new cluster according to your resize requirements, there will be a temporary outage while the old cluster is deleted and your connection is switched to the new cluster. When the new connection is complete, the original access permissions for the cluster are restored. You can use <a>DescribeResize</a> to track the progress of the resize request. </p> <p>Valid Values: Integer greater than <code>0</code>.</p>
+  ##                : <p>The new number of nodes of the cluster. If you specify a new number of nodes, you must also specify the node type parameter.</p> <p> For more information about resizing clusters, go to <a 
+  ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/rs-resize-tutorial.html">Resizing Clusters in Amazon Redshift</a> in the <i>Amazon Redshift Cluster Management Guide</i>.</p> <p>Valid Values: Integer greater than <code>0</code>.</p>
   ##   AllowVersionUpgrade: bool
   ##                      : <p>If <code>true</code>, major version upgrades will be applied automatically to the cluster during the maintenance window. </p> <p>Default: <code>false</code> </p>
   ##   ElasticIp: string
@@ -22566,7 +22574,7 @@ proc url_PostModifyClusterMaintenance_608862(protocol: Scheme; host: string;
 
 proc validate_PostModifyClusterMaintenance_608861(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the maintenance settings of a cluster. For example, you can defer a maintenance window. You can also update or cancel a deferment. 
+  ## Modifies the maintenance settings of a cluster.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -22682,7 +22690,7 @@ proc validate_PostModifyClusterMaintenance_608861(path: JsonNode; query: JsonNod
 
 proc call*(call_608878: Call_PostModifyClusterMaintenance_608860; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modifies the maintenance settings of a cluster. For example, you can defer a maintenance window. You can also update or cancel a deferment. 
+  ## Modifies the maintenance settings of a cluster.
   ## 
   let valid = call_608878.validator(path, query, header, formData, body)
   let scheme = call_608878.pickScheme
@@ -22700,7 +22708,7 @@ proc call*(call_608879: Call_PostModifyClusterMaintenance_608860;
           Action: string = "ModifyClusterMaintenance";
           DeferMaintenanceIdentifier: string = ""; Version: string = "2012-12-01"): Recallable =
   ## postModifyClusterMaintenance
-  ## Modifies the maintenance settings of a cluster. For example, you can defer a maintenance window. You can also update or cancel a deferment. 
+  ## Modifies the maintenance settings of a cluster.
   ##   ClusterIdentifier: string (required)
   ##                    : A unique identifier for the cluster.
   ##   DeferMaintenanceStartTime: string
@@ -22753,7 +22761,7 @@ proc url_GetModifyClusterMaintenance_608841(protocol: Scheme; host: string;
 
 proc validate_GetModifyClusterMaintenance_608840(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the maintenance settings of a cluster. For example, you can defer a maintenance window. You can also update or cancel a deferment. 
+  ## Modifies the maintenance settings of a cluster.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -22867,7 +22875,7 @@ proc validate_GetModifyClusterMaintenance_608840(path: JsonNode; query: JsonNode
 
 proc call*(call_608857: Call_GetModifyClusterMaintenance_608839; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modifies the maintenance settings of a cluster. For example, you can defer a maintenance window. You can also update or cancel a deferment. 
+  ## Modifies the maintenance settings of a cluster.
   ## 
   let valid = call_608857.validator(path, query, header, formData, body)
   let scheme = call_608857.pickScheme
@@ -22886,7 +22894,7 @@ proc call*(call_608858: Call_GetModifyClusterMaintenance_608839;
           DeferMaintenance: bool = false; Version: string = "2012-12-01";
           DeferMaintenanceStartTime: string = ""): Recallable =
   ## getModifyClusterMaintenance
-  ## Modifies the maintenance settings of a cluster. For example, you can defer a maintenance window. You can also update or cancel a deferment. 
+  ## Modifies the maintenance settings of a cluster.
   ##   DeferMaintenanceDuration: int
   ##                           : An integer indicating the duration of the maintenance window in days. If you specify a duration, you can't specify an end time. The duration must be 45 days or less.
   ##   DeferMaintenanceIdentifier: string
@@ -23222,7 +23230,7 @@ proc url_PostModifyClusterSnapshot_608937(protocol: Scheme; host: string;
 
 proc validate_PostModifyClusterSnapshot_608936(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the settings for a snapshot.
+  ## <p>Modifies the settings for a snapshot.</p> <p>This exanmple modifies the manual retention period setting for a cluster snapshot.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -23317,7 +23325,7 @@ proc validate_PostModifyClusterSnapshot_608936(path: JsonNode; query: JsonNode;
 
 proc call*(call_608950: Call_PostModifyClusterSnapshot_608935; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modifies the settings for a snapshot.
+  ## <p>Modifies the settings for a snapshot.</p> <p>This exanmple modifies the manual retention period setting for a cluster snapshot.</p>
   ## 
   let valid = call_608950.validator(path, query, header, formData, body)
   let scheme = call_608950.pickScheme
@@ -23333,7 +23341,7 @@ proc call*(call_608951: Call_PostModifyClusterSnapshot_608935;
           Action: string = "ModifyClusterSnapshot"; Version: string = "2012-12-01";
           ManualSnapshotRetentionPeriod: int = 0): Recallable =
   ## postModifyClusterSnapshot
-  ## Modifies the settings for a snapshot.
+  ## <p>Modifies the settings for a snapshot.</p> <p>This exanmple modifies the manual retention period setting for a cluster snapshot.</p>
   ##   Force: bool
   ##        : A Boolean option to override an exception if the retention period has already passed.
   ##   SnapshotIdentifier: string (required)
@@ -23375,7 +23383,7 @@ proc url_GetModifyClusterSnapshot_608919(protocol: Scheme; host: string;
 
 proc validate_GetModifyClusterSnapshot_608918(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modifies the settings for a snapshot.
+  ## <p>Modifies the settings for a snapshot.</p> <p>This exanmple modifies the manual retention period setting for a cluster snapshot.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -23468,7 +23476,7 @@ proc validate_GetModifyClusterSnapshot_608918(path: JsonNode; query: JsonNode;
 
 proc call*(call_608932: Call_GetModifyClusterSnapshot_608917; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modifies the settings for a snapshot.
+  ## <p>Modifies the settings for a snapshot.</p> <p>This exanmple modifies the manual retention period setting for a cluster snapshot.</p>
   ## 
   let valid = call_608932.validator(path, query, header, formData, body)
   let scheme = call_608932.pickScheme
@@ -23484,7 +23492,7 @@ proc call*(call_608933: Call_GetModifyClusterSnapshot_608917;
           Force: bool = false; Action: string = "ModifyClusterSnapshot";
           Version: string = "2012-12-01"): Recallable =
   ## getModifyClusterSnapshot
-  ## Modifies the settings for a snapshot.
+  ## <p>Modifies the settings for a snapshot.</p> <p>This exanmple modifies the manual retention period setting for a cluster snapshot.</p>
   ##   SnapshotIdentifier: string (required)
   ##                     : The identifier of the snapshot whose setting you want to modify.
   ##   ManualSnapshotRetentionPeriod: int
@@ -24210,7 +24218,7 @@ proc validate_PostModifyEventSubscription_609051(path: JsonNode; query: JsonNode
   ##   SubscriptionName: JString (required)
   ##                   : The name of the modified Amazon Redshift event notification subscription.
   ##   SourceType: JString
-  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, and cluster-snapshot.</p>
+  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, cluster-snapshot, and scheduled-action.</p>
   ##   Severity: JString
   ##           : <p>Specifies the Amazon Redshift event severity to be published by the event notification subscription.</p> <p>Values: ERROR, INFO</p>
   ##   EventCategories: JArray
@@ -24284,7 +24292,7 @@ proc call*(call_609070: Call_PostModifyEventSubscription_609050;
   ##   SubscriptionName: string (required)
   ##                   : The name of the modified Amazon Redshift event notification subscription.
   ##   SourceType: string
-  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, and cluster-snapshot.</p>
+  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, cluster-snapshot, and scheduled-action.</p>
   ##   Severity: string
   ##           : <p>Specifies the Amazon Redshift event severity to be published by the event notification subscription.</p> <p>Values: ERROR, INFO</p>
   ##   EventCategories: JArray
@@ -24336,7 +24344,7 @@ proc validate_GetModifyEventSubscription_609029(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   SourceType: JString
-  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, and cluster-snapshot.</p>
+  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, cluster-snapshot, and scheduled-action.</p>
   ##   Enabled: JBool
   ##          : A Boolean value indicating if the subscription is enabled. <code>true</code> indicates the subscription is enabled 
   ##   Severity: JString
@@ -24470,7 +24478,7 @@ proc call*(call_609048: Call_GetModifyEventSubscription_609028;
   ## getModifyEventSubscription
   ## Modifies an existing Amazon Redshift event notification subscription.
   ##   SourceType: string
-  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, and cluster-snapshot.</p>
+  ##             : <p>The type of source that will be generating the events. For example, if you want to be notified of events generated by a cluster, you would set this parameter to cluster. If this value is not specified, events are returned for all Amazon Redshift objects in your AWS account. You must specify a source type in order to specify source IDs.</p> <p>Valid values: cluster, cluster-parameter-group, cluster-security-group, cluster-snapshot, and scheduled-action.</p>
   ##   Enabled: bool
   ##          : A Boolean value indicating if the subscription is enabled. <code>true</code> indicates the subscription is enabled 
   ##   Severity: string
@@ -24521,7 +24529,7 @@ proc url_PostModifyScheduledAction_609098(protocol: Scheme; host: string;
 
 proc validate_PostModifyScheduledAction_609097(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modify a scheduled action. 
+  ## Modifies a scheduled action. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -24653,7 +24661,7 @@ proc validate_PostModifyScheduledAction_609097(path: JsonNode; query: JsonNode;
 
 proc call*(call_609116: Call_PostModifyScheduledAction_609096; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modify a scheduled action. 
+  ## Modifies a scheduled action. 
   ## 
   let valid = call_609116.validator(path, query, header, formData, body)
   let scheme = call_609116.pickScheme
@@ -24672,7 +24680,7 @@ proc call*(call_609117: Call_PostModifyScheduledAction_609096;
           Action: string = "ModifyScheduledAction"; Version: string = "2012-12-01";
           IamRole: string = ""): Recallable =
   ## postModifyScheduledAction
-  ## Modify a scheduled action. 
+  ## Modifies a scheduled action. 
   ##   Enable: bool
   ##         : A modified enable flag of the scheduled action. If true, the scheduled action is active. If false, the scheduled action is disabled. 
   ##   TargetActionResizeCluster: string
@@ -24731,7 +24739,7 @@ proc url_GetModifyScheduledAction_609075(protocol: Scheme; host: string;
 
 proc validate_GetModifyScheduledAction_609074(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Modify a scheduled action. 
+  ## Modifies a scheduled action. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -24861,7 +24869,7 @@ proc validate_GetModifyScheduledAction_609074(path: JsonNode; query: JsonNode;
 
 proc call*(call_609093: Call_GetModifyScheduledAction_609073; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Modify a scheduled action. 
+  ## Modifies a scheduled action. 
   ## 
   let valid = call_609093.validator(path, query, header, formData, body)
   let scheme = call_609093.pickScheme
@@ -24879,7 +24887,7 @@ proc call*(call_609094: Call_GetModifyScheduledAction_609073;
           Action: string = "ModifyScheduledAction"; StartTime: string = "";
           EndTime: string = ""; Version: string = "2012-12-01"): Recallable =
   ## getModifyScheduledAction
-  ## Modify a scheduled action. 
+  ## Modifies a scheduled action. 
   ##   Schedule: string
   ##           : A modified schedule in either <code>at( )</code> or <code>cron( )</code> format. For more information about this parameter, see <a>ScheduledAction</a>.
   ##   Enable: bool
@@ -26799,7 +26807,7 @@ proc validate_PostRestoreFromClusterSnapshot_609380(path: JsonNode;
   ##   AutomatedSnapshotRetentionPeriod: JInt
   ##                                   : <p>The number of days that automated snapshots are retained. If the value is 0, automated snapshots are disabled. Even if automated snapshots are disabled, you can still create manual snapshots when you want with <a>CreateClusterSnapshot</a>. </p> <p>Default: The value selected for the cluster from which the snapshot was taken.</p> <p>Constraints: Must be a value from 0 to 35.</p>
   ##   AvailabilityZone: JString
-  ##                   : <p>The Amazon EC2 Availability Zone in which to restore the cluster.</p> <p>Default: A random, system-chosen Availability Zone.</p> <p>Example: <code>us-east-1a</code> </p>
+  ##                   : <p>The Amazon EC2 Availability Zone in which to restore the cluster.</p> <p>Default: A random, system-chosen Availability Zone.</p> <p>Example: <code>us-east-2a</code> </p>
   ##   EnhancedVpcRouting: JBool
   ##                     : <p>An option that specifies whether to create the cluster with enhanced VPC routing enabled. To create a cluster that uses enhanced VPC routing, the cluster must be in a VPC. For more information, see <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/enhanced-vpc-routing.html">Enhanced VPC Routing</a> in the Amazon Redshift Cluster Management Guide.</p> <p>If this option is <code>true</code>, enhanced VPC routing is enabled. </p> <p>Default: false</p>
@@ -27016,7 +27024,7 @@ proc call*(call_609418: Call_PostRestoreFromClusterSnapshot_609379;
   ##   AutomatedSnapshotRetentionPeriod: int
   ##                                   : <p>The number of days that automated snapshots are retained. If the value is 0, automated snapshots are disabled. Even if automated snapshots are disabled, you can still create manual snapshots when you want with <a>CreateClusterSnapshot</a>. </p> <p>Default: The value selected for the cluster from which the snapshot was taken.</p> <p>Constraints: Must be a value from 0 to 35.</p>
   ##   AvailabilityZone: string
-  ##                   : <p>The Amazon EC2 Availability Zone in which to restore the cluster.</p> <p>Default: A random, system-chosen Availability Zone.</p> <p>Example: <code>us-east-1a</code> </p>
+  ##                   : <p>The Amazon EC2 Availability Zone in which to restore the cluster.</p> <p>Default: A random, system-chosen Availability Zone.</p> <p>Example: <code>us-east-2a</code> </p>
   ##   EnhancedVpcRouting: bool
   ##                     : <p>An option that specifies whether to create the cluster with enhanced VPC routing enabled. To create a cluster that uses enhanced VPC routing, the cluster must be in a VPC. For more information, see <a 
   ## href="https://docs.aws.amazon.com/redshift/latest/mgmt/enhanced-vpc-routing.html">Enhanced VPC Routing</a> in the Amazon Redshift Cluster Management Guide.</p> <p>If this option is <code>true</code>, enhanced VPC routing is enabled. </p> <p>Default: false</p>
@@ -27171,7 +27179,7 @@ proc validate_GetRestoreFromClusterSnapshot_609339(path: JsonNode; query: JsonNo
   ##   VpcSecurityGroupIds: JArray
   ##                      : <p>A list of Virtual Private Cloud (VPC) security groups to be associated with the cluster.</p> <p>Default: The default VPC security group is associated with the cluster.</p> <p>VPC security groups only apply to clusters in VPCs.</p>
   ##   AvailabilityZone: JString
-  ##                   : <p>The Amazon EC2 Availability Zone in which to restore the cluster.</p> <p>Default: A random, system-chosen Availability Zone.</p> <p>Example: <code>us-east-1a</code> </p>
+  ##                   : <p>The Amazon EC2 Availability Zone in which to restore the cluster.</p> <p>Default: A random, system-chosen Availability Zone.</p> <p>Example: <code>us-east-2a</code> </p>
   ##   HsmConfigurationIdentifier: JString
   ##                             : Specifies the name of the HSM configuration that contains the information the Amazon Redshift cluster can use to retrieve and store keys in an HSM.
   ##   OwnerAccount: JString
@@ -27447,7 +27455,7 @@ proc call*(call_609377: Call_GetRestoreFromClusterSnapshot_609338;
   ##   VpcSecurityGroupIds: JArray
   ##                      : <p>A list of Virtual Private Cloud (VPC) security groups to be associated with the cluster.</p> <p>Default: The default VPC security group is associated with the cluster.</p> <p>VPC security groups only apply to clusters in VPCs.</p>
   ##   AvailabilityZone: string
-  ##                   : <p>The Amazon EC2 Availability Zone in which to restore the cluster.</p> <p>Default: A random, system-chosen Availability Zone.</p> <p>Example: <code>us-east-1a</code> </p>
+  ##                   : <p>The Amazon EC2 Availability Zone in which to restore the cluster.</p> <p>Default: A random, system-chosen Availability Zone.</p> <p>Example: <code>us-east-2a</code> </p>
   ##   HsmConfigurationIdentifier: string
   ##                             : Specifies the name of the HSM configuration that contains the information the Amazon Redshift cluster can use to retrieve and store keys in an HSM.
   ##   OwnerAccount: string
@@ -28898,5 +28906,11 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
+  const
+    XAmzSecurityToken = "X-Amz-Security-Token"
+  if not headers.hasKey(XAmzSecurityToken):
+    let session = getEnv("AWS_SESSION_TOKEN", "")
+    if session != "":
+      headers[XAmzSecurityToken] = session
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

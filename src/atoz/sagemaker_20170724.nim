@@ -8367,9 +8367,9 @@ var describeUserProfile* = Call_DescribeUserProfile_607246(
     validator: validate_DescribeUserProfile_607247, base: "/",
     url: url_DescribeUserProfile_607248, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkteam_607261 = ref object of OpenApiRestCall_605589
-proc url_DescribeWorkteam_607263(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeWorkforce_607261 = ref object of OpenApiRestCall_605589
+proc url_DescribeWorkforce_607263(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -8380,10 +8380,10 @@ proc url_DescribeWorkteam_607263(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeWorkteam_607262(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## Gets information about a specific work team. You can see information such as the create date, the last updated date, membership information, and the work team's Amazon Resource Name (ARN).
+proc validate_DescribeWorkforce_607262(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## <p>Lists private workforce information, including workforce name, Amazon Resource Name (ARN), and, if applicable, allowed IP address ranges (<a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">CIDRs</a>). Allowable IP address ranges are the IP addresses that workers can use to access tasks. </p> <important> <p>This operation applies only to private workforces.</p> </important>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -8405,7 +8405,7 @@ proc validate_DescribeWorkteam_607262(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607264 = header.getOrDefault("X-Amz-Target")
   valid_607264 = validateParameter(valid_607264, JString, required = true, default = newJString(
-      "SageMaker.DescribeWorkteam"))
+      "SageMaker.DescribeWorkforce"))
   if valid_607264 != nil:
     section.add "X-Amz-Target", valid_607264
   var valid_607265 = header.getOrDefault("X-Amz-Signature")
@@ -8453,9 +8453,9 @@ proc validate_DescribeWorkteam_607262(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607273: Call_DescribeWorkteam_607261; path: JsonNode;
+proc call*(call_607273: Call_DescribeWorkforce_607261; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets information about a specific work team. You can see information such as the create date, the last updated date, membership information, and the work team's Amazon Resource Name (ARN).
+  ## <p>Lists private workforce information, including workforce name, Amazon Resource Name (ARN), and, if applicable, allowed IP address ranges (<a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">CIDRs</a>). Allowable IP address ranges are the IP addresses that workers can use to access tasks. </p> <important> <p>This operation applies only to private workforces.</p> </important>
   ## 
   let valid = call_607273.validator(path, query, header, formData, body)
   let scheme = call_607273.pickScheme
@@ -8466,24 +8466,24 @@ proc call*(call_607273: Call_DescribeWorkteam_607261; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_607273, url, valid)
 
-proc call*(call_607274: Call_DescribeWorkteam_607261; body: JsonNode): Recallable =
-  ## describeWorkteam
-  ## Gets information about a specific work team. You can see information such as the create date, the last updated date, membership information, and the work team's Amazon Resource Name (ARN).
+proc call*(call_607274: Call_DescribeWorkforce_607261; body: JsonNode): Recallable =
+  ## describeWorkforce
+  ## <p>Lists private workforce information, including workforce name, Amazon Resource Name (ARN), and, if applicable, allowed IP address ranges (<a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">CIDRs</a>). Allowable IP address ranges are the IP addresses that workers can use to access tasks. </p> <important> <p>This operation applies only to private workforces.</p> </important>
   ##   body: JObject (required)
   var body_607275 = newJObject()
   if body != nil:
     body_607275 = body
   result = call_607274.call(nil, nil, nil, nil, body_607275)
 
-var describeWorkteam* = Call_DescribeWorkteam_607261(name: "describeWorkteam",
+var describeWorkforce* = Call_DescribeWorkforce_607261(name: "describeWorkforce",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.DescribeWorkteam",
-    validator: validate_DescribeWorkteam_607262, base: "/",
-    url: url_DescribeWorkteam_607263, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=SageMaker.DescribeWorkforce",
+    validator: validate_DescribeWorkforce_607262, base: "/",
+    url: url_DescribeWorkforce_607263, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateTrialComponent_607276 = ref object of OpenApiRestCall_605589
-proc url_DisassociateTrialComponent_607278(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeWorkteam_607276 = ref object of OpenApiRestCall_605589
+proc url_DescribeWorkteam_607278(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -8494,9 +8494,10 @@ proc url_DisassociateTrialComponent_607278(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DisassociateTrialComponent_607277(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Disassociates a trial component from a trial. This doesn't effect other trials the component is associated with. Before you can delete a component, you must disassociate the component from all trials it is associated with. To associate a trial component with a trial, call the <a>AssociateTrialComponent</a> API.
+proc validate_DescribeWorkteam_607277(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## Gets information about a specific work team. You can see information such as the create date, the last updated date, membership information, and the work team's Amazon Resource Name (ARN).
   ## 
   var section: JsonNode
   result = newJObject()
@@ -8518,7 +8519,7 @@ proc validate_DisassociateTrialComponent_607277(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607279 = header.getOrDefault("X-Amz-Target")
   valid_607279 = validateParameter(valid_607279, JString, required = true, default = newJString(
-      "SageMaker.DisassociateTrialComponent"))
+      "SageMaker.DescribeWorkteam"))
   if valid_607279 != nil:
     section.add "X-Amz-Target", valid_607279
   var valid_607280 = header.getOrDefault("X-Amz-Signature")
@@ -8566,9 +8567,9 @@ proc validate_DisassociateTrialComponent_607277(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607288: Call_DisassociateTrialComponent_607276; path: JsonNode;
+proc call*(call_607288: Call_DescribeWorkteam_607276; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Disassociates a trial component from a trial. This doesn't effect other trials the component is associated with. Before you can delete a component, you must disassociate the component from all trials it is associated with. To associate a trial component with a trial, call the <a>AssociateTrialComponent</a> API.
+  ## Gets information about a specific work team. You can see information such as the create date, the last updated date, membership information, and the work team's Amazon Resource Name (ARN).
   ## 
   let valid = call_607288.validator(path, query, header, formData, body)
   let scheme = call_607288.pickScheme
@@ -8579,26 +8580,24 @@ proc call*(call_607288: Call_DisassociateTrialComponent_607276; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_607288, url, valid)
 
-proc call*(call_607289: Call_DisassociateTrialComponent_607276; body: JsonNode): Recallable =
-  ## disassociateTrialComponent
-  ## Disassociates a trial component from a trial. This doesn't effect other trials the component is associated with. Before you can delete a component, you must disassociate the component from all trials it is associated with. To associate a trial component with a trial, call the <a>AssociateTrialComponent</a> API.
+proc call*(call_607289: Call_DescribeWorkteam_607276; body: JsonNode): Recallable =
+  ## describeWorkteam
+  ## Gets information about a specific work team. You can see information such as the create date, the last updated date, membership information, and the work team's Amazon Resource Name (ARN).
   ##   body: JObject (required)
   var body_607290 = newJObject()
   if body != nil:
     body_607290 = body
   result = call_607289.call(nil, nil, nil, nil, body_607290)
 
-var disassociateTrialComponent* = Call_DisassociateTrialComponent_607276(
-    name: "disassociateTrialComponent", meth: HttpMethod.HttpPost,
-    host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.DisassociateTrialComponent",
-    validator: validate_DisassociateTrialComponent_607277, base: "/",
-    url: url_DisassociateTrialComponent_607278,
-    schemes: {Scheme.Https, Scheme.Http})
+var describeWorkteam* = Call_DescribeWorkteam_607276(name: "describeWorkteam",
+    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.DescribeWorkteam",
+    validator: validate_DescribeWorkteam_607277, base: "/",
+    url: url_DescribeWorkteam_607278, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSearchSuggestions_607291 = ref object of OpenApiRestCall_605589
-proc url_GetSearchSuggestions_607293(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DisassociateTrialComponent_607291 = ref object of OpenApiRestCall_605589
+proc url_DisassociateTrialComponent_607293(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -8609,9 +8608,9 @@ proc url_GetSearchSuggestions_607293(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_GetSearchSuggestions_607292(path: JsonNode; query: JsonNode;
+proc validate_DisassociateTrialComponent_607292(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## An auto-complete API for the search functionality in the Amazon SageMaker console. It returns suggestions of possible matches for the property name to use in <code>Search</code> queries. Provides suggestions for <code>HyperParameters</code>, <code>Tags</code>, and <code>Metrics</code>.
+  ## Disassociates a trial component from a trial. This doesn't effect other trials the component is associated with. Before you can delete a component, you must disassociate the component from all trials it is associated with. To associate a trial component with a trial, call the <a>AssociateTrialComponent</a> API.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -8633,7 +8632,7 @@ proc validate_GetSearchSuggestions_607292(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607294 = header.getOrDefault("X-Amz-Target")
   valid_607294 = validateParameter(valid_607294, JString, required = true, default = newJString(
-      "SageMaker.GetSearchSuggestions"))
+      "SageMaker.DisassociateTrialComponent"))
   if valid_607294 != nil:
     section.add "X-Amz-Target", valid_607294
   var valid_607295 = header.getOrDefault("X-Amz-Signature")
@@ -8681,9 +8680,9 @@ proc validate_GetSearchSuggestions_607292(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607303: Call_GetSearchSuggestions_607291; path: JsonNode;
+proc call*(call_607303: Call_DisassociateTrialComponent_607291; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## An auto-complete API for the search functionality in the Amazon SageMaker console. It returns suggestions of possible matches for the property name to use in <code>Search</code> queries. Provides suggestions for <code>HyperParameters</code>, <code>Tags</code>, and <code>Metrics</code>.
+  ## Disassociates a trial component from a trial. This doesn't effect other trials the component is associated with. Before you can delete a component, you must disassociate the component from all trials it is associated with. To associate a trial component with a trial, call the <a>AssociateTrialComponent</a> API.
   ## 
   let valid = call_607303.validator(path, query, header, formData, body)
   let scheme = call_607303.pickScheme
@@ -8694,24 +8693,139 @@ proc call*(call_607303: Call_GetSearchSuggestions_607291; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_607303, url, valid)
 
-proc call*(call_607304: Call_GetSearchSuggestions_607291; body: JsonNode): Recallable =
-  ## getSearchSuggestions
-  ## An auto-complete API for the search functionality in the Amazon SageMaker console. It returns suggestions of possible matches for the property name to use in <code>Search</code> queries. Provides suggestions for <code>HyperParameters</code>, <code>Tags</code>, and <code>Metrics</code>.
+proc call*(call_607304: Call_DisassociateTrialComponent_607291; body: JsonNode): Recallable =
+  ## disassociateTrialComponent
+  ## Disassociates a trial component from a trial. This doesn't effect other trials the component is associated with. Before you can delete a component, you must disassociate the component from all trials it is associated with. To associate a trial component with a trial, call the <a>AssociateTrialComponent</a> API.
   ##   body: JObject (required)
   var body_607305 = newJObject()
   if body != nil:
     body_607305 = body
   result = call_607304.call(nil, nil, nil, nil, body_607305)
 
-var getSearchSuggestions* = Call_GetSearchSuggestions_607291(
+var disassociateTrialComponent* = Call_DisassociateTrialComponent_607291(
+    name: "disassociateTrialComponent", meth: HttpMethod.HttpPost,
+    host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.DisassociateTrialComponent",
+    validator: validate_DisassociateTrialComponent_607292, base: "/",
+    url: url_DisassociateTrialComponent_607293,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_GetSearchSuggestions_607306 = ref object of OpenApiRestCall_605589
+proc url_GetSearchSuggestions_607308(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_GetSearchSuggestions_607307(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## An auto-complete API for the search functionality in the Amazon SageMaker console. It returns suggestions of possible matches for the property name to use in <code>Search</code> queries. Provides suggestions for <code>HyperParameters</code>, <code>Tags</code>, and <code>Metrics</code>.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_607309 = header.getOrDefault("X-Amz-Target")
+  valid_607309 = validateParameter(valid_607309, JString, required = true, default = newJString(
+      "SageMaker.GetSearchSuggestions"))
+  if valid_607309 != nil:
+    section.add "X-Amz-Target", valid_607309
+  var valid_607310 = header.getOrDefault("X-Amz-Signature")
+  valid_607310 = validateParameter(valid_607310, JString, required = false,
+                                 default = nil)
+  if valid_607310 != nil:
+    section.add "X-Amz-Signature", valid_607310
+  var valid_607311 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607311 = validateParameter(valid_607311, JString, required = false,
+                                 default = nil)
+  if valid_607311 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607311
+  var valid_607312 = header.getOrDefault("X-Amz-Date")
+  valid_607312 = validateParameter(valid_607312, JString, required = false,
+                                 default = nil)
+  if valid_607312 != nil:
+    section.add "X-Amz-Date", valid_607312
+  var valid_607313 = header.getOrDefault("X-Amz-Credential")
+  valid_607313 = validateParameter(valid_607313, JString, required = false,
+                                 default = nil)
+  if valid_607313 != nil:
+    section.add "X-Amz-Credential", valid_607313
+  var valid_607314 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607314 = validateParameter(valid_607314, JString, required = false,
+                                 default = nil)
+  if valid_607314 != nil:
+    section.add "X-Amz-Security-Token", valid_607314
+  var valid_607315 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607315 = validateParameter(valid_607315, JString, required = false,
+                                 default = nil)
+  if valid_607315 != nil:
+    section.add "X-Amz-Algorithm", valid_607315
+  var valid_607316 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607316 = validateParameter(valid_607316, JString, required = false,
+                                 default = nil)
+  if valid_607316 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607316
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_607318: Call_GetSearchSuggestions_607306; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## An auto-complete API for the search functionality in the Amazon SageMaker console. It returns suggestions of possible matches for the property name to use in <code>Search</code> queries. Provides suggestions for <code>HyperParameters</code>, <code>Tags</code>, and <code>Metrics</code>.
+  ## 
+  let valid = call_607318.validator(path, query, header, formData, body)
+  let scheme = call_607318.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_607318.url(scheme.get, call_607318.host, call_607318.base,
+                         call_607318.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_607318, url, valid)
+
+proc call*(call_607319: Call_GetSearchSuggestions_607306; body: JsonNode): Recallable =
+  ## getSearchSuggestions
+  ## An auto-complete API for the search functionality in the Amazon SageMaker console. It returns suggestions of possible matches for the property name to use in <code>Search</code> queries. Provides suggestions for <code>HyperParameters</code>, <code>Tags</code>, and <code>Metrics</code>.
+  ##   body: JObject (required)
+  var body_607320 = newJObject()
+  if body != nil:
+    body_607320 = body
+  result = call_607319.call(nil, nil, nil, nil, body_607320)
+
+var getSearchSuggestions* = Call_GetSearchSuggestions_607306(
     name: "getSearchSuggestions", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.GetSearchSuggestions",
-    validator: validate_GetSearchSuggestions_607292, base: "/",
-    url: url_GetSearchSuggestions_607293, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSearchSuggestions_607307, base: "/",
+    url: url_GetSearchSuggestions_607308, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAlgorithms_607306 = ref object of OpenApiRestCall_605589
-proc url_ListAlgorithms_607308(protocol: Scheme; host: string; base: string;
+  Call_ListAlgorithms_607321 = ref object of OpenApiRestCall_605589
+proc url_ListAlgorithms_607323(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8723,7 +8837,7 @@ proc url_ListAlgorithms_607308(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListAlgorithms_607307(path: JsonNode; query: JsonNode;
+proc validate_ListAlgorithms_607322(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Lists the machine learning algorithms that have been created.
@@ -8738,16 +8852,16 @@ proc validate_ListAlgorithms_607307(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607309 = query.getOrDefault("MaxResults")
-  valid_607309 = validateParameter(valid_607309, JString, required = false,
+  var valid_607324 = query.getOrDefault("MaxResults")
+  valid_607324 = validateParameter(valid_607324, JString, required = false,
                                  default = nil)
-  if valid_607309 != nil:
-    section.add "MaxResults", valid_607309
-  var valid_607310 = query.getOrDefault("NextToken")
-  valid_607310 = validateParameter(valid_607310, JString, required = false,
+  if valid_607324 != nil:
+    section.add "MaxResults", valid_607324
+  var valid_607325 = query.getOrDefault("NextToken")
+  valid_607325 = validateParameter(valid_607325, JString, required = false,
                                  default = nil)
-  if valid_607310 != nil:
-    section.add "NextToken", valid_607310
+  if valid_607325 != nil:
+    section.add "NextToken", valid_607325
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -8761,46 +8875,46 @@ proc validate_ListAlgorithms_607307(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607311 = header.getOrDefault("X-Amz-Target")
-  valid_607311 = validateParameter(valid_607311, JString, required = true, default = newJString(
+  var valid_607326 = header.getOrDefault("X-Amz-Target")
+  valid_607326 = validateParameter(valid_607326, JString, required = true, default = newJString(
       "SageMaker.ListAlgorithms"))
-  if valid_607311 != nil:
-    section.add "X-Amz-Target", valid_607311
-  var valid_607312 = header.getOrDefault("X-Amz-Signature")
-  valid_607312 = validateParameter(valid_607312, JString, required = false,
+  if valid_607326 != nil:
+    section.add "X-Amz-Target", valid_607326
+  var valid_607327 = header.getOrDefault("X-Amz-Signature")
+  valid_607327 = validateParameter(valid_607327, JString, required = false,
                                  default = nil)
-  if valid_607312 != nil:
-    section.add "X-Amz-Signature", valid_607312
-  var valid_607313 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607313 = validateParameter(valid_607313, JString, required = false,
+  if valid_607327 != nil:
+    section.add "X-Amz-Signature", valid_607327
+  var valid_607328 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607328 = validateParameter(valid_607328, JString, required = false,
                                  default = nil)
-  if valid_607313 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607313
-  var valid_607314 = header.getOrDefault("X-Amz-Date")
-  valid_607314 = validateParameter(valid_607314, JString, required = false,
+  if valid_607328 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607328
+  var valid_607329 = header.getOrDefault("X-Amz-Date")
+  valid_607329 = validateParameter(valid_607329, JString, required = false,
                                  default = nil)
-  if valid_607314 != nil:
-    section.add "X-Amz-Date", valid_607314
-  var valid_607315 = header.getOrDefault("X-Amz-Credential")
-  valid_607315 = validateParameter(valid_607315, JString, required = false,
+  if valid_607329 != nil:
+    section.add "X-Amz-Date", valid_607329
+  var valid_607330 = header.getOrDefault("X-Amz-Credential")
+  valid_607330 = validateParameter(valid_607330, JString, required = false,
                                  default = nil)
-  if valid_607315 != nil:
-    section.add "X-Amz-Credential", valid_607315
-  var valid_607316 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607316 = validateParameter(valid_607316, JString, required = false,
+  if valid_607330 != nil:
+    section.add "X-Amz-Credential", valid_607330
+  var valid_607331 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607331 = validateParameter(valid_607331, JString, required = false,
                                  default = nil)
-  if valid_607316 != nil:
-    section.add "X-Amz-Security-Token", valid_607316
-  var valid_607317 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607317 = validateParameter(valid_607317, JString, required = false,
+  if valid_607331 != nil:
+    section.add "X-Amz-Security-Token", valid_607331
+  var valid_607332 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607332 = validateParameter(valid_607332, JString, required = false,
                                  default = nil)
-  if valid_607317 != nil:
-    section.add "X-Amz-Algorithm", valid_607317
-  var valid_607318 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607318 = validateParameter(valid_607318, JString, required = false,
+  if valid_607332 != nil:
+    section.add "X-Amz-Algorithm", valid_607332
+  var valid_607333 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607333 = validateParameter(valid_607333, JString, required = false,
                                  default = nil)
-  if valid_607318 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607318
+  if valid_607333 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607333
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8811,20 +8925,20 @@ proc validate_ListAlgorithms_607307(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607320: Call_ListAlgorithms_607306; path: JsonNode; query: JsonNode;
+proc call*(call_607335: Call_ListAlgorithms_607321; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the machine learning algorithms that have been created.
   ## 
-  let valid = call_607320.validator(path, query, header, formData, body)
-  let scheme = call_607320.pickScheme
+  let valid = call_607335.validator(path, query, header, formData, body)
+  let scheme = call_607335.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607320.url(scheme.get, call_607320.host, call_607320.base,
-                         call_607320.route, valid.getOrDefault("path"),
+  let url = call_607335.url(scheme.get, call_607335.host, call_607335.base,
+                         call_607335.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607320, url, valid)
+  result = atozHook(call_607335, url, valid)
 
-proc call*(call_607321: Call_ListAlgorithms_607306; body: JsonNode;
+proc call*(call_607336: Call_ListAlgorithms_607321; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listAlgorithms
   ## Lists the machine learning algorithms that have been created.
@@ -8833,22 +8947,22 @@ proc call*(call_607321: Call_ListAlgorithms_607306; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607322 = newJObject()
-  var body_607323 = newJObject()
-  add(query_607322, "MaxResults", newJString(MaxResults))
-  add(query_607322, "NextToken", newJString(NextToken))
+  var query_607337 = newJObject()
+  var body_607338 = newJObject()
+  add(query_607337, "MaxResults", newJString(MaxResults))
+  add(query_607337, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607323 = body
-  result = call_607321.call(nil, query_607322, nil, nil, body_607323)
+    body_607338 = body
+  result = call_607336.call(nil, query_607337, nil, nil, body_607338)
 
-var listAlgorithms* = Call_ListAlgorithms_607306(name: "listAlgorithms",
+var listAlgorithms* = Call_ListAlgorithms_607321(name: "listAlgorithms",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListAlgorithms",
-    validator: validate_ListAlgorithms_607307, base: "/", url: url_ListAlgorithms_607308,
+    validator: validate_ListAlgorithms_607322, base: "/", url: url_ListAlgorithms_607323,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListApps_607325 = ref object of OpenApiRestCall_605589
-proc url_ListApps_607327(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListApps_607340 = ref object of OpenApiRestCall_605589
+proc url_ListApps_607342(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8860,7 +8974,7 @@ proc url_ListApps_607327(protocol: Scheme; host: string; base: string; route: st
   else:
     result.path = base & route
 
-proc validate_ListApps_607326(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListApps_607341(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists apps.
   ## 
@@ -8874,16 +8988,16 @@ proc validate_ListApps_607326(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607328 = query.getOrDefault("MaxResults")
-  valid_607328 = validateParameter(valid_607328, JString, required = false,
+  var valid_607343 = query.getOrDefault("MaxResults")
+  valid_607343 = validateParameter(valid_607343, JString, required = false,
                                  default = nil)
-  if valid_607328 != nil:
-    section.add "MaxResults", valid_607328
-  var valid_607329 = query.getOrDefault("NextToken")
-  valid_607329 = validateParameter(valid_607329, JString, required = false,
+  if valid_607343 != nil:
+    section.add "MaxResults", valid_607343
+  var valid_607344 = query.getOrDefault("NextToken")
+  valid_607344 = validateParameter(valid_607344, JString, required = false,
                                  default = nil)
-  if valid_607329 != nil:
-    section.add "NextToken", valid_607329
+  if valid_607344 != nil:
+    section.add "NextToken", valid_607344
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -8897,46 +9011,46 @@ proc validate_ListApps_607326(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607330 = header.getOrDefault("X-Amz-Target")
-  valid_607330 = validateParameter(valid_607330, JString, required = true,
+  var valid_607345 = header.getOrDefault("X-Amz-Target")
+  valid_607345 = validateParameter(valid_607345, JString, required = true,
                                  default = newJString("SageMaker.ListApps"))
-  if valid_607330 != nil:
-    section.add "X-Amz-Target", valid_607330
-  var valid_607331 = header.getOrDefault("X-Amz-Signature")
-  valid_607331 = validateParameter(valid_607331, JString, required = false,
+  if valid_607345 != nil:
+    section.add "X-Amz-Target", valid_607345
+  var valid_607346 = header.getOrDefault("X-Amz-Signature")
+  valid_607346 = validateParameter(valid_607346, JString, required = false,
                                  default = nil)
-  if valid_607331 != nil:
-    section.add "X-Amz-Signature", valid_607331
-  var valid_607332 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607332 = validateParameter(valid_607332, JString, required = false,
+  if valid_607346 != nil:
+    section.add "X-Amz-Signature", valid_607346
+  var valid_607347 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607347 = validateParameter(valid_607347, JString, required = false,
                                  default = nil)
-  if valid_607332 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607332
-  var valid_607333 = header.getOrDefault("X-Amz-Date")
-  valid_607333 = validateParameter(valid_607333, JString, required = false,
+  if valid_607347 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607347
+  var valid_607348 = header.getOrDefault("X-Amz-Date")
+  valid_607348 = validateParameter(valid_607348, JString, required = false,
                                  default = nil)
-  if valid_607333 != nil:
-    section.add "X-Amz-Date", valid_607333
-  var valid_607334 = header.getOrDefault("X-Amz-Credential")
-  valid_607334 = validateParameter(valid_607334, JString, required = false,
+  if valid_607348 != nil:
+    section.add "X-Amz-Date", valid_607348
+  var valid_607349 = header.getOrDefault("X-Amz-Credential")
+  valid_607349 = validateParameter(valid_607349, JString, required = false,
                                  default = nil)
-  if valid_607334 != nil:
-    section.add "X-Amz-Credential", valid_607334
-  var valid_607335 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607335 = validateParameter(valid_607335, JString, required = false,
+  if valid_607349 != nil:
+    section.add "X-Amz-Credential", valid_607349
+  var valid_607350 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607350 = validateParameter(valid_607350, JString, required = false,
                                  default = nil)
-  if valid_607335 != nil:
-    section.add "X-Amz-Security-Token", valid_607335
-  var valid_607336 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607336 = validateParameter(valid_607336, JString, required = false,
+  if valid_607350 != nil:
+    section.add "X-Amz-Security-Token", valid_607350
+  var valid_607351 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607351 = validateParameter(valid_607351, JString, required = false,
                                  default = nil)
-  if valid_607336 != nil:
-    section.add "X-Amz-Algorithm", valid_607336
-  var valid_607337 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607337 = validateParameter(valid_607337, JString, required = false,
+  if valid_607351 != nil:
+    section.add "X-Amz-Algorithm", valid_607351
+  var valid_607352 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607352 = validateParameter(valid_607352, JString, required = false,
                                  default = nil)
-  if valid_607337 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607337
+  if valid_607352 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607352
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8947,20 +9061,20 @@ proc validate_ListApps_607326(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607339: Call_ListApps_607325; path: JsonNode; query: JsonNode;
+proc call*(call_607354: Call_ListApps_607340; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists apps.
   ## 
-  let valid = call_607339.validator(path, query, header, formData, body)
-  let scheme = call_607339.pickScheme
+  let valid = call_607354.validator(path, query, header, formData, body)
+  let scheme = call_607354.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607339.url(scheme.get, call_607339.host, call_607339.base,
-                         call_607339.route, valid.getOrDefault("path"),
+  let url = call_607354.url(scheme.get, call_607354.host, call_607354.base,
+                         call_607354.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607339, url, valid)
+  result = atozHook(call_607354, url, valid)
 
-proc call*(call_607340: Call_ListApps_607325; body: JsonNode;
+proc call*(call_607355: Call_ListApps_607340; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listApps
   ## Lists apps.
@@ -8969,23 +9083,23 @@ proc call*(call_607340: Call_ListApps_607325; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607341 = newJObject()
-  var body_607342 = newJObject()
-  add(query_607341, "MaxResults", newJString(MaxResults))
-  add(query_607341, "NextToken", newJString(NextToken))
+  var query_607356 = newJObject()
+  var body_607357 = newJObject()
+  add(query_607356, "MaxResults", newJString(MaxResults))
+  add(query_607356, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607342 = body
-  result = call_607340.call(nil, query_607341, nil, nil, body_607342)
+    body_607357 = body
+  result = call_607355.call(nil, query_607356, nil, nil, body_607357)
 
-var listApps* = Call_ListApps_607325(name: "listApps", meth: HttpMethod.HttpPost,
+var listApps* = Call_ListApps_607340(name: "listApps", meth: HttpMethod.HttpPost,
                                   host: "api.sagemaker.amazonaws.com",
                                   route: "/#X-Amz-Target=SageMaker.ListApps",
-                                  validator: validate_ListApps_607326, base: "/",
-                                  url: url_ListApps_607327,
+                                  validator: validate_ListApps_607341, base: "/",
+                                  url: url_ListApps_607342,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAutoMLJobs_607343 = ref object of OpenApiRestCall_605589
-proc url_ListAutoMLJobs_607345(protocol: Scheme; host: string; base: string;
+  Call_ListAutoMLJobs_607358 = ref object of OpenApiRestCall_605589
+proc url_ListAutoMLJobs_607360(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8997,7 +9111,7 @@ proc url_ListAutoMLJobs_607345(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListAutoMLJobs_607344(path: JsonNode; query: JsonNode;
+proc validate_ListAutoMLJobs_607359(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Request a list of jobs.
@@ -9012,16 +9126,16 @@ proc validate_ListAutoMLJobs_607344(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607346 = query.getOrDefault("MaxResults")
-  valid_607346 = validateParameter(valid_607346, JString, required = false,
+  var valid_607361 = query.getOrDefault("MaxResults")
+  valid_607361 = validateParameter(valid_607361, JString, required = false,
                                  default = nil)
-  if valid_607346 != nil:
-    section.add "MaxResults", valid_607346
-  var valid_607347 = query.getOrDefault("NextToken")
-  valid_607347 = validateParameter(valid_607347, JString, required = false,
+  if valid_607361 != nil:
+    section.add "MaxResults", valid_607361
+  var valid_607362 = query.getOrDefault("NextToken")
+  valid_607362 = validateParameter(valid_607362, JString, required = false,
                                  default = nil)
-  if valid_607347 != nil:
-    section.add "NextToken", valid_607347
+  if valid_607362 != nil:
+    section.add "NextToken", valid_607362
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -9035,46 +9149,46 @@ proc validate_ListAutoMLJobs_607344(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607348 = header.getOrDefault("X-Amz-Target")
-  valid_607348 = validateParameter(valid_607348, JString, required = true, default = newJString(
+  var valid_607363 = header.getOrDefault("X-Amz-Target")
+  valid_607363 = validateParameter(valid_607363, JString, required = true, default = newJString(
       "SageMaker.ListAutoMLJobs"))
-  if valid_607348 != nil:
-    section.add "X-Amz-Target", valid_607348
-  var valid_607349 = header.getOrDefault("X-Amz-Signature")
-  valid_607349 = validateParameter(valid_607349, JString, required = false,
+  if valid_607363 != nil:
+    section.add "X-Amz-Target", valid_607363
+  var valid_607364 = header.getOrDefault("X-Amz-Signature")
+  valid_607364 = validateParameter(valid_607364, JString, required = false,
                                  default = nil)
-  if valid_607349 != nil:
-    section.add "X-Amz-Signature", valid_607349
-  var valid_607350 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607350 = validateParameter(valid_607350, JString, required = false,
+  if valid_607364 != nil:
+    section.add "X-Amz-Signature", valid_607364
+  var valid_607365 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607365 = validateParameter(valid_607365, JString, required = false,
                                  default = nil)
-  if valid_607350 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607350
-  var valid_607351 = header.getOrDefault("X-Amz-Date")
-  valid_607351 = validateParameter(valid_607351, JString, required = false,
+  if valid_607365 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607365
+  var valid_607366 = header.getOrDefault("X-Amz-Date")
+  valid_607366 = validateParameter(valid_607366, JString, required = false,
                                  default = nil)
-  if valid_607351 != nil:
-    section.add "X-Amz-Date", valid_607351
-  var valid_607352 = header.getOrDefault("X-Amz-Credential")
-  valid_607352 = validateParameter(valid_607352, JString, required = false,
+  if valid_607366 != nil:
+    section.add "X-Amz-Date", valid_607366
+  var valid_607367 = header.getOrDefault("X-Amz-Credential")
+  valid_607367 = validateParameter(valid_607367, JString, required = false,
                                  default = nil)
-  if valid_607352 != nil:
-    section.add "X-Amz-Credential", valid_607352
-  var valid_607353 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607353 = validateParameter(valid_607353, JString, required = false,
+  if valid_607367 != nil:
+    section.add "X-Amz-Credential", valid_607367
+  var valid_607368 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607368 = validateParameter(valid_607368, JString, required = false,
                                  default = nil)
-  if valid_607353 != nil:
-    section.add "X-Amz-Security-Token", valid_607353
-  var valid_607354 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607354 = validateParameter(valid_607354, JString, required = false,
+  if valid_607368 != nil:
+    section.add "X-Amz-Security-Token", valid_607368
+  var valid_607369 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607369 = validateParameter(valid_607369, JString, required = false,
                                  default = nil)
-  if valid_607354 != nil:
-    section.add "X-Amz-Algorithm", valid_607354
-  var valid_607355 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607355 = validateParameter(valid_607355, JString, required = false,
+  if valid_607369 != nil:
+    section.add "X-Amz-Algorithm", valid_607369
+  var valid_607370 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607370 = validateParameter(valid_607370, JString, required = false,
                                  default = nil)
-  if valid_607355 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607355
+  if valid_607370 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607370
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9085,20 +9199,20 @@ proc validate_ListAutoMLJobs_607344(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607357: Call_ListAutoMLJobs_607343; path: JsonNode; query: JsonNode;
+proc call*(call_607372: Call_ListAutoMLJobs_607358; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Request a list of jobs.
   ## 
-  let valid = call_607357.validator(path, query, header, formData, body)
-  let scheme = call_607357.pickScheme
+  let valid = call_607372.validator(path, query, header, formData, body)
+  let scheme = call_607372.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607357.url(scheme.get, call_607357.host, call_607357.base,
-                         call_607357.route, valid.getOrDefault("path"),
+  let url = call_607372.url(scheme.get, call_607372.host, call_607372.base,
+                         call_607372.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607357, url, valid)
+  result = atozHook(call_607372, url, valid)
 
-proc call*(call_607358: Call_ListAutoMLJobs_607343; body: JsonNode;
+proc call*(call_607373: Call_ListAutoMLJobs_607358; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listAutoMLJobs
   ## Request a list of jobs.
@@ -9107,22 +9221,22 @@ proc call*(call_607358: Call_ListAutoMLJobs_607343; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607359 = newJObject()
-  var body_607360 = newJObject()
-  add(query_607359, "MaxResults", newJString(MaxResults))
-  add(query_607359, "NextToken", newJString(NextToken))
+  var query_607374 = newJObject()
+  var body_607375 = newJObject()
+  add(query_607374, "MaxResults", newJString(MaxResults))
+  add(query_607374, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607360 = body
-  result = call_607358.call(nil, query_607359, nil, nil, body_607360)
+    body_607375 = body
+  result = call_607373.call(nil, query_607374, nil, nil, body_607375)
 
-var listAutoMLJobs* = Call_ListAutoMLJobs_607343(name: "listAutoMLJobs",
+var listAutoMLJobs* = Call_ListAutoMLJobs_607358(name: "listAutoMLJobs",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListAutoMLJobs",
-    validator: validate_ListAutoMLJobs_607344, base: "/", url: url_ListAutoMLJobs_607345,
+    validator: validate_ListAutoMLJobs_607359, base: "/", url: url_ListAutoMLJobs_607360,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCandidatesForAutoMLJob_607361 = ref object of OpenApiRestCall_605589
-proc url_ListCandidatesForAutoMLJob_607363(protocol: Scheme; host: string;
+  Call_ListCandidatesForAutoMLJob_607376 = ref object of OpenApiRestCall_605589
+proc url_ListCandidatesForAutoMLJob_607378(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -9134,7 +9248,7 @@ proc url_ListCandidatesForAutoMLJob_607363(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListCandidatesForAutoMLJob_607362(path: JsonNode; query: JsonNode;
+proc validate_ListCandidatesForAutoMLJob_607377(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## List the Candidates created for the job.
   ## 
@@ -9148,16 +9262,16 @@ proc validate_ListCandidatesForAutoMLJob_607362(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607364 = query.getOrDefault("MaxResults")
-  valid_607364 = validateParameter(valid_607364, JString, required = false,
+  var valid_607379 = query.getOrDefault("MaxResults")
+  valid_607379 = validateParameter(valid_607379, JString, required = false,
                                  default = nil)
-  if valid_607364 != nil:
-    section.add "MaxResults", valid_607364
-  var valid_607365 = query.getOrDefault("NextToken")
-  valid_607365 = validateParameter(valid_607365, JString, required = false,
+  if valid_607379 != nil:
+    section.add "MaxResults", valid_607379
+  var valid_607380 = query.getOrDefault("NextToken")
+  valid_607380 = validateParameter(valid_607380, JString, required = false,
                                  default = nil)
-  if valid_607365 != nil:
-    section.add "NextToken", valid_607365
+  if valid_607380 != nil:
+    section.add "NextToken", valid_607380
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -9171,46 +9285,46 @@ proc validate_ListCandidatesForAutoMLJob_607362(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607366 = header.getOrDefault("X-Amz-Target")
-  valid_607366 = validateParameter(valid_607366, JString, required = true, default = newJString(
+  var valid_607381 = header.getOrDefault("X-Amz-Target")
+  valid_607381 = validateParameter(valid_607381, JString, required = true, default = newJString(
       "SageMaker.ListCandidatesForAutoMLJob"))
-  if valid_607366 != nil:
-    section.add "X-Amz-Target", valid_607366
-  var valid_607367 = header.getOrDefault("X-Amz-Signature")
-  valid_607367 = validateParameter(valid_607367, JString, required = false,
+  if valid_607381 != nil:
+    section.add "X-Amz-Target", valid_607381
+  var valid_607382 = header.getOrDefault("X-Amz-Signature")
+  valid_607382 = validateParameter(valid_607382, JString, required = false,
                                  default = nil)
-  if valid_607367 != nil:
-    section.add "X-Amz-Signature", valid_607367
-  var valid_607368 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607368 = validateParameter(valid_607368, JString, required = false,
+  if valid_607382 != nil:
+    section.add "X-Amz-Signature", valid_607382
+  var valid_607383 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607383 = validateParameter(valid_607383, JString, required = false,
                                  default = nil)
-  if valid_607368 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607368
-  var valid_607369 = header.getOrDefault("X-Amz-Date")
-  valid_607369 = validateParameter(valid_607369, JString, required = false,
+  if valid_607383 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607383
+  var valid_607384 = header.getOrDefault("X-Amz-Date")
+  valid_607384 = validateParameter(valid_607384, JString, required = false,
                                  default = nil)
-  if valid_607369 != nil:
-    section.add "X-Amz-Date", valid_607369
-  var valid_607370 = header.getOrDefault("X-Amz-Credential")
-  valid_607370 = validateParameter(valid_607370, JString, required = false,
+  if valid_607384 != nil:
+    section.add "X-Amz-Date", valid_607384
+  var valid_607385 = header.getOrDefault("X-Amz-Credential")
+  valid_607385 = validateParameter(valid_607385, JString, required = false,
                                  default = nil)
-  if valid_607370 != nil:
-    section.add "X-Amz-Credential", valid_607370
-  var valid_607371 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607371 = validateParameter(valid_607371, JString, required = false,
+  if valid_607385 != nil:
+    section.add "X-Amz-Credential", valid_607385
+  var valid_607386 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607386 = validateParameter(valid_607386, JString, required = false,
                                  default = nil)
-  if valid_607371 != nil:
-    section.add "X-Amz-Security-Token", valid_607371
-  var valid_607372 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607372 = validateParameter(valid_607372, JString, required = false,
+  if valid_607386 != nil:
+    section.add "X-Amz-Security-Token", valid_607386
+  var valid_607387 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607387 = validateParameter(valid_607387, JString, required = false,
                                  default = nil)
-  if valid_607372 != nil:
-    section.add "X-Amz-Algorithm", valid_607372
-  var valid_607373 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607373 = validateParameter(valid_607373, JString, required = false,
+  if valid_607387 != nil:
+    section.add "X-Amz-Algorithm", valid_607387
+  var valid_607388 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607388 = validateParameter(valid_607388, JString, required = false,
                                  default = nil)
-  if valid_607373 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607373
+  if valid_607388 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607388
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9221,20 +9335,20 @@ proc validate_ListCandidatesForAutoMLJob_607362(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607375: Call_ListCandidatesForAutoMLJob_607361; path: JsonNode;
+proc call*(call_607390: Call_ListCandidatesForAutoMLJob_607376; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## List the Candidates created for the job.
   ## 
-  let valid = call_607375.validator(path, query, header, formData, body)
-  let scheme = call_607375.pickScheme
+  let valid = call_607390.validator(path, query, header, formData, body)
+  let scheme = call_607390.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607375.url(scheme.get, call_607375.host, call_607375.base,
-                         call_607375.route, valid.getOrDefault("path"),
+  let url = call_607390.url(scheme.get, call_607390.host, call_607390.base,
+                         call_607390.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607375, url, valid)
+  result = atozHook(call_607390, url, valid)
 
-proc call*(call_607376: Call_ListCandidatesForAutoMLJob_607361; body: JsonNode;
+proc call*(call_607391: Call_ListCandidatesForAutoMLJob_607376; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listCandidatesForAutoMLJob
   ## List the Candidates created for the job.
@@ -9243,24 +9357,24 @@ proc call*(call_607376: Call_ListCandidatesForAutoMLJob_607361; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607377 = newJObject()
-  var body_607378 = newJObject()
-  add(query_607377, "MaxResults", newJString(MaxResults))
-  add(query_607377, "NextToken", newJString(NextToken))
+  var query_607392 = newJObject()
+  var body_607393 = newJObject()
+  add(query_607392, "MaxResults", newJString(MaxResults))
+  add(query_607392, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607378 = body
-  result = call_607376.call(nil, query_607377, nil, nil, body_607378)
+    body_607393 = body
+  result = call_607391.call(nil, query_607392, nil, nil, body_607393)
 
-var listCandidatesForAutoMLJob* = Call_ListCandidatesForAutoMLJob_607361(
+var listCandidatesForAutoMLJob* = Call_ListCandidatesForAutoMLJob_607376(
     name: "listCandidatesForAutoMLJob", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListCandidatesForAutoMLJob",
-    validator: validate_ListCandidatesForAutoMLJob_607362, base: "/",
-    url: url_ListCandidatesForAutoMLJob_607363,
+    validator: validate_ListCandidatesForAutoMLJob_607377, base: "/",
+    url: url_ListCandidatesForAutoMLJob_607378,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCodeRepositories_607379 = ref object of OpenApiRestCall_605589
-proc url_ListCodeRepositories_607381(protocol: Scheme; host: string; base: string;
+  Call_ListCodeRepositories_607394 = ref object of OpenApiRestCall_605589
+proc url_ListCodeRepositories_607396(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -9272,7 +9386,7 @@ proc url_ListCodeRepositories_607381(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListCodeRepositories_607380(path: JsonNode; query: JsonNode;
+proc validate_ListCodeRepositories_607395(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of the Git repositories in your account.
   ## 
@@ -9286,16 +9400,16 @@ proc validate_ListCodeRepositories_607380(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607382 = query.getOrDefault("MaxResults")
-  valid_607382 = validateParameter(valid_607382, JString, required = false,
+  var valid_607397 = query.getOrDefault("MaxResults")
+  valid_607397 = validateParameter(valid_607397, JString, required = false,
                                  default = nil)
-  if valid_607382 != nil:
-    section.add "MaxResults", valid_607382
-  var valid_607383 = query.getOrDefault("NextToken")
-  valid_607383 = validateParameter(valid_607383, JString, required = false,
+  if valid_607397 != nil:
+    section.add "MaxResults", valid_607397
+  var valid_607398 = query.getOrDefault("NextToken")
+  valid_607398 = validateParameter(valid_607398, JString, required = false,
                                  default = nil)
-  if valid_607383 != nil:
-    section.add "NextToken", valid_607383
+  if valid_607398 != nil:
+    section.add "NextToken", valid_607398
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -9309,46 +9423,46 @@ proc validate_ListCodeRepositories_607380(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607384 = header.getOrDefault("X-Amz-Target")
-  valid_607384 = validateParameter(valid_607384, JString, required = true, default = newJString(
+  var valid_607399 = header.getOrDefault("X-Amz-Target")
+  valid_607399 = validateParameter(valid_607399, JString, required = true, default = newJString(
       "SageMaker.ListCodeRepositories"))
-  if valid_607384 != nil:
-    section.add "X-Amz-Target", valid_607384
-  var valid_607385 = header.getOrDefault("X-Amz-Signature")
-  valid_607385 = validateParameter(valid_607385, JString, required = false,
+  if valid_607399 != nil:
+    section.add "X-Amz-Target", valid_607399
+  var valid_607400 = header.getOrDefault("X-Amz-Signature")
+  valid_607400 = validateParameter(valid_607400, JString, required = false,
                                  default = nil)
-  if valid_607385 != nil:
-    section.add "X-Amz-Signature", valid_607385
-  var valid_607386 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607386 = validateParameter(valid_607386, JString, required = false,
+  if valid_607400 != nil:
+    section.add "X-Amz-Signature", valid_607400
+  var valid_607401 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607401 = validateParameter(valid_607401, JString, required = false,
                                  default = nil)
-  if valid_607386 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607386
-  var valid_607387 = header.getOrDefault("X-Amz-Date")
-  valid_607387 = validateParameter(valid_607387, JString, required = false,
+  if valid_607401 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607401
+  var valid_607402 = header.getOrDefault("X-Amz-Date")
+  valid_607402 = validateParameter(valid_607402, JString, required = false,
                                  default = nil)
-  if valid_607387 != nil:
-    section.add "X-Amz-Date", valid_607387
-  var valid_607388 = header.getOrDefault("X-Amz-Credential")
-  valid_607388 = validateParameter(valid_607388, JString, required = false,
+  if valid_607402 != nil:
+    section.add "X-Amz-Date", valid_607402
+  var valid_607403 = header.getOrDefault("X-Amz-Credential")
+  valid_607403 = validateParameter(valid_607403, JString, required = false,
                                  default = nil)
-  if valid_607388 != nil:
-    section.add "X-Amz-Credential", valid_607388
-  var valid_607389 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607389 = validateParameter(valid_607389, JString, required = false,
+  if valid_607403 != nil:
+    section.add "X-Amz-Credential", valid_607403
+  var valid_607404 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607404 = validateParameter(valid_607404, JString, required = false,
                                  default = nil)
-  if valid_607389 != nil:
-    section.add "X-Amz-Security-Token", valid_607389
-  var valid_607390 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607390 = validateParameter(valid_607390, JString, required = false,
+  if valid_607404 != nil:
+    section.add "X-Amz-Security-Token", valid_607404
+  var valid_607405 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607405 = validateParameter(valid_607405, JString, required = false,
                                  default = nil)
-  if valid_607390 != nil:
-    section.add "X-Amz-Algorithm", valid_607390
-  var valid_607391 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607391 = validateParameter(valid_607391, JString, required = false,
+  if valid_607405 != nil:
+    section.add "X-Amz-Algorithm", valid_607405
+  var valid_607406 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607406 = validateParameter(valid_607406, JString, required = false,
                                  default = nil)
-  if valid_607391 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607391
+  if valid_607406 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607406
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9359,20 +9473,20 @@ proc validate_ListCodeRepositories_607380(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607393: Call_ListCodeRepositories_607379; path: JsonNode;
+proc call*(call_607408: Call_ListCodeRepositories_607394; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of the Git repositories in your account.
   ## 
-  let valid = call_607393.validator(path, query, header, formData, body)
-  let scheme = call_607393.pickScheme
+  let valid = call_607408.validator(path, query, header, formData, body)
+  let scheme = call_607408.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607393.url(scheme.get, call_607393.host, call_607393.base,
-                         call_607393.route, valid.getOrDefault("path"),
+  let url = call_607408.url(scheme.get, call_607408.host, call_607408.base,
+                         call_607408.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607393, url, valid)
+  result = atozHook(call_607408, url, valid)
 
-proc call*(call_607394: Call_ListCodeRepositories_607379; body: JsonNode;
+proc call*(call_607409: Call_ListCodeRepositories_607394; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listCodeRepositories
   ## Gets a list of the Git repositories in your account.
@@ -9381,23 +9495,23 @@ proc call*(call_607394: Call_ListCodeRepositories_607379; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607395 = newJObject()
-  var body_607396 = newJObject()
-  add(query_607395, "MaxResults", newJString(MaxResults))
-  add(query_607395, "NextToken", newJString(NextToken))
+  var query_607410 = newJObject()
+  var body_607411 = newJObject()
+  add(query_607410, "MaxResults", newJString(MaxResults))
+  add(query_607410, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607396 = body
-  result = call_607394.call(nil, query_607395, nil, nil, body_607396)
+    body_607411 = body
+  result = call_607409.call(nil, query_607410, nil, nil, body_607411)
 
-var listCodeRepositories* = Call_ListCodeRepositories_607379(
+var listCodeRepositories* = Call_ListCodeRepositories_607394(
     name: "listCodeRepositories", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListCodeRepositories",
-    validator: validate_ListCodeRepositories_607380, base: "/",
-    url: url_ListCodeRepositories_607381, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListCodeRepositories_607395, base: "/",
+    url: url_ListCodeRepositories_607396, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCompilationJobs_607397 = ref object of OpenApiRestCall_605589
-proc url_ListCompilationJobs_607399(protocol: Scheme; host: string; base: string;
+  Call_ListCompilationJobs_607412 = ref object of OpenApiRestCall_605589
+proc url_ListCompilationJobs_607414(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -9409,7 +9523,7 @@ proc url_ListCompilationJobs_607399(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListCompilationJobs_607398(path: JsonNode; query: JsonNode;
+proc validate_ListCompilationJobs_607413(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Lists model compilation jobs that satisfy various filters.</p> <p>To create a model compilation job, use <a>CreateCompilationJob</a>. To get information about a particular model compilation job you have created, use <a>DescribeCompilationJob</a>.</p>
@@ -9424,16 +9538,16 @@ proc validate_ListCompilationJobs_607398(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607400 = query.getOrDefault("MaxResults")
-  valid_607400 = validateParameter(valid_607400, JString, required = false,
+  var valid_607415 = query.getOrDefault("MaxResults")
+  valid_607415 = validateParameter(valid_607415, JString, required = false,
                                  default = nil)
-  if valid_607400 != nil:
-    section.add "MaxResults", valid_607400
-  var valid_607401 = query.getOrDefault("NextToken")
-  valid_607401 = validateParameter(valid_607401, JString, required = false,
+  if valid_607415 != nil:
+    section.add "MaxResults", valid_607415
+  var valid_607416 = query.getOrDefault("NextToken")
+  valid_607416 = validateParameter(valid_607416, JString, required = false,
                                  default = nil)
-  if valid_607401 != nil:
-    section.add "NextToken", valid_607401
+  if valid_607416 != nil:
+    section.add "NextToken", valid_607416
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -9447,46 +9561,46 @@ proc validate_ListCompilationJobs_607398(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607402 = header.getOrDefault("X-Amz-Target")
-  valid_607402 = validateParameter(valid_607402, JString, required = true, default = newJString(
+  var valid_607417 = header.getOrDefault("X-Amz-Target")
+  valid_607417 = validateParameter(valid_607417, JString, required = true, default = newJString(
       "SageMaker.ListCompilationJobs"))
-  if valid_607402 != nil:
-    section.add "X-Amz-Target", valid_607402
-  var valid_607403 = header.getOrDefault("X-Amz-Signature")
-  valid_607403 = validateParameter(valid_607403, JString, required = false,
+  if valid_607417 != nil:
+    section.add "X-Amz-Target", valid_607417
+  var valid_607418 = header.getOrDefault("X-Amz-Signature")
+  valid_607418 = validateParameter(valid_607418, JString, required = false,
                                  default = nil)
-  if valid_607403 != nil:
-    section.add "X-Amz-Signature", valid_607403
-  var valid_607404 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607404 = validateParameter(valid_607404, JString, required = false,
+  if valid_607418 != nil:
+    section.add "X-Amz-Signature", valid_607418
+  var valid_607419 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607419 = validateParameter(valid_607419, JString, required = false,
                                  default = nil)
-  if valid_607404 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607404
-  var valid_607405 = header.getOrDefault("X-Amz-Date")
-  valid_607405 = validateParameter(valid_607405, JString, required = false,
+  if valid_607419 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607419
+  var valid_607420 = header.getOrDefault("X-Amz-Date")
+  valid_607420 = validateParameter(valid_607420, JString, required = false,
                                  default = nil)
-  if valid_607405 != nil:
-    section.add "X-Amz-Date", valid_607405
-  var valid_607406 = header.getOrDefault("X-Amz-Credential")
-  valid_607406 = validateParameter(valid_607406, JString, required = false,
+  if valid_607420 != nil:
+    section.add "X-Amz-Date", valid_607420
+  var valid_607421 = header.getOrDefault("X-Amz-Credential")
+  valid_607421 = validateParameter(valid_607421, JString, required = false,
                                  default = nil)
-  if valid_607406 != nil:
-    section.add "X-Amz-Credential", valid_607406
-  var valid_607407 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607407 = validateParameter(valid_607407, JString, required = false,
+  if valid_607421 != nil:
+    section.add "X-Amz-Credential", valid_607421
+  var valid_607422 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607422 = validateParameter(valid_607422, JString, required = false,
                                  default = nil)
-  if valid_607407 != nil:
-    section.add "X-Amz-Security-Token", valid_607407
-  var valid_607408 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607408 = validateParameter(valid_607408, JString, required = false,
+  if valid_607422 != nil:
+    section.add "X-Amz-Security-Token", valid_607422
+  var valid_607423 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607423 = validateParameter(valid_607423, JString, required = false,
                                  default = nil)
-  if valid_607408 != nil:
-    section.add "X-Amz-Algorithm", valid_607408
-  var valid_607409 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607409 = validateParameter(valid_607409, JString, required = false,
+  if valid_607423 != nil:
+    section.add "X-Amz-Algorithm", valid_607423
+  var valid_607424 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607424 = validateParameter(valid_607424, JString, required = false,
                                  default = nil)
-  if valid_607409 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607409
+  if valid_607424 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607424
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9497,20 +9611,20 @@ proc validate_ListCompilationJobs_607398(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607411: Call_ListCompilationJobs_607397; path: JsonNode;
+proc call*(call_607426: Call_ListCompilationJobs_607412; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Lists model compilation jobs that satisfy various filters.</p> <p>To create a model compilation job, use <a>CreateCompilationJob</a>. To get information about a particular model compilation job you have created, use <a>DescribeCompilationJob</a>.</p>
   ## 
-  let valid = call_607411.validator(path, query, header, formData, body)
-  let scheme = call_607411.pickScheme
+  let valid = call_607426.validator(path, query, header, formData, body)
+  let scheme = call_607426.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607411.url(scheme.get, call_607411.host, call_607411.base,
-                         call_607411.route, valid.getOrDefault("path"),
+  let url = call_607426.url(scheme.get, call_607426.host, call_607426.base,
+                         call_607426.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607411, url, valid)
+  result = atozHook(call_607426, url, valid)
 
-proc call*(call_607412: Call_ListCompilationJobs_607397; body: JsonNode;
+proc call*(call_607427: Call_ListCompilationJobs_607412; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listCompilationJobs
   ## <p>Lists model compilation jobs that satisfy various filters.</p> <p>To create a model compilation job, use <a>CreateCompilationJob</a>. To get information about a particular model compilation job you have created, use <a>DescribeCompilationJob</a>.</p>
@@ -9519,23 +9633,23 @@ proc call*(call_607412: Call_ListCompilationJobs_607397; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607413 = newJObject()
-  var body_607414 = newJObject()
-  add(query_607413, "MaxResults", newJString(MaxResults))
-  add(query_607413, "NextToken", newJString(NextToken))
+  var query_607428 = newJObject()
+  var body_607429 = newJObject()
+  add(query_607428, "MaxResults", newJString(MaxResults))
+  add(query_607428, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607414 = body
-  result = call_607412.call(nil, query_607413, nil, nil, body_607414)
+    body_607429 = body
+  result = call_607427.call(nil, query_607428, nil, nil, body_607429)
 
-var listCompilationJobs* = Call_ListCompilationJobs_607397(
+var listCompilationJobs* = Call_ListCompilationJobs_607412(
     name: "listCompilationJobs", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListCompilationJobs",
-    validator: validate_ListCompilationJobs_607398, base: "/",
-    url: url_ListCompilationJobs_607399, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListCompilationJobs_607413, base: "/",
+    url: url_ListCompilationJobs_607414, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDomains_607415 = ref object of OpenApiRestCall_605589
-proc url_ListDomains_607417(protocol: Scheme; host: string; base: string;
+  Call_ListDomains_607430 = ref object of OpenApiRestCall_605589
+proc url_ListDomains_607432(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -9547,7 +9661,7 @@ proc url_ListDomains_607417(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListDomains_607416(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListDomains_607431(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the domains.
   ## 
@@ -9561,16 +9675,16 @@ proc validate_ListDomains_607416(path: JsonNode; query: JsonNode; header: JsonNo
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607418 = query.getOrDefault("MaxResults")
-  valid_607418 = validateParameter(valid_607418, JString, required = false,
+  var valid_607433 = query.getOrDefault("MaxResults")
+  valid_607433 = validateParameter(valid_607433, JString, required = false,
                                  default = nil)
-  if valid_607418 != nil:
-    section.add "MaxResults", valid_607418
-  var valid_607419 = query.getOrDefault("NextToken")
-  valid_607419 = validateParameter(valid_607419, JString, required = false,
+  if valid_607433 != nil:
+    section.add "MaxResults", valid_607433
+  var valid_607434 = query.getOrDefault("NextToken")
+  valid_607434 = validateParameter(valid_607434, JString, required = false,
                                  default = nil)
-  if valid_607419 != nil:
-    section.add "NextToken", valid_607419
+  if valid_607434 != nil:
+    section.add "NextToken", valid_607434
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -9584,46 +9698,46 @@ proc validate_ListDomains_607416(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607420 = header.getOrDefault("X-Amz-Target")
-  valid_607420 = validateParameter(valid_607420, JString, required = true,
+  var valid_607435 = header.getOrDefault("X-Amz-Target")
+  valid_607435 = validateParameter(valid_607435, JString, required = true,
                                  default = newJString("SageMaker.ListDomains"))
-  if valid_607420 != nil:
-    section.add "X-Amz-Target", valid_607420
-  var valid_607421 = header.getOrDefault("X-Amz-Signature")
-  valid_607421 = validateParameter(valid_607421, JString, required = false,
+  if valid_607435 != nil:
+    section.add "X-Amz-Target", valid_607435
+  var valid_607436 = header.getOrDefault("X-Amz-Signature")
+  valid_607436 = validateParameter(valid_607436, JString, required = false,
                                  default = nil)
-  if valid_607421 != nil:
-    section.add "X-Amz-Signature", valid_607421
-  var valid_607422 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607422 = validateParameter(valid_607422, JString, required = false,
+  if valid_607436 != nil:
+    section.add "X-Amz-Signature", valid_607436
+  var valid_607437 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607437 = validateParameter(valid_607437, JString, required = false,
                                  default = nil)
-  if valid_607422 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607422
-  var valid_607423 = header.getOrDefault("X-Amz-Date")
-  valid_607423 = validateParameter(valid_607423, JString, required = false,
+  if valid_607437 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607437
+  var valid_607438 = header.getOrDefault("X-Amz-Date")
+  valid_607438 = validateParameter(valid_607438, JString, required = false,
                                  default = nil)
-  if valid_607423 != nil:
-    section.add "X-Amz-Date", valid_607423
-  var valid_607424 = header.getOrDefault("X-Amz-Credential")
-  valid_607424 = validateParameter(valid_607424, JString, required = false,
+  if valid_607438 != nil:
+    section.add "X-Amz-Date", valid_607438
+  var valid_607439 = header.getOrDefault("X-Amz-Credential")
+  valid_607439 = validateParameter(valid_607439, JString, required = false,
                                  default = nil)
-  if valid_607424 != nil:
-    section.add "X-Amz-Credential", valid_607424
-  var valid_607425 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607425 = validateParameter(valid_607425, JString, required = false,
+  if valid_607439 != nil:
+    section.add "X-Amz-Credential", valid_607439
+  var valid_607440 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607440 = validateParameter(valid_607440, JString, required = false,
                                  default = nil)
-  if valid_607425 != nil:
-    section.add "X-Amz-Security-Token", valid_607425
-  var valid_607426 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607426 = validateParameter(valid_607426, JString, required = false,
+  if valid_607440 != nil:
+    section.add "X-Amz-Security-Token", valid_607440
+  var valid_607441 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607441 = validateParameter(valid_607441, JString, required = false,
                                  default = nil)
-  if valid_607426 != nil:
-    section.add "X-Amz-Algorithm", valid_607426
-  var valid_607427 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607427 = validateParameter(valid_607427, JString, required = false,
+  if valid_607441 != nil:
+    section.add "X-Amz-Algorithm", valid_607441
+  var valid_607442 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607442 = validateParameter(valid_607442, JString, required = false,
                                  default = nil)
-  if valid_607427 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607427
+  if valid_607442 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607442
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9634,20 +9748,20 @@ proc validate_ListDomains_607416(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_607429: Call_ListDomains_607415; path: JsonNode; query: JsonNode;
+proc call*(call_607444: Call_ListDomains_607430; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the domains.
   ## 
-  let valid = call_607429.validator(path, query, header, formData, body)
-  let scheme = call_607429.pickScheme
+  let valid = call_607444.validator(path, query, header, formData, body)
+  let scheme = call_607444.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607429.url(scheme.get, call_607429.host, call_607429.base,
-                         call_607429.route, valid.getOrDefault("path"),
+  let url = call_607444.url(scheme.get, call_607444.host, call_607444.base,
+                         call_607444.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607429, url, valid)
+  result = atozHook(call_607444, url, valid)
 
-proc call*(call_607430: Call_ListDomains_607415; body: JsonNode;
+proc call*(call_607445: Call_ListDomains_607430; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listDomains
   ## Lists the domains.
@@ -9656,23 +9770,23 @@ proc call*(call_607430: Call_ListDomains_607415; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607431 = newJObject()
-  var body_607432 = newJObject()
-  add(query_607431, "MaxResults", newJString(MaxResults))
-  add(query_607431, "NextToken", newJString(NextToken))
+  var query_607446 = newJObject()
+  var body_607447 = newJObject()
+  add(query_607446, "MaxResults", newJString(MaxResults))
+  add(query_607446, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607432 = body
-  result = call_607430.call(nil, query_607431, nil, nil, body_607432)
+    body_607447 = body
+  result = call_607445.call(nil, query_607446, nil, nil, body_607447)
 
-var listDomains* = Call_ListDomains_607415(name: "listDomains",
+var listDomains* = Call_ListDomains_607430(name: "listDomains",
                                         meth: HttpMethod.HttpPost,
                                         host: "api.sagemaker.amazonaws.com", route: "/#X-Amz-Target=SageMaker.ListDomains",
-                                        validator: validate_ListDomains_607416,
-                                        base: "/", url: url_ListDomains_607417,
+                                        validator: validate_ListDomains_607431,
+                                        base: "/", url: url_ListDomains_607432,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListEndpointConfigs_607433 = ref object of OpenApiRestCall_605589
-proc url_ListEndpointConfigs_607435(protocol: Scheme; host: string; base: string;
+  Call_ListEndpointConfigs_607448 = ref object of OpenApiRestCall_605589
+proc url_ListEndpointConfigs_607450(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -9684,7 +9798,7 @@ proc url_ListEndpointConfigs_607435(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListEndpointConfigs_607434(path: JsonNode; query: JsonNode;
+proc validate_ListEndpointConfigs_607449(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lists endpoint configurations.
@@ -9699,16 +9813,16 @@ proc validate_ListEndpointConfigs_607434(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607436 = query.getOrDefault("MaxResults")
-  valid_607436 = validateParameter(valid_607436, JString, required = false,
+  var valid_607451 = query.getOrDefault("MaxResults")
+  valid_607451 = validateParameter(valid_607451, JString, required = false,
                                  default = nil)
-  if valid_607436 != nil:
-    section.add "MaxResults", valid_607436
-  var valid_607437 = query.getOrDefault("NextToken")
-  valid_607437 = validateParameter(valid_607437, JString, required = false,
+  if valid_607451 != nil:
+    section.add "MaxResults", valid_607451
+  var valid_607452 = query.getOrDefault("NextToken")
+  valid_607452 = validateParameter(valid_607452, JString, required = false,
                                  default = nil)
-  if valid_607437 != nil:
-    section.add "NextToken", valid_607437
+  if valid_607452 != nil:
+    section.add "NextToken", valid_607452
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -9722,46 +9836,46 @@ proc validate_ListEndpointConfigs_607434(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607438 = header.getOrDefault("X-Amz-Target")
-  valid_607438 = validateParameter(valid_607438, JString, required = true, default = newJString(
+  var valid_607453 = header.getOrDefault("X-Amz-Target")
+  valid_607453 = validateParameter(valid_607453, JString, required = true, default = newJString(
       "SageMaker.ListEndpointConfigs"))
-  if valid_607438 != nil:
-    section.add "X-Amz-Target", valid_607438
-  var valid_607439 = header.getOrDefault("X-Amz-Signature")
-  valid_607439 = validateParameter(valid_607439, JString, required = false,
+  if valid_607453 != nil:
+    section.add "X-Amz-Target", valid_607453
+  var valid_607454 = header.getOrDefault("X-Amz-Signature")
+  valid_607454 = validateParameter(valid_607454, JString, required = false,
                                  default = nil)
-  if valid_607439 != nil:
-    section.add "X-Amz-Signature", valid_607439
-  var valid_607440 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607440 = validateParameter(valid_607440, JString, required = false,
+  if valid_607454 != nil:
+    section.add "X-Amz-Signature", valid_607454
+  var valid_607455 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607455 = validateParameter(valid_607455, JString, required = false,
                                  default = nil)
-  if valid_607440 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607440
-  var valid_607441 = header.getOrDefault("X-Amz-Date")
-  valid_607441 = validateParameter(valid_607441, JString, required = false,
+  if valid_607455 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607455
+  var valid_607456 = header.getOrDefault("X-Amz-Date")
+  valid_607456 = validateParameter(valid_607456, JString, required = false,
                                  default = nil)
-  if valid_607441 != nil:
-    section.add "X-Amz-Date", valid_607441
-  var valid_607442 = header.getOrDefault("X-Amz-Credential")
-  valid_607442 = validateParameter(valid_607442, JString, required = false,
+  if valid_607456 != nil:
+    section.add "X-Amz-Date", valid_607456
+  var valid_607457 = header.getOrDefault("X-Amz-Credential")
+  valid_607457 = validateParameter(valid_607457, JString, required = false,
                                  default = nil)
-  if valid_607442 != nil:
-    section.add "X-Amz-Credential", valid_607442
-  var valid_607443 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607443 = validateParameter(valid_607443, JString, required = false,
+  if valid_607457 != nil:
+    section.add "X-Amz-Credential", valid_607457
+  var valid_607458 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607458 = validateParameter(valid_607458, JString, required = false,
                                  default = nil)
-  if valid_607443 != nil:
-    section.add "X-Amz-Security-Token", valid_607443
-  var valid_607444 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607444 = validateParameter(valid_607444, JString, required = false,
+  if valid_607458 != nil:
+    section.add "X-Amz-Security-Token", valid_607458
+  var valid_607459 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607459 = validateParameter(valid_607459, JString, required = false,
                                  default = nil)
-  if valid_607444 != nil:
-    section.add "X-Amz-Algorithm", valid_607444
-  var valid_607445 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607445 = validateParameter(valid_607445, JString, required = false,
+  if valid_607459 != nil:
+    section.add "X-Amz-Algorithm", valid_607459
+  var valid_607460 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607460 = validateParameter(valid_607460, JString, required = false,
                                  default = nil)
-  if valid_607445 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607445
+  if valid_607460 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607460
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9772,20 +9886,20 @@ proc validate_ListEndpointConfigs_607434(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607447: Call_ListEndpointConfigs_607433; path: JsonNode;
+proc call*(call_607462: Call_ListEndpointConfigs_607448; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists endpoint configurations.
   ## 
-  let valid = call_607447.validator(path, query, header, formData, body)
-  let scheme = call_607447.pickScheme
+  let valid = call_607462.validator(path, query, header, formData, body)
+  let scheme = call_607462.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607447.url(scheme.get, call_607447.host, call_607447.base,
-                         call_607447.route, valid.getOrDefault("path"),
+  let url = call_607462.url(scheme.get, call_607462.host, call_607462.base,
+                         call_607462.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607447, url, valid)
+  result = atozHook(call_607462, url, valid)
 
-proc call*(call_607448: Call_ListEndpointConfigs_607433; body: JsonNode;
+proc call*(call_607463: Call_ListEndpointConfigs_607448; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listEndpointConfigs
   ## Lists endpoint configurations.
@@ -9794,23 +9908,23 @@ proc call*(call_607448: Call_ListEndpointConfigs_607433; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607449 = newJObject()
-  var body_607450 = newJObject()
-  add(query_607449, "MaxResults", newJString(MaxResults))
-  add(query_607449, "NextToken", newJString(NextToken))
+  var query_607464 = newJObject()
+  var body_607465 = newJObject()
+  add(query_607464, "MaxResults", newJString(MaxResults))
+  add(query_607464, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607450 = body
-  result = call_607448.call(nil, query_607449, nil, nil, body_607450)
+    body_607465 = body
+  result = call_607463.call(nil, query_607464, nil, nil, body_607465)
 
-var listEndpointConfigs* = Call_ListEndpointConfigs_607433(
+var listEndpointConfigs* = Call_ListEndpointConfigs_607448(
     name: "listEndpointConfigs", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListEndpointConfigs",
-    validator: validate_ListEndpointConfigs_607434, base: "/",
-    url: url_ListEndpointConfigs_607435, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListEndpointConfigs_607449, base: "/",
+    url: url_ListEndpointConfigs_607450, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListEndpoints_607451 = ref object of OpenApiRestCall_605589
-proc url_ListEndpoints_607453(protocol: Scheme; host: string; base: string;
+  Call_ListEndpoints_607466 = ref object of OpenApiRestCall_605589
+proc url_ListEndpoints_607468(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -9822,7 +9936,7 @@ proc url_ListEndpoints_607453(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListEndpoints_607452(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListEndpoints_607467(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists endpoints.
   ## 
@@ -9836,16 +9950,16 @@ proc validate_ListEndpoints_607452(path: JsonNode; query: JsonNode; header: Json
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607454 = query.getOrDefault("MaxResults")
-  valid_607454 = validateParameter(valid_607454, JString, required = false,
+  var valid_607469 = query.getOrDefault("MaxResults")
+  valid_607469 = validateParameter(valid_607469, JString, required = false,
                                  default = nil)
-  if valid_607454 != nil:
-    section.add "MaxResults", valid_607454
-  var valid_607455 = query.getOrDefault("NextToken")
-  valid_607455 = validateParameter(valid_607455, JString, required = false,
+  if valid_607469 != nil:
+    section.add "MaxResults", valid_607469
+  var valid_607470 = query.getOrDefault("NextToken")
+  valid_607470 = validateParameter(valid_607470, JString, required = false,
                                  default = nil)
-  if valid_607455 != nil:
-    section.add "NextToken", valid_607455
+  if valid_607470 != nil:
+    section.add "NextToken", valid_607470
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -9859,46 +9973,46 @@ proc validate_ListEndpoints_607452(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607456 = header.getOrDefault("X-Amz-Target")
-  valid_607456 = validateParameter(valid_607456, JString, required = true, default = newJString(
+  var valid_607471 = header.getOrDefault("X-Amz-Target")
+  valid_607471 = validateParameter(valid_607471, JString, required = true, default = newJString(
       "SageMaker.ListEndpoints"))
-  if valid_607456 != nil:
-    section.add "X-Amz-Target", valid_607456
-  var valid_607457 = header.getOrDefault("X-Amz-Signature")
-  valid_607457 = validateParameter(valid_607457, JString, required = false,
+  if valid_607471 != nil:
+    section.add "X-Amz-Target", valid_607471
+  var valid_607472 = header.getOrDefault("X-Amz-Signature")
+  valid_607472 = validateParameter(valid_607472, JString, required = false,
                                  default = nil)
-  if valid_607457 != nil:
-    section.add "X-Amz-Signature", valid_607457
-  var valid_607458 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607458 = validateParameter(valid_607458, JString, required = false,
+  if valid_607472 != nil:
+    section.add "X-Amz-Signature", valid_607472
+  var valid_607473 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607473 = validateParameter(valid_607473, JString, required = false,
                                  default = nil)
-  if valid_607458 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607458
-  var valid_607459 = header.getOrDefault("X-Amz-Date")
-  valid_607459 = validateParameter(valid_607459, JString, required = false,
+  if valid_607473 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607473
+  var valid_607474 = header.getOrDefault("X-Amz-Date")
+  valid_607474 = validateParameter(valid_607474, JString, required = false,
                                  default = nil)
-  if valid_607459 != nil:
-    section.add "X-Amz-Date", valid_607459
-  var valid_607460 = header.getOrDefault("X-Amz-Credential")
-  valid_607460 = validateParameter(valid_607460, JString, required = false,
+  if valid_607474 != nil:
+    section.add "X-Amz-Date", valid_607474
+  var valid_607475 = header.getOrDefault("X-Amz-Credential")
+  valid_607475 = validateParameter(valid_607475, JString, required = false,
                                  default = nil)
-  if valid_607460 != nil:
-    section.add "X-Amz-Credential", valid_607460
-  var valid_607461 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607461 = validateParameter(valid_607461, JString, required = false,
+  if valid_607475 != nil:
+    section.add "X-Amz-Credential", valid_607475
+  var valid_607476 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607476 = validateParameter(valid_607476, JString, required = false,
                                  default = nil)
-  if valid_607461 != nil:
-    section.add "X-Amz-Security-Token", valid_607461
-  var valid_607462 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607462 = validateParameter(valid_607462, JString, required = false,
+  if valid_607476 != nil:
+    section.add "X-Amz-Security-Token", valid_607476
+  var valid_607477 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607477 = validateParameter(valid_607477, JString, required = false,
                                  default = nil)
-  if valid_607462 != nil:
-    section.add "X-Amz-Algorithm", valid_607462
-  var valid_607463 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607463 = validateParameter(valid_607463, JString, required = false,
+  if valid_607477 != nil:
+    section.add "X-Amz-Algorithm", valid_607477
+  var valid_607478 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607478 = validateParameter(valid_607478, JString, required = false,
                                  default = nil)
-  if valid_607463 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607463
+  if valid_607478 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607478
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9909,20 +10023,20 @@ proc validate_ListEndpoints_607452(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_607465: Call_ListEndpoints_607451; path: JsonNode; query: JsonNode;
+proc call*(call_607480: Call_ListEndpoints_607466; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists endpoints.
   ## 
-  let valid = call_607465.validator(path, query, header, formData, body)
-  let scheme = call_607465.pickScheme
+  let valid = call_607480.validator(path, query, header, formData, body)
+  let scheme = call_607480.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607465.url(scheme.get, call_607465.host, call_607465.base,
-                         call_607465.route, valid.getOrDefault("path"),
+  let url = call_607480.url(scheme.get, call_607480.host, call_607480.base,
+                         call_607480.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607465, url, valid)
+  result = atozHook(call_607480, url, valid)
 
-proc call*(call_607466: Call_ListEndpoints_607451; body: JsonNode;
+proc call*(call_607481: Call_ListEndpoints_607466; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listEndpoints
   ## Lists endpoints.
@@ -9931,22 +10045,22 @@ proc call*(call_607466: Call_ListEndpoints_607451; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607467 = newJObject()
-  var body_607468 = newJObject()
-  add(query_607467, "MaxResults", newJString(MaxResults))
-  add(query_607467, "NextToken", newJString(NextToken))
+  var query_607482 = newJObject()
+  var body_607483 = newJObject()
+  add(query_607482, "MaxResults", newJString(MaxResults))
+  add(query_607482, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607468 = body
-  result = call_607466.call(nil, query_607467, nil, nil, body_607468)
+    body_607483 = body
+  result = call_607481.call(nil, query_607482, nil, nil, body_607483)
 
-var listEndpoints* = Call_ListEndpoints_607451(name: "listEndpoints",
+var listEndpoints* = Call_ListEndpoints_607466(name: "listEndpoints",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListEndpoints",
-    validator: validate_ListEndpoints_607452, base: "/", url: url_ListEndpoints_607453,
+    validator: validate_ListEndpoints_607467, base: "/", url: url_ListEndpoints_607468,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListExperiments_607469 = ref object of OpenApiRestCall_605589
-proc url_ListExperiments_607471(protocol: Scheme; host: string; base: string;
+  Call_ListExperiments_607484 = ref object of OpenApiRestCall_605589
+proc url_ListExperiments_607486(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -9958,7 +10072,7 @@ proc url_ListExperiments_607471(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListExperiments_607470(path: JsonNode; query: JsonNode;
+proc validate_ListExperiments_607485(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Lists all the experiments in your account. The list can be filtered to show only experiments that were created in a specific time range. The list can be sorted by experiment name or creation time.
@@ -9973,16 +10087,16 @@ proc validate_ListExperiments_607470(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607472 = query.getOrDefault("MaxResults")
-  valid_607472 = validateParameter(valid_607472, JString, required = false,
+  var valid_607487 = query.getOrDefault("MaxResults")
+  valid_607487 = validateParameter(valid_607487, JString, required = false,
                                  default = nil)
-  if valid_607472 != nil:
-    section.add "MaxResults", valid_607472
-  var valid_607473 = query.getOrDefault("NextToken")
-  valid_607473 = validateParameter(valid_607473, JString, required = false,
+  if valid_607487 != nil:
+    section.add "MaxResults", valid_607487
+  var valid_607488 = query.getOrDefault("NextToken")
+  valid_607488 = validateParameter(valid_607488, JString, required = false,
                                  default = nil)
-  if valid_607473 != nil:
-    section.add "NextToken", valid_607473
+  if valid_607488 != nil:
+    section.add "NextToken", valid_607488
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -9996,46 +10110,46 @@ proc validate_ListExperiments_607470(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607474 = header.getOrDefault("X-Amz-Target")
-  valid_607474 = validateParameter(valid_607474, JString, required = true, default = newJString(
+  var valid_607489 = header.getOrDefault("X-Amz-Target")
+  valid_607489 = validateParameter(valid_607489, JString, required = true, default = newJString(
       "SageMaker.ListExperiments"))
-  if valid_607474 != nil:
-    section.add "X-Amz-Target", valid_607474
-  var valid_607475 = header.getOrDefault("X-Amz-Signature")
-  valid_607475 = validateParameter(valid_607475, JString, required = false,
+  if valid_607489 != nil:
+    section.add "X-Amz-Target", valid_607489
+  var valid_607490 = header.getOrDefault("X-Amz-Signature")
+  valid_607490 = validateParameter(valid_607490, JString, required = false,
                                  default = nil)
-  if valid_607475 != nil:
-    section.add "X-Amz-Signature", valid_607475
-  var valid_607476 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607476 = validateParameter(valid_607476, JString, required = false,
+  if valid_607490 != nil:
+    section.add "X-Amz-Signature", valid_607490
+  var valid_607491 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607491 = validateParameter(valid_607491, JString, required = false,
                                  default = nil)
-  if valid_607476 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607476
-  var valid_607477 = header.getOrDefault("X-Amz-Date")
-  valid_607477 = validateParameter(valid_607477, JString, required = false,
+  if valid_607491 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607491
+  var valid_607492 = header.getOrDefault("X-Amz-Date")
+  valid_607492 = validateParameter(valid_607492, JString, required = false,
                                  default = nil)
-  if valid_607477 != nil:
-    section.add "X-Amz-Date", valid_607477
-  var valid_607478 = header.getOrDefault("X-Amz-Credential")
-  valid_607478 = validateParameter(valid_607478, JString, required = false,
+  if valid_607492 != nil:
+    section.add "X-Amz-Date", valid_607492
+  var valid_607493 = header.getOrDefault("X-Amz-Credential")
+  valid_607493 = validateParameter(valid_607493, JString, required = false,
                                  default = nil)
-  if valid_607478 != nil:
-    section.add "X-Amz-Credential", valid_607478
-  var valid_607479 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607479 = validateParameter(valid_607479, JString, required = false,
+  if valid_607493 != nil:
+    section.add "X-Amz-Credential", valid_607493
+  var valid_607494 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607494 = validateParameter(valid_607494, JString, required = false,
                                  default = nil)
-  if valid_607479 != nil:
-    section.add "X-Amz-Security-Token", valid_607479
-  var valid_607480 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607480 = validateParameter(valid_607480, JString, required = false,
+  if valid_607494 != nil:
+    section.add "X-Amz-Security-Token", valid_607494
+  var valid_607495 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607495 = validateParameter(valid_607495, JString, required = false,
                                  default = nil)
-  if valid_607480 != nil:
-    section.add "X-Amz-Algorithm", valid_607480
-  var valid_607481 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607481 = validateParameter(valid_607481, JString, required = false,
+  if valid_607495 != nil:
+    section.add "X-Amz-Algorithm", valid_607495
+  var valid_607496 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607496 = validateParameter(valid_607496, JString, required = false,
                                  default = nil)
-  if valid_607481 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607481
+  if valid_607496 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607496
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10046,20 +10160,20 @@ proc validate_ListExperiments_607470(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607483: Call_ListExperiments_607469; path: JsonNode; query: JsonNode;
+proc call*(call_607498: Call_ListExperiments_607484; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all the experiments in your account. The list can be filtered to show only experiments that were created in a specific time range. The list can be sorted by experiment name or creation time.
   ## 
-  let valid = call_607483.validator(path, query, header, formData, body)
-  let scheme = call_607483.pickScheme
+  let valid = call_607498.validator(path, query, header, formData, body)
+  let scheme = call_607498.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607483.url(scheme.get, call_607483.host, call_607483.base,
-                         call_607483.route, valid.getOrDefault("path"),
+  let url = call_607498.url(scheme.get, call_607498.host, call_607498.base,
+                         call_607498.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607483, url, valid)
+  result = atozHook(call_607498, url, valid)
 
-proc call*(call_607484: Call_ListExperiments_607469; body: JsonNode;
+proc call*(call_607499: Call_ListExperiments_607484; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listExperiments
   ## Lists all the experiments in your account. The list can be filtered to show only experiments that were created in a specific time range. The list can be sorted by experiment name or creation time.
@@ -10068,22 +10182,22 @@ proc call*(call_607484: Call_ListExperiments_607469; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607485 = newJObject()
-  var body_607486 = newJObject()
-  add(query_607485, "MaxResults", newJString(MaxResults))
-  add(query_607485, "NextToken", newJString(NextToken))
+  var query_607500 = newJObject()
+  var body_607501 = newJObject()
+  add(query_607500, "MaxResults", newJString(MaxResults))
+  add(query_607500, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607486 = body
-  result = call_607484.call(nil, query_607485, nil, nil, body_607486)
+    body_607501 = body
+  result = call_607499.call(nil, query_607500, nil, nil, body_607501)
 
-var listExperiments* = Call_ListExperiments_607469(name: "listExperiments",
+var listExperiments* = Call_ListExperiments_607484(name: "listExperiments",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListExperiments",
-    validator: validate_ListExperiments_607470, base: "/", url: url_ListExperiments_607471,
+    validator: validate_ListExperiments_607485, base: "/", url: url_ListExperiments_607486,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListFlowDefinitions_607487 = ref object of OpenApiRestCall_605589
-proc url_ListFlowDefinitions_607489(protocol: Scheme; host: string; base: string;
+  Call_ListFlowDefinitions_607502 = ref object of OpenApiRestCall_605589
+proc url_ListFlowDefinitions_607504(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -10095,7 +10209,7 @@ proc url_ListFlowDefinitions_607489(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListFlowDefinitions_607488(path: JsonNode; query: JsonNode;
+proc validate_ListFlowDefinitions_607503(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns information about the flow definitions in your account.
@@ -10110,16 +10224,16 @@ proc validate_ListFlowDefinitions_607488(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607490 = query.getOrDefault("MaxResults")
-  valid_607490 = validateParameter(valid_607490, JString, required = false,
+  var valid_607505 = query.getOrDefault("MaxResults")
+  valid_607505 = validateParameter(valid_607505, JString, required = false,
                                  default = nil)
-  if valid_607490 != nil:
-    section.add "MaxResults", valid_607490
-  var valid_607491 = query.getOrDefault("NextToken")
-  valid_607491 = validateParameter(valid_607491, JString, required = false,
+  if valid_607505 != nil:
+    section.add "MaxResults", valid_607505
+  var valid_607506 = query.getOrDefault("NextToken")
+  valid_607506 = validateParameter(valid_607506, JString, required = false,
                                  default = nil)
-  if valid_607491 != nil:
-    section.add "NextToken", valid_607491
+  if valid_607506 != nil:
+    section.add "NextToken", valid_607506
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -10133,46 +10247,46 @@ proc validate_ListFlowDefinitions_607488(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607492 = header.getOrDefault("X-Amz-Target")
-  valid_607492 = validateParameter(valid_607492, JString, required = true, default = newJString(
+  var valid_607507 = header.getOrDefault("X-Amz-Target")
+  valid_607507 = validateParameter(valid_607507, JString, required = true, default = newJString(
       "SageMaker.ListFlowDefinitions"))
-  if valid_607492 != nil:
-    section.add "X-Amz-Target", valid_607492
-  var valid_607493 = header.getOrDefault("X-Amz-Signature")
-  valid_607493 = validateParameter(valid_607493, JString, required = false,
+  if valid_607507 != nil:
+    section.add "X-Amz-Target", valid_607507
+  var valid_607508 = header.getOrDefault("X-Amz-Signature")
+  valid_607508 = validateParameter(valid_607508, JString, required = false,
                                  default = nil)
-  if valid_607493 != nil:
-    section.add "X-Amz-Signature", valid_607493
-  var valid_607494 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607494 = validateParameter(valid_607494, JString, required = false,
+  if valid_607508 != nil:
+    section.add "X-Amz-Signature", valid_607508
+  var valid_607509 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607509 = validateParameter(valid_607509, JString, required = false,
                                  default = nil)
-  if valid_607494 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607494
-  var valid_607495 = header.getOrDefault("X-Amz-Date")
-  valid_607495 = validateParameter(valid_607495, JString, required = false,
+  if valid_607509 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607509
+  var valid_607510 = header.getOrDefault("X-Amz-Date")
+  valid_607510 = validateParameter(valid_607510, JString, required = false,
                                  default = nil)
-  if valid_607495 != nil:
-    section.add "X-Amz-Date", valid_607495
-  var valid_607496 = header.getOrDefault("X-Amz-Credential")
-  valid_607496 = validateParameter(valid_607496, JString, required = false,
+  if valid_607510 != nil:
+    section.add "X-Amz-Date", valid_607510
+  var valid_607511 = header.getOrDefault("X-Amz-Credential")
+  valid_607511 = validateParameter(valid_607511, JString, required = false,
                                  default = nil)
-  if valid_607496 != nil:
-    section.add "X-Amz-Credential", valid_607496
-  var valid_607497 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607497 = validateParameter(valid_607497, JString, required = false,
+  if valid_607511 != nil:
+    section.add "X-Amz-Credential", valid_607511
+  var valid_607512 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607512 = validateParameter(valid_607512, JString, required = false,
                                  default = nil)
-  if valid_607497 != nil:
-    section.add "X-Amz-Security-Token", valid_607497
-  var valid_607498 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607498 = validateParameter(valid_607498, JString, required = false,
+  if valid_607512 != nil:
+    section.add "X-Amz-Security-Token", valid_607512
+  var valid_607513 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607513 = validateParameter(valid_607513, JString, required = false,
                                  default = nil)
-  if valid_607498 != nil:
-    section.add "X-Amz-Algorithm", valid_607498
-  var valid_607499 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607499 = validateParameter(valid_607499, JString, required = false,
+  if valid_607513 != nil:
+    section.add "X-Amz-Algorithm", valid_607513
+  var valid_607514 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607514 = validateParameter(valid_607514, JString, required = false,
                                  default = nil)
-  if valid_607499 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607499
+  if valid_607514 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607514
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10183,20 +10297,20 @@ proc validate_ListFlowDefinitions_607488(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607501: Call_ListFlowDefinitions_607487; path: JsonNode;
+proc call*(call_607516: Call_ListFlowDefinitions_607502; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about the flow definitions in your account.
   ## 
-  let valid = call_607501.validator(path, query, header, formData, body)
-  let scheme = call_607501.pickScheme
+  let valid = call_607516.validator(path, query, header, formData, body)
+  let scheme = call_607516.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607501.url(scheme.get, call_607501.host, call_607501.base,
-                         call_607501.route, valid.getOrDefault("path"),
+  let url = call_607516.url(scheme.get, call_607516.host, call_607516.base,
+                         call_607516.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607501, url, valid)
+  result = atozHook(call_607516, url, valid)
 
-proc call*(call_607502: Call_ListFlowDefinitions_607487; body: JsonNode;
+proc call*(call_607517: Call_ListFlowDefinitions_607502; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listFlowDefinitions
   ## Returns information about the flow definitions in your account.
@@ -10205,23 +10319,23 @@ proc call*(call_607502: Call_ListFlowDefinitions_607487; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607503 = newJObject()
-  var body_607504 = newJObject()
-  add(query_607503, "MaxResults", newJString(MaxResults))
-  add(query_607503, "NextToken", newJString(NextToken))
+  var query_607518 = newJObject()
+  var body_607519 = newJObject()
+  add(query_607518, "MaxResults", newJString(MaxResults))
+  add(query_607518, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607504 = body
-  result = call_607502.call(nil, query_607503, nil, nil, body_607504)
+    body_607519 = body
+  result = call_607517.call(nil, query_607518, nil, nil, body_607519)
 
-var listFlowDefinitions* = Call_ListFlowDefinitions_607487(
+var listFlowDefinitions* = Call_ListFlowDefinitions_607502(
     name: "listFlowDefinitions", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListFlowDefinitions",
-    validator: validate_ListFlowDefinitions_607488, base: "/",
-    url: url_ListFlowDefinitions_607489, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListFlowDefinitions_607503, base: "/",
+    url: url_ListFlowDefinitions_607504, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHumanTaskUis_607505 = ref object of OpenApiRestCall_605589
-proc url_ListHumanTaskUis_607507(protocol: Scheme; host: string; base: string;
+  Call_ListHumanTaskUis_607520 = ref object of OpenApiRestCall_605589
+proc url_ListHumanTaskUis_607522(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -10233,7 +10347,7 @@ proc url_ListHumanTaskUis_607507(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListHumanTaskUis_607506(path: JsonNode; query: JsonNode;
+proc validate_ListHumanTaskUis_607521(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns information about the human task user interfaces in your account.
@@ -10248,16 +10362,16 @@ proc validate_ListHumanTaskUis_607506(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607508 = query.getOrDefault("MaxResults")
-  valid_607508 = validateParameter(valid_607508, JString, required = false,
+  var valid_607523 = query.getOrDefault("MaxResults")
+  valid_607523 = validateParameter(valid_607523, JString, required = false,
                                  default = nil)
-  if valid_607508 != nil:
-    section.add "MaxResults", valid_607508
-  var valid_607509 = query.getOrDefault("NextToken")
-  valid_607509 = validateParameter(valid_607509, JString, required = false,
+  if valid_607523 != nil:
+    section.add "MaxResults", valid_607523
+  var valid_607524 = query.getOrDefault("NextToken")
+  valid_607524 = validateParameter(valid_607524, JString, required = false,
                                  default = nil)
-  if valid_607509 != nil:
-    section.add "NextToken", valid_607509
+  if valid_607524 != nil:
+    section.add "NextToken", valid_607524
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -10271,46 +10385,46 @@ proc validate_ListHumanTaskUis_607506(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607510 = header.getOrDefault("X-Amz-Target")
-  valid_607510 = validateParameter(valid_607510, JString, required = true, default = newJString(
+  var valid_607525 = header.getOrDefault("X-Amz-Target")
+  valid_607525 = validateParameter(valid_607525, JString, required = true, default = newJString(
       "SageMaker.ListHumanTaskUis"))
-  if valid_607510 != nil:
-    section.add "X-Amz-Target", valid_607510
-  var valid_607511 = header.getOrDefault("X-Amz-Signature")
-  valid_607511 = validateParameter(valid_607511, JString, required = false,
+  if valid_607525 != nil:
+    section.add "X-Amz-Target", valid_607525
+  var valid_607526 = header.getOrDefault("X-Amz-Signature")
+  valid_607526 = validateParameter(valid_607526, JString, required = false,
                                  default = nil)
-  if valid_607511 != nil:
-    section.add "X-Amz-Signature", valid_607511
-  var valid_607512 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607512 = validateParameter(valid_607512, JString, required = false,
+  if valid_607526 != nil:
+    section.add "X-Amz-Signature", valid_607526
+  var valid_607527 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607527 = validateParameter(valid_607527, JString, required = false,
                                  default = nil)
-  if valid_607512 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607512
-  var valid_607513 = header.getOrDefault("X-Amz-Date")
-  valid_607513 = validateParameter(valid_607513, JString, required = false,
+  if valid_607527 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607527
+  var valid_607528 = header.getOrDefault("X-Amz-Date")
+  valid_607528 = validateParameter(valid_607528, JString, required = false,
                                  default = nil)
-  if valid_607513 != nil:
-    section.add "X-Amz-Date", valid_607513
-  var valid_607514 = header.getOrDefault("X-Amz-Credential")
-  valid_607514 = validateParameter(valid_607514, JString, required = false,
+  if valid_607528 != nil:
+    section.add "X-Amz-Date", valid_607528
+  var valid_607529 = header.getOrDefault("X-Amz-Credential")
+  valid_607529 = validateParameter(valid_607529, JString, required = false,
                                  default = nil)
-  if valid_607514 != nil:
-    section.add "X-Amz-Credential", valid_607514
-  var valid_607515 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607515 = validateParameter(valid_607515, JString, required = false,
+  if valid_607529 != nil:
+    section.add "X-Amz-Credential", valid_607529
+  var valid_607530 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607530 = validateParameter(valid_607530, JString, required = false,
                                  default = nil)
-  if valid_607515 != nil:
-    section.add "X-Amz-Security-Token", valid_607515
-  var valid_607516 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607516 = validateParameter(valid_607516, JString, required = false,
+  if valid_607530 != nil:
+    section.add "X-Amz-Security-Token", valid_607530
+  var valid_607531 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607531 = validateParameter(valid_607531, JString, required = false,
                                  default = nil)
-  if valid_607516 != nil:
-    section.add "X-Amz-Algorithm", valid_607516
-  var valid_607517 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607517 = validateParameter(valid_607517, JString, required = false,
+  if valid_607531 != nil:
+    section.add "X-Amz-Algorithm", valid_607531
+  var valid_607532 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607532 = validateParameter(valid_607532, JString, required = false,
                                  default = nil)
-  if valid_607517 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607517
+  if valid_607532 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607532
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10321,20 +10435,20 @@ proc validate_ListHumanTaskUis_607506(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607519: Call_ListHumanTaskUis_607505; path: JsonNode;
+proc call*(call_607534: Call_ListHumanTaskUis_607520; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about the human task user interfaces in your account.
   ## 
-  let valid = call_607519.validator(path, query, header, formData, body)
-  let scheme = call_607519.pickScheme
+  let valid = call_607534.validator(path, query, header, formData, body)
+  let scheme = call_607534.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607519.url(scheme.get, call_607519.host, call_607519.base,
-                         call_607519.route, valid.getOrDefault("path"),
+  let url = call_607534.url(scheme.get, call_607534.host, call_607534.base,
+                         call_607534.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607519, url, valid)
+  result = atozHook(call_607534, url, valid)
 
-proc call*(call_607520: Call_ListHumanTaskUis_607505; body: JsonNode;
+proc call*(call_607535: Call_ListHumanTaskUis_607520; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listHumanTaskUis
   ## Returns information about the human task user interfaces in your account.
@@ -10343,22 +10457,22 @@ proc call*(call_607520: Call_ListHumanTaskUis_607505; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607521 = newJObject()
-  var body_607522 = newJObject()
-  add(query_607521, "MaxResults", newJString(MaxResults))
-  add(query_607521, "NextToken", newJString(NextToken))
+  var query_607536 = newJObject()
+  var body_607537 = newJObject()
+  add(query_607536, "MaxResults", newJString(MaxResults))
+  add(query_607536, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607522 = body
-  result = call_607520.call(nil, query_607521, nil, nil, body_607522)
+    body_607537 = body
+  result = call_607535.call(nil, query_607536, nil, nil, body_607537)
 
-var listHumanTaskUis* = Call_ListHumanTaskUis_607505(name: "listHumanTaskUis",
+var listHumanTaskUis* = Call_ListHumanTaskUis_607520(name: "listHumanTaskUis",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListHumanTaskUis",
-    validator: validate_ListHumanTaskUis_607506, base: "/",
-    url: url_ListHumanTaskUis_607507, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListHumanTaskUis_607521, base: "/",
+    url: url_ListHumanTaskUis_607522, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHyperParameterTuningJobs_607523 = ref object of OpenApiRestCall_605589
-proc url_ListHyperParameterTuningJobs_607525(protocol: Scheme; host: string;
+  Call_ListHyperParameterTuningJobs_607538 = ref object of OpenApiRestCall_605589
+proc url_ListHyperParameterTuningJobs_607540(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -10370,7 +10484,7 @@ proc url_ListHyperParameterTuningJobs_607525(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListHyperParameterTuningJobs_607524(path: JsonNode; query: JsonNode;
+proc validate_ListHyperParameterTuningJobs_607539(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of <a>HyperParameterTuningJobSummary</a> objects that describe the hyperparameter tuning jobs launched in your account.
   ## 
@@ -10384,16 +10498,16 @@ proc validate_ListHyperParameterTuningJobs_607524(path: JsonNode; query: JsonNod
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607526 = query.getOrDefault("MaxResults")
-  valid_607526 = validateParameter(valid_607526, JString, required = false,
+  var valid_607541 = query.getOrDefault("MaxResults")
+  valid_607541 = validateParameter(valid_607541, JString, required = false,
                                  default = nil)
-  if valid_607526 != nil:
-    section.add "MaxResults", valid_607526
-  var valid_607527 = query.getOrDefault("NextToken")
-  valid_607527 = validateParameter(valid_607527, JString, required = false,
+  if valid_607541 != nil:
+    section.add "MaxResults", valid_607541
+  var valid_607542 = query.getOrDefault("NextToken")
+  valid_607542 = validateParameter(valid_607542, JString, required = false,
                                  default = nil)
-  if valid_607527 != nil:
-    section.add "NextToken", valid_607527
+  if valid_607542 != nil:
+    section.add "NextToken", valid_607542
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -10407,46 +10521,46 @@ proc validate_ListHyperParameterTuningJobs_607524(path: JsonNode; query: JsonNod
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607528 = header.getOrDefault("X-Amz-Target")
-  valid_607528 = validateParameter(valid_607528, JString, required = true, default = newJString(
+  var valid_607543 = header.getOrDefault("X-Amz-Target")
+  valid_607543 = validateParameter(valid_607543, JString, required = true, default = newJString(
       "SageMaker.ListHyperParameterTuningJobs"))
-  if valid_607528 != nil:
-    section.add "X-Amz-Target", valid_607528
-  var valid_607529 = header.getOrDefault("X-Amz-Signature")
-  valid_607529 = validateParameter(valid_607529, JString, required = false,
+  if valid_607543 != nil:
+    section.add "X-Amz-Target", valid_607543
+  var valid_607544 = header.getOrDefault("X-Amz-Signature")
+  valid_607544 = validateParameter(valid_607544, JString, required = false,
                                  default = nil)
-  if valid_607529 != nil:
-    section.add "X-Amz-Signature", valid_607529
-  var valid_607530 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607530 = validateParameter(valid_607530, JString, required = false,
+  if valid_607544 != nil:
+    section.add "X-Amz-Signature", valid_607544
+  var valid_607545 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607545 = validateParameter(valid_607545, JString, required = false,
                                  default = nil)
-  if valid_607530 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607530
-  var valid_607531 = header.getOrDefault("X-Amz-Date")
-  valid_607531 = validateParameter(valid_607531, JString, required = false,
+  if valid_607545 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607545
+  var valid_607546 = header.getOrDefault("X-Amz-Date")
+  valid_607546 = validateParameter(valid_607546, JString, required = false,
                                  default = nil)
-  if valid_607531 != nil:
-    section.add "X-Amz-Date", valid_607531
-  var valid_607532 = header.getOrDefault("X-Amz-Credential")
-  valid_607532 = validateParameter(valid_607532, JString, required = false,
+  if valid_607546 != nil:
+    section.add "X-Amz-Date", valid_607546
+  var valid_607547 = header.getOrDefault("X-Amz-Credential")
+  valid_607547 = validateParameter(valid_607547, JString, required = false,
                                  default = nil)
-  if valid_607532 != nil:
-    section.add "X-Amz-Credential", valid_607532
-  var valid_607533 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607533 = validateParameter(valid_607533, JString, required = false,
+  if valid_607547 != nil:
+    section.add "X-Amz-Credential", valid_607547
+  var valid_607548 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607548 = validateParameter(valid_607548, JString, required = false,
                                  default = nil)
-  if valid_607533 != nil:
-    section.add "X-Amz-Security-Token", valid_607533
-  var valid_607534 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607534 = validateParameter(valid_607534, JString, required = false,
+  if valid_607548 != nil:
+    section.add "X-Amz-Security-Token", valid_607548
+  var valid_607549 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607549 = validateParameter(valid_607549, JString, required = false,
                                  default = nil)
-  if valid_607534 != nil:
-    section.add "X-Amz-Algorithm", valid_607534
-  var valid_607535 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607535 = validateParameter(valid_607535, JString, required = false,
+  if valid_607549 != nil:
+    section.add "X-Amz-Algorithm", valid_607549
+  var valid_607550 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607550 = validateParameter(valid_607550, JString, required = false,
                                  default = nil)
-  if valid_607535 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607535
+  if valid_607550 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607550
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10457,20 +10571,20 @@ proc validate_ListHyperParameterTuningJobs_607524(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_607537: Call_ListHyperParameterTuningJobs_607523; path: JsonNode;
+proc call*(call_607552: Call_ListHyperParameterTuningJobs_607538; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of <a>HyperParameterTuningJobSummary</a> objects that describe the hyperparameter tuning jobs launched in your account.
   ## 
-  let valid = call_607537.validator(path, query, header, formData, body)
-  let scheme = call_607537.pickScheme
+  let valid = call_607552.validator(path, query, header, formData, body)
+  let scheme = call_607552.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607537.url(scheme.get, call_607537.host, call_607537.base,
-                         call_607537.route, valid.getOrDefault("path"),
+  let url = call_607552.url(scheme.get, call_607552.host, call_607552.base,
+                         call_607552.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607537, url, valid)
+  result = atozHook(call_607552, url, valid)
 
-proc call*(call_607538: Call_ListHyperParameterTuningJobs_607523; body: JsonNode;
+proc call*(call_607553: Call_ListHyperParameterTuningJobs_607538; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listHyperParameterTuningJobs
   ## Gets a list of <a>HyperParameterTuningJobSummary</a> objects that describe the hyperparameter tuning jobs launched in your account.
@@ -10479,24 +10593,24 @@ proc call*(call_607538: Call_ListHyperParameterTuningJobs_607523; body: JsonNode
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607539 = newJObject()
-  var body_607540 = newJObject()
-  add(query_607539, "MaxResults", newJString(MaxResults))
-  add(query_607539, "NextToken", newJString(NextToken))
+  var query_607554 = newJObject()
+  var body_607555 = newJObject()
+  add(query_607554, "MaxResults", newJString(MaxResults))
+  add(query_607554, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607540 = body
-  result = call_607538.call(nil, query_607539, nil, nil, body_607540)
+    body_607555 = body
+  result = call_607553.call(nil, query_607554, nil, nil, body_607555)
 
-var listHyperParameterTuningJobs* = Call_ListHyperParameterTuningJobs_607523(
+var listHyperParameterTuningJobs* = Call_ListHyperParameterTuningJobs_607538(
     name: "listHyperParameterTuningJobs", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListHyperParameterTuningJobs",
-    validator: validate_ListHyperParameterTuningJobs_607524, base: "/",
-    url: url_ListHyperParameterTuningJobs_607525,
+    validator: validate_ListHyperParameterTuningJobs_607539, base: "/",
+    url: url_ListHyperParameterTuningJobs_607540,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListLabelingJobs_607541 = ref object of OpenApiRestCall_605589
-proc url_ListLabelingJobs_607543(protocol: Scheme; host: string; base: string;
+  Call_ListLabelingJobs_607556 = ref object of OpenApiRestCall_605589
+proc url_ListLabelingJobs_607558(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -10508,7 +10622,7 @@ proc url_ListLabelingJobs_607543(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListLabelingJobs_607542(path: JsonNode; query: JsonNode;
+proc validate_ListLabelingJobs_607557(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Gets a list of labeling jobs.
@@ -10523,16 +10637,16 @@ proc validate_ListLabelingJobs_607542(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607544 = query.getOrDefault("MaxResults")
-  valid_607544 = validateParameter(valid_607544, JString, required = false,
+  var valid_607559 = query.getOrDefault("MaxResults")
+  valid_607559 = validateParameter(valid_607559, JString, required = false,
                                  default = nil)
-  if valid_607544 != nil:
-    section.add "MaxResults", valid_607544
-  var valid_607545 = query.getOrDefault("NextToken")
-  valid_607545 = validateParameter(valid_607545, JString, required = false,
+  if valid_607559 != nil:
+    section.add "MaxResults", valid_607559
+  var valid_607560 = query.getOrDefault("NextToken")
+  valid_607560 = validateParameter(valid_607560, JString, required = false,
                                  default = nil)
-  if valid_607545 != nil:
-    section.add "NextToken", valid_607545
+  if valid_607560 != nil:
+    section.add "NextToken", valid_607560
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -10546,46 +10660,46 @@ proc validate_ListLabelingJobs_607542(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607546 = header.getOrDefault("X-Amz-Target")
-  valid_607546 = validateParameter(valid_607546, JString, required = true, default = newJString(
+  var valid_607561 = header.getOrDefault("X-Amz-Target")
+  valid_607561 = validateParameter(valid_607561, JString, required = true, default = newJString(
       "SageMaker.ListLabelingJobs"))
-  if valid_607546 != nil:
-    section.add "X-Amz-Target", valid_607546
-  var valid_607547 = header.getOrDefault("X-Amz-Signature")
-  valid_607547 = validateParameter(valid_607547, JString, required = false,
+  if valid_607561 != nil:
+    section.add "X-Amz-Target", valid_607561
+  var valid_607562 = header.getOrDefault("X-Amz-Signature")
+  valid_607562 = validateParameter(valid_607562, JString, required = false,
                                  default = nil)
-  if valid_607547 != nil:
-    section.add "X-Amz-Signature", valid_607547
-  var valid_607548 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607548 = validateParameter(valid_607548, JString, required = false,
+  if valid_607562 != nil:
+    section.add "X-Amz-Signature", valid_607562
+  var valid_607563 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607563 = validateParameter(valid_607563, JString, required = false,
                                  default = nil)
-  if valid_607548 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607548
-  var valid_607549 = header.getOrDefault("X-Amz-Date")
-  valid_607549 = validateParameter(valid_607549, JString, required = false,
+  if valid_607563 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607563
+  var valid_607564 = header.getOrDefault("X-Amz-Date")
+  valid_607564 = validateParameter(valid_607564, JString, required = false,
                                  default = nil)
-  if valid_607549 != nil:
-    section.add "X-Amz-Date", valid_607549
-  var valid_607550 = header.getOrDefault("X-Amz-Credential")
-  valid_607550 = validateParameter(valid_607550, JString, required = false,
+  if valid_607564 != nil:
+    section.add "X-Amz-Date", valid_607564
+  var valid_607565 = header.getOrDefault("X-Amz-Credential")
+  valid_607565 = validateParameter(valid_607565, JString, required = false,
                                  default = nil)
-  if valid_607550 != nil:
-    section.add "X-Amz-Credential", valid_607550
-  var valid_607551 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607551 = validateParameter(valid_607551, JString, required = false,
+  if valid_607565 != nil:
+    section.add "X-Amz-Credential", valid_607565
+  var valid_607566 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607566 = validateParameter(valid_607566, JString, required = false,
                                  default = nil)
-  if valid_607551 != nil:
-    section.add "X-Amz-Security-Token", valid_607551
-  var valid_607552 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607552 = validateParameter(valid_607552, JString, required = false,
+  if valid_607566 != nil:
+    section.add "X-Amz-Security-Token", valid_607566
+  var valid_607567 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607567 = validateParameter(valid_607567, JString, required = false,
                                  default = nil)
-  if valid_607552 != nil:
-    section.add "X-Amz-Algorithm", valid_607552
-  var valid_607553 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607553 = validateParameter(valid_607553, JString, required = false,
+  if valid_607567 != nil:
+    section.add "X-Amz-Algorithm", valid_607567
+  var valid_607568 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607568 = validateParameter(valid_607568, JString, required = false,
                                  default = nil)
-  if valid_607553 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607553
+  if valid_607568 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607568
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10596,20 +10710,20 @@ proc validate_ListLabelingJobs_607542(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607555: Call_ListLabelingJobs_607541; path: JsonNode;
+proc call*(call_607570: Call_ListLabelingJobs_607556; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of labeling jobs.
   ## 
-  let valid = call_607555.validator(path, query, header, formData, body)
-  let scheme = call_607555.pickScheme
+  let valid = call_607570.validator(path, query, header, formData, body)
+  let scheme = call_607570.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607555.url(scheme.get, call_607555.host, call_607555.base,
-                         call_607555.route, valid.getOrDefault("path"),
+  let url = call_607570.url(scheme.get, call_607570.host, call_607570.base,
+                         call_607570.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607555, url, valid)
+  result = atozHook(call_607570, url, valid)
 
-proc call*(call_607556: Call_ListLabelingJobs_607541; body: JsonNode;
+proc call*(call_607571: Call_ListLabelingJobs_607556; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listLabelingJobs
   ## Gets a list of labeling jobs.
@@ -10618,22 +10732,22 @@ proc call*(call_607556: Call_ListLabelingJobs_607541; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607557 = newJObject()
-  var body_607558 = newJObject()
-  add(query_607557, "MaxResults", newJString(MaxResults))
-  add(query_607557, "NextToken", newJString(NextToken))
+  var query_607572 = newJObject()
+  var body_607573 = newJObject()
+  add(query_607572, "MaxResults", newJString(MaxResults))
+  add(query_607572, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607558 = body
-  result = call_607556.call(nil, query_607557, nil, nil, body_607558)
+    body_607573 = body
+  result = call_607571.call(nil, query_607572, nil, nil, body_607573)
 
-var listLabelingJobs* = Call_ListLabelingJobs_607541(name: "listLabelingJobs",
+var listLabelingJobs* = Call_ListLabelingJobs_607556(name: "listLabelingJobs",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListLabelingJobs",
-    validator: validate_ListLabelingJobs_607542, base: "/",
-    url: url_ListLabelingJobs_607543, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListLabelingJobs_607557, base: "/",
+    url: url_ListLabelingJobs_607558, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListLabelingJobsForWorkteam_607559 = ref object of OpenApiRestCall_605589
-proc url_ListLabelingJobsForWorkteam_607561(protocol: Scheme; host: string;
+  Call_ListLabelingJobsForWorkteam_607574 = ref object of OpenApiRestCall_605589
+proc url_ListLabelingJobsForWorkteam_607576(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -10645,7 +10759,7 @@ proc url_ListLabelingJobsForWorkteam_607561(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListLabelingJobsForWorkteam_607560(path: JsonNode; query: JsonNode;
+proc validate_ListLabelingJobsForWorkteam_607575(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of labeling jobs assigned to a specified work team.
   ## 
@@ -10659,16 +10773,16 @@ proc validate_ListLabelingJobsForWorkteam_607560(path: JsonNode; query: JsonNode
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607562 = query.getOrDefault("MaxResults")
-  valid_607562 = validateParameter(valid_607562, JString, required = false,
+  var valid_607577 = query.getOrDefault("MaxResults")
+  valid_607577 = validateParameter(valid_607577, JString, required = false,
                                  default = nil)
-  if valid_607562 != nil:
-    section.add "MaxResults", valid_607562
-  var valid_607563 = query.getOrDefault("NextToken")
-  valid_607563 = validateParameter(valid_607563, JString, required = false,
+  if valid_607577 != nil:
+    section.add "MaxResults", valid_607577
+  var valid_607578 = query.getOrDefault("NextToken")
+  valid_607578 = validateParameter(valid_607578, JString, required = false,
                                  default = nil)
-  if valid_607563 != nil:
-    section.add "NextToken", valid_607563
+  if valid_607578 != nil:
+    section.add "NextToken", valid_607578
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -10682,46 +10796,46 @@ proc validate_ListLabelingJobsForWorkteam_607560(path: JsonNode; query: JsonNode
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607564 = header.getOrDefault("X-Amz-Target")
-  valid_607564 = validateParameter(valid_607564, JString, required = true, default = newJString(
+  var valid_607579 = header.getOrDefault("X-Amz-Target")
+  valid_607579 = validateParameter(valid_607579, JString, required = true, default = newJString(
       "SageMaker.ListLabelingJobsForWorkteam"))
-  if valid_607564 != nil:
-    section.add "X-Amz-Target", valid_607564
-  var valid_607565 = header.getOrDefault("X-Amz-Signature")
-  valid_607565 = validateParameter(valid_607565, JString, required = false,
+  if valid_607579 != nil:
+    section.add "X-Amz-Target", valid_607579
+  var valid_607580 = header.getOrDefault("X-Amz-Signature")
+  valid_607580 = validateParameter(valid_607580, JString, required = false,
                                  default = nil)
-  if valid_607565 != nil:
-    section.add "X-Amz-Signature", valid_607565
-  var valid_607566 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607566 = validateParameter(valid_607566, JString, required = false,
+  if valid_607580 != nil:
+    section.add "X-Amz-Signature", valid_607580
+  var valid_607581 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607581 = validateParameter(valid_607581, JString, required = false,
                                  default = nil)
-  if valid_607566 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607566
-  var valid_607567 = header.getOrDefault("X-Amz-Date")
-  valid_607567 = validateParameter(valid_607567, JString, required = false,
+  if valid_607581 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607581
+  var valid_607582 = header.getOrDefault("X-Amz-Date")
+  valid_607582 = validateParameter(valid_607582, JString, required = false,
                                  default = nil)
-  if valid_607567 != nil:
-    section.add "X-Amz-Date", valid_607567
-  var valid_607568 = header.getOrDefault("X-Amz-Credential")
-  valid_607568 = validateParameter(valid_607568, JString, required = false,
+  if valid_607582 != nil:
+    section.add "X-Amz-Date", valid_607582
+  var valid_607583 = header.getOrDefault("X-Amz-Credential")
+  valid_607583 = validateParameter(valid_607583, JString, required = false,
                                  default = nil)
-  if valid_607568 != nil:
-    section.add "X-Amz-Credential", valid_607568
-  var valid_607569 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607569 = validateParameter(valid_607569, JString, required = false,
+  if valid_607583 != nil:
+    section.add "X-Amz-Credential", valid_607583
+  var valid_607584 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607584 = validateParameter(valid_607584, JString, required = false,
                                  default = nil)
-  if valid_607569 != nil:
-    section.add "X-Amz-Security-Token", valid_607569
-  var valid_607570 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607570 = validateParameter(valid_607570, JString, required = false,
+  if valid_607584 != nil:
+    section.add "X-Amz-Security-Token", valid_607584
+  var valid_607585 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607585 = validateParameter(valid_607585, JString, required = false,
                                  default = nil)
-  if valid_607570 != nil:
-    section.add "X-Amz-Algorithm", valid_607570
-  var valid_607571 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607571 = validateParameter(valid_607571, JString, required = false,
+  if valid_607585 != nil:
+    section.add "X-Amz-Algorithm", valid_607585
+  var valid_607586 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607586 = validateParameter(valid_607586, JString, required = false,
                                  default = nil)
-  if valid_607571 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607571
+  if valid_607586 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607586
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10732,20 +10846,20 @@ proc validate_ListLabelingJobsForWorkteam_607560(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_607573: Call_ListLabelingJobsForWorkteam_607559; path: JsonNode;
+proc call*(call_607588: Call_ListLabelingJobsForWorkteam_607574; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of labeling jobs assigned to a specified work team.
   ## 
-  let valid = call_607573.validator(path, query, header, formData, body)
-  let scheme = call_607573.pickScheme
+  let valid = call_607588.validator(path, query, header, formData, body)
+  let scheme = call_607588.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607573.url(scheme.get, call_607573.host, call_607573.base,
-                         call_607573.route, valid.getOrDefault("path"),
+  let url = call_607588.url(scheme.get, call_607588.host, call_607588.base,
+                         call_607588.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607573, url, valid)
+  result = atozHook(call_607588, url, valid)
 
-proc call*(call_607574: Call_ListLabelingJobsForWorkteam_607559; body: JsonNode;
+proc call*(call_607589: Call_ListLabelingJobsForWorkteam_607574; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listLabelingJobsForWorkteam
   ## Gets a list of labeling jobs assigned to a specified work team.
@@ -10754,24 +10868,24 @@ proc call*(call_607574: Call_ListLabelingJobsForWorkteam_607559; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607575 = newJObject()
-  var body_607576 = newJObject()
-  add(query_607575, "MaxResults", newJString(MaxResults))
-  add(query_607575, "NextToken", newJString(NextToken))
+  var query_607590 = newJObject()
+  var body_607591 = newJObject()
+  add(query_607590, "MaxResults", newJString(MaxResults))
+  add(query_607590, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607576 = body
-  result = call_607574.call(nil, query_607575, nil, nil, body_607576)
+    body_607591 = body
+  result = call_607589.call(nil, query_607590, nil, nil, body_607591)
 
-var listLabelingJobsForWorkteam* = Call_ListLabelingJobsForWorkteam_607559(
+var listLabelingJobsForWorkteam* = Call_ListLabelingJobsForWorkteam_607574(
     name: "listLabelingJobsForWorkteam", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListLabelingJobsForWorkteam",
-    validator: validate_ListLabelingJobsForWorkteam_607560, base: "/",
-    url: url_ListLabelingJobsForWorkteam_607561,
+    validator: validate_ListLabelingJobsForWorkteam_607575, base: "/",
+    url: url_ListLabelingJobsForWorkteam_607576,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListModelPackages_607577 = ref object of OpenApiRestCall_605589
-proc url_ListModelPackages_607579(protocol: Scheme; host: string; base: string;
+  Call_ListModelPackages_607592 = ref object of OpenApiRestCall_605589
+proc url_ListModelPackages_607594(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -10783,7 +10897,7 @@ proc url_ListModelPackages_607579(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListModelPackages_607578(path: JsonNode; query: JsonNode;
+proc validate_ListModelPackages_607593(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Lists the model packages that have been created.
@@ -10798,16 +10912,16 @@ proc validate_ListModelPackages_607578(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607580 = query.getOrDefault("MaxResults")
-  valid_607580 = validateParameter(valid_607580, JString, required = false,
+  var valid_607595 = query.getOrDefault("MaxResults")
+  valid_607595 = validateParameter(valid_607595, JString, required = false,
                                  default = nil)
-  if valid_607580 != nil:
-    section.add "MaxResults", valid_607580
-  var valid_607581 = query.getOrDefault("NextToken")
-  valid_607581 = validateParameter(valid_607581, JString, required = false,
+  if valid_607595 != nil:
+    section.add "MaxResults", valid_607595
+  var valid_607596 = query.getOrDefault("NextToken")
+  valid_607596 = validateParameter(valid_607596, JString, required = false,
                                  default = nil)
-  if valid_607581 != nil:
-    section.add "NextToken", valid_607581
+  if valid_607596 != nil:
+    section.add "NextToken", valid_607596
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -10821,46 +10935,46 @@ proc validate_ListModelPackages_607578(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607582 = header.getOrDefault("X-Amz-Target")
-  valid_607582 = validateParameter(valid_607582, JString, required = true, default = newJString(
+  var valid_607597 = header.getOrDefault("X-Amz-Target")
+  valid_607597 = validateParameter(valid_607597, JString, required = true, default = newJString(
       "SageMaker.ListModelPackages"))
-  if valid_607582 != nil:
-    section.add "X-Amz-Target", valid_607582
-  var valid_607583 = header.getOrDefault("X-Amz-Signature")
-  valid_607583 = validateParameter(valid_607583, JString, required = false,
+  if valid_607597 != nil:
+    section.add "X-Amz-Target", valid_607597
+  var valid_607598 = header.getOrDefault("X-Amz-Signature")
+  valid_607598 = validateParameter(valid_607598, JString, required = false,
                                  default = nil)
-  if valid_607583 != nil:
-    section.add "X-Amz-Signature", valid_607583
-  var valid_607584 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607584 = validateParameter(valid_607584, JString, required = false,
+  if valid_607598 != nil:
+    section.add "X-Amz-Signature", valid_607598
+  var valid_607599 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607599 = validateParameter(valid_607599, JString, required = false,
                                  default = nil)
-  if valid_607584 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607584
-  var valid_607585 = header.getOrDefault("X-Amz-Date")
-  valid_607585 = validateParameter(valid_607585, JString, required = false,
+  if valid_607599 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607599
+  var valid_607600 = header.getOrDefault("X-Amz-Date")
+  valid_607600 = validateParameter(valid_607600, JString, required = false,
                                  default = nil)
-  if valid_607585 != nil:
-    section.add "X-Amz-Date", valid_607585
-  var valid_607586 = header.getOrDefault("X-Amz-Credential")
-  valid_607586 = validateParameter(valid_607586, JString, required = false,
+  if valid_607600 != nil:
+    section.add "X-Amz-Date", valid_607600
+  var valid_607601 = header.getOrDefault("X-Amz-Credential")
+  valid_607601 = validateParameter(valid_607601, JString, required = false,
                                  default = nil)
-  if valid_607586 != nil:
-    section.add "X-Amz-Credential", valid_607586
-  var valid_607587 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607587 = validateParameter(valid_607587, JString, required = false,
+  if valid_607601 != nil:
+    section.add "X-Amz-Credential", valid_607601
+  var valid_607602 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607602 = validateParameter(valid_607602, JString, required = false,
                                  default = nil)
-  if valid_607587 != nil:
-    section.add "X-Amz-Security-Token", valid_607587
-  var valid_607588 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607588 = validateParameter(valid_607588, JString, required = false,
+  if valid_607602 != nil:
+    section.add "X-Amz-Security-Token", valid_607602
+  var valid_607603 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607603 = validateParameter(valid_607603, JString, required = false,
                                  default = nil)
-  if valid_607588 != nil:
-    section.add "X-Amz-Algorithm", valid_607588
-  var valid_607589 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607589 = validateParameter(valid_607589, JString, required = false,
+  if valid_607603 != nil:
+    section.add "X-Amz-Algorithm", valid_607603
+  var valid_607604 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607604 = validateParameter(valid_607604, JString, required = false,
                                  default = nil)
-  if valid_607589 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607589
+  if valid_607604 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607604
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -10871,20 +10985,20 @@ proc validate_ListModelPackages_607578(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607591: Call_ListModelPackages_607577; path: JsonNode;
+proc call*(call_607606: Call_ListModelPackages_607592; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the model packages that have been created.
   ## 
-  let valid = call_607591.validator(path, query, header, formData, body)
-  let scheme = call_607591.pickScheme
+  let valid = call_607606.validator(path, query, header, formData, body)
+  let scheme = call_607606.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607591.url(scheme.get, call_607591.host, call_607591.base,
-                         call_607591.route, valid.getOrDefault("path"),
+  let url = call_607606.url(scheme.get, call_607606.host, call_607606.base,
+                         call_607606.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607591, url, valid)
+  result = atozHook(call_607606, url, valid)
 
-proc call*(call_607592: Call_ListModelPackages_607577; body: JsonNode;
+proc call*(call_607607: Call_ListModelPackages_607592; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listModelPackages
   ## Lists the model packages that have been created.
@@ -10893,22 +11007,22 @@ proc call*(call_607592: Call_ListModelPackages_607577; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607593 = newJObject()
-  var body_607594 = newJObject()
-  add(query_607593, "MaxResults", newJString(MaxResults))
-  add(query_607593, "NextToken", newJString(NextToken))
+  var query_607608 = newJObject()
+  var body_607609 = newJObject()
+  add(query_607608, "MaxResults", newJString(MaxResults))
+  add(query_607608, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607594 = body
-  result = call_607592.call(nil, query_607593, nil, nil, body_607594)
+    body_607609 = body
+  result = call_607607.call(nil, query_607608, nil, nil, body_607609)
 
-var listModelPackages* = Call_ListModelPackages_607577(name: "listModelPackages",
+var listModelPackages* = Call_ListModelPackages_607592(name: "listModelPackages",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListModelPackages",
-    validator: validate_ListModelPackages_607578, base: "/",
-    url: url_ListModelPackages_607579, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListModelPackages_607593, base: "/",
+    url: url_ListModelPackages_607594, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListModels_607595 = ref object of OpenApiRestCall_605589
-proc url_ListModels_607597(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListModels_607610 = ref object of OpenApiRestCall_605589
+proc url_ListModels_607612(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -10920,7 +11034,7 @@ proc url_ListModels_607597(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_ListModels_607596(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListModels_607611(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists models created with the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_CreateModel.html">CreateModel</a> API.
   ## 
@@ -10934,16 +11048,16 @@ proc validate_ListModels_607596(path: JsonNode; query: JsonNode; header: JsonNod
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607598 = query.getOrDefault("MaxResults")
-  valid_607598 = validateParameter(valid_607598, JString, required = false,
+  var valid_607613 = query.getOrDefault("MaxResults")
+  valid_607613 = validateParameter(valid_607613, JString, required = false,
                                  default = nil)
-  if valid_607598 != nil:
-    section.add "MaxResults", valid_607598
-  var valid_607599 = query.getOrDefault("NextToken")
-  valid_607599 = validateParameter(valid_607599, JString, required = false,
+  if valid_607613 != nil:
+    section.add "MaxResults", valid_607613
+  var valid_607614 = query.getOrDefault("NextToken")
+  valid_607614 = validateParameter(valid_607614, JString, required = false,
                                  default = nil)
-  if valid_607599 != nil:
-    section.add "NextToken", valid_607599
+  if valid_607614 != nil:
+    section.add "NextToken", valid_607614
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -10957,46 +11071,46 @@ proc validate_ListModels_607596(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607600 = header.getOrDefault("X-Amz-Target")
-  valid_607600 = validateParameter(valid_607600, JString, required = true,
+  var valid_607615 = header.getOrDefault("X-Amz-Target")
+  valid_607615 = validateParameter(valid_607615, JString, required = true,
                                  default = newJString("SageMaker.ListModels"))
-  if valid_607600 != nil:
-    section.add "X-Amz-Target", valid_607600
-  var valid_607601 = header.getOrDefault("X-Amz-Signature")
-  valid_607601 = validateParameter(valid_607601, JString, required = false,
+  if valid_607615 != nil:
+    section.add "X-Amz-Target", valid_607615
+  var valid_607616 = header.getOrDefault("X-Amz-Signature")
+  valid_607616 = validateParameter(valid_607616, JString, required = false,
                                  default = nil)
-  if valid_607601 != nil:
-    section.add "X-Amz-Signature", valid_607601
-  var valid_607602 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607602 = validateParameter(valid_607602, JString, required = false,
+  if valid_607616 != nil:
+    section.add "X-Amz-Signature", valid_607616
+  var valid_607617 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607617 = validateParameter(valid_607617, JString, required = false,
                                  default = nil)
-  if valid_607602 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607602
-  var valid_607603 = header.getOrDefault("X-Amz-Date")
-  valid_607603 = validateParameter(valid_607603, JString, required = false,
+  if valid_607617 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607617
+  var valid_607618 = header.getOrDefault("X-Amz-Date")
+  valid_607618 = validateParameter(valid_607618, JString, required = false,
                                  default = nil)
-  if valid_607603 != nil:
-    section.add "X-Amz-Date", valid_607603
-  var valid_607604 = header.getOrDefault("X-Amz-Credential")
-  valid_607604 = validateParameter(valid_607604, JString, required = false,
+  if valid_607618 != nil:
+    section.add "X-Amz-Date", valid_607618
+  var valid_607619 = header.getOrDefault("X-Amz-Credential")
+  valid_607619 = validateParameter(valid_607619, JString, required = false,
                                  default = nil)
-  if valid_607604 != nil:
-    section.add "X-Amz-Credential", valid_607604
-  var valid_607605 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607605 = validateParameter(valid_607605, JString, required = false,
+  if valid_607619 != nil:
+    section.add "X-Amz-Credential", valid_607619
+  var valid_607620 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607620 = validateParameter(valid_607620, JString, required = false,
                                  default = nil)
-  if valid_607605 != nil:
-    section.add "X-Amz-Security-Token", valid_607605
-  var valid_607606 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607606 = validateParameter(valid_607606, JString, required = false,
+  if valid_607620 != nil:
+    section.add "X-Amz-Security-Token", valid_607620
+  var valid_607621 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607621 = validateParameter(valid_607621, JString, required = false,
                                  default = nil)
-  if valid_607606 != nil:
-    section.add "X-Amz-Algorithm", valid_607606
-  var valid_607607 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607607 = validateParameter(valid_607607, JString, required = false,
+  if valid_607621 != nil:
+    section.add "X-Amz-Algorithm", valid_607621
+  var valid_607622 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607622 = validateParameter(valid_607622, JString, required = false,
                                  default = nil)
-  if valid_607607 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607607
+  if valid_607622 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607622
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11007,20 +11121,20 @@ proc validate_ListModels_607596(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_607609: Call_ListModels_607595; path: JsonNode; query: JsonNode;
+proc call*(call_607624: Call_ListModels_607610; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists models created with the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_CreateModel.html">CreateModel</a> API.
   ## 
-  let valid = call_607609.validator(path, query, header, formData, body)
-  let scheme = call_607609.pickScheme
+  let valid = call_607624.validator(path, query, header, formData, body)
+  let scheme = call_607624.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607609.url(scheme.get, call_607609.host, call_607609.base,
-                         call_607609.route, valid.getOrDefault("path"),
+  let url = call_607624.url(scheme.get, call_607624.host, call_607624.base,
+                         call_607624.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607609, url, valid)
+  result = atozHook(call_607624, url, valid)
 
-proc call*(call_607610: Call_ListModels_607595; body: JsonNode;
+proc call*(call_607625: Call_ListModels_607610; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listModels
   ## Lists models created with the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_CreateModel.html">CreateModel</a> API.
@@ -11029,23 +11143,23 @@ proc call*(call_607610: Call_ListModels_607595; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607611 = newJObject()
-  var body_607612 = newJObject()
-  add(query_607611, "MaxResults", newJString(MaxResults))
-  add(query_607611, "NextToken", newJString(NextToken))
+  var query_607626 = newJObject()
+  var body_607627 = newJObject()
+  add(query_607626, "MaxResults", newJString(MaxResults))
+  add(query_607626, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607612 = body
-  result = call_607610.call(nil, query_607611, nil, nil, body_607612)
+    body_607627 = body
+  result = call_607625.call(nil, query_607626, nil, nil, body_607627)
 
-var listModels* = Call_ListModels_607595(name: "listModels",
+var listModels* = Call_ListModels_607610(name: "listModels",
                                       meth: HttpMethod.HttpPost,
                                       host: "api.sagemaker.amazonaws.com", route: "/#X-Amz-Target=SageMaker.ListModels",
-                                      validator: validate_ListModels_607596,
-                                      base: "/", url: url_ListModels_607597,
+                                      validator: validate_ListModels_607611,
+                                      base: "/", url: url_ListModels_607612,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListMonitoringExecutions_607613 = ref object of OpenApiRestCall_605589
-proc url_ListMonitoringExecutions_607615(protocol: Scheme; host: string;
+  Call_ListMonitoringExecutions_607628 = ref object of OpenApiRestCall_605589
+proc url_ListMonitoringExecutions_607630(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -11058,7 +11172,7 @@ proc url_ListMonitoringExecutions_607615(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListMonitoringExecutions_607614(path: JsonNode; query: JsonNode;
+proc validate_ListMonitoringExecutions_607629(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns list of all monitoring job executions.
   ## 
@@ -11072,16 +11186,16 @@ proc validate_ListMonitoringExecutions_607614(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607616 = query.getOrDefault("MaxResults")
-  valid_607616 = validateParameter(valid_607616, JString, required = false,
+  var valid_607631 = query.getOrDefault("MaxResults")
+  valid_607631 = validateParameter(valid_607631, JString, required = false,
                                  default = nil)
-  if valid_607616 != nil:
-    section.add "MaxResults", valid_607616
-  var valid_607617 = query.getOrDefault("NextToken")
-  valid_607617 = validateParameter(valid_607617, JString, required = false,
+  if valid_607631 != nil:
+    section.add "MaxResults", valid_607631
+  var valid_607632 = query.getOrDefault("NextToken")
+  valid_607632 = validateParameter(valid_607632, JString, required = false,
                                  default = nil)
-  if valid_607617 != nil:
-    section.add "NextToken", valid_607617
+  if valid_607632 != nil:
+    section.add "NextToken", valid_607632
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -11095,46 +11209,46 @@ proc validate_ListMonitoringExecutions_607614(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607618 = header.getOrDefault("X-Amz-Target")
-  valid_607618 = validateParameter(valid_607618, JString, required = true, default = newJString(
+  var valid_607633 = header.getOrDefault("X-Amz-Target")
+  valid_607633 = validateParameter(valid_607633, JString, required = true, default = newJString(
       "SageMaker.ListMonitoringExecutions"))
-  if valid_607618 != nil:
-    section.add "X-Amz-Target", valid_607618
-  var valid_607619 = header.getOrDefault("X-Amz-Signature")
-  valid_607619 = validateParameter(valid_607619, JString, required = false,
+  if valid_607633 != nil:
+    section.add "X-Amz-Target", valid_607633
+  var valid_607634 = header.getOrDefault("X-Amz-Signature")
+  valid_607634 = validateParameter(valid_607634, JString, required = false,
                                  default = nil)
-  if valid_607619 != nil:
-    section.add "X-Amz-Signature", valid_607619
-  var valid_607620 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607620 = validateParameter(valid_607620, JString, required = false,
+  if valid_607634 != nil:
+    section.add "X-Amz-Signature", valid_607634
+  var valid_607635 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607635 = validateParameter(valid_607635, JString, required = false,
                                  default = nil)
-  if valid_607620 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607620
-  var valid_607621 = header.getOrDefault("X-Amz-Date")
-  valid_607621 = validateParameter(valid_607621, JString, required = false,
+  if valid_607635 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607635
+  var valid_607636 = header.getOrDefault("X-Amz-Date")
+  valid_607636 = validateParameter(valid_607636, JString, required = false,
                                  default = nil)
-  if valid_607621 != nil:
-    section.add "X-Amz-Date", valid_607621
-  var valid_607622 = header.getOrDefault("X-Amz-Credential")
-  valid_607622 = validateParameter(valid_607622, JString, required = false,
+  if valid_607636 != nil:
+    section.add "X-Amz-Date", valid_607636
+  var valid_607637 = header.getOrDefault("X-Amz-Credential")
+  valid_607637 = validateParameter(valid_607637, JString, required = false,
                                  default = nil)
-  if valid_607622 != nil:
-    section.add "X-Amz-Credential", valid_607622
-  var valid_607623 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607623 = validateParameter(valid_607623, JString, required = false,
+  if valid_607637 != nil:
+    section.add "X-Amz-Credential", valid_607637
+  var valid_607638 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607638 = validateParameter(valid_607638, JString, required = false,
                                  default = nil)
-  if valid_607623 != nil:
-    section.add "X-Amz-Security-Token", valid_607623
-  var valid_607624 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607624 = validateParameter(valid_607624, JString, required = false,
+  if valid_607638 != nil:
+    section.add "X-Amz-Security-Token", valid_607638
+  var valid_607639 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607639 = validateParameter(valid_607639, JString, required = false,
                                  default = nil)
-  if valid_607624 != nil:
-    section.add "X-Amz-Algorithm", valid_607624
-  var valid_607625 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607625 = validateParameter(valid_607625, JString, required = false,
+  if valid_607639 != nil:
+    section.add "X-Amz-Algorithm", valid_607639
+  var valid_607640 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607640 = validateParameter(valid_607640, JString, required = false,
                                  default = nil)
-  if valid_607625 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607625
+  if valid_607640 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607640
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11145,20 +11259,20 @@ proc validate_ListMonitoringExecutions_607614(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607627: Call_ListMonitoringExecutions_607613; path: JsonNode;
+proc call*(call_607642: Call_ListMonitoringExecutions_607628; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns list of all monitoring job executions.
   ## 
-  let valid = call_607627.validator(path, query, header, formData, body)
-  let scheme = call_607627.pickScheme
+  let valid = call_607642.validator(path, query, header, formData, body)
+  let scheme = call_607642.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607627.url(scheme.get, call_607627.host, call_607627.base,
-                         call_607627.route, valid.getOrDefault("path"),
+  let url = call_607642.url(scheme.get, call_607642.host, call_607642.base,
+                         call_607642.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607627, url, valid)
+  result = atozHook(call_607642, url, valid)
 
-proc call*(call_607628: Call_ListMonitoringExecutions_607613; body: JsonNode;
+proc call*(call_607643: Call_ListMonitoringExecutions_607628; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listMonitoringExecutions
   ## Returns list of all monitoring job executions.
@@ -11167,23 +11281,23 @@ proc call*(call_607628: Call_ListMonitoringExecutions_607613; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607629 = newJObject()
-  var body_607630 = newJObject()
-  add(query_607629, "MaxResults", newJString(MaxResults))
-  add(query_607629, "NextToken", newJString(NextToken))
+  var query_607644 = newJObject()
+  var body_607645 = newJObject()
+  add(query_607644, "MaxResults", newJString(MaxResults))
+  add(query_607644, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607630 = body
-  result = call_607628.call(nil, query_607629, nil, nil, body_607630)
+    body_607645 = body
+  result = call_607643.call(nil, query_607644, nil, nil, body_607645)
 
-var listMonitoringExecutions* = Call_ListMonitoringExecutions_607613(
+var listMonitoringExecutions* = Call_ListMonitoringExecutions_607628(
     name: "listMonitoringExecutions", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListMonitoringExecutions",
-    validator: validate_ListMonitoringExecutions_607614, base: "/",
-    url: url_ListMonitoringExecutions_607615, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListMonitoringExecutions_607629, base: "/",
+    url: url_ListMonitoringExecutions_607630, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListMonitoringSchedules_607631 = ref object of OpenApiRestCall_605589
-proc url_ListMonitoringSchedules_607633(protocol: Scheme; host: string; base: string;
+  Call_ListMonitoringSchedules_607646 = ref object of OpenApiRestCall_605589
+proc url_ListMonitoringSchedules_607648(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -11196,7 +11310,7 @@ proc url_ListMonitoringSchedules_607633(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_ListMonitoringSchedules_607632(path: JsonNode; query: JsonNode;
+proc validate_ListMonitoringSchedules_607647(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns list of all monitoring schedules.
   ## 
@@ -11210,16 +11324,16 @@ proc validate_ListMonitoringSchedules_607632(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607634 = query.getOrDefault("MaxResults")
-  valid_607634 = validateParameter(valid_607634, JString, required = false,
+  var valid_607649 = query.getOrDefault("MaxResults")
+  valid_607649 = validateParameter(valid_607649, JString, required = false,
                                  default = nil)
-  if valid_607634 != nil:
-    section.add "MaxResults", valid_607634
-  var valid_607635 = query.getOrDefault("NextToken")
-  valid_607635 = validateParameter(valid_607635, JString, required = false,
+  if valid_607649 != nil:
+    section.add "MaxResults", valid_607649
+  var valid_607650 = query.getOrDefault("NextToken")
+  valid_607650 = validateParameter(valid_607650, JString, required = false,
                                  default = nil)
-  if valid_607635 != nil:
-    section.add "NextToken", valid_607635
+  if valid_607650 != nil:
+    section.add "NextToken", valid_607650
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -11233,46 +11347,46 @@ proc validate_ListMonitoringSchedules_607632(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607636 = header.getOrDefault("X-Amz-Target")
-  valid_607636 = validateParameter(valid_607636, JString, required = true, default = newJString(
+  var valid_607651 = header.getOrDefault("X-Amz-Target")
+  valid_607651 = validateParameter(valid_607651, JString, required = true, default = newJString(
       "SageMaker.ListMonitoringSchedules"))
-  if valid_607636 != nil:
-    section.add "X-Amz-Target", valid_607636
-  var valid_607637 = header.getOrDefault("X-Amz-Signature")
-  valid_607637 = validateParameter(valid_607637, JString, required = false,
+  if valid_607651 != nil:
+    section.add "X-Amz-Target", valid_607651
+  var valid_607652 = header.getOrDefault("X-Amz-Signature")
+  valid_607652 = validateParameter(valid_607652, JString, required = false,
                                  default = nil)
-  if valid_607637 != nil:
-    section.add "X-Amz-Signature", valid_607637
-  var valid_607638 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607638 = validateParameter(valid_607638, JString, required = false,
+  if valid_607652 != nil:
+    section.add "X-Amz-Signature", valid_607652
+  var valid_607653 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607653 = validateParameter(valid_607653, JString, required = false,
                                  default = nil)
-  if valid_607638 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607638
-  var valid_607639 = header.getOrDefault("X-Amz-Date")
-  valid_607639 = validateParameter(valid_607639, JString, required = false,
+  if valid_607653 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607653
+  var valid_607654 = header.getOrDefault("X-Amz-Date")
+  valid_607654 = validateParameter(valid_607654, JString, required = false,
                                  default = nil)
-  if valid_607639 != nil:
-    section.add "X-Amz-Date", valid_607639
-  var valid_607640 = header.getOrDefault("X-Amz-Credential")
-  valid_607640 = validateParameter(valid_607640, JString, required = false,
+  if valid_607654 != nil:
+    section.add "X-Amz-Date", valid_607654
+  var valid_607655 = header.getOrDefault("X-Amz-Credential")
+  valid_607655 = validateParameter(valid_607655, JString, required = false,
                                  default = nil)
-  if valid_607640 != nil:
-    section.add "X-Amz-Credential", valid_607640
-  var valid_607641 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607641 = validateParameter(valid_607641, JString, required = false,
+  if valid_607655 != nil:
+    section.add "X-Amz-Credential", valid_607655
+  var valid_607656 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607656 = validateParameter(valid_607656, JString, required = false,
                                  default = nil)
-  if valid_607641 != nil:
-    section.add "X-Amz-Security-Token", valid_607641
-  var valid_607642 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607642 = validateParameter(valid_607642, JString, required = false,
+  if valid_607656 != nil:
+    section.add "X-Amz-Security-Token", valid_607656
+  var valid_607657 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607657 = validateParameter(valid_607657, JString, required = false,
                                  default = nil)
-  if valid_607642 != nil:
-    section.add "X-Amz-Algorithm", valid_607642
-  var valid_607643 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607643 = validateParameter(valid_607643, JString, required = false,
+  if valid_607657 != nil:
+    section.add "X-Amz-Algorithm", valid_607657
+  var valid_607658 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607658 = validateParameter(valid_607658, JString, required = false,
                                  default = nil)
-  if valid_607643 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607643
+  if valid_607658 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607658
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11283,20 +11397,20 @@ proc validate_ListMonitoringSchedules_607632(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607645: Call_ListMonitoringSchedules_607631; path: JsonNode;
+proc call*(call_607660: Call_ListMonitoringSchedules_607646; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns list of all monitoring schedules.
   ## 
-  let valid = call_607645.validator(path, query, header, formData, body)
-  let scheme = call_607645.pickScheme
+  let valid = call_607660.validator(path, query, header, formData, body)
+  let scheme = call_607660.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607645.url(scheme.get, call_607645.host, call_607645.base,
-                         call_607645.route, valid.getOrDefault("path"),
+  let url = call_607660.url(scheme.get, call_607660.host, call_607660.base,
+                         call_607660.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607645, url, valid)
+  result = atozHook(call_607660, url, valid)
 
-proc call*(call_607646: Call_ListMonitoringSchedules_607631; body: JsonNode;
+proc call*(call_607661: Call_ListMonitoringSchedules_607646; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listMonitoringSchedules
   ## Returns list of all monitoring schedules.
@@ -11305,23 +11419,23 @@ proc call*(call_607646: Call_ListMonitoringSchedules_607631; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607647 = newJObject()
-  var body_607648 = newJObject()
-  add(query_607647, "MaxResults", newJString(MaxResults))
-  add(query_607647, "NextToken", newJString(NextToken))
+  var query_607662 = newJObject()
+  var body_607663 = newJObject()
+  add(query_607662, "MaxResults", newJString(MaxResults))
+  add(query_607662, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607648 = body
-  result = call_607646.call(nil, query_607647, nil, nil, body_607648)
+    body_607663 = body
+  result = call_607661.call(nil, query_607662, nil, nil, body_607663)
 
-var listMonitoringSchedules* = Call_ListMonitoringSchedules_607631(
+var listMonitoringSchedules* = Call_ListMonitoringSchedules_607646(
     name: "listMonitoringSchedules", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListMonitoringSchedules",
-    validator: validate_ListMonitoringSchedules_607632, base: "/",
-    url: url_ListMonitoringSchedules_607633, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListMonitoringSchedules_607647, base: "/",
+    url: url_ListMonitoringSchedules_607648, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListNotebookInstanceLifecycleConfigs_607649 = ref object of OpenApiRestCall_605589
-proc url_ListNotebookInstanceLifecycleConfigs_607651(protocol: Scheme;
+  Call_ListNotebookInstanceLifecycleConfigs_607664 = ref object of OpenApiRestCall_605589
+proc url_ListNotebookInstanceLifecycleConfigs_607666(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -11333,7 +11447,7 @@ proc url_ListNotebookInstanceLifecycleConfigs_607651(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_ListNotebookInstanceLifecycleConfigs_607650(path: JsonNode;
+proc validate_ListNotebookInstanceLifecycleConfigs_607665(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists notebook instance lifestyle configurations created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
   ## 
@@ -11347,16 +11461,16 @@ proc validate_ListNotebookInstanceLifecycleConfigs_607650(path: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607652 = query.getOrDefault("MaxResults")
-  valid_607652 = validateParameter(valid_607652, JString, required = false,
+  var valid_607667 = query.getOrDefault("MaxResults")
+  valid_607667 = validateParameter(valid_607667, JString, required = false,
                                  default = nil)
-  if valid_607652 != nil:
-    section.add "MaxResults", valid_607652
-  var valid_607653 = query.getOrDefault("NextToken")
-  valid_607653 = validateParameter(valid_607653, JString, required = false,
+  if valid_607667 != nil:
+    section.add "MaxResults", valid_607667
+  var valid_607668 = query.getOrDefault("NextToken")
+  valid_607668 = validateParameter(valid_607668, JString, required = false,
                                  default = nil)
-  if valid_607653 != nil:
-    section.add "NextToken", valid_607653
+  if valid_607668 != nil:
+    section.add "NextToken", valid_607668
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -11370,46 +11484,46 @@ proc validate_ListNotebookInstanceLifecycleConfigs_607650(path: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607654 = header.getOrDefault("X-Amz-Target")
-  valid_607654 = validateParameter(valid_607654, JString, required = true, default = newJString(
+  var valid_607669 = header.getOrDefault("X-Amz-Target")
+  valid_607669 = validateParameter(valid_607669, JString, required = true, default = newJString(
       "SageMaker.ListNotebookInstanceLifecycleConfigs"))
-  if valid_607654 != nil:
-    section.add "X-Amz-Target", valid_607654
-  var valid_607655 = header.getOrDefault("X-Amz-Signature")
-  valid_607655 = validateParameter(valid_607655, JString, required = false,
+  if valid_607669 != nil:
+    section.add "X-Amz-Target", valid_607669
+  var valid_607670 = header.getOrDefault("X-Amz-Signature")
+  valid_607670 = validateParameter(valid_607670, JString, required = false,
                                  default = nil)
-  if valid_607655 != nil:
-    section.add "X-Amz-Signature", valid_607655
-  var valid_607656 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607656 = validateParameter(valid_607656, JString, required = false,
+  if valid_607670 != nil:
+    section.add "X-Amz-Signature", valid_607670
+  var valid_607671 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607671 = validateParameter(valid_607671, JString, required = false,
                                  default = nil)
-  if valid_607656 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607656
-  var valid_607657 = header.getOrDefault("X-Amz-Date")
-  valid_607657 = validateParameter(valid_607657, JString, required = false,
+  if valid_607671 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607671
+  var valid_607672 = header.getOrDefault("X-Amz-Date")
+  valid_607672 = validateParameter(valid_607672, JString, required = false,
                                  default = nil)
-  if valid_607657 != nil:
-    section.add "X-Amz-Date", valid_607657
-  var valid_607658 = header.getOrDefault("X-Amz-Credential")
-  valid_607658 = validateParameter(valid_607658, JString, required = false,
+  if valid_607672 != nil:
+    section.add "X-Amz-Date", valid_607672
+  var valid_607673 = header.getOrDefault("X-Amz-Credential")
+  valid_607673 = validateParameter(valid_607673, JString, required = false,
                                  default = nil)
-  if valid_607658 != nil:
-    section.add "X-Amz-Credential", valid_607658
-  var valid_607659 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607659 = validateParameter(valid_607659, JString, required = false,
+  if valid_607673 != nil:
+    section.add "X-Amz-Credential", valid_607673
+  var valid_607674 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607674 = validateParameter(valid_607674, JString, required = false,
                                  default = nil)
-  if valid_607659 != nil:
-    section.add "X-Amz-Security-Token", valid_607659
-  var valid_607660 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607660 = validateParameter(valid_607660, JString, required = false,
+  if valid_607674 != nil:
+    section.add "X-Amz-Security-Token", valid_607674
+  var valid_607675 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607675 = validateParameter(valid_607675, JString, required = false,
                                  default = nil)
-  if valid_607660 != nil:
-    section.add "X-Amz-Algorithm", valid_607660
-  var valid_607661 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607661 = validateParameter(valid_607661, JString, required = false,
+  if valid_607675 != nil:
+    section.add "X-Amz-Algorithm", valid_607675
+  var valid_607676 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607676 = validateParameter(valid_607676, JString, required = false,
                                  default = nil)
-  if valid_607661 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607661
+  if valid_607676 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607676
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11420,21 +11534,21 @@ proc validate_ListNotebookInstanceLifecycleConfigs_607650(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607663: Call_ListNotebookInstanceLifecycleConfigs_607649;
+proc call*(call_607678: Call_ListNotebookInstanceLifecycleConfigs_607664;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Lists notebook instance lifestyle configurations created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
   ## 
-  let valid = call_607663.validator(path, query, header, formData, body)
-  let scheme = call_607663.pickScheme
+  let valid = call_607678.validator(path, query, header, formData, body)
+  let scheme = call_607678.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607663.url(scheme.get, call_607663.host, call_607663.base,
-                         call_607663.route, valid.getOrDefault("path"),
+  let url = call_607678.url(scheme.get, call_607678.host, call_607678.base,
+                         call_607678.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607663, url, valid)
+  result = atozHook(call_607678, url, valid)
 
-proc call*(call_607664: Call_ListNotebookInstanceLifecycleConfigs_607649;
+proc call*(call_607679: Call_ListNotebookInstanceLifecycleConfigs_607664;
           body: JsonNode; MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listNotebookInstanceLifecycleConfigs
   ## Lists notebook instance lifestyle configurations created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
@@ -11443,24 +11557,24 @@ proc call*(call_607664: Call_ListNotebookInstanceLifecycleConfigs_607649;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607665 = newJObject()
-  var body_607666 = newJObject()
-  add(query_607665, "MaxResults", newJString(MaxResults))
-  add(query_607665, "NextToken", newJString(NextToken))
+  var query_607680 = newJObject()
+  var body_607681 = newJObject()
+  add(query_607680, "MaxResults", newJString(MaxResults))
+  add(query_607680, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607666 = body
-  result = call_607664.call(nil, query_607665, nil, nil, body_607666)
+    body_607681 = body
+  result = call_607679.call(nil, query_607680, nil, nil, body_607681)
 
-var listNotebookInstanceLifecycleConfigs* = Call_ListNotebookInstanceLifecycleConfigs_607649(
+var listNotebookInstanceLifecycleConfigs* = Call_ListNotebookInstanceLifecycleConfigs_607664(
     name: "listNotebookInstanceLifecycleConfigs", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListNotebookInstanceLifecycleConfigs",
-    validator: validate_ListNotebookInstanceLifecycleConfigs_607650, base: "/",
-    url: url_ListNotebookInstanceLifecycleConfigs_607651,
+    validator: validate_ListNotebookInstanceLifecycleConfigs_607665, base: "/",
+    url: url_ListNotebookInstanceLifecycleConfigs_607666,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListNotebookInstances_607667 = ref object of OpenApiRestCall_605589
-proc url_ListNotebookInstances_607669(protocol: Scheme; host: string; base: string;
+  Call_ListNotebookInstances_607682 = ref object of OpenApiRestCall_605589
+proc url_ListNotebookInstances_607684(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -11472,7 +11586,7 @@ proc url_ListNotebookInstances_607669(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListNotebookInstances_607668(path: JsonNode; query: JsonNode;
+proc validate_ListNotebookInstances_607683(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of the Amazon SageMaker notebook instances in the requester's account in an AWS Region. 
   ## 
@@ -11486,16 +11600,16 @@ proc validate_ListNotebookInstances_607668(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607670 = query.getOrDefault("MaxResults")
-  valid_607670 = validateParameter(valid_607670, JString, required = false,
+  var valid_607685 = query.getOrDefault("MaxResults")
+  valid_607685 = validateParameter(valid_607685, JString, required = false,
                                  default = nil)
-  if valid_607670 != nil:
-    section.add "MaxResults", valid_607670
-  var valid_607671 = query.getOrDefault("NextToken")
-  valid_607671 = validateParameter(valid_607671, JString, required = false,
+  if valid_607685 != nil:
+    section.add "MaxResults", valid_607685
+  var valid_607686 = query.getOrDefault("NextToken")
+  valid_607686 = validateParameter(valid_607686, JString, required = false,
                                  default = nil)
-  if valid_607671 != nil:
-    section.add "NextToken", valid_607671
+  if valid_607686 != nil:
+    section.add "NextToken", valid_607686
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -11509,46 +11623,46 @@ proc validate_ListNotebookInstances_607668(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607672 = header.getOrDefault("X-Amz-Target")
-  valid_607672 = validateParameter(valid_607672, JString, required = true, default = newJString(
+  var valid_607687 = header.getOrDefault("X-Amz-Target")
+  valid_607687 = validateParameter(valid_607687, JString, required = true, default = newJString(
       "SageMaker.ListNotebookInstances"))
-  if valid_607672 != nil:
-    section.add "X-Amz-Target", valid_607672
-  var valid_607673 = header.getOrDefault("X-Amz-Signature")
-  valid_607673 = validateParameter(valid_607673, JString, required = false,
+  if valid_607687 != nil:
+    section.add "X-Amz-Target", valid_607687
+  var valid_607688 = header.getOrDefault("X-Amz-Signature")
+  valid_607688 = validateParameter(valid_607688, JString, required = false,
                                  default = nil)
-  if valid_607673 != nil:
-    section.add "X-Amz-Signature", valid_607673
-  var valid_607674 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607674 = validateParameter(valid_607674, JString, required = false,
+  if valid_607688 != nil:
+    section.add "X-Amz-Signature", valid_607688
+  var valid_607689 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607689 = validateParameter(valid_607689, JString, required = false,
                                  default = nil)
-  if valid_607674 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607674
-  var valid_607675 = header.getOrDefault("X-Amz-Date")
-  valid_607675 = validateParameter(valid_607675, JString, required = false,
+  if valid_607689 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607689
+  var valid_607690 = header.getOrDefault("X-Amz-Date")
+  valid_607690 = validateParameter(valid_607690, JString, required = false,
                                  default = nil)
-  if valid_607675 != nil:
-    section.add "X-Amz-Date", valid_607675
-  var valid_607676 = header.getOrDefault("X-Amz-Credential")
-  valid_607676 = validateParameter(valid_607676, JString, required = false,
+  if valid_607690 != nil:
+    section.add "X-Amz-Date", valid_607690
+  var valid_607691 = header.getOrDefault("X-Amz-Credential")
+  valid_607691 = validateParameter(valid_607691, JString, required = false,
                                  default = nil)
-  if valid_607676 != nil:
-    section.add "X-Amz-Credential", valid_607676
-  var valid_607677 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607677 = validateParameter(valid_607677, JString, required = false,
+  if valid_607691 != nil:
+    section.add "X-Amz-Credential", valid_607691
+  var valid_607692 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607692 = validateParameter(valid_607692, JString, required = false,
                                  default = nil)
-  if valid_607677 != nil:
-    section.add "X-Amz-Security-Token", valid_607677
-  var valid_607678 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607678 = validateParameter(valid_607678, JString, required = false,
+  if valid_607692 != nil:
+    section.add "X-Amz-Security-Token", valid_607692
+  var valid_607693 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607693 = validateParameter(valid_607693, JString, required = false,
                                  default = nil)
-  if valid_607678 != nil:
-    section.add "X-Amz-Algorithm", valid_607678
-  var valid_607679 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607679 = validateParameter(valid_607679, JString, required = false,
+  if valid_607693 != nil:
+    section.add "X-Amz-Algorithm", valid_607693
+  var valid_607694 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607694 = validateParameter(valid_607694, JString, required = false,
                                  default = nil)
-  if valid_607679 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607679
+  if valid_607694 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607694
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11559,20 +11673,20 @@ proc validate_ListNotebookInstances_607668(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607681: Call_ListNotebookInstances_607667; path: JsonNode;
+proc call*(call_607696: Call_ListNotebookInstances_607682; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of the Amazon SageMaker notebook instances in the requester's account in an AWS Region. 
   ## 
-  let valid = call_607681.validator(path, query, header, formData, body)
-  let scheme = call_607681.pickScheme
+  let valid = call_607696.validator(path, query, header, formData, body)
+  let scheme = call_607696.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607681.url(scheme.get, call_607681.host, call_607681.base,
-                         call_607681.route, valid.getOrDefault("path"),
+  let url = call_607696.url(scheme.get, call_607696.host, call_607696.base,
+                         call_607696.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607681, url, valid)
+  result = atozHook(call_607696, url, valid)
 
-proc call*(call_607682: Call_ListNotebookInstances_607667; body: JsonNode;
+proc call*(call_607697: Call_ListNotebookInstances_607682; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listNotebookInstances
   ## Returns a list of the Amazon SageMaker notebook instances in the requester's account in an AWS Region. 
@@ -11581,23 +11695,23 @@ proc call*(call_607682: Call_ListNotebookInstances_607667; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607683 = newJObject()
-  var body_607684 = newJObject()
-  add(query_607683, "MaxResults", newJString(MaxResults))
-  add(query_607683, "NextToken", newJString(NextToken))
+  var query_607698 = newJObject()
+  var body_607699 = newJObject()
+  add(query_607698, "MaxResults", newJString(MaxResults))
+  add(query_607698, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607684 = body
-  result = call_607682.call(nil, query_607683, nil, nil, body_607684)
+    body_607699 = body
+  result = call_607697.call(nil, query_607698, nil, nil, body_607699)
 
-var listNotebookInstances* = Call_ListNotebookInstances_607667(
+var listNotebookInstances* = Call_ListNotebookInstances_607682(
     name: "listNotebookInstances", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListNotebookInstances",
-    validator: validate_ListNotebookInstances_607668, base: "/",
-    url: url_ListNotebookInstances_607669, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListNotebookInstances_607683, base: "/",
+    url: url_ListNotebookInstances_607684, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListProcessingJobs_607685 = ref object of OpenApiRestCall_605589
-proc url_ListProcessingJobs_607687(protocol: Scheme; host: string; base: string;
+  Call_ListProcessingJobs_607700 = ref object of OpenApiRestCall_605589
+proc url_ListProcessingJobs_607702(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -11609,7 +11723,7 @@ proc url_ListProcessingJobs_607687(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListProcessingJobs_607686(path: JsonNode; query: JsonNode;
+proc validate_ListProcessingJobs_607701(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Lists processing jobs that satisfy various filters.
@@ -11624,16 +11738,16 @@ proc validate_ListProcessingJobs_607686(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607688 = query.getOrDefault("MaxResults")
-  valid_607688 = validateParameter(valid_607688, JString, required = false,
+  var valid_607703 = query.getOrDefault("MaxResults")
+  valid_607703 = validateParameter(valid_607703, JString, required = false,
                                  default = nil)
-  if valid_607688 != nil:
-    section.add "MaxResults", valid_607688
-  var valid_607689 = query.getOrDefault("NextToken")
-  valid_607689 = validateParameter(valid_607689, JString, required = false,
+  if valid_607703 != nil:
+    section.add "MaxResults", valid_607703
+  var valid_607704 = query.getOrDefault("NextToken")
+  valid_607704 = validateParameter(valid_607704, JString, required = false,
                                  default = nil)
-  if valid_607689 != nil:
-    section.add "NextToken", valid_607689
+  if valid_607704 != nil:
+    section.add "NextToken", valid_607704
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -11647,46 +11761,46 @@ proc validate_ListProcessingJobs_607686(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607690 = header.getOrDefault("X-Amz-Target")
-  valid_607690 = validateParameter(valid_607690, JString, required = true, default = newJString(
+  var valid_607705 = header.getOrDefault("X-Amz-Target")
+  valid_607705 = validateParameter(valid_607705, JString, required = true, default = newJString(
       "SageMaker.ListProcessingJobs"))
-  if valid_607690 != nil:
-    section.add "X-Amz-Target", valid_607690
-  var valid_607691 = header.getOrDefault("X-Amz-Signature")
-  valid_607691 = validateParameter(valid_607691, JString, required = false,
+  if valid_607705 != nil:
+    section.add "X-Amz-Target", valid_607705
+  var valid_607706 = header.getOrDefault("X-Amz-Signature")
+  valid_607706 = validateParameter(valid_607706, JString, required = false,
                                  default = nil)
-  if valid_607691 != nil:
-    section.add "X-Amz-Signature", valid_607691
-  var valid_607692 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607692 = validateParameter(valid_607692, JString, required = false,
+  if valid_607706 != nil:
+    section.add "X-Amz-Signature", valid_607706
+  var valid_607707 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607707 = validateParameter(valid_607707, JString, required = false,
                                  default = nil)
-  if valid_607692 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607692
-  var valid_607693 = header.getOrDefault("X-Amz-Date")
-  valid_607693 = validateParameter(valid_607693, JString, required = false,
+  if valid_607707 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607707
+  var valid_607708 = header.getOrDefault("X-Amz-Date")
+  valid_607708 = validateParameter(valid_607708, JString, required = false,
                                  default = nil)
-  if valid_607693 != nil:
-    section.add "X-Amz-Date", valid_607693
-  var valid_607694 = header.getOrDefault("X-Amz-Credential")
-  valid_607694 = validateParameter(valid_607694, JString, required = false,
+  if valid_607708 != nil:
+    section.add "X-Amz-Date", valid_607708
+  var valid_607709 = header.getOrDefault("X-Amz-Credential")
+  valid_607709 = validateParameter(valid_607709, JString, required = false,
                                  default = nil)
-  if valid_607694 != nil:
-    section.add "X-Amz-Credential", valid_607694
-  var valid_607695 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607695 = validateParameter(valid_607695, JString, required = false,
+  if valid_607709 != nil:
+    section.add "X-Amz-Credential", valid_607709
+  var valid_607710 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607710 = validateParameter(valid_607710, JString, required = false,
                                  default = nil)
-  if valid_607695 != nil:
-    section.add "X-Amz-Security-Token", valid_607695
-  var valid_607696 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607696 = validateParameter(valid_607696, JString, required = false,
+  if valid_607710 != nil:
+    section.add "X-Amz-Security-Token", valid_607710
+  var valid_607711 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607711 = validateParameter(valid_607711, JString, required = false,
                                  default = nil)
-  if valid_607696 != nil:
-    section.add "X-Amz-Algorithm", valid_607696
-  var valid_607697 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607697 = validateParameter(valid_607697, JString, required = false,
+  if valid_607711 != nil:
+    section.add "X-Amz-Algorithm", valid_607711
+  var valid_607712 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607712 = validateParameter(valid_607712, JString, required = false,
                                  default = nil)
-  if valid_607697 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607697
+  if valid_607712 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607712
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11697,20 +11811,20 @@ proc validate_ListProcessingJobs_607686(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607699: Call_ListProcessingJobs_607685; path: JsonNode;
+proc call*(call_607714: Call_ListProcessingJobs_607700; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists processing jobs that satisfy various filters.
   ## 
-  let valid = call_607699.validator(path, query, header, formData, body)
-  let scheme = call_607699.pickScheme
+  let valid = call_607714.validator(path, query, header, formData, body)
+  let scheme = call_607714.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607699.url(scheme.get, call_607699.host, call_607699.base,
-                         call_607699.route, valid.getOrDefault("path"),
+  let url = call_607714.url(scheme.get, call_607714.host, call_607714.base,
+                         call_607714.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607699, url, valid)
+  result = atozHook(call_607714, url, valid)
 
-proc call*(call_607700: Call_ListProcessingJobs_607685; body: JsonNode;
+proc call*(call_607715: Call_ListProcessingJobs_607700; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listProcessingJobs
   ## Lists processing jobs that satisfy various filters.
@@ -11719,23 +11833,23 @@ proc call*(call_607700: Call_ListProcessingJobs_607685; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607701 = newJObject()
-  var body_607702 = newJObject()
-  add(query_607701, "MaxResults", newJString(MaxResults))
-  add(query_607701, "NextToken", newJString(NextToken))
+  var query_607716 = newJObject()
+  var body_607717 = newJObject()
+  add(query_607716, "MaxResults", newJString(MaxResults))
+  add(query_607716, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607702 = body
-  result = call_607700.call(nil, query_607701, nil, nil, body_607702)
+    body_607717 = body
+  result = call_607715.call(nil, query_607716, nil, nil, body_607717)
 
-var listProcessingJobs* = Call_ListProcessingJobs_607685(
+var listProcessingJobs* = Call_ListProcessingJobs_607700(
     name: "listProcessingJobs", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListProcessingJobs",
-    validator: validate_ListProcessingJobs_607686, base: "/",
-    url: url_ListProcessingJobs_607687, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListProcessingJobs_607701, base: "/",
+    url: url_ListProcessingJobs_607702, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSubscribedWorkteams_607703 = ref object of OpenApiRestCall_605589
-proc url_ListSubscribedWorkteams_607705(protocol: Scheme; host: string; base: string;
+  Call_ListSubscribedWorkteams_607718 = ref object of OpenApiRestCall_605589
+proc url_ListSubscribedWorkteams_607720(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -11748,7 +11862,7 @@ proc url_ListSubscribedWorkteams_607705(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_ListSubscribedWorkteams_607704(path: JsonNode; query: JsonNode;
+proc validate_ListSubscribedWorkteams_607719(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of the work teams that you are subscribed to in the AWS Marketplace. The list may be empty if no work team satisfies the filter specified in the <code>NameContains</code> parameter.
   ## 
@@ -11762,16 +11876,16 @@ proc validate_ListSubscribedWorkteams_607704(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607706 = query.getOrDefault("MaxResults")
-  valid_607706 = validateParameter(valid_607706, JString, required = false,
+  var valid_607721 = query.getOrDefault("MaxResults")
+  valid_607721 = validateParameter(valid_607721, JString, required = false,
                                  default = nil)
-  if valid_607706 != nil:
-    section.add "MaxResults", valid_607706
-  var valid_607707 = query.getOrDefault("NextToken")
-  valid_607707 = validateParameter(valid_607707, JString, required = false,
+  if valid_607721 != nil:
+    section.add "MaxResults", valid_607721
+  var valid_607722 = query.getOrDefault("NextToken")
+  valid_607722 = validateParameter(valid_607722, JString, required = false,
                                  default = nil)
-  if valid_607707 != nil:
-    section.add "NextToken", valid_607707
+  if valid_607722 != nil:
+    section.add "NextToken", valid_607722
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -11785,46 +11899,46 @@ proc validate_ListSubscribedWorkteams_607704(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607708 = header.getOrDefault("X-Amz-Target")
-  valid_607708 = validateParameter(valid_607708, JString, required = true, default = newJString(
+  var valid_607723 = header.getOrDefault("X-Amz-Target")
+  valid_607723 = validateParameter(valid_607723, JString, required = true, default = newJString(
       "SageMaker.ListSubscribedWorkteams"))
-  if valid_607708 != nil:
-    section.add "X-Amz-Target", valid_607708
-  var valid_607709 = header.getOrDefault("X-Amz-Signature")
-  valid_607709 = validateParameter(valid_607709, JString, required = false,
+  if valid_607723 != nil:
+    section.add "X-Amz-Target", valid_607723
+  var valid_607724 = header.getOrDefault("X-Amz-Signature")
+  valid_607724 = validateParameter(valid_607724, JString, required = false,
                                  default = nil)
-  if valid_607709 != nil:
-    section.add "X-Amz-Signature", valid_607709
-  var valid_607710 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607710 = validateParameter(valid_607710, JString, required = false,
+  if valid_607724 != nil:
+    section.add "X-Amz-Signature", valid_607724
+  var valid_607725 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607725 = validateParameter(valid_607725, JString, required = false,
                                  default = nil)
-  if valid_607710 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607710
-  var valid_607711 = header.getOrDefault("X-Amz-Date")
-  valid_607711 = validateParameter(valid_607711, JString, required = false,
+  if valid_607725 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607725
+  var valid_607726 = header.getOrDefault("X-Amz-Date")
+  valid_607726 = validateParameter(valid_607726, JString, required = false,
                                  default = nil)
-  if valid_607711 != nil:
-    section.add "X-Amz-Date", valid_607711
-  var valid_607712 = header.getOrDefault("X-Amz-Credential")
-  valid_607712 = validateParameter(valid_607712, JString, required = false,
+  if valid_607726 != nil:
+    section.add "X-Amz-Date", valid_607726
+  var valid_607727 = header.getOrDefault("X-Amz-Credential")
+  valid_607727 = validateParameter(valid_607727, JString, required = false,
                                  default = nil)
-  if valid_607712 != nil:
-    section.add "X-Amz-Credential", valid_607712
-  var valid_607713 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607713 = validateParameter(valid_607713, JString, required = false,
+  if valid_607727 != nil:
+    section.add "X-Amz-Credential", valid_607727
+  var valid_607728 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607728 = validateParameter(valid_607728, JString, required = false,
                                  default = nil)
-  if valid_607713 != nil:
-    section.add "X-Amz-Security-Token", valid_607713
-  var valid_607714 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607714 = validateParameter(valid_607714, JString, required = false,
+  if valid_607728 != nil:
+    section.add "X-Amz-Security-Token", valid_607728
+  var valid_607729 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607729 = validateParameter(valid_607729, JString, required = false,
                                  default = nil)
-  if valid_607714 != nil:
-    section.add "X-Amz-Algorithm", valid_607714
-  var valid_607715 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607715 = validateParameter(valid_607715, JString, required = false,
+  if valid_607729 != nil:
+    section.add "X-Amz-Algorithm", valid_607729
+  var valid_607730 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607730 = validateParameter(valid_607730, JString, required = false,
                                  default = nil)
-  if valid_607715 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607715
+  if valid_607730 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607730
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11835,20 +11949,20 @@ proc validate_ListSubscribedWorkteams_607704(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607717: Call_ListSubscribedWorkteams_607703; path: JsonNode;
+proc call*(call_607732: Call_ListSubscribedWorkteams_607718; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of the work teams that you are subscribed to in the AWS Marketplace. The list may be empty if no work team satisfies the filter specified in the <code>NameContains</code> parameter.
   ## 
-  let valid = call_607717.validator(path, query, header, formData, body)
-  let scheme = call_607717.pickScheme
+  let valid = call_607732.validator(path, query, header, formData, body)
+  let scheme = call_607732.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607717.url(scheme.get, call_607717.host, call_607717.base,
-                         call_607717.route, valid.getOrDefault("path"),
+  let url = call_607732.url(scheme.get, call_607732.host, call_607732.base,
+                         call_607732.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607717, url, valid)
+  result = atozHook(call_607732, url, valid)
 
-proc call*(call_607718: Call_ListSubscribedWorkteams_607703; body: JsonNode;
+proc call*(call_607733: Call_ListSubscribedWorkteams_607718; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listSubscribedWorkteams
   ## Gets a list of the work teams that you are subscribed to in the AWS Marketplace. The list may be empty if no work team satisfies the filter specified in the <code>NameContains</code> parameter.
@@ -11857,23 +11971,23 @@ proc call*(call_607718: Call_ListSubscribedWorkteams_607703; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607719 = newJObject()
-  var body_607720 = newJObject()
-  add(query_607719, "MaxResults", newJString(MaxResults))
-  add(query_607719, "NextToken", newJString(NextToken))
+  var query_607734 = newJObject()
+  var body_607735 = newJObject()
+  add(query_607734, "MaxResults", newJString(MaxResults))
+  add(query_607734, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607720 = body
-  result = call_607718.call(nil, query_607719, nil, nil, body_607720)
+    body_607735 = body
+  result = call_607733.call(nil, query_607734, nil, nil, body_607735)
 
-var listSubscribedWorkteams* = Call_ListSubscribedWorkteams_607703(
+var listSubscribedWorkteams* = Call_ListSubscribedWorkteams_607718(
     name: "listSubscribedWorkteams", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListSubscribedWorkteams",
-    validator: validate_ListSubscribedWorkteams_607704, base: "/",
-    url: url_ListSubscribedWorkteams_607705, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSubscribedWorkteams_607719, base: "/",
+    url: url_ListSubscribedWorkteams_607720, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTags_607721 = ref object of OpenApiRestCall_605589
-proc url_ListTags_607723(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTags_607736 = ref object of OpenApiRestCall_605589
+proc url_ListTags_607738(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -11885,7 +11999,7 @@ proc url_ListTags_607723(protocol: Scheme; host: string; base: string; route: st
   else:
     result.path = base & route
 
-proc validate_ListTags_607722(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTags_607737(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the tags for the specified Amazon SageMaker resource.
   ## 
@@ -11899,16 +12013,16 @@ proc validate_ListTags_607722(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607724 = query.getOrDefault("MaxResults")
-  valid_607724 = validateParameter(valid_607724, JString, required = false,
+  var valid_607739 = query.getOrDefault("MaxResults")
+  valid_607739 = validateParameter(valid_607739, JString, required = false,
                                  default = nil)
-  if valid_607724 != nil:
-    section.add "MaxResults", valid_607724
-  var valid_607725 = query.getOrDefault("NextToken")
-  valid_607725 = validateParameter(valid_607725, JString, required = false,
+  if valid_607739 != nil:
+    section.add "MaxResults", valid_607739
+  var valid_607740 = query.getOrDefault("NextToken")
+  valid_607740 = validateParameter(valid_607740, JString, required = false,
                                  default = nil)
-  if valid_607725 != nil:
-    section.add "NextToken", valid_607725
+  if valid_607740 != nil:
+    section.add "NextToken", valid_607740
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -11922,46 +12036,46 @@ proc validate_ListTags_607722(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607726 = header.getOrDefault("X-Amz-Target")
-  valid_607726 = validateParameter(valid_607726, JString, required = true,
+  var valid_607741 = header.getOrDefault("X-Amz-Target")
+  valid_607741 = validateParameter(valid_607741, JString, required = true,
                                  default = newJString("SageMaker.ListTags"))
-  if valid_607726 != nil:
-    section.add "X-Amz-Target", valid_607726
-  var valid_607727 = header.getOrDefault("X-Amz-Signature")
-  valid_607727 = validateParameter(valid_607727, JString, required = false,
+  if valid_607741 != nil:
+    section.add "X-Amz-Target", valid_607741
+  var valid_607742 = header.getOrDefault("X-Amz-Signature")
+  valid_607742 = validateParameter(valid_607742, JString, required = false,
                                  default = nil)
-  if valid_607727 != nil:
-    section.add "X-Amz-Signature", valid_607727
-  var valid_607728 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607728 = validateParameter(valid_607728, JString, required = false,
+  if valid_607742 != nil:
+    section.add "X-Amz-Signature", valid_607742
+  var valid_607743 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607743 = validateParameter(valid_607743, JString, required = false,
                                  default = nil)
-  if valid_607728 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607728
-  var valid_607729 = header.getOrDefault("X-Amz-Date")
-  valid_607729 = validateParameter(valid_607729, JString, required = false,
+  if valid_607743 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607743
+  var valid_607744 = header.getOrDefault("X-Amz-Date")
+  valid_607744 = validateParameter(valid_607744, JString, required = false,
                                  default = nil)
-  if valid_607729 != nil:
-    section.add "X-Amz-Date", valid_607729
-  var valid_607730 = header.getOrDefault("X-Amz-Credential")
-  valid_607730 = validateParameter(valid_607730, JString, required = false,
+  if valid_607744 != nil:
+    section.add "X-Amz-Date", valid_607744
+  var valid_607745 = header.getOrDefault("X-Amz-Credential")
+  valid_607745 = validateParameter(valid_607745, JString, required = false,
                                  default = nil)
-  if valid_607730 != nil:
-    section.add "X-Amz-Credential", valid_607730
-  var valid_607731 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607731 = validateParameter(valid_607731, JString, required = false,
+  if valid_607745 != nil:
+    section.add "X-Amz-Credential", valid_607745
+  var valid_607746 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607746 = validateParameter(valid_607746, JString, required = false,
                                  default = nil)
-  if valid_607731 != nil:
-    section.add "X-Amz-Security-Token", valid_607731
-  var valid_607732 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607732 = validateParameter(valid_607732, JString, required = false,
+  if valid_607746 != nil:
+    section.add "X-Amz-Security-Token", valid_607746
+  var valid_607747 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607747 = validateParameter(valid_607747, JString, required = false,
                                  default = nil)
-  if valid_607732 != nil:
-    section.add "X-Amz-Algorithm", valid_607732
-  var valid_607733 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607733 = validateParameter(valid_607733, JString, required = false,
+  if valid_607747 != nil:
+    section.add "X-Amz-Algorithm", valid_607747
+  var valid_607748 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607748 = validateParameter(valid_607748, JString, required = false,
                                  default = nil)
-  if valid_607733 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607733
+  if valid_607748 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607748
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -11972,20 +12086,20 @@ proc validate_ListTags_607722(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607735: Call_ListTags_607721; path: JsonNode; query: JsonNode;
+proc call*(call_607750: Call_ListTags_607736; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the tags for the specified Amazon SageMaker resource.
   ## 
-  let valid = call_607735.validator(path, query, header, formData, body)
-  let scheme = call_607735.pickScheme
+  let valid = call_607750.validator(path, query, header, formData, body)
+  let scheme = call_607750.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607735.url(scheme.get, call_607735.host, call_607735.base,
-                         call_607735.route, valid.getOrDefault("path"),
+  let url = call_607750.url(scheme.get, call_607750.host, call_607750.base,
+                         call_607750.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607735, url, valid)
+  result = atozHook(call_607750, url, valid)
 
-proc call*(call_607736: Call_ListTags_607721; body: JsonNode;
+proc call*(call_607751: Call_ListTags_607736; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTags
   ## Returns the tags for the specified Amazon SageMaker resource.
@@ -11994,23 +12108,23 @@ proc call*(call_607736: Call_ListTags_607721; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607737 = newJObject()
-  var body_607738 = newJObject()
-  add(query_607737, "MaxResults", newJString(MaxResults))
-  add(query_607737, "NextToken", newJString(NextToken))
+  var query_607752 = newJObject()
+  var body_607753 = newJObject()
+  add(query_607752, "MaxResults", newJString(MaxResults))
+  add(query_607752, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607738 = body
-  result = call_607736.call(nil, query_607737, nil, nil, body_607738)
+    body_607753 = body
+  result = call_607751.call(nil, query_607752, nil, nil, body_607753)
 
-var listTags* = Call_ListTags_607721(name: "listTags", meth: HttpMethod.HttpPost,
+var listTags* = Call_ListTags_607736(name: "listTags", meth: HttpMethod.HttpPost,
                                   host: "api.sagemaker.amazonaws.com",
                                   route: "/#X-Amz-Target=SageMaker.ListTags",
-                                  validator: validate_ListTags_607722, base: "/",
-                                  url: url_ListTags_607723,
+                                  validator: validate_ListTags_607737, base: "/",
+                                  url: url_ListTags_607738,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrainingJobs_607739 = ref object of OpenApiRestCall_605589
-proc url_ListTrainingJobs_607741(protocol: Scheme; host: string; base: string;
+  Call_ListTrainingJobs_607754 = ref object of OpenApiRestCall_605589
+proc url_ListTrainingJobs_607756(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -12022,7 +12136,7 @@ proc url_ListTrainingJobs_607741(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListTrainingJobs_607740(path: JsonNode; query: JsonNode;
+proc validate_ListTrainingJobs_607755(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Lists training jobs.
@@ -12037,16 +12151,16 @@ proc validate_ListTrainingJobs_607740(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607742 = query.getOrDefault("MaxResults")
-  valid_607742 = validateParameter(valid_607742, JString, required = false,
+  var valid_607757 = query.getOrDefault("MaxResults")
+  valid_607757 = validateParameter(valid_607757, JString, required = false,
                                  default = nil)
-  if valid_607742 != nil:
-    section.add "MaxResults", valid_607742
-  var valid_607743 = query.getOrDefault("NextToken")
-  valid_607743 = validateParameter(valid_607743, JString, required = false,
+  if valid_607757 != nil:
+    section.add "MaxResults", valid_607757
+  var valid_607758 = query.getOrDefault("NextToken")
+  valid_607758 = validateParameter(valid_607758, JString, required = false,
                                  default = nil)
-  if valid_607743 != nil:
-    section.add "NextToken", valid_607743
+  if valid_607758 != nil:
+    section.add "NextToken", valid_607758
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -12060,46 +12174,46 @@ proc validate_ListTrainingJobs_607740(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607744 = header.getOrDefault("X-Amz-Target")
-  valid_607744 = validateParameter(valid_607744, JString, required = true, default = newJString(
+  var valid_607759 = header.getOrDefault("X-Amz-Target")
+  valid_607759 = validateParameter(valid_607759, JString, required = true, default = newJString(
       "SageMaker.ListTrainingJobs"))
-  if valid_607744 != nil:
-    section.add "X-Amz-Target", valid_607744
-  var valid_607745 = header.getOrDefault("X-Amz-Signature")
-  valid_607745 = validateParameter(valid_607745, JString, required = false,
+  if valid_607759 != nil:
+    section.add "X-Amz-Target", valid_607759
+  var valid_607760 = header.getOrDefault("X-Amz-Signature")
+  valid_607760 = validateParameter(valid_607760, JString, required = false,
                                  default = nil)
-  if valid_607745 != nil:
-    section.add "X-Amz-Signature", valid_607745
-  var valid_607746 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607746 = validateParameter(valid_607746, JString, required = false,
+  if valid_607760 != nil:
+    section.add "X-Amz-Signature", valid_607760
+  var valid_607761 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607761 = validateParameter(valid_607761, JString, required = false,
                                  default = nil)
-  if valid_607746 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607746
-  var valid_607747 = header.getOrDefault("X-Amz-Date")
-  valid_607747 = validateParameter(valid_607747, JString, required = false,
+  if valid_607761 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607761
+  var valid_607762 = header.getOrDefault("X-Amz-Date")
+  valid_607762 = validateParameter(valid_607762, JString, required = false,
                                  default = nil)
-  if valid_607747 != nil:
-    section.add "X-Amz-Date", valid_607747
-  var valid_607748 = header.getOrDefault("X-Amz-Credential")
-  valid_607748 = validateParameter(valid_607748, JString, required = false,
+  if valid_607762 != nil:
+    section.add "X-Amz-Date", valid_607762
+  var valid_607763 = header.getOrDefault("X-Amz-Credential")
+  valid_607763 = validateParameter(valid_607763, JString, required = false,
                                  default = nil)
-  if valid_607748 != nil:
-    section.add "X-Amz-Credential", valid_607748
-  var valid_607749 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607749 = validateParameter(valid_607749, JString, required = false,
+  if valid_607763 != nil:
+    section.add "X-Amz-Credential", valid_607763
+  var valid_607764 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607764 = validateParameter(valid_607764, JString, required = false,
                                  default = nil)
-  if valid_607749 != nil:
-    section.add "X-Amz-Security-Token", valid_607749
-  var valid_607750 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607750 = validateParameter(valid_607750, JString, required = false,
+  if valid_607764 != nil:
+    section.add "X-Amz-Security-Token", valid_607764
+  var valid_607765 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607765 = validateParameter(valid_607765, JString, required = false,
                                  default = nil)
-  if valid_607750 != nil:
-    section.add "X-Amz-Algorithm", valid_607750
-  var valid_607751 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607751 = validateParameter(valid_607751, JString, required = false,
+  if valid_607765 != nil:
+    section.add "X-Amz-Algorithm", valid_607765
+  var valid_607766 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607766 = validateParameter(valid_607766, JString, required = false,
                                  default = nil)
-  if valid_607751 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607751
+  if valid_607766 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607766
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -12110,20 +12224,20 @@ proc validate_ListTrainingJobs_607740(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607753: Call_ListTrainingJobs_607739; path: JsonNode;
+proc call*(call_607768: Call_ListTrainingJobs_607754; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists training jobs.
   ## 
-  let valid = call_607753.validator(path, query, header, formData, body)
-  let scheme = call_607753.pickScheme
+  let valid = call_607768.validator(path, query, header, formData, body)
+  let scheme = call_607768.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607753.url(scheme.get, call_607753.host, call_607753.base,
-                         call_607753.route, valid.getOrDefault("path"),
+  let url = call_607768.url(scheme.get, call_607768.host, call_607768.base,
+                         call_607768.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607753, url, valid)
+  result = atozHook(call_607768, url, valid)
 
-proc call*(call_607754: Call_ListTrainingJobs_607739; body: JsonNode;
+proc call*(call_607769: Call_ListTrainingJobs_607754; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTrainingJobs
   ## Lists training jobs.
@@ -12132,22 +12246,22 @@ proc call*(call_607754: Call_ListTrainingJobs_607739; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607755 = newJObject()
-  var body_607756 = newJObject()
-  add(query_607755, "MaxResults", newJString(MaxResults))
-  add(query_607755, "NextToken", newJString(NextToken))
+  var query_607770 = newJObject()
+  var body_607771 = newJObject()
+  add(query_607770, "MaxResults", newJString(MaxResults))
+  add(query_607770, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607756 = body
-  result = call_607754.call(nil, query_607755, nil, nil, body_607756)
+    body_607771 = body
+  result = call_607769.call(nil, query_607770, nil, nil, body_607771)
 
-var listTrainingJobs* = Call_ListTrainingJobs_607739(name: "listTrainingJobs",
+var listTrainingJobs* = Call_ListTrainingJobs_607754(name: "listTrainingJobs",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListTrainingJobs",
-    validator: validate_ListTrainingJobs_607740, base: "/",
-    url: url_ListTrainingJobs_607741, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTrainingJobs_607755, base: "/",
+    url: url_ListTrainingJobs_607756, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrainingJobsForHyperParameterTuningJob_607757 = ref object of OpenApiRestCall_605589
-proc url_ListTrainingJobsForHyperParameterTuningJob_607759(protocol: Scheme;
+  Call_ListTrainingJobsForHyperParameterTuningJob_607772 = ref object of OpenApiRestCall_605589
+proc url_ListTrainingJobsForHyperParameterTuningJob_607774(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -12159,7 +12273,7 @@ proc url_ListTrainingJobsForHyperParameterTuningJob_607759(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_ListTrainingJobsForHyperParameterTuningJob_607758(path: JsonNode;
+proc validate_ListTrainingJobsForHyperParameterTuningJob_607773(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of <a>TrainingJobSummary</a> objects that describe the training jobs that a hyperparameter tuning job launched.
   ## 
@@ -12173,16 +12287,16 @@ proc validate_ListTrainingJobsForHyperParameterTuningJob_607758(path: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607760 = query.getOrDefault("MaxResults")
-  valid_607760 = validateParameter(valid_607760, JString, required = false,
+  var valid_607775 = query.getOrDefault("MaxResults")
+  valid_607775 = validateParameter(valid_607775, JString, required = false,
                                  default = nil)
-  if valid_607760 != nil:
-    section.add "MaxResults", valid_607760
-  var valid_607761 = query.getOrDefault("NextToken")
-  valid_607761 = validateParameter(valid_607761, JString, required = false,
+  if valid_607775 != nil:
+    section.add "MaxResults", valid_607775
+  var valid_607776 = query.getOrDefault("NextToken")
+  valid_607776 = validateParameter(valid_607776, JString, required = false,
                                  default = nil)
-  if valid_607761 != nil:
-    section.add "NextToken", valid_607761
+  if valid_607776 != nil:
+    section.add "NextToken", valid_607776
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -12196,46 +12310,46 @@ proc validate_ListTrainingJobsForHyperParameterTuningJob_607758(path: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607762 = header.getOrDefault("X-Amz-Target")
-  valid_607762 = validateParameter(valid_607762, JString, required = true, default = newJString(
+  var valid_607777 = header.getOrDefault("X-Amz-Target")
+  valid_607777 = validateParameter(valid_607777, JString, required = true, default = newJString(
       "SageMaker.ListTrainingJobsForHyperParameterTuningJob"))
-  if valid_607762 != nil:
-    section.add "X-Amz-Target", valid_607762
-  var valid_607763 = header.getOrDefault("X-Amz-Signature")
-  valid_607763 = validateParameter(valid_607763, JString, required = false,
+  if valid_607777 != nil:
+    section.add "X-Amz-Target", valid_607777
+  var valid_607778 = header.getOrDefault("X-Amz-Signature")
+  valid_607778 = validateParameter(valid_607778, JString, required = false,
                                  default = nil)
-  if valid_607763 != nil:
-    section.add "X-Amz-Signature", valid_607763
-  var valid_607764 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607764 = validateParameter(valid_607764, JString, required = false,
+  if valid_607778 != nil:
+    section.add "X-Amz-Signature", valid_607778
+  var valid_607779 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607779 = validateParameter(valid_607779, JString, required = false,
                                  default = nil)
-  if valid_607764 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607764
-  var valid_607765 = header.getOrDefault("X-Amz-Date")
-  valid_607765 = validateParameter(valid_607765, JString, required = false,
+  if valid_607779 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607779
+  var valid_607780 = header.getOrDefault("X-Amz-Date")
+  valid_607780 = validateParameter(valid_607780, JString, required = false,
                                  default = nil)
-  if valid_607765 != nil:
-    section.add "X-Amz-Date", valid_607765
-  var valid_607766 = header.getOrDefault("X-Amz-Credential")
-  valid_607766 = validateParameter(valid_607766, JString, required = false,
+  if valid_607780 != nil:
+    section.add "X-Amz-Date", valid_607780
+  var valid_607781 = header.getOrDefault("X-Amz-Credential")
+  valid_607781 = validateParameter(valid_607781, JString, required = false,
                                  default = nil)
-  if valid_607766 != nil:
-    section.add "X-Amz-Credential", valid_607766
-  var valid_607767 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607767 = validateParameter(valid_607767, JString, required = false,
+  if valid_607781 != nil:
+    section.add "X-Amz-Credential", valid_607781
+  var valid_607782 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607782 = validateParameter(valid_607782, JString, required = false,
                                  default = nil)
-  if valid_607767 != nil:
-    section.add "X-Amz-Security-Token", valid_607767
-  var valid_607768 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607768 = validateParameter(valid_607768, JString, required = false,
+  if valid_607782 != nil:
+    section.add "X-Amz-Security-Token", valid_607782
+  var valid_607783 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607783 = validateParameter(valid_607783, JString, required = false,
                                  default = nil)
-  if valid_607768 != nil:
-    section.add "X-Amz-Algorithm", valid_607768
-  var valid_607769 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607769 = validateParameter(valid_607769, JString, required = false,
+  if valid_607783 != nil:
+    section.add "X-Amz-Algorithm", valid_607783
+  var valid_607784 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607784 = validateParameter(valid_607784, JString, required = false,
                                  default = nil)
-  if valid_607769 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607769
+  if valid_607784 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607784
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -12246,21 +12360,21 @@ proc validate_ListTrainingJobsForHyperParameterTuningJob_607758(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607771: Call_ListTrainingJobsForHyperParameterTuningJob_607757;
+proc call*(call_607786: Call_ListTrainingJobsForHyperParameterTuningJob_607772;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Gets a list of <a>TrainingJobSummary</a> objects that describe the training jobs that a hyperparameter tuning job launched.
   ## 
-  let valid = call_607771.validator(path, query, header, formData, body)
-  let scheme = call_607771.pickScheme
+  let valid = call_607786.validator(path, query, header, formData, body)
+  let scheme = call_607786.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607771.url(scheme.get, call_607771.host, call_607771.base,
-                         call_607771.route, valid.getOrDefault("path"),
+  let url = call_607786.url(scheme.get, call_607786.host, call_607786.base,
+                         call_607786.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607771, url, valid)
+  result = atozHook(call_607786, url, valid)
 
-proc call*(call_607772: Call_ListTrainingJobsForHyperParameterTuningJob_607757;
+proc call*(call_607787: Call_ListTrainingJobsForHyperParameterTuningJob_607772;
           body: JsonNode; MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTrainingJobsForHyperParameterTuningJob
   ## Gets a list of <a>TrainingJobSummary</a> objects that describe the training jobs that a hyperparameter tuning job launched.
@@ -12269,23 +12383,23 @@ proc call*(call_607772: Call_ListTrainingJobsForHyperParameterTuningJob_607757;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607773 = newJObject()
-  var body_607774 = newJObject()
-  add(query_607773, "MaxResults", newJString(MaxResults))
-  add(query_607773, "NextToken", newJString(NextToken))
+  var query_607788 = newJObject()
+  var body_607789 = newJObject()
+  add(query_607788, "MaxResults", newJString(MaxResults))
+  add(query_607788, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607774 = body
-  result = call_607772.call(nil, query_607773, nil, nil, body_607774)
+    body_607789 = body
+  result = call_607787.call(nil, query_607788, nil, nil, body_607789)
 
-var listTrainingJobsForHyperParameterTuningJob* = Call_ListTrainingJobsForHyperParameterTuningJob_607757(
+var listTrainingJobsForHyperParameterTuningJob* = Call_ListTrainingJobsForHyperParameterTuningJob_607772(
     name: "listTrainingJobsForHyperParameterTuningJob", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com", route: "/#X-Amz-Target=SageMaker.ListTrainingJobsForHyperParameterTuningJob",
-    validator: validate_ListTrainingJobsForHyperParameterTuningJob_607758,
-    base: "/", url: url_ListTrainingJobsForHyperParameterTuningJob_607759,
+    validator: validate_ListTrainingJobsForHyperParameterTuningJob_607773,
+    base: "/", url: url_ListTrainingJobsForHyperParameterTuningJob_607774,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTransformJobs_607775 = ref object of OpenApiRestCall_605589
-proc url_ListTransformJobs_607777(protocol: Scheme; host: string; base: string;
+  Call_ListTransformJobs_607790 = ref object of OpenApiRestCall_605589
+proc url_ListTransformJobs_607792(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -12297,7 +12411,7 @@ proc url_ListTransformJobs_607777(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListTransformJobs_607776(path: JsonNode; query: JsonNode;
+proc validate_ListTransformJobs_607791(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Lists transform jobs.
@@ -12312,16 +12426,16 @@ proc validate_ListTransformJobs_607776(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607778 = query.getOrDefault("MaxResults")
-  valid_607778 = validateParameter(valid_607778, JString, required = false,
+  var valid_607793 = query.getOrDefault("MaxResults")
+  valid_607793 = validateParameter(valid_607793, JString, required = false,
                                  default = nil)
-  if valid_607778 != nil:
-    section.add "MaxResults", valid_607778
-  var valid_607779 = query.getOrDefault("NextToken")
-  valid_607779 = validateParameter(valid_607779, JString, required = false,
+  if valid_607793 != nil:
+    section.add "MaxResults", valid_607793
+  var valid_607794 = query.getOrDefault("NextToken")
+  valid_607794 = validateParameter(valid_607794, JString, required = false,
                                  default = nil)
-  if valid_607779 != nil:
-    section.add "NextToken", valid_607779
+  if valid_607794 != nil:
+    section.add "NextToken", valid_607794
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -12335,46 +12449,46 @@ proc validate_ListTransformJobs_607776(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607780 = header.getOrDefault("X-Amz-Target")
-  valid_607780 = validateParameter(valid_607780, JString, required = true, default = newJString(
+  var valid_607795 = header.getOrDefault("X-Amz-Target")
+  valid_607795 = validateParameter(valid_607795, JString, required = true, default = newJString(
       "SageMaker.ListTransformJobs"))
-  if valid_607780 != nil:
-    section.add "X-Amz-Target", valid_607780
-  var valid_607781 = header.getOrDefault("X-Amz-Signature")
-  valid_607781 = validateParameter(valid_607781, JString, required = false,
+  if valid_607795 != nil:
+    section.add "X-Amz-Target", valid_607795
+  var valid_607796 = header.getOrDefault("X-Amz-Signature")
+  valid_607796 = validateParameter(valid_607796, JString, required = false,
                                  default = nil)
-  if valid_607781 != nil:
-    section.add "X-Amz-Signature", valid_607781
-  var valid_607782 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607782 = validateParameter(valid_607782, JString, required = false,
+  if valid_607796 != nil:
+    section.add "X-Amz-Signature", valid_607796
+  var valid_607797 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607797 = validateParameter(valid_607797, JString, required = false,
                                  default = nil)
-  if valid_607782 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607782
-  var valid_607783 = header.getOrDefault("X-Amz-Date")
-  valid_607783 = validateParameter(valid_607783, JString, required = false,
+  if valid_607797 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607797
+  var valid_607798 = header.getOrDefault("X-Amz-Date")
+  valid_607798 = validateParameter(valid_607798, JString, required = false,
                                  default = nil)
-  if valid_607783 != nil:
-    section.add "X-Amz-Date", valid_607783
-  var valid_607784 = header.getOrDefault("X-Amz-Credential")
-  valid_607784 = validateParameter(valid_607784, JString, required = false,
+  if valid_607798 != nil:
+    section.add "X-Amz-Date", valid_607798
+  var valid_607799 = header.getOrDefault("X-Amz-Credential")
+  valid_607799 = validateParameter(valid_607799, JString, required = false,
                                  default = nil)
-  if valid_607784 != nil:
-    section.add "X-Amz-Credential", valid_607784
-  var valid_607785 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607785 = validateParameter(valid_607785, JString, required = false,
+  if valid_607799 != nil:
+    section.add "X-Amz-Credential", valid_607799
+  var valid_607800 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607800 = validateParameter(valid_607800, JString, required = false,
                                  default = nil)
-  if valid_607785 != nil:
-    section.add "X-Amz-Security-Token", valid_607785
-  var valid_607786 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607786 = validateParameter(valid_607786, JString, required = false,
+  if valid_607800 != nil:
+    section.add "X-Amz-Security-Token", valid_607800
+  var valid_607801 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607801 = validateParameter(valid_607801, JString, required = false,
                                  default = nil)
-  if valid_607786 != nil:
-    section.add "X-Amz-Algorithm", valid_607786
-  var valid_607787 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607787 = validateParameter(valid_607787, JString, required = false,
+  if valid_607801 != nil:
+    section.add "X-Amz-Algorithm", valid_607801
+  var valid_607802 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607802 = validateParameter(valid_607802, JString, required = false,
                                  default = nil)
-  if valid_607787 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607787
+  if valid_607802 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607802
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -12385,20 +12499,20 @@ proc validate_ListTransformJobs_607776(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607789: Call_ListTransformJobs_607775; path: JsonNode;
+proc call*(call_607804: Call_ListTransformJobs_607790; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists transform jobs.
   ## 
-  let valid = call_607789.validator(path, query, header, formData, body)
-  let scheme = call_607789.pickScheme
+  let valid = call_607804.validator(path, query, header, formData, body)
+  let scheme = call_607804.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607789.url(scheme.get, call_607789.host, call_607789.base,
-                         call_607789.route, valid.getOrDefault("path"),
+  let url = call_607804.url(scheme.get, call_607804.host, call_607804.base,
+                         call_607804.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607789, url, valid)
+  result = atozHook(call_607804, url, valid)
 
-proc call*(call_607790: Call_ListTransformJobs_607775; body: JsonNode;
+proc call*(call_607805: Call_ListTransformJobs_607790; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTransformJobs
   ## Lists transform jobs.
@@ -12407,22 +12521,22 @@ proc call*(call_607790: Call_ListTransformJobs_607775; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607791 = newJObject()
-  var body_607792 = newJObject()
-  add(query_607791, "MaxResults", newJString(MaxResults))
-  add(query_607791, "NextToken", newJString(NextToken))
+  var query_607806 = newJObject()
+  var body_607807 = newJObject()
+  add(query_607806, "MaxResults", newJString(MaxResults))
+  add(query_607806, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607792 = body
-  result = call_607790.call(nil, query_607791, nil, nil, body_607792)
+    body_607807 = body
+  result = call_607805.call(nil, query_607806, nil, nil, body_607807)
 
-var listTransformJobs* = Call_ListTransformJobs_607775(name: "listTransformJobs",
+var listTransformJobs* = Call_ListTransformJobs_607790(name: "listTransformJobs",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListTransformJobs",
-    validator: validate_ListTransformJobs_607776, base: "/",
-    url: url_ListTransformJobs_607777, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTransformJobs_607791, base: "/",
+    url: url_ListTransformJobs_607792, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrialComponents_607793 = ref object of OpenApiRestCall_605589
-proc url_ListTrialComponents_607795(protocol: Scheme; host: string; base: string;
+  Call_ListTrialComponents_607808 = ref object of OpenApiRestCall_605589
+proc url_ListTrialComponents_607810(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -12434,10 +12548,10 @@ proc url_ListTrialComponents_607795(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListTrialComponents_607794(path: JsonNode; query: JsonNode;
+proc validate_ListTrialComponents_607809(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## Lists the trial components in your account. You can filter the list to show only components that were created in a specific time range. You can sort the list by trial component name or creation time.
+  ## <p>Lists the trial components in your account. You can sort the list by trial component name or creation time. You can filter the list to show only components that were created in a specific time range. You can also filter on one of the following:</p> <ul> <li> <p> <code>ExperimentName</code> </p> </li> <li> <p> <code>SourceArn</code> </p> </li> <li> <p> <code>TrialName</code> </p> </li> </ul>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -12449,16 +12563,16 @@ proc validate_ListTrialComponents_607794(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607796 = query.getOrDefault("MaxResults")
-  valid_607796 = validateParameter(valid_607796, JString, required = false,
+  var valid_607811 = query.getOrDefault("MaxResults")
+  valid_607811 = validateParameter(valid_607811, JString, required = false,
                                  default = nil)
-  if valid_607796 != nil:
-    section.add "MaxResults", valid_607796
-  var valid_607797 = query.getOrDefault("NextToken")
-  valid_607797 = validateParameter(valid_607797, JString, required = false,
+  if valid_607811 != nil:
+    section.add "MaxResults", valid_607811
+  var valid_607812 = query.getOrDefault("NextToken")
+  valid_607812 = validateParameter(valid_607812, JString, required = false,
                                  default = nil)
-  if valid_607797 != nil:
-    section.add "NextToken", valid_607797
+  if valid_607812 != nil:
+    section.add "NextToken", valid_607812
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -12472,46 +12586,46 @@ proc validate_ListTrialComponents_607794(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607798 = header.getOrDefault("X-Amz-Target")
-  valid_607798 = validateParameter(valid_607798, JString, required = true, default = newJString(
+  var valid_607813 = header.getOrDefault("X-Amz-Target")
+  valid_607813 = validateParameter(valid_607813, JString, required = true, default = newJString(
       "SageMaker.ListTrialComponents"))
-  if valid_607798 != nil:
-    section.add "X-Amz-Target", valid_607798
-  var valid_607799 = header.getOrDefault("X-Amz-Signature")
-  valid_607799 = validateParameter(valid_607799, JString, required = false,
+  if valid_607813 != nil:
+    section.add "X-Amz-Target", valid_607813
+  var valid_607814 = header.getOrDefault("X-Amz-Signature")
+  valid_607814 = validateParameter(valid_607814, JString, required = false,
                                  default = nil)
-  if valid_607799 != nil:
-    section.add "X-Amz-Signature", valid_607799
-  var valid_607800 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607800 = validateParameter(valid_607800, JString, required = false,
+  if valid_607814 != nil:
+    section.add "X-Amz-Signature", valid_607814
+  var valid_607815 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607815 = validateParameter(valid_607815, JString, required = false,
                                  default = nil)
-  if valid_607800 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607800
-  var valid_607801 = header.getOrDefault("X-Amz-Date")
-  valid_607801 = validateParameter(valid_607801, JString, required = false,
+  if valid_607815 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607815
+  var valid_607816 = header.getOrDefault("X-Amz-Date")
+  valid_607816 = validateParameter(valid_607816, JString, required = false,
                                  default = nil)
-  if valid_607801 != nil:
-    section.add "X-Amz-Date", valid_607801
-  var valid_607802 = header.getOrDefault("X-Amz-Credential")
-  valid_607802 = validateParameter(valid_607802, JString, required = false,
+  if valid_607816 != nil:
+    section.add "X-Amz-Date", valid_607816
+  var valid_607817 = header.getOrDefault("X-Amz-Credential")
+  valid_607817 = validateParameter(valid_607817, JString, required = false,
                                  default = nil)
-  if valid_607802 != nil:
-    section.add "X-Amz-Credential", valid_607802
-  var valid_607803 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607803 = validateParameter(valid_607803, JString, required = false,
+  if valid_607817 != nil:
+    section.add "X-Amz-Credential", valid_607817
+  var valid_607818 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607818 = validateParameter(valid_607818, JString, required = false,
                                  default = nil)
-  if valid_607803 != nil:
-    section.add "X-Amz-Security-Token", valid_607803
-  var valid_607804 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607804 = validateParameter(valid_607804, JString, required = false,
+  if valid_607818 != nil:
+    section.add "X-Amz-Security-Token", valid_607818
+  var valid_607819 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607819 = validateParameter(valid_607819, JString, required = false,
                                  default = nil)
-  if valid_607804 != nil:
-    section.add "X-Amz-Algorithm", valid_607804
-  var valid_607805 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607805 = validateParameter(valid_607805, JString, required = false,
+  if valid_607819 != nil:
+    section.add "X-Amz-Algorithm", valid_607819
+  var valid_607820 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607820 = validateParameter(valid_607820, JString, required = false,
                                  default = nil)
-  if valid_607805 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607805
+  if valid_607820 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607820
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -12522,45 +12636,45 @@ proc validate_ListTrialComponents_607794(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607807: Call_ListTrialComponents_607793; path: JsonNode;
+proc call*(call_607822: Call_ListTrialComponents_607808; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Lists the trial components in your account. You can filter the list to show only components that were created in a specific time range. You can sort the list by trial component name or creation time.
+  ## <p>Lists the trial components in your account. You can sort the list by trial component name or creation time. You can filter the list to show only components that were created in a specific time range. You can also filter on one of the following:</p> <ul> <li> <p> <code>ExperimentName</code> </p> </li> <li> <p> <code>SourceArn</code> </p> </li> <li> <p> <code>TrialName</code> </p> </li> </ul>
   ## 
-  let valid = call_607807.validator(path, query, header, formData, body)
-  let scheme = call_607807.pickScheme
+  let valid = call_607822.validator(path, query, header, formData, body)
+  let scheme = call_607822.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607807.url(scheme.get, call_607807.host, call_607807.base,
-                         call_607807.route, valid.getOrDefault("path"),
+  let url = call_607822.url(scheme.get, call_607822.host, call_607822.base,
+                         call_607822.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607807, url, valid)
+  result = atozHook(call_607822, url, valid)
 
-proc call*(call_607808: Call_ListTrialComponents_607793; body: JsonNode;
+proc call*(call_607823: Call_ListTrialComponents_607808; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTrialComponents
-  ## Lists the trial components in your account. You can filter the list to show only components that were created in a specific time range. You can sort the list by trial component name or creation time.
+  ## <p>Lists the trial components in your account. You can sort the list by trial component name or creation time. You can filter the list to show only components that were created in a specific time range. You can also filter on one of the following:</p> <ul> <li> <p> <code>ExperimentName</code> </p> </li> <li> <p> <code>SourceArn</code> </p> </li> <li> <p> <code>TrialName</code> </p> </li> </ul>
   ##   MaxResults: string
   ##             : Pagination limit
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607809 = newJObject()
-  var body_607810 = newJObject()
-  add(query_607809, "MaxResults", newJString(MaxResults))
-  add(query_607809, "NextToken", newJString(NextToken))
+  var query_607824 = newJObject()
+  var body_607825 = newJObject()
+  add(query_607824, "MaxResults", newJString(MaxResults))
+  add(query_607824, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607810 = body
-  result = call_607808.call(nil, query_607809, nil, nil, body_607810)
+    body_607825 = body
+  result = call_607823.call(nil, query_607824, nil, nil, body_607825)
 
-var listTrialComponents* = Call_ListTrialComponents_607793(
+var listTrialComponents* = Call_ListTrialComponents_607808(
     name: "listTrialComponents", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListTrialComponents",
-    validator: validate_ListTrialComponents_607794, base: "/",
-    url: url_ListTrialComponents_607795, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTrialComponents_607809, base: "/",
+    url: url_ListTrialComponents_607810, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrials_607811 = ref object of OpenApiRestCall_605589
-proc url_ListTrials_607813(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTrials_607826 = ref object of OpenApiRestCall_605589
+proc url_ListTrials_607828(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -12572,7 +12686,7 @@ proc url_ListTrials_607813(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_ListTrials_607812(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTrials_607827(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the trials in your account. Specify an experiment name to limit the list to the trials that are part of that experiment. The list can be filtered to show only trials that were created in a specific time range. The list can be sorted by trial name or creation time.
   ## 
@@ -12586,16 +12700,16 @@ proc validate_ListTrials_607812(path: JsonNode; query: JsonNode; header: JsonNod
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607814 = query.getOrDefault("MaxResults")
-  valid_607814 = validateParameter(valid_607814, JString, required = false,
+  var valid_607829 = query.getOrDefault("MaxResults")
+  valid_607829 = validateParameter(valid_607829, JString, required = false,
                                  default = nil)
-  if valid_607814 != nil:
-    section.add "MaxResults", valid_607814
-  var valid_607815 = query.getOrDefault("NextToken")
-  valid_607815 = validateParameter(valid_607815, JString, required = false,
+  if valid_607829 != nil:
+    section.add "MaxResults", valid_607829
+  var valid_607830 = query.getOrDefault("NextToken")
+  valid_607830 = validateParameter(valid_607830, JString, required = false,
                                  default = nil)
-  if valid_607815 != nil:
-    section.add "NextToken", valid_607815
+  if valid_607830 != nil:
+    section.add "NextToken", valid_607830
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -12609,46 +12723,46 @@ proc validate_ListTrials_607812(path: JsonNode; query: JsonNode; header: JsonNod
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607816 = header.getOrDefault("X-Amz-Target")
-  valid_607816 = validateParameter(valid_607816, JString, required = true,
+  var valid_607831 = header.getOrDefault("X-Amz-Target")
+  valid_607831 = validateParameter(valid_607831, JString, required = true,
                                  default = newJString("SageMaker.ListTrials"))
-  if valid_607816 != nil:
-    section.add "X-Amz-Target", valid_607816
-  var valid_607817 = header.getOrDefault("X-Amz-Signature")
-  valid_607817 = validateParameter(valid_607817, JString, required = false,
+  if valid_607831 != nil:
+    section.add "X-Amz-Target", valid_607831
+  var valid_607832 = header.getOrDefault("X-Amz-Signature")
+  valid_607832 = validateParameter(valid_607832, JString, required = false,
                                  default = nil)
-  if valid_607817 != nil:
-    section.add "X-Amz-Signature", valid_607817
-  var valid_607818 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607818 = validateParameter(valid_607818, JString, required = false,
+  if valid_607832 != nil:
+    section.add "X-Amz-Signature", valid_607832
+  var valid_607833 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607833 = validateParameter(valid_607833, JString, required = false,
                                  default = nil)
-  if valid_607818 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607818
-  var valid_607819 = header.getOrDefault("X-Amz-Date")
-  valid_607819 = validateParameter(valid_607819, JString, required = false,
+  if valid_607833 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607833
+  var valid_607834 = header.getOrDefault("X-Amz-Date")
+  valid_607834 = validateParameter(valid_607834, JString, required = false,
                                  default = nil)
-  if valid_607819 != nil:
-    section.add "X-Amz-Date", valid_607819
-  var valid_607820 = header.getOrDefault("X-Amz-Credential")
-  valid_607820 = validateParameter(valid_607820, JString, required = false,
+  if valid_607834 != nil:
+    section.add "X-Amz-Date", valid_607834
+  var valid_607835 = header.getOrDefault("X-Amz-Credential")
+  valid_607835 = validateParameter(valid_607835, JString, required = false,
                                  default = nil)
-  if valid_607820 != nil:
-    section.add "X-Amz-Credential", valid_607820
-  var valid_607821 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607821 = validateParameter(valid_607821, JString, required = false,
+  if valid_607835 != nil:
+    section.add "X-Amz-Credential", valid_607835
+  var valid_607836 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607836 = validateParameter(valid_607836, JString, required = false,
                                  default = nil)
-  if valid_607821 != nil:
-    section.add "X-Amz-Security-Token", valid_607821
-  var valid_607822 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607822 = validateParameter(valid_607822, JString, required = false,
+  if valid_607836 != nil:
+    section.add "X-Amz-Security-Token", valid_607836
+  var valid_607837 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607837 = validateParameter(valid_607837, JString, required = false,
                                  default = nil)
-  if valid_607822 != nil:
-    section.add "X-Amz-Algorithm", valid_607822
-  var valid_607823 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607823 = validateParameter(valid_607823, JString, required = false,
+  if valid_607837 != nil:
+    section.add "X-Amz-Algorithm", valid_607837
+  var valid_607838 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607838 = validateParameter(valid_607838, JString, required = false,
                                  default = nil)
-  if valid_607823 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607823
+  if valid_607838 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607838
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -12659,20 +12773,20 @@ proc validate_ListTrials_607812(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_607825: Call_ListTrials_607811; path: JsonNode; query: JsonNode;
+proc call*(call_607840: Call_ListTrials_607826; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the trials in your account. Specify an experiment name to limit the list to the trials that are part of that experiment. The list can be filtered to show only trials that were created in a specific time range. The list can be sorted by trial name or creation time.
   ## 
-  let valid = call_607825.validator(path, query, header, formData, body)
-  let scheme = call_607825.pickScheme
+  let valid = call_607840.validator(path, query, header, formData, body)
+  let scheme = call_607840.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607825.url(scheme.get, call_607825.host, call_607825.base,
-                         call_607825.route, valid.getOrDefault("path"),
+  let url = call_607840.url(scheme.get, call_607840.host, call_607840.base,
+                         call_607840.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607825, url, valid)
+  result = atozHook(call_607840, url, valid)
 
-proc call*(call_607826: Call_ListTrials_607811; body: JsonNode;
+proc call*(call_607841: Call_ListTrials_607826; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listTrials
   ## Lists the trials in your account. Specify an experiment name to limit the list to the trials that are part of that experiment. The list can be filtered to show only trials that were created in a specific time range. The list can be sorted by trial name or creation time.
@@ -12681,23 +12795,23 @@ proc call*(call_607826: Call_ListTrials_607811; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607827 = newJObject()
-  var body_607828 = newJObject()
-  add(query_607827, "MaxResults", newJString(MaxResults))
-  add(query_607827, "NextToken", newJString(NextToken))
+  var query_607842 = newJObject()
+  var body_607843 = newJObject()
+  add(query_607842, "MaxResults", newJString(MaxResults))
+  add(query_607842, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607828 = body
-  result = call_607826.call(nil, query_607827, nil, nil, body_607828)
+    body_607843 = body
+  result = call_607841.call(nil, query_607842, nil, nil, body_607843)
 
-var listTrials* = Call_ListTrials_607811(name: "listTrials",
+var listTrials* = Call_ListTrials_607826(name: "listTrials",
                                       meth: HttpMethod.HttpPost,
                                       host: "api.sagemaker.amazonaws.com", route: "/#X-Amz-Target=SageMaker.ListTrials",
-                                      validator: validate_ListTrials_607812,
-                                      base: "/", url: url_ListTrials_607813,
+                                      validator: validate_ListTrials_607827,
+                                      base: "/", url: url_ListTrials_607828,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListUserProfiles_607829 = ref object of OpenApiRestCall_605589
-proc url_ListUserProfiles_607831(protocol: Scheme; host: string; base: string;
+  Call_ListUserProfiles_607844 = ref object of OpenApiRestCall_605589
+proc url_ListUserProfiles_607846(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -12709,7 +12823,7 @@ proc url_ListUserProfiles_607831(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListUserProfiles_607830(path: JsonNode; query: JsonNode;
+proc validate_ListUserProfiles_607845(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Lists user profiles.
@@ -12724,16 +12838,16 @@ proc validate_ListUserProfiles_607830(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607832 = query.getOrDefault("MaxResults")
-  valid_607832 = validateParameter(valid_607832, JString, required = false,
+  var valid_607847 = query.getOrDefault("MaxResults")
+  valid_607847 = validateParameter(valid_607847, JString, required = false,
                                  default = nil)
-  if valid_607832 != nil:
-    section.add "MaxResults", valid_607832
-  var valid_607833 = query.getOrDefault("NextToken")
-  valid_607833 = validateParameter(valid_607833, JString, required = false,
+  if valid_607847 != nil:
+    section.add "MaxResults", valid_607847
+  var valid_607848 = query.getOrDefault("NextToken")
+  valid_607848 = validateParameter(valid_607848, JString, required = false,
                                  default = nil)
-  if valid_607833 != nil:
-    section.add "NextToken", valid_607833
+  if valid_607848 != nil:
+    section.add "NextToken", valid_607848
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -12747,46 +12861,46 @@ proc validate_ListUserProfiles_607830(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607834 = header.getOrDefault("X-Amz-Target")
-  valid_607834 = validateParameter(valid_607834, JString, required = true, default = newJString(
+  var valid_607849 = header.getOrDefault("X-Amz-Target")
+  valid_607849 = validateParameter(valid_607849, JString, required = true, default = newJString(
       "SageMaker.ListUserProfiles"))
-  if valid_607834 != nil:
-    section.add "X-Amz-Target", valid_607834
-  var valid_607835 = header.getOrDefault("X-Amz-Signature")
-  valid_607835 = validateParameter(valid_607835, JString, required = false,
+  if valid_607849 != nil:
+    section.add "X-Amz-Target", valid_607849
+  var valid_607850 = header.getOrDefault("X-Amz-Signature")
+  valid_607850 = validateParameter(valid_607850, JString, required = false,
                                  default = nil)
-  if valid_607835 != nil:
-    section.add "X-Amz-Signature", valid_607835
-  var valid_607836 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607836 = validateParameter(valid_607836, JString, required = false,
+  if valid_607850 != nil:
+    section.add "X-Amz-Signature", valid_607850
+  var valid_607851 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607851 = validateParameter(valid_607851, JString, required = false,
                                  default = nil)
-  if valid_607836 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607836
-  var valid_607837 = header.getOrDefault("X-Amz-Date")
-  valid_607837 = validateParameter(valid_607837, JString, required = false,
+  if valid_607851 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607851
+  var valid_607852 = header.getOrDefault("X-Amz-Date")
+  valid_607852 = validateParameter(valid_607852, JString, required = false,
                                  default = nil)
-  if valid_607837 != nil:
-    section.add "X-Amz-Date", valid_607837
-  var valid_607838 = header.getOrDefault("X-Amz-Credential")
-  valid_607838 = validateParameter(valid_607838, JString, required = false,
+  if valid_607852 != nil:
+    section.add "X-Amz-Date", valid_607852
+  var valid_607853 = header.getOrDefault("X-Amz-Credential")
+  valid_607853 = validateParameter(valid_607853, JString, required = false,
                                  default = nil)
-  if valid_607838 != nil:
-    section.add "X-Amz-Credential", valid_607838
-  var valid_607839 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607839 = validateParameter(valid_607839, JString, required = false,
+  if valid_607853 != nil:
+    section.add "X-Amz-Credential", valid_607853
+  var valid_607854 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607854 = validateParameter(valid_607854, JString, required = false,
                                  default = nil)
-  if valid_607839 != nil:
-    section.add "X-Amz-Security-Token", valid_607839
-  var valid_607840 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607840 = validateParameter(valid_607840, JString, required = false,
+  if valid_607854 != nil:
+    section.add "X-Amz-Security-Token", valid_607854
+  var valid_607855 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607855 = validateParameter(valid_607855, JString, required = false,
                                  default = nil)
-  if valid_607840 != nil:
-    section.add "X-Amz-Algorithm", valid_607840
-  var valid_607841 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607841 = validateParameter(valid_607841, JString, required = false,
+  if valid_607855 != nil:
+    section.add "X-Amz-Algorithm", valid_607855
+  var valid_607856 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607856 = validateParameter(valid_607856, JString, required = false,
                                  default = nil)
-  if valid_607841 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607841
+  if valid_607856 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607856
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -12797,20 +12911,20 @@ proc validate_ListUserProfiles_607830(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607843: Call_ListUserProfiles_607829; path: JsonNode;
+proc call*(call_607858: Call_ListUserProfiles_607844; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists user profiles.
   ## 
-  let valid = call_607843.validator(path, query, header, formData, body)
-  let scheme = call_607843.pickScheme
+  let valid = call_607858.validator(path, query, header, formData, body)
+  let scheme = call_607858.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607843.url(scheme.get, call_607843.host, call_607843.base,
-                         call_607843.route, valid.getOrDefault("path"),
+  let url = call_607858.url(scheme.get, call_607858.host, call_607858.base,
+                         call_607858.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607843, url, valid)
+  result = atozHook(call_607858, url, valid)
 
-proc call*(call_607844: Call_ListUserProfiles_607829; body: JsonNode;
+proc call*(call_607859: Call_ListUserProfiles_607844; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listUserProfiles
   ## Lists user profiles.
@@ -12819,22 +12933,22 @@ proc call*(call_607844: Call_ListUserProfiles_607829; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607845 = newJObject()
-  var body_607846 = newJObject()
-  add(query_607845, "MaxResults", newJString(MaxResults))
-  add(query_607845, "NextToken", newJString(NextToken))
+  var query_607860 = newJObject()
+  var body_607861 = newJObject()
+  add(query_607860, "MaxResults", newJString(MaxResults))
+  add(query_607860, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607846 = body
-  result = call_607844.call(nil, query_607845, nil, nil, body_607846)
+    body_607861 = body
+  result = call_607859.call(nil, query_607860, nil, nil, body_607861)
 
-var listUserProfiles* = Call_ListUserProfiles_607829(name: "listUserProfiles",
+var listUserProfiles* = Call_ListUserProfiles_607844(name: "listUserProfiles",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListUserProfiles",
-    validator: validate_ListUserProfiles_607830, base: "/",
-    url: url_ListUserProfiles_607831, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListUserProfiles_607845, base: "/",
+    url: url_ListUserProfiles_607846, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListWorkteams_607847 = ref object of OpenApiRestCall_605589
-proc url_ListWorkteams_607849(protocol: Scheme; host: string; base: string;
+  Call_ListWorkteams_607862 = ref object of OpenApiRestCall_605589
+proc url_ListWorkteams_607864(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -12846,7 +12960,7 @@ proc url_ListWorkteams_607849(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListWorkteams_607848(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListWorkteams_607863(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Gets a list of work teams that you have defined in a region. The list may be empty if no work team satisfies the filter specified in the <code>NameContains</code> parameter.
   ## 
@@ -12860,16 +12974,16 @@ proc validate_ListWorkteams_607848(path: JsonNode; query: JsonNode; header: Json
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607850 = query.getOrDefault("MaxResults")
-  valid_607850 = validateParameter(valid_607850, JString, required = false,
+  var valid_607865 = query.getOrDefault("MaxResults")
+  valid_607865 = validateParameter(valid_607865, JString, required = false,
                                  default = nil)
-  if valid_607850 != nil:
-    section.add "MaxResults", valid_607850
-  var valid_607851 = query.getOrDefault("NextToken")
-  valid_607851 = validateParameter(valid_607851, JString, required = false,
+  if valid_607865 != nil:
+    section.add "MaxResults", valid_607865
+  var valid_607866 = query.getOrDefault("NextToken")
+  valid_607866 = validateParameter(valid_607866, JString, required = false,
                                  default = nil)
-  if valid_607851 != nil:
-    section.add "NextToken", valid_607851
+  if valid_607866 != nil:
+    section.add "NextToken", valid_607866
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -12883,46 +12997,46 @@ proc validate_ListWorkteams_607848(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607852 = header.getOrDefault("X-Amz-Target")
-  valid_607852 = validateParameter(valid_607852, JString, required = true, default = newJString(
+  var valid_607867 = header.getOrDefault("X-Amz-Target")
+  valid_607867 = validateParameter(valid_607867, JString, required = true, default = newJString(
       "SageMaker.ListWorkteams"))
-  if valid_607852 != nil:
-    section.add "X-Amz-Target", valid_607852
-  var valid_607853 = header.getOrDefault("X-Amz-Signature")
-  valid_607853 = validateParameter(valid_607853, JString, required = false,
+  if valid_607867 != nil:
+    section.add "X-Amz-Target", valid_607867
+  var valid_607868 = header.getOrDefault("X-Amz-Signature")
+  valid_607868 = validateParameter(valid_607868, JString, required = false,
                                  default = nil)
-  if valid_607853 != nil:
-    section.add "X-Amz-Signature", valid_607853
-  var valid_607854 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607854 = validateParameter(valid_607854, JString, required = false,
+  if valid_607868 != nil:
+    section.add "X-Amz-Signature", valid_607868
+  var valid_607869 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607869 = validateParameter(valid_607869, JString, required = false,
                                  default = nil)
-  if valid_607854 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607854
-  var valid_607855 = header.getOrDefault("X-Amz-Date")
-  valid_607855 = validateParameter(valid_607855, JString, required = false,
+  if valid_607869 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607869
+  var valid_607870 = header.getOrDefault("X-Amz-Date")
+  valid_607870 = validateParameter(valid_607870, JString, required = false,
                                  default = nil)
-  if valid_607855 != nil:
-    section.add "X-Amz-Date", valid_607855
-  var valid_607856 = header.getOrDefault("X-Amz-Credential")
-  valid_607856 = validateParameter(valid_607856, JString, required = false,
+  if valid_607870 != nil:
+    section.add "X-Amz-Date", valid_607870
+  var valid_607871 = header.getOrDefault("X-Amz-Credential")
+  valid_607871 = validateParameter(valid_607871, JString, required = false,
                                  default = nil)
-  if valid_607856 != nil:
-    section.add "X-Amz-Credential", valid_607856
-  var valid_607857 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607857 = validateParameter(valid_607857, JString, required = false,
+  if valid_607871 != nil:
+    section.add "X-Amz-Credential", valid_607871
+  var valid_607872 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607872 = validateParameter(valid_607872, JString, required = false,
                                  default = nil)
-  if valid_607857 != nil:
-    section.add "X-Amz-Security-Token", valid_607857
-  var valid_607858 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607858 = validateParameter(valid_607858, JString, required = false,
+  if valid_607872 != nil:
+    section.add "X-Amz-Security-Token", valid_607872
+  var valid_607873 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607873 = validateParameter(valid_607873, JString, required = false,
                                  default = nil)
-  if valid_607858 != nil:
-    section.add "X-Amz-Algorithm", valid_607858
-  var valid_607859 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607859 = validateParameter(valid_607859, JString, required = false,
+  if valid_607873 != nil:
+    section.add "X-Amz-Algorithm", valid_607873
+  var valid_607874 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607874 = validateParameter(valid_607874, JString, required = false,
                                  default = nil)
-  if valid_607859 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607859
+  if valid_607874 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607874
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -12933,20 +13047,20 @@ proc validate_ListWorkteams_607848(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_607861: Call_ListWorkteams_607847; path: JsonNode; query: JsonNode;
+proc call*(call_607876: Call_ListWorkteams_607862; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Gets a list of work teams that you have defined in a region. The list may be empty if no work team satisfies the filter specified in the <code>NameContains</code> parameter.
   ## 
-  let valid = call_607861.validator(path, query, header, formData, body)
-  let scheme = call_607861.pickScheme
+  let valid = call_607876.validator(path, query, header, formData, body)
+  let scheme = call_607876.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607861.url(scheme.get, call_607861.host, call_607861.base,
-                         call_607861.route, valid.getOrDefault("path"),
+  let url = call_607876.url(scheme.get, call_607876.host, call_607876.base,
+                         call_607876.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607861, url, valid)
+  result = atozHook(call_607876, url, valid)
 
-proc call*(call_607862: Call_ListWorkteams_607847; body: JsonNode;
+proc call*(call_607877: Call_ListWorkteams_607862; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listWorkteams
   ## Gets a list of work teams that you have defined in a region. The list may be empty if no work team satisfies the filter specified in the <code>NameContains</code> parameter.
@@ -12955,22 +13069,22 @@ proc call*(call_607862: Call_ListWorkteams_607847; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607863 = newJObject()
-  var body_607864 = newJObject()
-  add(query_607863, "MaxResults", newJString(MaxResults))
-  add(query_607863, "NextToken", newJString(NextToken))
+  var query_607878 = newJObject()
+  var body_607879 = newJObject()
+  add(query_607878, "MaxResults", newJString(MaxResults))
+  add(query_607878, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607864 = body
-  result = call_607862.call(nil, query_607863, nil, nil, body_607864)
+    body_607879 = body
+  result = call_607877.call(nil, query_607878, nil, nil, body_607879)
 
-var listWorkteams* = Call_ListWorkteams_607847(name: "listWorkteams",
+var listWorkteams* = Call_ListWorkteams_607862(name: "listWorkteams",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.ListWorkteams",
-    validator: validate_ListWorkteams_607848, base: "/", url: url_ListWorkteams_607849,
+    validator: validate_ListWorkteams_607863, base: "/", url: url_ListWorkteams_607864,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RenderUiTemplate_607865 = ref object of OpenApiRestCall_605589
-proc url_RenderUiTemplate_607867(protocol: Scheme; host: string; base: string;
+  Call_RenderUiTemplate_607880 = ref object of OpenApiRestCall_605589
+proc url_RenderUiTemplate_607882(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -12982,7 +13096,7 @@ proc url_RenderUiTemplate_607867(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RenderUiTemplate_607866(path: JsonNode; query: JsonNode;
+proc validate_RenderUiTemplate_607881(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Renders the UI template so that you can preview the worker's experience. 
@@ -13005,46 +13119,46 @@ proc validate_RenderUiTemplate_607866(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607868 = header.getOrDefault("X-Amz-Target")
-  valid_607868 = validateParameter(valid_607868, JString, required = true, default = newJString(
+  var valid_607883 = header.getOrDefault("X-Amz-Target")
+  valid_607883 = validateParameter(valid_607883, JString, required = true, default = newJString(
       "SageMaker.RenderUiTemplate"))
-  if valid_607868 != nil:
-    section.add "X-Amz-Target", valid_607868
-  var valid_607869 = header.getOrDefault("X-Amz-Signature")
-  valid_607869 = validateParameter(valid_607869, JString, required = false,
+  if valid_607883 != nil:
+    section.add "X-Amz-Target", valid_607883
+  var valid_607884 = header.getOrDefault("X-Amz-Signature")
+  valid_607884 = validateParameter(valid_607884, JString, required = false,
                                  default = nil)
-  if valid_607869 != nil:
-    section.add "X-Amz-Signature", valid_607869
-  var valid_607870 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607870 = validateParameter(valid_607870, JString, required = false,
+  if valid_607884 != nil:
+    section.add "X-Amz-Signature", valid_607884
+  var valid_607885 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607885 = validateParameter(valid_607885, JString, required = false,
                                  default = nil)
-  if valid_607870 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607870
-  var valid_607871 = header.getOrDefault("X-Amz-Date")
-  valid_607871 = validateParameter(valid_607871, JString, required = false,
+  if valid_607885 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607885
+  var valid_607886 = header.getOrDefault("X-Amz-Date")
+  valid_607886 = validateParameter(valid_607886, JString, required = false,
                                  default = nil)
-  if valid_607871 != nil:
-    section.add "X-Amz-Date", valid_607871
-  var valid_607872 = header.getOrDefault("X-Amz-Credential")
-  valid_607872 = validateParameter(valid_607872, JString, required = false,
+  if valid_607886 != nil:
+    section.add "X-Amz-Date", valid_607886
+  var valid_607887 = header.getOrDefault("X-Amz-Credential")
+  valid_607887 = validateParameter(valid_607887, JString, required = false,
                                  default = nil)
-  if valid_607872 != nil:
-    section.add "X-Amz-Credential", valid_607872
-  var valid_607873 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607873 = validateParameter(valid_607873, JString, required = false,
+  if valid_607887 != nil:
+    section.add "X-Amz-Credential", valid_607887
+  var valid_607888 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607888 = validateParameter(valid_607888, JString, required = false,
                                  default = nil)
-  if valid_607873 != nil:
-    section.add "X-Amz-Security-Token", valid_607873
-  var valid_607874 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607874 = validateParameter(valid_607874, JString, required = false,
+  if valid_607888 != nil:
+    section.add "X-Amz-Security-Token", valid_607888
+  var valid_607889 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607889 = validateParameter(valid_607889, JString, required = false,
                                  default = nil)
-  if valid_607874 != nil:
-    section.add "X-Amz-Algorithm", valid_607874
-  var valid_607875 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607875 = validateParameter(valid_607875, JString, required = false,
+  if valid_607889 != nil:
+    section.add "X-Amz-Algorithm", valid_607889
+  var valid_607890 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607890 = validateParameter(valid_607890, JString, required = false,
                                  default = nil)
-  if valid_607875 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607875
+  if valid_607890 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607890
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -13055,36 +13169,36 @@ proc validate_RenderUiTemplate_607866(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607877: Call_RenderUiTemplate_607865; path: JsonNode;
+proc call*(call_607892: Call_RenderUiTemplate_607880; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Renders the UI template so that you can preview the worker's experience. 
   ## 
-  let valid = call_607877.validator(path, query, header, formData, body)
-  let scheme = call_607877.pickScheme
+  let valid = call_607892.validator(path, query, header, formData, body)
+  let scheme = call_607892.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607877.url(scheme.get, call_607877.host, call_607877.base,
-                         call_607877.route, valid.getOrDefault("path"),
+  let url = call_607892.url(scheme.get, call_607892.host, call_607892.base,
+                         call_607892.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607877, url, valid)
+  result = atozHook(call_607892, url, valid)
 
-proc call*(call_607878: Call_RenderUiTemplate_607865; body: JsonNode): Recallable =
+proc call*(call_607893: Call_RenderUiTemplate_607880; body: JsonNode): Recallable =
   ## renderUiTemplate
   ## Renders the UI template so that you can preview the worker's experience. 
   ##   body: JObject (required)
-  var body_607879 = newJObject()
+  var body_607894 = newJObject()
   if body != nil:
-    body_607879 = body
-  result = call_607878.call(nil, nil, nil, nil, body_607879)
+    body_607894 = body
+  result = call_607893.call(nil, nil, nil, nil, body_607894)
 
-var renderUiTemplate* = Call_RenderUiTemplate_607865(name: "renderUiTemplate",
+var renderUiTemplate* = Call_RenderUiTemplate_607880(name: "renderUiTemplate",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.RenderUiTemplate",
-    validator: validate_RenderUiTemplate_607866, base: "/",
-    url: url_RenderUiTemplate_607867, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RenderUiTemplate_607881, base: "/",
+    url: url_RenderUiTemplate_607882, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_Search_607880 = ref object of OpenApiRestCall_605589
-proc url_Search_607882(protocol: Scheme; host: string; base: string; route: string;
+  Call_Search_607895 = ref object of OpenApiRestCall_605589
+proc url_Search_607897(protocol: Scheme; host: string; base: string; route: string;
                       path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -13096,7 +13210,7 @@ proc url_Search_607882(protocol: Scheme; host: string; base: string; route: stri
   else:
     result.path = base & route
 
-proc validate_Search_607881(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_Search_607896(path: JsonNode; query: JsonNode; header: JsonNode;
                            formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Finds Amazon SageMaker resources that match a search query. Matching resource objects are returned as a list of <code>SearchResult</code> objects in the response. You can sort the search results by any resource property in a ascending or descending order.</p> <p>You can query against the following value types: numeric, text, Boolean, and timestamp.</p>
   ## 
@@ -13110,16 +13224,16 @@ proc validate_Search_607881(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_607883 = query.getOrDefault("MaxResults")
-  valid_607883 = validateParameter(valid_607883, JString, required = false,
+  var valid_607898 = query.getOrDefault("MaxResults")
+  valid_607898 = validateParameter(valid_607898, JString, required = false,
                                  default = nil)
-  if valid_607883 != nil:
-    section.add "MaxResults", valid_607883
-  var valid_607884 = query.getOrDefault("NextToken")
-  valid_607884 = validateParameter(valid_607884, JString, required = false,
+  if valid_607898 != nil:
+    section.add "MaxResults", valid_607898
+  var valid_607899 = query.getOrDefault("NextToken")
+  valid_607899 = validateParameter(valid_607899, JString, required = false,
                                  default = nil)
-  if valid_607884 != nil:
-    section.add "NextToken", valid_607884
+  if valid_607899 != nil:
+    section.add "NextToken", valid_607899
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -13133,46 +13247,46 @@ proc validate_Search_607881(path: JsonNode; query: JsonNode; header: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607885 = header.getOrDefault("X-Amz-Target")
-  valid_607885 = validateParameter(valid_607885, JString, required = true,
+  var valid_607900 = header.getOrDefault("X-Amz-Target")
+  valid_607900 = validateParameter(valid_607900, JString, required = true,
                                  default = newJString("SageMaker.Search"))
-  if valid_607885 != nil:
-    section.add "X-Amz-Target", valid_607885
-  var valid_607886 = header.getOrDefault("X-Amz-Signature")
-  valid_607886 = validateParameter(valid_607886, JString, required = false,
+  if valid_607900 != nil:
+    section.add "X-Amz-Target", valid_607900
+  var valid_607901 = header.getOrDefault("X-Amz-Signature")
+  valid_607901 = validateParameter(valid_607901, JString, required = false,
                                  default = nil)
-  if valid_607886 != nil:
-    section.add "X-Amz-Signature", valid_607886
-  var valid_607887 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607887 = validateParameter(valid_607887, JString, required = false,
+  if valid_607901 != nil:
+    section.add "X-Amz-Signature", valid_607901
+  var valid_607902 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_607902 = validateParameter(valid_607902, JString, required = false,
                                  default = nil)
-  if valid_607887 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607887
-  var valid_607888 = header.getOrDefault("X-Amz-Date")
-  valid_607888 = validateParameter(valid_607888, JString, required = false,
+  if valid_607902 != nil:
+    section.add "X-Amz-Content-Sha256", valid_607902
+  var valid_607903 = header.getOrDefault("X-Amz-Date")
+  valid_607903 = validateParameter(valid_607903, JString, required = false,
                                  default = nil)
-  if valid_607888 != nil:
-    section.add "X-Amz-Date", valid_607888
-  var valid_607889 = header.getOrDefault("X-Amz-Credential")
-  valid_607889 = validateParameter(valid_607889, JString, required = false,
+  if valid_607903 != nil:
+    section.add "X-Amz-Date", valid_607903
+  var valid_607904 = header.getOrDefault("X-Amz-Credential")
+  valid_607904 = validateParameter(valid_607904, JString, required = false,
                                  default = nil)
-  if valid_607889 != nil:
-    section.add "X-Amz-Credential", valid_607889
-  var valid_607890 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607890 = validateParameter(valid_607890, JString, required = false,
+  if valid_607904 != nil:
+    section.add "X-Amz-Credential", valid_607904
+  var valid_607905 = header.getOrDefault("X-Amz-Security-Token")
+  valid_607905 = validateParameter(valid_607905, JString, required = false,
                                  default = nil)
-  if valid_607890 != nil:
-    section.add "X-Amz-Security-Token", valid_607890
-  var valid_607891 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607891 = validateParameter(valid_607891, JString, required = false,
+  if valid_607905 != nil:
+    section.add "X-Amz-Security-Token", valid_607905
+  var valid_607906 = header.getOrDefault("X-Amz-Algorithm")
+  valid_607906 = validateParameter(valid_607906, JString, required = false,
                                  default = nil)
-  if valid_607891 != nil:
-    section.add "X-Amz-Algorithm", valid_607891
-  var valid_607892 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607892 = validateParameter(valid_607892, JString, required = false,
+  if valid_607906 != nil:
+    section.add "X-Amz-Algorithm", valid_607906
+  var valid_607907 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_607907 = validateParameter(valid_607907, JString, required = false,
                                  default = nil)
-  if valid_607892 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607892
+  if valid_607907 != nil:
+    section.add "X-Amz-SignedHeaders", valid_607907
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -13183,20 +13297,20 @@ proc validate_Search_607881(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607894: Call_Search_607880; path: JsonNode; query: JsonNode;
+proc call*(call_607909: Call_Search_607895; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Finds Amazon SageMaker resources that match a search query. Matching resource objects are returned as a list of <code>SearchResult</code> objects in the response. You can sort the search results by any resource property in a ascending or descending order.</p> <p>You can query against the following value types: numeric, text, Boolean, and timestamp.</p>
   ## 
-  let valid = call_607894.validator(path, query, header, formData, body)
-  let scheme = call_607894.pickScheme
+  let valid = call_607909.validator(path, query, header, formData, body)
+  let scheme = call_607909.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607894.url(scheme.get, call_607894.host, call_607894.base,
-                         call_607894.route, valid.getOrDefault("path"),
+  let url = call_607909.url(scheme.get, call_607909.host, call_607909.base,
+                         call_607909.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607894, url, valid)
+  result = atozHook(call_607909, url, valid)
 
-proc call*(call_607895: Call_Search_607880; body: JsonNode; MaxResults: string = "";
+proc call*(call_607910: Call_Search_607895; body: JsonNode; MaxResults: string = "";
           NextToken: string = ""): Recallable =
   ## search
   ## <p>Finds Amazon SageMaker resources that match a search query. Matching resource objects are returned as a list of <code>SearchResult</code> objects in the response. You can sort the search results by any resource property in a ascending or descending order.</p> <p>You can query against the following value types: numeric, text, Boolean, and timestamp.</p>
@@ -13205,23 +13319,23 @@ proc call*(call_607895: Call_Search_607880; body: JsonNode; MaxResults: string =
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_607896 = newJObject()
-  var body_607897 = newJObject()
-  add(query_607896, "MaxResults", newJString(MaxResults))
-  add(query_607896, "NextToken", newJString(NextToken))
+  var query_607911 = newJObject()
+  var body_607912 = newJObject()
+  add(query_607911, "MaxResults", newJString(MaxResults))
+  add(query_607911, "NextToken", newJString(NextToken))
   if body != nil:
-    body_607897 = body
-  result = call_607895.call(nil, query_607896, nil, nil, body_607897)
+    body_607912 = body
+  result = call_607910.call(nil, query_607911, nil, nil, body_607912)
 
-var search* = Call_Search_607880(name: "search", meth: HttpMethod.HttpPost,
+var search* = Call_Search_607895(name: "search", meth: HttpMethod.HttpPost,
                               host: "api.sagemaker.amazonaws.com",
                               route: "/#X-Amz-Target=SageMaker.Search",
-                              validator: validate_Search_607881, base: "/",
-                              url: url_Search_607882,
+                              validator: validate_Search_607896, base: "/",
+                              url: url_Search_607897,
                               schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartMonitoringSchedule_607898 = ref object of OpenApiRestCall_605589
-proc url_StartMonitoringSchedule_607900(protocol: Scheme; host: string; base: string;
+  Call_StartMonitoringSchedule_607913 = ref object of OpenApiRestCall_605589
+proc url_StartMonitoringSchedule_607915(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -13234,123 +13348,9 @@ proc url_StartMonitoringSchedule_607900(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_StartMonitoringSchedule_607899(path: JsonNode; query: JsonNode;
+proc validate_StartMonitoringSchedule_607914(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts a previously stopped monitoring schedule.</p> <note> <p>New monitoring schedules are immediately started after creation.</p> </note>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  section = newJObject()
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Target: JString (required)
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
-  var valid_607901 = header.getOrDefault("X-Amz-Target")
-  valid_607901 = validateParameter(valid_607901, JString, required = true, default = newJString(
-      "SageMaker.StartMonitoringSchedule"))
-  if valid_607901 != nil:
-    section.add "X-Amz-Target", valid_607901
-  var valid_607902 = header.getOrDefault("X-Amz-Signature")
-  valid_607902 = validateParameter(valid_607902, JString, required = false,
-                                 default = nil)
-  if valid_607902 != nil:
-    section.add "X-Amz-Signature", valid_607902
-  var valid_607903 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607903 = validateParameter(valid_607903, JString, required = false,
-                                 default = nil)
-  if valid_607903 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607903
-  var valid_607904 = header.getOrDefault("X-Amz-Date")
-  valid_607904 = validateParameter(valid_607904, JString, required = false,
-                                 default = nil)
-  if valid_607904 != nil:
-    section.add "X-Amz-Date", valid_607904
-  var valid_607905 = header.getOrDefault("X-Amz-Credential")
-  valid_607905 = validateParameter(valid_607905, JString, required = false,
-                                 default = nil)
-  if valid_607905 != nil:
-    section.add "X-Amz-Credential", valid_607905
-  var valid_607906 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607906 = validateParameter(valid_607906, JString, required = false,
-                                 default = nil)
-  if valid_607906 != nil:
-    section.add "X-Amz-Security-Token", valid_607906
-  var valid_607907 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607907 = validateParameter(valid_607907, JString, required = false,
-                                 default = nil)
-  if valid_607907 != nil:
-    section.add "X-Amz-Algorithm", valid_607907
-  var valid_607908 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607908 = validateParameter(valid_607908, JString, required = false,
-                                 default = nil)
-  if valid_607908 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607908
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_607910: Call_StartMonitoringSchedule_607898; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Starts a previously stopped monitoring schedule.</p> <note> <p>New monitoring schedules are immediately started after creation.</p> </note>
-  ## 
-  let valid = call_607910.validator(path, query, header, formData, body)
-  let scheme = call_607910.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607910.url(scheme.get, call_607910.host, call_607910.base,
-                         call_607910.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_607910, url, valid)
-
-proc call*(call_607911: Call_StartMonitoringSchedule_607898; body: JsonNode): Recallable =
-  ## startMonitoringSchedule
-  ## <p>Starts a previously stopped monitoring schedule.</p> <note> <p>New monitoring schedules are immediately started after creation.</p> </note>
-  ##   body: JObject (required)
-  var body_607912 = newJObject()
-  if body != nil:
-    body_607912 = body
-  result = call_607911.call(nil, nil, nil, nil, body_607912)
-
-var startMonitoringSchedule* = Call_StartMonitoringSchedule_607898(
-    name: "startMonitoringSchedule", meth: HttpMethod.HttpPost,
-    host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StartMonitoringSchedule",
-    validator: validate_StartMonitoringSchedule_607899, base: "/",
-    url: url_StartMonitoringSchedule_607900, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_StartNotebookInstance_607913 = ref object of OpenApiRestCall_605589
-proc url_StartNotebookInstance_607915(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_StartNotebookInstance_607914(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Launches an ML compute instance with the latest version of the libraries and attaches your ML storage volume. After configuring the notebook instance, Amazon SageMaker sets the notebook instance status to <code>InService</code>. A notebook instance's status must be <code>InService</code> before you can connect to your Jupyter notebook. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -13372,7 +13372,7 @@ proc validate_StartNotebookInstance_607914(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607916 = header.getOrDefault("X-Amz-Target")
   valid_607916 = validateParameter(valid_607916, JString, required = true, default = newJString(
-      "SageMaker.StartNotebookInstance"))
+      "SageMaker.StartMonitoringSchedule"))
   if valid_607916 != nil:
     section.add "X-Amz-Target", valid_607916
   var valid_607917 = header.getOrDefault("X-Amz-Signature")
@@ -13420,9 +13420,9 @@ proc validate_StartNotebookInstance_607914(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607925: Call_StartNotebookInstance_607913; path: JsonNode;
+proc call*(call_607925: Call_StartMonitoringSchedule_607913; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Launches an ML compute instance with the latest version of the libraries and attaches your ML storage volume. After configuring the notebook instance, Amazon SageMaker sets the notebook instance status to <code>InService</code>. A notebook instance's status must be <code>InService</code> before you can connect to your Jupyter notebook. 
+  ## <p>Starts a previously stopped monitoring schedule.</p> <note> <p>New monitoring schedules are immediately started after creation.</p> </note>
   ## 
   let valid = call_607925.validator(path, query, header, formData, body)
   let scheme = call_607925.pickScheme
@@ -13433,25 +13433,25 @@ proc call*(call_607925: Call_StartNotebookInstance_607913; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_607925, url, valid)
 
-proc call*(call_607926: Call_StartNotebookInstance_607913; body: JsonNode): Recallable =
-  ## startNotebookInstance
-  ## Launches an ML compute instance with the latest version of the libraries and attaches your ML storage volume. After configuring the notebook instance, Amazon SageMaker sets the notebook instance status to <code>InService</code>. A notebook instance's status must be <code>InService</code> before you can connect to your Jupyter notebook. 
+proc call*(call_607926: Call_StartMonitoringSchedule_607913; body: JsonNode): Recallable =
+  ## startMonitoringSchedule
+  ## <p>Starts a previously stopped monitoring schedule.</p> <note> <p>New monitoring schedules are immediately started after creation.</p> </note>
   ##   body: JObject (required)
   var body_607927 = newJObject()
   if body != nil:
     body_607927 = body
   result = call_607926.call(nil, nil, nil, nil, body_607927)
 
-var startNotebookInstance* = Call_StartNotebookInstance_607913(
-    name: "startNotebookInstance", meth: HttpMethod.HttpPost,
+var startMonitoringSchedule* = Call_StartMonitoringSchedule_607913(
+    name: "startMonitoringSchedule", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StartNotebookInstance",
-    validator: validate_StartNotebookInstance_607914, base: "/",
-    url: url_StartNotebookInstance_607915, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=SageMaker.StartMonitoringSchedule",
+    validator: validate_StartMonitoringSchedule_607914, base: "/",
+    url: url_StartMonitoringSchedule_607915, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopAutoMLJob_607928 = ref object of OpenApiRestCall_605589
-proc url_StopAutoMLJob_607930(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StartNotebookInstance_607928 = ref object of OpenApiRestCall_605589
+proc url_StartNotebookInstance_607930(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -13462,9 +13462,9 @@ proc url_StopAutoMLJob_607930(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopAutoMLJob_607929(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## A method for forcing the termination of a running job.
+proc validate_StartNotebookInstance_607929(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Launches an ML compute instance with the latest version of the libraries and attaches your ML storage volume. After configuring the notebook instance, Amazon SageMaker sets the notebook instance status to <code>InService</code>. A notebook instance's status must be <code>InService</code> before you can connect to your Jupyter notebook. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -13486,7 +13486,7 @@ proc validate_StopAutoMLJob_607929(path: JsonNode; query: JsonNode; header: Json
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607931 = header.getOrDefault("X-Amz-Target")
   valid_607931 = validateParameter(valid_607931, JString, required = true, default = newJString(
-      "SageMaker.StopAutoMLJob"))
+      "SageMaker.StartNotebookInstance"))
   if valid_607931 != nil:
     section.add "X-Amz-Target", valid_607931
   var valid_607932 = header.getOrDefault("X-Amz-Signature")
@@ -13534,9 +13534,9 @@ proc validate_StopAutoMLJob_607929(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_607940: Call_StopAutoMLJob_607928; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## A method for forcing the termination of a running job.
+proc call*(call_607940: Call_StartNotebookInstance_607928; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Launches an ML compute instance with the latest version of the libraries and attaches your ML storage volume. After configuring the notebook instance, Amazon SageMaker sets the notebook instance status to <code>InService</code>. A notebook instance's status must be <code>InService</code> before you can connect to your Jupyter notebook. 
   ## 
   let valid = call_607940.validator(path, query, header, formData, body)
   let scheme = call_607940.pickScheme
@@ -13547,24 +13547,25 @@ proc call*(call_607940: Call_StopAutoMLJob_607928; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_607940, url, valid)
 
-proc call*(call_607941: Call_StopAutoMLJob_607928; body: JsonNode): Recallable =
-  ## stopAutoMLJob
-  ## A method for forcing the termination of a running job.
+proc call*(call_607941: Call_StartNotebookInstance_607928; body: JsonNode): Recallable =
+  ## startNotebookInstance
+  ## Launches an ML compute instance with the latest version of the libraries and attaches your ML storage volume. After configuring the notebook instance, Amazon SageMaker sets the notebook instance status to <code>InService</code>. A notebook instance's status must be <code>InService</code> before you can connect to your Jupyter notebook. 
   ##   body: JObject (required)
   var body_607942 = newJObject()
   if body != nil:
     body_607942 = body
   result = call_607941.call(nil, nil, nil, nil, body_607942)
 
-var stopAutoMLJob* = Call_StopAutoMLJob_607928(name: "stopAutoMLJob",
-    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopAutoMLJob",
-    validator: validate_StopAutoMLJob_607929, base: "/", url: url_StopAutoMLJob_607930,
-    schemes: {Scheme.Https, Scheme.Http})
+var startNotebookInstance* = Call_StartNotebookInstance_607928(
+    name: "startNotebookInstance", meth: HttpMethod.HttpPost,
+    host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.StartNotebookInstance",
+    validator: validate_StartNotebookInstance_607929, base: "/",
+    url: url_StartNotebookInstance_607930, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopCompilationJob_607943 = ref object of OpenApiRestCall_605589
-proc url_StopCompilationJob_607945(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopAutoMLJob_607943 = ref object of OpenApiRestCall_605589
+proc url_StopAutoMLJob_607945(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -13575,10 +13576,9 @@ proc url_StopCompilationJob_607945(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopCompilationJob_607944(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode): JsonNode =
-  ## <p>Stops a model compilation job.</p> <p> To stop a job, Amazon SageMaker sends the algorithm the SIGTERM signal. This gracefully shuts the job down. If the job hasn't stopped, it sends the SIGKILL signal.</p> <p>When it receives a <code>StopCompilationJob</code> request, Amazon SageMaker changes the <a>CompilationJobSummary$CompilationJobStatus</a> of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the <a>CompilationJobSummary$CompilationJobStatus</a> to <code>Stopped</code>. </p>
+proc validate_StopAutoMLJob_607944(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## A method for forcing the termination of a running job.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -13600,7 +13600,7 @@ proc validate_StopCompilationJob_607944(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607946 = header.getOrDefault("X-Amz-Target")
   valid_607946 = validateParameter(valid_607946, JString, required = true, default = newJString(
-      "SageMaker.StopCompilationJob"))
+      "SageMaker.StopAutoMLJob"))
   if valid_607946 != nil:
     section.add "X-Amz-Target", valid_607946
   var valid_607947 = header.getOrDefault("X-Amz-Signature")
@@ -13648,9 +13648,9 @@ proc validate_StopCompilationJob_607944(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607955: Call_StopCompilationJob_607943; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Stops a model compilation job.</p> <p> To stop a job, Amazon SageMaker sends the algorithm the SIGTERM signal. This gracefully shuts the job down. If the job hasn't stopped, it sends the SIGKILL signal.</p> <p>When it receives a <code>StopCompilationJob</code> request, Amazon SageMaker changes the <a>CompilationJobSummary$CompilationJobStatus</a> of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the <a>CompilationJobSummary$CompilationJobStatus</a> to <code>Stopped</code>. </p>
+proc call*(call_607955: Call_StopAutoMLJob_607943; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## A method for forcing the termination of a running job.
   ## 
   let valid = call_607955.validator(path, query, header, formData, body)
   let scheme = call_607955.pickScheme
@@ -13661,25 +13661,24 @@ proc call*(call_607955: Call_StopCompilationJob_607943; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_607955, url, valid)
 
-proc call*(call_607956: Call_StopCompilationJob_607943; body: JsonNode): Recallable =
-  ## stopCompilationJob
-  ## <p>Stops a model compilation job.</p> <p> To stop a job, Amazon SageMaker sends the algorithm the SIGTERM signal. This gracefully shuts the job down. If the job hasn't stopped, it sends the SIGKILL signal.</p> <p>When it receives a <code>StopCompilationJob</code> request, Amazon SageMaker changes the <a>CompilationJobSummary$CompilationJobStatus</a> of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the <a>CompilationJobSummary$CompilationJobStatus</a> to <code>Stopped</code>. </p>
+proc call*(call_607956: Call_StopAutoMLJob_607943; body: JsonNode): Recallable =
+  ## stopAutoMLJob
+  ## A method for forcing the termination of a running job.
   ##   body: JObject (required)
   var body_607957 = newJObject()
   if body != nil:
     body_607957 = body
   result = call_607956.call(nil, nil, nil, nil, body_607957)
 
-var stopCompilationJob* = Call_StopCompilationJob_607943(
-    name: "stopCompilationJob", meth: HttpMethod.HttpPost,
-    host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopCompilationJob",
-    validator: validate_StopCompilationJob_607944, base: "/",
-    url: url_StopCompilationJob_607945, schemes: {Scheme.Https, Scheme.Http})
+var stopAutoMLJob* = Call_StopAutoMLJob_607943(name: "stopAutoMLJob",
+    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.StopAutoMLJob",
+    validator: validate_StopAutoMLJob_607944, base: "/", url: url_StopAutoMLJob_607945,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopHyperParameterTuningJob_607958 = ref object of OpenApiRestCall_605589
-proc url_StopHyperParameterTuningJob_607960(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopCompilationJob_607958 = ref object of OpenApiRestCall_605589
+proc url_StopCompilationJob_607960(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -13690,9 +13689,10 @@ proc url_StopHyperParameterTuningJob_607960(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_StopHyperParameterTuningJob_607959(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Stops a running hyperparameter tuning job and all running training jobs that the tuning job launched.</p> <p>All model artifacts output from the training jobs are stored in Amazon Simple Storage Service (Amazon S3). All data that the training jobs write to Amazon CloudWatch Logs are still available in CloudWatch. After the tuning job moves to the <code>Stopped</code> state, it releases all reserved resources for the tuning job.</p>
+proc validate_StopCompilationJob_607959(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode): JsonNode =
+  ## <p>Stops a model compilation job.</p> <p> To stop a job, Amazon SageMaker sends the algorithm the SIGTERM signal. This gracefully shuts the job down. If the job hasn't stopped, it sends the SIGKILL signal.</p> <p>When it receives a <code>StopCompilationJob</code> request, Amazon SageMaker changes the <a>CompilationJobSummary$CompilationJobStatus</a> of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the <a>CompilationJobSummary$CompilationJobStatus</a> to <code>Stopped</code>. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -13714,7 +13714,7 @@ proc validate_StopHyperParameterTuningJob_607959(path: JsonNode; query: JsonNode
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607961 = header.getOrDefault("X-Amz-Target")
   valid_607961 = validateParameter(valid_607961, JString, required = true, default = newJString(
-      "SageMaker.StopHyperParameterTuningJob"))
+      "SageMaker.StopCompilationJob"))
   if valid_607961 != nil:
     section.add "X-Amz-Target", valid_607961
   var valid_607962 = header.getOrDefault("X-Amz-Signature")
@@ -13762,9 +13762,9 @@ proc validate_StopHyperParameterTuningJob_607959(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_607970: Call_StopHyperParameterTuningJob_607958; path: JsonNode;
+proc call*(call_607970: Call_StopCompilationJob_607958; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Stops a running hyperparameter tuning job and all running training jobs that the tuning job launched.</p> <p>All model artifacts output from the training jobs are stored in Amazon Simple Storage Service (Amazon S3). All data that the training jobs write to Amazon CloudWatch Logs are still available in CloudWatch. After the tuning job moves to the <code>Stopped</code> state, it releases all reserved resources for the tuning job.</p>
+  ## <p>Stops a model compilation job.</p> <p> To stop a job, Amazon SageMaker sends the algorithm the SIGTERM signal. This gracefully shuts the job down. If the job hasn't stopped, it sends the SIGKILL signal.</p> <p>When it receives a <code>StopCompilationJob</code> request, Amazon SageMaker changes the <a>CompilationJobSummary$CompilationJobStatus</a> of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the <a>CompilationJobSummary$CompilationJobStatus</a> to <code>Stopped</code>. </p>
   ## 
   let valid = call_607970.validator(path, query, header, formData, body)
   let scheme = call_607970.pickScheme
@@ -13775,26 +13775,25 @@ proc call*(call_607970: Call_StopHyperParameterTuningJob_607958; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_607970, url, valid)
 
-proc call*(call_607971: Call_StopHyperParameterTuningJob_607958; body: JsonNode): Recallable =
-  ## stopHyperParameterTuningJob
-  ## <p>Stops a running hyperparameter tuning job and all running training jobs that the tuning job launched.</p> <p>All model artifacts output from the training jobs are stored in Amazon Simple Storage Service (Amazon S3). All data that the training jobs write to Amazon CloudWatch Logs are still available in CloudWatch. After the tuning job moves to the <code>Stopped</code> state, it releases all reserved resources for the tuning job.</p>
+proc call*(call_607971: Call_StopCompilationJob_607958; body: JsonNode): Recallable =
+  ## stopCompilationJob
+  ## <p>Stops a model compilation job.</p> <p> To stop a job, Amazon SageMaker sends the algorithm the SIGTERM signal. This gracefully shuts the job down. If the job hasn't stopped, it sends the SIGKILL signal.</p> <p>When it receives a <code>StopCompilationJob</code> request, Amazon SageMaker changes the <a>CompilationJobSummary$CompilationJobStatus</a> of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the <a>CompilationJobSummary$CompilationJobStatus</a> to <code>Stopped</code>. </p>
   ##   body: JObject (required)
   var body_607972 = newJObject()
   if body != nil:
     body_607972 = body
   result = call_607971.call(nil, nil, nil, nil, body_607972)
 
-var stopHyperParameterTuningJob* = Call_StopHyperParameterTuningJob_607958(
-    name: "stopHyperParameterTuningJob", meth: HttpMethod.HttpPost,
+var stopCompilationJob* = Call_StopCompilationJob_607958(
+    name: "stopCompilationJob", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopHyperParameterTuningJob",
-    validator: validate_StopHyperParameterTuningJob_607959, base: "/",
-    url: url_StopHyperParameterTuningJob_607960,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=SageMaker.StopCompilationJob",
+    validator: validate_StopCompilationJob_607959, base: "/",
+    url: url_StopCompilationJob_607960, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopLabelingJob_607973 = ref object of OpenApiRestCall_605589
-proc url_StopLabelingJob_607975(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopHyperParameterTuningJob_607973 = ref object of OpenApiRestCall_605589
+proc url_StopHyperParameterTuningJob_607975(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -13805,10 +13804,9 @@ proc url_StopLabelingJob_607975(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopLabelingJob_607974(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode): JsonNode =
-  ## Stops a running labeling job. A job that is stopped cannot be restarted. Any results obtained before the job is stopped are placed in the Amazon S3 output bucket.
+proc validate_StopHyperParameterTuningJob_607974(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Stops a running hyperparameter tuning job and all running training jobs that the tuning job launched.</p> <p>All model artifacts output from the training jobs are stored in Amazon Simple Storage Service (Amazon S3). All data that the training jobs write to Amazon CloudWatch Logs are still available in CloudWatch. After the tuning job moves to the <code>Stopped</code> state, it releases all reserved resources for the tuning job.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -13830,7 +13828,7 @@ proc validate_StopLabelingJob_607974(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607976 = header.getOrDefault("X-Amz-Target")
   valid_607976 = validateParameter(valid_607976, JString, required = true, default = newJString(
-      "SageMaker.StopLabelingJob"))
+      "SageMaker.StopHyperParameterTuningJob"))
   if valid_607976 != nil:
     section.add "X-Amz-Target", valid_607976
   var valid_607977 = header.getOrDefault("X-Amz-Signature")
@@ -13878,9 +13876,9 @@ proc validate_StopLabelingJob_607974(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607985: Call_StopLabelingJob_607973; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Stops a running labeling job. A job that is stopped cannot be restarted. Any results obtained before the job is stopped are placed in the Amazon S3 output bucket.
+proc call*(call_607985: Call_StopHyperParameterTuningJob_607973; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Stops a running hyperparameter tuning job and all running training jobs that the tuning job launched.</p> <p>All model artifacts output from the training jobs are stored in Amazon Simple Storage Service (Amazon S3). All data that the training jobs write to Amazon CloudWatch Logs are still available in CloudWatch. After the tuning job moves to the <code>Stopped</code> state, it releases all reserved resources for the tuning job.</p>
   ## 
   let valid = call_607985.validator(path, query, header, formData, body)
   let scheme = call_607985.pickScheme
@@ -13891,24 +13889,26 @@ proc call*(call_607985: Call_StopLabelingJob_607973; path: JsonNode; query: Json
                          valid.getOrDefault("query"))
   result = atozHook(call_607985, url, valid)
 
-proc call*(call_607986: Call_StopLabelingJob_607973; body: JsonNode): Recallable =
-  ## stopLabelingJob
-  ## Stops a running labeling job. A job that is stopped cannot be restarted. Any results obtained before the job is stopped are placed in the Amazon S3 output bucket.
+proc call*(call_607986: Call_StopHyperParameterTuningJob_607973; body: JsonNode): Recallable =
+  ## stopHyperParameterTuningJob
+  ## <p>Stops a running hyperparameter tuning job and all running training jobs that the tuning job launched.</p> <p>All model artifacts output from the training jobs are stored in Amazon Simple Storage Service (Amazon S3). All data that the training jobs write to Amazon CloudWatch Logs are still available in CloudWatch. After the tuning job moves to the <code>Stopped</code> state, it releases all reserved resources for the tuning job.</p>
   ##   body: JObject (required)
   var body_607987 = newJObject()
   if body != nil:
     body_607987 = body
   result = call_607986.call(nil, nil, nil, nil, body_607987)
 
-var stopLabelingJob* = Call_StopLabelingJob_607973(name: "stopLabelingJob",
-    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopLabelingJob",
-    validator: validate_StopLabelingJob_607974, base: "/", url: url_StopLabelingJob_607975,
+var stopHyperParameterTuningJob* = Call_StopHyperParameterTuningJob_607973(
+    name: "stopHyperParameterTuningJob", meth: HttpMethod.HttpPost,
+    host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.StopHyperParameterTuningJob",
+    validator: validate_StopHyperParameterTuningJob_607974, base: "/",
+    url: url_StopHyperParameterTuningJob_607975,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopMonitoringSchedule_607988 = ref object of OpenApiRestCall_605589
-proc url_StopMonitoringSchedule_607990(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopLabelingJob_607988 = ref object of OpenApiRestCall_605589
+proc url_StopLabelingJob_607990(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -13919,9 +13919,10 @@ proc url_StopMonitoringSchedule_607990(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_StopMonitoringSchedule_607989(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Stops a previously started monitoring schedule.
+proc validate_StopLabelingJob_607989(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode): JsonNode =
+  ## Stops a running labeling job. A job that is stopped cannot be restarted. Any results obtained before the job is stopped are placed in the Amazon S3 output bucket.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -13943,7 +13944,7 @@ proc validate_StopMonitoringSchedule_607989(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607991 = header.getOrDefault("X-Amz-Target")
   valid_607991 = validateParameter(valid_607991, JString, required = true, default = newJString(
-      "SageMaker.StopMonitoringSchedule"))
+      "SageMaker.StopLabelingJob"))
   if valid_607991 != nil:
     section.add "X-Amz-Target", valid_607991
   var valid_607992 = header.getOrDefault("X-Amz-Signature")
@@ -13991,9 +13992,9 @@ proc validate_StopMonitoringSchedule_607989(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608000: Call_StopMonitoringSchedule_607988; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Stops a previously started monitoring schedule.
+proc call*(call_608000: Call_StopLabelingJob_607988; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Stops a running labeling job. A job that is stopped cannot be restarted. Any results obtained before the job is stopped are placed in the Amazon S3 output bucket.
   ## 
   let valid = call_608000.validator(path, query, header, formData, body)
   let scheme = call_608000.pickScheme
@@ -14004,25 +14005,24 @@ proc call*(call_608000: Call_StopMonitoringSchedule_607988; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608000, url, valid)
 
-proc call*(call_608001: Call_StopMonitoringSchedule_607988; body: JsonNode): Recallable =
-  ## stopMonitoringSchedule
-  ## Stops a previously started monitoring schedule.
+proc call*(call_608001: Call_StopLabelingJob_607988; body: JsonNode): Recallable =
+  ## stopLabelingJob
+  ## Stops a running labeling job. A job that is stopped cannot be restarted. Any results obtained before the job is stopped are placed in the Amazon S3 output bucket.
   ##   body: JObject (required)
   var body_608002 = newJObject()
   if body != nil:
     body_608002 = body
   result = call_608001.call(nil, nil, nil, nil, body_608002)
 
-var stopMonitoringSchedule* = Call_StopMonitoringSchedule_607988(
-    name: "stopMonitoringSchedule", meth: HttpMethod.HttpPost,
-    host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopMonitoringSchedule",
-    validator: validate_StopMonitoringSchedule_607989, base: "/",
-    url: url_StopMonitoringSchedule_607990, schemes: {Scheme.Https, Scheme.Http})
+var stopLabelingJob* = Call_StopLabelingJob_607988(name: "stopLabelingJob",
+    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.StopLabelingJob",
+    validator: validate_StopLabelingJob_607989, base: "/", url: url_StopLabelingJob_607990,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopNotebookInstance_608003 = ref object of OpenApiRestCall_605589
-proc url_StopNotebookInstance_608005(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopMonitoringSchedule_608003 = ref object of OpenApiRestCall_605589
+proc url_StopMonitoringSchedule_608005(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14033,9 +14033,9 @@ proc url_StopNotebookInstance_608005(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_StopNotebookInstance_608004(path: JsonNode; query: JsonNode;
+proc validate_StopMonitoringSchedule_608004(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Terminates the ML compute instance. Before terminating the instance, Amazon SageMaker disconnects the ML storage volume from it. Amazon SageMaker preserves the ML storage volume. Amazon SageMaker stops charging you for the ML compute instance when you call <code>StopNotebookInstance</code>.</p> <p>To access data on the ML storage volume for a notebook instance that has been terminated, call the <code>StartNotebookInstance</code> API. <code>StartNotebookInstance</code> launches another ML compute instance, configures it, and attaches the preserved ML storage volume so you can continue your work. </p>
+  ## Stops a previously started monitoring schedule.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14057,7 +14057,7 @@ proc validate_StopNotebookInstance_608004(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608006 = header.getOrDefault("X-Amz-Target")
   valid_608006 = validateParameter(valid_608006, JString, required = true, default = newJString(
-      "SageMaker.StopNotebookInstance"))
+      "SageMaker.StopMonitoringSchedule"))
   if valid_608006 != nil:
     section.add "X-Amz-Target", valid_608006
   var valid_608007 = header.getOrDefault("X-Amz-Signature")
@@ -14105,9 +14105,9 @@ proc validate_StopNotebookInstance_608004(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608015: Call_StopNotebookInstance_608003; path: JsonNode;
+proc call*(call_608015: Call_StopMonitoringSchedule_608003; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Terminates the ML compute instance. Before terminating the instance, Amazon SageMaker disconnects the ML storage volume from it. Amazon SageMaker preserves the ML storage volume. Amazon SageMaker stops charging you for the ML compute instance when you call <code>StopNotebookInstance</code>.</p> <p>To access data on the ML storage volume for a notebook instance that has been terminated, call the <code>StartNotebookInstance</code> API. <code>StartNotebookInstance</code> launches another ML compute instance, configures it, and attaches the preserved ML storage volume so you can continue your work. </p>
+  ## Stops a previously started monitoring schedule.
   ## 
   let valid = call_608015.validator(path, query, header, formData, body)
   let scheme = call_608015.pickScheme
@@ -14118,25 +14118,25 @@ proc call*(call_608015: Call_StopNotebookInstance_608003; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608015, url, valid)
 
-proc call*(call_608016: Call_StopNotebookInstance_608003; body: JsonNode): Recallable =
-  ## stopNotebookInstance
-  ## <p>Terminates the ML compute instance. Before terminating the instance, Amazon SageMaker disconnects the ML storage volume from it. Amazon SageMaker preserves the ML storage volume. Amazon SageMaker stops charging you for the ML compute instance when you call <code>StopNotebookInstance</code>.</p> <p>To access data on the ML storage volume for a notebook instance that has been terminated, call the <code>StartNotebookInstance</code> API. <code>StartNotebookInstance</code> launches another ML compute instance, configures it, and attaches the preserved ML storage volume so you can continue your work. </p>
+proc call*(call_608016: Call_StopMonitoringSchedule_608003; body: JsonNode): Recallable =
+  ## stopMonitoringSchedule
+  ## Stops a previously started monitoring schedule.
   ##   body: JObject (required)
   var body_608017 = newJObject()
   if body != nil:
     body_608017 = body
   result = call_608016.call(nil, nil, nil, nil, body_608017)
 
-var stopNotebookInstance* = Call_StopNotebookInstance_608003(
-    name: "stopNotebookInstance", meth: HttpMethod.HttpPost,
+var stopMonitoringSchedule* = Call_StopMonitoringSchedule_608003(
+    name: "stopMonitoringSchedule", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopNotebookInstance",
-    validator: validate_StopNotebookInstance_608004, base: "/",
-    url: url_StopNotebookInstance_608005, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=SageMaker.StopMonitoringSchedule",
+    validator: validate_StopMonitoringSchedule_608004, base: "/",
+    url: url_StopMonitoringSchedule_608005, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopProcessingJob_608018 = ref object of OpenApiRestCall_605589
-proc url_StopProcessingJob_608020(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopNotebookInstance_608018 = ref object of OpenApiRestCall_605589
+proc url_StopNotebookInstance_608020(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14147,10 +14147,9 @@ proc url_StopProcessingJob_608020(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopProcessingJob_608019(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## Stops a processing job.
+proc validate_StopNotebookInstance_608019(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Terminates the ML compute instance. Before terminating the instance, Amazon SageMaker disconnects the ML storage volume from it. Amazon SageMaker preserves the ML storage volume. Amazon SageMaker stops charging you for the ML compute instance when you call <code>StopNotebookInstance</code>.</p> <p>To access data on the ML storage volume for a notebook instance that has been terminated, call the <code>StartNotebookInstance</code> API. <code>StartNotebookInstance</code> launches another ML compute instance, configures it, and attaches the preserved ML storage volume so you can continue your work. </p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14172,7 +14171,7 @@ proc validate_StopProcessingJob_608019(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608021 = header.getOrDefault("X-Amz-Target")
   valid_608021 = validateParameter(valid_608021, JString, required = true, default = newJString(
-      "SageMaker.StopProcessingJob"))
+      "SageMaker.StopNotebookInstance"))
   if valid_608021 != nil:
     section.add "X-Amz-Target", valid_608021
   var valid_608022 = header.getOrDefault("X-Amz-Signature")
@@ -14220,9 +14219,9 @@ proc validate_StopProcessingJob_608019(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608030: Call_StopProcessingJob_608018; path: JsonNode;
+proc call*(call_608030: Call_StopNotebookInstance_608018; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Stops a processing job.
+  ## <p>Terminates the ML compute instance. Before terminating the instance, Amazon SageMaker disconnects the ML storage volume from it. Amazon SageMaker preserves the ML storage volume. Amazon SageMaker stops charging you for the ML compute instance when you call <code>StopNotebookInstance</code>.</p> <p>To access data on the ML storage volume for a notebook instance that has been terminated, call the <code>StartNotebookInstance</code> API. <code>StartNotebookInstance</code> launches another ML compute instance, configures it, and attaches the preserved ML storage volume so you can continue your work. </p>
   ## 
   let valid = call_608030.validator(path, query, header, formData, body)
   let scheme = call_608030.pickScheme
@@ -14233,24 +14232,25 @@ proc call*(call_608030: Call_StopProcessingJob_608018; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608030, url, valid)
 
-proc call*(call_608031: Call_StopProcessingJob_608018; body: JsonNode): Recallable =
-  ## stopProcessingJob
-  ## Stops a processing job.
+proc call*(call_608031: Call_StopNotebookInstance_608018; body: JsonNode): Recallable =
+  ## stopNotebookInstance
+  ## <p>Terminates the ML compute instance. Before terminating the instance, Amazon SageMaker disconnects the ML storage volume from it. Amazon SageMaker preserves the ML storage volume. Amazon SageMaker stops charging you for the ML compute instance when you call <code>StopNotebookInstance</code>.</p> <p>To access data on the ML storage volume for a notebook instance that has been terminated, call the <code>StartNotebookInstance</code> API. <code>StartNotebookInstance</code> launches another ML compute instance, configures it, and attaches the preserved ML storage volume so you can continue your work. </p>
   ##   body: JObject (required)
   var body_608032 = newJObject()
   if body != nil:
     body_608032 = body
   result = call_608031.call(nil, nil, nil, nil, body_608032)
 
-var stopProcessingJob* = Call_StopProcessingJob_608018(name: "stopProcessingJob",
-    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopProcessingJob",
-    validator: validate_StopProcessingJob_608019, base: "/",
-    url: url_StopProcessingJob_608020, schemes: {Scheme.Https, Scheme.Http})
+var stopNotebookInstance* = Call_StopNotebookInstance_608018(
+    name: "stopNotebookInstance", meth: HttpMethod.HttpPost,
+    host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.StopNotebookInstance",
+    validator: validate_StopNotebookInstance_608019, base: "/",
+    url: url_StopNotebookInstance_608020, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopTrainingJob_608033 = ref object of OpenApiRestCall_605589
-proc url_StopTrainingJob_608035(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopProcessingJob_608033 = ref object of OpenApiRestCall_605589
+proc url_StopProcessingJob_608035(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14261,10 +14261,10 @@ proc url_StopTrainingJob_608035(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopTrainingJob_608034(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode): JsonNode =
-  ## <p>Stops a training job. To stop a job, Amazon SageMaker sends the algorithm the <code>SIGTERM</code> signal, which delays job termination for 120 seconds. Algorithms might use this 120-second window to save the model artifacts, so the results of the training is not lost. </p> <p>When it receives a <code>StopTrainingJob</code> request, Amazon SageMaker changes the status of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the status to <code>Stopped</code>.</p>
+proc validate_StopProcessingJob_608034(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## Stops a processing job.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14286,7 +14286,7 @@ proc validate_StopTrainingJob_608034(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608036 = header.getOrDefault("X-Amz-Target")
   valid_608036 = validateParameter(valid_608036, JString, required = true, default = newJString(
-      "SageMaker.StopTrainingJob"))
+      "SageMaker.StopProcessingJob"))
   if valid_608036 != nil:
     section.add "X-Amz-Target", valid_608036
   var valid_608037 = header.getOrDefault("X-Amz-Signature")
@@ -14334,9 +14334,9 @@ proc validate_StopTrainingJob_608034(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608045: Call_StopTrainingJob_608033; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Stops a training job. To stop a job, Amazon SageMaker sends the algorithm the <code>SIGTERM</code> signal, which delays job termination for 120 seconds. Algorithms might use this 120-second window to save the model artifacts, so the results of the training is not lost. </p> <p>When it receives a <code>StopTrainingJob</code> request, Amazon SageMaker changes the status of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the status to <code>Stopped</code>.</p>
+proc call*(call_608045: Call_StopProcessingJob_608033; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Stops a processing job.
   ## 
   let valid = call_608045.validator(path, query, header, formData, body)
   let scheme = call_608045.pickScheme
@@ -14347,24 +14347,24 @@ proc call*(call_608045: Call_StopTrainingJob_608033; path: JsonNode; query: Json
                          valid.getOrDefault("query"))
   result = atozHook(call_608045, url, valid)
 
-proc call*(call_608046: Call_StopTrainingJob_608033; body: JsonNode): Recallable =
-  ## stopTrainingJob
-  ## <p>Stops a training job. To stop a job, Amazon SageMaker sends the algorithm the <code>SIGTERM</code> signal, which delays job termination for 120 seconds. Algorithms might use this 120-second window to save the model artifacts, so the results of the training is not lost. </p> <p>When it receives a <code>StopTrainingJob</code> request, Amazon SageMaker changes the status of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the status to <code>Stopped</code>.</p>
+proc call*(call_608046: Call_StopProcessingJob_608033; body: JsonNode): Recallable =
+  ## stopProcessingJob
+  ## Stops a processing job.
   ##   body: JObject (required)
   var body_608047 = newJObject()
   if body != nil:
     body_608047 = body
   result = call_608046.call(nil, nil, nil, nil, body_608047)
 
-var stopTrainingJob* = Call_StopTrainingJob_608033(name: "stopTrainingJob",
+var stopProcessingJob* = Call_StopProcessingJob_608033(name: "stopProcessingJob",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopTrainingJob",
-    validator: validate_StopTrainingJob_608034, base: "/", url: url_StopTrainingJob_608035,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=SageMaker.StopProcessingJob",
+    validator: validate_StopProcessingJob_608034, base: "/",
+    url: url_StopProcessingJob_608035, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopTransformJob_608048 = ref object of OpenApiRestCall_605589
-proc url_StopTransformJob_608050(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopTrainingJob_608048 = ref object of OpenApiRestCall_605589
+proc url_StopTrainingJob_608050(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14375,10 +14375,10 @@ proc url_StopTransformJob_608050(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopTransformJob_608049(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## <p>Stops a transform job.</p> <p>When Amazon SageMaker receives a <code>StopTransformJob</code> request, the status of the job changes to <code>Stopping</code>. After Amazon SageMaker stops the job, the status is set to <code>Stopped</code>. When you stop a transform job before it is completed, Amazon SageMaker doesn't store the job's output in Amazon S3.</p>
+proc validate_StopTrainingJob_608049(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode): JsonNode =
+  ## <p>Stops a training job. To stop a job, Amazon SageMaker sends the algorithm the <code>SIGTERM</code> signal, which delays job termination for 120 seconds. Algorithms might use this 120-second window to save the model artifacts, so the results of the training is not lost. </p> <p>When it receives a <code>StopTrainingJob</code> request, Amazon SageMaker changes the status of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the status to <code>Stopped</code>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14400,7 +14400,7 @@ proc validate_StopTransformJob_608049(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608051 = header.getOrDefault("X-Amz-Target")
   valid_608051 = validateParameter(valid_608051, JString, required = true, default = newJString(
-      "SageMaker.StopTransformJob"))
+      "SageMaker.StopTrainingJob"))
   if valid_608051 != nil:
     section.add "X-Amz-Target", valid_608051
   var valid_608052 = header.getOrDefault("X-Amz-Signature")
@@ -14448,9 +14448,9 @@ proc validate_StopTransformJob_608049(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608060: Call_StopTransformJob_608048; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Stops a transform job.</p> <p>When Amazon SageMaker receives a <code>StopTransformJob</code> request, the status of the job changes to <code>Stopping</code>. After Amazon SageMaker stops the job, the status is set to <code>Stopped</code>. When you stop a transform job before it is completed, Amazon SageMaker doesn't store the job's output in Amazon S3.</p>
+proc call*(call_608060: Call_StopTrainingJob_608048; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Stops a training job. To stop a job, Amazon SageMaker sends the algorithm the <code>SIGTERM</code> signal, which delays job termination for 120 seconds. Algorithms might use this 120-second window to save the model artifacts, so the results of the training is not lost. </p> <p>When it receives a <code>StopTrainingJob</code> request, Amazon SageMaker changes the status of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the status to <code>Stopped</code>.</p>
   ## 
   let valid = call_608060.validator(path, query, header, formData, body)
   let scheme = call_608060.pickScheme
@@ -14461,24 +14461,24 @@ proc call*(call_608060: Call_StopTransformJob_608048; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608060, url, valid)
 
-proc call*(call_608061: Call_StopTransformJob_608048; body: JsonNode): Recallable =
-  ## stopTransformJob
-  ## <p>Stops a transform job.</p> <p>When Amazon SageMaker receives a <code>StopTransformJob</code> request, the status of the job changes to <code>Stopping</code>. After Amazon SageMaker stops the job, the status is set to <code>Stopped</code>. When you stop a transform job before it is completed, Amazon SageMaker doesn't store the job's output in Amazon S3.</p>
+proc call*(call_608061: Call_StopTrainingJob_608048; body: JsonNode): Recallable =
+  ## stopTrainingJob
+  ## <p>Stops a training job. To stop a job, Amazon SageMaker sends the algorithm the <code>SIGTERM</code> signal, which delays job termination for 120 seconds. Algorithms might use this 120-second window to save the model artifacts, so the results of the training is not lost. </p> <p>When it receives a <code>StopTrainingJob</code> request, Amazon SageMaker changes the status of the job to <code>Stopping</code>. After Amazon SageMaker stops the job, it sets the status to <code>Stopped</code>.</p>
   ##   body: JObject (required)
   var body_608062 = newJObject()
   if body != nil:
     body_608062 = body
   result = call_608061.call(nil, nil, nil, nil, body_608062)
 
-var stopTransformJob* = Call_StopTransformJob_608048(name: "stopTransformJob",
+var stopTrainingJob* = Call_StopTrainingJob_608048(name: "stopTrainingJob",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.StopTransformJob",
-    validator: validate_StopTransformJob_608049, base: "/",
-    url: url_StopTransformJob_608050, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=SageMaker.StopTrainingJob",
+    validator: validate_StopTrainingJob_608049, base: "/", url: url_StopTrainingJob_608050,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateCodeRepository_608063 = ref object of OpenApiRestCall_605589
-proc url_UpdateCodeRepository_608065(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_StopTransformJob_608063 = ref object of OpenApiRestCall_605589
+proc url_StopTransformJob_608065(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14489,9 +14489,10 @@ proc url_UpdateCodeRepository_608065(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_UpdateCodeRepository_608064(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates the specified Git repository with the specified values.
+proc validate_StopTransformJob_608064(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## <p>Stops a transform job.</p> <p>When Amazon SageMaker receives a <code>StopTransformJob</code> request, the status of the job changes to <code>Stopping</code>. After Amazon SageMaker stops the job, the status is set to <code>Stopped</code>. When you stop a transform job before it is completed, Amazon SageMaker doesn't store the job's output in Amazon S3.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14513,7 +14514,7 @@ proc validate_UpdateCodeRepository_608064(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608066 = header.getOrDefault("X-Amz-Target")
   valid_608066 = validateParameter(valid_608066, JString, required = true, default = newJString(
-      "SageMaker.UpdateCodeRepository"))
+      "SageMaker.StopTransformJob"))
   if valid_608066 != nil:
     section.add "X-Amz-Target", valid_608066
   var valid_608067 = header.getOrDefault("X-Amz-Signature")
@@ -14561,9 +14562,9 @@ proc validate_UpdateCodeRepository_608064(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608075: Call_UpdateCodeRepository_608063; path: JsonNode;
+proc call*(call_608075: Call_StopTransformJob_608063; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates the specified Git repository with the specified values.
+  ## <p>Stops a transform job.</p> <p>When Amazon SageMaker receives a <code>StopTransformJob</code> request, the status of the job changes to <code>Stopping</code>. After Amazon SageMaker stops the job, the status is set to <code>Stopped</code>. When you stop a transform job before it is completed, Amazon SageMaker doesn't store the job's output in Amazon S3.</p>
   ## 
   let valid = call_608075.validator(path, query, header, formData, body)
   let scheme = call_608075.pickScheme
@@ -14574,25 +14575,24 @@ proc call*(call_608075: Call_UpdateCodeRepository_608063; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608075, url, valid)
 
-proc call*(call_608076: Call_UpdateCodeRepository_608063; body: JsonNode): Recallable =
-  ## updateCodeRepository
-  ## Updates the specified Git repository with the specified values.
+proc call*(call_608076: Call_StopTransformJob_608063; body: JsonNode): Recallable =
+  ## stopTransformJob
+  ## <p>Stops a transform job.</p> <p>When Amazon SageMaker receives a <code>StopTransformJob</code> request, the status of the job changes to <code>Stopping</code>. After Amazon SageMaker stops the job, the status is set to <code>Stopped</code>. When you stop a transform job before it is completed, Amazon SageMaker doesn't store the job's output in Amazon S3.</p>
   ##   body: JObject (required)
   var body_608077 = newJObject()
   if body != nil:
     body_608077 = body
   result = call_608076.call(nil, nil, nil, nil, body_608077)
 
-var updateCodeRepository* = Call_UpdateCodeRepository_608063(
-    name: "updateCodeRepository", meth: HttpMethod.HttpPost,
-    host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateCodeRepository",
-    validator: validate_UpdateCodeRepository_608064, base: "/",
-    url: url_UpdateCodeRepository_608065, schemes: {Scheme.Https, Scheme.Http})
+var stopTransformJob* = Call_StopTransformJob_608063(name: "stopTransformJob",
+    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.StopTransformJob",
+    validator: validate_StopTransformJob_608064, base: "/",
+    url: url_StopTransformJob_608065, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateDomain_608078 = ref object of OpenApiRestCall_605589
-proc url_UpdateDomain_608080(protocol: Scheme; host: string; base: string;
-                            route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateCodeRepository_608078 = ref object of OpenApiRestCall_605589
+proc url_UpdateCodeRepository_608080(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14603,9 +14603,9 @@ proc url_UpdateDomain_608080(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateDomain_608079(path: JsonNode; query: JsonNode; header: JsonNode;
-                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates a domain. Changes will impact all of the people in the domain.
+proc validate_UpdateCodeRepository_608079(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates the specified Git repository with the specified values.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14626,8 +14626,8 @@ proc validate_UpdateDomain_608079(path: JsonNode; query: JsonNode; header: JsonN
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608081 = header.getOrDefault("X-Amz-Target")
-  valid_608081 = validateParameter(valid_608081, JString, required = true,
-                                 default = newJString("SageMaker.UpdateDomain"))
+  valid_608081 = validateParameter(valid_608081, JString, required = true, default = newJString(
+      "SageMaker.UpdateCodeRepository"))
   if valid_608081 != nil:
     section.add "X-Amz-Target", valid_608081
   var valid_608082 = header.getOrDefault("X-Amz-Signature")
@@ -14675,9 +14675,9 @@ proc validate_UpdateDomain_608079(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_608090: Call_UpdateDomain_608078; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates a domain. Changes will impact all of the people in the domain.
+proc call*(call_608090: Call_UpdateCodeRepository_608078; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates the specified Git repository with the specified values.
   ## 
   let valid = call_608090.validator(path, query, header, formData, body)
   let scheme = call_608090.pickScheme
@@ -14688,24 +14688,25 @@ proc call*(call_608090: Call_UpdateDomain_608078; path: JsonNode; query: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_608090, url, valid)
 
-proc call*(call_608091: Call_UpdateDomain_608078; body: JsonNode): Recallable =
-  ## updateDomain
-  ## Updates a domain. Changes will impact all of the people in the domain.
+proc call*(call_608091: Call_UpdateCodeRepository_608078; body: JsonNode): Recallable =
+  ## updateCodeRepository
+  ## Updates the specified Git repository with the specified values.
   ##   body: JObject (required)
   var body_608092 = newJObject()
   if body != nil:
     body_608092 = body
   result = call_608091.call(nil, nil, nil, nil, body_608092)
 
-var updateDomain* = Call_UpdateDomain_608078(name: "updateDomain",
-    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateDomain",
-    validator: validate_UpdateDomain_608079, base: "/", url: url_UpdateDomain_608080,
-    schemes: {Scheme.Https, Scheme.Http})
+var updateCodeRepository* = Call_UpdateCodeRepository_608078(
+    name: "updateCodeRepository", meth: HttpMethod.HttpPost,
+    host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.UpdateCodeRepository",
+    validator: validate_UpdateCodeRepository_608079, base: "/",
+    url: url_UpdateCodeRepository_608080, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateEndpoint_608093 = ref object of OpenApiRestCall_605589
-proc url_UpdateEndpoint_608095(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateDomain_608093 = ref object of OpenApiRestCall_605589
+proc url_UpdateDomain_608095(protocol: Scheme; host: string; base: string;
+                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14716,10 +14717,9 @@ proc url_UpdateEndpoint_608095(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateEndpoint_608094(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode): JsonNode =
-  ## <p>Deploys the new <code>EndpointConfig</code> specified in the request, switches to using newly created endpoint, and then deletes resources provisioned for the endpoint using the previous <code>EndpointConfig</code> (there is no availability loss). </p> <p>When Amazon SageMaker receives the request, it sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. </p> <note> <p>You must not delete an <code>EndpointConfig</code> in use by an endpoint that is live or while the <code>UpdateEndpoint</code> or <code>CreateEndpoint</code> operations are being performed on the endpoint. To update an endpoint, you must create a new <code>EndpointConfig</code>.</p> </note>
+proc validate_UpdateDomain_608094(path: JsonNode; query: JsonNode; header: JsonNode;
+                                 formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates a domain. Changes will impact all of the people in the domain.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14740,8 +14740,8 @@ proc validate_UpdateEndpoint_608094(path: JsonNode; query: JsonNode;
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608096 = header.getOrDefault("X-Amz-Target")
-  valid_608096 = validateParameter(valid_608096, JString, required = true, default = newJString(
-      "SageMaker.UpdateEndpoint"))
+  valid_608096 = validateParameter(valid_608096, JString, required = true,
+                                 default = newJString("SageMaker.UpdateDomain"))
   if valid_608096 != nil:
     section.add "X-Amz-Target", valid_608096
   var valid_608097 = header.getOrDefault("X-Amz-Signature")
@@ -14789,9 +14789,9 @@ proc validate_UpdateEndpoint_608094(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608105: Call_UpdateEndpoint_608093; path: JsonNode; query: JsonNode;
+proc call*(call_608105: Call_UpdateDomain_608093; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deploys the new <code>EndpointConfig</code> specified in the request, switches to using newly created endpoint, and then deletes resources provisioned for the endpoint using the previous <code>EndpointConfig</code> (there is no availability loss). </p> <p>When Amazon SageMaker receives the request, it sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. </p> <note> <p>You must not delete an <code>EndpointConfig</code> in use by an endpoint that is live or while the <code>UpdateEndpoint</code> or <code>CreateEndpoint</code> operations are being performed on the endpoint. To update an endpoint, you must create a new <code>EndpointConfig</code>.</p> </note>
+  ## Updates a domain. Changes will impact all of the people in the domain.
   ## 
   let valid = call_608105.validator(path, query, header, formData, body)
   let scheme = call_608105.pickScheme
@@ -14802,24 +14802,24 @@ proc call*(call_608105: Call_UpdateEndpoint_608093; path: JsonNode; query: JsonN
                          valid.getOrDefault("query"))
   result = atozHook(call_608105, url, valid)
 
-proc call*(call_608106: Call_UpdateEndpoint_608093; body: JsonNode): Recallable =
-  ## updateEndpoint
-  ## <p>Deploys the new <code>EndpointConfig</code> specified in the request, switches to using newly created endpoint, and then deletes resources provisioned for the endpoint using the previous <code>EndpointConfig</code> (there is no availability loss). </p> <p>When Amazon SageMaker receives the request, it sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. </p> <note> <p>You must not delete an <code>EndpointConfig</code> in use by an endpoint that is live or while the <code>UpdateEndpoint</code> or <code>CreateEndpoint</code> operations are being performed on the endpoint. To update an endpoint, you must create a new <code>EndpointConfig</code>.</p> </note>
+proc call*(call_608106: Call_UpdateDomain_608093; body: JsonNode): Recallable =
+  ## updateDomain
+  ## Updates a domain. Changes will impact all of the people in the domain.
   ##   body: JObject (required)
   var body_608107 = newJObject()
   if body != nil:
     body_608107 = body
   result = call_608106.call(nil, nil, nil, nil, body_608107)
 
-var updateEndpoint* = Call_UpdateEndpoint_608093(name: "updateEndpoint",
+var updateDomain* = Call_UpdateDomain_608093(name: "updateDomain",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateEndpoint",
-    validator: validate_UpdateEndpoint_608094, base: "/", url: url_UpdateEndpoint_608095,
+    route: "/#X-Amz-Target=SageMaker.UpdateDomain",
+    validator: validate_UpdateDomain_608094, base: "/", url: url_UpdateDomain_608095,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateEndpointWeightsAndCapacities_608108 = ref object of OpenApiRestCall_605589
-proc url_UpdateEndpointWeightsAndCapacities_608110(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateEndpoint_608108 = ref object of OpenApiRestCall_605589
+proc url_UpdateEndpoint_608110(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14830,9 +14830,10 @@ proc url_UpdateEndpointWeightsAndCapacities_608110(protocol: Scheme; host: strin
   else:
     result.path = base & route
 
-proc validate_UpdateEndpointWeightsAndCapacities_608109(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates variant weight of one or more variants associated with an existing endpoint, or capacity of one variant associated with an existing endpoint. When it receives the request, Amazon SageMaker sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. 
+proc validate_UpdateEndpoint_608109(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode): JsonNode =
+  ## <p>Deploys the new <code>EndpointConfig</code> specified in the request, switches to using newly created endpoint, and then deletes resources provisioned for the endpoint using the previous <code>EndpointConfig</code> (there is no availability loss). </p> <p>When Amazon SageMaker receives the request, it sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. </p> <note> <p>You must not delete an <code>EndpointConfig</code> in use by an endpoint that is live or while the <code>UpdateEndpoint</code> or <code>CreateEndpoint</code> operations are being performed on the endpoint. To update an endpoint, you must create a new <code>EndpointConfig</code>.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14854,7 +14855,7 @@ proc validate_UpdateEndpointWeightsAndCapacities_608109(path: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608111 = header.getOrDefault("X-Amz-Target")
   valid_608111 = validateParameter(valid_608111, JString, required = true, default = newJString(
-      "SageMaker.UpdateEndpointWeightsAndCapacities"))
+      "SageMaker.UpdateEndpoint"))
   if valid_608111 != nil:
     section.add "X-Amz-Target", valid_608111
   var valid_608112 = header.getOrDefault("X-Amz-Signature")
@@ -14902,10 +14903,9 @@ proc validate_UpdateEndpointWeightsAndCapacities_608109(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608120: Call_UpdateEndpointWeightsAndCapacities_608108;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## Updates variant weight of one or more variants associated with an existing endpoint, or capacity of one variant associated with an existing endpoint. When it receives the request, Amazon SageMaker sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. 
+proc call*(call_608120: Call_UpdateEndpoint_608108; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Deploys the new <code>EndpointConfig</code> specified in the request, switches to using newly created endpoint, and then deletes resources provisioned for the endpoint using the previous <code>EndpointConfig</code> (there is no availability loss). </p> <p>When Amazon SageMaker receives the request, it sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. </p> <note> <p>You must not delete an <code>EndpointConfig</code> in use by an endpoint that is live or while the <code>UpdateEndpoint</code> or <code>CreateEndpoint</code> operations are being performed on the endpoint. To update an endpoint, you must create a new <code>EndpointConfig</code>.</p> </note>
   ## 
   let valid = call_608120.validator(path, query, header, formData, body)
   let scheme = call_608120.pickScheme
@@ -14916,27 +14916,24 @@ proc call*(call_608120: Call_UpdateEndpointWeightsAndCapacities_608108;
                          valid.getOrDefault("query"))
   result = atozHook(call_608120, url, valid)
 
-proc call*(call_608121: Call_UpdateEndpointWeightsAndCapacities_608108;
-          body: JsonNode): Recallable =
-  ## updateEndpointWeightsAndCapacities
-  ## Updates variant weight of one or more variants associated with an existing endpoint, or capacity of one variant associated with an existing endpoint. When it receives the request, Amazon SageMaker sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. 
+proc call*(call_608121: Call_UpdateEndpoint_608108; body: JsonNode): Recallable =
+  ## updateEndpoint
+  ## <p>Deploys the new <code>EndpointConfig</code> specified in the request, switches to using newly created endpoint, and then deletes resources provisioned for the endpoint using the previous <code>EndpointConfig</code> (there is no availability loss). </p> <p>When Amazon SageMaker receives the request, it sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. </p> <note> <p>You must not delete an <code>EndpointConfig</code> in use by an endpoint that is live or while the <code>UpdateEndpoint</code> or <code>CreateEndpoint</code> operations are being performed on the endpoint. To update an endpoint, you must create a new <code>EndpointConfig</code>.</p> </note>
   ##   body: JObject (required)
   var body_608122 = newJObject()
   if body != nil:
     body_608122 = body
   result = call_608121.call(nil, nil, nil, nil, body_608122)
 
-var updateEndpointWeightsAndCapacities* = Call_UpdateEndpointWeightsAndCapacities_608108(
-    name: "updateEndpointWeightsAndCapacities", meth: HttpMethod.HttpPost,
-    host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateEndpointWeightsAndCapacities",
-    validator: validate_UpdateEndpointWeightsAndCapacities_608109, base: "/",
-    url: url_UpdateEndpointWeightsAndCapacities_608110,
+var updateEndpoint* = Call_UpdateEndpoint_608108(name: "updateEndpoint",
+    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.UpdateEndpoint",
+    validator: validate_UpdateEndpoint_608109, base: "/", url: url_UpdateEndpoint_608110,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateExperiment_608123 = ref object of OpenApiRestCall_605589
-proc url_UpdateExperiment_608125(protocol: Scheme; host: string; base: string;
-                                route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateEndpointWeightsAndCapacities_608123 = ref object of OpenApiRestCall_605589
+proc url_UpdateEndpointWeightsAndCapacities_608125(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -14947,10 +14944,9 @@ proc url_UpdateExperiment_608125(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateExperiment_608124(path: JsonNode; query: JsonNode;
-                                     header: JsonNode; formData: JsonNode;
-                                     body: JsonNode): JsonNode =
-  ## Adds, updates, or removes the description of an experiment. Updates the display name of an experiment.
+proc validate_UpdateEndpointWeightsAndCapacities_608124(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates variant weight of one or more variants associated with an existing endpoint, or capacity of one variant associated with an existing endpoint. When it receives the request, Amazon SageMaker sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -14972,7 +14968,7 @@ proc validate_UpdateExperiment_608124(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608126 = header.getOrDefault("X-Amz-Target")
   valid_608126 = validateParameter(valid_608126, JString, required = true, default = newJString(
-      "SageMaker.UpdateExperiment"))
+      "SageMaker.UpdateEndpointWeightsAndCapacities"))
   if valid_608126 != nil:
     section.add "X-Amz-Target", valid_608126
   var valid_608127 = header.getOrDefault("X-Amz-Signature")
@@ -15020,9 +15016,10 @@ proc validate_UpdateExperiment_608124(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608135: Call_UpdateExperiment_608123; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Adds, updates, or removes the description of an experiment. Updates the display name of an experiment.
+proc call*(call_608135: Call_UpdateEndpointWeightsAndCapacities_608123;
+          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
+          body: JsonNode): Recallable =
+  ## Updates variant weight of one or more variants associated with an existing endpoint, or capacity of one variant associated with an existing endpoint. When it receives the request, Amazon SageMaker sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. 
   ## 
   let valid = call_608135.validator(path, query, header, formData, body)
   let scheme = call_608135.pickScheme
@@ -15033,25 +15030,27 @@ proc call*(call_608135: Call_UpdateExperiment_608123; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608135, url, valid)
 
-proc call*(call_608136: Call_UpdateExperiment_608123; body: JsonNode): Recallable =
-  ## updateExperiment
-  ## Adds, updates, or removes the description of an experiment. Updates the display name of an experiment.
+proc call*(call_608136: Call_UpdateEndpointWeightsAndCapacities_608123;
+          body: JsonNode): Recallable =
+  ## updateEndpointWeightsAndCapacities
+  ## Updates variant weight of one or more variants associated with an existing endpoint, or capacity of one variant associated with an existing endpoint. When it receives the request, Amazon SageMaker sets the endpoint status to <code>Updating</code>. After updating the endpoint, it sets the status to <code>InService</code>. To check the status of an endpoint, use the <a href="https://docs.aws.amazon.com/sagemaker/latest/dg/API_DescribeEndpoint.html">DescribeEndpoint</a> API. 
   ##   body: JObject (required)
   var body_608137 = newJObject()
   if body != nil:
     body_608137 = body
   result = call_608136.call(nil, nil, nil, nil, body_608137)
 
-var updateExperiment* = Call_UpdateExperiment_608123(name: "updateExperiment",
-    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateExperiment",
-    validator: validate_UpdateExperiment_608124, base: "/",
-    url: url_UpdateExperiment_608125, schemes: {Scheme.Https, Scheme.Http})
+var updateEndpointWeightsAndCapacities* = Call_UpdateEndpointWeightsAndCapacities_608123(
+    name: "updateEndpointWeightsAndCapacities", meth: HttpMethod.HttpPost,
+    host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.UpdateEndpointWeightsAndCapacities",
+    validator: validate_UpdateEndpointWeightsAndCapacities_608124, base: "/",
+    url: url_UpdateEndpointWeightsAndCapacities_608125,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateMonitoringSchedule_608138 = ref object of OpenApiRestCall_605589
-proc url_UpdateMonitoringSchedule_608140(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
+  Call_UpdateExperiment_608138 = ref object of OpenApiRestCall_605589
+proc url_UpdateExperiment_608140(protocol: Scheme; host: string; base: string;
+                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -15062,9 +15061,10 @@ proc url_UpdateMonitoringSchedule_608140(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateMonitoringSchedule_608139(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates a previously created schedule.
+proc validate_UpdateExperiment_608139(path: JsonNode; query: JsonNode;
+                                     header: JsonNode; formData: JsonNode;
+                                     body: JsonNode): JsonNode =
+  ## Adds, updates, or removes the description of an experiment. Updates the display name of an experiment.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -15086,7 +15086,7 @@ proc validate_UpdateMonitoringSchedule_608139(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608141 = header.getOrDefault("X-Amz-Target")
   valid_608141 = validateParameter(valid_608141, JString, required = true, default = newJString(
-      "SageMaker.UpdateMonitoringSchedule"))
+      "SageMaker.UpdateExperiment"))
   if valid_608141 != nil:
     section.add "X-Amz-Target", valid_608141
   var valid_608142 = header.getOrDefault("X-Amz-Signature")
@@ -15134,9 +15134,9 @@ proc validate_UpdateMonitoringSchedule_608139(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608150: Call_UpdateMonitoringSchedule_608138; path: JsonNode;
+proc call*(call_608150: Call_UpdateExperiment_608138; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates a previously created schedule.
+  ## Adds, updates, or removes the description of an experiment. Updates the display name of an experiment.
   ## 
   let valid = call_608150.validator(path, query, header, formData, body)
   let scheme = call_608150.pickScheme
@@ -15147,25 +15147,25 @@ proc call*(call_608150: Call_UpdateMonitoringSchedule_608138; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608150, url, valid)
 
-proc call*(call_608151: Call_UpdateMonitoringSchedule_608138; body: JsonNode): Recallable =
-  ## updateMonitoringSchedule
-  ## Updates a previously created schedule.
+proc call*(call_608151: Call_UpdateExperiment_608138; body: JsonNode): Recallable =
+  ## updateExperiment
+  ## Adds, updates, or removes the description of an experiment. Updates the display name of an experiment.
   ##   body: JObject (required)
   var body_608152 = newJObject()
   if body != nil:
     body_608152 = body
   result = call_608151.call(nil, nil, nil, nil, body_608152)
 
-var updateMonitoringSchedule* = Call_UpdateMonitoringSchedule_608138(
-    name: "updateMonitoringSchedule", meth: HttpMethod.HttpPost,
-    host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateMonitoringSchedule",
-    validator: validate_UpdateMonitoringSchedule_608139, base: "/",
-    url: url_UpdateMonitoringSchedule_608140, schemes: {Scheme.Https, Scheme.Http})
+var updateExperiment* = Call_UpdateExperiment_608138(name: "updateExperiment",
+    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.UpdateExperiment",
+    validator: validate_UpdateExperiment_608139, base: "/",
+    url: url_UpdateExperiment_608140, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateNotebookInstance_608153 = ref object of OpenApiRestCall_605589
-proc url_UpdateNotebookInstance_608155(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateMonitoringSchedule_608153 = ref object of OpenApiRestCall_605589
+proc url_UpdateMonitoringSchedule_608155(protocol: Scheme; host: string;
+                                        base: string; route: string; path: JsonNode;
+                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -15176,9 +15176,9 @@ proc url_UpdateNotebookInstance_608155(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_UpdateNotebookInstance_608154(path: JsonNode; query: JsonNode;
+proc validate_UpdateMonitoringSchedule_608154(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates a notebook instance. NotebookInstance updates include upgrading or downgrading the ML compute instance used for your notebook instance to accommodate changes in your workload requirements.
+  ## Updates a previously created schedule.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -15200,7 +15200,7 @@ proc validate_UpdateNotebookInstance_608154(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608156 = header.getOrDefault("X-Amz-Target")
   valid_608156 = validateParameter(valid_608156, JString, required = true, default = newJString(
-      "SageMaker.UpdateNotebookInstance"))
+      "SageMaker.UpdateMonitoringSchedule"))
   if valid_608156 != nil:
     section.add "X-Amz-Target", valid_608156
   var valid_608157 = header.getOrDefault("X-Amz-Signature")
@@ -15248,9 +15248,9 @@ proc validate_UpdateNotebookInstance_608154(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608165: Call_UpdateNotebookInstance_608153; path: JsonNode;
+proc call*(call_608165: Call_UpdateMonitoringSchedule_608153; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates a notebook instance. NotebookInstance updates include upgrading or downgrading the ML compute instance used for your notebook instance to accommodate changes in your workload requirements.
+  ## Updates a previously created schedule.
   ## 
   let valid = call_608165.validator(path, query, header, formData, body)
   let scheme = call_608165.pickScheme
@@ -15261,25 +15261,25 @@ proc call*(call_608165: Call_UpdateNotebookInstance_608153; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608165, url, valid)
 
-proc call*(call_608166: Call_UpdateNotebookInstance_608153; body: JsonNode): Recallable =
-  ## updateNotebookInstance
-  ## Updates a notebook instance. NotebookInstance updates include upgrading or downgrading the ML compute instance used for your notebook instance to accommodate changes in your workload requirements.
+proc call*(call_608166: Call_UpdateMonitoringSchedule_608153; body: JsonNode): Recallable =
+  ## updateMonitoringSchedule
+  ## Updates a previously created schedule.
   ##   body: JObject (required)
   var body_608167 = newJObject()
   if body != nil:
     body_608167 = body
   result = call_608166.call(nil, nil, nil, nil, body_608167)
 
-var updateNotebookInstance* = Call_UpdateNotebookInstance_608153(
-    name: "updateNotebookInstance", meth: HttpMethod.HttpPost,
+var updateMonitoringSchedule* = Call_UpdateMonitoringSchedule_608153(
+    name: "updateMonitoringSchedule", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateNotebookInstance",
-    validator: validate_UpdateNotebookInstance_608154, base: "/",
-    url: url_UpdateNotebookInstance_608155, schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=SageMaker.UpdateMonitoringSchedule",
+    validator: validate_UpdateMonitoringSchedule_608154, base: "/",
+    url: url_UpdateMonitoringSchedule_608155, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateNotebookInstanceLifecycleConfig_608168 = ref object of OpenApiRestCall_605589
-proc url_UpdateNotebookInstanceLifecycleConfig_608170(protocol: Scheme;
-    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateNotebookInstance_608168 = ref object of OpenApiRestCall_605589
+proc url_UpdateNotebookInstance_608170(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -15290,9 +15290,9 @@ proc url_UpdateNotebookInstanceLifecycleConfig_608170(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_UpdateNotebookInstanceLifecycleConfig_608169(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates a notebook instance lifecycle configuration created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
+proc validate_UpdateNotebookInstance_608169(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates a notebook instance. NotebookInstance updates include upgrading or downgrading the ML compute instance used for your notebook instance to accommodate changes in your workload requirements.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -15314,7 +15314,7 @@ proc validate_UpdateNotebookInstanceLifecycleConfig_608169(path: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608171 = header.getOrDefault("X-Amz-Target")
   valid_608171 = validateParameter(valid_608171, JString, required = true, default = newJString(
-      "SageMaker.UpdateNotebookInstanceLifecycleConfig"))
+      "SageMaker.UpdateNotebookInstance"))
   if valid_608171 != nil:
     section.add "X-Amz-Target", valid_608171
   var valid_608172 = header.getOrDefault("X-Amz-Signature")
@@ -15362,10 +15362,9 @@ proc validate_UpdateNotebookInstanceLifecycleConfig_608169(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608180: Call_UpdateNotebookInstanceLifecycleConfig_608168;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## Updates a notebook instance lifecycle configuration created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
+proc call*(call_608180: Call_UpdateNotebookInstance_608168; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates a notebook instance. NotebookInstance updates include upgrading or downgrading the ML compute instance used for your notebook instance to accommodate changes in your workload requirements.
   ## 
   let valid = call_608180.validator(path, query, header, formData, body)
   let scheme = call_608180.pickScheme
@@ -15376,27 +15375,25 @@ proc call*(call_608180: Call_UpdateNotebookInstanceLifecycleConfig_608168;
                          valid.getOrDefault("query"))
   result = atozHook(call_608180, url, valid)
 
-proc call*(call_608181: Call_UpdateNotebookInstanceLifecycleConfig_608168;
-          body: JsonNode): Recallable =
-  ## updateNotebookInstanceLifecycleConfig
-  ## Updates a notebook instance lifecycle configuration created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
+proc call*(call_608181: Call_UpdateNotebookInstance_608168; body: JsonNode): Recallable =
+  ## updateNotebookInstance
+  ## Updates a notebook instance. NotebookInstance updates include upgrading or downgrading the ML compute instance used for your notebook instance to accommodate changes in your workload requirements.
   ##   body: JObject (required)
   var body_608182 = newJObject()
   if body != nil:
     body_608182 = body
   result = call_608181.call(nil, nil, nil, nil, body_608182)
 
-var updateNotebookInstanceLifecycleConfig* = Call_UpdateNotebookInstanceLifecycleConfig_608168(
-    name: "updateNotebookInstanceLifecycleConfig", meth: HttpMethod.HttpPost,
+var updateNotebookInstance* = Call_UpdateNotebookInstance_608168(
+    name: "updateNotebookInstance", meth: HttpMethod.HttpPost,
     host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateNotebookInstanceLifecycleConfig",
-    validator: validate_UpdateNotebookInstanceLifecycleConfig_608169, base: "/",
-    url: url_UpdateNotebookInstanceLifecycleConfig_608170,
-    schemes: {Scheme.Https, Scheme.Http})
+    route: "/#X-Amz-Target=SageMaker.UpdateNotebookInstance",
+    validator: validate_UpdateNotebookInstance_608169, base: "/",
+    url: url_UpdateNotebookInstance_608170, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTrial_608183 = ref object of OpenApiRestCall_605589
-proc url_UpdateTrial_608185(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateNotebookInstanceLifecycleConfig_608183 = ref object of OpenApiRestCall_605589
+proc url_UpdateNotebookInstanceLifecycleConfig_608185(protocol: Scheme;
+    host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -15407,9 +15404,9 @@ proc url_UpdateTrial_608185(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateTrial_608184(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates the display name of a trial.
+proc validate_UpdateNotebookInstanceLifecycleConfig_608184(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates a notebook instance lifecycle configuration created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -15430,8 +15427,8 @@ proc validate_UpdateTrial_608184(path: JsonNode; query: JsonNode; header: JsonNo
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608186 = header.getOrDefault("X-Amz-Target")
-  valid_608186 = validateParameter(valid_608186, JString, required = true,
-                                 default = newJString("SageMaker.UpdateTrial"))
+  valid_608186 = validateParameter(valid_608186, JString, required = true, default = newJString(
+      "SageMaker.UpdateNotebookInstanceLifecycleConfig"))
   if valid_608186 != nil:
     section.add "X-Amz-Target", valid_608186
   var valid_608187 = header.getOrDefault("X-Amz-Signature")
@@ -15479,9 +15476,10 @@ proc validate_UpdateTrial_608184(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_608195: Call_UpdateTrial_608183; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates the display name of a trial.
+proc call*(call_608195: Call_UpdateNotebookInstanceLifecycleConfig_608183;
+          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
+          body: JsonNode): Recallable =
+  ## Updates a notebook instance lifecycle configuration created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
   ## 
   let valid = call_608195.validator(path, query, header, formData, body)
   let scheme = call_608195.pickScheme
@@ -15492,25 +15490,27 @@ proc call*(call_608195: Call_UpdateTrial_608183; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_608195, url, valid)
 
-proc call*(call_608196: Call_UpdateTrial_608183; body: JsonNode): Recallable =
-  ## updateTrial
-  ## Updates the display name of a trial.
+proc call*(call_608196: Call_UpdateNotebookInstanceLifecycleConfig_608183;
+          body: JsonNode): Recallable =
+  ## updateNotebookInstanceLifecycleConfig
+  ## Updates a notebook instance lifecycle configuration created with the <a>CreateNotebookInstanceLifecycleConfig</a> API.
   ##   body: JObject (required)
   var body_608197 = newJObject()
   if body != nil:
     body_608197 = body
   result = call_608196.call(nil, nil, nil, nil, body_608197)
 
-var updateTrial* = Call_UpdateTrial_608183(name: "updateTrial",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "api.sagemaker.amazonaws.com", route: "/#X-Amz-Target=SageMaker.UpdateTrial",
-                                        validator: validate_UpdateTrial_608184,
-                                        base: "/", url: url_UpdateTrial_608185,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var updateNotebookInstanceLifecycleConfig* = Call_UpdateNotebookInstanceLifecycleConfig_608183(
+    name: "updateNotebookInstanceLifecycleConfig", meth: HttpMethod.HttpPost,
+    host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.UpdateNotebookInstanceLifecycleConfig",
+    validator: validate_UpdateNotebookInstanceLifecycleConfig_608184, base: "/",
+    url: url_UpdateNotebookInstanceLifecycleConfig_608185,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTrialComponent_608198 = ref object of OpenApiRestCall_605589
-proc url_UpdateTrialComponent_608200(protocol: Scheme; host: string; base: string;
-                                    route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateTrial_608198 = ref object of OpenApiRestCall_605589
+proc url_UpdateTrial_608200(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -15521,9 +15521,9 @@ proc url_UpdateTrialComponent_608200(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_UpdateTrialComponent_608199(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates one or more properties of a trial component.
+proc validate_UpdateTrial_608199(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates the display name of a trial.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -15544,8 +15544,8 @@ proc validate_UpdateTrialComponent_608199(path: JsonNode; query: JsonNode;
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608201 = header.getOrDefault("X-Amz-Target")
-  valid_608201 = validateParameter(valid_608201, JString, required = true, default = newJString(
-      "SageMaker.UpdateTrialComponent"))
+  valid_608201 = validateParameter(valid_608201, JString, required = true,
+                                 default = newJString("SageMaker.UpdateTrial"))
   if valid_608201 != nil:
     section.add "X-Amz-Target", valid_608201
   var valid_608202 = header.getOrDefault("X-Amz-Signature")
@@ -15593,9 +15593,9 @@ proc validate_UpdateTrialComponent_608199(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608210: Call_UpdateTrialComponent_608198; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates one or more properties of a trial component.
+proc call*(call_608210: Call_UpdateTrial_608198; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates the display name of a trial.
   ## 
   let valid = call_608210.validator(path, query, header, formData, body)
   let scheme = call_608210.pickScheme
@@ -15606,25 +15606,25 @@ proc call*(call_608210: Call_UpdateTrialComponent_608198; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608210, url, valid)
 
-proc call*(call_608211: Call_UpdateTrialComponent_608198; body: JsonNode): Recallable =
-  ## updateTrialComponent
-  ## Updates one or more properties of a trial component.
+proc call*(call_608211: Call_UpdateTrial_608198; body: JsonNode): Recallable =
+  ## updateTrial
+  ## Updates the display name of a trial.
   ##   body: JObject (required)
   var body_608212 = newJObject()
   if body != nil:
     body_608212 = body
   result = call_608211.call(nil, nil, nil, nil, body_608212)
 
-var updateTrialComponent* = Call_UpdateTrialComponent_608198(
-    name: "updateTrialComponent", meth: HttpMethod.HttpPost,
-    host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateTrialComponent",
-    validator: validate_UpdateTrialComponent_608199, base: "/",
-    url: url_UpdateTrialComponent_608200, schemes: {Scheme.Https, Scheme.Http})
+var updateTrial* = Call_UpdateTrial_608198(name: "updateTrial",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "api.sagemaker.amazonaws.com", route: "/#X-Amz-Target=SageMaker.UpdateTrial",
+                                        validator: validate_UpdateTrial_608199,
+                                        base: "/", url: url_UpdateTrial_608200,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateUserProfile_608213 = ref object of OpenApiRestCall_605589
-proc url_UpdateUserProfile_608215(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateTrialComponent_608213 = ref object of OpenApiRestCall_605589
+proc url_UpdateTrialComponent_608215(protocol: Scheme; host: string; base: string;
+                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -15635,10 +15635,9 @@ proc url_UpdateUserProfile_608215(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateUserProfile_608214(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## Updates a user profile.
+proc validate_UpdateTrialComponent_608214(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Updates one or more properties of a trial component.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -15660,7 +15659,7 @@ proc validate_UpdateUserProfile_608214(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608216 = header.getOrDefault("X-Amz-Target")
   valid_608216 = validateParameter(valid_608216, JString, required = true, default = newJString(
-      "SageMaker.UpdateUserProfile"))
+      "SageMaker.UpdateTrialComponent"))
   if valid_608216 != nil:
     section.add "X-Amz-Target", valid_608216
   var valid_608217 = header.getOrDefault("X-Amz-Signature")
@@ -15708,9 +15707,9 @@ proc validate_UpdateUserProfile_608214(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608225: Call_UpdateUserProfile_608213; path: JsonNode;
+proc call*(call_608225: Call_UpdateTrialComponent_608213; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates a user profile.
+  ## Updates one or more properties of a trial component.
   ## 
   let valid = call_608225.validator(path, query, header, formData, body)
   let scheme = call_608225.pickScheme
@@ -15721,24 +15720,25 @@ proc call*(call_608225: Call_UpdateUserProfile_608213; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_608225, url, valid)
 
-proc call*(call_608226: Call_UpdateUserProfile_608213; body: JsonNode): Recallable =
-  ## updateUserProfile
-  ## Updates a user profile.
+proc call*(call_608226: Call_UpdateTrialComponent_608213; body: JsonNode): Recallable =
+  ## updateTrialComponent
+  ## Updates one or more properties of a trial component.
   ##   body: JObject (required)
   var body_608227 = newJObject()
   if body != nil:
     body_608227 = body
   result = call_608226.call(nil, nil, nil, nil, body_608227)
 
-var updateUserProfile* = Call_UpdateUserProfile_608213(name: "updateUserProfile",
-    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
-    route: "/#X-Amz-Target=SageMaker.UpdateUserProfile",
-    validator: validate_UpdateUserProfile_608214, base: "/",
-    url: url_UpdateUserProfile_608215, schemes: {Scheme.Https, Scheme.Http})
+var updateTrialComponent* = Call_UpdateTrialComponent_608213(
+    name: "updateTrialComponent", meth: HttpMethod.HttpPost,
+    host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.UpdateTrialComponent",
+    validator: validate_UpdateTrialComponent_608214, base: "/",
+    url: url_UpdateTrialComponent_608215, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateWorkteam_608228 = ref object of OpenApiRestCall_605589
-proc url_UpdateWorkteam_608230(protocol: Scheme; host: string; base: string;
-                              route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_UpdateUserProfile_608228 = ref object of OpenApiRestCall_605589
+proc url_UpdateUserProfile_608230(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -15749,10 +15749,10 @@ proc url_UpdateWorkteam_608230(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateWorkteam_608229(path: JsonNode; query: JsonNode;
-                                   header: JsonNode; formData: JsonNode;
-                                   body: JsonNode): JsonNode =
-  ## Updates an existing work team with new member definitions or description.
+proc validate_UpdateUserProfile_608229(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## Updates a user profile.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -15774,7 +15774,7 @@ proc validate_UpdateWorkteam_608229(path: JsonNode; query: JsonNode;
         "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608231 = header.getOrDefault("X-Amz-Target")
   valid_608231 = validateParameter(valid_608231, JString, required = true, default = newJString(
-      "SageMaker.UpdateWorkteam"))
+      "SageMaker.UpdateUserProfile"))
   if valid_608231 != nil:
     section.add "X-Amz-Target", valid_608231
   var valid_608232 = header.getOrDefault("X-Amz-Signature")
@@ -15822,9 +15822,9 @@ proc validate_UpdateWorkteam_608229(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_608240: Call_UpdateWorkteam_608228; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates an existing work team with new member definitions or description.
+proc call*(call_608240: Call_UpdateUserProfile_608228; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates a user profile.
   ## 
   let valid = call_608240.validator(path, query, header, formData, body)
   let scheme = call_608240.pickScheme
@@ -15835,19 +15835,247 @@ proc call*(call_608240: Call_UpdateWorkteam_608228; path: JsonNode; query: JsonN
                          valid.getOrDefault("query"))
   result = atozHook(call_608240, url, valid)
 
-proc call*(call_608241: Call_UpdateWorkteam_608228; body: JsonNode): Recallable =
-  ## updateWorkteam
-  ## Updates an existing work team with new member definitions or description.
+proc call*(call_608241: Call_UpdateUserProfile_608228; body: JsonNode): Recallable =
+  ## updateUserProfile
+  ## Updates a user profile.
   ##   body: JObject (required)
   var body_608242 = newJObject()
   if body != nil:
     body_608242 = body
   result = call_608241.call(nil, nil, nil, nil, body_608242)
 
-var updateWorkteam* = Call_UpdateWorkteam_608228(name: "updateWorkteam",
+var updateUserProfile* = Call_UpdateUserProfile_608228(name: "updateUserProfile",
+    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.UpdateUserProfile",
+    validator: validate_UpdateUserProfile_608229, base: "/",
+    url: url_UpdateUserProfile_608230, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateWorkforce_608243 = ref object of OpenApiRestCall_605589
+proc url_UpdateWorkforce_608245(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateWorkforce_608244(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode): JsonNode =
+  ## <p>Restricts access to tasks assigned to workers in the specified workforce to those within specific ranges of IP addresses. You specify allowed IP addresses by creating a list of up to four <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">CIDRs</a>.</p> <p>By default, a workforce isn't restricted to specific IP addresses. If you specify a range of IP addresses, workers who attempt to access tasks using any IP address outside the specified range are denied access and get a <code>Not Found</code> error message on the worker portal. After restricting access with this operation, you can see the allowed IP values for a private workforce with the operation.</p> <important> <p>This operation applies only to private workforces.</p> </important>
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_608246 = header.getOrDefault("X-Amz-Target")
+  valid_608246 = validateParameter(valid_608246, JString, required = true, default = newJString(
+      "SageMaker.UpdateWorkforce"))
+  if valid_608246 != nil:
+    section.add "X-Amz-Target", valid_608246
+  var valid_608247 = header.getOrDefault("X-Amz-Signature")
+  valid_608247 = validateParameter(valid_608247, JString, required = false,
+                                 default = nil)
+  if valid_608247 != nil:
+    section.add "X-Amz-Signature", valid_608247
+  var valid_608248 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_608248 = validateParameter(valid_608248, JString, required = false,
+                                 default = nil)
+  if valid_608248 != nil:
+    section.add "X-Amz-Content-Sha256", valid_608248
+  var valid_608249 = header.getOrDefault("X-Amz-Date")
+  valid_608249 = validateParameter(valid_608249, JString, required = false,
+                                 default = nil)
+  if valid_608249 != nil:
+    section.add "X-Amz-Date", valid_608249
+  var valid_608250 = header.getOrDefault("X-Amz-Credential")
+  valid_608250 = validateParameter(valid_608250, JString, required = false,
+                                 default = nil)
+  if valid_608250 != nil:
+    section.add "X-Amz-Credential", valid_608250
+  var valid_608251 = header.getOrDefault("X-Amz-Security-Token")
+  valid_608251 = validateParameter(valid_608251, JString, required = false,
+                                 default = nil)
+  if valid_608251 != nil:
+    section.add "X-Amz-Security-Token", valid_608251
+  var valid_608252 = header.getOrDefault("X-Amz-Algorithm")
+  valid_608252 = validateParameter(valid_608252, JString, required = false,
+                                 default = nil)
+  if valid_608252 != nil:
+    section.add "X-Amz-Algorithm", valid_608252
+  var valid_608253 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_608253 = validateParameter(valid_608253, JString, required = false,
+                                 default = nil)
+  if valid_608253 != nil:
+    section.add "X-Amz-SignedHeaders", valid_608253
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_608255: Call_UpdateWorkforce_608243; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Restricts access to tasks assigned to workers in the specified workforce to those within specific ranges of IP addresses. You specify allowed IP addresses by creating a list of up to four <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">CIDRs</a>.</p> <p>By default, a workforce isn't restricted to specific IP addresses. If you specify a range of IP addresses, workers who attempt to access tasks using any IP address outside the specified range are denied access and get a <code>Not Found</code> error message on the worker portal. After restricting access with this operation, you can see the allowed IP values for a private workforce with the operation.</p> <important> <p>This operation applies only to private workforces.</p> </important>
+  ## 
+  let valid = call_608255.validator(path, query, header, formData, body)
+  let scheme = call_608255.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_608255.url(scheme.get, call_608255.host, call_608255.base,
+                         call_608255.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_608255, url, valid)
+
+proc call*(call_608256: Call_UpdateWorkforce_608243; body: JsonNode): Recallable =
+  ## updateWorkforce
+  ## <p>Restricts access to tasks assigned to workers in the specified workforce to those within specific ranges of IP addresses. You specify allowed IP addresses by creating a list of up to four <a href="https://docs.aws.amazon.com/vpc/latest/userguide/VPC_Subnets.html">CIDRs</a>.</p> <p>By default, a workforce isn't restricted to specific IP addresses. If you specify a range of IP addresses, workers who attempt to access tasks using any IP address outside the specified range are denied access and get a <code>Not Found</code> error message on the worker portal. After restricting access with this operation, you can see the allowed IP values for a private workforce with the operation.</p> <important> <p>This operation applies only to private workforces.</p> </important>
+  ##   body: JObject (required)
+  var body_608257 = newJObject()
+  if body != nil:
+    body_608257 = body
+  result = call_608256.call(nil, nil, nil, nil, body_608257)
+
+var updateWorkforce* = Call_UpdateWorkforce_608243(name: "updateWorkforce",
+    meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
+    route: "/#X-Amz-Target=SageMaker.UpdateWorkforce",
+    validator: validate_UpdateWorkforce_608244, base: "/", url: url_UpdateWorkforce_608245,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateWorkteam_608258 = ref object of OpenApiRestCall_605589
+proc url_UpdateWorkteam_608260(protocol: Scheme; host: string; base: string;
+                              route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateWorkteam_608259(path: JsonNode; query: JsonNode;
+                                   header: JsonNode; formData: JsonNode;
+                                   body: JsonNode): JsonNode =
+  ## Updates an existing work team with new member definitions or description.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  assert header != nil,
+        "header argument is necessary due to required `X-Amz-Target` field"
+  var valid_608261 = header.getOrDefault("X-Amz-Target")
+  valid_608261 = validateParameter(valid_608261, JString, required = true, default = newJString(
+      "SageMaker.UpdateWorkteam"))
+  if valid_608261 != nil:
+    section.add "X-Amz-Target", valid_608261
+  var valid_608262 = header.getOrDefault("X-Amz-Signature")
+  valid_608262 = validateParameter(valid_608262, JString, required = false,
+                                 default = nil)
+  if valid_608262 != nil:
+    section.add "X-Amz-Signature", valid_608262
+  var valid_608263 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_608263 = validateParameter(valid_608263, JString, required = false,
+                                 default = nil)
+  if valid_608263 != nil:
+    section.add "X-Amz-Content-Sha256", valid_608263
+  var valid_608264 = header.getOrDefault("X-Amz-Date")
+  valid_608264 = validateParameter(valid_608264, JString, required = false,
+                                 default = nil)
+  if valid_608264 != nil:
+    section.add "X-Amz-Date", valid_608264
+  var valid_608265 = header.getOrDefault("X-Amz-Credential")
+  valid_608265 = validateParameter(valid_608265, JString, required = false,
+                                 default = nil)
+  if valid_608265 != nil:
+    section.add "X-Amz-Credential", valid_608265
+  var valid_608266 = header.getOrDefault("X-Amz-Security-Token")
+  valid_608266 = validateParameter(valid_608266, JString, required = false,
+                                 default = nil)
+  if valid_608266 != nil:
+    section.add "X-Amz-Security-Token", valid_608266
+  var valid_608267 = header.getOrDefault("X-Amz-Algorithm")
+  valid_608267 = validateParameter(valid_608267, JString, required = false,
+                                 default = nil)
+  if valid_608267 != nil:
+    section.add "X-Amz-Algorithm", valid_608267
+  var valid_608268 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_608268 = validateParameter(valid_608268, JString, required = false,
+                                 default = nil)
+  if valid_608268 != nil:
+    section.add "X-Amz-SignedHeaders", valid_608268
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_608270: Call_UpdateWorkteam_608258; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Updates an existing work team with new member definitions or description.
+  ## 
+  let valid = call_608270.validator(path, query, header, formData, body)
+  let scheme = call_608270.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_608270.url(scheme.get, call_608270.host, call_608270.base,
+                         call_608270.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_608270, url, valid)
+
+proc call*(call_608271: Call_UpdateWorkteam_608258; body: JsonNode): Recallable =
+  ## updateWorkteam
+  ## Updates an existing work team with new member definitions or description.
+  ##   body: JObject (required)
+  var body_608272 = newJObject()
+  if body != nil:
+    body_608272 = body
+  result = call_608271.call(nil, nil, nil, nil, body_608272)
+
+var updateWorkteam* = Call_UpdateWorkteam_608258(name: "updateWorkteam",
     meth: HttpMethod.HttpPost, host: "api.sagemaker.amazonaws.com",
     route: "/#X-Amz-Target=SageMaker.UpdateWorkteam",
-    validator: validate_UpdateWorkteam_608229, base: "/", url: url_UpdateWorkteam_608230,
+    validator: validate_UpdateWorkteam_608259, base: "/", url: url_UpdateWorkteam_608260,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -15929,5 +16157,11 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
+  const
+    XAmzSecurityToken = "X-Amz-Security-Token"
+  if not headers.hasKey(XAmzSecurityToken):
+    let session = getEnv("AWS_SESSION_TOKEN", "")
+    if session != "":
+      headers[XAmzSecurityToken] = session
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)
