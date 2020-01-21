@@ -168,8 +168,6 @@ proc validate_ActivateGateway_605929(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606055 = header.getOrDefault("X-Amz-Target")
   valid_606055 = validateParameter(valid_606055, JString, required = true, default = newJString(
       "StorageGateway_20130630.ActivateGateway"))
@@ -281,8 +279,6 @@ proc validate_AddCache_606198(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606200 = header.getOrDefault("X-Amz-Target")
   valid_606200 = validateParameter(valid_606200, JString, required = true, default = newJString(
       "StorageGateway_20130630.AddCache"))
@@ -395,8 +391,6 @@ proc validate_AddTagsToResource_606213(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606215 = header.getOrDefault("X-Amz-Target")
   valid_606215 = validateParameter(valid_606215, JString, required = true, default = newJString(
       "StorageGateway_20130630.AddTagsToResource"))
@@ -509,8 +503,6 @@ proc validate_AddUploadBuffer_606228(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606230 = header.getOrDefault("X-Amz-Target")
   valid_606230 = validateParameter(valid_606230, JString, required = true, default = newJString(
       "StorageGateway_20130630.AddUploadBuffer"))
@@ -623,8 +615,6 @@ proc validate_AddWorkingStorage_606243(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606245 = header.getOrDefault("X-Amz-Target")
   valid_606245 = validateParameter(valid_606245, JString, required = true, default = newJString(
       "StorageGateway_20130630.AddWorkingStorage"))
@@ -737,8 +727,6 @@ proc validate_AssignTapePool_606258(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606260 = header.getOrDefault("X-Amz-Target")
   valid_606260 = validateParameter(valid_606260, JString, required = true, default = newJString(
       "StorageGateway_20130630.AssignTapePool"))
@@ -850,8 +838,6 @@ proc validate_AttachVolume_606273(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606275 = header.getOrDefault("X-Amz-Target")
   valid_606275 = validateParameter(valid_606275, JString, required = true, default = newJString(
       "StorageGateway_20130630.AttachVolume"))
@@ -964,8 +950,6 @@ proc validate_CancelArchival_606288(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606290 = header.getOrDefault("X-Amz-Target")
   valid_606290 = validateParameter(valid_606290, JString, required = true, default = newJString(
       "StorageGateway_20130630.CancelArchival"))
@@ -1078,8 +1062,6 @@ proc validate_CancelRetrieval_606303(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606305 = header.getOrDefault("X-Amz-Target")
   valid_606305 = validateParameter(valid_606305, JString, required = true, default = newJString(
       "StorageGateway_20130630.CancelRetrieval"))
@@ -1192,8 +1174,6 @@ proc validate_CreateCachediSCSIVolume_606318(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606320 = header.getOrDefault("X-Amz-Target")
   valid_606320 = validateParameter(valid_606320, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateCachediSCSIVolume"))
@@ -1307,8 +1287,6 @@ proc validate_CreateNFSFileShare_606333(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606335 = header.getOrDefault("X-Amz-Target")
   valid_606335 = validateParameter(valid_606335, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateNFSFileShare"))
@@ -1422,8 +1400,6 @@ proc validate_CreateSMBFileShare_606348(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606350 = header.getOrDefault("X-Amz-Target")
   valid_606350 = validateParameter(valid_606350, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateSMBFileShare"))
@@ -1537,8 +1513,6 @@ proc validate_CreateSnapshot_606363(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606365 = header.getOrDefault("X-Amz-Target")
   valid_606365 = validateParameter(valid_606365, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateSnapshot"))
@@ -1650,8 +1624,6 @@ proc validate_CreateSnapshotFromVolumeRecoveryPoint_606378(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606380 = header.getOrDefault("X-Amz-Target")
   valid_606380 = validateParameter(valid_606380, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateSnapshotFromVolumeRecoveryPoint"))
@@ -1767,8 +1739,6 @@ proc validate_CreateStorediSCSIVolume_606393(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606395 = header.getOrDefault("X-Amz-Target")
   valid_606395 = validateParameter(valid_606395, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateStorediSCSIVolume"))
@@ -1881,8 +1851,6 @@ proc validate_CreateTapeWithBarcode_606408(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606410 = header.getOrDefault("X-Amz-Target")
   valid_606410 = validateParameter(valid_606410, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateTapeWithBarcode"))
@@ -1995,8 +1963,6 @@ proc validate_CreateTapes_606423(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606425 = header.getOrDefault("X-Amz-Target")
   valid_606425 = validateParameter(valid_606425, JString, required = true, default = newJString(
       "StorageGateway_20130630.CreateTapes"))
@@ -2110,8 +2076,6 @@ proc validate_DeleteBandwidthRateLimit_606438(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606440 = header.getOrDefault("X-Amz-Target")
   valid_606440 = validateParameter(valid_606440, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteBandwidthRateLimit"))
@@ -2224,8 +2188,6 @@ proc validate_DeleteChapCredentials_606453(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606455 = header.getOrDefault("X-Amz-Target")
   valid_606455 = validateParameter(valid_606455, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteChapCredentials"))
@@ -2339,8 +2301,6 @@ proc validate_DeleteFileShare_606468(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606470 = header.getOrDefault("X-Amz-Target")
   valid_606470 = validateParameter(valid_606470, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteFileShare"))
@@ -2452,8 +2412,6 @@ proc validate_DeleteGateway_606483(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606485 = header.getOrDefault("X-Amz-Target")
   valid_606485 = validateParameter(valid_606485, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteGateway"))
@@ -2565,8 +2523,6 @@ proc validate_DeleteSnapshotSchedule_606498(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606500 = header.getOrDefault("X-Amz-Target")
   valid_606500 = validateParameter(valid_606500, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteSnapshotSchedule"))
@@ -2679,8 +2635,6 @@ proc validate_DeleteTape_606513(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606515 = header.getOrDefault("X-Amz-Target")
   valid_606515 = validateParameter(valid_606515, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteTape"))
@@ -2794,8 +2748,6 @@ proc validate_DeleteTapeArchive_606528(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606530 = header.getOrDefault("X-Amz-Target")
   valid_606530 = validateParameter(valid_606530, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteTapeArchive"))
@@ -2907,8 +2859,6 @@ proc validate_DeleteVolume_606543(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606545 = header.getOrDefault("X-Amz-Target")
   valid_606545 = validateParameter(valid_606545, JString, required = true, default = newJString(
       "StorageGateway_20130630.DeleteVolume"))
@@ -3020,8 +2970,6 @@ proc validate_DescribeAvailabilityMonitorTest_606558(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606560 = header.getOrDefault("X-Amz-Target")
   valid_606560 = validateParameter(valid_606560, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeAvailabilityMonitorTest"))
@@ -3135,8 +3083,6 @@ proc validate_DescribeBandwidthRateLimit_606573(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606575 = header.getOrDefault("X-Amz-Target")
   valid_606575 = validateParameter(valid_606575, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeBandwidthRateLimit"))
@@ -3250,8 +3196,6 @@ proc validate_DescribeCache_606588(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606590 = header.getOrDefault("X-Amz-Target")
   valid_606590 = validateParameter(valid_606590, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeCache"))
@@ -3363,8 +3307,6 @@ proc validate_DescribeCachediSCSIVolumes_606603(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606605 = header.getOrDefault("X-Amz-Target")
   valid_606605 = validateParameter(valid_606605, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeCachediSCSIVolumes"))
@@ -3479,8 +3421,6 @@ proc validate_DescribeChapCredentials_606618(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606620 = header.getOrDefault("X-Amz-Target")
   valid_606620 = validateParameter(valid_606620, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeChapCredentials"))
@@ -3593,8 +3533,6 @@ proc validate_DescribeGatewayInformation_606633(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606635 = header.getOrDefault("X-Amz-Target")
   valid_606635 = validateParameter(valid_606635, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeGatewayInformation"))
@@ -3708,8 +3646,6 @@ proc validate_DescribeMaintenanceStartTime_606648(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606650 = header.getOrDefault("X-Amz-Target")
   valid_606650 = validateParameter(valid_606650, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeMaintenanceStartTime"))
@@ -3822,8 +3758,6 @@ proc validate_DescribeNFSFileShares_606663(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606665 = header.getOrDefault("X-Amz-Target")
   valid_606665 = validateParameter(valid_606665, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeNFSFileShares"))
@@ -3936,8 +3870,6 @@ proc validate_DescribeSMBFileShares_606678(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606680 = header.getOrDefault("X-Amz-Target")
   valid_606680 = validateParameter(valid_606680, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeSMBFileShares"))
@@ -4051,8 +3983,6 @@ proc validate_DescribeSMBSettings_606693(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606695 = header.getOrDefault("X-Amz-Target")
   valid_606695 = validateParameter(valid_606695, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeSMBSettings"))
@@ -4166,8 +4096,6 @@ proc validate_DescribeSnapshotSchedule_606708(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606710 = header.getOrDefault("X-Amz-Target")
   valid_606710 = validateParameter(valid_606710, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeSnapshotSchedule"))
@@ -4280,8 +4208,6 @@ proc validate_DescribeStorediSCSIVolumes_606723(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606725 = header.getOrDefault("X-Amz-Target")
   valid_606725 = validateParameter(valid_606725, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeStorediSCSIVolumes"))
@@ -4410,8 +4336,6 @@ proc validate_DescribeTapeArchives_606738(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606742 = header.getOrDefault("X-Amz-Target")
   valid_606742 = validateParameter(valid_606742, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeTapeArchives"))
@@ -4547,8 +4471,6 @@ proc validate_DescribeTapeRecoveryPoints_606757(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606761 = header.getOrDefault("X-Amz-Target")
   valid_606761 = validateParameter(valid_606761, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeTapeRecoveryPoints"))
@@ -4685,8 +4607,6 @@ proc validate_DescribeTapes_606775(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606779 = header.getOrDefault("X-Amz-Target")
   valid_606779 = validateParameter(valid_606779, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeTapes"))
@@ -4806,8 +4726,6 @@ proc validate_DescribeUploadBuffer_606793(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606795 = header.getOrDefault("X-Amz-Target")
   valid_606795 = validateParameter(valid_606795, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeUploadBuffer"))
@@ -4936,8 +4854,6 @@ proc validate_DescribeVTLDevices_606808(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606812 = header.getOrDefault("X-Amz-Target")
   valid_606812 = validateParameter(valid_606812, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeVTLDevices"))
@@ -5058,8 +4974,6 @@ proc validate_DescribeWorkingStorage_606826(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606828 = header.getOrDefault("X-Amz-Target")
   valid_606828 = validateParameter(valid_606828, JString, required = true, default = newJString(
       "StorageGateway_20130630.DescribeWorkingStorage"))
@@ -5172,8 +5086,6 @@ proc validate_DetachVolume_606841(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606843 = header.getOrDefault("X-Amz-Target")
   valid_606843 = validateParameter(valid_606843, JString, required = true, default = newJString(
       "StorageGateway_20130630.DetachVolume"))
@@ -5286,8 +5198,6 @@ proc validate_DisableGateway_606856(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606858 = header.getOrDefault("X-Amz-Target")
   valid_606858 = validateParameter(valid_606858, JString, required = true, default = newJString(
       "StorageGateway_20130630.DisableGateway"))
@@ -5399,8 +5309,6 @@ proc validate_JoinDomain_606871(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606873 = header.getOrDefault("X-Amz-Target")
   valid_606873 = validateParameter(valid_606873, JString, required = true, default = newJString(
       "StorageGateway_20130630.JoinDomain"))
@@ -5529,8 +5437,6 @@ proc validate_ListFileShares_606886(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606890 = header.getOrDefault("X-Amz-Target")
   valid_606890 = validateParameter(valid_606890, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListFileShares"))
@@ -5665,8 +5571,6 @@ proc validate_ListGateways_606904(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606908 = header.getOrDefault("X-Amz-Target")
   valid_606908 = validateParameter(valid_606908, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListGateways"))
@@ -5787,8 +5691,6 @@ proc validate_ListLocalDisks_606922(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606924 = header.getOrDefault("X-Amz-Target")
   valid_606924 = validateParameter(valid_606924, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListLocalDisks"))
@@ -5916,8 +5818,6 @@ proc validate_ListTagsForResource_606937(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606941 = header.getOrDefault("X-Amz-Target")
   valid_606941 = validateParameter(valid_606941, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListTagsForResource"))
@@ -6053,8 +5953,6 @@ proc validate_ListTapes_606955(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606959 = header.getOrDefault("X-Amz-Target")
   valid_606959 = validateParameter(valid_606959, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListTapes"))
@@ -6174,8 +6072,6 @@ proc validate_ListVolumeInitiators_606973(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606975 = header.getOrDefault("X-Amz-Target")
   valid_606975 = validateParameter(valid_606975, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListVolumeInitiators"))
@@ -6289,8 +6185,6 @@ proc validate_ListVolumeRecoveryPoints_606988(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606990 = header.getOrDefault("X-Amz-Target")
   valid_606990 = validateParameter(valid_606990, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListVolumeRecoveryPoints"))
@@ -6418,8 +6312,6 @@ proc validate_ListVolumes_607003(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607007 = header.getOrDefault("X-Amz-Target")
   valid_607007 = validateParameter(valid_607007, JString, required = true, default = newJString(
       "StorageGateway_20130630.ListVolumes"))
@@ -6541,8 +6433,6 @@ proc validate_NotifyWhenUploaded_607021(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607023 = header.getOrDefault("X-Amz-Target")
   valid_607023 = validateParameter(valid_607023, JString, required = true, default = newJString(
       "StorageGateway_20130630.NotifyWhenUploaded"))
@@ -6655,8 +6545,6 @@ proc validate_RefreshCache_607036(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607038 = header.getOrDefault("X-Amz-Target")
   valid_607038 = validateParameter(valid_607038, JString, required = true, default = newJString(
       "StorageGateway_20130630.RefreshCache"))
@@ -6768,8 +6656,6 @@ proc validate_RemoveTagsFromResource_607051(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607053 = header.getOrDefault("X-Amz-Target")
   valid_607053 = validateParameter(valid_607053, JString, required = true, default = newJString(
       "StorageGateway_20130630.RemoveTagsFromResource"))
@@ -6882,8 +6768,6 @@ proc validate_ResetCache_607066(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607068 = header.getOrDefault("X-Amz-Target")
   valid_607068 = validateParameter(valid_607068, JString, required = true, default = newJString(
       "StorageGateway_20130630.ResetCache"))
@@ -6997,8 +6881,6 @@ proc validate_RetrieveTapeArchive_607081(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607083 = header.getOrDefault("X-Amz-Target")
   valid_607083 = validateParameter(valid_607083, JString, required = true, default = newJString(
       "StorageGateway_20130630.RetrieveTapeArchive"))
@@ -7111,8 +6993,6 @@ proc validate_RetrieveTapeRecoveryPoint_607096(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607098 = header.getOrDefault("X-Amz-Target")
   valid_607098 = validateParameter(valid_607098, JString, required = true, default = newJString(
       "StorageGateway_20130630.RetrieveTapeRecoveryPoint"))
@@ -7227,8 +7107,6 @@ proc validate_SetLocalConsolePassword_607111(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607113 = header.getOrDefault("X-Amz-Target")
   valid_607113 = validateParameter(valid_607113, JString, required = true, default = newJString(
       "StorageGateway_20130630.SetLocalConsolePassword"))
@@ -7342,8 +7220,6 @@ proc validate_SetSMBGuestPassword_607126(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607128 = header.getOrDefault("X-Amz-Target")
   valid_607128 = validateParameter(valid_607128, JString, required = true, default = newJString(
       "StorageGateway_20130630.SetSMBGuestPassword"))
@@ -7457,8 +7333,6 @@ proc validate_ShutdownGateway_607141(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607143 = header.getOrDefault("X-Amz-Target")
   valid_607143 = validateParameter(valid_607143, JString, required = true, default = newJString(
       "StorageGateway_20130630.ShutdownGateway"))
@@ -7570,8 +7444,6 @@ proc validate_StartAvailabilityMonitorTest_607156(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607158 = header.getOrDefault("X-Amz-Target")
   valid_607158 = validateParameter(valid_607158, JString, required = true, default = newJString(
       "StorageGateway_20130630.StartAvailabilityMonitorTest"))
@@ -7684,8 +7556,6 @@ proc validate_StartGateway_607171(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607173 = header.getOrDefault("X-Amz-Target")
   valid_607173 = validateParameter(valid_607173, JString, required = true, default = newJString(
       "StorageGateway_20130630.StartGateway"))
@@ -7798,8 +7668,6 @@ proc validate_UpdateBandwidthRateLimit_607186(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607188 = header.getOrDefault("X-Amz-Target")
   valid_607188 = validateParameter(valid_607188, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateBandwidthRateLimit"))
@@ -7912,8 +7780,6 @@ proc validate_UpdateChapCredentials_607201(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607203 = header.getOrDefault("X-Amz-Target")
   valid_607203 = validateParameter(valid_607203, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateChapCredentials"))
@@ -8027,8 +7893,6 @@ proc validate_UpdateGatewayInformation_607216(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607218 = header.getOrDefault("X-Amz-Target")
   valid_607218 = validateParameter(valid_607218, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateGatewayInformation"))
@@ -8142,8 +8006,6 @@ proc validate_UpdateGatewaySoftwareNow_607231(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607233 = header.getOrDefault("X-Amz-Target")
   valid_607233 = validateParameter(valid_607233, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateGatewaySoftwareNow"))
@@ -8256,8 +8118,6 @@ proc validate_UpdateMaintenanceStartTime_607246(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607248 = header.getOrDefault("X-Amz-Target")
   valid_607248 = validateParameter(valid_607248, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateMaintenanceStartTime"))
@@ -8372,8 +8232,6 @@ proc validate_UpdateNFSFileShare_607261(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607263 = header.getOrDefault("X-Amz-Target")
   valid_607263 = validateParameter(valid_607263, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateNFSFileShare"))
@@ -8487,8 +8345,6 @@ proc validate_UpdateSMBFileShare_607276(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607278 = header.getOrDefault("X-Amz-Target")
   valid_607278 = validateParameter(valid_607278, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateSMBFileShare"))
@@ -8601,8 +8457,6 @@ proc validate_UpdateSMBSecurityStrategy_607291(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607293 = header.getOrDefault("X-Amz-Target")
   valid_607293 = validateParameter(valid_607293, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateSMBSecurityStrategy"))
@@ -8716,8 +8570,6 @@ proc validate_UpdateSnapshotSchedule_607306(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607308 = header.getOrDefault("X-Amz-Target")
   valid_607308 = validateParameter(valid_607308, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateSnapshotSchedule"))
@@ -8831,8 +8683,6 @@ proc validate_UpdateVTLDeviceType_607321(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607323 = header.getOrDefault("X-Amz-Target")
   valid_607323 = validateParameter(valid_607323, JString, required = true, default = newJString(
       "StorageGateway_20130630.UpdateVTLDeviceType"))

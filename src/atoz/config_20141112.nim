@@ -180,8 +180,6 @@ proc validate_BatchGetAggregateResourceConfig_605928(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "StarlingDoveService.BatchGetAggregateResourceConfig"))
@@ -295,8 +293,6 @@ proc validate_BatchGetResourceConfig_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "StarlingDoveService.BatchGetResourceConfig"))
@@ -409,8 +405,6 @@ proc validate_DeleteAggregationAuthorization_606212(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteAggregationAuthorization"))
@@ -525,8 +519,6 @@ proc validate_DeleteConfigRule_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteConfigRule"))
@@ -638,8 +630,6 @@ proc validate_DeleteConfigurationAggregator_606242(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteConfigurationAggregator"))
@@ -753,8 +743,6 @@ proc validate_DeleteConfigurationRecorder_606257(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteConfigurationRecorder"))
@@ -868,8 +856,6 @@ proc validate_DeleteConformancePack_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteConformancePack"))
@@ -982,8 +968,6 @@ proc validate_DeleteDeliveryChannel_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteDeliveryChannel"))
@@ -1097,8 +1081,6 @@ proc validate_DeleteEvaluationResults_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteEvaluationResults"))
@@ -1211,8 +1193,6 @@ proc validate_DeleteOrganizationConfigRule_606317(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteOrganizationConfigRule"))
@@ -1326,8 +1306,6 @@ proc validate_DeleteOrganizationConformancePack_606332(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteOrganizationConformancePack"))
@@ -1442,8 +1420,6 @@ proc validate_DeletePendingAggregationRequest_606347(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "StarlingDoveService.DeletePendingAggregationRequest"))
@@ -1557,8 +1533,6 @@ proc validate_DeleteRemediationConfiguration_606362(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteRemediationConfiguration"))
@@ -1672,8 +1646,6 @@ proc validate_DeleteRemediationExceptions_606377(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteRemediationExceptions"))
@@ -1787,8 +1759,6 @@ proc validate_DeleteResourceConfig_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteResourceConfig"))
@@ -1901,8 +1871,6 @@ proc validate_DeleteRetentionConfiguration_606407(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "StarlingDoveService.DeleteRetentionConfiguration"))
@@ -2016,8 +1984,6 @@ proc validate_DeliverConfigSnapshot_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "StarlingDoveService.DeliverConfigSnapshot"))
@@ -2130,8 +2096,6 @@ proc validate_DescribeAggregateComplianceByConfigRules_606437(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeAggregateComplianceByConfigRules"))
@@ -2246,8 +2210,6 @@ proc validate_DescribeAggregationAuthorizations_606452(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeAggregationAuthorizations"))
@@ -2362,8 +2324,6 @@ proc validate_DescribeComplianceByConfigRule_606467(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeComplianceByConfigRule"))
@@ -2477,8 +2437,6 @@ proc validate_DescribeComplianceByResource_606482(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeComplianceByResource"))
@@ -2592,8 +2550,6 @@ proc validate_DescribeConfigRuleEvaluationStatus_606497(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConfigRuleEvaluationStatus"))
@@ -2709,8 +2665,6 @@ proc validate_DescribeConfigRules_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConfigRules"))
@@ -2823,8 +2777,6 @@ proc validate_DescribeConfigurationAggregatorSourcesStatus_606527(path: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConfigurationAggregatorSourcesStatus"))
@@ -2939,8 +2891,6 @@ proc validate_DescribeConfigurationAggregators_606542(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConfigurationAggregators"))
@@ -3055,8 +3005,6 @@ proc validate_DescribeConfigurationRecorderStatus_606557(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConfigurationRecorderStatus"))
@@ -3171,8 +3119,6 @@ proc validate_DescribeConfigurationRecorders_606572(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConfigurationRecorders"))
@@ -3286,8 +3232,6 @@ proc validate_DescribeConformancePackCompliance_606587(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConformancePackCompliance"))
@@ -3402,8 +3346,6 @@ proc validate_DescribeConformancePackStatus_606602(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConformancePackStatus"))
@@ -3518,8 +3460,6 @@ proc validate_DescribeConformancePacks_606617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeConformancePacks"))
@@ -3632,8 +3572,6 @@ proc validate_DescribeDeliveryChannelStatus_606632(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeDeliveryChannelStatus"))
@@ -3748,8 +3686,6 @@ proc validate_DescribeDeliveryChannels_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeDeliveryChannels"))
@@ -3862,8 +3798,6 @@ proc validate_DescribeOrganizationConfigRuleStatuses_606662(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeOrganizationConfigRuleStatuses"))
@@ -3978,8 +3912,6 @@ proc validate_DescribeOrganizationConfigRules_606677(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeOrganizationConfigRules"))
@@ -4093,8 +4025,6 @@ proc validate_DescribeOrganizationConformancePackStatuses_606692(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeOrganizationConformancePackStatuses"))
@@ -4209,8 +4139,6 @@ proc validate_DescribeOrganizationConformancePacks_606707(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeOrganizationConformancePacks"))
@@ -4325,8 +4253,6 @@ proc validate_DescribePendingAggregationRequests_606722(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "StarlingDoveService.DescribePendingAggregationRequests"))
@@ -4441,8 +4367,6 @@ proc validate_DescribeRemediationConfigurations_606737(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeRemediationConfigurations"))
@@ -4572,8 +4496,6 @@ proc validate_DescribeRemediationExceptions_606752(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606756 = header.getOrDefault("X-Amz-Target")
   valid_606756 = validateParameter(valid_606756, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeRemediationExceptions"))
@@ -4710,8 +4632,6 @@ proc validate_DescribeRemediationExecutionStatus_606771(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606775 = header.getOrDefault("X-Amz-Target")
   valid_606775 = validateParameter(valid_606775, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeRemediationExecutionStatus"))
@@ -4833,8 +4753,6 @@ proc validate_DescribeRetentionConfigurations_606789(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606791 = header.getOrDefault("X-Amz-Target")
   valid_606791 = validateParameter(valid_606791, JString, required = true, default = newJString(
       "StarlingDoveService.DescribeRetentionConfigurations"))
@@ -4948,8 +4866,6 @@ proc validate_GetAggregateComplianceDetailsByConfigRule_606804(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606806 = header.getOrDefault("X-Amz-Target")
   valid_606806 = validateParameter(valid_606806, JString, required = true, default = newJString(
       "StarlingDoveService.GetAggregateComplianceDetailsByConfigRule"))
@@ -5064,8 +4980,6 @@ proc validate_GetAggregateConfigRuleComplianceSummary_606819(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606821 = header.getOrDefault("X-Amz-Target")
   valid_606821 = validateParameter(valid_606821, JString, required = true, default = newJString(
       "StarlingDoveService.GetAggregateConfigRuleComplianceSummary"))
@@ -5180,8 +5094,6 @@ proc validate_GetAggregateDiscoveredResourceCounts_606834(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606836 = header.getOrDefault("X-Amz-Target")
   valid_606836 = validateParameter(valid_606836, JString, required = true, default = newJString(
       "StarlingDoveService.GetAggregateDiscoveredResourceCounts"))
@@ -5296,8 +5208,6 @@ proc validate_GetAggregateResourceConfig_606849(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606851 = header.getOrDefault("X-Amz-Target")
   valid_606851 = validateParameter(valid_606851, JString, required = true, default = newJString(
       "StarlingDoveService.GetAggregateResourceConfig"))
@@ -5411,8 +5321,6 @@ proc validate_GetComplianceDetailsByConfigRule_606864(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606866 = header.getOrDefault("X-Amz-Target")
   valid_606866 = validateParameter(valid_606866, JString, required = true, default = newJString(
       "StarlingDoveService.GetComplianceDetailsByConfigRule"))
@@ -5527,8 +5435,6 @@ proc validate_GetComplianceDetailsByResource_606879(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606881 = header.getOrDefault("X-Amz-Target")
   valid_606881 = validateParameter(valid_606881, JString, required = true, default = newJString(
       "StarlingDoveService.GetComplianceDetailsByResource"))
@@ -5642,8 +5548,6 @@ proc validate_GetComplianceSummaryByConfigRule_606894(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606896 = header.getOrDefault("X-Amz-Target")
   valid_606896 = validateParameter(valid_606896, JString, required = true, default = newJString(
       "StarlingDoveService.GetComplianceSummaryByConfigRule"))
@@ -5749,8 +5653,6 @@ proc validate_GetComplianceSummaryByResourceType_606907(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606909 = header.getOrDefault("X-Amz-Target")
   valid_606909 = validateParameter(valid_606909, JString, required = true, default = newJString(
       "StarlingDoveService.GetComplianceSummaryByResourceType"))
@@ -5865,8 +5767,6 @@ proc validate_GetConformancePackComplianceDetails_606922(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606924 = header.getOrDefault("X-Amz-Target")
   valid_606924 = validateParameter(valid_606924, JString, required = true, default = newJString(
       "StarlingDoveService.GetConformancePackComplianceDetails"))
@@ -5981,8 +5881,6 @@ proc validate_GetConformancePackComplianceSummary_606937(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606939 = header.getOrDefault("X-Amz-Target")
   valid_606939 = validateParameter(valid_606939, JString, required = true, default = newJString(
       "StarlingDoveService.GetConformancePackComplianceSummary"))
@@ -6097,8 +5995,6 @@ proc validate_GetDiscoveredResourceCounts_606952(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606954 = header.getOrDefault("X-Amz-Target")
   valid_606954 = validateParameter(valid_606954, JString, required = true, default = newJString(
       "StarlingDoveService.GetDiscoveredResourceCounts"))
@@ -6212,8 +6108,6 @@ proc validate_GetOrganizationConfigRuleDetailedStatus_606967(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606969 = header.getOrDefault("X-Amz-Target")
   valid_606969 = validateParameter(valid_606969, JString, required = true, default = newJString(
       "StarlingDoveService.GetOrganizationConfigRuleDetailedStatus"))
@@ -6328,8 +6222,6 @@ proc validate_GetOrganizationConformancePackDetailedStatus_606982(path: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606984 = header.getOrDefault("X-Amz-Target")
   valid_606984 = validateParameter(valid_606984, JString, required = true, default = newJString(
       "StarlingDoveService.GetOrganizationConformancePackDetailedStatus"))
@@ -6460,8 +6352,6 @@ proc validate_GetResourceConfigHistory_606997(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607001 = header.getOrDefault("X-Amz-Target")
   valid_607001 = validateParameter(valid_607001, JString, required = true, default = newJString(
       "StarlingDoveService.GetResourceConfigHistory"))
@@ -6582,8 +6472,6 @@ proc validate_ListAggregateDiscoveredResources_607015(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607017 = header.getOrDefault("X-Amz-Target")
   valid_607017 = validateParameter(valid_607017, JString, required = true, default = newJString(
       "StarlingDoveService.ListAggregateDiscoveredResources"))
@@ -6699,8 +6587,6 @@ proc validate_ListDiscoveredResources_607030(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607032 = header.getOrDefault("X-Amz-Target")
   valid_607032 = validateParameter(valid_607032, JString, required = true, default = newJString(
       "StarlingDoveService.ListDiscoveredResources"))
@@ -6814,8 +6700,6 @@ proc validate_ListTagsForResource_607045(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607047 = header.getOrDefault("X-Amz-Target")
   valid_607047 = validateParameter(valid_607047, JString, required = true, default = newJString(
       "StarlingDoveService.ListTagsForResource"))
@@ -6928,8 +6812,6 @@ proc validate_PutAggregationAuthorization_607060(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607062 = header.getOrDefault("X-Amz-Target")
   valid_607062 = validateParameter(valid_607062, JString, required = true, default = newJString(
       "StarlingDoveService.PutAggregationAuthorization"))
@@ -7043,8 +6925,6 @@ proc validate_PutConfigRule_607075(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607077 = header.getOrDefault("X-Amz-Target")
   valid_607077 = validateParameter(valid_607077, JString, required = true, default = newJString(
       "StarlingDoveService.PutConfigRule"))
@@ -7156,8 +7036,6 @@ proc validate_PutConfigurationAggregator_607090(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607092 = header.getOrDefault("X-Amz-Target")
   valid_607092 = validateParameter(valid_607092, JString, required = true, default = newJString(
       "StarlingDoveService.PutConfigurationAggregator"))
@@ -7272,8 +7150,6 @@ proc validate_PutConfigurationRecorder_607105(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607107 = header.getOrDefault("X-Amz-Target")
   valid_607107 = validateParameter(valid_607107, JString, required = true, default = newJString(
       "StarlingDoveService.PutConfigurationRecorder"))
@@ -7387,8 +7263,6 @@ proc validate_PutConformancePack_607120(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607122 = header.getOrDefault("X-Amz-Target")
   valid_607122 = validateParameter(valid_607122, JString, required = true, default = newJString(
       "StarlingDoveService.PutConformancePack"))
@@ -7502,8 +7376,6 @@ proc validate_PutDeliveryChannel_607135(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607137 = header.getOrDefault("X-Amz-Target")
   valid_607137 = validateParameter(valid_607137, JString, required = true, default = newJString(
       "StarlingDoveService.PutDeliveryChannel"))
@@ -7617,8 +7489,6 @@ proc validate_PutEvaluations_607150(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607152 = header.getOrDefault("X-Amz-Target")
   valid_607152 = validateParameter(valid_607152, JString, required = true, default = newJString(
       "StarlingDoveService.PutEvaluations"))
@@ -7730,8 +7600,6 @@ proc validate_PutOrganizationConfigRule_607165(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607167 = header.getOrDefault("X-Amz-Target")
   valid_607167 = validateParameter(valid_607167, JString, required = true, default = newJString(
       "StarlingDoveService.PutOrganizationConfigRule"))
@@ -7845,8 +7713,6 @@ proc validate_PutOrganizationConformancePack_607180(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607182 = header.getOrDefault("X-Amz-Target")
   valid_607182 = validateParameter(valid_607182, JString, required = true, default = newJString(
       "StarlingDoveService.PutOrganizationConformancePack"))
@@ -7960,8 +7826,6 @@ proc validate_PutRemediationConfigurations_607195(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607197 = header.getOrDefault("X-Amz-Target")
   valid_607197 = validateParameter(valid_607197, JString, required = true, default = newJString(
       "StarlingDoveService.PutRemediationConfigurations"))
@@ -8076,8 +7940,6 @@ proc validate_PutRemediationExceptions_607210(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607212 = header.getOrDefault("X-Amz-Target")
   valid_607212 = validateParameter(valid_607212, JString, required = true, default = newJString(
       "StarlingDoveService.PutRemediationExceptions"))
@@ -8191,8 +8053,6 @@ proc validate_PutResourceConfig_607225(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607227 = header.getOrDefault("X-Amz-Target")
   valid_607227 = validateParameter(valid_607227, JString, required = true, default = newJString(
       "StarlingDoveService.PutResourceConfig"))
@@ -8304,8 +8164,6 @@ proc validate_PutRetentionConfiguration_607240(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607242 = header.getOrDefault("X-Amz-Target")
   valid_607242 = validateParameter(valid_607242, JString, required = true, default = newJString(
       "StarlingDoveService.PutRetentionConfiguration"))
@@ -8419,8 +8277,6 @@ proc validate_SelectResourceConfig_607255(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607257 = header.getOrDefault("X-Amz-Target")
   valid_607257 = validateParameter(valid_607257, JString, required = true, default = newJString(
       "StarlingDoveService.SelectResourceConfig"))
@@ -8533,8 +8389,6 @@ proc validate_StartConfigRulesEvaluation_607270(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607272 = header.getOrDefault("X-Amz-Target")
   valid_607272 = validateParameter(valid_607272, JString, required = true, default = newJString(
       "StarlingDoveService.StartConfigRulesEvaluation"))
@@ -8648,8 +8502,6 @@ proc validate_StartConfigurationRecorder_607285(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607287 = header.getOrDefault("X-Amz-Target")
   valid_607287 = validateParameter(valid_607287, JString, required = true, default = newJString(
       "StarlingDoveService.StartConfigurationRecorder"))
@@ -8763,8 +8615,6 @@ proc validate_StartRemediationExecution_607300(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607302 = header.getOrDefault("X-Amz-Target")
   valid_607302 = validateParameter(valid_607302, JString, required = true, default = newJString(
       "StarlingDoveService.StartRemediationExecution"))
@@ -8878,8 +8728,6 @@ proc validate_StopConfigurationRecorder_607315(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607317 = header.getOrDefault("X-Amz-Target")
   valid_607317 = validateParameter(valid_607317, JString, required = true, default = newJString(
       "StarlingDoveService.StopConfigurationRecorder"))
@@ -8993,8 +8841,6 @@ proc validate_TagResource_607330(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607332 = header.getOrDefault("X-Amz-Target")
   valid_607332 = validateParameter(valid_607332, JString, required = true, default = newJString(
       "StarlingDoveService.TagResource"))
@@ -9107,8 +8953,6 @@ proc validate_UntagResource_607345(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607347 = header.getOrDefault("X-Amz-Target")
   valid_607347 = validateParameter(valid_607347, JString, required = true, default = newJString(
       "StarlingDoveService.UntagResource"))

@@ -178,8 +178,6 @@ proc validate_AllocateStaticIp_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "Lightsail_20161128.AllocateStaticIp"))
@@ -291,8 +289,6 @@ proc validate_AttachDisk_606197(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "Lightsail_20161128.AttachDisk"))
@@ -405,8 +401,6 @@ proc validate_AttachInstancesToLoadBalancer_606212(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "Lightsail_20161128.AttachInstancesToLoadBalancer"))
@@ -520,8 +514,6 @@ proc validate_AttachLoadBalancerTlsCertificate_606227(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "Lightsail_20161128.AttachLoadBalancerTlsCertificate"))
@@ -637,8 +629,6 @@ proc validate_AttachStaticIp_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "Lightsail_20161128.AttachStaticIp"))
@@ -751,8 +741,6 @@ proc validate_CloseInstancePublicPorts_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "Lightsail_20161128.CloseInstancePublicPorts"))
@@ -865,8 +853,6 @@ proc validate_CopySnapshot_606272(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "Lightsail_20161128.CopySnapshot"))
@@ -978,8 +964,6 @@ proc validate_CreateCloudFormationStack_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateCloudFormationStack"))
@@ -1093,8 +1077,6 @@ proc validate_CreateDisk_606302(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDisk"))
@@ -1207,8 +1189,6 @@ proc validate_CreateDiskFromSnapshot_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDiskFromSnapshot"))
@@ -1322,8 +1302,6 @@ proc validate_CreateDiskSnapshot_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDiskSnapshot"))
@@ -1436,8 +1414,6 @@ proc validate_CreateDomain_606347(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDomain"))
@@ -1550,8 +1526,6 @@ proc validate_CreateDomainEntry_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateDomainEntry"))
@@ -1663,8 +1637,6 @@ proc validate_CreateInstanceSnapshot_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateInstanceSnapshot"))
@@ -1778,8 +1750,6 @@ proc validate_CreateInstances_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateInstances"))
@@ -1891,8 +1861,6 @@ proc validate_CreateInstancesFromSnapshot_606407(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateInstancesFromSnapshot"))
@@ -2006,8 +1974,6 @@ proc validate_CreateKeyPair_606422(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateKeyPair"))
@@ -2120,8 +2086,6 @@ proc validate_CreateLoadBalancer_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateLoadBalancer"))
@@ -2234,8 +2198,6 @@ proc validate_CreateLoadBalancerTlsCertificate_606452(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateLoadBalancerTlsCertificate"))
@@ -2351,8 +2313,6 @@ proc validate_CreateRelationalDatabase_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateRelationalDatabase"))
@@ -2465,8 +2425,6 @@ proc validate_CreateRelationalDatabaseFromSnapshot_606482(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateRelationalDatabaseFromSnapshot"))
@@ -2581,8 +2539,6 @@ proc validate_CreateRelationalDatabaseSnapshot_606497(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "Lightsail_20161128.CreateRelationalDatabaseSnapshot"))
@@ -2698,8 +2654,6 @@ proc validate_DeleteAutoSnapshot_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteAutoSnapshot"))
@@ -2812,8 +2766,6 @@ proc validate_DeleteDisk_606527(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteDisk"))
@@ -2927,8 +2879,6 @@ proc validate_DeleteDiskSnapshot_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteDiskSnapshot"))
@@ -3041,8 +2991,6 @@ proc validate_DeleteDomain_606557(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteDomain"))
@@ -3155,8 +3103,6 @@ proc validate_DeleteDomainEntry_606572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteDomainEntry"))
@@ -3269,8 +3215,6 @@ proc validate_DeleteInstance_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteInstance"))
@@ -3382,8 +3326,6 @@ proc validate_DeleteInstanceSnapshot_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteInstanceSnapshot"))
@@ -3496,8 +3438,6 @@ proc validate_DeleteKeyPair_606617(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteKeyPair"))
@@ -3610,8 +3550,6 @@ proc validate_DeleteKnownHostKeys_606632(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteKnownHostKeys"))
@@ -3725,8 +3663,6 @@ proc validate_DeleteLoadBalancer_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteLoadBalancer"))
@@ -3839,8 +3775,6 @@ proc validate_DeleteLoadBalancerTlsCertificate_606662(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteLoadBalancerTlsCertificate"))
@@ -3956,8 +3890,6 @@ proc validate_DeleteRelationalDatabase_606677(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteRelationalDatabase"))
@@ -4070,8 +4002,6 @@ proc validate_DeleteRelationalDatabaseSnapshot_606692(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "Lightsail_20161128.DeleteRelationalDatabaseSnapshot"))
@@ -4186,8 +4116,6 @@ proc validate_DetachDisk_606707(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "Lightsail_20161128.DetachDisk"))
@@ -4300,8 +4228,6 @@ proc validate_DetachInstancesFromLoadBalancer_606722(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "Lightsail_20161128.DetachInstancesFromLoadBalancer"))
@@ -4417,8 +4343,6 @@ proc validate_DetachStaticIp_606737(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true, default = newJString(
       "Lightsail_20161128.DetachStaticIp"))
@@ -4530,8 +4454,6 @@ proc validate_DisableAddOn_606752(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606754 = header.getOrDefault("X-Amz-Target")
   valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
       "Lightsail_20161128.DisableAddOn"))
@@ -4643,8 +4565,6 @@ proc validate_DownloadDefaultKeyPair_606767(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
       "Lightsail_20161128.DownloadDefaultKeyPair"))
@@ -4757,8 +4677,6 @@ proc validate_EnableAddOn_606782(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606784 = header.getOrDefault("X-Amz-Target")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "Lightsail_20161128.EnableAddOn"))
@@ -4872,8 +4790,6 @@ proc validate_ExportSnapshot_606797(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606799 = header.getOrDefault("X-Amz-Target")
   valid_606799 = validateParameter(valid_606799, JString, required = true, default = newJString(
       "Lightsail_20161128.ExportSnapshot"))
@@ -4986,8 +4902,6 @@ proc validate_GetActiveNames_606812(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606814 = header.getOrDefault("X-Amz-Target")
   valid_606814 = validateParameter(valid_606814, JString, required = true, default = newJString(
       "Lightsail_20161128.GetActiveNames"))
@@ -5100,8 +5014,6 @@ proc validate_GetAutoSnapshots_606827(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606829 = header.getOrDefault("X-Amz-Target")
   valid_606829 = validateParameter(valid_606829, JString, required = true, default = newJString(
       "Lightsail_20161128.GetAutoSnapshots"))
@@ -5213,8 +5125,6 @@ proc validate_GetBlueprints_606842(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606844 = header.getOrDefault("X-Amz-Target")
   valid_606844 = validateParameter(valid_606844, JString, required = true, default = newJString(
       "Lightsail_20161128.GetBlueprints"))
@@ -5326,8 +5236,6 @@ proc validate_GetBundles_606857(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606859 = header.getOrDefault("X-Amz-Target")
   valid_606859 = validateParameter(valid_606859, JString, required = true, default = newJString(
       "Lightsail_20161128.GetBundles"))
@@ -5440,8 +5348,6 @@ proc validate_GetCloudFormationStackRecords_606872(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606874 = header.getOrDefault("X-Amz-Target")
   valid_606874 = validateParameter(valid_606874, JString, required = true, default = newJString(
       "Lightsail_20161128.GetCloudFormationStackRecords"))
@@ -5555,8 +5461,6 @@ proc validate_GetDisk_606887(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606889 = header.getOrDefault("X-Amz-Target")
   valid_606889 = validateParameter(valid_606889, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDisk"))
@@ -5669,8 +5573,6 @@ proc validate_GetDiskSnapshot_606902(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606904 = header.getOrDefault("X-Amz-Target")
   valid_606904 = validateParameter(valid_606904, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDiskSnapshot"))
@@ -5783,8 +5685,6 @@ proc validate_GetDiskSnapshots_606917(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606919 = header.getOrDefault("X-Amz-Target")
   valid_606919 = validateParameter(valid_606919, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDiskSnapshots"))
@@ -5896,8 +5796,6 @@ proc validate_GetDisks_606932(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606934 = header.getOrDefault("X-Amz-Target")
   valid_606934 = validateParameter(valid_606934, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDisks"))
@@ -6009,8 +5907,6 @@ proc validate_GetDomain_606947(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606949 = header.getOrDefault("X-Amz-Target")
   valid_606949 = validateParameter(valid_606949, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDomain"))
@@ -6122,8 +6018,6 @@ proc validate_GetDomains_606962(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606964 = header.getOrDefault("X-Amz-Target")
   valid_606964 = validateParameter(valid_606964, JString, required = true, default = newJString(
       "Lightsail_20161128.GetDomains"))
@@ -6237,8 +6131,6 @@ proc validate_GetExportSnapshotRecords_606977(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606979 = header.getOrDefault("X-Amz-Target")
   valid_606979 = validateParameter(valid_606979, JString, required = true, default = newJString(
       "Lightsail_20161128.GetExportSnapshotRecords"))
@@ -6351,8 +6243,6 @@ proc validate_GetInstance_606992(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606994 = header.getOrDefault("X-Amz-Target")
   valid_606994 = validateParameter(valid_606994, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstance"))
@@ -6466,8 +6356,6 @@ proc validate_GetInstanceAccessDetails_607007(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607009 = header.getOrDefault("X-Amz-Target")
   valid_607009 = validateParameter(valid_607009, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceAccessDetails"))
@@ -6580,8 +6468,6 @@ proc validate_GetInstanceMetricData_607022(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607024 = header.getOrDefault("X-Amz-Target")
   valid_607024 = validateParameter(valid_607024, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceMetricData"))
@@ -6694,8 +6580,6 @@ proc validate_GetInstancePortStates_607037(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607039 = header.getOrDefault("X-Amz-Target")
   valid_607039 = validateParameter(valid_607039, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstancePortStates"))
@@ -6809,8 +6693,6 @@ proc validate_GetInstanceSnapshot_607052(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607054 = header.getOrDefault("X-Amz-Target")
   valid_607054 = validateParameter(valid_607054, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceSnapshot"))
@@ -6923,8 +6805,6 @@ proc validate_GetInstanceSnapshots_607067(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607069 = header.getOrDefault("X-Amz-Target")
   valid_607069 = validateParameter(valid_607069, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceSnapshots"))
@@ -7038,8 +6918,6 @@ proc validate_GetInstanceState_607082(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607084 = header.getOrDefault("X-Amz-Target")
   valid_607084 = validateParameter(valid_607084, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstanceState"))
@@ -7151,8 +7029,6 @@ proc validate_GetInstances_607097(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607099 = header.getOrDefault("X-Amz-Target")
   valid_607099 = validateParameter(valid_607099, JString, required = true, default = newJString(
       "Lightsail_20161128.GetInstances"))
@@ -7264,8 +7140,6 @@ proc validate_GetKeyPair_607112(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607114 = header.getOrDefault("X-Amz-Target")
   valid_607114 = validateParameter(valid_607114, JString, required = true, default = newJString(
       "Lightsail_20161128.GetKeyPair"))
@@ -7378,8 +7252,6 @@ proc validate_GetKeyPairs_607127(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607129 = header.getOrDefault("X-Amz-Target")
   valid_607129 = validateParameter(valid_607129, JString, required = true, default = newJString(
       "Lightsail_20161128.GetKeyPairs"))
@@ -7493,8 +7365,6 @@ proc validate_GetLoadBalancer_607142(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607144 = header.getOrDefault("X-Amz-Target")
   valid_607144 = validateParameter(valid_607144, JString, required = true, default = newJString(
       "Lightsail_20161128.GetLoadBalancer"))
@@ -7606,8 +7476,6 @@ proc validate_GetLoadBalancerMetricData_607157(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607159 = header.getOrDefault("X-Amz-Target")
   valid_607159 = validateParameter(valid_607159, JString, required = true, default = newJString(
       "Lightsail_20161128.GetLoadBalancerMetricData"))
@@ -7721,8 +7589,6 @@ proc validate_GetLoadBalancerTlsCertificates_607172(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607174 = header.getOrDefault("X-Amz-Target")
   valid_607174 = validateParameter(valid_607174, JString, required = true, default = newJString(
       "Lightsail_20161128.GetLoadBalancerTlsCertificates"))
@@ -7837,8 +7703,6 @@ proc validate_GetLoadBalancers_607187(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607189 = header.getOrDefault("X-Amz-Target")
   valid_607189 = validateParameter(valid_607189, JString, required = true, default = newJString(
       "Lightsail_20161128.GetLoadBalancers"))
@@ -7950,8 +7814,6 @@ proc validate_GetOperation_607202(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607204 = header.getOrDefault("X-Amz-Target")
   valid_607204 = validateParameter(valid_607204, JString, required = true, default = newJString(
       "Lightsail_20161128.GetOperation"))
@@ -8063,8 +7925,6 @@ proc validate_GetOperations_607217(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607219 = header.getOrDefault("X-Amz-Target")
   valid_607219 = validateParameter(valid_607219, JString, required = true, default = newJString(
       "Lightsail_20161128.GetOperations"))
@@ -8177,8 +8037,6 @@ proc validate_GetOperationsForResource_607232(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607234 = header.getOrDefault("X-Amz-Target")
   valid_607234 = validateParameter(valid_607234, JString, required = true, default = newJString(
       "Lightsail_20161128.GetOperationsForResource"))
@@ -8291,8 +8149,6 @@ proc validate_GetRegions_607247(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607249 = header.getOrDefault("X-Amz-Target")
   valid_607249 = validateParameter(valid_607249, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRegions"))
@@ -8405,8 +8261,6 @@ proc validate_GetRelationalDatabase_607262(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607264 = header.getOrDefault("X-Amz-Target")
   valid_607264 = validateParameter(valid_607264, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabase"))
@@ -8519,8 +8373,6 @@ proc validate_GetRelationalDatabaseBlueprints_607277(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607279 = header.getOrDefault("X-Amz-Target")
   valid_607279 = validateParameter(valid_607279, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseBlueprints"))
@@ -8635,8 +8487,6 @@ proc validate_GetRelationalDatabaseBundles_607292(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607294 = header.getOrDefault("X-Amz-Target")
   valid_607294 = validateParameter(valid_607294, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseBundles"))
@@ -8750,8 +8600,6 @@ proc validate_GetRelationalDatabaseEvents_607307(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607309 = header.getOrDefault("X-Amz-Target")
   valid_607309 = validateParameter(valid_607309, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseEvents"))
@@ -8865,8 +8713,6 @@ proc validate_GetRelationalDatabaseLogEvents_607322(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607324 = header.getOrDefault("X-Amz-Target")
   valid_607324 = validateParameter(valid_607324, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseLogEvents"))
@@ -8980,8 +8826,6 @@ proc validate_GetRelationalDatabaseLogStreams_607337(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607339 = header.getOrDefault("X-Amz-Target")
   valid_607339 = validateParameter(valid_607339, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseLogStreams"))
@@ -9096,8 +8940,6 @@ proc validate_GetRelationalDatabaseMasterUserPassword_607352(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607354 = header.getOrDefault("X-Amz-Target")
   valid_607354 = validateParameter(valid_607354, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseMasterUserPassword"))
@@ -9212,8 +9054,6 @@ proc validate_GetRelationalDatabaseMetricData_607367(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607369 = header.getOrDefault("X-Amz-Target")
   valid_607369 = validateParameter(valid_607369, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseMetricData"))
@@ -9328,8 +9168,6 @@ proc validate_GetRelationalDatabaseParameters_607382(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607384 = header.getOrDefault("X-Amz-Target")
   valid_607384 = validateParameter(valid_607384, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseParameters"))
@@ -9444,8 +9282,6 @@ proc validate_GetRelationalDatabaseSnapshot_607397(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607399 = header.getOrDefault("X-Amz-Target")
   valid_607399 = validateParameter(valid_607399, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseSnapshot"))
@@ -9559,8 +9395,6 @@ proc validate_GetRelationalDatabaseSnapshots_607412(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607414 = header.getOrDefault("X-Amz-Target")
   valid_607414 = validateParameter(valid_607414, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabaseSnapshots"))
@@ -9674,8 +9508,6 @@ proc validate_GetRelationalDatabases_607427(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607429 = header.getOrDefault("X-Amz-Target")
   valid_607429 = validateParameter(valid_607429, JString, required = true, default = newJString(
       "Lightsail_20161128.GetRelationalDatabases"))
@@ -9788,8 +9620,6 @@ proc validate_GetStaticIp_607442(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607444 = header.getOrDefault("X-Amz-Target")
   valid_607444 = validateParameter(valid_607444, JString, required = true, default = newJString(
       "Lightsail_20161128.GetStaticIp"))
@@ -9902,8 +9732,6 @@ proc validate_GetStaticIps_607457(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607459 = header.getOrDefault("X-Amz-Target")
   valid_607459 = validateParameter(valid_607459, JString, required = true, default = newJString(
       "Lightsail_20161128.GetStaticIps"))
@@ -10015,8 +9843,6 @@ proc validate_ImportKeyPair_607472(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607474 = header.getOrDefault("X-Amz-Target")
   valid_607474 = validateParameter(valid_607474, JString, required = true, default = newJString(
       "Lightsail_20161128.ImportKeyPair"))
@@ -10128,8 +9954,6 @@ proc validate_IsVpcPeered_607487(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607489 = header.getOrDefault("X-Amz-Target")
   valid_607489 = validateParameter(valid_607489, JString, required = true, default = newJString(
       "Lightsail_20161128.IsVpcPeered"))
@@ -10243,8 +10067,6 @@ proc validate_OpenInstancePublicPorts_607502(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607504 = header.getOrDefault("X-Amz-Target")
   valid_607504 = validateParameter(valid_607504, JString, required = true, default = newJString(
       "Lightsail_20161128.OpenInstancePublicPorts"))
@@ -10357,8 +10179,6 @@ proc validate_PeerVpc_607517(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607519 = header.getOrDefault("X-Amz-Target")
   valid_607519 = validateParameter(valid_607519, JString, required = true, default = newJString(
       "Lightsail_20161128.PeerVpc"))
@@ -10470,8 +10290,6 @@ proc validate_PutInstancePublicPorts_607532(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607534 = header.getOrDefault("X-Amz-Target")
   valid_607534 = validateParameter(valid_607534, JString, required = true, default = newJString(
       "Lightsail_20161128.PutInstancePublicPorts"))
@@ -10585,8 +10403,6 @@ proc validate_RebootInstance_607547(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607549 = header.getOrDefault("X-Amz-Target")
   valid_607549 = validateParameter(valid_607549, JString, required = true, default = newJString(
       "Lightsail_20161128.RebootInstance"))
@@ -10699,8 +10515,6 @@ proc validate_RebootRelationalDatabase_607562(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607564 = header.getOrDefault("X-Amz-Target")
   valid_607564 = validateParameter(valid_607564, JString, required = true, default = newJString(
       "Lightsail_20161128.RebootRelationalDatabase"))
@@ -10814,8 +10628,6 @@ proc validate_ReleaseStaticIp_607577(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607579 = header.getOrDefault("X-Amz-Target")
   valid_607579 = validateParameter(valid_607579, JString, required = true, default = newJString(
       "Lightsail_20161128.ReleaseStaticIp"))
@@ -10927,8 +10739,6 @@ proc validate_StartInstance_607592(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607594 = header.getOrDefault("X-Amz-Target")
   valid_607594 = validateParameter(valid_607594, JString, required = true, default = newJString(
       "Lightsail_20161128.StartInstance"))
@@ -11041,8 +10851,6 @@ proc validate_StartRelationalDatabase_607607(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607609 = header.getOrDefault("X-Amz-Target")
   valid_607609 = validateParameter(valid_607609, JString, required = true, default = newJString(
       "Lightsail_20161128.StartRelationalDatabase"))
@@ -11155,8 +10963,6 @@ proc validate_StopInstance_607622(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607624 = header.getOrDefault("X-Amz-Target")
   valid_607624 = validateParameter(valid_607624, JString, required = true, default = newJString(
       "Lightsail_20161128.StopInstance"))
@@ -11268,8 +11074,6 @@ proc validate_StopRelationalDatabase_607637(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607639 = header.getOrDefault("X-Amz-Target")
   valid_607639 = validateParameter(valid_607639, JString, required = true, default = newJString(
       "Lightsail_20161128.StopRelationalDatabase"))
@@ -11382,8 +11186,6 @@ proc validate_TagResource_607652(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607654 = header.getOrDefault("X-Amz-Target")
   valid_607654 = validateParameter(valid_607654, JString, required = true, default = newJString(
       "Lightsail_20161128.TagResource"))
@@ -11496,8 +11298,6 @@ proc validate_UnpeerVpc_607667(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607669 = header.getOrDefault("X-Amz-Target")
   valid_607669 = validateParameter(valid_607669, JString, required = true, default = newJString(
       "Lightsail_20161128.UnpeerVpc"))
@@ -11609,8 +11409,6 @@ proc validate_UntagResource_607682(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607684 = header.getOrDefault("X-Amz-Target")
   valid_607684 = validateParameter(valid_607684, JString, required = true, default = newJString(
       "Lightsail_20161128.UntagResource"))
@@ -11723,8 +11521,6 @@ proc validate_UpdateDomainEntry_607697(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607699 = header.getOrDefault("X-Amz-Target")
   valid_607699 = validateParameter(valid_607699, JString, required = true, default = newJString(
       "Lightsail_20161128.UpdateDomainEntry"))
@@ -11836,8 +11632,6 @@ proc validate_UpdateLoadBalancerAttribute_607712(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607714 = header.getOrDefault("X-Amz-Target")
   valid_607714 = validateParameter(valid_607714, JString, required = true, default = newJString(
       "Lightsail_20161128.UpdateLoadBalancerAttribute"))
@@ -11952,8 +11746,6 @@ proc validate_UpdateRelationalDatabase_607727(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607729 = header.getOrDefault("X-Amz-Target")
   valid_607729 = validateParameter(valid_607729, JString, required = true, default = newJString(
       "Lightsail_20161128.UpdateRelationalDatabase"))
@@ -12066,8 +11858,6 @@ proc validate_UpdateRelationalDatabaseParameters_607742(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607744 = header.getOrDefault("X-Amz-Target")
   valid_607744 = validateParameter(valid_607744, JString, required = true, default = newJString(
       "Lightsail_20161128.UpdateRelationalDatabaseParameters"))

@@ -167,8 +167,6 @@ proc validate_BatchGrantPermissions_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSLakeFormation.BatchGrantPermissions"))
@@ -281,8 +279,6 @@ proc validate_BatchRevokePermissions_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSLakeFormation.BatchRevokePermissions"))
@@ -396,8 +392,6 @@ proc validate_DeregisterResource_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSLakeFormation.DeregisterResource"))
@@ -511,8 +505,6 @@ proc validate_DescribeResource_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSLakeFormation.DescribeResource"))
@@ -625,8 +617,6 @@ proc validate_GetDataLakeSettings_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSLakeFormation.GetDataLakeSettings"))
@@ -754,8 +744,6 @@ proc validate_GetEffectivePermissionsForPath_606257(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606261 = header.getOrDefault("X-Amz-Target")
   valid_606261 = validateParameter(valid_606261, JString, required = true, default = newJString(
       "AWSLakeFormation.GetEffectivePermissionsForPath"))
@@ -878,8 +866,6 @@ proc validate_GrantPermissions_606276(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606278 = header.getOrDefault("X-Amz-Target")
   valid_606278 = validateParameter(valid_606278, JString, required = true, default = newJString(
       "AWSLakeFormation.GrantPermissions"))
@@ -1007,8 +993,6 @@ proc validate_ListPermissions_606291(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606295 = header.getOrDefault("X-Amz-Target")
   valid_606295 = validateParameter(valid_606295, JString, required = true, default = newJString(
       "AWSLakeFormation.ListPermissions"))
@@ -1143,8 +1127,6 @@ proc validate_ListResources_606309(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606313 = header.getOrDefault("X-Amz-Target")
   valid_606313 = validateParameter(valid_606313, JString, required = true, default = newJString(
       "AWSLakeFormation.ListResources"))
@@ -1265,8 +1247,6 @@ proc validate_PutDataLakeSettings_606327(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606329 = header.getOrDefault("X-Amz-Target")
   valid_606329 = validateParameter(valid_606329, JString, required = true, default = newJString(
       "AWSLakeFormation.PutDataLakeSettings"))
@@ -1380,8 +1360,6 @@ proc validate_RegisterResource_606342(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606344 = header.getOrDefault("X-Amz-Target")
   valid_606344 = validateParameter(valid_606344, JString, required = true, default = newJString(
       "AWSLakeFormation.RegisterResource"))
@@ -1494,8 +1472,6 @@ proc validate_RevokePermissions_606357(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606359 = header.getOrDefault("X-Amz-Target")
   valid_606359 = validateParameter(valid_606359, JString, required = true, default = newJString(
       "AWSLakeFormation.RevokePermissions"))
@@ -1608,8 +1584,6 @@ proc validate_UpdateResource_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606374 = header.getOrDefault("X-Amz-Target")
   valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString(
       "AWSLakeFormation.UpdateResource"))

@@ -149,8 +149,6 @@ proc validate_CreateBudget_605928(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.CreateBudget"))
@@ -263,8 +261,6 @@ proc validate_CreateNotification_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.CreateNotification"))
@@ -378,8 +374,6 @@ proc validate_CreateSubscriber_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.CreateSubscriber"))
@@ -491,8 +485,6 @@ proc validate_DeleteBudget_606227(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DeleteBudget"))
@@ -605,8 +597,6 @@ proc validate_DeleteNotification_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DeleteNotification"))
@@ -720,8 +710,6 @@ proc validate_DeleteSubscriber_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DeleteSubscriber"))
@@ -834,8 +822,6 @@ proc validate_DescribeBudget_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeBudget"))
@@ -947,8 +933,6 @@ proc validate_DescribeBudgetPerformanceHistory_606287(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeBudgetPerformanceHistory"))
@@ -1064,8 +1048,6 @@ proc validate_DescribeBudgets_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeBudgets"))
@@ -1177,8 +1159,6 @@ proc validate_DescribeNotificationsForBudget_606317(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeNotificationsForBudget"))
@@ -1291,8 +1271,6 @@ proc validate_DescribeSubscribersForNotification_606332(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.DescribeSubscribersForNotification"))
@@ -1407,8 +1385,6 @@ proc validate_UpdateBudget_606347(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.UpdateBudget"))
@@ -1521,8 +1497,6 @@ proc validate_UpdateNotification_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.UpdateNotification"))
@@ -1636,8 +1610,6 @@ proc validate_UpdateSubscriber_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "AWSBudgetServiceGateway.UpdateSubscriber"))

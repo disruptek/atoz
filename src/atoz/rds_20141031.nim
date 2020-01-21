@@ -174,7 +174,6 @@ proc validate_PostAddRoleToDBCluster_606201(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606203 = query.getOrDefault("Action")
   valid_606203 = validateParameter(valid_606203, JString, required = true,
                                  default = newJString("AddRoleToDBCluster"))
@@ -475,7 +474,6 @@ proc validate_PostAddRoleToDBInstance_606238(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606240 = query.getOrDefault("Action")
   valid_606240 = validateParameter(valid_606240, JString, required = true,
                                  default = newJString("AddRoleToDBInstance"))
@@ -775,7 +773,6 @@ proc validate_PostAddSourceIdentifierToSubscription_606274(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606276 = query.getOrDefault("Action")
   valid_606276 = validateParameter(valid_606276, JString, required = true, default = newJString(
       "AddSourceIdentifierToSubscription"))
@@ -1063,7 +1060,6 @@ proc validate_PostAddTagsToResource_606309(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606311 = query.getOrDefault("Action")
   valid_606311 = validateParameter(valid_606311, JString, required = true,
                                  default = newJString("AddTagsToResource"))
@@ -1351,7 +1347,6 @@ proc validate_PostApplyPendingMaintenanceAction_606345(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606347 = query.getOrDefault("Action")
   valid_606347 = validateParameter(valid_606347, JString, required = true, default = newJString(
       "ApplyPendingMaintenanceAction"))
@@ -1660,7 +1655,6 @@ proc validate_PostAuthorizeDBSecurityGroupIngress_606384(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606386 = query.getOrDefault("Action")
   valid_606386 = validateParameter(valid_606386, JString, required = true, default = newJString(
       "AuthorizeDBSecurityGroupIngress"))
@@ -2008,7 +2002,6 @@ proc validate_PostBacktrackDBCluster_606424(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606426 = query.getOrDefault("Action")
   valid_606426 = validateParameter(valid_606426, JString, required = true,
                                  default = newJString("BacktrackDBCluster"))
@@ -2328,7 +2321,6 @@ proc validate_PostCopyDBClusterParameterGroup_606463(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606465 = query.getOrDefault("Action")
   valid_606465 = validateParameter(valid_606465, JString, required = true, default = newJString(
       "CopyDBClusterParameterGroup"))
@@ -2676,7 +2668,6 @@ proc validate_PostCopyDBClusterSnapshot_606505(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606507 = query.getOrDefault("Action")
   valid_606507 = validateParameter(valid_606507, JString, required = true,
                                  default = newJString("CopyDBClusterSnapshot"))
@@ -3084,7 +3075,6 @@ proc validate_PostCopyDBParameterGroup_606547(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606549 = query.getOrDefault("Action")
   valid_606549 = validateParameter(valid_606549, JString, required = true,
                                  default = newJString("CopyDBParameterGroup"))
@@ -3426,7 +3416,6 @@ proc validate_PostCopyDBSnapshot_606590(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606592 = query.getOrDefault("Action")
   valid_606592 = validateParameter(valid_606592, JString, required = true,
                                  default = newJString("CopyDBSnapshot"))
@@ -3865,7 +3854,6 @@ proc validate_PostCopyOptionGroup_606633(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606635 = query.getOrDefault("Action")
   valid_606635 = validateParameter(valid_606635, JString, required = true,
                                  default = newJString("CopyOptionGroup"))
@@ -4205,7 +4193,6 @@ proc validate_PostCreateCustomAvailabilityZone_606672(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606674 = query.getOrDefault("Action")
   valid_606674 = validateParameter(valid_606674, JString, required = true, default = newJString(
       "CreateCustomAvailabilityZone"))
@@ -4389,7 +4376,6 @@ proc validate_GetCreateCustomAvailabilityZone_606653(path: JsonNode;
                                  default = nil)
   if valid_606656 != nil:
     section.add "ExistingVpnId", valid_606656
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606657 = query.getOrDefault("Action")
   valid_606657 = validateParameter(valid_606657, JString, required = true, default = newJString(
       "CreateCustomAvailabilityZone"))
@@ -4535,7 +4521,6 @@ proc validate_PostCreateDBCluster_606760(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606762 = query.getOrDefault("Action")
   valid_606762 = validateParameter(valid_606762, JString, required = true,
                                  default = newJString("CreateDBCluster"))
@@ -5618,7 +5603,6 @@ proc validate_PostCreateDBClusterEndpoint_606832(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606834 = query.getOrDefault("Action")
   valid_606834 = validateParameter(valid_606834, JString, required = true, default = newJString(
       "CreateDBClusterEndpoint"))
@@ -5996,7 +5980,6 @@ proc validate_PostCreateDBClusterParameterGroup_606873(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606875 = query.getOrDefault("Action")
   valid_606875 = validateParameter(valid_606875, JString, required = true, default = newJString(
       "CreateDBClusterParameterGroup"))
@@ -6333,7 +6316,6 @@ proc validate_PostCreateDBClusterSnapshot_606911(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606913 = query.getOrDefault("Action")
   valid_606913 = validateParameter(valid_606913, JString, required = true, default = newJString(
       "CreateDBClusterSnapshot"))
@@ -6644,7 +6626,6 @@ proc validate_PostCreateDBInstance_606991(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606993 = query.getOrDefault("Action")
   valid_606993 = validateParameter(valid_606993, JString, required = true,
                                  default = newJString("CreateDBInstance"))
@@ -7926,7 +7907,6 @@ proc validate_PostCreateDBInstanceReadReplica_607099(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607101 = query.getOrDefault("Action")
   valid_607101 = validateParameter(valid_607101, JString, required = true, default = newJString(
       "CreateDBInstanceReadReplica"))
@@ -8870,7 +8850,6 @@ proc validate_PostCreateDBParameterGroup_607165(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607167 = query.getOrDefault("Action")
   valid_607167 = validateParameter(valid_607167, JString, required = true,
                                  default = newJString("CreateDBParameterGroup"))
@@ -9203,7 +9182,6 @@ proc validate_PostCreateDBProxy_607210(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607212 = query.getOrDefault("Action")
   valid_607212 = validateParameter(valid_607212, JString, required = true,
                                  default = newJString("CreateDBProxy"))
@@ -9652,7 +9630,6 @@ proc validate_PostCreateDBSecurityGroup_607254(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607256 = query.getOrDefault("Action")
   valid_607256 = validateParameter(valid_607256, JString, required = true,
                                  default = newJString("CreateDBSecurityGroup"))
@@ -9963,7 +9940,6 @@ proc validate_PostCreateDBSnapshot_607291(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607293 = query.getOrDefault("Action")
   valid_607293 = validateParameter(valid_607293, JString, required = true,
                                  default = newJString("CreateDBSnapshot"))
@@ -10272,7 +10248,6 @@ proc validate_PostCreateDBSubnetGroup_607329(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607331 = query.getOrDefault("Action")
   valid_607331 = validateParameter(valid_607331, JString, required = true,
                                  default = newJString("CreateDBSubnetGroup"))
@@ -10602,7 +10577,6 @@ proc validate_PostCreateEventSubscription_607371(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607373 = query.getOrDefault("Action")
   valid_607373 = validateParameter(valid_607373, JString, required = true, default = newJString(
       "CreateEventSubscription"))
@@ -11003,7 +10977,6 @@ proc validate_PostCreateGlobalCluster_607416(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607418 = query.getOrDefault("Action")
   valid_607418 = validateParameter(valid_607418, JString, required = true,
                                  default = newJString("CreateGlobalCluster"))
@@ -11243,7 +11216,6 @@ proc validate_GetCreateGlobalCluster_607394(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_607402 != nil:
     section.add "EngineVersion", valid_607402
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607403 = query.getOrDefault("Action")
   valid_607403 = validateParameter(valid_607403, JString, required = true,
                                  default = newJString("CreateGlobalCluster"))
@@ -11386,7 +11358,6 @@ proc validate_PostCreateOptionGroup_607459(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607461 = query.getOrDefault("Action")
   valid_607461 = validateParameter(valid_607461, JString, required = true,
                                  default = newJString("CreateOptionGroup"))
@@ -11736,7 +11707,6 @@ proc validate_PostDeleteCustomAvailabilityZone_607496(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607498 = query.getOrDefault("Action")
   valid_607498 = validateParameter(valid_607498, JString, required = true, default = newJString(
       "DeleteCustomAvailabilityZone"))
@@ -12004,7 +11974,6 @@ proc validate_PostDeleteDBCluster_607531(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607533 = query.getOrDefault("Action")
   valid_607533 = validateParameter(valid_607533, JString, required = true,
                                  default = newJString("DeleteDBCluster"))
@@ -12306,7 +12275,6 @@ proc validate_PostDeleteDBClusterEndpoint_607566(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607568 = query.getOrDefault("Action")
   valid_607568 = validateParameter(valid_607568, JString, required = true, default = newJString(
       "DeleteDBClusterEndpoint"))
@@ -12569,7 +12537,6 @@ proc validate_PostDeleteDBClusterParameterGroup_607599(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607601 = query.getOrDefault("Action")
   valid_607601 = validateParameter(valid_607601, JString, required = true, default = newJString(
       "DeleteDBClusterParameterGroup"))
@@ -12836,7 +12803,6 @@ proc validate_PostDeleteDBClusterSnapshot_607632(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607634 = query.getOrDefault("Action")
   valid_607634 = validateParameter(valid_607634, JString, required = true, default = newJString(
       "DeleteDBClusterSnapshot"))
@@ -13099,7 +13065,6 @@ proc validate_PostDeleteDBInstance_607668(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607670 = query.getOrDefault("Action")
   valid_607670 = validateParameter(valid_607670, JString, required = true,
                                  default = newJString("DeleteDBInstance"))
@@ -13419,7 +13384,6 @@ proc validate_PostDeleteDBInstanceAutomatedBackup_607704(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607706 = query.getOrDefault("Action")
   valid_607706 = validateParameter(valid_607706, JString, required = true, default = newJString(
       "DeleteDBInstanceAutomatedBackup"))
@@ -13686,7 +13650,6 @@ proc validate_PostDeleteDBParameterGroup_607737(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607739 = query.getOrDefault("Action")
   valid_607739 = validateParameter(valid_607739, JString, required = true,
                                  default = newJString("DeleteDBParameterGroup"))
@@ -13948,7 +13911,6 @@ proc validate_PostDeleteDBProxy_607770(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607772 = query.getOrDefault("Action")
   valid_607772 = validateParameter(valid_607772, JString, required = true,
                                  default = newJString("DeleteDBProxy"))
@@ -14082,7 +14044,6 @@ proc validate_GetDeleteDBProxy_607754(path: JsonNode; query: JsonNode;
   ##   DBProxyName: JString (required)
   ##              : The name of the DB proxy to delete.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607756 = query.getOrDefault("Action")
   valid_607756 = validateParameter(valid_607756, JString, required = true,
                                  default = newJString("DeleteDBProxy"))
@@ -14207,7 +14168,6 @@ proc validate_PostDeleteDBSecurityGroup_607803(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607805 = query.getOrDefault("Action")
   valid_607805 = validateParameter(valid_607805, JString, required = true,
                                  default = newJString("DeleteDBSecurityGroup"))
@@ -14468,7 +14428,6 @@ proc validate_PostDeleteDBSnapshot_607836(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607838 = query.getOrDefault("Action")
   valid_607838 = validateParameter(valid_607838, JString, required = true,
                                  default = newJString("DeleteDBSnapshot"))
@@ -14729,7 +14688,6 @@ proc validate_PostDeleteDBSubnetGroup_607869(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607871 = query.getOrDefault("Action")
   valid_607871 = validateParameter(valid_607871, JString, required = true,
                                  default = newJString("DeleteDBSubnetGroup"))
@@ -14862,7 +14820,6 @@ proc validate_GetDeleteDBSubnetGroup_607853(path: JsonNode; query: JsonNode;
   ##                    : <p>The name of the database subnet group to delete.</p> <note> <p>You can't delete the default subnet group.</p> </note> <p>Constraints:</p> <p>Constraints: Must match the name of an existing DBSubnetGroup. Must not be default.</p> <p>Example: <code>mySubnetgroup</code> </p>
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607855 = query.getOrDefault("Action")
   valid_607855 = validateParameter(valid_607855, JString, required = true,
                                  default = newJString("DeleteDBSubnetGroup"))
@@ -14988,7 +14945,6 @@ proc validate_PostDeleteEventSubscription_607902(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607904 = query.getOrDefault("Action")
   valid_607904 = validateParameter(valid_607904, JString, required = true, default = newJString(
       "DeleteEventSubscription"))
@@ -15251,7 +15207,6 @@ proc validate_PostDeleteGlobalCluster_607935(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607937 = query.getOrDefault("Action")
   valid_607937 = validateParameter(valid_607937, JString, required = true,
                                  default = newJString("DeleteGlobalCluster"))
@@ -15511,7 +15466,6 @@ proc validate_PostDeleteInstallationMedia_607968(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607970 = query.getOrDefault("Action")
   valid_607970 = validateParameter(valid_607970, JString, required = true, default = newJString(
       "DeleteInstallationMedia"))
@@ -15772,7 +15726,6 @@ proc validate_PostDeleteOptionGroup_608001(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608003 = query.getOrDefault("Action")
   valid_608003 = validateParameter(valid_608003, JString, required = true,
                                  default = newJString("DeleteOptionGroup"))
@@ -15904,7 +15857,6 @@ proc validate_GetDeleteOptionGroup_607985(path: JsonNode; query: JsonNode;
   ##                  : <p>The name of the option group to be deleted.</p> <note> <p>You can't delete default option groups.</p> </note>
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607987 = query.getOrDefault("Action")
   valid_607987 = validateParameter(valid_607987, JString, required = true,
                                  default = newJString("DeleteOptionGroup"))
@@ -16029,7 +15981,6 @@ proc validate_PostDeregisterDBProxyTargets_608037(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608039 = query.getOrDefault("Action")
   valid_608039 = validateParameter(valid_608039, JString, required = true, default = newJString(
       "DeregisterDBProxyTargets"))
@@ -16220,7 +16171,6 @@ proc validate_GetDeregisterDBProxyTargets_608018(path: JsonNode; query: JsonNode
                                  default = nil)
   if valid_608022 != nil:
     section.add "TargetGroupName", valid_608022
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608023 = query.getOrDefault("Action")
   valid_608023 = validateParameter(valid_608023, JString, required = true, default = newJString(
       "DeregisterDBProxyTargets"))
@@ -16360,7 +16310,6 @@ proc validate_PostDescribeAccountAttributes_608072(path: JsonNode; query: JsonNo
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608074 = query.getOrDefault("Action")
   valid_608074 = validateParameter(valid_608074, JString, required = true, default = newJString(
       "DescribeAccountAttributes"))
@@ -16479,7 +16428,6 @@ proc validate_GetDescribeAccountAttributes_608057(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608059 = query.getOrDefault("Action")
   valid_608059 = validateParameter(valid_608059, JString, required = true, default = newJString(
       "DescribeAccountAttributes"))
@@ -16599,7 +16547,6 @@ proc validate_PostDescribeCertificates_608106(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608108 = query.getOrDefault("Action")
   valid_608108 = validateParameter(valid_608108, JString, required = true,
                                  default = newJString("DescribeCertificates"))
@@ -16774,7 +16721,6 @@ proc validate_GetDescribeCertificates_608087(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_608089 != nil:
     section.add "Marker", valid_608089
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608090 = query.getOrDefault("Action")
   valid_608090 = validateParameter(valid_608090, JString, required = true,
                                  default = newJString("DescribeCertificates"))
@@ -16920,7 +16866,6 @@ proc validate_PostDescribeCustomAvailabilityZones_608145(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608147 = query.getOrDefault("Action")
   valid_608147 = validateParameter(valid_608147, JString, required = true, default = newJString(
       "DescribeCustomAvailabilityZones"))
@@ -17103,7 +17048,6 @@ proc validate_GetDescribeCustomAvailabilityZones_608126(path: JsonNode;
                                  default = nil)
   if valid_608129 != nil:
     section.add "CustomAvailabilityZoneId", valid_608129
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608130 = query.getOrDefault("Action")
   valid_608130 = validateParameter(valid_608130, JString, required = true, default = newJString(
       "DescribeCustomAvailabilityZones"))
@@ -17247,7 +17191,6 @@ proc validate_PostDescribeDBClusterBacktracks_608185(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608187 = query.getOrDefault("Action")
   valid_608187 = validateParameter(valid_608187, JString, required = true, default = newJString(
       "DescribeDBClusterBacktracks"))
@@ -17593,7 +17536,6 @@ proc validate_PostDescribeDBClusterEndpoints_608226(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608228 = query.getOrDefault("Action")
   valid_608228 = validateParameter(valid_608228, JString, required = true, default = newJString(
       "DescribeDBClusterEndpoints"))
@@ -17795,7 +17737,6 @@ proc validate_GetDescribeDBClusterEndpoints_608206(path: JsonNode; query: JsonNo
                                  default = nil)
   if valid_608210 != nil:
     section.add "DBClusterEndpointIdentifier", valid_608210
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608211 = query.getOrDefault("Action")
   valid_608211 = validateParameter(valid_608211, JString, required = true, default = newJString(
       "DescribeDBClusterEndpoints"))
@@ -17943,7 +17884,6 @@ proc validate_PostDescribeDBClusterParameterGroups_608266(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608268 = query.getOrDefault("Action")
   valid_608268 = validateParameter(valid_608268, JString, required = true, default = newJString(
       "DescribeDBClusterParameterGroups"))
@@ -18126,7 +18066,6 @@ proc validate_GetDescribeDBClusterParameterGroups_608247(path: JsonNode;
                                  default = nil)
   if valid_608250 != nil:
     section.add "DBClusterParameterGroupName", valid_608250
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608251 = query.getOrDefault("Action")
   valid_608251 = validateParameter(valid_608251, JString, required = true, default = newJString(
       "DescribeDBClusterParameterGroups"))
@@ -18270,7 +18209,6 @@ proc validate_PostDescribeDBClusterParameters_608306(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608308 = query.getOrDefault("Action")
   valid_608308 = validateParameter(valid_608308, JString, required = true, default = newJString(
       "DescribeDBClusterParameters"))
@@ -18617,7 +18555,6 @@ proc validate_PostDescribeDBClusterSnapshotAttributes_608343(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608345 = query.getOrDefault("Action")
   valid_608345 = validateParameter(valid_608345, JString, required = true, default = newJString(
       "DescribeDBClusterSnapshotAttributes"))
@@ -18886,7 +18823,6 @@ proc validate_PostDescribeDBClusterSnapshots_608383(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608385 = query.getOrDefault("Action")
   valid_608385 = validateParameter(valid_608385, JString, required = true, default = newJString(
       "DescribeDBClusterSnapshots"))
@@ -19129,7 +19065,6 @@ proc validate_GetDescribeDBClusterSnapshots_608360(path: JsonNode; query: JsonNo
   valid_608366 = validateParameter(valid_608366, JBool, required = false, default = nil)
   if valid_608366 != nil:
     section.add "IncludePublic", valid_608366
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608367 = query.getOrDefault("Action")
   valid_608367 = validateParameter(valid_608367, JString, required = true, default = newJString(
       "DescribeDBClusterSnapshots"))
@@ -19291,7 +19226,6 @@ proc validate_PostDescribeDBClusters_608427(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608429 = query.getOrDefault("Action")
   valid_608429 = validateParameter(valid_608429, JString, required = true,
                                  default = newJString("DescribeDBClusters"))
@@ -19481,7 +19415,6 @@ proc validate_GetDescribeDBClusters_608407(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_608410 != nil:
     section.add "DBClusterIdentifier", valid_608410
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608411 = query.getOrDefault("Action")
   valid_608411 = validateParameter(valid_608411, JString, required = true,
                                  default = newJString("DescribeDBClusters"))
@@ -19629,7 +19562,6 @@ proc validate_PostDescribeDBEngineVersions_608473(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608475 = query.getOrDefault("Action")
   valid_608475 = validateParameter(valid_608475, JString, required = true, default = newJString(
       "DescribeDBEngineVersions"))
@@ -19900,7 +19832,6 @@ proc validate_GetDescribeDBEngineVersions_608448(path: JsonNode; query: JsonNode
                                  default = nil)
   if valid_608455 != nil:
     section.add "EngineVersion", valid_608455
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608456 = query.getOrDefault("Action")
   valid_608456 = validateParameter(valid_608456, JString, required = true, default = newJString(
       "DescribeDBEngineVersions"))
@@ -20072,7 +20003,6 @@ proc validate_PostDescribeDBInstanceAutomatedBackups_608519(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608521 = query.getOrDefault("Action")
   valid_608521 = validateParameter(valid_608521, JString, required = true, default = newJString(
       "DescribeDBInstanceAutomatedBackups"))
@@ -20272,7 +20202,6 @@ proc validate_GetDescribeDBInstanceAutomatedBackups_608499(path: JsonNode;
                                  default = nil)
   if valid_608503 != nil:
     section.add "DBInstanceIdentifier", valid_608503
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608504 = query.getOrDefault("Action")
   valid_608504 = validateParameter(valid_608504, JString, required = true, default = newJString(
       "DescribeDBInstanceAutomatedBackups"))
@@ -20421,7 +20350,6 @@ proc validate_PostDescribeDBInstances_608559(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608561 = query.getOrDefault("Action")
   valid_608561 = validateParameter(valid_608561, JString, required = true,
                                  default = newJString("DescribeDBInstances"))
@@ -20600,7 +20528,6 @@ proc validate_GetDescribeDBInstances_608540(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_608543 != nil:
     section.add "DBInstanceIdentifier", valid_608543
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608544 = query.getOrDefault("Action")
   valid_608544 = validateParameter(valid_608544, JString, required = true,
                                  default = newJString("DescribeDBInstances"))
@@ -20740,7 +20667,6 @@ proc validate_PostDescribeDBLogFiles_608601(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608603 = query.getOrDefault("Action")
   valid_608603 = validateParameter(valid_608603, JString, required = true,
                                  default = newJString("DescribeDBLogFiles"))
@@ -21119,7 +21045,6 @@ proc validate_PostDescribeDBParameterGroups_608643(path: JsonNode; query: JsonNo
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608645 = query.getOrDefault("Action")
   valid_608645 = validateParameter(valid_608645, JString, required = true, default = newJString(
       "DescribeDBParameterGroups"))
@@ -21299,7 +21224,6 @@ proc validate_GetDescribeDBParameterGroups_608624(path: JsonNode; query: JsonNod
                                  default = nil)
   if valid_608627 != nil:
     section.add "DBParameterGroupName", valid_608627
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608628 = query.getOrDefault("Action")
   valid_608628 = validateParameter(valid_608628, JString, required = true, default = newJString(
       "DescribeDBParameterGroups"))
@@ -21442,7 +21366,6 @@ proc validate_PostDescribeDBParameters_608683(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608685 = query.getOrDefault("Action")
   valid_608685 = validateParameter(valid_608685, JString, required = true,
                                  default = newJString("DescribeDBParameters"))
@@ -21784,7 +21707,6 @@ proc validate_PostDescribeDBProxies_608723(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608725 = query.getOrDefault("Action")
   valid_608725 = validateParameter(valid_608725, JString, required = true,
                                  default = newJString("DescribeDBProxies"))
@@ -21958,7 +21880,6 @@ proc validate_GetDescribeDBProxies_608704(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_608706 != nil:
     section.add "Marker", valid_608706
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608707 = query.getOrDefault("Action")
   valid_608707 = validateParameter(valid_608707, JString, required = true,
                                  default = newJString("DescribeDBProxies"))
@@ -22103,7 +22024,6 @@ proc validate_PostDescribeDBProxyTargetGroups_608763(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608765 = query.getOrDefault("Action")
   valid_608765 = validateParameter(valid_608765, JString, required = true, default = newJString(
       "DescribeDBProxyTargetGroups"))
@@ -22298,7 +22218,6 @@ proc validate_GetDescribeDBProxyTargetGroups_608743(path: JsonNode;
                                  default = nil)
   if valid_608746 != nil:
     section.add "TargetGroupName", valid_608746
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608747 = query.getOrDefault("Action")
   valid_608747 = validateParameter(valid_608747, JString, required = true, default = newJString(
       "DescribeDBProxyTargetGroups"))
@@ -22448,7 +22367,6 @@ proc validate_PostDescribeDBProxyTargets_608804(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608806 = query.getOrDefault("Action")
   valid_608806 = validateParameter(valid_608806, JString, required = true,
                                  default = newJString("DescribeDBProxyTargets"))
@@ -22642,7 +22560,6 @@ proc validate_GetDescribeDBProxyTargets_608784(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_608787 != nil:
     section.add "TargetGroupName", valid_608787
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608788 = query.getOrDefault("Action")
   valid_608788 = validateParameter(valid_608788, JString, required = true,
                                  default = newJString("DescribeDBProxyTargets"))
@@ -22792,7 +22709,6 @@ proc validate_PostDescribeDBSecurityGroups_608844(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608846 = query.getOrDefault("Action")
   valid_608846 = validateParameter(valid_608846, JString, required = true, default = newJString(
       "DescribeDBSecurityGroups"))
@@ -22972,7 +22888,6 @@ proc validate_GetDescribeDBSecurityGroups_608825(path: JsonNode; query: JsonNode
                                  default = nil)
   if valid_608828 != nil:
     section.add "DBSecurityGroupName", valid_608828
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608829 = query.getOrDefault("Action")
   valid_608829 = validateParameter(valid_608829, JString, required = true, default = newJString(
       "DescribeDBSecurityGroups"))
@@ -23114,7 +23029,6 @@ proc validate_PostDescribeDBSnapshotAttributes_608880(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608882 = query.getOrDefault("Action")
   valid_608882 = validateParameter(valid_608882, JString, required = true, default = newJString(
       "DescribeDBSnapshotAttributes"))
@@ -23380,7 +23294,6 @@ proc validate_PostDescribeDBSnapshots_608921(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608923 = query.getOrDefault("Action")
   valid_608923 = validateParameter(valid_608923, JString, required = true,
                                  default = newJString("DescribeDBSnapshots"))
@@ -23641,7 +23554,6 @@ proc validate_GetDescribeDBSnapshots_608897(path: JsonNode; query: JsonNode;
   valid_608904 = validateParameter(valid_608904, JBool, required = false, default = nil)
   if valid_608904 != nil:
     section.add "IncludePublic", valid_608904
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608905 = query.getOrDefault("Action")
   valid_608905 = validateParameter(valid_608905, JString, required = true,
                                  default = newJString("DescribeDBSnapshots"))
@@ -23804,7 +23716,6 @@ proc validate_PostDescribeDBSubnetGroups_608965(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608967 = query.getOrDefault("Action")
   valid_608967 = validateParameter(valid_608967, JString, required = true,
                                  default = newJString("DescribeDBSubnetGroups"))
@@ -23979,7 +23890,6 @@ proc validate_GetDescribeDBSubnetGroups_608946(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_608948 != nil:
     section.add "Marker", valid_608948
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608949 = query.getOrDefault("Action")
   valid_608949 = validateParameter(valid_608949, JString, required = true,
                                  default = newJString("DescribeDBSubnetGroups"))
@@ -24125,7 +24035,6 @@ proc validate_PostDescribeEngineDefaultClusterParameters_609004(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609006 = query.getOrDefault("Action")
   valid_609006 = validateParameter(valid_609006, JString, required = true, default = newJString(
       "DescribeEngineDefaultClusterParameters"))
@@ -24453,7 +24362,6 @@ proc validate_PostDescribeEngineDefaultParameters_609043(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609045 = query.getOrDefault("Action")
   valid_609045 = validateParameter(valid_609045, JString, required = true, default = newJString(
       "DescribeEngineDefaultParameters"))
@@ -24779,7 +24687,6 @@ proc validate_PostDescribeEventCategories_609080(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609082 = query.getOrDefault("Action")
   valid_609082 = validateParameter(valid_609082, JString, required = true, default = newJString(
       "DescribeEventCategories"))
@@ -24930,7 +24837,6 @@ proc validate_GetDescribeEventCategories_609063(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_609065 != nil:
     section.add "SourceType", valid_609065
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609066 = query.getOrDefault("Action")
   valid_609066 = validateParameter(valid_609066, JString, required = true, default = newJString(
       "DescribeEventCategories"))
@@ -25061,7 +24967,6 @@ proc validate_PostDescribeEventSubscriptions_609117(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609119 = query.getOrDefault("Action")
   valid_609119 = validateParameter(valid_609119, JString, required = true, default = newJString(
       "DescribeEventSubscriptions"))
@@ -25241,7 +25146,6 @@ proc validate_GetDescribeEventSubscriptions_609098(path: JsonNode; query: JsonNo
                                  default = nil)
   if valid_609101 != nil:
     section.add "SubscriptionName", valid_609101
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609102 = query.getOrDefault("Action")
   valid_609102 = validateParameter(valid_609102, JString, required = true, default = newJString(
       "DescribeEventSubscriptions"))
@@ -25384,7 +25288,6 @@ proc validate_PostDescribeEvents_609161(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609163 = query.getOrDefault("Action")
   valid_609163 = validateParameter(valid_609163, JString, required = true,
                                  default = newJString("DescribeEvents"))
@@ -25636,7 +25539,6 @@ proc validate_GetDescribeEvents_609137(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_609142 != nil:
     section.add "EventCategories", valid_609142
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609143 = query.getOrDefault("Action")
   valid_609143 = validateParameter(valid_609143, JString, required = true,
                                  default = newJString("DescribeEvents"))
@@ -25808,7 +25710,6 @@ proc validate_PostDescribeGlobalClusters_609205(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609207 = query.getOrDefault("Action")
   valid_609207 = validateParameter(valid_609207, JString, required = true,
                                  default = newJString("DescribeGlobalClusters"))
@@ -25989,7 +25890,6 @@ proc validate_GetDescribeGlobalClusters_609186(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_609189 != nil:
     section.add "GlobalClusterIdentifier", valid_609189
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609190 = query.getOrDefault("Action")
   valid_609190 = validateParameter(valid_609190, JString, required = true,
                                  default = newJString("DescribeGlobalClusters"))
@@ -26131,7 +26031,6 @@ proc validate_PostDescribeInstallationMedia_609244(path: JsonNode; query: JsonNo
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609246 = query.getOrDefault("Action")
   valid_609246 = validateParameter(valid_609246, JString, required = true, default = newJString(
       "DescribeInstallationMedia"))
@@ -26311,7 +26210,6 @@ proc validate_GetDescribeInstallationMedia_609225(path: JsonNode; query: JsonNod
                                  default = nil)
   if valid_609228 != nil:
     section.add "InstallationMediaId", valid_609228
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609229 = query.getOrDefault("Action")
   valid_609229 = validateParameter(valid_609229, JString, required = true, default = newJString(
       "DescribeInstallationMedia"))
@@ -26453,7 +26351,6 @@ proc validate_PostDescribeOptionGroupOptions_609284(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609286 = query.getOrDefault("Action")
   valid_609286 = validateParameter(valid_609286, JString, required = true, default = newJString(
       "DescribeOptionGroupOptions"))
@@ -26801,7 +26698,6 @@ proc validate_PostDescribeOptionGroups_609326(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609328 = query.getOrDefault("Action")
   valid_609328 = validateParameter(valid_609328, JString, required = true,
                                  default = newJString("DescribeOptionGroups"))
@@ -27005,7 +26901,6 @@ proc validate_GetDescribeOptionGroups_609305(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_609308 != nil:
     section.add "Marker", valid_609308
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609309 = query.getOrDefault("Action")
   valid_609309 = validateParameter(valid_609309, JString, required = true,
                                  default = newJString("DescribeOptionGroups"))
@@ -27163,7 +27058,6 @@ proc validate_PostDescribeOrderableDBInstanceOptions_609371(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609373 = query.getOrDefault("Action")
   valid_609373 = validateParameter(valid_609373, JString, required = true, default = newJString(
       "DescribeOrderableDBInstanceOptions"))
@@ -27573,7 +27467,6 @@ proc validate_PostDescribePendingMaintenanceActions_609414(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609416 = query.getOrDefault("Action")
   valid_609416 = validateParameter(valid_609416, JString, required = true, default = newJString(
       "DescribePendingMaintenanceActions"))
@@ -27755,7 +27648,6 @@ proc validate_GetDescribePendingMaintenanceActions_609395(path: JsonNode;
                                  default = nil)
   if valid_609398 != nil:
     section.add "Marker", valid_609398
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609399 = query.getOrDefault("Action")
   valid_609399 = validateParameter(valid_609399, JString, required = true, default = newJString(
       "DescribePendingMaintenanceActions"))
@@ -27899,7 +27791,6 @@ proc validate_PostDescribeReservedDBInstances_609460(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609462 = query.getOrDefault("Action")
   valid_609462 = validateParameter(valid_609462, JString, required = true, default = newJString(
       "DescribeReservedDBInstances"))
@@ -28182,7 +28073,6 @@ proc validate_GetDescribeReservedDBInstances_609434(path: JsonNode;
                                  default = nil)
   if valid_609440 != nil:
     section.add "LeaseId", valid_609440
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609441 = query.getOrDefault("Action")
   valid_609441 = validateParameter(valid_609441, JString, required = true, default = newJString(
       "DescribeReservedDBInstances"))
@@ -28369,7 +28259,6 @@ proc validate_PostDescribeReservedDBInstancesOfferings_609511(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609513 = query.getOrDefault("Action")
   valid_609513 = validateParameter(valid_609513, JString, required = true, default = newJString(
       "DescribeReservedDBInstancesOfferings"))
@@ -28619,7 +28508,6 @@ proc validate_GetDescribeReservedDBInstancesOfferings_609487(path: JsonNode;
                                  default = nil)
   if valid_609491 != nil:
     section.add "OfferingType", valid_609491
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609492 = query.getOrDefault("Action")
   valid_609492 = validateParameter(valid_609492, JString, required = true, default = newJString(
       "DescribeReservedDBInstancesOfferings"))
@@ -28802,7 +28690,6 @@ proc validate_PostDescribeSourceRegions_609555(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609557 = query.getOrDefault("Action")
   valid_609557 = validateParameter(valid_609557, JString, required = true,
                                  default = newJString("DescribeSourceRegions"))
@@ -28983,7 +28870,6 @@ proc validate_GetDescribeSourceRegions_609536(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_609539 != nil:
     section.add "RegionName", valid_609539
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609540 = query.getOrDefault("Action")
   valid_609540 = validateParameter(valid_609540, JString, required = true,
                                  default = newJString("DescribeSourceRegions"))
@@ -29123,7 +29009,6 @@ proc validate_PostDescribeValidDBInstanceModifications_609591(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609593 = query.getOrDefault("Action")
   valid_609593 = validateParameter(valid_609593, JString, required = true, default = newJString(
       "DescribeValidDBInstanceModifications"))
@@ -29390,7 +29275,6 @@ proc validate_PostDownloadDBLogFilePortion_609627(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609629 = query.getOrDefault("Action")
   valid_609629 = validateParameter(valid_609629, JString, required = true, default = newJString(
       "DownloadDBLogFilePortion"))
@@ -29712,7 +29596,6 @@ proc validate_PostFailoverDBCluster_609664(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609666 = query.getOrDefault("Action")
   valid_609666 = validateParameter(valid_609666, JString, required = true,
                                  default = newJString("FailoverDBCluster"))
@@ -29993,7 +29876,6 @@ proc validate_PostImportInstallationMedia_609702(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609704 = query.getOrDefault("Action")
   valid_609704 = validateParameter(valid_609704, JString, required = true, default = newJString(
       "ImportInstallationMedia"))
@@ -30346,7 +30228,6 @@ proc validate_PostListTagsForResource_609740(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609742 = query.getOrDefault("Action")
   valid_609742 = validateParameter(valid_609742, JString, required = true,
                                  default = newJString("ListTagsForResource"))
@@ -30633,7 +30514,6 @@ proc validate_PostModifyCertificates_609775(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609777 = query.getOrDefault("Action")
   valid_609777 = validateParameter(valid_609777, JString, required = true,
                                  default = newJString("ModifyCertificates"))
@@ -30780,7 +30660,6 @@ proc validate_GetModifyCertificates_609758(path: JsonNode; query: JsonNode;
   valid_609760 = validateParameter(valid_609760, JBool, required = false, default = nil)
   if valid_609760 != nil:
     section.add "RemoveCustomerOverride", valid_609760
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609761 = query.getOrDefault("Action")
   valid_609761 = validateParameter(valid_609761, JString, required = true,
                                  default = newJString("ModifyCertificates"))
@@ -30910,7 +30789,6 @@ proc validate_PostModifyCurrentDBClusterCapacity_609812(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609814 = query.getOrDefault("Action")
   valid_609814 = validateParameter(valid_609814, JString, required = true, default = newJString(
       "ModifyCurrentDBClusterCapacity"))
@@ -31234,7 +31112,6 @@ proc validate_PostModifyDBCluster_609873(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609875 = query.getOrDefault("Action")
   valid_609875 = validateParameter(valid_609875, JString, required = true,
                                  default = newJString("ModifyDBCluster"))
@@ -32118,7 +31995,6 @@ proc validate_PostModifyDBClusterEndpoint_609934(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609936 = query.getOrDefault("Action")
   valid_609936 = validateParameter(valid_609936, JString, required = true, default = newJString(
       "ModifyDBClusterEndpoint"))
@@ -32447,7 +32323,6 @@ proc validate_PostModifyDBClusterParameterGroup_609971(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_609973 = query.getOrDefault("Action")
   valid_609973 = validateParameter(valid_609973, JString, required = true, default = newJString(
       "ModifyDBClusterParameterGroup"))
@@ -32736,7 +32611,6 @@ proc validate_PostModifyDBClusterSnapshotAttribute_610008(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610010 = query.getOrDefault("Action")
   valid_610010 = validateParameter(valid_610010, JString, required = true, default = newJString(
       "ModifyDBClusterSnapshotAttribute"))
@@ -33070,7 +32944,6 @@ proc validate_PostModifyDBInstance_610086(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610088 = query.getOrDefault("Action")
   valid_610088 = validateParameter(valid_610088, JString, required = true,
                                  default = newJString("ModifyDBInstance"))
@@ -33827,7 +33700,6 @@ proc validate_GetModifyDBInstance_610028(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_610040 != nil:
     section.add "EngineVersion", valid_610040
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610041 = query.getOrDefault("Action")
   valid_610041 = validateParameter(valid_610041, JString, required = true,
                                  default = newJString("ModifyDBInstance"))
@@ -34273,7 +34145,6 @@ proc validate_PostModifyDBParameterGroup_610162(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610164 = query.getOrDefault("Action")
   valid_610164 = validateParameter(valid_610164, JString, required = true,
                                  default = newJString("ModifyDBParameterGroup"))
@@ -34555,7 +34426,6 @@ proc validate_PostModifyDBProxy_610203(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610205 = query.getOrDefault("Action")
   valid_610205 = validateParameter(valid_610205, JString, required = true,
                                  default = newJString("ModifyDBProxy"))
@@ -34804,7 +34674,6 @@ proc validate_GetModifyDBProxy_610180(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_610187 != nil:
     section.add "SecurityGroups", valid_610187
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610188 = query.getOrDefault("Action")
   valid_610188 = validateParameter(valid_610188, JString, required = true,
                                  default = newJString("ModifyDBProxy"))
@@ -34959,7 +34828,6 @@ proc validate_PostModifyDBProxyTargetGroup_610250(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610252 = query.getOrDefault("Action")
   valid_610252 = validateParameter(valid_610252, JString, required = true, default = newJString(
       "ModifyDBProxyTargetGroup"))
@@ -35407,7 +35275,6 @@ proc validate_PostModifyDBSnapshot_610292(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610294 = query.getOrDefault("Action")
   valid_610294 = validateParameter(valid_610294, JString, required = true,
                                  default = newJString("ModifyDBSnapshot"))
@@ -35717,7 +35584,6 @@ proc validate_PostModifyDBSnapshotAttribute_610330(path: JsonNode; query: JsonNo
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610332 = query.getOrDefault("Action")
   valid_610332 = validateParameter(valid_610332, JString, required = true, default = newJString(
       "ModifyDBSnapshotAttribute"))
@@ -36047,7 +35913,6 @@ proc validate_PostModifyDBSubnetGroup_610368(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610370 = query.getOrDefault("Action")
   valid_610370 = validateParameter(valid_610370, JString, required = true,
                                  default = newJString("ModifyDBSubnetGroup"))
@@ -36350,7 +36215,6 @@ proc validate_PostModifyEventSubscription_610407(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610409 = query.getOrDefault("Action")
   valid_610409 = validateParameter(valid_610409, JString, required = true, default = newJString(
       "ModifyEventSubscription"))
@@ -36700,7 +36564,6 @@ proc validate_PostModifyGlobalCluster_610446(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610448 = query.getOrDefault("Action")
   valid_610448 = validateParameter(valid_610448, JString, required = true,
                                  default = newJString("ModifyGlobalCluster"))
@@ -36872,7 +36735,6 @@ proc validate_GetModifyGlobalCluster_610428(path: JsonNode; query: JsonNode;
   valid_610432 = validateParameter(valid_610432, JBool, required = false, default = nil)
   if valid_610432 != nil:
     section.add "DeletionProtection", valid_610432
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610433 = query.getOrDefault("Action")
   valid_610433 = validateParameter(valid_610433, JString, required = true,
                                  default = newJString("ModifyGlobalCluster"))
@@ -37001,7 +36863,6 @@ proc validate_PostModifyOptionGroup_610484(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610486 = query.getOrDefault("Action")
   valid_610486 = validateParameter(valid_610486, JString, required = true,
                                  default = newJString("ModifyOptionGroup"))
@@ -37172,7 +37033,6 @@ proc validate_GetModifyOptionGroup_610465(path: JsonNode; query: JsonNode;
   ##                  : <p>The name of the option group to be modified.</p> <p>Permanent options, such as the TDE option for Oracle Advanced Security TDE, can't be removed from an option group, and that option group can't be removed from a DB instance once it is associated with a DB instance</p>
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610467 = query.getOrDefault("Action")
   valid_610467 = validateParameter(valid_610467, JString, required = true,
                                  default = newJString("ModifyOptionGroup"))
@@ -37324,7 +37184,6 @@ proc validate_PostPromoteReadReplica_610522(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610524 = query.getOrDefault("Action")
   valid_610524 = validateParameter(valid_610524, JString, required = true,
                                  default = newJString("PromoteReadReplica"))
@@ -37627,7 +37486,6 @@ proc validate_PostPromoteReadReplicaDBCluster_610557(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610559 = query.getOrDefault("Action")
   valid_610559 = validateParameter(valid_610559, JString, required = true, default = newJString(
       "PromoteReadReplicaDBCluster"))
@@ -37891,7 +37749,6 @@ proc validate_PostPurchaseReservedDBInstancesOffering_610593(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610595 = query.getOrDefault("Action")
   valid_610595 = validateParameter(valid_610595, JString, required = true, default = newJString(
       "PurchaseReservedDBInstancesOffering"))
@@ -38083,7 +37940,6 @@ proc validate_GetPurchaseReservedDBInstancesOffering_610574(path: JsonNode;
                                  default = nil)
   if valid_610578 != nil:
     section.add "ReservedDBInstanceId", valid_610578
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610579 = query.getOrDefault("Action")
   valid_610579 = validateParameter(valid_610579, JString, required = true, default = newJString(
       "PurchaseReservedDBInstancesOffering"))
@@ -38226,7 +38082,6 @@ proc validate_PostRebootDBInstance_610630(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610632 = query.getOrDefault("Action")
   valid_610632 = validateParameter(valid_610632, JString, required = true,
                                  default = newJString("RebootDBInstance"))
@@ -38504,7 +38359,6 @@ proc validate_PostRegisterDBProxyTargets_610667(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610669 = query.getOrDefault("Action")
   valid_610669 = validateParameter(valid_610669, JString, required = true,
                                  default = newJString("RegisterDBProxyTargets"))
@@ -38694,7 +38548,6 @@ proc validate_GetRegisterDBProxyTargets_610648(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_610652 != nil:
     section.add "TargetGroupName", valid_610652
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610653 = query.getOrDefault("Action")
   valid_610653 = validateParameter(valid_610653, JString, required = true,
                                  default = newJString("RegisterDBProxyTargets"))
@@ -38833,7 +38686,6 @@ proc validate_PostRemoveFromGlobalCluster_610704(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610706 = query.getOrDefault("Action")
   valid_610706 = validateParameter(valid_610706, JString, required = true, default = newJString(
       "RemoveFromGlobalCluster"))
@@ -38989,7 +38841,6 @@ proc validate_GetRemoveFromGlobalCluster_610687(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_610690 != nil:
     section.add "DbClusterIdentifier", valid_610690
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610691 = query.getOrDefault("Action")
   valid_610691 = validateParameter(valid_610691, JString, required = true, default = newJString(
       "RemoveFromGlobalCluster"))
@@ -39114,7 +38965,6 @@ proc validate_PostRemoveRoleFromDBCluster_610740(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610742 = query.getOrDefault("Action")
   valid_610742 = validateParameter(valid_610742, JString, required = true, default = newJString(
       "RemoveRoleFromDBCluster"))
@@ -39416,7 +39266,6 @@ proc validate_PostRemoveRoleFromDBInstance_610777(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610779 = query.getOrDefault("Action")
   valid_610779 = validateParameter(valid_610779, JString, required = true, default = newJString(
       "RemoveRoleFromDBInstance"))
@@ -39720,7 +39569,6 @@ proc validate_PostRemoveSourceIdentifierFromSubscription_610813(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610815 = query.getOrDefault("Action")
   valid_610815 = validateParameter(valid_610815, JString, required = true, default = newJString(
       "RemoveSourceIdentifierFromSubscription"))
@@ -40008,7 +39856,6 @@ proc validate_PostRemoveTagsFromResource_610848(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610850 = query.getOrDefault("Action")
   valid_610850 = validateParameter(valid_610850, JString, required = true,
                                  default = newJString("RemoveTagsFromResource"))
@@ -40295,7 +40142,6 @@ proc validate_PostResetDBClusterParameterGroup_610884(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610886 = query.getOrDefault("Action")
   valid_610886 = validateParameter(valid_610886, JString, required = true, default = newJString(
       "ResetDBClusterParameterGroup"))
@@ -40603,7 +40449,6 @@ proc validate_PostResetDBParameterGroup_610921(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610923 = query.getOrDefault("Action")
   valid_610923 = validateParameter(valid_610923, JString, required = true,
                                  default = newJString("ResetDBParameterGroup"))
@@ -40906,7 +40751,6 @@ proc validate_PostRestoreDBClusterFromS3_610984(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_610986 = query.getOrDefault("Action")
   valid_610986 = validateParameter(valid_610986, JString, required = true,
                                  default = newJString("RestoreDBClusterFromS3"))
@@ -41774,7 +41618,6 @@ proc validate_PostRestoreDBClusterFromSnapshot_611068(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611070 = query.getOrDefault("Action")
   valid_611070 = validateParameter(valid_611070, JString, required = true, default = newJString(
       "RestoreDBClusterFromSnapshot"))
@@ -42593,7 +42436,6 @@ proc validate_PostRestoreDBClusterToPointInTime_611140(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611142 = query.getOrDefault("Action")
   valid_611142 = validateParameter(valid_611142, JString, required = true, default = newJString(
       "RestoreDBClusterToPointInTime"))
@@ -43204,7 +43046,6 @@ proc validate_PostRestoreDBInstanceFromDBSnapshot_611216(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611218 = query.getOrDefault("Action")
   valid_611218 = validateParameter(valid_611218, JString, required = true, default = newJString(
       "RestoreDBInstanceFromDBSnapshot"))
@@ -44061,7 +43902,6 @@ proc validate_PostRestoreDBInstanceFromS3_611318(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611320 = query.getOrDefault("Action")
   valid_611320 = validateParameter(valid_611320, JString, required = true, default = newJString(
       "RestoreDBInstanceFromS3"))
@@ -45243,7 +45083,6 @@ proc validate_PostRestoreDBInstanceToPointInTime_611423(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611425 = query.getOrDefault("Action")
   valid_611425 = validateParameter(valid_611425, JString, required = true, default = newJString(
       "RestoreDBInstanceToPointInTime"))
@@ -46165,7 +46004,6 @@ proc validate_PostRevokeDBSecurityGroupIngress_611490(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611492 = query.getOrDefault("Action")
   valid_611492 = validateParameter(valid_611492, JString, required = true, default = newJString(
       "RevokeDBSecurityGroupIngress"))
@@ -46514,7 +46352,6 @@ proc validate_PostStartActivityStream_611530(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611532 = query.getOrDefault("Action")
   valid_611532 = validateParameter(valid_611532, JString, required = true,
                                  default = newJString("StartActivityStream"))
@@ -46835,7 +46672,6 @@ proc validate_PostStartDBCluster_611566(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611568 = query.getOrDefault("Action")
   valid_611568 = validateParameter(valid_611568, JString, required = true,
                                  default = newJString("StartDBCluster"))
@@ -47095,7 +46931,6 @@ proc validate_PostStartDBInstance_611599(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611601 = query.getOrDefault("Action")
   valid_611601 = validateParameter(valid_611601, JString, required = true,
                                  default = newJString("StartDBInstance"))
@@ -47355,7 +47190,6 @@ proc validate_PostStopActivityStream_611633(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611635 = query.getOrDefault("Action")
   valid_611635 = validateParameter(valid_611635, JString, required = true,
                                  default = newJString("StopActivityStream"))
@@ -47635,7 +47469,6 @@ proc validate_PostStopDBCluster_611667(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611669 = query.getOrDefault("Action")
   valid_611669 = validateParameter(valid_611669, JString, required = true,
                                  default = newJString("StopDBCluster"))
@@ -47894,7 +47727,6 @@ proc validate_PostStopDBInstance_611701(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_611703 = query.getOrDefault("Action")
   valid_611703 = validateParameter(valid_611703, JString, required = true,
                                  default = newJString("StopDBInstance"))

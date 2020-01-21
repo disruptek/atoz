@@ -178,8 +178,6 @@ proc validate_CancelTaskExecution_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "FmrsService.CancelTaskExecution"))
@@ -292,8 +290,6 @@ proc validate_CreateAgent_606197(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "FmrsService.CreateAgent"))
@@ -407,8 +403,6 @@ proc validate_CreateLocationEfs_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "FmrsService.CreateLocationEfs"))
@@ -521,8 +515,6 @@ proc validate_CreateLocationNfs_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "FmrsService.CreateLocationNfs"))
@@ -635,8 +627,6 @@ proc validate_CreateLocationS3_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "FmrsService.CreateLocationS3"))
@@ -749,8 +739,6 @@ proc validate_CreateLocationSmb_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "FmrsService.CreateLocationSmb"))
@@ -862,8 +850,6 @@ proc validate_CreateTask_606272(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true,
                                  default = newJString("FmrsService.CreateTask"))
@@ -976,8 +962,6 @@ proc validate_DeleteAgent_606287(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "FmrsService.DeleteAgent"))
@@ -1091,8 +1075,6 @@ proc validate_DeleteLocation_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "FmrsService.DeleteLocation"))
@@ -1204,8 +1186,6 @@ proc validate_DeleteTask_606317(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true,
                                  default = newJString("FmrsService.DeleteTask"))
@@ -1318,8 +1298,6 @@ proc validate_DescribeAgent_606332(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "FmrsService.DescribeAgent"))
@@ -1432,8 +1410,6 @@ proc validate_DescribeLocationEfs_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "FmrsService.DescribeLocationEfs"))
@@ -1547,8 +1523,6 @@ proc validate_DescribeLocationNfs_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "FmrsService.DescribeLocationNfs"))
@@ -1662,8 +1636,6 @@ proc validate_DescribeLocationS3_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "FmrsService.DescribeLocationS3"))
@@ -1777,8 +1749,6 @@ proc validate_DescribeLocationSmb_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "FmrsService.DescribeLocationSmb"))
@@ -1891,8 +1861,6 @@ proc validate_DescribeTask_606407(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "FmrsService.DescribeTask"))
@@ -2004,8 +1972,6 @@ proc validate_DescribeTaskExecution_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "FmrsService.DescribeTaskExecution"))
@@ -2133,8 +2099,6 @@ proc validate_ListAgents_606437(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606441 = header.getOrDefault("X-Amz-Target")
   valid_606441 = validateParameter(valid_606441, JString, required = true,
                                  default = newJString("FmrsService.ListAgents"))
@@ -2270,8 +2234,6 @@ proc validate_ListLocations_606456(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606460 = header.getOrDefault("X-Amz-Target")
   valid_606460 = validateParameter(valid_606460, JString, required = true, default = newJString(
       "FmrsService.ListLocations"))
@@ -2407,8 +2369,6 @@ proc validate_ListTagsForResource_606474(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606478 = header.getOrDefault("X-Amz-Target")
   valid_606478 = validateParameter(valid_606478, JString, required = true, default = newJString(
       "FmrsService.ListTagsForResource"))
@@ -2545,8 +2505,6 @@ proc validate_ListTaskExecutions_606492(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606496 = header.getOrDefault("X-Amz-Target")
   valid_606496 = validateParameter(valid_606496, JString, required = true, default = newJString(
       "FmrsService.ListTaskExecutions"))
@@ -2682,8 +2640,6 @@ proc validate_ListTasks_606510(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true,
                                  default = newJString("FmrsService.ListTasks"))
@@ -2804,8 +2760,6 @@ proc validate_StartTaskExecution_606528(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606530 = header.getOrDefault("X-Amz-Target")
   valid_606530 = validateParameter(valid_606530, JString, required = true, default = newJString(
       "FmrsService.StartTaskExecution"))
@@ -2918,8 +2872,6 @@ proc validate_TagResource_606543(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606545 = header.getOrDefault("X-Amz-Target")
   valid_606545 = validateParameter(valid_606545, JString, required = true, default = newJString(
       "FmrsService.TagResource"))
@@ -3032,8 +2984,6 @@ proc validate_UntagResource_606558(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606560 = header.getOrDefault("X-Amz-Target")
   valid_606560 = validateParameter(valid_606560, JString, required = true, default = newJString(
       "FmrsService.UntagResource"))
@@ -3145,8 +3095,6 @@ proc validate_UpdateAgent_606573(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606575 = header.getOrDefault("X-Amz-Target")
   valid_606575 = validateParameter(valid_606575, JString, required = true, default = newJString(
       "FmrsService.UpdateAgent"))
@@ -3259,8 +3207,6 @@ proc validate_UpdateTask_606588(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606590 = header.getOrDefault("X-Amz-Target")
   valid_606590 = validateParameter(valid_606590, JString, required = true,
                                  default = newJString("FmrsService.UpdateTask"))

@@ -182,8 +182,6 @@ proc validate_CountClosedWorkflowExecutions_605928(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "SimpleWorkflowService.CountClosedWorkflowExecutions"))
@@ -296,8 +294,6 @@ proc validate_CountOpenWorkflowExecutions_606197(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "SimpleWorkflowService.CountOpenWorkflowExecutions"))
@@ -411,8 +407,6 @@ proc validate_CountPendingActivityTasks_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "SimpleWorkflowService.CountPendingActivityTasks"))
@@ -526,8 +520,6 @@ proc validate_CountPendingDecisionTasks_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "SimpleWorkflowService.CountPendingDecisionTasks"))
@@ -641,8 +633,6 @@ proc validate_DeprecateActivityType_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "SimpleWorkflowService.DeprecateActivityType"))
@@ -756,8 +746,6 @@ proc validate_DeprecateDomain_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "SimpleWorkflowService.DeprecateDomain"))
@@ -869,8 +857,6 @@ proc validate_DeprecateWorkflowType_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "SimpleWorkflowService.DeprecateWorkflowType"))
@@ -983,8 +969,6 @@ proc validate_DescribeActivityType_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "SimpleWorkflowService.DescribeActivityType"))
@@ -1098,8 +1082,6 @@ proc validate_DescribeDomain_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "SimpleWorkflowService.DescribeDomain"))
@@ -1211,8 +1193,6 @@ proc validate_DescribeWorkflowExecution_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "SimpleWorkflowService.DescribeWorkflowExecution"))
@@ -1326,8 +1306,6 @@ proc validate_DescribeWorkflowType_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "SimpleWorkflowService.DescribeWorkflowType"))
@@ -1455,8 +1433,6 @@ proc validate_GetWorkflowExecutionHistory_606347(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606351 = header.getOrDefault("X-Amz-Target")
   valid_606351 = validateParameter(valid_606351, JString, required = true, default = newJString(
       "SimpleWorkflowService.GetWorkflowExecutionHistory"))
@@ -1594,8 +1570,6 @@ proc validate_ListActivityTypes_606366(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606370 = header.getOrDefault("X-Amz-Target")
   valid_606370 = validateParameter(valid_606370, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListActivityTypes"))
@@ -1730,8 +1704,6 @@ proc validate_ListClosedWorkflowExecutions_606384(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606388 = header.getOrDefault("X-Amz-Target")
   valid_606388 = validateParameter(valid_606388, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListClosedWorkflowExecutions"))
@@ -1868,8 +1840,6 @@ proc validate_ListDomains_606402(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606406 = header.getOrDefault("X-Amz-Target")
   valid_606406 = validateParameter(valid_606406, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListDomains"))
@@ -2005,8 +1975,6 @@ proc validate_ListOpenWorkflowExecutions_606420(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListOpenWorkflowExecutions"))
@@ -2129,8 +2097,6 @@ proc validate_ListTagsForResource_606438(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606440 = header.getOrDefault("X-Amz-Target")
   valid_606440 = validateParameter(valid_606440, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListTagsForResource"))
@@ -2259,8 +2225,6 @@ proc validate_ListWorkflowTypes_606453(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606457 = header.getOrDefault("X-Amz-Target")
   valid_606457 = validateParameter(valid_606457, JString, required = true, default = newJString(
       "SimpleWorkflowService.ListWorkflowTypes"))
@@ -2381,8 +2345,6 @@ proc validate_PollForActivityTask_606471(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606473 = header.getOrDefault("X-Amz-Target")
   valid_606473 = validateParameter(valid_606473, JString, required = true, default = newJString(
       "SimpleWorkflowService.PollForActivityTask"))
@@ -2511,8 +2473,6 @@ proc validate_PollForDecisionTask_606486(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606490 = header.getOrDefault("X-Amz-Target")
   valid_606490 = validateParameter(valid_606490, JString, required = true, default = newJString(
       "SimpleWorkflowService.PollForDecisionTask"))
@@ -2633,8 +2593,6 @@ proc validate_RecordActivityTaskHeartbeat_606504(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606506 = header.getOrDefault("X-Amz-Target")
   valid_606506 = validateParameter(valid_606506, JString, required = true, default = newJString(
       "SimpleWorkflowService.RecordActivityTaskHeartbeat"))
@@ -2748,8 +2706,6 @@ proc validate_RegisterActivityType_606519(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606521 = header.getOrDefault("X-Amz-Target")
   valid_606521 = validateParameter(valid_606521, JString, required = true, default = newJString(
       "SimpleWorkflowService.RegisterActivityType"))
@@ -2863,8 +2819,6 @@ proc validate_RegisterDomain_606534(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606536 = header.getOrDefault("X-Amz-Target")
   valid_606536 = validateParameter(valid_606536, JString, required = true, default = newJString(
       "SimpleWorkflowService.RegisterDomain"))
@@ -2976,8 +2930,6 @@ proc validate_RegisterWorkflowType_606549(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606551 = header.getOrDefault("X-Amz-Target")
   valid_606551 = validateParameter(valid_606551, JString, required = true, default = newJString(
       "SimpleWorkflowService.RegisterWorkflowType"))
@@ -3090,8 +3042,6 @@ proc validate_RequestCancelWorkflowExecution_606564(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606566 = header.getOrDefault("X-Amz-Target")
   valid_606566 = validateParameter(valid_606566, JString, required = true, default = newJString(
       "SimpleWorkflowService.RequestCancelWorkflowExecution"))
@@ -3204,8 +3154,6 @@ proc validate_RespondActivityTaskCanceled_606579(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606581 = header.getOrDefault("X-Amz-Target")
   valid_606581 = validateParameter(valid_606581, JString, required = true, default = newJString(
       "SimpleWorkflowService.RespondActivityTaskCanceled"))
@@ -3319,8 +3267,6 @@ proc validate_RespondActivityTaskCompleted_606594(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606596 = header.getOrDefault("X-Amz-Target")
   valid_606596 = validateParameter(valid_606596, JString, required = true, default = newJString(
       "SimpleWorkflowService.RespondActivityTaskCompleted"))
@@ -3434,8 +3380,6 @@ proc validate_RespondActivityTaskFailed_606609(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606611 = header.getOrDefault("X-Amz-Target")
   valid_606611 = validateParameter(valid_606611, JString, required = true, default = newJString(
       "SimpleWorkflowService.RespondActivityTaskFailed"))
@@ -3549,8 +3493,6 @@ proc validate_RespondDecisionTaskCompleted_606624(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606626 = header.getOrDefault("X-Amz-Target")
   valid_606626 = validateParameter(valid_606626, JString, required = true, default = newJString(
       "SimpleWorkflowService.RespondDecisionTaskCompleted"))
@@ -3665,8 +3607,6 @@ proc validate_SignalWorkflowExecution_606639(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606641 = header.getOrDefault("X-Amz-Target")
   valid_606641 = validateParameter(valid_606641, JString, required = true, default = newJString(
       "SimpleWorkflowService.SignalWorkflowExecution"))
@@ -3779,8 +3719,6 @@ proc validate_StartWorkflowExecution_606654(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606656 = header.getOrDefault("X-Amz-Target")
   valid_606656 = validateParameter(valid_606656, JString, required = true, default = newJString(
       "SimpleWorkflowService.StartWorkflowExecution"))
@@ -3893,8 +3831,6 @@ proc validate_TagResource_606669(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606671 = header.getOrDefault("X-Amz-Target")
   valid_606671 = validateParameter(valid_606671, JString, required = true, default = newJString(
       "SimpleWorkflowService.TagResource"))
@@ -4007,8 +3943,6 @@ proc validate_TerminateWorkflowExecution_606684(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606686 = header.getOrDefault("X-Amz-Target")
   valid_606686 = validateParameter(valid_606686, JString, required = true, default = newJString(
       "SimpleWorkflowService.TerminateWorkflowExecution"))
@@ -4123,8 +4057,6 @@ proc validate_UndeprecateActivityType_606699(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606701 = header.getOrDefault("X-Amz-Target")
   valid_606701 = validateParameter(valid_606701, JString, required = true, default = newJString(
       "SimpleWorkflowService.UndeprecateActivityType"))
@@ -4238,8 +4170,6 @@ proc validate_UndeprecateDomain_606714(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606716 = header.getOrDefault("X-Amz-Target")
   valid_606716 = validateParameter(valid_606716, JString, required = true, default = newJString(
       "SimpleWorkflowService.UndeprecateDomain"))
@@ -4352,8 +4282,6 @@ proc validate_UndeprecateWorkflowType_606729(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606731 = header.getOrDefault("X-Amz-Target")
   valid_606731 = validateParameter(valid_606731, JString, required = true, default = newJString(
       "SimpleWorkflowService.UndeprecateWorkflowType"))
@@ -4466,8 +4394,6 @@ proc validate_UntagResource_606744(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606746 = header.getOrDefault("X-Amz-Target")
   valid_606746 = validateParameter(valid_606746, JString, required = true, default = newJString(
       "SimpleWorkflowService.UntagResource"))

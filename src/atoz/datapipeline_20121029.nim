@@ -176,8 +176,6 @@ proc validate_ActivatePipeline_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "DataPipeline.ActivatePipeline"))
@@ -289,8 +287,6 @@ proc validate_AddTags_606197(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true,
                                  default = newJString("DataPipeline.AddTags"))
@@ -404,8 +400,6 @@ proc validate_CreatePipeline_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "DataPipeline.CreatePipeline"))
@@ -518,8 +512,6 @@ proc validate_DeactivatePipeline_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "DataPipeline.DeactivatePipeline"))
@@ -633,8 +625,6 @@ proc validate_DeletePipeline_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "DataPipeline.DeletePipeline"))
@@ -755,8 +745,6 @@ proc validate_DescribeObjects_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606260 = header.getOrDefault("X-Amz-Target")
   valid_606260 = validateParameter(valid_606260, JString, required = true, default = newJString(
       "DataPipeline.DescribeObjects"))
@@ -874,8 +862,6 @@ proc validate_DescribePipelines_606275(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606277 = header.getOrDefault("X-Amz-Target")
   valid_606277 = validateParameter(valid_606277, JString, required = true, default = newJString(
       "DataPipeline.DescribePipelines"))
@@ -988,8 +974,6 @@ proc validate_EvaluateExpression_606290(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606292 = header.getOrDefault("X-Amz-Target")
   valid_606292 = validateParameter(valid_606292, JString, required = true, default = newJString(
       "DataPipeline.EvaluateExpression"))
@@ -1102,8 +1086,6 @@ proc validate_GetPipelineDefinition_606305(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606307 = header.getOrDefault("X-Amz-Target")
   valid_606307 = validateParameter(valid_606307, JString, required = true, default = newJString(
       "DataPipeline.GetPipelineDefinition"))
@@ -1224,8 +1206,6 @@ proc validate_ListPipelines_606320(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606323 = header.getOrDefault("X-Amz-Target")
   valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
       "DataPipeline.ListPipelines"))
@@ -1342,8 +1322,6 @@ proc validate_PollForTask_606337(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606339 = header.getOrDefault("X-Amz-Target")
   valid_606339 = validateParameter(valid_606339, JString, required = true, default = newJString(
       "DataPipeline.PollForTask"))
@@ -1456,8 +1434,6 @@ proc validate_PutPipelineDefinition_606352(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606354 = header.getOrDefault("X-Amz-Target")
   valid_606354 = validateParameter(valid_606354, JString, required = true, default = newJString(
       "DataPipeline.PutPipelineDefinition"))
@@ -1585,8 +1561,6 @@ proc validate_QueryObjects_606367(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606371 = header.getOrDefault("X-Amz-Target")
   valid_606371 = validateParameter(valid_606371, JString, required = true, default = newJString(
       "DataPipeline.QueryObjects"))
@@ -1706,8 +1680,6 @@ proc validate_RemoveTags_606385(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606387 = header.getOrDefault("X-Amz-Target")
   valid_606387 = validateParameter(valid_606387, JString, required = true, default = newJString(
       "DataPipeline.RemoveTags"))
@@ -1821,8 +1793,6 @@ proc validate_ReportTaskProgress_606400(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606402 = header.getOrDefault("X-Amz-Target")
   valid_606402 = validateParameter(valid_606402, JString, required = true, default = newJString(
       "DataPipeline.ReportTaskProgress"))
@@ -1935,8 +1905,6 @@ proc validate_ReportTaskRunnerHeartbeat_606415(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606417 = header.getOrDefault("X-Amz-Target")
   valid_606417 = validateParameter(valid_606417, JString, required = true, default = newJString(
       "DataPipeline.ReportTaskRunnerHeartbeat"))
@@ -2050,8 +2018,6 @@ proc validate_SetStatus_606430(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606432 = header.getOrDefault("X-Amz-Target")
   valid_606432 = validateParameter(valid_606432, JString, required = true,
                                  default = newJString("DataPipeline.SetStatus"))
@@ -2163,8 +2129,6 @@ proc validate_SetTaskStatus_606445(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606447 = header.getOrDefault("X-Amz-Target")
   valid_606447 = validateParameter(valid_606447, JString, required = true, default = newJString(
       "DataPipeline.SetTaskStatus"))
@@ -2276,8 +2240,6 @@ proc validate_ValidatePipelineDefinition_606460(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606462 = header.getOrDefault("X-Amz-Target")
   valid_606462 = validateParameter(valid_606462, JString, required = true, default = newJString(
       "DataPipeline.ValidatePipelineDefinition"))

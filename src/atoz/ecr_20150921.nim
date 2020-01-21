@@ -179,8 +179,6 @@ proc validate_BatchCheckLayerAvailability_605928(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.BatchCheckLayerAvailability"))
@@ -294,8 +292,6 @@ proc validate_BatchDeleteImage_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.BatchDeleteImage"))
@@ -406,8 +402,6 @@ proc validate_BatchGetImage_606212(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.BatchGetImage"))
@@ -520,8 +514,6 @@ proc validate_CompleteLayerUpload_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.CompleteLayerUpload"))
@@ -634,8 +626,6 @@ proc validate_CreateRepository_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.CreateRepository"))
@@ -746,8 +736,6 @@ proc validate_DeleteLifecyclePolicy_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.DeleteLifecyclePolicy"))
@@ -860,8 +848,6 @@ proc validate_DeleteRepository_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.DeleteRepository"))
@@ -972,8 +958,6 @@ proc validate_DeleteRepositoryPolicy_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.DeleteRepositoryPolicy"))
@@ -1100,8 +1084,6 @@ proc validate_DescribeImageScanFindings_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606306 = header.getOrDefault("X-Amz-Target")
   valid_606306 = validateParameter(valid_606306, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.DescribeImageScanFindings"))
@@ -1238,8 +1220,6 @@ proc validate_DescribeImages_606321(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606325 = header.getOrDefault("X-Amz-Target")
   valid_606325 = validateParameter(valid_606325, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.DescribeImages"))
@@ -1373,8 +1353,6 @@ proc validate_DescribeRepositories_606339(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606343 = header.getOrDefault("X-Amz-Target")
   valid_606343 = validateParameter(valid_606343, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.DescribeRepositories"))
@@ -1494,8 +1472,6 @@ proc validate_GetAuthorizationToken_606357(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606359 = header.getOrDefault("X-Amz-Target")
   valid_606359 = validateParameter(valid_606359, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.GetAuthorizationToken"))
@@ -1607,8 +1583,6 @@ proc validate_GetDownloadUrlForLayer_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606374 = header.getOrDefault("X-Amz-Target")
   valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.GetDownloadUrlForLayer"))
@@ -1721,8 +1695,6 @@ proc validate_GetLifecyclePolicy_606387(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606389 = header.getOrDefault("X-Amz-Target")
   valid_606389 = validateParameter(valid_606389, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.GetLifecyclePolicy"))
@@ -1849,8 +1821,6 @@ proc validate_GetLifecyclePolicyPreview_606402(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606406 = header.getOrDefault("X-Amz-Target")
   valid_606406 = validateParameter(valid_606406, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.GetLifecyclePolicyPreview"))
@@ -1972,8 +1942,6 @@ proc validate_GetRepositoryPolicy_606420(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606422 = header.getOrDefault("X-Amz-Target")
   valid_606422 = validateParameter(valid_606422, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.GetRepositoryPolicy"))
@@ -2086,8 +2054,6 @@ proc validate_InitiateLayerUpload_606435(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606437 = header.getOrDefault("X-Amz-Target")
   valid_606437 = validateParameter(valid_606437, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.InitiateLayerUpload"))
@@ -2214,8 +2180,6 @@ proc validate_ListImages_606450(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.ListImages"))
@@ -2337,8 +2301,6 @@ proc validate_ListTagsForResource_606468(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606470 = header.getOrDefault("X-Amz-Target")
   valid_606470 = validateParameter(valid_606470, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.ListTagsForResource"))
@@ -2450,8 +2412,6 @@ proc validate_PutImage_606483(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606485 = header.getOrDefault("X-Amz-Target")
   valid_606485 = validateParameter(valid_606485, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.PutImage"))
@@ -2563,8 +2523,6 @@ proc validate_PutImageScanningConfiguration_606498(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606500 = header.getOrDefault("X-Amz-Target")
   valid_606500 = validateParameter(valid_606500, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.PutImageScanningConfiguration"))
@@ -2677,8 +2635,6 @@ proc validate_PutImageTagMutability_606513(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606515 = header.getOrDefault("X-Amz-Target")
   valid_606515 = validateParameter(valid_606515, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.PutImageTagMutability"))
@@ -2791,8 +2747,6 @@ proc validate_PutLifecyclePolicy_606528(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606530 = header.getOrDefault("X-Amz-Target")
   valid_606530 = validateParameter(valid_606530, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.PutLifecyclePolicy"))
@@ -2905,8 +2859,6 @@ proc validate_SetRepositoryPolicy_606543(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606545 = header.getOrDefault("X-Amz-Target")
   valid_606545 = validateParameter(valid_606545, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.SetRepositoryPolicy"))
@@ -3019,8 +2971,6 @@ proc validate_StartImageScan_606558(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606560 = header.getOrDefault("X-Amz-Target")
   valid_606560 = validateParameter(valid_606560, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.StartImageScan"))
@@ -3131,8 +3081,6 @@ proc validate_StartLifecyclePolicyPreview_606573(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606575 = header.getOrDefault("X-Amz-Target")
   valid_606575 = validateParameter(valid_606575, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.StartLifecyclePolicyPreview"))
@@ -3245,8 +3193,6 @@ proc validate_TagResource_606588(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606590 = header.getOrDefault("X-Amz-Target")
   valid_606590 = validateParameter(valid_606590, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.TagResource"))
@@ -3359,8 +3305,6 @@ proc validate_UntagResource_606603(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606605 = header.getOrDefault("X-Amz-Target")
   valid_606605 = validateParameter(valid_606605, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.UntagResource"))
@@ -3473,8 +3417,6 @@ proc validate_UploadLayerPart_606618(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606620 = header.getOrDefault("X-Amz-Target")
   valid_606620 = validateParameter(valid_606620, JString, required = true, default = newJString(
       "AmazonEC2ContainerRegistry_V20150921.UploadLayerPart"))

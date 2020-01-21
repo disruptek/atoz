@@ -185,8 +185,6 @@ proc validate_BatchGetItem_605928(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606055 = header.getOrDefault("X-Amz-Target")
   valid_606055 = validateParameter(valid_606055, JString, required = true, default = newJString(
       "DynamoDB_20111205.BatchGetItem"))
@@ -304,8 +302,6 @@ proc validate_BatchWriteItem_606200(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606202 = header.getOrDefault("X-Amz-Target")
   valid_606202 = validateParameter(valid_606202, JString, required = true, default = newJString(
       "DynamoDB_20111205.BatchWriteItem"))
@@ -417,8 +413,6 @@ proc validate_CreateTable_606215(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606217 = header.getOrDefault("X-Amz-Target")
   valid_606217 = validateParameter(valid_606217, JString, required = true, default = newJString(
       "DynamoDB_20111205.CreateTable"))
@@ -531,8 +525,6 @@ proc validate_DeleteItem_606230(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606232 = header.getOrDefault("X-Amz-Target")
   valid_606232 = validateParameter(valid_606232, JString, required = true, default = newJString(
       "DynamoDB_20111205.DeleteItem"))
@@ -645,8 +637,6 @@ proc validate_DeleteTable_606245(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606247 = header.getOrDefault("X-Amz-Target")
   valid_606247 = validateParameter(valid_606247, JString, required = true, default = newJString(
       "DynamoDB_20111205.DeleteTable"))
@@ -759,8 +749,6 @@ proc validate_DescribeTable_606260(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606262 = header.getOrDefault("X-Amz-Target")
   valid_606262 = validateParameter(valid_606262, JString, required = true, default = newJString(
       "DynamoDB_20111205.DescribeTable"))
@@ -872,8 +860,6 @@ proc validate_GetItem_606275(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606277 = header.getOrDefault("X-Amz-Target")
   valid_606277 = validateParameter(valid_606277, JString, required = true, default = newJString(
       "DynamoDB_20111205.GetItem"))
@@ -1000,8 +986,6 @@ proc validate_ListTables_606290(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606294 = header.getOrDefault("X-Amz-Target")
   valid_606294 = validateParameter(valid_606294, JString, required = true, default = newJString(
       "DynamoDB_20111205.ListTables"))
@@ -1122,8 +1106,6 @@ proc validate_PutItem_606308(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606310 = header.getOrDefault("X-Amz-Target")
   valid_606310 = validateParameter(valid_606310, JString, required = true, default = newJString(
       "DynamoDB_20111205.PutItem"))
@@ -1250,8 +1232,6 @@ proc validate_Query_606323(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606327 = header.getOrDefault("X-Amz-Target")
   valid_606327 = validateParameter(valid_606327, JString, required = true, default = newJString(
       "DynamoDB_20111205.Query"))
@@ -1387,8 +1367,6 @@ proc validate_Scan_606341(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606345 = header.getOrDefault("X-Amz-Target")
   valid_606345 = validateParameter(valid_606345, JString, required = true,
                                  default = newJString("DynamoDB_20111205.Scan"))
@@ -1508,8 +1486,6 @@ proc validate_UpdateItem_606359(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606361 = header.getOrDefault("X-Amz-Target")
   valid_606361 = validateParameter(valid_606361, JString, required = true, default = newJString(
       "DynamoDB_20111205.UpdateItem"))
@@ -1622,8 +1598,6 @@ proc validate_UpdateTable_606374(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606376 = header.getOrDefault("X-Amz-Target")
   valid_606376 = validateParameter(valid_606376, JString, required = true, default = newJString(
       "DynamoDB_20111205.UpdateTable"))

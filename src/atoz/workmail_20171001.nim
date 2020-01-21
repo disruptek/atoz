@@ -177,8 +177,6 @@ proc validate_AssociateDelegateToResource_605928(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "WorkMailService.AssociateDelegateToResource"))
@@ -292,8 +290,6 @@ proc validate_AssociateMemberToGroup_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "WorkMailService.AssociateMemberToGroup"))
@@ -406,8 +402,6 @@ proc validate_CreateAlias_606212(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "WorkMailService.CreateAlias"))
@@ -520,8 +514,6 @@ proc validate_CreateGroup_606227(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "WorkMailService.CreateGroup"))
@@ -635,8 +627,6 @@ proc validate_CreateResource_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "WorkMailService.CreateResource"))
@@ -748,8 +738,6 @@ proc validate_CreateUser_606257(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "WorkMailService.CreateUser"))
@@ -862,8 +850,6 @@ proc validate_DeleteAlias_606272(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "WorkMailService.DeleteAlias"))
@@ -976,8 +962,6 @@ proc validate_DeleteGroup_606287(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "WorkMailService.DeleteGroup"))
@@ -1091,8 +1075,6 @@ proc validate_DeleteMailboxPermissions_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "WorkMailService.DeleteMailboxPermissions"))
@@ -1206,8 +1188,6 @@ proc validate_DeleteResource_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "WorkMailService.DeleteResource"))
@@ -1319,8 +1299,6 @@ proc validate_DeleteUser_606332(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "WorkMailService.DeleteUser"))
@@ -1433,8 +1411,6 @@ proc validate_DeregisterFromWorkMail_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "WorkMailService.DeregisterFromWorkMail"))
@@ -1547,8 +1523,6 @@ proc validate_DescribeGroup_606362(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "WorkMailService.DescribeGroup"))
@@ -1660,8 +1634,6 @@ proc validate_DescribeOrganization_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "WorkMailService.DescribeOrganization"))
@@ -1775,8 +1747,6 @@ proc validate_DescribeResource_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "WorkMailService.DescribeResource"))
@@ -1888,8 +1858,6 @@ proc validate_DescribeUser_606407(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "WorkMailService.DescribeUser"))
@@ -2001,8 +1969,6 @@ proc validate_DisassociateDelegateFromResource_606422(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "WorkMailService.DisassociateDelegateFromResource"))
@@ -2118,8 +2084,6 @@ proc validate_DisassociateMemberFromGroup_606437(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "WorkMailService.DisassociateMemberFromGroup"))
@@ -2234,8 +2198,6 @@ proc validate_GetMailboxDetails_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "WorkMailService.GetMailboxDetails"))
@@ -2362,8 +2324,6 @@ proc validate_ListAliases_606467(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606471 = header.getOrDefault("X-Amz-Target")
   valid_606471 = validateParameter(valid_606471, JString, required = true, default = newJString(
       "WorkMailService.ListAliases"))
@@ -2500,8 +2460,6 @@ proc validate_ListGroupMembers_606486(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606490 = header.getOrDefault("X-Amz-Target")
   valid_606490 = validateParameter(valid_606490, JString, required = true, default = newJString(
       "WorkMailService.ListGroupMembers"))
@@ -2636,8 +2594,6 @@ proc validate_ListGroups_606504(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606508 = header.getOrDefault("X-Amz-Target")
   valid_606508 = validateParameter(valid_606508, JString, required = true, default = newJString(
       "WorkMailService.ListGroups"))
@@ -2773,8 +2729,6 @@ proc validate_ListMailboxPermissions_606522(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606526 = header.getOrDefault("X-Amz-Target")
   valid_606526 = validateParameter(valid_606526, JString, required = true, default = newJString(
       "WorkMailService.ListMailboxPermissions"))
@@ -2911,8 +2865,6 @@ proc validate_ListOrganizations_606540(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "WorkMailService.ListOrganizations"))
@@ -3047,8 +2999,6 @@ proc validate_ListResourceDelegates_606558(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606562 = header.getOrDefault("X-Amz-Target")
   valid_606562 = validateParameter(valid_606562, JString, required = true, default = newJString(
       "WorkMailService.ListResourceDelegates"))
@@ -3184,8 +3134,6 @@ proc validate_ListResources_606576(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606580 = header.getOrDefault("X-Amz-Target")
   valid_606580 = validateParameter(valid_606580, JString, required = true, default = newJString(
       "WorkMailService.ListResources"))
@@ -3320,8 +3268,6 @@ proc validate_ListUsers_606594(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606598 = header.getOrDefault("X-Amz-Target")
   valid_606598 = validateParameter(valid_606598, JString, required = true, default = newJString(
       "WorkMailService.ListUsers"))
@@ -3441,8 +3387,6 @@ proc validate_PutMailboxPermissions_606612(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606614 = header.getOrDefault("X-Amz-Target")
   valid_606614 = validateParameter(valid_606614, JString, required = true, default = newJString(
       "WorkMailService.PutMailboxPermissions"))
@@ -3556,8 +3500,6 @@ proc validate_RegisterToWorkMail_606627(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606629 = header.getOrDefault("X-Amz-Target")
   valid_606629 = validateParameter(valid_606629, JString, required = true, default = newJString(
       "WorkMailService.RegisterToWorkMail"))
@@ -3670,8 +3612,6 @@ proc validate_ResetPassword_606642(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606644 = header.getOrDefault("X-Amz-Target")
   valid_606644 = validateParameter(valid_606644, JString, required = true, default = newJString(
       "WorkMailService.ResetPassword"))
@@ -3784,8 +3724,6 @@ proc validate_UpdateMailboxQuota_606657(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606659 = header.getOrDefault("X-Amz-Target")
   valid_606659 = validateParameter(valid_606659, JString, required = true, default = newJString(
       "WorkMailService.UpdateMailboxQuota"))
@@ -3898,8 +3836,6 @@ proc validate_UpdatePrimaryEmailAddress_606672(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606674 = header.getOrDefault("X-Amz-Target")
   valid_606674 = validateParameter(valid_606674, JString, required = true, default = newJString(
       "WorkMailService.UpdatePrimaryEmailAddress"))
@@ -4014,8 +3950,6 @@ proc validate_UpdateResource_606687(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606689 = header.getOrDefault("X-Amz-Target")
   valid_606689 = validateParameter(valid_606689, JString, required = true, default = newJString(
       "WorkMailService.UpdateResource"))

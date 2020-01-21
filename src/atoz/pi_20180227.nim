@@ -186,8 +186,6 @@ proc validate_DescribeDimensionKeys_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606045 = header.getOrDefault("X-Amz-Target")
   valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
       "PerformanceInsightsv20180227.DescribeDimensionKeys"))
@@ -301,8 +299,6 @@ proc validate_GetResourceMetrics_606188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606190 = header.getOrDefault("X-Amz-Target")
   valid_606190 = validateParameter(valid_606190, JString, required = true, default = newJString(
       "PerformanceInsightsv20180227.GetResourceMetrics"))

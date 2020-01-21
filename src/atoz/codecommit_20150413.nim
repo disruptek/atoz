@@ -177,8 +177,6 @@ proc validate_AssociateApprovalRuleTemplateWithRepository_605928(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "CodeCommit_20150413.AssociateApprovalRuleTemplateWithRepository"))
@@ -295,8 +293,6 @@ proc validate_BatchAssociateApprovalRuleTemplateWithRepositories_606197(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "CodeCommit_20150413.BatchAssociateApprovalRuleTemplateWithRepositories"))
@@ -411,8 +407,6 @@ proc validate_BatchDescribeMergeConflicts_606212(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "CodeCommit_20150413.BatchDescribeMergeConflicts"))
@@ -528,8 +522,6 @@ proc validate_BatchDisassociateApprovalRuleTemplateFromRepositories_606227(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString("CodeCommit_20150413.BatchDisassociateApprovalRuleTemplateFromRepositories"))
   if valid_606229 != nil:
@@ -644,8 +636,6 @@ proc validate_BatchGetCommits_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "CodeCommit_20150413.BatchGetCommits"))
@@ -757,8 +747,6 @@ proc validate_BatchGetRepositories_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "CodeCommit_20150413.BatchGetRepositories"))
@@ -871,8 +859,6 @@ proc validate_CreateApprovalRuleTemplate_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "CodeCommit_20150413.CreateApprovalRuleTemplate"))
@@ -986,8 +972,6 @@ proc validate_CreateBranch_606287(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "CodeCommit_20150413.CreateBranch"))
@@ -1099,8 +1083,6 @@ proc validate_CreateCommit_606302(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "CodeCommit_20150413.CreateCommit"))
@@ -1213,8 +1195,6 @@ proc validate_CreatePullRequest_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "CodeCommit_20150413.CreatePullRequest"))
@@ -1326,8 +1306,6 @@ proc validate_CreatePullRequestApprovalRule_606332(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "CodeCommit_20150413.CreatePullRequestApprovalRule"))
@@ -1442,8 +1420,6 @@ proc validate_CreateRepository_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "CodeCommit_20150413.CreateRepository"))
@@ -1555,8 +1531,6 @@ proc validate_CreateUnreferencedMergeCommit_606362(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "CodeCommit_20150413.CreateUnreferencedMergeCommit"))
@@ -1670,8 +1644,6 @@ proc validate_DeleteApprovalRuleTemplate_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "CodeCommit_20150413.DeleteApprovalRuleTemplate"))
@@ -1785,8 +1757,6 @@ proc validate_DeleteBranch_606392(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "CodeCommit_20150413.DeleteBranch"))
@@ -1898,8 +1868,6 @@ proc validate_DeleteCommentContent_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "CodeCommit_20150413.DeleteCommentContent"))
@@ -2012,8 +1980,6 @@ proc validate_DeleteFile_606422(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "CodeCommit_20150413.DeleteFile"))
@@ -2126,8 +2092,6 @@ proc validate_DeletePullRequestApprovalRule_606437(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "CodeCommit_20150413.DeletePullRequestApprovalRule"))
@@ -2242,8 +2206,6 @@ proc validate_DeleteRepository_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "CodeCommit_20150413.DeleteRepository"))
@@ -2370,8 +2332,6 @@ proc validate_DescribeMergeConflicts_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606471 = header.getOrDefault("X-Amz-Target")
   valid_606471 = validateParameter(valid_606471, JString, required = true, default = newJString(
       "CodeCommit_20150413.DescribeMergeConflicts"))
@@ -2507,8 +2467,6 @@ proc validate_DescribePullRequestEvents_606486(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606490 = header.getOrDefault("X-Amz-Target")
   valid_606490 = validateParameter(valid_606490, JString, required = true, default = newJString(
       "CodeCommit_20150413.DescribePullRequestEvents"))
@@ -2631,8 +2589,6 @@ proc validate_DisassociateApprovalRuleTemplateFromRepository_606504(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606506 = header.getOrDefault("X-Amz-Target")
   valid_606506 = validateParameter(valid_606506, JString, required = true, default = newJString(
       "CodeCommit_20150413.DisassociateApprovalRuleTemplateFromRepository"))
@@ -2747,8 +2703,6 @@ proc validate_EvaluatePullRequestApprovalRules_606519(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606521 = header.getOrDefault("X-Amz-Target")
   valid_606521 = validateParameter(valid_606521, JString, required = true, default = newJString(
       "CodeCommit_20150413.EvaluatePullRequestApprovalRules"))
@@ -2864,8 +2818,6 @@ proc validate_GetApprovalRuleTemplate_606534(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606536 = header.getOrDefault("X-Amz-Target")
   valid_606536 = validateParameter(valid_606536, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetApprovalRuleTemplate"))
@@ -2978,8 +2930,6 @@ proc validate_GetBlob_606549(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606551 = header.getOrDefault("X-Amz-Target")
   valid_606551 = validateParameter(valid_606551, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetBlob"))
@@ -3091,8 +3041,6 @@ proc validate_GetBranch_606564(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606566 = header.getOrDefault("X-Amz-Target")
   valid_606566 = validateParameter(valid_606566, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetBranch"))
@@ -3204,8 +3152,6 @@ proc validate_GetComment_606579(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606581 = header.getOrDefault("X-Amz-Target")
   valid_606581 = validateParameter(valid_606581, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetComment"))
@@ -3333,8 +3279,6 @@ proc validate_GetCommentsForComparedCommit_606594(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606598 = header.getOrDefault("X-Amz-Target")
   valid_606598 = validateParameter(valid_606598, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetCommentsForComparedCommit"))
@@ -3471,8 +3415,6 @@ proc validate_GetCommentsForPullRequest_606612(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606616 = header.getOrDefault("X-Amz-Target")
   valid_606616 = validateParameter(valid_606616, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetCommentsForPullRequest"))
@@ -3594,8 +3536,6 @@ proc validate_GetCommit_606630(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606632 = header.getOrDefault("X-Amz-Target")
   valid_606632 = validateParameter(valid_606632, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetCommit"))
@@ -3723,8 +3663,6 @@ proc validate_GetDifferences_606645(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetDifferences"))
@@ -3844,8 +3782,6 @@ proc validate_GetFile_606663(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606665 = header.getOrDefault("X-Amz-Target")
   valid_606665 = validateParameter(valid_606665, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetFile"))
@@ -3957,8 +3893,6 @@ proc validate_GetFolder_606678(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606680 = header.getOrDefault("X-Amz-Target")
   valid_606680 = validateParameter(valid_606680, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetFolder"))
@@ -4071,8 +4005,6 @@ proc validate_GetMergeCommit_606693(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606695 = header.getOrDefault("X-Amz-Target")
   valid_606695 = validateParameter(valid_606695, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetMergeCommit"))
@@ -4200,8 +4132,6 @@ proc validate_GetMergeConflicts_606708(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606712 = header.getOrDefault("X-Amz-Target")
   valid_606712 = validateParameter(valid_606712, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetMergeConflicts"))
@@ -4322,8 +4252,6 @@ proc validate_GetMergeOptions_606726(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606728 = header.getOrDefault("X-Amz-Target")
   valid_606728 = validateParameter(valid_606728, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetMergeOptions"))
@@ -4436,8 +4364,6 @@ proc validate_GetPullRequest_606741(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606743 = header.getOrDefault("X-Amz-Target")
   valid_606743 = validateParameter(valid_606743, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetPullRequest"))
@@ -4549,8 +4475,6 @@ proc validate_GetPullRequestApprovalStates_606756(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606758 = header.getOrDefault("X-Amz-Target")
   valid_606758 = validateParameter(valid_606758, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetPullRequestApprovalStates"))
@@ -4664,8 +4588,6 @@ proc validate_GetPullRequestOverrideState_606771(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606773 = header.getOrDefault("X-Amz-Target")
   valid_606773 = validateParameter(valid_606773, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetPullRequestOverrideState"))
@@ -4779,8 +4701,6 @@ proc validate_GetRepository_606786(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606788 = header.getOrDefault("X-Amz-Target")
   valid_606788 = validateParameter(valid_606788, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetRepository"))
@@ -4892,8 +4812,6 @@ proc validate_GetRepositoryTriggers_606801(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606803 = header.getOrDefault("X-Amz-Target")
   valid_606803 = validateParameter(valid_606803, JString, required = true, default = newJString(
       "CodeCommit_20150413.GetRepositoryTriggers"))
@@ -5021,8 +4939,6 @@ proc validate_ListApprovalRuleTemplates_606816(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606820 = header.getOrDefault("X-Amz-Target")
   valid_606820 = validateParameter(valid_606820, JString, required = true, default = newJString(
       "CodeCommit_20150413.ListApprovalRuleTemplates"))
@@ -5161,8 +5077,6 @@ proc validate_ListAssociatedApprovalRuleTemplatesForRepository_606834(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606838 = header.getOrDefault("X-Amz-Target")
   valid_606838 = validateParameter(valid_606838, JString, required = true, default = newJString(
       "CodeCommit_20150413.ListAssociatedApprovalRuleTemplatesForRepository"))
@@ -5292,8 +5206,6 @@ proc validate_ListBranches_606852(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606855 = header.getOrDefault("X-Amz-Target")
   valid_606855 = validateParameter(valid_606855, JString, required = true, default = newJString(
       "CodeCommit_20150413.ListBranches"))
@@ -5426,8 +5338,6 @@ proc validate_ListPullRequests_606869(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606873 = header.getOrDefault("X-Amz-Target")
   valid_606873 = validateParameter(valid_606873, JString, required = true, default = newJString(
       "CodeCommit_20150413.ListPullRequests"))
@@ -5556,8 +5466,6 @@ proc validate_ListRepositories_606887(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606890 = header.getOrDefault("X-Amz-Target")
   valid_606890 = validateParameter(valid_606890, JString, required = true, default = newJString(
       "CodeCommit_20150413.ListRepositories"))
@@ -5689,8 +5597,6 @@ proc validate_ListRepositoriesForApprovalRuleTemplate_606904(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606908 = header.getOrDefault("X-Amz-Target")
   valid_606908 = validateParameter(valid_606908, JString, required = true, default = newJString(
       "CodeCommit_20150413.ListRepositoriesForApprovalRuleTemplate"))
@@ -5813,8 +5719,6 @@ proc validate_ListTagsForResource_606922(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606924 = header.getOrDefault("X-Amz-Target")
   valid_606924 = validateParameter(valid_606924, JString, required = true, default = newJString(
       "CodeCommit_20150413.ListTagsForResource"))
@@ -5927,8 +5831,6 @@ proc validate_MergeBranchesByFastForward_606937(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606939 = header.getOrDefault("X-Amz-Target")
   valid_606939 = validateParameter(valid_606939, JString, required = true, default = newJString(
       "CodeCommit_20150413.MergeBranchesByFastForward"))
@@ -6042,8 +5944,6 @@ proc validate_MergeBranchesBySquash_606952(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606954 = header.getOrDefault("X-Amz-Target")
   valid_606954 = validateParameter(valid_606954, JString, required = true, default = newJString(
       "CodeCommit_20150413.MergeBranchesBySquash"))
@@ -6157,8 +6057,6 @@ proc validate_MergeBranchesByThreeWay_606967(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606969 = header.getOrDefault("X-Amz-Target")
   valid_606969 = validateParameter(valid_606969, JString, required = true, default = newJString(
       "CodeCommit_20150413.MergeBranchesByThreeWay"))
@@ -6271,8 +6169,6 @@ proc validate_MergePullRequestByFastForward_606982(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606984 = header.getOrDefault("X-Amz-Target")
   valid_606984 = validateParameter(valid_606984, JString, required = true, default = newJString(
       "CodeCommit_20150413.MergePullRequestByFastForward"))
@@ -6387,8 +6283,6 @@ proc validate_MergePullRequestBySquash_606997(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606999 = header.getOrDefault("X-Amz-Target")
   valid_606999 = validateParameter(valid_606999, JString, required = true, default = newJString(
       "CodeCommit_20150413.MergePullRequestBySquash"))
@@ -6501,8 +6395,6 @@ proc validate_MergePullRequestByThreeWay_607012(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607014 = header.getOrDefault("X-Amz-Target")
   valid_607014 = validateParameter(valid_607014, JString, required = true, default = newJString(
       "CodeCommit_20150413.MergePullRequestByThreeWay"))
@@ -6616,8 +6508,6 @@ proc validate_OverridePullRequestApprovalRules_607027(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607029 = header.getOrDefault("X-Amz-Target")
   valid_607029 = validateParameter(valid_607029, JString, required = true, default = newJString(
       "CodeCommit_20150413.OverridePullRequestApprovalRules"))
@@ -6732,8 +6622,6 @@ proc validate_PostCommentForComparedCommit_607042(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607044 = header.getOrDefault("X-Amz-Target")
   valid_607044 = validateParameter(valid_607044, JString, required = true, default = newJString(
       "CodeCommit_20150413.PostCommentForComparedCommit"))
@@ -6847,8 +6735,6 @@ proc validate_PostCommentForPullRequest_607057(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607059 = header.getOrDefault("X-Amz-Target")
   valid_607059 = validateParameter(valid_607059, JString, required = true, default = newJString(
       "CodeCommit_20150413.PostCommentForPullRequest"))
@@ -6963,8 +6849,6 @@ proc validate_PostCommentReply_607072(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607074 = header.getOrDefault("X-Amz-Target")
   valid_607074 = validateParameter(valid_607074, JString, required = true, default = newJString(
       "CodeCommit_20150413.PostCommentReply"))
@@ -7076,8 +6960,6 @@ proc validate_PutFile_607087(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607089 = header.getOrDefault("X-Amz-Target")
   valid_607089 = validateParameter(valid_607089, JString, required = true, default = newJString(
       "CodeCommit_20150413.PutFile"))
@@ -7189,8 +7071,6 @@ proc validate_PutRepositoryTriggers_607102(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607104 = header.getOrDefault("X-Amz-Target")
   valid_607104 = validateParameter(valid_607104, JString, required = true, default = newJString(
       "CodeCommit_20150413.PutRepositoryTriggers"))
@@ -7303,8 +7183,6 @@ proc validate_TagResource_607117(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607119 = header.getOrDefault("X-Amz-Target")
   valid_607119 = validateParameter(valid_607119, JString, required = true, default = newJString(
       "CodeCommit_20150413.TagResource"))
@@ -7417,8 +7295,6 @@ proc validate_TestRepositoryTriggers_607132(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607134 = header.getOrDefault("X-Amz-Target")
   valid_607134 = validateParameter(valid_607134, JString, required = true, default = newJString(
       "CodeCommit_20150413.TestRepositoryTriggers"))
@@ -7531,8 +7407,6 @@ proc validate_UntagResource_607147(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607149 = header.getOrDefault("X-Amz-Target")
   valid_607149 = validateParameter(valid_607149, JString, required = true, default = newJString(
       "CodeCommit_20150413.UntagResource"))
@@ -7644,8 +7518,6 @@ proc validate_UpdateApprovalRuleTemplateContent_607162(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607164 = header.getOrDefault("X-Amz-Target")
   valid_607164 = validateParameter(valid_607164, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdateApprovalRuleTemplateContent"))
@@ -7760,8 +7632,6 @@ proc validate_UpdateApprovalRuleTemplateDescription_607177(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607179 = header.getOrDefault("X-Amz-Target")
   valid_607179 = validateParameter(valid_607179, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdateApprovalRuleTemplateDescription"))
@@ -7876,8 +7746,6 @@ proc validate_UpdateApprovalRuleTemplateName_607192(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607194 = header.getOrDefault("X-Amz-Target")
   valid_607194 = validateParameter(valid_607194, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdateApprovalRuleTemplateName"))
@@ -7991,8 +7859,6 @@ proc validate_UpdateComment_607207(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607209 = header.getOrDefault("X-Amz-Target")
   valid_607209 = validateParameter(valid_607209, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdateComment"))
@@ -8105,8 +7971,6 @@ proc validate_UpdateDefaultBranch_607222(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607224 = header.getOrDefault("X-Amz-Target")
   valid_607224 = validateParameter(valid_607224, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdateDefaultBranch"))
@@ -8219,8 +8083,6 @@ proc validate_UpdatePullRequestApprovalRuleContent_607237(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607239 = header.getOrDefault("X-Amz-Target")
   valid_607239 = validateParameter(valid_607239, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdatePullRequestApprovalRuleContent"))
@@ -8335,8 +8197,6 @@ proc validate_UpdatePullRequestApprovalState_607252(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607254 = header.getOrDefault("X-Amz-Target")
   valid_607254 = validateParameter(valid_607254, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdatePullRequestApprovalState"))
@@ -8450,8 +8310,6 @@ proc validate_UpdatePullRequestDescription_607267(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607269 = header.getOrDefault("X-Amz-Target")
   valid_607269 = validateParameter(valid_607269, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdatePullRequestDescription"))
@@ -8566,8 +8424,6 @@ proc validate_UpdatePullRequestStatus_607282(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607284 = header.getOrDefault("X-Amz-Target")
   valid_607284 = validateParameter(valid_607284, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdatePullRequestStatus"))
@@ -8680,8 +8536,6 @@ proc validate_UpdatePullRequestTitle_607297(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607299 = header.getOrDefault("X-Amz-Target")
   valid_607299 = validateParameter(valid_607299, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdatePullRequestTitle"))
@@ -8794,8 +8648,6 @@ proc validate_UpdateRepositoryDescription_607312(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607314 = header.getOrDefault("X-Amz-Target")
   valid_607314 = validateParameter(valid_607314, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdateRepositoryDescription"))
@@ -8909,8 +8761,6 @@ proc validate_UpdateRepositoryName_607327(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607329 = header.getOrDefault("X-Amz-Target")
   valid_607329 = validateParameter(valid_607329, JString, required = true, default = newJString(
       "CodeCommit_20150413.UpdateRepositoryName"))

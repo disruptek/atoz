@@ -178,8 +178,6 @@ proc validate_CopyBackupToRegion_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "BaldrApiService.CopyBackupToRegion"))
@@ -292,8 +290,6 @@ proc validate_CreateCluster_606197(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "BaldrApiService.CreateCluster"))
@@ -405,8 +401,6 @@ proc validate_CreateHsm_606212(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "BaldrApiService.CreateHsm"))
@@ -518,8 +512,6 @@ proc validate_DeleteBackup_606227(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "BaldrApiService.DeleteBackup"))
@@ -631,8 +623,6 @@ proc validate_DeleteCluster_606242(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "BaldrApiService.DeleteCluster"))
@@ -744,8 +734,6 @@ proc validate_DeleteHsm_606257(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "BaldrApiService.DeleteHsm"))
@@ -873,8 +861,6 @@ proc validate_DescribeBackups_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606276 = header.getOrDefault("X-Amz-Target")
   valid_606276 = validateParameter(valid_606276, JString, required = true, default = newJString(
       "BaldrApiService.DescribeBackups"))
@@ -1010,8 +996,6 @@ proc validate_DescribeClusters_606291(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606295 = header.getOrDefault("X-Amz-Target")
   valid_606295 = validateParameter(valid_606295, JString, required = true, default = newJString(
       "BaldrApiService.DescribeClusters"))
@@ -1132,8 +1116,6 @@ proc validate_InitializeCluster_606309(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606311 = header.getOrDefault("X-Amz-Target")
   valid_606311 = validateParameter(valid_606311, JString, required = true, default = newJString(
       "BaldrApiService.InitializeCluster"))
@@ -1260,8 +1242,6 @@ proc validate_ListTags_606324(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606328 = header.getOrDefault("X-Amz-Target")
   valid_606328 = validateParameter(valid_606328, JString, required = true, default = newJString(
       "BaldrApiService.ListTags"))
@@ -1381,8 +1361,6 @@ proc validate_RestoreBackup_606342(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606344 = header.getOrDefault("X-Amz-Target")
   valid_606344 = validateParameter(valid_606344, JString, required = true, default = newJString(
       "BaldrApiService.RestoreBackup"))
@@ -1494,8 +1472,6 @@ proc validate_TagResource_606357(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606359 = header.getOrDefault("X-Amz-Target")
   valid_606359 = validateParameter(valid_606359, JString, required = true, default = newJString(
       "BaldrApiService.TagResource"))
@@ -1608,8 +1584,6 @@ proc validate_UntagResource_606372(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606374 = header.getOrDefault("X-Amz-Target")
   valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString(
       "BaldrApiService.UntagResource"))

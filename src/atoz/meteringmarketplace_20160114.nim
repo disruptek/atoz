@@ -168,8 +168,6 @@ proc validate_BatchMeterUsage_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606045 = header.getOrDefault("X-Amz-Target")
   valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
       "AWSMPMeteringService.BatchMeterUsage"))
@@ -281,8 +279,6 @@ proc validate_MeterUsage_606188(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606190 = header.getOrDefault("X-Amz-Target")
   valid_606190 = validateParameter(valid_606190, JString, required = true, default = newJString(
       "AWSMPMeteringService.MeterUsage"))
@@ -394,8 +390,6 @@ proc validate_RegisterUsage_606203(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606205 = header.getOrDefault("X-Amz-Target")
   valid_606205 = validateParameter(valid_606205, JString, required = true, default = newJString(
       "AWSMPMeteringService.RegisterUsage"))
@@ -508,8 +502,6 @@ proc validate_ResolveCustomer_606218(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606220 = header.getOrDefault("X-Amz-Target")
   valid_606220 = validateParameter(valid_606220, JString, required = true, default = newJString(
       "AWSMPMeteringService.ResolveCustomer"))

@@ -177,8 +177,6 @@ proc validate_BatchDetectDominantLanguage_605928(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "Comprehend_20171127.BatchDetectDominantLanguage"))
@@ -293,8 +291,6 @@ proc validate_BatchDetectEntities_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "Comprehend_20171127.BatchDetectEntities"))
@@ -407,8 +403,6 @@ proc validate_BatchDetectKeyPhrases_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "Comprehend_20171127.BatchDetectKeyPhrases"))
@@ -521,8 +515,6 @@ proc validate_BatchDetectSentiment_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "Comprehend_20171127.BatchDetectSentiment"))
@@ -636,8 +628,6 @@ proc validate_BatchDetectSyntax_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "Comprehend_20171127.BatchDetectSyntax"))
@@ -750,8 +740,6 @@ proc validate_ClassifyDocument_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "Comprehend_20171127.ClassifyDocument"))
@@ -864,8 +852,6 @@ proc validate_CreateDocumentClassifier_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "Comprehend_20171127.CreateDocumentClassifier"))
@@ -979,8 +965,6 @@ proc validate_CreateEndpoint_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "Comprehend_20171127.CreateEndpoint"))
@@ -1092,8 +1076,6 @@ proc validate_CreateEntityRecognizer_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "Comprehend_20171127.CreateEntityRecognizer"))
@@ -1207,8 +1189,6 @@ proc validate_DeleteDocumentClassifier_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "Comprehend_20171127.DeleteDocumentClassifier"))
@@ -1322,8 +1302,6 @@ proc validate_DeleteEndpoint_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "Comprehend_20171127.DeleteEndpoint"))
@@ -1435,8 +1413,6 @@ proc validate_DeleteEntityRecognizer_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "Comprehend_20171127.DeleteEntityRecognizer"))
@@ -1549,8 +1525,6 @@ proc validate_DescribeDocumentClassificationJob_606362(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeDocumentClassificationJob"))
@@ -1665,8 +1639,6 @@ proc validate_DescribeDocumentClassifier_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeDocumentClassifier"))
@@ -1780,8 +1752,6 @@ proc validate_DescribeDominantLanguageDetectionJob_606392(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeDominantLanguageDetectionJob"))
@@ -1897,8 +1867,6 @@ proc validate_DescribeEndpoint_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeEndpoint"))
@@ -2010,8 +1978,6 @@ proc validate_DescribeEntitiesDetectionJob_606422(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeEntitiesDetectionJob"))
@@ -2126,8 +2092,6 @@ proc validate_DescribeEntityRecognizer_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeEntityRecognizer"))
@@ -2240,8 +2204,6 @@ proc validate_DescribeKeyPhrasesDetectionJob_606452(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeKeyPhrasesDetectionJob"))
@@ -2355,8 +2317,6 @@ proc validate_DescribeSentimentDetectionJob_606467(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeSentimentDetectionJob"))
@@ -2470,8 +2430,6 @@ proc validate_DescribeTopicsDetectionJob_606482(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "Comprehend_20171127.DescribeTopicsDetectionJob"))
@@ -2585,8 +2543,6 @@ proc validate_DetectDominantLanguage_606497(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "Comprehend_20171127.DetectDominantLanguage"))
@@ -2700,8 +2656,6 @@ proc validate_DetectEntities_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "Comprehend_20171127.DetectEntities"))
@@ -2814,8 +2768,6 @@ proc validate_DetectKeyPhrases_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "Comprehend_20171127.DetectKeyPhrases"))
@@ -2928,8 +2880,6 @@ proc validate_DetectSentiment_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "Comprehend_20171127.DetectSentiment"))
@@ -3041,8 +2991,6 @@ proc validate_DetectSyntax_606557(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "Comprehend_20171127.DetectSyntax"))
@@ -3169,8 +3117,6 @@ proc validate_ListDocumentClassificationJobs_606572(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606576 = header.getOrDefault("X-Amz-Target")
   valid_606576 = validateParameter(valid_606576, JString, required = true, default = newJString(
       "Comprehend_20171127.ListDocumentClassificationJobs"))
@@ -3308,8 +3254,6 @@ proc validate_ListDocumentClassifiers_606591(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606595 = header.getOrDefault("X-Amz-Target")
   valid_606595 = validateParameter(valid_606595, JString, required = true, default = newJString(
       "Comprehend_20171127.ListDocumentClassifiers"))
@@ -3445,8 +3389,6 @@ proc validate_ListDominantLanguageDetectionJobs_606609(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606613 = header.getOrDefault("X-Amz-Target")
   valid_606613 = validateParameter(valid_606613, JString, required = true, default = newJString(
       "Comprehend_20171127.ListDominantLanguageDetectionJobs"))
@@ -3568,8 +3510,6 @@ proc validate_ListEndpoints_606627(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606629 = header.getOrDefault("X-Amz-Target")
   valid_606629 = validateParameter(valid_606629, JString, required = true, default = newJString(
       "Comprehend_20171127.ListEndpoints"))
@@ -3696,8 +3636,6 @@ proc validate_ListEntitiesDetectionJobs_606642(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606646 = header.getOrDefault("X-Amz-Target")
   valid_606646 = validateParameter(valid_606646, JString, required = true, default = newJString(
       "Comprehend_20171127.ListEntitiesDetectionJobs"))
@@ -3834,8 +3772,6 @@ proc validate_ListEntityRecognizers_606660(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
       "Comprehend_20171127.ListEntityRecognizers"))
@@ -3971,8 +3907,6 @@ proc validate_ListKeyPhrasesDetectionJobs_606678(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606682 = header.getOrDefault("X-Amz-Target")
   valid_606682 = validateParameter(valid_606682, JString, required = true, default = newJString(
       "Comprehend_20171127.ListKeyPhrasesDetectionJobs"))
@@ -4109,8 +4043,6 @@ proc validate_ListSentimentDetectionJobs_606696(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606700 = header.getOrDefault("X-Amz-Target")
   valid_606700 = validateParameter(valid_606700, JString, required = true, default = newJString(
       "Comprehend_20171127.ListSentimentDetectionJobs"))
@@ -4233,8 +4165,6 @@ proc validate_ListTagsForResource_606714(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606716 = header.getOrDefault("X-Amz-Target")
   valid_606716 = validateParameter(valid_606716, JString, required = true, default = newJString(
       "Comprehend_20171127.ListTagsForResource"))
@@ -4363,8 +4293,6 @@ proc validate_ListTopicsDetectionJobs_606729(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606733 = header.getOrDefault("X-Amz-Target")
   valid_606733 = validateParameter(valid_606733, JString, required = true, default = newJString(
       "Comprehend_20171127.ListTopicsDetectionJobs"))
@@ -4485,8 +4413,6 @@ proc validate_StartDocumentClassificationJob_606747(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606749 = header.getOrDefault("X-Amz-Target")
   valid_606749 = validateParameter(valid_606749, JString, required = true, default = newJString(
       "Comprehend_20171127.StartDocumentClassificationJob"))
@@ -4600,8 +4526,6 @@ proc validate_StartDominantLanguageDetectionJob_606762(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606764 = header.getOrDefault("X-Amz-Target")
   valid_606764 = validateParameter(valid_606764, JString, required = true, default = newJString(
       "Comprehend_20171127.StartDominantLanguageDetectionJob"))
@@ -4716,8 +4640,6 @@ proc validate_StartEntitiesDetectionJob_606777(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606779 = header.getOrDefault("X-Amz-Target")
   valid_606779 = validateParameter(valid_606779, JString, required = true, default = newJString(
       "Comprehend_20171127.StartEntitiesDetectionJob"))
@@ -4831,8 +4753,6 @@ proc validate_StartKeyPhrasesDetectionJob_606792(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606794 = header.getOrDefault("X-Amz-Target")
   valid_606794 = validateParameter(valid_606794, JString, required = true, default = newJString(
       "Comprehend_20171127.StartKeyPhrasesDetectionJob"))
@@ -4946,8 +4866,6 @@ proc validate_StartSentimentDetectionJob_606807(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606809 = header.getOrDefault("X-Amz-Target")
   valid_606809 = validateParameter(valid_606809, JString, required = true, default = newJString(
       "Comprehend_20171127.StartSentimentDetectionJob"))
@@ -5062,8 +4980,6 @@ proc validate_StartTopicsDetectionJob_606822(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606824 = header.getOrDefault("X-Amz-Target")
   valid_606824 = validateParameter(valid_606824, JString, required = true, default = newJString(
       "Comprehend_20171127.StartTopicsDetectionJob"))
@@ -5176,8 +5092,6 @@ proc validate_StopDominantLanguageDetectionJob_606837(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606839 = header.getOrDefault("X-Amz-Target")
   valid_606839 = validateParameter(valid_606839, JString, required = true, default = newJString(
       "Comprehend_20171127.StopDominantLanguageDetectionJob"))
@@ -5293,8 +5207,6 @@ proc validate_StopEntitiesDetectionJob_606852(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606854 = header.getOrDefault("X-Amz-Target")
   valid_606854 = validateParameter(valid_606854, JString, required = true, default = newJString(
       "Comprehend_20171127.StopEntitiesDetectionJob"))
@@ -5407,8 +5319,6 @@ proc validate_StopKeyPhrasesDetectionJob_606867(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606869 = header.getOrDefault("X-Amz-Target")
   valid_606869 = validateParameter(valid_606869, JString, required = true, default = newJString(
       "Comprehend_20171127.StopKeyPhrasesDetectionJob"))
@@ -5522,8 +5432,6 @@ proc validate_StopSentimentDetectionJob_606882(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606884 = header.getOrDefault("X-Amz-Target")
   valid_606884 = validateParameter(valid_606884, JString, required = true, default = newJString(
       "Comprehend_20171127.StopSentimentDetectionJob"))
@@ -5637,8 +5545,6 @@ proc validate_StopTrainingDocumentClassifier_606897(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606899 = header.getOrDefault("X-Amz-Target")
   valid_606899 = validateParameter(valid_606899, JString, required = true, default = newJString(
       "Comprehend_20171127.StopTrainingDocumentClassifier"))
@@ -5752,8 +5658,6 @@ proc validate_StopTrainingEntityRecognizer_606912(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606914 = header.getOrDefault("X-Amz-Target")
   valid_606914 = validateParameter(valid_606914, JString, required = true, default = newJString(
       "Comprehend_20171127.StopTrainingEntityRecognizer"))
@@ -5867,8 +5771,6 @@ proc validate_TagResource_606927(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606929 = header.getOrDefault("X-Amz-Target")
   valid_606929 = validateParameter(valid_606929, JString, required = true, default = newJString(
       "Comprehend_20171127.TagResource"))
@@ -5981,8 +5883,6 @@ proc validate_UntagResource_606942(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606944 = header.getOrDefault("X-Amz-Target")
   valid_606944 = validateParameter(valid_606944, JString, required = true, default = newJString(
       "Comprehend_20171127.UntagResource"))
@@ -6095,8 +5995,6 @@ proc validate_UpdateEndpoint_606957(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606959 = header.getOrDefault("X-Amz-Target")
   valid_606959 = validateParameter(valid_606959, JString, required = true, default = newJString(
       "Comprehend_20171127.UpdateEndpoint"))

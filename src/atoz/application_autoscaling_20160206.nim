@@ -167,8 +167,6 @@ proc validate_DeleteScalingPolicy_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DeleteScalingPolicy"))
@@ -281,8 +279,6 @@ proc validate_DeleteScheduledAction_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DeleteScheduledAction"))
@@ -396,8 +392,6 @@ proc validate_DeregisterScalableTarget_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DeregisterScalableTarget"))
@@ -526,8 +520,6 @@ proc validate_DescribeScalableTargets_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606231 = header.getOrDefault("X-Amz-Target")
   valid_606231 = validateParameter(valid_606231, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DescribeScalableTargets"))
@@ -663,8 +655,6 @@ proc validate_DescribeScalingActivities_606246(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606250 = header.getOrDefault("X-Amz-Target")
   valid_606250 = validateParameter(valid_606250, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DescribeScalingActivities"))
@@ -802,8 +792,6 @@ proc validate_DescribeScalingPolicies_606264(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606268 = header.getOrDefault("X-Amz-Target")
   valid_606268 = validateParameter(valid_606268, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DescribeScalingPolicies"))
@@ -940,8 +928,6 @@ proc validate_DescribeScheduledActions_606282(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606286 = header.getOrDefault("X-Amz-Target")
   valid_606286 = validateParameter(valid_606286, JString, required = true, default = newJString(
       "AnyScaleFrontendService.DescribeScheduledActions"))
@@ -1063,8 +1049,6 @@ proc validate_PutScalingPolicy_606300(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606302 = header.getOrDefault("X-Amz-Target")
   valid_606302 = validateParameter(valid_606302, JString, required = true, default = newJString(
       "AnyScaleFrontendService.PutScalingPolicy"))
@@ -1177,8 +1161,6 @@ proc validate_PutScheduledAction_606315(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606317 = header.getOrDefault("X-Amz-Target")
   valid_606317 = validateParameter(valid_606317, JString, required = true, default = newJString(
       "AnyScaleFrontendService.PutScheduledAction"))
@@ -1291,8 +1273,6 @@ proc validate_RegisterScalableTarget_606330(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606332 = header.getOrDefault("X-Amz-Target")
   valid_606332 = validateParameter(valid_606332, JString, required = true, default = newJString(
       "AnyScaleFrontendService.RegisterScalableTarget"))

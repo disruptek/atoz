@@ -183,8 +183,6 @@ proc validate_CancelDataRepositoryTask_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.CancelDataRepositoryTask"))
@@ -296,8 +294,6 @@ proc validate_CreateBackup_606197(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.CreateBackup"))
@@ -410,8 +406,6 @@ proc validate_CreateDataRepositoryTask_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.CreateDataRepositoryTask"))
@@ -524,8 +518,6 @@ proc validate_CreateFileSystem_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.CreateFileSystem"))
@@ -637,8 +629,6 @@ proc validate_CreateFileSystemFromBackup_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.CreateFileSystemFromBackup"))
@@ -751,8 +741,6 @@ proc validate_DeleteBackup_606257(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DeleteBackup"))
@@ -865,8 +853,6 @@ proc validate_DeleteFileSystem_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DeleteFileSystem"))
@@ -994,8 +980,6 @@ proc validate_DescribeBackups_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606291 = header.getOrDefault("X-Amz-Target")
   valid_606291 = validateParameter(valid_606291, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DescribeBackups"))
@@ -1130,8 +1114,6 @@ proc validate_DescribeDataRepositoryTasks_606306(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606310 = header.getOrDefault("X-Amz-Target")
   valid_606310 = validateParameter(valid_606310, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DescribeDataRepositoryTasks"))
@@ -1268,8 +1250,6 @@ proc validate_DescribeFileSystems_606324(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606328 = header.getOrDefault("X-Amz-Target")
   valid_606328 = validateParameter(valid_606328, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.DescribeFileSystems"))
@@ -1391,8 +1371,6 @@ proc validate_ListTagsForResource_606342(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606344 = header.getOrDefault("X-Amz-Target")
   valid_606344 = validateParameter(valid_606344, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.ListTagsForResource"))
@@ -1505,8 +1483,6 @@ proc validate_TagResource_606357(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606359 = header.getOrDefault("X-Amz-Target")
   valid_606359 = validateParameter(valid_606359, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.TagResource"))
@@ -1619,8 +1595,6 @@ proc validate_UntagResource_606372(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606374 = header.getOrDefault("X-Amz-Target")
   valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.UntagResource"))
@@ -1733,8 +1707,6 @@ proc validate_UpdateFileSystem_606387(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606389 = header.getOrDefault("X-Amz-Target")
   valid_606389 = validateParameter(valid_606389, JString, required = true, default = newJString(
       "AWSSimbaAPIService_v20180301.UpdateFileSystem"))

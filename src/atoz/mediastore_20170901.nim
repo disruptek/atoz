@@ -178,8 +178,6 @@ proc validate_CreateContainer_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "MediaStore_20170901.CreateContainer"))
@@ -292,8 +290,6 @@ proc validate_DeleteContainer_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "MediaStore_20170901.DeleteContainer"))
@@ -405,8 +401,6 @@ proc validate_DeleteContainerPolicy_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "MediaStore_20170901.DeleteContainerPolicy"))
@@ -520,8 +514,6 @@ proc validate_DeleteCorsPolicy_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "MediaStore_20170901.DeleteCorsPolicy"))
@@ -633,8 +625,6 @@ proc validate_DeleteLifecyclePolicy_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "MediaStore_20170901.DeleteLifecyclePolicy"))
@@ -748,8 +738,6 @@ proc validate_DescribeContainer_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "MediaStore_20170901.DescribeContainer"))
@@ -862,8 +850,6 @@ proc validate_GetContainerPolicy_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "MediaStore_20170901.GetContainerPolicy"))
@@ -976,8 +962,6 @@ proc validate_GetCorsPolicy_606287(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "MediaStore_20170901.GetCorsPolicy"))
@@ -1090,8 +1074,6 @@ proc validate_GetLifecyclePolicy_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "MediaStore_20170901.GetLifecyclePolicy"))
@@ -1220,8 +1202,6 @@ proc validate_ListContainers_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606321 = header.getOrDefault("X-Amz-Target")
   valid_606321 = validateParameter(valid_606321, JString, required = true, default = newJString(
       "MediaStore_20170901.ListContainers"))
@@ -1342,8 +1322,6 @@ proc validate_ListTagsForResource_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606338 = header.getOrDefault("X-Amz-Target")
   valid_606338 = validateParameter(valid_606338, JString, required = true, default = newJString(
       "MediaStore_20170901.ListTagsForResource"))
@@ -1457,8 +1435,6 @@ proc validate_PutContainerPolicy_606351(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606353 = header.getOrDefault("X-Amz-Target")
   valid_606353 = validateParameter(valid_606353, JString, required = true, default = newJString(
       "MediaStore_20170901.PutContainerPolicy"))
@@ -1571,8 +1547,6 @@ proc validate_PutCorsPolicy_606366(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606368 = header.getOrDefault("X-Amz-Target")
   valid_606368 = validateParameter(valid_606368, JString, required = true, default = newJString(
       "MediaStore_20170901.PutCorsPolicy"))
@@ -1685,8 +1659,6 @@ proc validate_PutLifecyclePolicy_606381(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606383 = header.getOrDefault("X-Amz-Target")
   valid_606383 = validateParameter(valid_606383, JString, required = true, default = newJString(
       "MediaStore_20170901.PutLifecyclePolicy"))
@@ -1800,8 +1772,6 @@ proc validate_StartAccessLogging_606396(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606398 = header.getOrDefault("X-Amz-Target")
   valid_606398 = validateParameter(valid_606398, JString, required = true, default = newJString(
       "MediaStore_20170901.StartAccessLogging"))
@@ -1915,8 +1885,6 @@ proc validate_StopAccessLogging_606411(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606413 = header.getOrDefault("X-Amz-Target")
   valid_606413 = validateParameter(valid_606413, JString, required = true, default = newJString(
       "MediaStore_20170901.StopAccessLogging"))
@@ -2028,8 +1996,6 @@ proc validate_TagResource_606426(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606428 = header.getOrDefault("X-Amz-Target")
   valid_606428 = validateParameter(valid_606428, JString, required = true, default = newJString(
       "MediaStore_20170901.TagResource"))
@@ -2142,8 +2108,6 @@ proc validate_UntagResource_606441(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606443 = header.getOrDefault("X-Amz-Target")
   valid_606443 = validateParameter(valid_606443, JString, required = true, default = newJString(
       "MediaStore_20170901.UntagResource"))

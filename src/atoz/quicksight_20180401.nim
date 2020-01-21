@@ -7190,8 +7190,6 @@ proc validate_GetDashboardEmbedUrl_606982(path: JsonNode; query: JsonNode;
   valid_606986 = validateParameter(valid_606986, JBool, required = false, default = nil)
   if valid_606986 != nil:
     section.add "reset-disabled", valid_606986
-  assert query != nil,
-        "query argument is necessary due to required `creds-type` field"
   var valid_607000 = query.getOrDefault("creds-type")
   valid_607000 = validateParameter(valid_607000, JString, required = true,
                                  default = newJString("IAM"))

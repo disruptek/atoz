@@ -170,7 +170,6 @@ proc validate_PostDeleteAlarms_606199(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606201 = query.getOrDefault("Action")
   valid_606201 = validateParameter(valid_606201, JString, required = true,
                                  default = newJString("DeleteAlarms"))
@@ -429,7 +428,6 @@ proc validate_PostDeleteAnomalyDetector_606235(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606237 = query.getOrDefault("Action")
   valid_606237 = validateParameter(valid_606237, JString, required = true,
                                  default = newJString("DeleteAnomalyDetector"))
@@ -755,7 +753,6 @@ proc validate_PostDeleteDashboards_606271(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606273 = query.getOrDefault("Action")
   valid_606273 = validateParameter(valid_606273, JString, required = true,
                                  default = newJString("DeleteDashboards"))
@@ -1015,7 +1012,6 @@ proc validate_PostDeleteInsightRules_606304(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606306 = query.getOrDefault("Action")
   valid_606306 = validateParameter(valid_606306, JString, required = true,
                                  default = newJString("DeleteInsightRules"))
@@ -1148,7 +1144,6 @@ proc validate_GetDeleteInsightRules_606288(path: JsonNode; query: JsonNode;
   ##            : An array of the rule names to delete. If you need to find out the names of your rules, use <a>DescribeInsightRules</a>.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606290 = query.getOrDefault("Action")
   valid_606290 = validateParameter(valid_606290, JString, required = true,
                                  default = newJString("DeleteInsightRules"))
@@ -1274,7 +1269,6 @@ proc validate_PostDescribeAlarmHistory_606342(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606344 = query.getOrDefault("Action")
   valid_606344 = validateParameter(valid_606344, JString, required = true,
                                  default = newJString("DescribeAlarmHistory"))
@@ -1483,7 +1477,6 @@ proc validate_GetDescribeAlarmHistory_606321(path: JsonNode; query: JsonNode;
                                  default = newJString("ConfigurationUpdate"))
   if valid_606325 != nil:
     section.add "HistoryItemType", valid_606325
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606326 = query.getOrDefault("Action")
   valid_606326 = validateParameter(valid_606326, JString, required = true,
                                  default = newJString("DescribeAlarmHistory"))
@@ -1635,7 +1628,6 @@ proc validate_PostDescribeAlarms_606385(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606387 = query.getOrDefault("Action")
   valid_606387 = validateParameter(valid_606387, JString, required = true,
                                  default = newJString("DescribeAlarms"))
@@ -1855,7 +1847,6 @@ proc validate_GetDescribeAlarms_606364(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606370 != nil:
     section.add "AlarmNames", valid_606370
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606371 = query.getOrDefault("Action")
   valid_606371 = validateParameter(valid_606371, JString, required = true,
                                  default = newJString("DescribeAlarms"))
@@ -1998,7 +1989,6 @@ proc validate_PostDescribeAlarmsForMetric_606429(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606431 = query.getOrDefault("Action")
   valid_606431 = validateParameter(valid_606431, JString, required = true, default = newJString(
       "DescribeAlarmsForMetric"))
@@ -2385,7 +2375,6 @@ proc validate_PostDescribeAnomalyDetectors_606472(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606474 = query.getOrDefault("Action")
   valid_606474 = validateParameter(valid_606474, JString, required = true, default = newJString(
       "DescribeAnomalyDetectors"))
@@ -2586,7 +2575,6 @@ proc validate_GetDescribeAnomalyDetectors_606452(path: JsonNode; query: JsonNode
                                  default = nil)
   if valid_606457 != nil:
     section.add "Dimensions", valid_606457
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606458 = query.getOrDefault("Action")
   valid_606458 = validateParameter(valid_606458, JString, required = true, default = newJString(
       "DescribeAnomalyDetectors"))
@@ -2728,7 +2716,6 @@ proc validate_PostDescribeInsightRules_606510(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606512 = query.getOrDefault("Action")
   valid_606512 = validateParameter(valid_606512, JString, required = true,
                                  default = newJString("DescribeInsightRules"))
@@ -2881,7 +2868,6 @@ proc validate_GetDescribeInsightRules_606493(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606496 != nil:
     section.add "NextToken", valid_606496
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606497 = query.getOrDefault("Action")
   valid_606497 = validateParameter(valid_606497, JString, required = true,
                                  default = newJString("DescribeInsightRules"))
@@ -3006,7 +2992,6 @@ proc validate_PostDisableAlarmActions_606544(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606546 = query.getOrDefault("Action")
   valid_606546 = validateParameter(valid_606546, JString, required = true,
                                  default = newJString("DisableAlarmActions"))
@@ -3266,7 +3251,6 @@ proc validate_PostDisableInsightRules_606577(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606579 = query.getOrDefault("Action")
   valid_606579 = validateParameter(valid_606579, JString, required = true,
                                  default = newJString("DisableInsightRules"))
@@ -3399,7 +3383,6 @@ proc validate_GetDisableInsightRules_606561(path: JsonNode; query: JsonNode;
   ##            : An array of the rule names to disable. If you need to find out the names of your rules, use <a>DescribeInsightRules</a>.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606563 = query.getOrDefault("Action")
   valid_606563 = validateParameter(valid_606563, JString, required = true,
                                  default = newJString("DisableInsightRules"))
@@ -3524,7 +3507,6 @@ proc validate_PostEnableAlarmActions_606610(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606612 = query.getOrDefault("Action")
   valid_606612 = validateParameter(valid_606612, JString, required = true,
                                  default = newJString("EnableAlarmActions"))
@@ -3783,7 +3765,6 @@ proc validate_PostEnableInsightRules_606643(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606645 = query.getOrDefault("Action")
   valid_606645 = validateParameter(valid_606645, JString, required = true,
                                  default = newJString("EnableInsightRules"))
@@ -3916,7 +3897,6 @@ proc validate_GetEnableInsightRules_606627(path: JsonNode; query: JsonNode;
   ##            : An array of the rule names to enable. If you need to find out the names of your rules, use <a>DescribeInsightRules</a>.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606629 = query.getOrDefault("Action")
   valid_606629 = validateParameter(valid_606629, JString, required = true,
                                  default = newJString("EnableInsightRules"))
@@ -4042,7 +4022,6 @@ proc validate_PostGetDashboard_606676(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606678 = query.getOrDefault("Action")
   valid_606678 = validateParameter(valid_606678, JString, required = true,
                                  default = newJString("GetDashboard"))
@@ -4176,7 +4155,6 @@ proc validate_GetGetDashboard_606660(path: JsonNode; query: JsonNode;
   ##                : The name of the dashboard to be described.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606662 = query.getOrDefault("Action")
   valid_606662 = validateParameter(valid_606662, JString, required = true,
                                  default = newJString("GetDashboard"))
@@ -4301,7 +4279,6 @@ proc validate_PostGetInsightRuleReport_606715(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606717 = query.getOrDefault("Action")
   valid_606717 = validateParameter(valid_606717, JString, required = true,
                                  default = newJString("GetInsightRuleReport"))
@@ -4685,7 +4662,6 @@ proc validate_PostGetMetricData_606759(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606761 = query.getOrDefault("Action")
   valid_606761 = validateParameter(valid_606761, JString, required = true,
                                  default = newJString("GetMetricData"))
@@ -4889,7 +4865,6 @@ proc validate_GetGetMetricData_606738(path: JsonNode; query: JsonNode;
   valid_606741 = validateParameter(valid_606741, JInt, required = false, default = nil)
   if valid_606741 != nil:
     section.add "MaxDatapoints", valid_606741
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606742 = query.getOrDefault("Action")
   valid_606742 = validateParameter(valid_606742, JString, required = true,
                                  default = newJString("GetMetricData"))
@@ -5047,7 +5022,6 @@ proc validate_PostGetMetricStatistics_606805(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606807 = query.getOrDefault("Action")
   valid_606807 = validateParameter(valid_606807, JString, required = true,
                                  default = newJString("GetMetricStatistics"))
@@ -5486,7 +5460,6 @@ proc validate_PostGetMetricWidgetImage_606847(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606849 = query.getOrDefault("Action")
   valid_606849 = validateParameter(valid_606849, JString, required = true,
                                  default = newJString("GetMetricWidgetImage"))
@@ -5769,7 +5742,6 @@ proc validate_PostListDashboards_606882(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606884 = query.getOrDefault("Action")
   valid_606884 = validateParameter(valid_606884, JString, required = true,
                                  default = newJString("ListDashboards"))
@@ -5924,7 +5896,6 @@ proc validate_GetListDashboards_606865(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606868 != nil:
     section.add "NextToken", valid_606868
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606869 = query.getOrDefault("Action")
   valid_606869 = validateParameter(valid_606869, JString, required = true,
                                  default = newJString("ListDashboards"))
@@ -6049,7 +6020,6 @@ proc validate_PostListMetrics_606919(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606921 = query.getOrDefault("Action")
   valid_606921 = validateParameter(valid_606921, JString, required = true,
                                  default = newJString("ListMetrics"))
@@ -6234,7 +6204,6 @@ proc validate_GetListMetrics_606900(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606904 != nil:
     section.add "Dimensions", valid_606904
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606905 = query.getOrDefault("Action")
   valid_606905 = validateParameter(valid_606905, JString, required = true,
                                  default = newJString("ListMetrics"))
@@ -6371,7 +6340,6 @@ proc validate_PostListTagsForResource_606955(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606957 = query.getOrDefault("Action")
   valid_606957 = validateParameter(valid_606957, JString, required = true,
                                  default = newJString("ListTagsForResource"))
@@ -6507,7 +6475,6 @@ proc validate_GetListTagsForResource_606939(path: JsonNode; query: JsonNode;
   ## href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html#arn-syntax-cloudwatch">Example ARNs</a> in the <i>Amazon Web Services General Reference</i>.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606941 = query.getOrDefault("Action")
   valid_606941 = validateParameter(valid_606941, JString, required = true,
                                  default = newJString("ListTagsForResource"))
@@ -6633,7 +6600,6 @@ proc validate_PostPutAnomalyDetector_606993(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606995 = query.getOrDefault("Action")
   valid_606995 = validateParameter(valid_606995, JString, required = true,
                                  default = newJString("PutAnomalyDetector"))
@@ -7017,7 +6983,6 @@ proc validate_PostPutDashboard_607032(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607034 = query.getOrDefault("Action")
   valid_607034 = validateParameter(valid_607034, JString, required = true,
                                  default = newJString("PutDashboard"))
@@ -7299,7 +7264,6 @@ proc validate_PostPutInsightRule_607068(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607070 = query.getOrDefault("Action")
   valid_607070 = validateParameter(valid_607070, JString, required = true,
                                  default = newJString("PutInsightRule"))
@@ -7606,7 +7570,6 @@ proc validate_PostPutMetricAlarm_607124(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607126 = query.getOrDefault("Action")
   valid_607126 = validateParameter(valid_607126, JString, required = true,
                                  default = newJString("PutMetricAlarm"))
@@ -8373,7 +8336,6 @@ proc validate_PostPutMetricData_607179(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607181 = query.getOrDefault("Action")
   valid_607181 = validateParameter(valid_607181, JString, required = true,
                                  default = newJString("PutMetricData"))
@@ -8656,7 +8618,6 @@ proc validate_PostSetAlarmState_607216(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607218 = query.getOrDefault("Action")
   valid_607218 = validateParameter(valid_607218, JString, required = true,
                                  default = newJString("SetAlarmState"))
@@ -8981,7 +8942,6 @@ proc validate_PostTagResource_607253(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607255 = query.getOrDefault("Action")
   valid_607255 = validateParameter(valid_607255, JString, required = true,
                                  default = newJString("TagResource"))
@@ -9265,7 +9225,6 @@ proc validate_PostUntagResource_607288(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607290 = query.getOrDefault("Action")
   valid_607290 = validateParameter(valid_607290, JString, required = true,
                                  default = newJString("UntagResource"))

@@ -191,8 +191,6 @@ proc validate_DescribeServices_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606047 = header.getOrDefault("X-Amz-Target")
   valid_606047 = validateParameter(valid_606047, JString, required = true, default = newJString(
       "AWSPriceListService.DescribeServices"))
@@ -328,8 +326,6 @@ proc validate_GetAttributeValues_606192(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606196 = header.getOrDefault("X-Amz-Target")
   valid_606196 = validateParameter(valid_606196, JString, required = true, default = newJString(
       "AWSPriceListService.GetAttributeValues"))
@@ -465,8 +461,6 @@ proc validate_GetProducts_606210(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSPriceListService.GetProducts"))

@@ -167,8 +167,6 @@ proc validate_AssociateResolverEndpointIpAddress_605928(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "Route53Resolver.AssociateResolverEndpointIpAddress"))
@@ -284,8 +282,6 @@ proc validate_AssociateResolverRule_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "Route53Resolver.AssociateResolverRule"))
@@ -398,8 +394,6 @@ proc validate_CreateResolverEndpoint_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "Route53Resolver.CreateResolverEndpoint"))
@@ -513,8 +507,6 @@ proc validate_CreateResolverRule_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "Route53Resolver.CreateResolverRule"))
@@ -627,8 +619,6 @@ proc validate_DeleteResolverEndpoint_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "Route53Resolver.DeleteResolverEndpoint"))
@@ -742,8 +732,6 @@ proc validate_DeleteResolverRule_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "Route53Resolver.DeleteResolverRule"))
@@ -856,8 +844,6 @@ proc validate_DisassociateResolverEndpointIpAddress_606272(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "Route53Resolver.DisassociateResolverEndpointIpAddress"))
@@ -973,8 +959,6 @@ proc validate_DisassociateResolverRule_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "Route53Resolver.DisassociateResolverRule"))
@@ -1088,8 +1072,6 @@ proc validate_GetResolverEndpoint_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "Route53Resolver.GetResolverEndpoint"))
@@ -1203,8 +1185,6 @@ proc validate_GetResolverRule_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "Route53Resolver.GetResolverRule"))
@@ -1316,8 +1296,6 @@ proc validate_GetResolverRuleAssociation_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "Route53Resolver.GetResolverRuleAssociation"))
@@ -1431,8 +1409,6 @@ proc validate_GetResolverRulePolicy_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "Route53Resolver.GetResolverRulePolicy"))
@@ -1560,8 +1536,6 @@ proc validate_ListResolverEndpointIpAddresses_606362(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606366 = header.getOrDefault("X-Amz-Target")
   valid_606366 = validateParameter(valid_606366, JString, required = true, default = newJString(
       "Route53Resolver.ListResolverEndpointIpAddresses"))
@@ -1699,8 +1673,6 @@ proc validate_ListResolverEndpoints_606381(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606385 = header.getOrDefault("X-Amz-Target")
   valid_606385 = validateParameter(valid_606385, JString, required = true, default = newJString(
       "Route53Resolver.ListResolverEndpoints"))
@@ -1836,8 +1808,6 @@ proc validate_ListResolverRuleAssociations_606399(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606403 = header.getOrDefault("X-Amz-Target")
   valid_606403 = validateParameter(valid_606403, JString, required = true, default = newJString(
       "Route53Resolver.ListResolverRuleAssociations"))
@@ -1975,8 +1945,6 @@ proc validate_ListResolverRules_606417(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606421 = header.getOrDefault("X-Amz-Target")
   valid_606421 = validateParameter(valid_606421, JString, required = true, default = newJString(
       "Route53Resolver.ListResolverRules"))
@@ -2097,8 +2065,6 @@ proc validate_ListTagsForResource_606435(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606437 = header.getOrDefault("X-Amz-Target")
   valid_606437 = validateParameter(valid_606437, JString, required = true, default = newJString(
       "Route53Resolver.ListTagsForResource"))
@@ -2211,8 +2177,6 @@ proc validate_PutResolverRulePolicy_606450(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606452 = header.getOrDefault("X-Amz-Target")
   valid_606452 = validateParameter(valid_606452, JString, required = true, default = newJString(
       "Route53Resolver.PutResolverRulePolicy"))
@@ -2325,8 +2289,6 @@ proc validate_TagResource_606465(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606467 = header.getOrDefault("X-Amz-Target")
   valid_606467 = validateParameter(valid_606467, JString, required = true, default = newJString(
       "Route53Resolver.TagResource"))
@@ -2439,8 +2401,6 @@ proc validate_UntagResource_606480(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606482 = header.getOrDefault("X-Amz-Target")
   valid_606482 = validateParameter(valid_606482, JString, required = true, default = newJString(
       "Route53Resolver.UntagResource"))
@@ -2552,8 +2512,6 @@ proc validate_UpdateResolverEndpoint_606495(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606497 = header.getOrDefault("X-Amz-Target")
   valid_606497 = validateParameter(valid_606497, JString, required = true, default = newJString(
       "Route53Resolver.UpdateResolverEndpoint"))
@@ -2667,8 +2625,6 @@ proc validate_UpdateResolverRule_606510(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606512 = header.getOrDefault("X-Amz-Target")
   valid_606512 = validateParameter(valid_606512, JString, required = true, default = newJString(
       "Route53Resolver.UpdateResolverRule"))

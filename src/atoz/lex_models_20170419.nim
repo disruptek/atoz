@@ -4350,8 +4350,6 @@ proc validate_GetUtterancesView_606687(path: JsonNode; query: JsonNode;
   ##               : An array of bot versions for which utterance information should be returned. The limit is 5 versions per request.
   ##   view: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `status_type` field"
   var valid_606690 = query.getOrDefault("status_type")
   valid_606690 = validateParameter(valid_606690, JString, required = true,
                                  default = newJString("Detected"))

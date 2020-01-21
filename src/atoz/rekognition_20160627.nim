@@ -175,8 +175,6 @@ proc validate_CompareFaces_605929(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606055 = header.getOrDefault("X-Amz-Target")
   valid_606055 = validateParameter(valid_606055, JString, required = true, default = newJString(
       "RekognitionService.CompareFaces"))
@@ -289,8 +287,6 @@ proc validate_CreateCollection_606198(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606200 = header.getOrDefault("X-Amz-Target")
   valid_606200 = validateParameter(valid_606200, JString, required = true, default = newJString(
       "RekognitionService.CreateCollection"))
@@ -402,8 +398,6 @@ proc validate_CreateProject_606213(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606215 = header.getOrDefault("X-Amz-Target")
   valid_606215 = validateParameter(valid_606215, JString, required = true, default = newJString(
       "RekognitionService.CreateProject"))
@@ -515,8 +509,6 @@ proc validate_CreateProjectVersion_606228(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606230 = header.getOrDefault("X-Amz-Target")
   valid_606230 = validateParameter(valid_606230, JString, required = true, default = newJString(
       "RekognitionService.CreateProjectVersion"))
@@ -629,8 +621,6 @@ proc validate_CreateStreamProcessor_606243(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606245 = header.getOrDefault("X-Amz-Target")
   valid_606245 = validateParameter(valid_606245, JString, required = true, default = newJString(
       "RekognitionService.CreateStreamProcessor"))
@@ -744,8 +734,6 @@ proc validate_DeleteCollection_606258(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606260 = header.getOrDefault("X-Amz-Target")
   valid_606260 = validateParameter(valid_606260, JString, required = true, default = newJString(
       "RekognitionService.DeleteCollection"))
@@ -857,8 +845,6 @@ proc validate_DeleteFaces_606273(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606275 = header.getOrDefault("X-Amz-Target")
   valid_606275 = validateParameter(valid_606275, JString, required = true, default = newJString(
       "RekognitionService.DeleteFaces"))
@@ -971,8 +957,6 @@ proc validate_DeleteStreamProcessor_606288(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606290 = header.getOrDefault("X-Amz-Target")
   valid_606290 = validateParameter(valid_606290, JString, required = true, default = newJString(
       "RekognitionService.DeleteStreamProcessor"))
@@ -1086,8 +1070,6 @@ proc validate_DescribeCollection_606303(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606305 = header.getOrDefault("X-Amz-Target")
   valid_606305 = validateParameter(valid_606305, JString, required = true, default = newJString(
       "RekognitionService.DescribeCollection"))
@@ -1216,8 +1198,6 @@ proc validate_DescribeProjectVersions_606318(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606322 = header.getOrDefault("X-Amz-Target")
   valid_606322 = validateParameter(valid_606322, JString, required = true, default = newJString(
       "RekognitionService.DescribeProjectVersions"))
@@ -1354,8 +1334,6 @@ proc validate_DescribeProjects_606337(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606341 = header.getOrDefault("X-Amz-Target")
   valid_606341 = validateParameter(valid_606341, JString, required = true, default = newJString(
       "RekognitionService.DescribeProjects"))
@@ -1476,8 +1454,6 @@ proc validate_DescribeStreamProcessor_606355(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606357 = header.getOrDefault("X-Amz-Target")
   valid_606357 = validateParameter(valid_606357, JString, required = true, default = newJString(
       "RekognitionService.DescribeStreamProcessor"))
@@ -1591,8 +1567,6 @@ proc validate_DetectCustomLabels_606370(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606372 = header.getOrDefault("X-Amz-Target")
   valid_606372 = validateParameter(valid_606372, JString, required = true, default = newJString(
       "RekognitionService.DetectCustomLabels"))
@@ -1705,8 +1679,6 @@ proc validate_DetectFaces_606385(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606387 = header.getOrDefault("X-Amz-Target")
   valid_606387 = validateParameter(valid_606387, JString, required = true, default = newJString(
       "RekognitionService.DetectFaces"))
@@ -1819,8 +1791,6 @@ proc validate_DetectLabels_606400(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606402 = header.getOrDefault("X-Amz-Target")
   valid_606402 = validateParameter(valid_606402, JString, required = true, default = newJString(
       "RekognitionService.DetectLabels"))
@@ -1932,8 +1902,6 @@ proc validate_DetectModerationLabels_606415(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606417 = header.getOrDefault("X-Amz-Target")
   valid_606417 = validateParameter(valid_606417, JString, required = true, default = newJString(
       "RekognitionService.DetectModerationLabels"))
@@ -2046,8 +2014,6 @@ proc validate_DetectText_606430(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606432 = header.getOrDefault("X-Amz-Target")
   valid_606432 = validateParameter(valid_606432, JString, required = true, default = newJString(
       "RekognitionService.DetectText"))
@@ -2161,8 +2127,6 @@ proc validate_GetCelebrityInfo_606445(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606447 = header.getOrDefault("X-Amz-Target")
   valid_606447 = validateParameter(valid_606447, JString, required = true, default = newJString(
       "RekognitionService.GetCelebrityInfo"))
@@ -2290,8 +2254,6 @@ proc validate_GetCelebrityRecognition_606460(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606464 = header.getOrDefault("X-Amz-Target")
   valid_606464 = validateParameter(valid_606464, JString, required = true, default = newJString(
       "RekognitionService.GetCelebrityRecognition"))
@@ -2427,8 +2389,6 @@ proc validate_GetContentModeration_606478(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606482 = header.getOrDefault("X-Amz-Target")
   valid_606482 = validateParameter(valid_606482, JString, required = true, default = newJString(
       "RekognitionService.GetContentModeration"))
@@ -2565,8 +2525,6 @@ proc validate_GetFaceDetection_606496(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606500 = header.getOrDefault("X-Amz-Target")
   valid_606500 = validateParameter(valid_606500, JString, required = true, default = newJString(
       "RekognitionService.GetFaceDetection"))
@@ -2701,8 +2659,6 @@ proc validate_GetFaceSearch_606514(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606518 = header.getOrDefault("X-Amz-Target")
   valid_606518 = validateParameter(valid_606518, JString, required = true, default = newJString(
       "RekognitionService.GetFaceSearch"))
@@ -2838,8 +2794,6 @@ proc validate_GetLabelDetection_606532(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606536 = header.getOrDefault("X-Amz-Target")
   valid_606536 = validateParameter(valid_606536, JString, required = true, default = newJString(
       "RekognitionService.GetLabelDetection"))
@@ -2975,8 +2929,6 @@ proc validate_GetPersonTracking_606550(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606554 = header.getOrDefault("X-Amz-Target")
   valid_606554 = validateParameter(valid_606554, JString, required = true, default = newJString(
       "RekognitionService.GetPersonTracking"))
@@ -3096,8 +3048,6 @@ proc validate_IndexFaces_606568(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606570 = header.getOrDefault("X-Amz-Target")
   valid_606570 = validateParameter(valid_606570, JString, required = true, default = newJString(
       "RekognitionService.IndexFaces"))
@@ -3226,8 +3176,6 @@ proc validate_ListCollections_606583(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606587 = header.getOrDefault("X-Amz-Target")
   valid_606587 = validateParameter(valid_606587, JString, required = true, default = newJString(
       "RekognitionService.ListCollections"))
@@ -3362,8 +3310,6 @@ proc validate_ListFaces_606601(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606605 = header.getOrDefault("X-Amz-Target")
   valid_606605 = validateParameter(valid_606605, JString, required = true, default = newJString(
       "RekognitionService.ListFaces"))
@@ -3498,8 +3444,6 @@ proc validate_ListStreamProcessors_606619(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606623 = header.getOrDefault("X-Amz-Target")
   valid_606623 = validateParameter(valid_606623, JString, required = true, default = newJString(
       "RekognitionService.ListStreamProcessors"))
@@ -3620,8 +3564,6 @@ proc validate_RecognizeCelebrities_606637(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606639 = header.getOrDefault("X-Amz-Target")
   valid_606639 = validateParameter(valid_606639, JString, required = true, default = newJString(
       "RekognitionService.RecognizeCelebrities"))
@@ -3734,8 +3676,6 @@ proc validate_SearchFaces_606652(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606654 = header.getOrDefault("X-Amz-Target")
   valid_606654 = validateParameter(valid_606654, JString, required = true, default = newJString(
       "RekognitionService.SearchFaces"))
@@ -3849,8 +3789,6 @@ proc validate_SearchFacesByImage_606667(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606669 = header.getOrDefault("X-Amz-Target")
   valid_606669 = validateParameter(valid_606669, JString, required = true, default = newJString(
       "RekognitionService.SearchFacesByImage"))
@@ -3963,8 +3901,6 @@ proc validate_StartCelebrityRecognition_606682(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606684 = header.getOrDefault("X-Amz-Target")
   valid_606684 = validateParameter(valid_606684, JString, required = true, default = newJString(
       "RekognitionService.StartCelebrityRecognition"))
@@ -4078,8 +4014,6 @@ proc validate_StartContentModeration_606697(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606699 = header.getOrDefault("X-Amz-Target")
   valid_606699 = validateParameter(valid_606699, JString, required = true, default = newJString(
       "RekognitionService.StartContentModeration"))
@@ -4193,8 +4127,6 @@ proc validate_StartFaceDetection_606712(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606714 = header.getOrDefault("X-Amz-Target")
   valid_606714 = validateParameter(valid_606714, JString, required = true, default = newJString(
       "RekognitionService.StartFaceDetection"))
@@ -4308,8 +4240,6 @@ proc validate_StartFaceSearch_606727(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606729 = header.getOrDefault("X-Amz-Target")
   valid_606729 = validateParameter(valid_606729, JString, required = true, default = newJString(
       "RekognitionService.StartFaceSearch"))
@@ -4422,8 +4352,6 @@ proc validate_StartLabelDetection_606742(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606744 = header.getOrDefault("X-Amz-Target")
   valid_606744 = validateParameter(valid_606744, JString, required = true, default = newJString(
       "RekognitionService.StartLabelDetection"))
@@ -4537,8 +4465,6 @@ proc validate_StartPersonTracking_606757(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606759 = header.getOrDefault("X-Amz-Target")
   valid_606759 = validateParameter(valid_606759, JString, required = true, default = newJString(
       "RekognitionService.StartPersonTracking"))
@@ -4652,8 +4578,6 @@ proc validate_StartProjectVersion_606772(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606774 = header.getOrDefault("X-Amz-Target")
   valid_606774 = validateParameter(valid_606774, JString, required = true, default = newJString(
       "RekognitionService.StartProjectVersion"))
@@ -4766,8 +4690,6 @@ proc validate_StartStreamProcessor_606787(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606789 = header.getOrDefault("X-Amz-Target")
   valid_606789 = validateParameter(valid_606789, JString, required = true, default = newJString(
       "RekognitionService.StartStreamProcessor"))
@@ -4881,8 +4803,6 @@ proc validate_StopProjectVersion_606802(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606804 = header.getOrDefault("X-Amz-Target")
   valid_606804 = validateParameter(valid_606804, JString, required = true, default = newJString(
       "RekognitionService.StopProjectVersion"))
@@ -4996,8 +4916,6 @@ proc validate_StopStreamProcessor_606817(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606819 = header.getOrDefault("X-Amz-Target")
   valid_606819 = validateParameter(valid_606819, JString, required = true, default = newJString(
       "RekognitionService.StopStreamProcessor"))

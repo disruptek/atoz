@@ -168,8 +168,6 @@ proc validate_CreateConnection_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606045 = header.getOrDefault("X-Amz-Target")
   valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString("com.amazonaws.codestar.connections.CodeStar_connections_20191201.CreateConnection"))
   if valid_606045 != nil:
@@ -280,8 +278,6 @@ proc validate_DeleteConnection_606188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606190 = header.getOrDefault("X-Amz-Target")
   valid_606190 = validateParameter(valid_606190, JString, required = true, default = newJString("com.amazonaws.codestar.connections.CodeStar_connections_20191201.DeleteConnection"))
   if valid_606190 != nil:
@@ -391,8 +387,6 @@ proc validate_GetConnection_606203(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606205 = header.getOrDefault("X-Amz-Target")
   valid_606205 = validateParameter(valid_606205, JString, required = true, default = newJString("com.amazonaws.codestar.connections.CodeStar_connections_20191201.GetConnection"))
   if valid_606205 != nil:
@@ -518,8 +512,6 @@ proc validate_ListConnections_606218(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606222 = header.getOrDefault("X-Amz-Target")
   valid_606222 = validateParameter(valid_606222, JString, required = true, default = newJString("com.amazonaws.codestar.connections.CodeStar_connections_20191201.ListConnections"))
   if valid_606222 != nil:

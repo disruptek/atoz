@@ -168,8 +168,6 @@ proc validate_AcceptHandshake_605929(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606055 = header.getOrDefault("X-Amz-Target")
   valid_606055 = validateParameter(valid_606055, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.AcceptHandshake"))
@@ -281,8 +279,6 @@ proc validate_AttachPolicy_606198(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606200 = header.getOrDefault("X-Amz-Target")
   valid_606200 = validateParameter(valid_606200, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.AttachPolicy"))
@@ -395,8 +391,6 @@ proc validate_CancelHandshake_606213(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606215 = header.getOrDefault("X-Amz-Target")
   valid_606215 = validateParameter(valid_606215, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.CancelHandshake"))
@@ -508,8 +502,6 @@ proc validate_CreateAccount_606228(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606230 = header.getOrDefault("X-Amz-Target")
   valid_606230 = validateParameter(valid_606230, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.CreateAccount"))
@@ -621,8 +613,6 @@ proc validate_CreateGovCloudAccount_606243(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606245 = header.getOrDefault("X-Amz-Target")
   valid_606245 = validateParameter(valid_606245, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.CreateGovCloudAccount"))
@@ -736,8 +726,6 @@ proc validate_CreateOrganization_606258(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606260 = header.getOrDefault("X-Amz-Target")
   valid_606260 = validateParameter(valid_606260, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.CreateOrganization"))
@@ -851,8 +839,6 @@ proc validate_CreateOrganizationalUnit_606273(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606275 = header.getOrDefault("X-Amz-Target")
   valid_606275 = validateParameter(valid_606275, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.CreateOrganizationalUnit"))
@@ -965,8 +951,6 @@ proc validate_CreatePolicy_606288(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606290 = header.getOrDefault("X-Amz-Target")
   valid_606290 = validateParameter(valid_606290, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.CreatePolicy"))
@@ -1079,8 +1063,6 @@ proc validate_DeclineHandshake_606303(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606305 = header.getOrDefault("X-Amz-Target")
   valid_606305 = validateParameter(valid_606305, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DeclineHandshake"))
@@ -1193,8 +1175,6 @@ proc validate_DeleteOrganization_606318(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606320 = header.getOrDefault("X-Amz-Target")
   valid_606320 = validateParameter(valid_606320, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DeleteOrganization"))
@@ -1300,8 +1280,6 @@ proc validate_DeleteOrganizationalUnit_606331(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606333 = header.getOrDefault("X-Amz-Target")
   valid_606333 = validateParameter(valid_606333, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DeleteOrganizationalUnit"))
@@ -1414,8 +1392,6 @@ proc validate_DeletePolicy_606346(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606348 = header.getOrDefault("X-Amz-Target")
   valid_606348 = validateParameter(valid_606348, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DeletePolicy"))
@@ -1528,8 +1504,6 @@ proc validate_DescribeAccount_606361(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606363 = header.getOrDefault("X-Amz-Target")
   valid_606363 = validateParameter(valid_606363, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DescribeAccount"))
@@ -1641,8 +1615,6 @@ proc validate_DescribeCreateAccountStatus_606376(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606378 = header.getOrDefault("X-Amz-Target")
   valid_606378 = validateParameter(valid_606378, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DescribeCreateAccountStatus"))
@@ -1756,8 +1728,6 @@ proc validate_DescribeEffectivePolicy_606391(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606393 = header.getOrDefault("X-Amz-Target")
   valid_606393 = validateParameter(valid_606393, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DescribeEffectivePolicy"))
@@ -1871,8 +1841,6 @@ proc validate_DescribeHandshake_606406(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606408 = header.getOrDefault("X-Amz-Target")
   valid_606408 = validateParameter(valid_606408, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DescribeHandshake"))
@@ -1984,8 +1952,6 @@ proc validate_DescribeOrganization_606421(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606423 = header.getOrDefault("X-Amz-Target")
   valid_606423 = validateParameter(valid_606423, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DescribeOrganization"))
@@ -2090,8 +2056,6 @@ proc validate_DescribeOrganizationalUnit_606434(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606436 = header.getOrDefault("X-Amz-Target")
   valid_606436 = validateParameter(valid_606436, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DescribeOrganizationalUnit"))
@@ -2205,8 +2169,6 @@ proc validate_DescribePolicy_606449(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606451 = header.getOrDefault("X-Amz-Target")
   valid_606451 = validateParameter(valid_606451, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DescribePolicy"))
@@ -2318,8 +2280,6 @@ proc validate_DetachPolicy_606464(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606466 = header.getOrDefault("X-Amz-Target")
   valid_606466 = validateParameter(valid_606466, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DetachPolicy"))
@@ -2432,8 +2392,6 @@ proc validate_DisableAWSServiceAccess_606479(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606481 = header.getOrDefault("X-Amz-Target")
   valid_606481 = validateParameter(valid_606481, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DisableAWSServiceAccess"))
@@ -2547,8 +2505,6 @@ proc validate_DisablePolicyType_606494(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606496 = header.getOrDefault("X-Amz-Target")
   valid_606496 = validateParameter(valid_606496, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.DisablePolicyType"))
@@ -2660,8 +2616,6 @@ proc validate_EnableAWSServiceAccess_606509(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606511 = header.getOrDefault("X-Amz-Target")
   valid_606511 = validateParameter(valid_606511, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.EnableAWSServiceAccess"))
@@ -2775,8 +2729,6 @@ proc validate_EnableAllFeatures_606524(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606526 = header.getOrDefault("X-Amz-Target")
   valid_606526 = validateParameter(valid_606526, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.EnableAllFeatures"))
@@ -2889,8 +2841,6 @@ proc validate_EnablePolicyType_606539(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606541 = header.getOrDefault("X-Amz-Target")
   valid_606541 = validateParameter(valid_606541, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.EnablePolicyType"))
@@ -3002,8 +2952,6 @@ proc validate_InviteAccountToOrganization_606554(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606556 = header.getOrDefault("X-Amz-Target")
   valid_606556 = validateParameter(valid_606556, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.InviteAccountToOrganization"))
@@ -3117,8 +3065,6 @@ proc validate_LeaveOrganization_606569(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606571 = header.getOrDefault("X-Amz-Target")
   valid_606571 = validateParameter(valid_606571, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.LeaveOrganization"))
@@ -3237,8 +3183,6 @@ proc validate_ListAWSServiceAccessForOrganization_606582(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606586 = header.getOrDefault("X-Amz-Target")
   valid_606586 = validateParameter(valid_606586, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListAWSServiceAccessForOrganization"))
@@ -3375,8 +3319,6 @@ proc validate_ListAccounts_606601(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606605 = header.getOrDefault("X-Amz-Target")
   valid_606605 = validateParameter(valid_606605, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListAccounts"))
@@ -3511,8 +3453,6 @@ proc validate_ListAccountsForParent_606619(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606623 = header.getOrDefault("X-Amz-Target")
   valid_606623 = validateParameter(valid_606623, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListAccountsForParent"))
@@ -3648,8 +3588,6 @@ proc validate_ListChildren_606637(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606641 = header.getOrDefault("X-Amz-Target")
   valid_606641 = validateParameter(valid_606641, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListChildren"))
@@ -3785,8 +3723,6 @@ proc validate_ListCreateAccountStatus_606655(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606659 = header.getOrDefault("X-Amz-Target")
   valid_606659 = validateParameter(valid_606659, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListCreateAccountStatus"))
@@ -3923,8 +3859,6 @@ proc validate_ListHandshakesForAccount_606673(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606677 = header.getOrDefault("X-Amz-Target")
   valid_606677 = validateParameter(valid_606677, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListHandshakesForAccount"))
@@ -4060,8 +3994,6 @@ proc validate_ListHandshakesForOrganization_606691(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606695 = header.getOrDefault("X-Amz-Target")
   valid_606695 = validateParameter(valid_606695, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListHandshakesForOrganization"))
@@ -4197,8 +4129,6 @@ proc validate_ListOrganizationalUnitsForParent_606709(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606713 = header.getOrDefault("X-Amz-Target")
   valid_606713 = validateParameter(valid_606713, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListOrganizationalUnitsForParent"))
@@ -4335,8 +4265,6 @@ proc validate_ListParents_606727(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606731 = header.getOrDefault("X-Amz-Target")
   valid_606731 = validateParameter(valid_606731, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListParents"))
@@ -4472,8 +4400,6 @@ proc validate_ListPolicies_606745(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606749 = header.getOrDefault("X-Amz-Target")
   valid_606749 = validateParameter(valid_606749, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListPolicies"))
@@ -4608,8 +4534,6 @@ proc validate_ListPoliciesForTarget_606763(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606767 = header.getOrDefault("X-Amz-Target")
   valid_606767 = validateParameter(valid_606767, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListPoliciesForTarget"))
@@ -4745,8 +4669,6 @@ proc validate_ListRoots_606781(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606785 = header.getOrDefault("X-Amz-Target")
   valid_606785 = validateParameter(valid_606785, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListRoots"))
@@ -4875,8 +4797,6 @@ proc validate_ListTagsForResource_606799(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606802 = header.getOrDefault("X-Amz-Target")
   valid_606802 = validateParameter(valid_606802, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListTagsForResource"))
@@ -5009,8 +4929,6 @@ proc validate_ListTargetsForPolicy_606816(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606820 = header.getOrDefault("X-Amz-Target")
   valid_606820 = validateParameter(valid_606820, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.ListTargetsForPolicy"))
@@ -5131,8 +5049,6 @@ proc validate_MoveAccount_606834(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606836 = header.getOrDefault("X-Amz-Target")
   valid_606836 = validateParameter(valid_606836, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.MoveAccount"))
@@ -5245,8 +5161,6 @@ proc validate_RemoveAccountFromOrganization_606849(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606851 = header.getOrDefault("X-Amz-Target")
   valid_606851 = validateParameter(valid_606851, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.RemoveAccountFromOrganization"))
@@ -5359,8 +5273,6 @@ proc validate_TagResource_606864(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606866 = header.getOrDefault("X-Amz-Target")
   valid_606866 = validateParameter(valid_606866, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.TagResource"))
@@ -5473,8 +5385,6 @@ proc validate_UntagResource_606879(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606881 = header.getOrDefault("X-Amz-Target")
   valid_606881 = validateParameter(valid_606881, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.UntagResource"))
@@ -5587,8 +5497,6 @@ proc validate_UpdateOrganizationalUnit_606894(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606896 = header.getOrDefault("X-Amz-Target")
   valid_606896 = validateParameter(valid_606896, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.UpdateOrganizationalUnit"))
@@ -5701,8 +5609,6 @@ proc validate_UpdatePolicy_606909(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606911 = header.getOrDefault("X-Amz-Target")
   valid_606911 = validateParameter(valid_606911, JString, required = true, default = newJString(
       "AWSOrganizationsV20161128.UpdatePolicy"))

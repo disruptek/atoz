@@ -182,8 +182,6 @@ proc validate_CreateCluster_605912(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606038 = header.getOrDefault("X-Amz-Target")
   valid_606038 = validateParameter(valid_606038, JString, required = true, default = newJString(
       "AmazonDAXV3.CreateCluster"))
@@ -295,8 +293,6 @@ proc validate_CreateParameterGroup_606181(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606183 = header.getOrDefault("X-Amz-Target")
   valid_606183 = validateParameter(valid_606183, JString, required = true, default = newJString(
       "AmazonDAXV3.CreateParameterGroup"))
@@ -410,8 +406,6 @@ proc validate_CreateSubnetGroup_606196(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606198 = header.getOrDefault("X-Amz-Target")
   valid_606198 = validateParameter(valid_606198, JString, required = true, default = newJString(
       "AmazonDAXV3.CreateSubnetGroup"))
@@ -523,8 +517,6 @@ proc validate_DecreaseReplicationFactor_606211(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606213 = header.getOrDefault("X-Amz-Target")
   valid_606213 = validateParameter(valid_606213, JString, required = true, default = newJString(
       "AmazonDAXV3.DecreaseReplicationFactor"))
@@ -638,8 +630,6 @@ proc validate_DeleteCluster_606226(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606228 = header.getOrDefault("X-Amz-Target")
   valid_606228 = validateParameter(valid_606228, JString, required = true, default = newJString(
       "AmazonDAXV3.DeleteCluster"))
@@ -751,8 +741,6 @@ proc validate_DeleteParameterGroup_606241(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606243 = header.getOrDefault("X-Amz-Target")
   valid_606243 = validateParameter(valid_606243, JString, required = true, default = newJString(
       "AmazonDAXV3.DeleteParameterGroup"))
@@ -866,8 +854,6 @@ proc validate_DeleteSubnetGroup_606256(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606258 = header.getOrDefault("X-Amz-Target")
   valid_606258 = validateParameter(valid_606258, JString, required = true, default = newJString(
       "AmazonDAXV3.DeleteSubnetGroup"))
@@ -980,8 +966,6 @@ proc validate_DescribeClusters_606271(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606273 = header.getOrDefault("X-Amz-Target")
   valid_606273 = validateParameter(valid_606273, JString, required = true, default = newJString(
       "AmazonDAXV3.DescribeClusters"))
@@ -1093,8 +1077,6 @@ proc validate_DescribeDefaultParameters_606286(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606288 = header.getOrDefault("X-Amz-Target")
   valid_606288 = validateParameter(valid_606288, JString, required = true, default = newJString(
       "AmazonDAXV3.DescribeDefaultParameters"))
@@ -1209,8 +1191,6 @@ proc validate_DescribeEvents_606301(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606303 = header.getOrDefault("X-Amz-Target")
   valid_606303 = validateParameter(valid_606303, JString, required = true, default = newJString(
       "AmazonDAXV3.DescribeEvents"))
@@ -1323,8 +1303,6 @@ proc validate_DescribeParameterGroups_606316(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606318 = header.getOrDefault("X-Amz-Target")
   valid_606318 = validateParameter(valid_606318, JString, required = true, default = newJString(
       "AmazonDAXV3.DescribeParameterGroups"))
@@ -1438,8 +1416,6 @@ proc validate_DescribeParameters_606331(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606333 = header.getOrDefault("X-Amz-Target")
   valid_606333 = validateParameter(valid_606333, JString, required = true, default = newJString(
       "AmazonDAXV3.DescribeParameters"))
@@ -1552,8 +1528,6 @@ proc validate_DescribeSubnetGroups_606346(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606348 = header.getOrDefault("X-Amz-Target")
   valid_606348 = validateParameter(valid_606348, JString, required = true, default = newJString(
       "AmazonDAXV3.DescribeSubnetGroups"))
@@ -1666,8 +1640,6 @@ proc validate_IncreaseReplicationFactor_606361(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606363 = header.getOrDefault("X-Amz-Target")
   valid_606363 = validateParameter(valid_606363, JString, required = true, default = newJString(
       "AmazonDAXV3.IncreaseReplicationFactor"))
@@ -1781,8 +1753,6 @@ proc validate_ListTags_606376(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606378 = header.getOrDefault("X-Amz-Target")
   valid_606378 = validateParameter(valid_606378, JString, required = true,
                                  default = newJString("AmazonDAXV3.ListTags"))
@@ -1895,8 +1865,6 @@ proc validate_RebootNode_606391(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606393 = header.getOrDefault("X-Amz-Target")
   valid_606393 = validateParameter(valid_606393, JString, required = true,
                                  default = newJString("AmazonDAXV3.RebootNode"))
@@ -2009,8 +1977,6 @@ proc validate_TagResource_606406(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606408 = header.getOrDefault("X-Amz-Target")
   valid_606408 = validateParameter(valid_606408, JString, required = true, default = newJString(
       "AmazonDAXV3.TagResource"))
@@ -2123,8 +2089,6 @@ proc validate_UntagResource_606421(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606423 = header.getOrDefault("X-Amz-Target")
   valid_606423 = validateParameter(valid_606423, JString, required = true, default = newJString(
       "AmazonDAXV3.UntagResource"))
@@ -2236,8 +2200,6 @@ proc validate_UpdateCluster_606436(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606438 = header.getOrDefault("X-Amz-Target")
   valid_606438 = validateParameter(valid_606438, JString, required = true, default = newJString(
       "AmazonDAXV3.UpdateCluster"))
@@ -2349,8 +2311,6 @@ proc validate_UpdateParameterGroup_606451(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606453 = header.getOrDefault("X-Amz-Target")
   valid_606453 = validateParameter(valid_606453, JString, required = true, default = newJString(
       "AmazonDAXV3.UpdateParameterGroup"))
@@ -2464,8 +2424,6 @@ proc validate_UpdateSubnetGroup_606466(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606468 = header.getOrDefault("X-Amz-Target")
   valid_606468 = validateParameter(valid_606468, JString, required = true, default = newJString(
       "AmazonDAXV3.UpdateSubnetGroup"))

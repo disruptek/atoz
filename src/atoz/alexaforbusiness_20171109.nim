@@ -182,8 +182,6 @@ proc validate_ApproveSkill_605928(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AlexaForBusiness.ApproveSkill"))
@@ -295,8 +293,6 @@ proc validate_AssociateContactWithAddressBook_606197(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AlexaForBusiness.AssociateContactWithAddressBook"))
@@ -411,8 +407,6 @@ proc validate_AssociateDeviceWithNetworkProfile_606212(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AlexaForBusiness.AssociateDeviceWithNetworkProfile"))
@@ -529,8 +523,6 @@ proc validate_AssociateDeviceWithRoom_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AlexaForBusiness.AssociateDeviceWithRoom"))
@@ -643,8 +635,6 @@ proc validate_AssociateSkillGroupWithRoom_606242(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AlexaForBusiness.AssociateSkillGroupWithRoom"))
@@ -758,8 +748,6 @@ proc validate_AssociateSkillWithSkillGroup_606257(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AlexaForBusiness.AssociateSkillWithSkillGroup"))
@@ -874,8 +862,6 @@ proc validate_AssociateSkillWithUsers_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AlexaForBusiness.AssociateSkillWithUsers"))
@@ -989,8 +975,6 @@ proc validate_CreateAddressBook_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateAddressBook"))
@@ -1102,8 +1086,6 @@ proc validate_CreateBusinessReportSchedule_606302(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateBusinessReportSchedule"))
@@ -1218,8 +1200,6 @@ proc validate_CreateConferenceProvider_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateConferenceProvider"))
@@ -1332,8 +1312,6 @@ proc validate_CreateContact_606332(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateContact"))
@@ -1446,8 +1424,6 @@ proc validate_CreateGatewayGroup_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateGatewayGroup"))
@@ -1560,8 +1536,6 @@ proc validate_CreateNetworkProfile_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateNetworkProfile"))
@@ -1674,8 +1648,6 @@ proc validate_CreateProfile_606377(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateProfile"))
@@ -1787,8 +1759,6 @@ proc validate_CreateRoom_606392(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateRoom"))
@@ -1902,8 +1872,6 @@ proc validate_CreateSkillGroup_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateSkillGroup"))
@@ -2015,8 +1983,6 @@ proc validate_CreateUser_606422(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "AlexaForBusiness.CreateUser"))
@@ -2130,8 +2096,6 @@ proc validate_DeleteAddressBook_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteAddressBook"))
@@ -2243,8 +2207,6 @@ proc validate_DeleteBusinessReportSchedule_606452(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteBusinessReportSchedule"))
@@ -2359,8 +2321,6 @@ proc validate_DeleteConferenceProvider_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteConferenceProvider"))
@@ -2473,8 +2433,6 @@ proc validate_DeleteContact_606482(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteContact"))
@@ -2586,8 +2544,6 @@ proc validate_DeleteDevice_606497(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteDevice"))
@@ -2699,8 +2655,6 @@ proc validate_DeleteDeviceUsageData_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteDeviceUsageData"))
@@ -2814,8 +2768,6 @@ proc validate_DeleteGatewayGroup_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteGatewayGroup"))
@@ -2928,8 +2880,6 @@ proc validate_DeleteNetworkProfile_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteNetworkProfile"))
@@ -3042,8 +2992,6 @@ proc validate_DeleteProfile_606557(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteProfile"))
@@ -3155,8 +3103,6 @@ proc validate_DeleteRoom_606572(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteRoom"))
@@ -3270,8 +3216,6 @@ proc validate_DeleteRoomSkillParameter_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteRoomSkillParameter"))
@@ -3385,8 +3329,6 @@ proc validate_DeleteSkillAuthorization_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteSkillAuthorization"))
@@ -3500,8 +3442,6 @@ proc validate_DeleteSkillGroup_606617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteSkillGroup"))
@@ -3613,8 +3553,6 @@ proc validate_DeleteUser_606632(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "AlexaForBusiness.DeleteUser"))
@@ -3727,8 +3665,6 @@ proc validate_DisassociateContactFromAddressBook_606647(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "AlexaForBusiness.DisassociateContactFromAddressBook"))
@@ -3843,8 +3779,6 @@ proc validate_DisassociateDeviceFromRoom_606662(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
       "AlexaForBusiness.DisassociateDeviceFromRoom"))
@@ -3958,8 +3892,6 @@ proc validate_DisassociateSkillFromSkillGroup_606677(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "AlexaForBusiness.DisassociateSkillFromSkillGroup"))
@@ -4074,8 +4006,6 @@ proc validate_DisassociateSkillFromUsers_606692(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "AlexaForBusiness.DisassociateSkillFromUsers"))
@@ -4189,8 +4119,6 @@ proc validate_DisassociateSkillGroupFromRoom_606707(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "AlexaForBusiness.DisassociateSkillGroupFromRoom"))
@@ -4304,8 +4232,6 @@ proc validate_ForgetSmartHomeAppliances_606722(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "AlexaForBusiness.ForgetSmartHomeAppliances"))
@@ -4420,8 +4346,6 @@ proc validate_GetAddressBook_606737(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true, default = newJString(
       "AlexaForBusiness.GetAddressBook"))
@@ -4534,8 +4458,6 @@ proc validate_GetConferencePreference_606752(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606754 = header.getOrDefault("X-Amz-Target")
   valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
       "AlexaForBusiness.GetConferencePreference"))
@@ -4648,8 +4570,6 @@ proc validate_GetConferenceProvider_606767(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
       "AlexaForBusiness.GetConferenceProvider"))
@@ -4762,8 +4682,6 @@ proc validate_GetContact_606782(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606784 = header.getOrDefault("X-Amz-Target")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "AlexaForBusiness.GetContact"))
@@ -4876,8 +4794,6 @@ proc validate_GetDevice_606797(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606799 = header.getOrDefault("X-Amz-Target")
   valid_606799 = validateParameter(valid_606799, JString, required = true, default = newJString(
       "AlexaForBusiness.GetDevice"))
@@ -4989,8 +4905,6 @@ proc validate_GetGateway_606812(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606814 = header.getOrDefault("X-Amz-Target")
   valid_606814 = validateParameter(valid_606814, JString, required = true, default = newJString(
       "AlexaForBusiness.GetGateway"))
@@ -5104,8 +5018,6 @@ proc validate_GetGatewayGroup_606827(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606829 = header.getOrDefault("X-Amz-Target")
   valid_606829 = validateParameter(valid_606829, JString, required = true, default = newJString(
       "AlexaForBusiness.GetGatewayGroup"))
@@ -5217,8 +5129,6 @@ proc validate_GetInvitationConfiguration_606842(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606844 = header.getOrDefault("X-Amz-Target")
   valid_606844 = validateParameter(valid_606844, JString, required = true, default = newJString(
       "AlexaForBusiness.GetInvitationConfiguration"))
@@ -5333,8 +5243,6 @@ proc validate_GetNetworkProfile_606857(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606859 = header.getOrDefault("X-Amz-Target")
   valid_606859 = validateParameter(valid_606859, JString, required = true, default = newJString(
       "AlexaForBusiness.GetNetworkProfile"))
@@ -5446,8 +5354,6 @@ proc validate_GetProfile_606872(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606874 = header.getOrDefault("X-Amz-Target")
   valid_606874 = validateParameter(valid_606874, JString, required = true, default = newJString(
       "AlexaForBusiness.GetProfile"))
@@ -5560,8 +5466,6 @@ proc validate_GetRoom_606887(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606889 = header.getOrDefault("X-Amz-Target")
   valid_606889 = validateParameter(valid_606889, JString, required = true, default = newJString(
       "AlexaForBusiness.GetRoom"))
@@ -5673,8 +5577,6 @@ proc validate_GetRoomSkillParameter_606902(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606904 = header.getOrDefault("X-Amz-Target")
   valid_606904 = validateParameter(valid_606904, JString, required = true, default = newJString(
       "AlexaForBusiness.GetRoomSkillParameter"))
@@ -5787,8 +5689,6 @@ proc validate_GetSkillGroup_606917(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606919 = header.getOrDefault("X-Amz-Target")
   valid_606919 = validateParameter(valid_606919, JString, required = true, default = newJString(
       "AlexaForBusiness.GetSkillGroup"))
@@ -5915,8 +5815,6 @@ proc validate_ListBusinessReportSchedules_606932(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606936 = header.getOrDefault("X-Amz-Target")
   valid_606936 = validateParameter(valid_606936, JString, required = true, default = newJString(
       "AlexaForBusiness.ListBusinessReportSchedules"))
@@ -6054,8 +5952,6 @@ proc validate_ListConferenceProviders_606951(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606955 = header.getOrDefault("X-Amz-Target")
   valid_606955 = validateParameter(valid_606955, JString, required = true, default = newJString(
       "AlexaForBusiness.ListConferenceProviders"))
@@ -6192,8 +6088,6 @@ proc validate_ListDeviceEvents_606969(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606973 = header.getOrDefault("X-Amz-Target")
   valid_606973 = validateParameter(valid_606973, JString, required = true, default = newJString(
       "AlexaForBusiness.ListDeviceEvents"))
@@ -6329,8 +6223,6 @@ proc validate_ListGatewayGroups_606987(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606991 = header.getOrDefault("X-Amz-Target")
   valid_606991 = validateParameter(valid_606991, JString, required = true, default = newJString(
       "AlexaForBusiness.ListGatewayGroups"))
@@ -6465,8 +6357,6 @@ proc validate_ListGateways_607005(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607009 = header.getOrDefault("X-Amz-Target")
   valid_607009 = validateParameter(valid_607009, JString, required = true, default = newJString(
       "AlexaForBusiness.ListGateways"))
@@ -6601,8 +6491,6 @@ proc validate_ListSkills_607023(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607027 = header.getOrDefault("X-Amz-Target")
   valid_607027 = validateParameter(valid_607027, JString, required = true, default = newJString(
       "AlexaForBusiness.ListSkills"))
@@ -6738,8 +6626,6 @@ proc validate_ListSkillsStoreCategories_607041(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607045 = header.getOrDefault("X-Amz-Target")
   valid_607045 = validateParameter(valid_607045, JString, required = true, default = newJString(
       "AlexaForBusiness.ListSkillsStoreCategories"))
@@ -6876,8 +6762,6 @@ proc validate_ListSkillsStoreSkillsByCategory_607059(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607063 = header.getOrDefault("X-Amz-Target")
   valid_607063 = validateParameter(valid_607063, JString, required = true, default = newJString(
       "AlexaForBusiness.ListSkillsStoreSkillsByCategory"))
@@ -7016,8 +6900,6 @@ proc validate_ListSmartHomeAppliances_607077(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607081 = header.getOrDefault("X-Amz-Target")
   valid_607081 = validateParameter(valid_607081, JString, required = true, default = newJString(
       "AlexaForBusiness.ListSmartHomeAppliances"))
@@ -7153,8 +7035,6 @@ proc validate_ListTags_607095(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607099 = header.getOrDefault("X-Amz-Target")
   valid_607099 = validateParameter(valid_607099, JString, required = true, default = newJString(
       "AlexaForBusiness.ListTags"))
@@ -7275,8 +7155,6 @@ proc validate_PutConferencePreference_607113(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607115 = header.getOrDefault("X-Amz-Target")
   valid_607115 = validateParameter(valid_607115, JString, required = true, default = newJString(
       "AlexaForBusiness.PutConferencePreference"))
@@ -7389,8 +7267,6 @@ proc validate_PutInvitationConfiguration_607128(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607130 = header.getOrDefault("X-Amz-Target")
   valid_607130 = validateParameter(valid_607130, JString, required = true, default = newJString(
       "AlexaForBusiness.PutInvitationConfiguration"))
@@ -7504,8 +7380,6 @@ proc validate_PutRoomSkillParameter_607143(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607145 = header.getOrDefault("X-Amz-Target")
   valid_607145 = validateParameter(valid_607145, JString, required = true, default = newJString(
       "AlexaForBusiness.PutRoomSkillParameter"))
@@ -7618,8 +7492,6 @@ proc validate_PutSkillAuthorization_607158(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607160 = header.getOrDefault("X-Amz-Target")
   valid_607160 = validateParameter(valid_607160, JString, required = true, default = newJString(
       "AlexaForBusiness.PutSkillAuthorization"))
@@ -7733,8 +7605,6 @@ proc validate_RegisterAVSDevice_607173(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607175 = header.getOrDefault("X-Amz-Target")
   valid_607175 = validateParameter(valid_607175, JString, required = true, default = newJString(
       "AlexaForBusiness.RegisterAVSDevice"))
@@ -7846,8 +7716,6 @@ proc validate_RejectSkill_607188(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607190 = header.getOrDefault("X-Amz-Target")
   valid_607190 = validateParameter(valid_607190, JString, required = true, default = newJString(
       "AlexaForBusiness.RejectSkill"))
@@ -7960,8 +7828,6 @@ proc validate_ResolveRoom_607203(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607205 = header.getOrDefault("X-Amz-Target")
   valid_607205 = validateParameter(valid_607205, JString, required = true, default = newJString(
       "AlexaForBusiness.ResolveRoom"))
@@ -8075,8 +7941,6 @@ proc validate_RevokeInvitation_607218(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607220 = header.getOrDefault("X-Amz-Target")
   valid_607220 = validateParameter(valid_607220, JString, required = true, default = newJString(
       "AlexaForBusiness.RevokeInvitation"))
@@ -8204,8 +8068,6 @@ proc validate_SearchAddressBooks_607233(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607237 = header.getOrDefault("X-Amz-Target")
   valid_607237 = validateParameter(valid_607237, JString, required = true, default = newJString(
       "AlexaForBusiness.SearchAddressBooks"))
@@ -8342,8 +8204,6 @@ proc validate_SearchContacts_607251(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607255 = header.getOrDefault("X-Amz-Target")
   valid_607255 = validateParameter(valid_607255, JString, required = true, default = newJString(
       "AlexaForBusiness.SearchContacts"))
@@ -8478,8 +8338,6 @@ proc validate_SearchDevices_607269(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607273 = header.getOrDefault("X-Amz-Target")
   valid_607273 = validateParameter(valid_607273, JString, required = true, default = newJString(
       "AlexaForBusiness.SearchDevices"))
@@ -8614,8 +8472,6 @@ proc validate_SearchNetworkProfiles_607287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607291 = header.getOrDefault("X-Amz-Target")
   valid_607291 = validateParameter(valid_607291, JString, required = true, default = newJString(
       "AlexaForBusiness.SearchNetworkProfiles"))
@@ -8752,8 +8608,6 @@ proc validate_SearchProfiles_607305(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607309 = header.getOrDefault("X-Amz-Target")
   valid_607309 = validateParameter(valid_607309, JString, required = true, default = newJString(
       "AlexaForBusiness.SearchProfiles"))
@@ -8888,8 +8742,6 @@ proc validate_SearchRooms_607323(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607327 = header.getOrDefault("X-Amz-Target")
   valid_607327 = validateParameter(valid_607327, JString, required = true, default = newJString(
       "AlexaForBusiness.SearchRooms"))
@@ -9026,8 +8878,6 @@ proc validate_SearchSkillGroups_607341(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607345 = header.getOrDefault("X-Amz-Target")
   valid_607345 = validateParameter(valid_607345, JString, required = true, default = newJString(
       "AlexaForBusiness.SearchSkillGroups"))
@@ -9162,8 +9012,6 @@ proc validate_SearchUsers_607359(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607363 = header.getOrDefault("X-Amz-Target")
   valid_607363 = validateParameter(valid_607363, JString, required = true, default = newJString(
       "AlexaForBusiness.SearchUsers"))
@@ -9285,8 +9133,6 @@ proc validate_SendAnnouncement_607377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607379 = header.getOrDefault("X-Amz-Target")
   valid_607379 = validateParameter(valid_607379, JString, required = true, default = newJString(
       "AlexaForBusiness.SendAnnouncement"))
@@ -9399,8 +9245,6 @@ proc validate_SendInvitation_607392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607394 = header.getOrDefault("X-Amz-Target")
   valid_607394 = validateParameter(valid_607394, JString, required = true, default = newJString(
       "AlexaForBusiness.SendInvitation"))
@@ -9513,8 +9357,6 @@ proc validate_StartDeviceSync_607407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607409 = header.getOrDefault("X-Amz-Target")
   valid_607409 = validateParameter(valid_607409, JString, required = true, default = newJString(
       "AlexaForBusiness.StartDeviceSync"))
@@ -9626,8 +9468,6 @@ proc validate_StartSmartHomeApplianceDiscovery_607422(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607424 = header.getOrDefault("X-Amz-Target")
   valid_607424 = validateParameter(valid_607424, JString, required = true, default = newJString(
       "AlexaForBusiness.StartSmartHomeApplianceDiscovery"))
@@ -9743,8 +9583,6 @@ proc validate_TagResource_607437(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607439 = header.getOrDefault("X-Amz-Target")
   valid_607439 = validateParameter(valid_607439, JString, required = true, default = newJString(
       "AlexaForBusiness.TagResource"))
@@ -9857,8 +9695,6 @@ proc validate_UntagResource_607452(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607454 = header.getOrDefault("X-Amz-Target")
   valid_607454 = validateParameter(valid_607454, JString, required = true, default = newJString(
       "AlexaForBusiness.UntagResource"))
@@ -9971,8 +9807,6 @@ proc validate_UpdateAddressBook_607467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607469 = header.getOrDefault("X-Amz-Target")
   valid_607469 = validateParameter(valid_607469, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateAddressBook"))
@@ -10084,8 +9918,6 @@ proc validate_UpdateBusinessReportSchedule_607482(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607484 = header.getOrDefault("X-Amz-Target")
   valid_607484 = validateParameter(valid_607484, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateBusinessReportSchedule"))
@@ -10200,8 +10032,6 @@ proc validate_UpdateConferenceProvider_607497(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607499 = header.getOrDefault("X-Amz-Target")
   valid_607499 = validateParameter(valid_607499, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateConferenceProvider"))
@@ -10314,8 +10144,6 @@ proc validate_UpdateContact_607512(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607514 = header.getOrDefault("X-Amz-Target")
   valid_607514 = validateParameter(valid_607514, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateContact"))
@@ -10427,8 +10255,6 @@ proc validate_UpdateDevice_607527(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607529 = header.getOrDefault("X-Amz-Target")
   valid_607529 = validateParameter(valid_607529, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateDevice"))
@@ -10540,8 +10366,6 @@ proc validate_UpdateGateway_607542(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607544 = header.getOrDefault("X-Amz-Target")
   valid_607544 = validateParameter(valid_607544, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateGateway"))
@@ -10654,8 +10478,6 @@ proc validate_UpdateGatewayGroup_607557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607559 = header.getOrDefault("X-Amz-Target")
   valid_607559 = validateParameter(valid_607559, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateGatewayGroup"))
@@ -10768,8 +10590,6 @@ proc validate_UpdateNetworkProfile_607572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607574 = header.getOrDefault("X-Amz-Target")
   valid_607574 = validateParameter(valid_607574, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateNetworkProfile"))
@@ -10882,8 +10702,6 @@ proc validate_UpdateProfile_607587(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607589 = header.getOrDefault("X-Amz-Target")
   valid_607589 = validateParameter(valid_607589, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateProfile"))
@@ -10995,8 +10813,6 @@ proc validate_UpdateRoom_607602(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607604 = header.getOrDefault("X-Amz-Target")
   valid_607604 = validateParameter(valid_607604, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateRoom"))
@@ -11110,8 +10926,6 @@ proc validate_UpdateSkillGroup_607617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607619 = header.getOrDefault("X-Amz-Target")
   valid_607619 = validateParameter(valid_607619, JString, required = true, default = newJString(
       "AlexaForBusiness.UpdateSkillGroup"))

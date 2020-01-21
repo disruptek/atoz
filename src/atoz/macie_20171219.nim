@@ -180,8 +180,6 @@ proc validate_AssociateMemberAccount_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606045 = header.getOrDefault("X-Amz-Target")
   valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
       "MacieService.AssociateMemberAccount"))
@@ -294,8 +292,6 @@ proc validate_AssociateS3Resources_606188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606190 = header.getOrDefault("X-Amz-Target")
   valid_606190 = validateParameter(valid_606190, JString, required = true, default = newJString(
       "MacieService.AssociateS3Resources"))
@@ -408,8 +404,6 @@ proc validate_DisassociateMemberAccount_606203(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606205 = header.getOrDefault("X-Amz-Target")
   valid_606205 = validateParameter(valid_606205, JString, required = true, default = newJString(
       "MacieService.DisassociateMemberAccount"))
@@ -524,8 +518,6 @@ proc validate_DisassociateS3Resources_606218(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606220 = header.getOrDefault("X-Amz-Target")
   valid_606220 = validateParameter(valid_606220, JString, required = true, default = newJString(
       "MacieService.DisassociateS3Resources"))
@@ -654,8 +646,6 @@ proc validate_ListMemberAccounts_606233(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606237 = header.getOrDefault("X-Amz-Target")
   valid_606237 = validateParameter(valid_606237, JString, required = true, default = newJString(
       "MacieService.ListMemberAccounts"))
@@ -792,8 +782,6 @@ proc validate_ListS3Resources_606252(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606256 = header.getOrDefault("X-Amz-Target")
   valid_606256 = validateParameter(valid_606256, JString, required = true, default = newJString(
       "MacieService.ListS3Resources"))
@@ -914,8 +902,6 @@ proc validate_UpdateS3Resources_606270(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606272 = header.getOrDefault("X-Amz-Target")
   valid_606272 = validateParameter(valid_606272, JString, required = true, default = newJString(
       "MacieService.UpdateS3Resources"))

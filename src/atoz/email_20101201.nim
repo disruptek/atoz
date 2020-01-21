@@ -173,7 +173,6 @@ proc validate_PostCloneReceiptRuleSet_606200(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606202 = query.getOrDefault("Action")
   valid_606202 = validateParameter(valid_606202, JString, required = true,
                                  default = newJString("CloneReceiptRuleSet"))
@@ -453,7 +452,6 @@ proc validate_PostCreateConfigurationSet_606234(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606236 = query.getOrDefault("Action")
   valid_606236 = validateParameter(valid_606236, JString, required = true,
                                  default = newJString("CreateConfigurationSet"))
@@ -597,7 +595,6 @@ proc validate_GetCreateConfigurationSet_606218(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606220 != nil:
     section.add "ConfigurationSet.Name", valid_606220
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606221 = query.getOrDefault("Action")
   valid_606221 = validateParameter(valid_606221, JString, required = true,
                                  default = newJString("CreateConfigurationSet"))
@@ -721,7 +718,6 @@ proc validate_PostCreateConfigurationSetEventDestination_606273(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606275 = query.getOrDefault("Action")
   valid_606275 = validateParameter(valid_606275, JString, required = true, default = newJString(
       "CreateConfigurationSetEventDestination"))
@@ -1178,7 +1174,6 @@ proc validate_PostCreateConfigurationSetTrackingOptions_606313(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606315 = query.getOrDefault("Action")
   valid_606315 = validateParameter(valid_606315, JString, required = true, default = newJString(
       "CreateConfigurationSetTrackingOptions"))
@@ -1477,7 +1472,6 @@ proc validate_PostCreateCustomVerificationEmailTemplate_606352(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606354 = query.getOrDefault("Action")
   valid_606354 = validateParameter(valid_606354, JString, required = true, default = newJString(
       "CreateCustomVerificationEmailTemplate"))
@@ -1854,7 +1848,6 @@ proc validate_PostCreateReceiptFilter_606391(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606393 = query.getOrDefault("Action")
   valid_606393 = validateParameter(valid_606393, JString, required = true,
                                  default = newJString("CreateReceiptFilter"))
@@ -2020,7 +2013,6 @@ proc validate_GetCreateReceiptFilter_606374(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606377 != nil:
     section.add "Filter.IpFilter", valid_606377
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606378 = query.getOrDefault("Action")
   valid_606378 = validateParameter(valid_606378, JString, required = true,
                                  default = newJString("CreateReceiptFilter"))
@@ -2148,7 +2140,6 @@ proc validate_PostCreateReceiptRule_606432(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606434 = query.getOrDefault("Action")
   valid_606434 = validateParameter(valid_606434, JString, required = true,
                                  default = newJString("CreateReceiptRule"))
@@ -2431,7 +2422,6 @@ proc validate_GetCreateReceiptRule_606409(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606415 != nil:
     section.add "Rule.Recipients", valid_606415
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606416 = query.getOrDefault("Action")
   valid_606416 = validateParameter(valid_606416, JString, required = true,
                                  default = newJString("CreateReceiptRule"))
@@ -2605,7 +2595,6 @@ proc validate_PostCreateReceiptRuleSet_606472(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606474 = query.getOrDefault("Action")
   valid_606474 = validateParameter(valid_606474, JString, required = true,
                                  default = newJString("CreateReceiptRuleSet"))
@@ -2739,7 +2728,6 @@ proc validate_GetCreateReceiptRuleSet_606456(path: JsonNode; query: JsonNode;
   ##              : <p>The name of the rule set to create. The name must:</p> <ul> <li> <p>This value can only contain ASCII letters (a-z, A-Z), numbers (0-9), underscores (_), or dashes (-).</p> </li> <li> <p>Start and end with a letter or number.</p> </li> <li> <p>Contain less than 64 characters.</p> </li> </ul>
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606458 = query.getOrDefault("Action")
   valid_606458 = validateParameter(valid_606458, JString, required = true,
                                  default = newJString("CreateReceiptRuleSet"))
@@ -2865,7 +2853,6 @@ proc validate_PostCreateTemplate_606508(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606510 = query.getOrDefault("Action")
   valid_606510 = validateParameter(valid_606510, JString, required = true,
                                  default = newJString("CreateTemplate"))
@@ -3062,7 +3049,6 @@ proc validate_GetCreateTemplate_606489(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606493 != nil:
     section.add "Template.TextPart", valid_606493
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606494 = query.getOrDefault("Action")
   valid_606494 = validateParameter(valid_606494, JString, required = true,
                                  default = newJString("CreateTemplate"))
@@ -3202,7 +3188,6 @@ proc validate_PostDeleteConfigurationSet_606544(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606546 = query.getOrDefault("Action")
   valid_606546 = validateParameter(valid_606546, JString, required = true,
                                  default = newJString("DeleteConfigurationSet"))
@@ -3463,7 +3448,6 @@ proc validate_PostDeleteConfigurationSetEventDestination_606578(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606580 = query.getOrDefault("Action")
   valid_606580 = validateParameter(valid_606580, JString, required = true, default = newJString(
       "DeleteConfigurationSetEventDestination"))
@@ -3750,7 +3734,6 @@ proc validate_PostDeleteConfigurationSetTrackingOptions_606612(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606614 = query.getOrDefault("Action")
   valid_606614 = validateParameter(valid_606614, JString, required = true, default = newJString(
       "DeleteConfigurationSetTrackingOptions"))
@@ -4017,7 +4000,6 @@ proc validate_PostDeleteCustomVerificationEmailTemplate_606645(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606647 = query.getOrDefault("Action")
   valid_606647 = validateParameter(valid_606647, JString, required = true, default = newJString(
       "DeleteCustomVerificationEmailTemplate"))
@@ -4155,7 +4137,6 @@ proc validate_GetDeleteCustomVerificationEmailTemplate_606629(path: JsonNode;
   ##   TemplateName: JString (required)
   ##               : The name of the custom verification email template that you want to delete.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606631 = query.getOrDefault("Action")
   valid_606631 = validateParameter(valid_606631, JString, required = true, default = newJString(
       "DeleteCustomVerificationEmailTemplate"))
@@ -4286,7 +4267,6 @@ proc validate_PostDeleteIdentity_606678(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606680 = query.getOrDefault("Action")
   valid_606680 = validateParameter(valid_606680, JString, required = true,
                                  default = newJString("DeleteIdentity"))
@@ -4547,7 +4527,6 @@ proc validate_PostDeleteIdentityPolicy_606712(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606714 = query.getOrDefault("Action")
   valid_606714 = validateParameter(valid_606714, JString, required = true,
                                  default = newJString("DeleteIdentityPolicy"))
@@ -4830,7 +4809,6 @@ proc validate_PostDeleteReceiptFilter_606746(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606748 = query.getOrDefault("Action")
   valid_606748 = validateParameter(valid_606748, JString, required = true,
                                  default = newJString("DeleteReceiptFilter"))
@@ -5089,7 +5067,6 @@ proc validate_PostDeleteReceiptRule_606780(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606782 = query.getOrDefault("Action")
   valid_606782 = validateParameter(valid_606782, JString, required = true,
                                  default = newJString("DeleteReceiptRule"))
@@ -5371,7 +5348,6 @@ proc validate_PostDeleteReceiptRuleSet_606814(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606816 = query.getOrDefault("Action")
   valid_606816 = validateParameter(valid_606816, JString, required = true,
                                  default = newJString("DeleteReceiptRuleSet"))
@@ -5505,7 +5481,6 @@ proc validate_GetDeleteReceiptRuleSet_606798(path: JsonNode; query: JsonNode;
   ##              : The name of the receipt rule set to delete.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606800 = query.getOrDefault("Action")
   valid_606800 = validateParameter(valid_606800, JString, required = true,
                                  default = newJString("DeleteReceiptRuleSet"))
@@ -5631,7 +5606,6 @@ proc validate_PostDeleteTemplate_606847(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606849 = query.getOrDefault("Action")
   valid_606849 = validateParameter(valid_606849, JString, required = true,
                                  default = newJString("DeleteTemplate"))
@@ -5765,7 +5739,6 @@ proc validate_GetDeleteTemplate_606831(path: JsonNode; query: JsonNode;
   ##   TemplateName: JString (required)
   ##               : The name of the template to be deleted.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606833 = query.getOrDefault("Action")
   valid_606833 = validateParameter(valid_606833, JString, required = true,
                                  default = newJString("DeleteTemplate"))
@@ -5890,7 +5863,6 @@ proc validate_PostDeleteVerifiedEmailAddress_606880(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606882 = query.getOrDefault("Action")
   valid_606882 = validateParameter(valid_606882, JString, required = true, default = newJString(
       "DeleteVerifiedEmailAddress"))
@@ -6025,7 +5997,6 @@ proc validate_GetDeleteVerifiedEmailAddress_606864(path: JsonNode; query: JsonNo
   ##               : An email address to be removed from the list of verified addresses.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606866 = query.getOrDefault("Action")
   valid_606866 = validateParameter(valid_606866, JString, required = true, default = newJString(
       "DeleteVerifiedEmailAddress"))
@@ -6152,7 +6123,6 @@ proc validate_PostDescribeActiveReceiptRuleSet_606912(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606914 = query.getOrDefault("Action")
   valid_606914 = validateParameter(valid_606914, JString, required = true, default = newJString(
       "DescribeActiveReceiptRuleSet"))
@@ -6272,7 +6242,6 @@ proc validate_GetDescribeActiveReceiptRuleSet_606897(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606899 = query.getOrDefault("Action")
   valid_606899 = validateParameter(valid_606899, JString, required = true, default = newJString(
       "DescribeActiveReceiptRuleSet"))
@@ -6392,7 +6361,6 @@ proc validate_PostDescribeConfigurationSet_606944(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606946 = query.getOrDefault("Action")
   valid_606946 = validateParameter(valid_606946, JString, required = true, default = newJString(
       "DescribeConfigurationSet"))
@@ -6682,7 +6650,6 @@ proc validate_PostDescribeReceiptRule_606979(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606981 = query.getOrDefault("Action")
   valid_606981 = validateParameter(valid_606981, JString, required = true,
                                  default = newJString("DescribeReceiptRule"))
@@ -6963,7 +6930,6 @@ proc validate_PostDescribeReceiptRuleSet_607013(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607015 = query.getOrDefault("Action")
   valid_607015 = validateParameter(valid_607015, JString, required = true,
                                  default = newJString("DescribeReceiptRuleSet"))
@@ -7098,7 +7064,6 @@ proc validate_GetDescribeReceiptRuleSet_606997(path: JsonNode; query: JsonNode;
   ##              : The name of the receipt rule set to describe.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606999 = query.getOrDefault("Action")
   valid_606999 = validateParameter(valid_606999, JString, required = true,
                                  default = newJString("DescribeReceiptRuleSet"))
@@ -7224,7 +7189,6 @@ proc validate_PostGetAccountSendingEnabled_607045(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607047 = query.getOrDefault("Action")
   valid_607047 = validateParameter(valid_607047, JString, required = true, default = newJString(
       "GetAccountSendingEnabled"))
@@ -7343,7 +7307,6 @@ proc validate_GetGetAccountSendingEnabled_607030(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607032 = query.getOrDefault("Action")
   valid_607032 = validateParameter(valid_607032, JString, required = true, default = newJString(
       "GetAccountSendingEnabled"))
@@ -7462,7 +7425,6 @@ proc validate_PostGetCustomVerificationEmailTemplate_607076(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607078 = query.getOrDefault("Action")
   valid_607078 = validateParameter(valid_607078, JString, required = true, default = newJString(
       "GetCustomVerificationEmailTemplate"))
@@ -7600,7 +7562,6 @@ proc validate_GetGetCustomVerificationEmailTemplate_607060(path: JsonNode;
   ##   TemplateName: JString (required)
   ##               : The name of the custom verification email template that you want to retrieve.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607062 = query.getOrDefault("Action")
   valid_607062 = validateParameter(valid_607062, JString, required = true, default = newJString(
       "GetCustomVerificationEmailTemplate"))
@@ -7730,7 +7691,6 @@ proc validate_PostGetIdentityDkimAttributes_607109(path: JsonNode; query: JsonNo
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607111 = query.getOrDefault("Action")
   valid_607111 = validateParameter(valid_607111, JString, required = true, default = newJString(
       "GetIdentityDkimAttributes"))
@@ -7993,7 +7953,6 @@ proc validate_PostGetIdentityMailFromDomainAttributes_607142(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607144 = query.getOrDefault("Action")
   valid_607144 = validateParameter(valid_607144, JString, required = true, default = newJString(
       "GetIdentityMailFromDomainAttributes"))
@@ -8262,7 +8221,6 @@ proc validate_PostGetIdentityNotificationAttributes_607175(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607177 = query.getOrDefault("Action")
   valid_607177 = validateParameter(valid_607177, JString, required = true, default = newJString(
       "GetIdentityNotificationAttributes"))
@@ -8532,7 +8490,6 @@ proc validate_PostGetIdentityPolicies_607209(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607211 = query.getOrDefault("Action")
   valid_607211 = validateParameter(valid_607211, JString, required = true,
                                  default = newJString("GetIdentityPolicies"))
@@ -8813,7 +8770,6 @@ proc validate_PostGetIdentityVerificationAttributes_607243(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607245 = query.getOrDefault("Action")
   valid_607245 = validateParameter(valid_607245, JString, required = true, default = newJString(
       "GetIdentityVerificationAttributes"))
@@ -9083,7 +9039,6 @@ proc validate_PostGetSendQuota_607275(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607277 = query.getOrDefault("Action")
   valid_607277 = validateParameter(valid_607277, JString, required = true,
                                  default = newJString("GetSendQuota"))
@@ -9201,7 +9156,6 @@ proc validate_GetGetSendQuota_607260(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607262 = query.getOrDefault("Action")
   valid_607262 = validateParameter(valid_607262, JString, required = true,
                                  default = newJString("GetSendQuota"))
@@ -9317,7 +9271,6 @@ proc validate_PostGetSendStatistics_607305(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607307 = query.getOrDefault("Action")
   valid_607307 = validateParameter(valid_607307, JString, required = true,
                                  default = newJString("GetSendStatistics"))
@@ -9434,7 +9387,6 @@ proc validate_GetGetSendStatistics_607290(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607292 = query.getOrDefault("Action")
   valid_607292 = validateParameter(valid_607292, JString, required = true,
                                  default = newJString("GetSendStatistics"))
@@ -9552,7 +9504,6 @@ proc validate_PostGetTemplate_607336(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607338 = query.getOrDefault("Action")
   valid_607338 = validateParameter(valid_607338, JString, required = true,
                                  default = newJString("GetTemplate"))
@@ -9685,7 +9636,6 @@ proc validate_GetGetTemplate_607320(path: JsonNode; query: JsonNode;
   ##   TemplateName: JString (required)
   ##               : The name of the template you want to retrieve.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607322 = query.getOrDefault("Action")
   valid_607322 = validateParameter(valid_607322, JString, required = true,
                                  default = newJString("GetTemplate"))
@@ -9809,7 +9759,6 @@ proc validate_PostListConfigurationSets_607370(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607372 = query.getOrDefault("Action")
   valid_607372 = validateParameter(valid_607372, JString, required = true,
                                  default = newJString("ListConfigurationSets"))
@@ -9963,7 +9912,6 @@ proc validate_GetListConfigurationSets_607353(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_607356 != nil:
     section.add "NextToken", valid_607356
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607357 = query.getOrDefault("Action")
   valid_607357 = validateParameter(valid_607357, JString, required = true,
                                  default = newJString("ListConfigurationSets"))
@@ -10087,7 +10035,6 @@ proc validate_PostListCustomVerificationEmailTemplates_607405(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607407 = query.getOrDefault("Action")
   valid_607407 = validateParameter(valid_607407, JString, required = true, default = newJString(
       "ListCustomVerificationEmailTemplates"))
@@ -10243,7 +10190,6 @@ proc validate_GetListCustomVerificationEmailTemplates_607388(path: JsonNode;
                                  default = nil)
   if valid_607391 != nil:
     section.add "NextToken", valid_607391
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607392 = query.getOrDefault("Action")
   valid_607392 = validateParameter(valid_607392, JString, required = true, default = newJString(
       "ListCustomVerificationEmailTemplates"))
@@ -10372,7 +10318,6 @@ proc validate_PostListIdentities_607441(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607443 = query.getOrDefault("Action")
   valid_607443 = validateParameter(valid_607443, JString, required = true,
                                  default = newJString("ListIdentities"))
@@ -10542,7 +10487,6 @@ proc validate_GetListIdentities_607423(path: JsonNode; query: JsonNode;
                                  default = newJString("EmailAddress"))
   if valid_607427 != nil:
     section.add "IdentityType", valid_607427
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607428 = query.getOrDefault("Action")
   valid_607428 = validateParameter(valid_607428, JString, required = true,
                                  default = newJString("ListIdentities"))
@@ -10670,7 +10614,6 @@ proc validate_PostListIdentityPolicies_607476(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607478 = query.getOrDefault("Action")
   valid_607478 = validateParameter(valid_607478, JString, required = true,
                                  default = newJString("ListIdentityPolicies"))
@@ -10930,7 +10873,6 @@ proc validate_PostListReceiptFilters_607508(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607510 = query.getOrDefault("Action")
   valid_607510 = validateParameter(valid_607510, JString, required = true,
                                  default = newJString("ListReceiptFilters"))
@@ -11047,7 +10989,6 @@ proc validate_GetListReceiptFilters_607493(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607495 = query.getOrDefault("Action")
   valid_607495 = validateParameter(valid_607495, JString, required = true,
                                  default = newJString("ListReceiptFilters"))
@@ -11165,7 +11106,6 @@ proc validate_PostListReceiptRuleSets_607539(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607541 = query.getOrDefault("Action")
   valid_607541 = validateParameter(valid_607541, JString, required = true,
                                  default = newJString("ListReceiptRuleSets"))
@@ -11302,7 +11242,6 @@ proc validate_GetListReceiptRuleSets_607523(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_607525 != nil:
     section.add "NextToken", valid_607525
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607526 = query.getOrDefault("Action")
   valid_607526 = validateParameter(valid_607526, JString, required = true,
                                  default = newJString("ListReceiptRuleSets"))
@@ -11423,7 +11362,6 @@ proc validate_PostListTemplates_607573(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607575 = query.getOrDefault("Action")
   valid_607575 = validateParameter(valid_607575, JString, required = true,
                                  default = newJString("ListTemplates"))
@@ -11576,7 +11514,6 @@ proc validate_GetListTemplates_607556(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_607559 != nil:
     section.add "NextToken", valid_607559
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607560 = query.getOrDefault("Action")
   valid_607560 = validateParameter(valid_607560, JString, required = true,
                                  default = newJString("ListTemplates"))
@@ -11700,7 +11637,6 @@ proc validate_PostListVerifiedEmailAddresses_607606(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607608 = query.getOrDefault("Action")
   valid_607608 = validateParameter(valid_607608, JString, required = true, default = newJString(
       "ListVerifiedEmailAddresses"))
@@ -11819,7 +11755,6 @@ proc validate_GetListVerifiedEmailAddresses_607591(path: JsonNode; query: JsonNo
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607593 = query.getOrDefault("Action")
   valid_607593 = validateParameter(valid_607593, JString, required = true, default = newJString(
       "ListVerifiedEmailAddresses"))
@@ -11938,7 +11873,6 @@ proc validate_PostPutConfigurationSetDeliveryOptions_607638(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607640 = query.getOrDefault("Action")
   valid_607640 = validateParameter(valid_607640, JString, required = true, default = newJString(
       "PutConfigurationSetDeliveryOptions"))
@@ -12231,7 +12165,6 @@ proc validate_PostPutIdentityPolicy_607674(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607676 = query.getOrDefault("Action")
   valid_607676 = validateParameter(valid_607676, JString, required = true,
                                  default = newJString("PutIdentityPolicy"))
@@ -12536,7 +12469,6 @@ proc validate_PostReorderReceiptRuleSet_607710(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607712 = query.getOrDefault("Action")
   valid_607712 = validateParameter(valid_607712, JString, required = true,
                                  default = newJString("ReorderReceiptRuleSet"))
@@ -12684,7 +12616,6 @@ proc validate_GetReorderReceiptRuleSet_607693(path: JsonNode; query: JsonNode;
   ##            : A list of the specified receipt rule set's receipt rules in the order that you want to put them.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607695 = query.getOrDefault("Action")
   valid_607695 = validateParameter(valid_607695, JString, required = true,
                                  default = newJString("ReorderReceiptRuleSet"))
@@ -12819,7 +12750,6 @@ proc validate_PostSendBounce_607751(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607753 = query.getOrDefault("Action")
   valid_607753 = validateParameter(valid_607753, JString, required = true,
                                  default = newJString("SendBounce"))
@@ -13255,7 +13185,6 @@ proc validate_PostSendBulkTemplatedEmail_607801(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607803 = query.getOrDefault("Action")
   valid_607803 = validateParameter(valid_607803, JString, required = true,
                                  default = newJString("SendBulkTemplatedEmail"))
@@ -13746,7 +13675,6 @@ proc validate_PostSendCustomVerificationEmail_607846(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607848 = query.getOrDefault("Action")
   valid_607848 = validateParameter(valid_607848, JString, required = true, default = newJString(
       "SendCustomVerificationEmail"))
@@ -13912,7 +13840,6 @@ proc validate_GetSendCustomVerificationEmail_607828(path: JsonNode;
                                  default = nil)
   if valid_607830 != nil:
     section.add "ConfigurationSetName", valid_607830
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607831 = query.getOrDefault("Action")
   valid_607831 = validateParameter(valid_607831, JString, required = true, default = newJString(
       "SendCustomVerificationEmail"))
@@ -14052,7 +13979,6 @@ proc validate_PostSendEmail_607892(path: JsonNode; query: JsonNode; header: Json
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607894 = query.getOrDefault("Action")
   valid_607894 = validateParameter(valid_607894, JString, required = true,
                                  default = newJString("SendEmail"))
@@ -14587,7 +14513,6 @@ proc validate_PostSendRawEmail_607943(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607945 = query.getOrDefault("Action")
   valid_607945 = validateParameter(valid_607945, JString, required = true,
                                  default = newJString("SendRawEmail"))
@@ -14853,7 +14778,6 @@ proc validate_GetSendRawEmail_607920(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_607927 != nil:
     section.add "ConfigurationSetName", valid_607927
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607928 = query.getOrDefault("Action")
   valid_607928 = validateParameter(valid_607928, JString, required = true,
                                  default = newJString("SendRawEmail"))
@@ -15014,7 +14938,6 @@ proc validate_PostSendTemplatedEmail_607995(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607997 = query.getOrDefault("Action")
   valid_607997 = validateParameter(valid_607997, JString, required = true,
                                  default = newJString("SendTemplatedEmail"))
@@ -15564,7 +15487,6 @@ proc validate_PostSetActiveReceiptRuleSet_608040(path: JsonNode; query: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608042 = query.getOrDefault("Action")
   valid_608042 = validateParameter(valid_608042, JString, required = true, default = newJString(
       "SetActiveReceiptRuleSet"))
@@ -15697,7 +15619,6 @@ proc validate_GetSetActiveReceiptRuleSet_608024(path: JsonNode; query: JsonNode;
   ##              : The name of the receipt rule set to make active. Setting this value to null disables all email receiving.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608026 = query.getOrDefault("Action")
   valid_608026 = validateParameter(valid_608026, JString, required = true, default = newJString(
       "SetActiveReceiptRuleSet"))
@@ -15824,7 +15745,6 @@ proc validate_PostSetIdentityDkimEnabled_608074(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608076 = query.getOrDefault("Action")
   valid_608076 = validateParameter(valid_608076, JString, required = true,
                                  default = newJString("SetIdentityDkimEnabled"))
@@ -16105,7 +16025,6 @@ proc validate_PostSetIdentityFeedbackForwardingEnabled_608109(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608111 = query.getOrDefault("Action")
   valid_608111 = validateParameter(valid_608111, JString, required = true, default = newJString(
       "SetIdentityFeedbackForwardingEnabled"))
@@ -16392,7 +16311,6 @@ proc validate_PostSetIdentityHeadersInNotificationsEnabled_608145(path: JsonNode
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608147 = query.getOrDefault("Action")
   valid_608147 = validateParameter(valid_608147, JString, required = true, default = newJString(
       "SetIdentityHeadersInNotificationsEnabled"))
@@ -16457,7 +16375,6 @@ proc validate_PostSetIdentityHeadersInNotificationsEnabled_608145(path: JsonNode
   ##   Identity: JString (required)
   ##           : The identity for which to enable or disable headers in notifications. Examples: <code>user@example.com</code>, <code>example.com</code>.
   section = newJObject()
-  assert formData != nil, "formData argument is necessary due to required `NotificationType` field"
   var valid_608156 = formData.getOrDefault("NotificationType")
   valid_608156 = validateParameter(valid_608156, JString, required = true,
                                  default = newJString("Bounce"))
@@ -16552,8 +16469,6 @@ proc validate_GetSetIdentityHeadersInNotificationsEnabled_608127(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `NotificationType` field"
   var valid_608129 = query.getOrDefault("NotificationType")
   valid_608129 = validateParameter(valid_608129, JString, required = true,
                                  default = newJString("Bounce"))
@@ -16698,7 +16613,6 @@ proc validate_PostSetIdentityMailFromDomain_608182(path: JsonNode; query: JsonNo
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608184 = query.getOrDefault("Action")
   valid_608184 = validateParameter(valid_608184, JString, required = true, default = newJString(
       "SetIdentityMailFromDomain"))
@@ -17007,7 +16921,6 @@ proc validate_PostSetIdentityNotificationTopic_608219(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608221 = query.getOrDefault("Action")
   valid_608221 = validateParameter(valid_608221, JString, required = true, default = newJString(
       "SetIdentityNotificationTopic"))
@@ -17072,7 +16985,6 @@ proc validate_PostSetIdentityNotificationTopic_608219(path: JsonNode;
   ##   SnsTopic: JString
   ##           : The Amazon Resource Name (ARN) of the Amazon SNS topic. If the parameter is omitted from the request or a null value is passed, <code>SnsTopic</code> is cleared and publishing is disabled.
   section = newJObject()
-  assert formData != nil, "formData argument is necessary due to required `NotificationType` field"
   var valid_608230 = formData.getOrDefault("NotificationType")
   valid_608230 = validateParameter(valid_608230, JString, required = true,
                                  default = newJString("Bounce"))
@@ -17167,8 +17079,6 @@ proc validate_GetSetIdentityNotificationTopic_608201(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `NotificationType` field"
   var valid_608203 = query.getOrDefault("NotificationType")
   valid_608203 = validateParameter(valid_608203, JString, required = true,
                                  default = newJString("Bounce"))
@@ -17313,7 +17223,6 @@ proc validate_PostSetReceiptRulePosition_608256(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608258 = query.getOrDefault("Action")
   valid_608258 = validateParameter(valid_608258, JString, required = true,
                                  default = newJString("SetReceiptRulePosition"))
@@ -17616,7 +17525,6 @@ proc validate_PostTestRenderTemplate_608292(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608294 = query.getOrDefault("Action")
   valid_608294 = validateParameter(valid_608294, JString, required = true,
                                  default = newJString("TestRenderTemplate"))
@@ -17897,7 +17805,6 @@ proc validate_PostUpdateAccountSendingEnabled_608326(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608328 = query.getOrDefault("Action")
   valid_608328 = validateParameter(valid_608328, JString, required = true, default = newJString(
       "UpdateAccountSendingEnabled"))
@@ -18034,7 +17941,6 @@ proc validate_GetUpdateAccountSendingEnabled_608310(path: JsonNode;
   valid_608312 = validateParameter(valid_608312, JBool, required = false, default = nil)
   if valid_608312 != nil:
     section.add "Enabled", valid_608312
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608313 = query.getOrDefault("Action")
   valid_608313 = validateParameter(valid_608313, JString, required = true, default = newJString(
       "UpdateAccountSendingEnabled"))
@@ -18156,7 +18062,6 @@ proc validate_PostUpdateConfigurationSetEventDestination_608365(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608367 = query.getOrDefault("Action")
   valid_608367 = validateParameter(valid_608367, JString, required = true, default = newJString(
       "UpdateConfigurationSetEventDestination"))
@@ -18615,7 +18520,6 @@ proc validate_PostUpdateConfigurationSetReputationMetricsEnabled_608405(
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608407 = query.getOrDefault("Action")
   valid_608407 = validateParameter(valid_608407, JString, required = true, default = newJString(
       "UpdateConfigurationSetReputationMetricsEnabled"))
@@ -18903,7 +18807,6 @@ proc validate_PostUpdateConfigurationSetSendingEnabled_608440(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608442 = query.getOrDefault("Action")
   valid_608442 = validateParameter(valid_608442, JString, required = true, default = newJString(
       "UpdateConfigurationSetSendingEnabled"))
@@ -19189,7 +19092,6 @@ proc validate_PostUpdateConfigurationSetTrackingOptions_608475(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608477 = query.getOrDefault("Action")
   valid_608477 = validateParameter(valid_608477, JString, required = true, default = newJString(
       "UpdateConfigurationSetTrackingOptions"))
@@ -19488,7 +19390,6 @@ proc validate_PostUpdateCustomVerificationEmailTemplate_608514(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608516 = query.getOrDefault("Action")
   valid_608516 = validateParameter(valid_608516, JString, required = true, default = newJString(
       "UpdateCustomVerificationEmailTemplate"))
@@ -19711,7 +19612,6 @@ proc validate_GetUpdateCustomVerificationEmailTemplate_608493(path: JsonNode;
                                  default = nil)
   if valid_608498 != nil:
     section.add "SuccessRedirectionURL", valid_608498
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608499 = query.getOrDefault("Action")
   valid_608499 = validateParameter(valid_608499, JString, required = true, default = newJString(
       "UpdateCustomVerificationEmailTemplate"))
@@ -19864,7 +19764,6 @@ proc validate_PostUpdateReceiptRule_608558(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608560 = query.getOrDefault("Action")
   valid_608560 = validateParameter(valid_608560, JString, required = true,
                                  default = newJString("UpdateReceiptRule"))
@@ -20130,7 +20029,6 @@ proc validate_GetUpdateReceiptRule_608536(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_608541 != nil:
     section.add "Rule.Recipients", valid_608541
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608542 = query.getOrDefault("Action")
   valid_608542 = validateParameter(valid_608542, JString, required = true,
                                  default = newJString("UpdateReceiptRule"))
@@ -20301,7 +20199,6 @@ proc validate_PostUpdateTemplate_608600(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608602 = query.getOrDefault("Action")
   valid_608602 = validateParameter(valid_608602, JString, required = true,
                                  default = newJString("UpdateTemplate"))
@@ -20498,7 +20395,6 @@ proc validate_GetUpdateTemplate_608581(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_608585 != nil:
     section.add "Template.TextPart", valid_608585
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608586 = query.getOrDefault("Action")
   valid_608586 = validateParameter(valid_608586, JString, required = true,
                                  default = newJString("UpdateTemplate"))
@@ -20638,7 +20534,6 @@ proc validate_PostVerifyDomainDkim_608636(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608638 = query.getOrDefault("Action")
   valid_608638 = validateParameter(valid_608638, JString, required = true,
                                  default = newJString("VerifyDomainDkim"))
@@ -20772,7 +20667,6 @@ proc validate_GetVerifyDomainDkim_608620(path: JsonNode; query: JsonNode;
   ##         : The name of the domain to be verified for Easy DKIM signing.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608622 = query.getOrDefault("Action")
   valid_608622 = validateParameter(valid_608622, JString, required = true,
                                  default = newJString("VerifyDomainDkim"))
@@ -20898,7 +20792,6 @@ proc validate_PostVerifyDomainIdentity_608669(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608671 = query.getOrDefault("Action")
   valid_608671 = validateParameter(valid_608671, JString, required = true,
                                  default = newJString("VerifyDomainIdentity"))
@@ -21032,7 +20925,6 @@ proc validate_GetVerifyDomainIdentity_608653(path: JsonNode; query: JsonNode;
   ##         : The domain to be verified.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608655 = query.getOrDefault("Action")
   valid_608655 = validateParameter(valid_608655, JString, required = true,
                                  default = newJString("VerifyDomainIdentity"))
@@ -21157,7 +21049,6 @@ proc validate_PostVerifyEmailAddress_608702(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608704 = query.getOrDefault("Action")
   valid_608704 = validateParameter(valid_608704, JString, required = true,
                                  default = newJString("VerifyEmailAddress"))
@@ -21290,7 +21181,6 @@ proc validate_GetVerifyEmailAddress_608686(path: JsonNode; query: JsonNode;
   ##               : The email address to be verified.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608688 = query.getOrDefault("Action")
   valid_608688 = validateParameter(valid_608688, JString, required = true,
                                  default = newJString("VerifyEmailAddress"))
@@ -21416,7 +21306,6 @@ proc validate_PostVerifyEmailIdentity_608735(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608737 = query.getOrDefault("Action")
   valid_608737 = validateParameter(valid_608737, JString, required = true,
                                  default = newJString("VerifyEmailIdentity"))
@@ -21549,7 +21438,6 @@ proc validate_GetVerifyEmailIdentity_608719(path: JsonNode; query: JsonNode;
   ##               : The email address to be verified.
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_608721 = query.getOrDefault("Action")
   valid_608721 = validateParameter(valid_608721, JString, required = true,
                                  default = newJString("VerifyEmailIdentity"))

@@ -176,8 +176,6 @@ proc validate_CreateBatchInferenceJob_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateBatchInferenceJob"))
@@ -291,8 +289,6 @@ proc validate_CreateCampaign_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateCampaign"))
@@ -404,8 +400,6 @@ proc validate_CreateDataset_606212(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateDataset"))
@@ -518,8 +512,6 @@ proc validate_CreateDatasetGroup_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateDatasetGroup"))
@@ -632,8 +624,6 @@ proc validate_CreateDatasetImportJob_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateDatasetImportJob"))
@@ -747,8 +737,6 @@ proc validate_CreateEventTracker_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateEventTracker"))
@@ -861,8 +849,6 @@ proc validate_CreateSchema_606272(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateSchema"))
@@ -975,8 +961,6 @@ proc validate_CreateSolution_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateSolution"))
@@ -1088,8 +1072,6 @@ proc validate_CreateSolutionVersion_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AmazonPersonalize.CreateSolutionVersion"))
@@ -1203,8 +1185,6 @@ proc validate_DeleteCampaign_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AmazonPersonalize.DeleteCampaign"))
@@ -1316,8 +1296,6 @@ proc validate_DeleteDataset_606332(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "AmazonPersonalize.DeleteDataset"))
@@ -1430,8 +1408,6 @@ proc validate_DeleteDatasetGroup_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "AmazonPersonalize.DeleteDatasetGroup"))
@@ -1545,8 +1521,6 @@ proc validate_DeleteEventTracker_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "AmazonPersonalize.DeleteEventTracker"))
@@ -1659,8 +1633,6 @@ proc validate_DeleteSchema_606377(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "AmazonPersonalize.DeleteSchema"))
@@ -1773,8 +1745,6 @@ proc validate_DeleteSolution_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "AmazonPersonalize.DeleteSolution"))
@@ -1887,8 +1857,6 @@ proc validate_DescribeAlgorithm_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeAlgorithm"))
@@ -2000,8 +1968,6 @@ proc validate_DescribeBatchInferenceJob_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeBatchInferenceJob"))
@@ -2116,8 +2082,6 @@ proc validate_DescribeCampaign_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeCampaign"))
@@ -2230,8 +2194,6 @@ proc validate_DescribeDataset_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeDataset"))
@@ -2343,8 +2305,6 @@ proc validate_DescribeDatasetGroup_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeDatasetGroup"))
@@ -2458,8 +2418,6 @@ proc validate_DescribeDatasetImportJob_606482(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeDatasetImportJob"))
@@ -2572,8 +2530,6 @@ proc validate_DescribeEventTracker_606497(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeEventTracker"))
@@ -2686,8 +2642,6 @@ proc validate_DescribeFeatureTransformation_606512(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeFeatureTransformation"))
@@ -2802,8 +2756,6 @@ proc validate_DescribeRecipe_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeRecipe"))
@@ -2916,8 +2868,6 @@ proc validate_DescribeSchema_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeSchema"))
@@ -3030,8 +2980,6 @@ proc validate_DescribeSolution_606557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeSolution"))
@@ -3144,8 +3092,6 @@ proc validate_DescribeSolutionVersion_606572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "AmazonPersonalize.DescribeSolutionVersion"))
@@ -3259,8 +3205,6 @@ proc validate_GetSolutionMetrics_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "AmazonPersonalize.GetSolutionMetrics"))
@@ -3388,8 +3332,6 @@ proc validate_ListBatchInferenceJobs_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606606 = header.getOrDefault("X-Amz-Target")
   valid_606606 = validateParameter(valid_606606, JString, required = true, default = newJString(
       "AmazonPersonalize.ListBatchInferenceJobs"))
@@ -3525,8 +3467,6 @@ proc validate_ListCampaigns_606621(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606625 = header.getOrDefault("X-Amz-Target")
   valid_606625 = validateParameter(valid_606625, JString, required = true, default = newJString(
       "AmazonPersonalize.ListCampaigns"))
@@ -3662,8 +3602,6 @@ proc validate_ListDatasetGroups_606639(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606643 = header.getOrDefault("X-Amz-Target")
   valid_606643 = validateParameter(valid_606643, JString, required = true, default = newJString(
       "AmazonPersonalize.ListDatasetGroups"))
@@ -3798,8 +3736,6 @@ proc validate_ListDatasetImportJobs_606657(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606661 = header.getOrDefault("X-Amz-Target")
   valid_606661 = validateParameter(valid_606661, JString, required = true, default = newJString(
       "AmazonPersonalize.ListDatasetImportJobs"))
@@ -3935,8 +3871,6 @@ proc validate_ListDatasets_606675(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "AmazonPersonalize.ListDatasets"))
@@ -4072,8 +4006,6 @@ proc validate_ListEventTrackers_606693(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606697 = header.getOrDefault("X-Amz-Target")
   valid_606697 = validateParameter(valid_606697, JString, required = true, default = newJString(
       "AmazonPersonalize.ListEventTrackers"))
@@ -4208,8 +4140,6 @@ proc validate_ListRecipes_606711(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606715 = header.getOrDefault("X-Amz-Target")
   valid_606715 = validateParameter(valid_606715, JString, required = true, default = newJString(
       "AmazonPersonalize.ListRecipes"))
@@ -4345,8 +4275,6 @@ proc validate_ListSchemas_606729(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606733 = header.getOrDefault("X-Amz-Target")
   valid_606733 = validateParameter(valid_606733, JString, required = true, default = newJString(
       "AmazonPersonalize.ListSchemas"))
@@ -4482,8 +4410,6 @@ proc validate_ListSolutionVersions_606747(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606751 = header.getOrDefault("X-Amz-Target")
   valid_606751 = validateParameter(valid_606751, JString, required = true, default = newJString(
       "AmazonPersonalize.ListSolutionVersions"))
@@ -4619,8 +4545,6 @@ proc validate_ListSolutions_606765(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
       "AmazonPersonalize.ListSolutions"))
@@ -4741,8 +4665,6 @@ proc validate_UpdateCampaign_606783(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606785 = header.getOrDefault("X-Amz-Target")
   valid_606785 = validateParameter(valid_606785, JString, required = true, default = newJString(
       "AmazonPersonalize.UpdateCampaign"))

@@ -168,8 +168,6 @@ proc validate_CreateApplication_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.CreateApplication"))
@@ -282,8 +280,6 @@ proc validate_CreateComponent_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.CreateComponent"))
@@ -396,8 +392,6 @@ proc validate_CreateLogPattern_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.CreateLogPattern"))
@@ -510,8 +504,6 @@ proc validate_DeleteApplication_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DeleteApplication"))
@@ -624,8 +616,6 @@ proc validate_DeleteComponent_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DeleteComponent"))
@@ -738,8 +728,6 @@ proc validate_DeleteLogPattern_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DeleteLogPattern"))
@@ -852,8 +840,6 @@ proc validate_DescribeApplication_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DescribeApplication"))
@@ -967,8 +953,6 @@ proc validate_DescribeComponent_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DescribeComponent"))
@@ -1080,8 +1064,6 @@ proc validate_DescribeComponentConfiguration_606302(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DescribeComponentConfiguration"))
@@ -1194,8 +1176,6 @@ proc validate_DescribeComponentConfigurationRecommendation_606317(path: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DescribeComponentConfigurationRecommendation"))
@@ -1311,8 +1291,6 @@ proc validate_DescribeLogPattern_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DescribeLogPattern"))
@@ -1426,8 +1404,6 @@ proc validate_DescribeObservation_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DescribeObservation"))
@@ -1541,8 +1517,6 @@ proc validate_DescribeProblem_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DescribeProblem"))
@@ -1654,8 +1628,6 @@ proc validate_DescribeProblemObservations_606377(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.DescribeProblemObservations"))
@@ -1784,8 +1756,6 @@ proc validate_ListApplications_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606396 = header.getOrDefault("X-Amz-Target")
   valid_606396 = validateParameter(valid_606396, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.ListApplications"))
@@ -1921,8 +1891,6 @@ proc validate_ListComponents_606411(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606415 = header.getOrDefault("X-Amz-Target")
   valid_606415 = validateParameter(valid_606415, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.ListComponents"))
@@ -2058,8 +2026,6 @@ proc validate_ListLogPatternSets_606429(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606433 = header.getOrDefault("X-Amz-Target")
   valid_606433 = validateParameter(valid_606433, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.ListLogPatternSets"))
@@ -2196,8 +2162,6 @@ proc validate_ListLogPatterns_606447(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606451 = header.getOrDefault("X-Amz-Target")
   valid_606451 = validateParameter(valid_606451, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.ListLogPatterns"))
@@ -2332,8 +2296,6 @@ proc validate_ListProblems_606465(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.ListProblems"))
@@ -2454,8 +2416,6 @@ proc validate_ListTagsForResource_606483(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606485 = header.getOrDefault("X-Amz-Target")
   valid_606485 = validateParameter(valid_606485, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.ListTagsForResource"))
@@ -2568,8 +2528,6 @@ proc validate_TagResource_606498(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606500 = header.getOrDefault("X-Amz-Target")
   valid_606500 = validateParameter(valid_606500, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.TagResource"))
@@ -2681,8 +2639,6 @@ proc validate_UntagResource_606513(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606515 = header.getOrDefault("X-Amz-Target")
   valid_606515 = validateParameter(valid_606515, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.UntagResource"))
@@ -2795,8 +2751,6 @@ proc validate_UpdateApplication_606528(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606530 = header.getOrDefault("X-Amz-Target")
   valid_606530 = validateParameter(valid_606530, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.UpdateApplication"))
@@ -2909,8 +2863,6 @@ proc validate_UpdateComponent_606543(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606545 = header.getOrDefault("X-Amz-Target")
   valid_606545 = validateParameter(valid_606545, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.UpdateComponent"))
@@ -3022,8 +2974,6 @@ proc validate_UpdateComponentConfiguration_606558(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606560 = header.getOrDefault("X-Amz-Target")
   valid_606560 = validateParameter(valid_606560, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.UpdateComponentConfiguration"))
@@ -3137,8 +3087,6 @@ proc validate_UpdateLogPattern_606573(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606575 = header.getOrDefault("X-Amz-Target")
   valid_606575 = validateParameter(valid_606575, JString, required = true, default = newJString(
       "EC2WindowsBarleyService.UpdateLogPattern"))

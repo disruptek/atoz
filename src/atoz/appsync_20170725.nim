@@ -4297,7 +4297,6 @@ proc validate_GetIntrospectionSchema_606673(path: JsonNode; query: JsonNode;
   valid_606676 = validateParameter(valid_606676, JBool, required = false, default = nil)
   if valid_606676 != nil:
     section.add "includeDirectives", valid_606676
-  assert query != nil, "query argument is necessary due to required `format` field"
   var valid_606690 = query.getOrDefault("format")
   valid_606690 = validateParameter(valid_606690, JString, required = true,
                                  default = newJString("SDL"))
@@ -4692,7 +4691,6 @@ proc validate_GetType_606733(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   format: JString (required)
   ##         : The type format: SDL or JSON.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `format` field"
   var valid_606737 = query.getOrDefault("format")
   valid_606737 = validateParameter(valid_606737, JString, required = true,
                                  default = newJString("SDL"))
@@ -5243,7 +5241,6 @@ proc validate_ListTypes_606798(path: JsonNode; query: JsonNode; header: JsonNode
                                  default = nil)
   if valid_606801 != nil:
     section.add "nextToken", valid_606801
-  assert query != nil, "query argument is necessary due to required `format` field"
   var valid_606802 = query.getOrDefault("format")
   valid_606802 = validateParameter(valid_606802, JString, required = true,
                                  default = newJString("SDL"))

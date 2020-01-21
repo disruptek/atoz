@@ -1209,8 +1209,6 @@ proc validate_DescribeElasticsearchInstanceTypeLimits_606310(path: JsonNode;
   ##   ElasticsearchVersion: JString (required)
   ##                       :  Version of Elasticsearch for which <code> <a>Limits</a> </code> are needed. 
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `InstanceType` field"
   var valid_606325 = path.getOrDefault("InstanceType")
   valid_606325 = validateParameter(valid_606325, JString, required = true, default = newJString(
       "m3.medium.elasticsearch"))

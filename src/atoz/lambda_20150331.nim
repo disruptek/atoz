@@ -4393,7 +4393,6 @@ proc validate_GetLayerVersionByArn_606690(path: JsonNode; query: JsonNode;
   ##   Arn: JString (required)
   ##      : The ARN of the layer version.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `find` field"
   var valid_606705 = query.getOrDefault("find")
   valid_606705 = validateParameter(valid_606705, JString, required = true,
                                  default = newJString("LayerVersion"))
@@ -5529,7 +5528,6 @@ proc validate_ListProvisionedConcurrencyConfigs_606839(path: JsonNode;
   valid_606843 = validateParameter(valid_606843, JInt, required = false, default = nil)
   if valid_606843 != nil:
     section.add "MaxItems", valid_606843
-  assert query != nil, "query argument is necessary due to required `List` field"
   var valid_606844 = query.getOrDefault("List")
   valid_606844 = validateParameter(valid_606844, JString, required = true,
                                  default = newJString("ALL"))

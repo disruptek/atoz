@@ -178,8 +178,6 @@ proc validate_AssociateFleet_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "PhotonAdminProxyService.AssociateFleet"))
@@ -292,8 +290,6 @@ proc validate_BatchAssociateUserStack_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "PhotonAdminProxyService.BatchAssociateUserStack"))
@@ -406,8 +402,6 @@ proc validate_BatchDisassociateUserStack_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "PhotonAdminProxyService.BatchDisassociateUserStack"))
@@ -521,8 +515,6 @@ proc validate_CopyImage_606227(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CopyImage"))
@@ -634,8 +626,6 @@ proc validate_CreateDirectoryConfig_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CreateDirectoryConfig"))
@@ -748,8 +738,6 @@ proc validate_CreateFleet_606257(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CreateFleet"))
@@ -863,8 +851,6 @@ proc validate_CreateImageBuilder_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CreateImageBuilder"))
@@ -977,8 +963,6 @@ proc validate_CreateImageBuilderStreamingURL_606287(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CreateImageBuilderStreamingURL"))
@@ -1091,8 +1075,6 @@ proc validate_CreateStack_606302(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CreateStack"))
@@ -1206,8 +1188,6 @@ proc validate_CreateStreamingURL_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CreateStreamingURL"))
@@ -1320,8 +1300,6 @@ proc validate_CreateUsageReportSubscription_606332(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CreateUsageReportSubscription"))
@@ -1434,8 +1412,6 @@ proc validate_CreateUser_606347(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "PhotonAdminProxyService.CreateUser"))
@@ -1548,8 +1524,6 @@ proc validate_DeleteDirectoryConfig_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DeleteDirectoryConfig"))
@@ -1662,8 +1636,6 @@ proc validate_DeleteFleet_606377(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DeleteFleet"))
@@ -1776,8 +1748,6 @@ proc validate_DeleteImage_606392(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DeleteImage"))
@@ -1891,8 +1861,6 @@ proc validate_DeleteImageBuilder_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DeleteImageBuilder"))
@@ -2005,8 +1973,6 @@ proc validate_DeleteImagePermissions_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DeleteImagePermissions"))
@@ -2119,8 +2085,6 @@ proc validate_DeleteStack_606437(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DeleteStack"))
@@ -2233,8 +2197,6 @@ proc validate_DeleteUsageReportSubscription_606452(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DeleteUsageReportSubscription"))
@@ -2347,8 +2309,6 @@ proc validate_DeleteUser_606467(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DeleteUser"))
@@ -2462,8 +2422,6 @@ proc validate_DescribeDirectoryConfigs_606482(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeDirectoryConfigs"))
@@ -2577,8 +2535,6 @@ proc validate_DescribeFleets_606497(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeFleets"))
@@ -2690,8 +2646,6 @@ proc validate_DescribeImageBuilders_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeImageBuilders"))
@@ -2820,8 +2774,6 @@ proc validate_DescribeImagePermissions_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606531 = header.getOrDefault("X-Amz-Target")
   valid_606531 = validateParameter(valid_606531, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeImagePermissions"))
@@ -2958,8 +2910,6 @@ proc validate_DescribeImages_606546(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606550 = header.getOrDefault("X-Amz-Target")
   valid_606550 = validateParameter(valid_606550, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeImages"))
@@ -3080,8 +3030,6 @@ proc validate_DescribeSessions_606564(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606566 = header.getOrDefault("X-Amz-Target")
   valid_606566 = validateParameter(valid_606566, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeSessions"))
@@ -3194,8 +3142,6 @@ proc validate_DescribeStacks_606579(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606581 = header.getOrDefault("X-Amz-Target")
   valid_606581 = validateParameter(valid_606581, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeStacks"))
@@ -3307,8 +3253,6 @@ proc validate_DescribeUsageReportSubscriptions_606594(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606596 = header.getOrDefault("X-Amz-Target")
   valid_606596 = validateParameter(valid_606596, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeUsageReportSubscriptions"))
@@ -3423,8 +3367,6 @@ proc validate_DescribeUserStackAssociations_606609(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606611 = header.getOrDefault("X-Amz-Target")
   valid_606611 = validateParameter(valid_606611, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeUserStackAssociations"))
@@ -3537,8 +3479,6 @@ proc validate_DescribeUsers_606624(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606626 = header.getOrDefault("X-Amz-Target")
   valid_606626 = validateParameter(valid_606626, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DescribeUsers"))
@@ -3650,8 +3590,6 @@ proc validate_DisableUser_606639(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606641 = header.getOrDefault("X-Amz-Target")
   valid_606641 = validateParameter(valid_606641, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DisableUser"))
@@ -3765,8 +3703,6 @@ proc validate_DisassociateFleet_606654(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606656 = header.getOrDefault("X-Amz-Target")
   valid_606656 = validateParameter(valid_606656, JString, required = true, default = newJString(
       "PhotonAdminProxyService.DisassociateFleet"))
@@ -3878,8 +3814,6 @@ proc validate_EnableUser_606669(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606671 = header.getOrDefault("X-Amz-Target")
   valid_606671 = validateParameter(valid_606671, JString, required = true, default = newJString(
       "PhotonAdminProxyService.EnableUser"))
@@ -3992,8 +3926,6 @@ proc validate_ExpireSession_606684(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606686 = header.getOrDefault("X-Amz-Target")
   valid_606686 = validateParameter(valid_606686, JString, required = true, default = newJString(
       "PhotonAdminProxyService.ExpireSession"))
@@ -4105,8 +4037,6 @@ proc validate_ListAssociatedFleets_606699(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606701 = header.getOrDefault("X-Amz-Target")
   valid_606701 = validateParameter(valid_606701, JString, required = true, default = newJString(
       "PhotonAdminProxyService.ListAssociatedFleets"))
@@ -4219,8 +4149,6 @@ proc validate_ListAssociatedStacks_606714(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606716 = header.getOrDefault("X-Amz-Target")
   valid_606716 = validateParameter(valid_606716, JString, required = true, default = newJString(
       "PhotonAdminProxyService.ListAssociatedStacks"))
@@ -4334,8 +4262,6 @@ proc validate_ListTagsForResource_606729(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606731 = header.getOrDefault("X-Amz-Target")
   valid_606731 = validateParameter(valid_606731, JString, required = true, default = newJString(
       "PhotonAdminProxyService.ListTagsForResource"))
@@ -4448,8 +4374,6 @@ proc validate_StartFleet_606744(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606746 = header.getOrDefault("X-Amz-Target")
   valid_606746 = validateParameter(valid_606746, JString, required = true, default = newJString(
       "PhotonAdminProxyService.StartFleet"))
@@ -4563,8 +4487,6 @@ proc validate_StartImageBuilder_606759(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606761 = header.getOrDefault("X-Amz-Target")
   valid_606761 = validateParameter(valid_606761, JString, required = true, default = newJString(
       "PhotonAdminProxyService.StartImageBuilder"))
@@ -4676,8 +4598,6 @@ proc validate_StopFleet_606774(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606776 = header.getOrDefault("X-Amz-Target")
   valid_606776 = validateParameter(valid_606776, JString, required = true, default = newJString(
       "PhotonAdminProxyService.StopFleet"))
@@ -4790,8 +4710,6 @@ proc validate_StopImageBuilder_606789(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606791 = header.getOrDefault("X-Amz-Target")
   valid_606791 = validateParameter(valid_606791, JString, required = true, default = newJString(
       "PhotonAdminProxyService.StopImageBuilder"))
@@ -4903,8 +4821,6 @@ proc validate_TagResource_606804(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606806 = header.getOrDefault("X-Amz-Target")
   valid_606806 = validateParameter(valid_606806, JString, required = true, default = newJString(
       "PhotonAdminProxyService.TagResource"))
@@ -5017,8 +4933,6 @@ proc validate_UntagResource_606819(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606821 = header.getOrDefault("X-Amz-Target")
   valid_606821 = validateParameter(valid_606821, JString, required = true, default = newJString(
       "PhotonAdminProxyService.UntagResource"))
@@ -5130,8 +5044,6 @@ proc validate_UpdateDirectoryConfig_606834(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606836 = header.getOrDefault("X-Amz-Target")
   valid_606836 = validateParameter(valid_606836, JString, required = true, default = newJString(
       "PhotonAdminProxyService.UpdateDirectoryConfig"))
@@ -5244,8 +5156,6 @@ proc validate_UpdateFleet_606849(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606851 = header.getOrDefault("X-Amz-Target")
   valid_606851 = validateParameter(valid_606851, JString, required = true, default = newJString(
       "PhotonAdminProxyService.UpdateFleet"))
@@ -5358,8 +5268,6 @@ proc validate_UpdateImagePermissions_606864(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606866 = header.getOrDefault("X-Amz-Target")
   valid_606866 = validateParameter(valid_606866, JString, required = true, default = newJString(
       "PhotonAdminProxyService.UpdateImagePermissions"))
@@ -5472,8 +5380,6 @@ proc validate_UpdateStack_606879(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606881 = header.getOrDefault("X-Amz-Target")
   valid_606881 = validateParameter(valid_606881, JString, required = true, default = newJString(
       "PhotonAdminProxyService.UpdateStack"))

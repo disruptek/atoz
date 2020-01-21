@@ -168,8 +168,6 @@ proc validate_CancelRotateSecret_605929(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606055 = header.getOrDefault("X-Amz-Target")
   valid_606055 = validateParameter(valid_606055, JString, required = true, default = newJString(
       "secretsmanager.CancelRotateSecret"))
@@ -282,8 +280,6 @@ proc validate_CreateSecret_606198(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606200 = header.getOrDefault("X-Amz-Target")
   valid_606200 = validateParameter(valid_606200, JString, required = true, default = newJString(
       "secretsmanager.CreateSecret"))
@@ -395,8 +391,6 @@ proc validate_DeleteResourcePolicy_606213(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606215 = header.getOrDefault("X-Amz-Target")
   valid_606215 = validateParameter(valid_606215, JString, required = true, default = newJString(
       "secretsmanager.DeleteResourcePolicy"))
@@ -509,8 +503,6 @@ proc validate_DeleteSecret_606228(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606230 = header.getOrDefault("X-Amz-Target")
   valid_606230 = validateParameter(valid_606230, JString, required = true, default = newJString(
       "secretsmanager.DeleteSecret"))
@@ -623,8 +615,6 @@ proc validate_DescribeSecret_606243(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606245 = header.getOrDefault("X-Amz-Target")
   valid_606245 = validateParameter(valid_606245, JString, required = true, default = newJString(
       "secretsmanager.DescribeSecret"))
@@ -737,8 +727,6 @@ proc validate_GetRandomPassword_606258(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606260 = header.getOrDefault("X-Amz-Target")
   valid_606260 = validateParameter(valid_606260, JString, required = true, default = newJString(
       "secretsmanager.GetRandomPassword"))
@@ -851,8 +839,6 @@ proc validate_GetResourcePolicy_606273(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606275 = header.getOrDefault("X-Amz-Target")
   valid_606275 = validateParameter(valid_606275, JString, required = true, default = newJString(
       "secretsmanager.GetResourcePolicy"))
@@ -965,8 +951,6 @@ proc validate_GetSecretValue_606288(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606290 = header.getOrDefault("X-Amz-Target")
   valid_606290 = validateParameter(valid_606290, JString, required = true, default = newJString(
       "secretsmanager.GetSecretValue"))
@@ -1093,8 +1077,6 @@ proc validate_ListSecretVersionIds_606303(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606307 = header.getOrDefault("X-Amz-Target")
   valid_606307 = validateParameter(valid_606307, JString, required = true, default = newJString(
       "secretsmanager.ListSecretVersionIds"))
@@ -1230,8 +1212,6 @@ proc validate_ListSecrets_606322(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606326 = header.getOrDefault("X-Amz-Target")
   valid_606326 = validateParameter(valid_606326, JString, required = true, default = newJString(
       "secretsmanager.ListSecrets"))
@@ -1353,8 +1333,6 @@ proc validate_PutResourcePolicy_606340(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606342 = header.getOrDefault("X-Amz-Target")
   valid_606342 = validateParameter(valid_606342, JString, required = true, default = newJString(
       "secretsmanager.PutResourcePolicy"))
@@ -1467,8 +1445,6 @@ proc validate_PutSecretValue_606355(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606357 = header.getOrDefault("X-Amz-Target")
   valid_606357 = validateParameter(valid_606357, JString, required = true, default = newJString(
       "secretsmanager.PutSecretValue"))
@@ -1580,8 +1556,6 @@ proc validate_RestoreSecret_606370(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606372 = header.getOrDefault("X-Amz-Target")
   valid_606372 = validateParameter(valid_606372, JString, required = true, default = newJString(
       "secretsmanager.RestoreSecret"))
@@ -1693,8 +1667,6 @@ proc validate_RotateSecret_606385(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606387 = header.getOrDefault("X-Amz-Target")
   valid_606387 = validateParameter(valid_606387, JString, required = true, default = newJString(
       "secretsmanager.RotateSecret"))
@@ -1806,8 +1778,6 @@ proc validate_TagResource_606400(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606402 = header.getOrDefault("X-Amz-Target")
   valid_606402 = validateParameter(valid_606402, JString, required = true, default = newJString(
       "secretsmanager.TagResource"))
@@ -1920,8 +1890,6 @@ proc validate_UntagResource_606415(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606417 = header.getOrDefault("X-Amz-Target")
   valid_606417 = validateParameter(valid_606417, JString, required = true, default = newJString(
       "secretsmanager.UntagResource"))
@@ -2033,8 +2001,6 @@ proc validate_UpdateSecret_606430(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606432 = header.getOrDefault("X-Amz-Target")
   valid_606432 = validateParameter(valid_606432, JString, required = true, default = newJString(
       "secretsmanager.UpdateSecret"))
@@ -2147,8 +2113,6 @@ proc validate_UpdateSecretVersionStage_606445(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606447 = header.getOrDefault("X-Amz-Target")
   valid_606447 = validateParameter(valid_606447, JString, required = true, default = newJString(
       "secretsmanager.UpdateSecretVersionStage"))

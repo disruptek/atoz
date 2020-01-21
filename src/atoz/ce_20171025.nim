@@ -186,8 +186,6 @@ proc validate_CreateCostCategoryDefinition_605928(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSInsightsIndexService.CreateCostCategoryDefinition"))
@@ -300,8 +298,6 @@ proc validate_DeleteCostCategoryDefinition_606197(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSInsightsIndexService.DeleteCostCategoryDefinition"))
@@ -414,8 +410,6 @@ proc validate_DescribeCostCategoryDefinition_606212(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSInsightsIndexService.DescribeCostCategoryDefinition"))
@@ -529,8 +523,6 @@ proc validate_GetCostAndUsage_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetCostAndUsage"))
@@ -642,8 +634,6 @@ proc validate_GetCostAndUsageWithResources_606242(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetCostAndUsageWithResources"))
@@ -757,8 +747,6 @@ proc validate_GetCostForecast_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetCostForecast"))
@@ -871,8 +859,6 @@ proc validate_GetDimensionValues_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetDimensionValues"))
@@ -984,8 +970,6 @@ proc validate_GetReservationCoverage_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetReservationCoverage"))
@@ -1098,8 +1082,6 @@ proc validate_GetReservationPurchaseRecommendation_606302(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetReservationPurchaseRecommendation"))
@@ -1214,8 +1196,6 @@ proc validate_GetReservationUtilization_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetReservationUtilization"))
@@ -1329,8 +1309,6 @@ proc validate_GetRightsizingRecommendation_606332(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetRightsizingRecommendation"))
@@ -1459,8 +1437,6 @@ proc validate_GetSavingsPlansCoverage_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606351 = header.getOrDefault("X-Amz-Target")
   valid_606351 = validateParameter(valid_606351, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetSavingsPlansCoverage"))
@@ -1581,8 +1557,6 @@ proc validate_GetSavingsPlansPurchaseRecommendation_606366(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606368 = header.getOrDefault("X-Amz-Target")
   valid_606368 = validateParameter(valid_606368, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetSavingsPlansPurchaseRecommendation"))
@@ -1697,8 +1671,6 @@ proc validate_GetSavingsPlansUtilization_606381(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606383 = header.getOrDefault("X-Amz-Target")
   valid_606383 = validateParameter(valid_606383, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetSavingsPlansUtilization"))
@@ -1827,8 +1799,6 @@ proc validate_GetSavingsPlansUtilizationDetails_606396(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606400 = header.getOrDefault("X-Amz-Target")
   valid_606400 = validateParameter(valid_606400, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetSavingsPlansUtilizationDetails"))
@@ -1950,8 +1920,6 @@ proc validate_GetTags_606414(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606416 = header.getOrDefault("X-Amz-Target")
   valid_606416 = validateParameter(valid_606416, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetTags"))
@@ -2064,8 +2032,6 @@ proc validate_GetUsageForecast_606429(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606431 = header.getOrDefault("X-Amz-Target")
   valid_606431 = validateParameter(valid_606431, JString, required = true, default = newJString(
       "AWSInsightsIndexService.GetUsageForecast"))
@@ -2177,8 +2143,6 @@ proc validate_ListCostCategoryDefinitions_606444(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606446 = header.getOrDefault("X-Amz-Target")
   valid_606446 = validateParameter(valid_606446, JString, required = true, default = newJString(
       "AWSInsightsIndexService.ListCostCategoryDefinitions"))
@@ -2291,8 +2255,6 @@ proc validate_UpdateCostCategoryDefinition_606459(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606461 = header.getOrDefault("X-Amz-Target")
   valid_606461 = validateParameter(valid_606461, JString, required = true, default = newJString(
       "AWSInsightsIndexService.UpdateCostCategoryDefinition"))

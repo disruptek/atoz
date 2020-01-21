@@ -167,8 +167,6 @@ proc validate_AddTags_605928(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true,
                                  default = newJString("SageMaker.AddTags"))
@@ -282,8 +280,6 @@ proc validate_AssociateTrialComponent_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "SageMaker.AssociateTrialComponent"))
@@ -397,8 +393,6 @@ proc validate_CreateAlgorithm_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "SageMaker.CreateAlgorithm"))
@@ -510,8 +504,6 @@ proc validate_CreateApp_606227(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true,
                                  default = newJString("SageMaker.CreateApp"))
@@ -624,8 +616,6 @@ proc validate_CreateAutoMLJob_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "SageMaker.CreateAutoMLJob"))
@@ -737,8 +727,6 @@ proc validate_CreateCodeRepository_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "SageMaker.CreateCodeRepository"))
@@ -851,8 +839,6 @@ proc validate_CreateCompilationJob_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "SageMaker.CreateCompilationJob"))
@@ -965,8 +951,6 @@ proc validate_CreateDomain_606287(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true,
                                  default = newJString("SageMaker.CreateDomain"))
@@ -1079,8 +1063,6 @@ proc validate_CreateEndpoint_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "SageMaker.CreateEndpoint"))
@@ -1192,8 +1174,6 @@ proc validate_CreateEndpointConfig_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "SageMaker.CreateEndpointConfig"))
@@ -1307,8 +1287,6 @@ proc validate_CreateExperiment_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "SageMaker.CreateExperiment"))
@@ -1420,8 +1398,6 @@ proc validate_CreateFlowDefinition_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "SageMaker.CreateFlowDefinition"))
@@ -1535,8 +1511,6 @@ proc validate_CreateHumanTaskUi_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "SageMaker.CreateHumanTaskUi"))
@@ -1648,8 +1622,6 @@ proc validate_CreateHyperParameterTuningJob_606377(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "SageMaker.CreateHyperParameterTuningJob"))
@@ -1764,8 +1736,6 @@ proc validate_CreateLabelingJob_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "SageMaker.CreateLabelingJob"))
@@ -1877,8 +1847,6 @@ proc validate_CreateModel_606407(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true,
                                  default = newJString("SageMaker.CreateModel"))
@@ -1992,8 +1960,6 @@ proc validate_CreateModelPackage_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "SageMaker.CreateModelPackage"))
@@ -2107,8 +2073,6 @@ proc validate_CreateMonitoringSchedule_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "SageMaker.CreateMonitoringSchedule"))
@@ -2221,8 +2185,6 @@ proc validate_CreateNotebookInstance_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "SageMaker.CreateNotebookInstance"))
@@ -2335,8 +2297,6 @@ proc validate_CreateNotebookInstanceLifecycleConfig_606467(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "SageMaker.CreateNotebookInstanceLifecycleConfig"))
@@ -2453,8 +2413,6 @@ proc validate_CreatePresignedDomainUrl_606482(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "SageMaker.CreatePresignedDomainUrl"))
@@ -2567,8 +2525,6 @@ proc validate_CreatePresignedNotebookInstanceUrl_606497(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "SageMaker.CreatePresignedNotebookInstanceUrl"))
@@ -2685,8 +2641,6 @@ proc validate_CreateProcessingJob_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "SageMaker.CreateProcessingJob"))
@@ -2800,8 +2754,6 @@ proc validate_CreateTrainingJob_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "SageMaker.CreateTrainingJob"))
@@ -2914,8 +2866,6 @@ proc validate_CreateTransformJob_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "SageMaker.CreateTransformJob"))
@@ -3028,8 +2978,6 @@ proc validate_CreateTrial_606557(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true,
                                  default = newJString("SageMaker.CreateTrial"))
@@ -3142,8 +3090,6 @@ proc validate_CreateTrialComponent_606572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "SageMaker.CreateTrialComponent"))
@@ -3257,8 +3203,6 @@ proc validate_CreateUserProfile_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "SageMaker.CreateUserProfile"))
@@ -3371,8 +3315,6 @@ proc validate_CreateWorkteam_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "SageMaker.CreateWorkteam"))
@@ -3485,8 +3427,6 @@ proc validate_DeleteAlgorithm_606617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "SageMaker.DeleteAlgorithm"))
@@ -3598,8 +3538,6 @@ proc validate_DeleteApp_606632(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true,
                                  default = newJString("SageMaker.DeleteApp"))
@@ -3711,8 +3649,6 @@ proc validate_DeleteCodeRepository_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "SageMaker.DeleteCodeRepository"))
@@ -3825,8 +3761,6 @@ proc validate_DeleteDomain_606662(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true,
                                  default = newJString("SageMaker.DeleteDomain"))
@@ -3939,8 +3873,6 @@ proc validate_DeleteEndpoint_606677(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "SageMaker.DeleteEndpoint"))
@@ -4052,8 +3984,6 @@ proc validate_DeleteEndpointConfig_606692(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "SageMaker.DeleteEndpointConfig"))
@@ -4167,8 +4097,6 @@ proc validate_DeleteExperiment_606707(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "SageMaker.DeleteExperiment"))
@@ -4280,8 +4208,6 @@ proc validate_DeleteFlowDefinition_606722(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "SageMaker.DeleteFlowDefinition"))
@@ -4394,8 +4320,6 @@ proc validate_DeleteModel_606737(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true,
                                  default = newJString("SageMaker.DeleteModel"))
@@ -4509,8 +4433,6 @@ proc validate_DeleteModelPackage_606752(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606754 = header.getOrDefault("X-Amz-Target")
   valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
       "SageMaker.DeleteModelPackage"))
@@ -4624,8 +4546,6 @@ proc validate_DeleteMonitoringSchedule_606767(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
       "SageMaker.DeleteMonitoringSchedule"))
@@ -4738,8 +4658,6 @@ proc validate_DeleteNotebookInstance_606782(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606784 = header.getOrDefault("X-Amz-Target")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "SageMaker.DeleteNotebookInstance"))
@@ -4852,8 +4770,6 @@ proc validate_DeleteNotebookInstanceLifecycleConfig_606797(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606799 = header.getOrDefault("X-Amz-Target")
   valid_606799 = validateParameter(valid_606799, JString, required = true, default = newJString(
       "SageMaker.DeleteNotebookInstanceLifecycleConfig"))
@@ -4969,8 +4885,6 @@ proc validate_DeleteTags_606812(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606814 = header.getOrDefault("X-Amz-Target")
   valid_606814 = validateParameter(valid_606814, JString, required = true,
                                  default = newJString("SageMaker.DeleteTags"))
@@ -5083,8 +4997,6 @@ proc validate_DeleteTrial_606827(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606829 = header.getOrDefault("X-Amz-Target")
   valid_606829 = validateParameter(valid_606829, JString, required = true,
                                  default = newJString("SageMaker.DeleteTrial"))
@@ -5197,8 +5109,6 @@ proc validate_DeleteTrialComponent_606842(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606844 = header.getOrDefault("X-Amz-Target")
   valid_606844 = validateParameter(valid_606844, JString, required = true, default = newJString(
       "SageMaker.DeleteTrialComponent"))
@@ -5312,8 +5222,6 @@ proc validate_DeleteUserProfile_606857(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606859 = header.getOrDefault("X-Amz-Target")
   valid_606859 = validateParameter(valid_606859, JString, required = true, default = newJString(
       "SageMaker.DeleteUserProfile"))
@@ -5426,8 +5334,6 @@ proc validate_DeleteWorkteam_606872(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606874 = header.getOrDefault("X-Amz-Target")
   valid_606874 = validateParameter(valid_606874, JString, required = true, default = newJString(
       "SageMaker.DeleteWorkteam"))
@@ -5540,8 +5446,6 @@ proc validate_DescribeAlgorithm_606887(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606889 = header.getOrDefault("X-Amz-Target")
   valid_606889 = validateParameter(valid_606889, JString, required = true, default = newJString(
       "SageMaker.DescribeAlgorithm"))
@@ -5653,8 +5557,6 @@ proc validate_DescribeApp_606902(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606904 = header.getOrDefault("X-Amz-Target")
   valid_606904 = validateParameter(valid_606904, JString, required = true,
                                  default = newJString("SageMaker.DescribeApp"))
@@ -5768,8 +5670,6 @@ proc validate_DescribeAutoMLJob_606917(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606919 = header.getOrDefault("X-Amz-Target")
   valid_606919 = validateParameter(valid_606919, JString, required = true, default = newJString(
       "SageMaker.DescribeAutoMLJob"))
@@ -5881,8 +5781,6 @@ proc validate_DescribeCodeRepository_606932(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606934 = header.getOrDefault("X-Amz-Target")
   valid_606934 = validateParameter(valid_606934, JString, required = true, default = newJString(
       "SageMaker.DescribeCodeRepository"))
@@ -5995,8 +5893,6 @@ proc validate_DescribeCompilationJob_606947(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606949 = header.getOrDefault("X-Amz-Target")
   valid_606949 = validateParameter(valid_606949, JString, required = true, default = newJString(
       "SageMaker.DescribeCompilationJob"))
@@ -6110,8 +6006,6 @@ proc validate_DescribeDomain_606962(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606964 = header.getOrDefault("X-Amz-Target")
   valid_606964 = validateParameter(valid_606964, JString, required = true, default = newJString(
       "SageMaker.DescribeDomain"))
@@ -6224,8 +6118,6 @@ proc validate_DescribeEndpoint_606977(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606979 = header.getOrDefault("X-Amz-Target")
   valid_606979 = validateParameter(valid_606979, JString, required = true, default = newJString(
       "SageMaker.DescribeEndpoint"))
@@ -6337,8 +6229,6 @@ proc validate_DescribeEndpointConfig_606992(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606994 = header.getOrDefault("X-Amz-Target")
   valid_606994 = validateParameter(valid_606994, JString, required = true, default = newJString(
       "SageMaker.DescribeEndpointConfig"))
@@ -6452,8 +6342,6 @@ proc validate_DescribeExperiment_607007(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607009 = header.getOrDefault("X-Amz-Target")
   valid_607009 = validateParameter(valid_607009, JString, required = true, default = newJString(
       "SageMaker.DescribeExperiment"))
@@ -6566,8 +6454,6 @@ proc validate_DescribeFlowDefinition_607022(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607024 = header.getOrDefault("X-Amz-Target")
   valid_607024 = validateParameter(valid_607024, JString, required = true, default = newJString(
       "SageMaker.DescribeFlowDefinition"))
@@ -6681,8 +6567,6 @@ proc validate_DescribeHumanTaskUi_607037(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607039 = header.getOrDefault("X-Amz-Target")
   valid_607039 = validateParameter(valid_607039, JString, required = true, default = newJString(
       "SageMaker.DescribeHumanTaskUi"))
@@ -6795,8 +6679,6 @@ proc validate_DescribeHyperParameterTuningJob_607052(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607054 = header.getOrDefault("X-Amz-Target")
   valid_607054 = validateParameter(valid_607054, JString, required = true, default = newJString(
       "SageMaker.DescribeHyperParameterTuningJob"))
@@ -6912,8 +6794,6 @@ proc validate_DescribeLabelingJob_607067(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607069 = header.getOrDefault("X-Amz-Target")
   valid_607069 = validateParameter(valid_607069, JString, required = true, default = newJString(
       "SageMaker.DescribeLabelingJob"))
@@ -7026,8 +6906,6 @@ proc validate_DescribeModel_607082(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607084 = header.getOrDefault("X-Amz-Target")
   valid_607084 = validateParameter(valid_607084, JString, required = true, default = newJString(
       "SageMaker.DescribeModel"))
@@ -7139,8 +7017,6 @@ proc validate_DescribeModelPackage_607097(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607099 = header.getOrDefault("X-Amz-Target")
   valid_607099 = validateParameter(valid_607099, JString, required = true, default = newJString(
       "SageMaker.DescribeModelPackage"))
@@ -7253,8 +7129,6 @@ proc validate_DescribeMonitoringSchedule_607112(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607114 = header.getOrDefault("X-Amz-Target")
   valid_607114 = validateParameter(valid_607114, JString, required = true, default = newJString(
       "SageMaker.DescribeMonitoringSchedule"))
@@ -7369,8 +7243,6 @@ proc validate_DescribeNotebookInstance_607127(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607129 = header.getOrDefault("X-Amz-Target")
   valid_607129 = validateParameter(valid_607129, JString, required = true, default = newJString(
       "SageMaker.DescribeNotebookInstance"))
@@ -7483,8 +7355,6 @@ proc validate_DescribeNotebookInstanceLifecycleConfig_607142(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607144 = header.getOrDefault("X-Amz-Target")
   valid_607144 = validateParameter(valid_607144, JString, required = true, default = newJString(
       "SageMaker.DescribeNotebookInstanceLifecycleConfig"))
@@ -7600,8 +7470,6 @@ proc validate_DescribeProcessingJob_607157(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607159 = header.getOrDefault("X-Amz-Target")
   valid_607159 = validateParameter(valid_607159, JString, required = true, default = newJString(
       "SageMaker.DescribeProcessingJob"))
@@ -7714,8 +7582,6 @@ proc validate_DescribeSubscribedWorkteam_607172(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607174 = header.getOrDefault("X-Amz-Target")
   valid_607174 = validateParameter(valid_607174, JString, required = true, default = newJString(
       "SageMaker.DescribeSubscribedWorkteam"))
@@ -7830,8 +7696,6 @@ proc validate_DescribeTrainingJob_607187(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607189 = header.getOrDefault("X-Amz-Target")
   valid_607189 = validateParameter(valid_607189, JString, required = true, default = newJString(
       "SageMaker.DescribeTrainingJob"))
@@ -7944,8 +7808,6 @@ proc validate_DescribeTransformJob_607202(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607204 = header.getOrDefault("X-Amz-Target")
   valid_607204 = validateParameter(valid_607204, JString, required = true, default = newJString(
       "SageMaker.DescribeTransformJob"))
@@ -8058,8 +7920,6 @@ proc validate_DescribeTrial_607217(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607219 = header.getOrDefault("X-Amz-Target")
   valid_607219 = validateParameter(valid_607219, JString, required = true, default = newJString(
       "SageMaker.DescribeTrial"))
@@ -8171,8 +8031,6 @@ proc validate_DescribeTrialComponent_607232(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607234 = header.getOrDefault("X-Amz-Target")
   valid_607234 = validateParameter(valid_607234, JString, required = true, default = newJString(
       "SageMaker.DescribeTrialComponent"))
@@ -8286,8 +8144,6 @@ proc validate_DescribeUserProfile_607247(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607249 = header.getOrDefault("X-Amz-Target")
   valid_607249 = validateParameter(valid_607249, JString, required = true, default = newJString(
       "SageMaker.DescribeUserProfile"))
@@ -8401,8 +8257,6 @@ proc validate_DescribeWorkforce_607262(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607264 = header.getOrDefault("X-Amz-Target")
   valid_607264 = validateParameter(valid_607264, JString, required = true, default = newJString(
       "SageMaker.DescribeWorkforce"))
@@ -8515,8 +8369,6 @@ proc validate_DescribeWorkteam_607277(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607279 = header.getOrDefault("X-Amz-Target")
   valid_607279 = validateParameter(valid_607279, JString, required = true, default = newJString(
       "SageMaker.DescribeWorkteam"))
@@ -8628,8 +8480,6 @@ proc validate_DisassociateTrialComponent_607292(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607294 = header.getOrDefault("X-Amz-Target")
   valid_607294 = validateParameter(valid_607294, JString, required = true, default = newJString(
       "SageMaker.DisassociateTrialComponent"))
@@ -8743,8 +8593,6 @@ proc validate_GetSearchSuggestions_607307(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607309 = header.getOrDefault("X-Amz-Target")
   valid_607309 = validateParameter(valid_607309, JString, required = true, default = newJString(
       "SageMaker.GetSearchSuggestions"))
@@ -8873,8 +8721,6 @@ proc validate_ListAlgorithms_607322(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607326 = header.getOrDefault("X-Amz-Target")
   valid_607326 = validateParameter(valid_607326, JString, required = true, default = newJString(
       "SageMaker.ListAlgorithms"))
@@ -9009,8 +8855,6 @@ proc validate_ListApps_607341(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607345 = header.getOrDefault("X-Amz-Target")
   valid_607345 = validateParameter(valid_607345, JString, required = true,
                                  default = newJString("SageMaker.ListApps"))
@@ -9147,8 +8991,6 @@ proc validate_ListAutoMLJobs_607359(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607363 = header.getOrDefault("X-Amz-Target")
   valid_607363 = validateParameter(valid_607363, JString, required = true, default = newJString(
       "SageMaker.ListAutoMLJobs"))
@@ -9283,8 +9125,6 @@ proc validate_ListCandidatesForAutoMLJob_607377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607381 = header.getOrDefault("X-Amz-Target")
   valid_607381 = validateParameter(valid_607381, JString, required = true, default = newJString(
       "SageMaker.ListCandidatesForAutoMLJob"))
@@ -9421,8 +9261,6 @@ proc validate_ListCodeRepositories_607395(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607399 = header.getOrDefault("X-Amz-Target")
   valid_607399 = validateParameter(valid_607399, JString, required = true, default = newJString(
       "SageMaker.ListCodeRepositories"))
@@ -9559,8 +9397,6 @@ proc validate_ListCompilationJobs_607413(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607417 = header.getOrDefault("X-Amz-Target")
   valid_607417 = validateParameter(valid_607417, JString, required = true, default = newJString(
       "SageMaker.ListCompilationJobs"))
@@ -9696,8 +9532,6 @@ proc validate_ListDomains_607431(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607435 = header.getOrDefault("X-Amz-Target")
   valid_607435 = validateParameter(valid_607435, JString, required = true,
                                  default = newJString("SageMaker.ListDomains"))
@@ -9834,8 +9668,6 @@ proc validate_ListEndpointConfigs_607449(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607453 = header.getOrDefault("X-Amz-Target")
   valid_607453 = validateParameter(valid_607453, JString, required = true, default = newJString(
       "SageMaker.ListEndpointConfigs"))
@@ -9971,8 +9803,6 @@ proc validate_ListEndpoints_607467(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607471 = header.getOrDefault("X-Amz-Target")
   valid_607471 = validateParameter(valid_607471, JString, required = true, default = newJString(
       "SageMaker.ListEndpoints"))
@@ -10108,8 +9938,6 @@ proc validate_ListExperiments_607485(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607489 = header.getOrDefault("X-Amz-Target")
   valid_607489 = validateParameter(valid_607489, JString, required = true, default = newJString(
       "SageMaker.ListExperiments"))
@@ -10245,8 +10073,6 @@ proc validate_ListFlowDefinitions_607503(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607507 = header.getOrDefault("X-Amz-Target")
   valid_607507 = validateParameter(valid_607507, JString, required = true, default = newJString(
       "SageMaker.ListFlowDefinitions"))
@@ -10383,8 +10209,6 @@ proc validate_ListHumanTaskUis_607521(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607525 = header.getOrDefault("X-Amz-Target")
   valid_607525 = validateParameter(valid_607525, JString, required = true, default = newJString(
       "SageMaker.ListHumanTaskUis"))
@@ -10519,8 +10343,6 @@ proc validate_ListHyperParameterTuningJobs_607539(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607543 = header.getOrDefault("X-Amz-Target")
   valid_607543 = validateParameter(valid_607543, JString, required = true, default = newJString(
       "SageMaker.ListHyperParameterTuningJobs"))
@@ -10658,8 +10480,6 @@ proc validate_ListLabelingJobs_607557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607561 = header.getOrDefault("X-Amz-Target")
   valid_607561 = validateParameter(valid_607561, JString, required = true, default = newJString(
       "SageMaker.ListLabelingJobs"))
@@ -10794,8 +10614,6 @@ proc validate_ListLabelingJobsForWorkteam_607575(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607579 = header.getOrDefault("X-Amz-Target")
   valid_607579 = validateParameter(valid_607579, JString, required = true, default = newJString(
       "SageMaker.ListLabelingJobsForWorkteam"))
@@ -10933,8 +10751,6 @@ proc validate_ListModelPackages_607593(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607597 = header.getOrDefault("X-Amz-Target")
   valid_607597 = validateParameter(valid_607597, JString, required = true, default = newJString(
       "SageMaker.ListModelPackages"))
@@ -11069,8 +10885,6 @@ proc validate_ListModels_607611(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607615 = header.getOrDefault("X-Amz-Target")
   valid_607615 = validateParameter(valid_607615, JString, required = true,
                                  default = newJString("SageMaker.ListModels"))
@@ -11207,8 +11021,6 @@ proc validate_ListMonitoringExecutions_607629(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607633 = header.getOrDefault("X-Amz-Target")
   valid_607633 = validateParameter(valid_607633, JString, required = true, default = newJString(
       "SageMaker.ListMonitoringExecutions"))
@@ -11345,8 +11157,6 @@ proc validate_ListMonitoringSchedules_607647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607651 = header.getOrDefault("X-Amz-Target")
   valid_607651 = validateParameter(valid_607651, JString, required = true, default = newJString(
       "SageMaker.ListMonitoringSchedules"))
@@ -11482,8 +11292,6 @@ proc validate_ListNotebookInstanceLifecycleConfigs_607665(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607669 = header.getOrDefault("X-Amz-Target")
   valid_607669 = validateParameter(valid_607669, JString, required = true, default = newJString(
       "SageMaker.ListNotebookInstanceLifecycleConfigs"))
@@ -11621,8 +11429,6 @@ proc validate_ListNotebookInstances_607683(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607687 = header.getOrDefault("X-Amz-Target")
   valid_607687 = validateParameter(valid_607687, JString, required = true, default = newJString(
       "SageMaker.ListNotebookInstances"))
@@ -11759,8 +11565,6 @@ proc validate_ListProcessingJobs_607701(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607705 = header.getOrDefault("X-Amz-Target")
   valid_607705 = validateParameter(valid_607705, JString, required = true, default = newJString(
       "SageMaker.ListProcessingJobs"))
@@ -11897,8 +11701,6 @@ proc validate_ListSubscribedWorkteams_607719(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607723 = header.getOrDefault("X-Amz-Target")
   valid_607723 = validateParameter(valid_607723, JString, required = true, default = newJString(
       "SageMaker.ListSubscribedWorkteams"))
@@ -12034,8 +11836,6 @@ proc validate_ListTags_607737(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607741 = header.getOrDefault("X-Amz-Target")
   valid_607741 = validateParameter(valid_607741, JString, required = true,
                                  default = newJString("SageMaker.ListTags"))
@@ -12172,8 +11972,6 @@ proc validate_ListTrainingJobs_607755(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607759 = header.getOrDefault("X-Amz-Target")
   valid_607759 = validateParameter(valid_607759, JString, required = true, default = newJString(
       "SageMaker.ListTrainingJobs"))
@@ -12308,8 +12106,6 @@ proc validate_ListTrainingJobsForHyperParameterTuningJob_607773(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607777 = header.getOrDefault("X-Amz-Target")
   valid_607777 = validateParameter(valid_607777, JString, required = true, default = newJString(
       "SageMaker.ListTrainingJobsForHyperParameterTuningJob"))
@@ -12447,8 +12243,6 @@ proc validate_ListTransformJobs_607791(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607795 = header.getOrDefault("X-Amz-Target")
   valid_607795 = validateParameter(valid_607795, JString, required = true, default = newJString(
       "SageMaker.ListTransformJobs"))
@@ -12584,8 +12378,6 @@ proc validate_ListTrialComponents_607809(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607813 = header.getOrDefault("X-Amz-Target")
   valid_607813 = validateParameter(valid_607813, JString, required = true, default = newJString(
       "SageMaker.ListTrialComponents"))
@@ -12721,8 +12513,6 @@ proc validate_ListTrials_607827(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607831 = header.getOrDefault("X-Amz-Target")
   valid_607831 = validateParameter(valid_607831, JString, required = true,
                                  default = newJString("SageMaker.ListTrials"))
@@ -12859,8 +12649,6 @@ proc validate_ListUserProfiles_607845(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607849 = header.getOrDefault("X-Amz-Target")
   valid_607849 = validateParameter(valid_607849, JString, required = true, default = newJString(
       "SageMaker.ListUserProfiles"))
@@ -12995,8 +12783,6 @@ proc validate_ListWorkteams_607863(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607867 = header.getOrDefault("X-Amz-Target")
   valid_607867 = validateParameter(valid_607867, JString, required = true, default = newJString(
       "SageMaker.ListWorkteams"))
@@ -13117,8 +12903,6 @@ proc validate_RenderUiTemplate_607881(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607883 = header.getOrDefault("X-Amz-Target")
   valid_607883 = validateParameter(valid_607883, JString, required = true, default = newJString(
       "SageMaker.RenderUiTemplate"))
@@ -13245,8 +13029,6 @@ proc validate_Search_607896(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607900 = header.getOrDefault("X-Amz-Target")
   valid_607900 = validateParameter(valid_607900, JString, required = true,
                                  default = newJString("SageMaker.Search"))
@@ -13368,8 +13150,6 @@ proc validate_StartMonitoringSchedule_607914(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607916 = header.getOrDefault("X-Amz-Target")
   valid_607916 = validateParameter(valid_607916, JString, required = true, default = newJString(
       "SageMaker.StartMonitoringSchedule"))
@@ -13482,8 +13262,6 @@ proc validate_StartNotebookInstance_607929(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607931 = header.getOrDefault("X-Amz-Target")
   valid_607931 = validateParameter(valid_607931, JString, required = true, default = newJString(
       "SageMaker.StartNotebookInstance"))
@@ -13596,8 +13374,6 @@ proc validate_StopAutoMLJob_607944(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607946 = header.getOrDefault("X-Amz-Target")
   valid_607946 = validateParameter(valid_607946, JString, required = true, default = newJString(
       "SageMaker.StopAutoMLJob"))
@@ -13710,8 +13486,6 @@ proc validate_StopCompilationJob_607959(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607961 = header.getOrDefault("X-Amz-Target")
   valid_607961 = validateParameter(valid_607961, JString, required = true, default = newJString(
       "SageMaker.StopCompilationJob"))
@@ -13824,8 +13598,6 @@ proc validate_StopHyperParameterTuningJob_607974(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607976 = header.getOrDefault("X-Amz-Target")
   valid_607976 = validateParameter(valid_607976, JString, required = true, default = newJString(
       "SageMaker.StopHyperParameterTuningJob"))
@@ -13940,8 +13712,6 @@ proc validate_StopLabelingJob_607989(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607991 = header.getOrDefault("X-Amz-Target")
   valid_607991 = validateParameter(valid_607991, JString, required = true, default = newJString(
       "SageMaker.StopLabelingJob"))
@@ -14053,8 +13823,6 @@ proc validate_StopMonitoringSchedule_608004(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608006 = header.getOrDefault("X-Amz-Target")
   valid_608006 = validateParameter(valid_608006, JString, required = true, default = newJString(
       "SageMaker.StopMonitoringSchedule"))
@@ -14167,8 +13935,6 @@ proc validate_StopNotebookInstance_608019(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608021 = header.getOrDefault("X-Amz-Target")
   valid_608021 = validateParameter(valid_608021, JString, required = true, default = newJString(
       "SageMaker.StopNotebookInstance"))
@@ -14282,8 +14048,6 @@ proc validate_StopProcessingJob_608034(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608036 = header.getOrDefault("X-Amz-Target")
   valid_608036 = validateParameter(valid_608036, JString, required = true, default = newJString(
       "SageMaker.StopProcessingJob"))
@@ -14396,8 +14160,6 @@ proc validate_StopTrainingJob_608049(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608051 = header.getOrDefault("X-Amz-Target")
   valid_608051 = validateParameter(valid_608051, JString, required = true, default = newJString(
       "SageMaker.StopTrainingJob"))
@@ -14510,8 +14272,6 @@ proc validate_StopTransformJob_608064(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608066 = header.getOrDefault("X-Amz-Target")
   valid_608066 = validateParameter(valid_608066, JString, required = true, default = newJString(
       "SageMaker.StopTransformJob"))
@@ -14623,8 +14383,6 @@ proc validate_UpdateCodeRepository_608079(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608081 = header.getOrDefault("X-Amz-Target")
   valid_608081 = validateParameter(valid_608081, JString, required = true, default = newJString(
       "SageMaker.UpdateCodeRepository"))
@@ -14737,8 +14495,6 @@ proc validate_UpdateDomain_608094(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608096 = header.getOrDefault("X-Amz-Target")
   valid_608096 = validateParameter(valid_608096, JString, required = true,
                                  default = newJString("SageMaker.UpdateDomain"))
@@ -14851,8 +14607,6 @@ proc validate_UpdateEndpoint_608109(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608111 = header.getOrDefault("X-Amz-Target")
   valid_608111 = validateParameter(valid_608111, JString, required = true, default = newJString(
       "SageMaker.UpdateEndpoint"))
@@ -14964,8 +14718,6 @@ proc validate_UpdateEndpointWeightsAndCapacities_608124(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608126 = header.getOrDefault("X-Amz-Target")
   valid_608126 = validateParameter(valid_608126, JString, required = true, default = newJString(
       "SageMaker.UpdateEndpointWeightsAndCapacities"))
@@ -15082,8 +14834,6 @@ proc validate_UpdateExperiment_608139(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608141 = header.getOrDefault("X-Amz-Target")
   valid_608141 = validateParameter(valid_608141, JString, required = true, default = newJString(
       "SageMaker.UpdateExperiment"))
@@ -15196,8 +14946,6 @@ proc validate_UpdateMonitoringSchedule_608154(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608156 = header.getOrDefault("X-Amz-Target")
   valid_608156 = validateParameter(valid_608156, JString, required = true, default = newJString(
       "SageMaker.UpdateMonitoringSchedule"))
@@ -15310,8 +15058,6 @@ proc validate_UpdateNotebookInstance_608169(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608171 = header.getOrDefault("X-Amz-Target")
   valid_608171 = validateParameter(valid_608171, JString, required = true, default = newJString(
       "SageMaker.UpdateNotebookInstance"))
@@ -15424,8 +15170,6 @@ proc validate_UpdateNotebookInstanceLifecycleConfig_608184(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608186 = header.getOrDefault("X-Amz-Target")
   valid_608186 = validateParameter(valid_608186, JString, required = true, default = newJString(
       "SageMaker.UpdateNotebookInstanceLifecycleConfig"))
@@ -15541,8 +15285,6 @@ proc validate_UpdateTrial_608199(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608201 = header.getOrDefault("X-Amz-Target")
   valid_608201 = validateParameter(valid_608201, JString, required = true,
                                  default = newJString("SageMaker.UpdateTrial"))
@@ -15655,8 +15397,6 @@ proc validate_UpdateTrialComponent_608214(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608216 = header.getOrDefault("X-Amz-Target")
   valid_608216 = validateParameter(valid_608216, JString, required = true, default = newJString(
       "SageMaker.UpdateTrialComponent"))
@@ -15770,8 +15510,6 @@ proc validate_UpdateUserProfile_608229(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608231 = header.getOrDefault("X-Amz-Target")
   valid_608231 = validateParameter(valid_608231, JString, required = true, default = newJString(
       "SageMaker.UpdateUserProfile"))
@@ -15884,8 +15622,6 @@ proc validate_UpdateWorkforce_608244(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608246 = header.getOrDefault("X-Amz-Target")
   valid_608246 = validateParameter(valid_608246, JString, required = true, default = newJString(
       "SageMaker.UpdateWorkforce"))
@@ -15998,8 +15734,6 @@ proc validate_UpdateWorkteam_608259(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608261 = header.getOrDefault("X-Amz-Target")
   valid_608261 = validateParameter(valid_608261, JString, required = true, default = newJString(
       "SageMaker.UpdateWorkteam"))

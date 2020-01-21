@@ -177,8 +177,6 @@ proc validate_CancelCluster_605928(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.CancelCluster"))
@@ -290,8 +288,6 @@ proc validate_CancelJob_606197(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.CancelJob"))
@@ -403,8 +399,6 @@ proc validate_CreateAddress_606212(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.CreateAddress"))
@@ -516,8 +510,6 @@ proc validate_CreateCluster_606227(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.CreateCluster"))
@@ -629,8 +621,6 @@ proc validate_CreateJob_606242(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.CreateJob"))
@@ -743,8 +733,6 @@ proc validate_DescribeAddress_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.DescribeAddress"))
@@ -872,8 +860,6 @@ proc validate_DescribeAddresses_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606276 = header.getOrDefault("X-Amz-Target")
   valid_606276 = validateParameter(valid_606276, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.DescribeAddresses"))
@@ -993,8 +979,6 @@ proc validate_DescribeCluster_606291(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606293 = header.getOrDefault("X-Amz-Target")
   valid_606293 = validateParameter(valid_606293, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.DescribeCluster"))
@@ -1106,8 +1090,6 @@ proc validate_DescribeJob_606306(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606308 = header.getOrDefault("X-Amz-Target")
   valid_606308 = validateParameter(valid_606308, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.DescribeJob"))
@@ -1221,8 +1203,6 @@ proc validate_GetJobManifest_606321(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606323 = header.getOrDefault("X-Amz-Target")
   valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.GetJobManifest"))
@@ -1335,8 +1315,6 @@ proc validate_GetJobUnlockCode_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606338 = header.getOrDefault("X-Amz-Target")
   valid_606338 = validateParameter(valid_606338, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.GetJobUnlockCode"))
@@ -1449,8 +1427,6 @@ proc validate_GetSnowballUsage_606351(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606353 = header.getOrDefault("X-Amz-Target")
   valid_606353 = validateParameter(valid_606353, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.GetSnowballUsage"))
@@ -1563,8 +1539,6 @@ proc validate_GetSoftwareUpdates_606366(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606368 = header.getOrDefault("X-Amz-Target")
   valid_606368 = validateParameter(valid_606368, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.GetSoftwareUpdates"))
@@ -1677,8 +1651,6 @@ proc validate_ListClusterJobs_606381(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606383 = header.getOrDefault("X-Amz-Target")
   valid_606383 = validateParameter(valid_606383, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.ListClusterJobs"))
@@ -1790,8 +1762,6 @@ proc validate_ListClusters_606396(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606398 = header.getOrDefault("X-Amz-Target")
   valid_606398 = validateParameter(valid_606398, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.ListClusters"))
@@ -1903,8 +1873,6 @@ proc validate_ListCompatibleImages_606411(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606413 = header.getOrDefault("X-Amz-Target")
   valid_606413 = validateParameter(valid_606413, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.ListCompatibleImages"))
@@ -2031,8 +1999,6 @@ proc validate_ListJobs_606426(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606430 = header.getOrDefault("X-Amz-Target")
   valid_606430 = validateParameter(valid_606430, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.ListJobs"))
@@ -2152,8 +2118,6 @@ proc validate_UpdateCluster_606444(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606446 = header.getOrDefault("X-Amz-Target")
   valid_606446 = validateParameter(valid_606446, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.UpdateCluster"))
@@ -2265,8 +2229,6 @@ proc validate_UpdateJob_606459(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606461 = header.getOrDefault("X-Amz-Target")
   valid_606461 = validateParameter(valid_606461, JString, required = true, default = newJString(
       "AWSIESnowballJobManagementService.UpdateJob"))

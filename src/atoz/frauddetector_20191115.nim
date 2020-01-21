@@ -168,8 +168,6 @@ proc validate_BatchCreateVariable_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.BatchCreateVariable"))
@@ -283,8 +281,6 @@ proc validate_BatchGetVariable_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.BatchGetVariable"))
@@ -396,8 +392,6 @@ proc validate_CreateDetectorVersion_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.CreateDetectorVersion"))
@@ -511,8 +505,6 @@ proc validate_CreateModelVersion_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.CreateModelVersion"))
@@ -625,8 +617,6 @@ proc validate_CreateRule_606242(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.CreateRule"))
@@ -740,8 +730,6 @@ proc validate_CreateVariable_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.CreateVariable"))
@@ -853,8 +841,6 @@ proc validate_DeleteDetectorVersion_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.DeleteDetectorVersion"))
@@ -967,8 +953,6 @@ proc validate_DeleteEvent_606287(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.DeleteEvent"))
@@ -1082,8 +1066,6 @@ proc validate_DescribeDetector_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.DescribeDetector"))
@@ -1210,8 +1192,6 @@ proc validate_DescribeModelVersions_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606321 = header.getOrDefault("X-Amz-Target")
   valid_606321 = validateParameter(valid_606321, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.DescribeModelVersions"))
@@ -1333,8 +1313,6 @@ proc validate_GetDetectorVersion_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606338 = header.getOrDefault("X-Amz-Target")
   valid_606338 = validateParameter(valid_606338, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetDetectorVersion"))
@@ -1462,8 +1440,6 @@ proc validate_GetDetectors_606351(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606355 = header.getOrDefault("X-Amz-Target")
   valid_606355 = validateParameter(valid_606355, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetDetectors"))
@@ -1599,8 +1575,6 @@ proc validate_GetExternalModels_606369(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606373 = header.getOrDefault("X-Amz-Target")
   valid_606373 = validateParameter(valid_606373, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetExternalModels"))
@@ -1721,8 +1695,6 @@ proc validate_GetModelVersion_606387(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606389 = header.getOrDefault("X-Amz-Target")
   valid_606389 = validateParameter(valid_606389, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetModelVersion"))
@@ -1849,8 +1821,6 @@ proc validate_GetModels_606402(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606406 = header.getOrDefault("X-Amz-Target")
   valid_606406 = validateParameter(valid_606406, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetModels"))
@@ -1985,8 +1955,6 @@ proc validate_GetOutcomes_606420(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetOutcomes"))
@@ -2107,8 +2075,6 @@ proc validate_GetPrediction_606438(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606440 = header.getOrDefault("X-Amz-Target")
   valid_606440 = validateParameter(valid_606440, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetPrediction"))
@@ -2235,8 +2201,6 @@ proc validate_GetRules_606453(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606457 = header.getOrDefault("X-Amz-Target")
   valid_606457 = validateParameter(valid_606457, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetRules"))
@@ -2371,8 +2335,6 @@ proc validate_GetVariables_606471(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606475 = header.getOrDefault("X-Amz-Target")
   valid_606475 = validateParameter(valid_606475, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.GetVariables"))
@@ -2492,8 +2454,6 @@ proc validate_PutDetector_606489(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606491 = header.getOrDefault("X-Amz-Target")
   valid_606491 = validateParameter(valid_606491, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.PutDetector"))
@@ -2607,8 +2567,6 @@ proc validate_PutExternalModel_606504(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606506 = header.getOrDefault("X-Amz-Target")
   valid_606506 = validateParameter(valid_606506, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.PutExternalModel"))
@@ -2720,8 +2678,6 @@ proc validate_PutModel_606519(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606521 = header.getOrDefault("X-Amz-Target")
   valid_606521 = validateParameter(valid_606521, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.PutModel"))
@@ -2833,8 +2789,6 @@ proc validate_PutOutcome_606534(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606536 = header.getOrDefault("X-Amz-Target")
   valid_606536 = validateParameter(valid_606536, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.PutOutcome"))
@@ -2947,8 +2901,6 @@ proc validate_UpdateDetectorVersion_606549(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606551 = header.getOrDefault("X-Amz-Target")
   valid_606551 = validateParameter(valid_606551, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.UpdateDetectorVersion"))
@@ -3061,8 +3013,6 @@ proc validate_UpdateDetectorVersionMetadata_606564(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606566 = header.getOrDefault("X-Amz-Target")
   valid_606566 = validateParameter(valid_606566, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.UpdateDetectorVersionMetadata"))
@@ -3175,8 +3125,6 @@ proc validate_UpdateDetectorVersionStatus_606579(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606581 = header.getOrDefault("X-Amz-Target")
   valid_606581 = validateParameter(valid_606581, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.UpdateDetectorVersionStatus"))
@@ -3290,8 +3238,6 @@ proc validate_UpdateModelVersion_606594(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606596 = header.getOrDefault("X-Amz-Target")
   valid_606596 = validateParameter(valid_606596, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.UpdateModelVersion"))
@@ -3405,8 +3351,6 @@ proc validate_UpdateRuleMetadata_606609(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606611 = header.getOrDefault("X-Amz-Target")
   valid_606611 = validateParameter(valid_606611, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.UpdateRuleMetadata"))
@@ -3520,8 +3464,6 @@ proc validate_UpdateRuleVersion_606624(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606626 = header.getOrDefault("X-Amz-Target")
   valid_606626 = validateParameter(valid_606626, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.UpdateRuleVersion"))
@@ -3634,8 +3576,6 @@ proc validate_UpdateVariable_606639(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606641 = header.getOrDefault("X-Amz-Target")
   valid_606641 = validateParameter(valid_606641, JString, required = true, default = newJString(
       "AWSHawksNestServiceFacade.UpdateVariable"))

@@ -167,8 +167,6 @@ proc validate_CreateLicenseConfiguration_605912(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606038 = header.getOrDefault("X-Amz-Target")
   valid_606038 = validateParameter(valid_606038, JString, required = true, default = newJString(
       "AWSLicenseManager.CreateLicenseConfiguration"))
@@ -282,8 +280,6 @@ proc validate_DeleteLicenseConfiguration_606181(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606183 = header.getOrDefault("X-Amz-Target")
   valid_606183 = validateParameter(valid_606183, JString, required = true, default = newJString(
       "AWSLicenseManager.DeleteLicenseConfiguration"))
@@ -398,8 +394,6 @@ proc validate_GetLicenseConfiguration_606196(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606198 = header.getOrDefault("X-Amz-Target")
   valid_606198 = validateParameter(valid_606198, JString, required = true, default = newJString(
       "AWSLicenseManager.GetLicenseConfiguration"))
@@ -513,8 +507,6 @@ proc validate_GetServiceSettings_606211(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606213 = header.getOrDefault("X-Amz-Target")
   valid_606213 = validateParameter(valid_606213, JString, required = true, default = newJString(
       "AWSLicenseManager.GetServiceSettings"))
@@ -627,8 +619,6 @@ proc validate_ListAssociationsForLicenseConfiguration_606226(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606228 = header.getOrDefault("X-Amz-Target")
   valid_606228 = validateParameter(valid_606228, JString, required = true, default = newJString(
       "AWSLicenseManager.ListAssociationsForLicenseConfiguration"))
@@ -744,8 +734,6 @@ proc validate_ListFailuresForLicenseConfigurationOperations_606241(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606243 = header.getOrDefault("X-Amz-Target")
   valid_606243 = validateParameter(valid_606243, JString, required = true, default = newJString(
       "AWSLicenseManager.ListFailuresForLicenseConfigurationOperations"))
@@ -860,8 +848,6 @@ proc validate_ListLicenseConfigurations_606256(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606258 = header.getOrDefault("X-Amz-Target")
   valid_606258 = validateParameter(valid_606258, JString, required = true, default = newJString(
       "AWSLicenseManager.ListLicenseConfigurations"))
@@ -975,8 +961,6 @@ proc validate_ListLicenseSpecificationsForResource_606271(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606273 = header.getOrDefault("X-Amz-Target")
   valid_606273 = validateParameter(valid_606273, JString, required = true, default = newJString(
       "AWSLicenseManager.ListLicenseSpecificationsForResource"))
@@ -1091,8 +1075,6 @@ proc validate_ListResourceInventory_606286(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606288 = header.getOrDefault("X-Amz-Target")
   valid_606288 = validateParameter(valid_606288, JString, required = true, default = newJString(
       "AWSLicenseManager.ListResourceInventory"))
@@ -1206,8 +1188,6 @@ proc validate_ListTagsForResource_606301(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606303 = header.getOrDefault("X-Amz-Target")
   valid_606303 = validateParameter(valid_606303, JString, required = true, default = newJString(
       "AWSLicenseManager.ListTagsForResource"))
@@ -1320,8 +1300,6 @@ proc validate_ListUsageForLicenseConfiguration_606316(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606318 = header.getOrDefault("X-Amz-Target")
   valid_606318 = validateParameter(valid_606318, JString, required = true, default = newJString(
       "AWSLicenseManager.ListUsageForLicenseConfiguration"))
@@ -1437,8 +1415,6 @@ proc validate_TagResource_606331(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606333 = header.getOrDefault("X-Amz-Target")
   valid_606333 = validateParameter(valid_606333, JString, required = true, default = newJString(
       "AWSLicenseManager.TagResource"))
@@ -1551,8 +1527,6 @@ proc validate_UntagResource_606346(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606348 = header.getOrDefault("X-Amz-Target")
   valid_606348 = validateParameter(valid_606348, JString, required = true, default = newJString(
       "AWSLicenseManager.UntagResource"))
@@ -1664,8 +1638,6 @@ proc validate_UpdateLicenseConfiguration_606361(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606363 = header.getOrDefault("X-Amz-Target")
   valid_606363 = validateParameter(valid_606363, JString, required = true, default = newJString(
       "AWSLicenseManager.UpdateLicenseConfiguration"))
@@ -1779,8 +1751,6 @@ proc validate_UpdateLicenseSpecificationsForResource_606376(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606378 = header.getOrDefault("X-Amz-Target")
   valid_606378 = validateParameter(valid_606378, JString, required = true, default = newJString(
       "AWSLicenseManager.UpdateLicenseSpecificationsForResource"))
@@ -1895,8 +1865,6 @@ proc validate_UpdateServiceSettings_606391(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606393 = header.getOrDefault("X-Amz-Target")
   valid_606393 = validateParameter(valid_606393, JString, required = true, default = newJString(
       "AWSLicenseManager.UpdateServiceSettings"))

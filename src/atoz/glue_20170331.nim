@@ -182,8 +182,6 @@ proc validate_BatchCreatePartition_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSGlue.BatchCreatePartition"))
@@ -296,8 +294,6 @@ proc validate_BatchDeleteConnection_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSGlue.BatchDeleteConnection"))
@@ -410,8 +406,6 @@ proc validate_BatchDeletePartition_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSGlue.BatchDeletePartition"))
@@ -525,8 +519,6 @@ proc validate_BatchDeleteTable_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSGlue.BatchDeleteTable"))
@@ -639,8 +631,6 @@ proc validate_BatchDeleteTableVersion_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSGlue.BatchDeleteTableVersion"))
@@ -754,8 +744,6 @@ proc validate_BatchGetCrawlers_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSGlue.BatchGetCrawlers"))
@@ -867,8 +855,6 @@ proc validate_BatchGetDevEndpoints_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSGlue.BatchGetDevEndpoints"))
@@ -981,8 +967,6 @@ proc validate_BatchGetJobs_606287(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true,
                                  default = newJString("AWSGlue.BatchGetJobs"))
@@ -1095,8 +1079,6 @@ proc validate_BatchGetPartition_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSGlue.BatchGetPartition"))
@@ -1209,8 +1191,6 @@ proc validate_BatchGetTriggers_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AWSGlue.BatchGetTriggers"))
@@ -1323,8 +1303,6 @@ proc validate_BatchGetWorkflows_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "AWSGlue.BatchGetWorkflows"))
@@ -1437,8 +1415,6 @@ proc validate_BatchStopJobRun_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "AWSGlue.BatchStopJobRun"))
@@ -1551,8 +1527,6 @@ proc validate_CancelMLTaskRun_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "AWSGlue.CancelMLTaskRun"))
@@ -1665,8 +1639,6 @@ proc validate_CreateClassifier_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "AWSGlue.CreateClassifier"))
@@ -1779,8 +1751,6 @@ proc validate_CreateConnection_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "AWSGlue.CreateConnection"))
@@ -1892,8 +1862,6 @@ proc validate_CreateCrawler_606407(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true,
                                  default = newJString("AWSGlue.CreateCrawler"))
@@ -2006,8 +1974,6 @@ proc validate_CreateDatabase_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true,
                                  default = newJString("AWSGlue.CreateDatabase"))
@@ -2120,8 +2086,6 @@ proc validate_CreateDevEndpoint_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "AWSGlue.CreateDevEndpoint"))
@@ -2233,8 +2197,6 @@ proc validate_CreateJob_606452(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true,
                                  default = newJString("AWSGlue.CreateJob"))
@@ -2348,8 +2310,6 @@ proc validate_CreateMLTransform_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "AWSGlue.CreateMLTransform"))
@@ -2462,8 +2422,6 @@ proc validate_CreatePartition_606482(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "AWSGlue.CreatePartition"))
@@ -2575,8 +2533,6 @@ proc validate_CreateScript_606497(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true,
                                  default = newJString("AWSGlue.CreateScript"))
@@ -2688,8 +2644,6 @@ proc validate_CreateSecurityConfiguration_606512(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "AWSGlue.CreateSecurityConfiguration"))
@@ -2803,8 +2757,6 @@ proc validate_CreateTable_606527(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true,
                                  default = newJString("AWSGlue.CreateTable"))
@@ -2917,8 +2869,6 @@ proc validate_CreateTrigger_606542(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true,
                                  default = newJString("AWSGlue.CreateTrigger"))
@@ -3030,8 +2980,6 @@ proc validate_CreateUserDefinedFunction_606557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "AWSGlue.CreateUserDefinedFunction"))
@@ -3146,8 +3094,6 @@ proc validate_CreateWorkflow_606572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true,
                                  default = newJString("AWSGlue.CreateWorkflow"))
@@ -3260,8 +3206,6 @@ proc validate_DeleteClassifier_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "AWSGlue.DeleteClassifier"))
@@ -3374,8 +3318,6 @@ proc validate_DeleteConnection_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "AWSGlue.DeleteConnection"))
@@ -3487,8 +3429,6 @@ proc validate_DeleteCrawler_606617(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true,
                                  default = newJString("AWSGlue.DeleteCrawler"))
@@ -3601,8 +3541,6 @@ proc validate_DeleteDatabase_606632(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true,
                                  default = newJString("AWSGlue.DeleteDatabase"))
@@ -3715,8 +3653,6 @@ proc validate_DeleteDevEndpoint_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "AWSGlue.DeleteDevEndpoint"))
@@ -3828,8 +3764,6 @@ proc validate_DeleteJob_606662(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true,
                                  default = newJString("AWSGlue.DeleteJob"))
@@ -3943,8 +3877,6 @@ proc validate_DeleteMLTransform_606677(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "AWSGlue.DeleteMLTransform"))
@@ -4057,8 +3989,6 @@ proc validate_DeletePartition_606692(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "AWSGlue.DeletePartition"))
@@ -4170,8 +4100,6 @@ proc validate_DeleteResourcePolicy_606707(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "AWSGlue.DeleteResourcePolicy"))
@@ -4284,8 +4212,6 @@ proc validate_DeleteSecurityConfiguration_606722(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "AWSGlue.DeleteSecurityConfiguration"))
@@ -4399,8 +4325,6 @@ proc validate_DeleteTable_606737(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true,
                                  default = newJString("AWSGlue.DeleteTable"))
@@ -4514,8 +4438,6 @@ proc validate_DeleteTableVersion_606752(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606754 = header.getOrDefault("X-Amz-Target")
   valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
       "AWSGlue.DeleteTableVersion"))
@@ -4628,8 +4550,6 @@ proc validate_DeleteTrigger_606767(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true,
                                  default = newJString("AWSGlue.DeleteTrigger"))
@@ -4741,8 +4661,6 @@ proc validate_DeleteUserDefinedFunction_606782(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606784 = header.getOrDefault("X-Amz-Target")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "AWSGlue.DeleteUserDefinedFunction"))
@@ -4857,8 +4775,6 @@ proc validate_DeleteWorkflow_606797(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606799 = header.getOrDefault("X-Amz-Target")
   valid_606799 = validateParameter(valid_606799, JString, required = true,
                                  default = newJString("AWSGlue.DeleteWorkflow"))
@@ -4970,8 +4886,6 @@ proc validate_GetCatalogImportStatus_606812(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606814 = header.getOrDefault("X-Amz-Target")
   valid_606814 = validateParameter(valid_606814, JString, required = true, default = newJString(
       "AWSGlue.GetCatalogImportStatus"))
@@ -5084,8 +4998,6 @@ proc validate_GetClassifier_606827(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606829 = header.getOrDefault("X-Amz-Target")
   valid_606829 = validateParameter(valid_606829, JString, required = true,
                                  default = newJString("AWSGlue.GetClassifier"))
@@ -5213,8 +5125,6 @@ proc validate_GetClassifiers_606842(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606846 = header.getOrDefault("X-Amz-Target")
   valid_606846 = validateParameter(valid_606846, JString, required = true,
                                  default = newJString("AWSGlue.GetClassifiers"))
@@ -5334,8 +5244,6 @@ proc validate_GetConnection_606861(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606863 = header.getOrDefault("X-Amz-Target")
   valid_606863 = validateParameter(valid_606863, JString, required = true,
                                  default = newJString("AWSGlue.GetConnection"))
@@ -5463,8 +5371,6 @@ proc validate_GetConnections_606876(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606880 = header.getOrDefault("X-Amz-Target")
   valid_606880 = validateParameter(valid_606880, JString, required = true,
                                  default = newJString("AWSGlue.GetConnections"))
@@ -5584,8 +5490,6 @@ proc validate_GetCrawler_606894(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606896 = header.getOrDefault("X-Amz-Target")
   valid_606896 = validateParameter(valid_606896, JString, required = true,
                                  default = newJString("AWSGlue.GetCrawler"))
@@ -5714,8 +5618,6 @@ proc validate_GetCrawlerMetrics_606909(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606913 = header.getOrDefault("X-Amz-Target")
   valid_606913 = validateParameter(valid_606913, JString, required = true, default = newJString(
       "AWSGlue.GetCrawlerMetrics"))
@@ -5850,8 +5752,6 @@ proc validate_GetCrawlers_606927(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606931 = header.getOrDefault("X-Amz-Target")
   valid_606931 = validateParameter(valid_606931, JString, required = true,
                                  default = newJString("AWSGlue.GetCrawlers"))
@@ -5972,8 +5872,6 @@ proc validate_GetDataCatalogEncryptionSettings_606945(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606947 = header.getOrDefault("X-Amz-Target")
   valid_606947 = validateParameter(valid_606947, JString, required = true, default = newJString(
       "AWSGlue.GetDataCatalogEncryptionSettings"))
@@ -6089,8 +5987,6 @@ proc validate_GetDatabase_606960(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606962 = header.getOrDefault("X-Amz-Target")
   valid_606962 = validateParameter(valid_606962, JString, required = true,
                                  default = newJString("AWSGlue.GetDatabase"))
@@ -6218,8 +6114,6 @@ proc validate_GetDatabases_606975(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606979 = header.getOrDefault("X-Amz-Target")
   valid_606979 = validateParameter(valid_606979, JString, required = true,
                                  default = newJString("AWSGlue.GetDatabases"))
@@ -6340,8 +6234,6 @@ proc validate_GetDataflowGraph_606993(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606995 = header.getOrDefault("X-Amz-Target")
   valid_606995 = validateParameter(valid_606995, JString, required = true, default = newJString(
       "AWSGlue.GetDataflowGraph"))
@@ -6454,8 +6346,6 @@ proc validate_GetDevEndpoint_607008(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607010 = header.getOrDefault("X-Amz-Target")
   valid_607010 = validateParameter(valid_607010, JString, required = true,
                                  default = newJString("AWSGlue.GetDevEndpoint"))
@@ -6583,8 +6473,6 @@ proc validate_GetDevEndpoints_607023(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607027 = header.getOrDefault("X-Amz-Target")
   valid_607027 = validateParameter(valid_607027, JString, required = true, default = newJString(
       "AWSGlue.GetDevEndpoints"))
@@ -6704,8 +6592,6 @@ proc validate_GetJob_607041(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607043 = header.getOrDefault("X-Amz-Target")
   valid_607043 = validateParameter(valid_607043, JString, required = true,
                                  default = newJString("AWSGlue.GetJob"))
@@ -6819,8 +6705,6 @@ proc validate_GetJobBookmark_607056(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607058 = header.getOrDefault("X-Amz-Target")
   valid_607058 = validateParameter(valid_607058, JString, required = true,
                                  default = newJString("AWSGlue.GetJobBookmark"))
@@ -6932,8 +6816,6 @@ proc validate_GetJobRun_607071(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607073 = header.getOrDefault("X-Amz-Target")
   valid_607073 = validateParameter(valid_607073, JString, required = true,
                                  default = newJString("AWSGlue.GetJobRun"))
@@ -7061,8 +6943,6 @@ proc validate_GetJobRuns_607086(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607090 = header.getOrDefault("X-Amz-Target")
   valid_607090 = validateParameter(valid_607090, JString, required = true,
                                  default = newJString("AWSGlue.GetJobRuns"))
@@ -7198,8 +7078,6 @@ proc validate_GetJobs_607104(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607108 = header.getOrDefault("X-Amz-Target")
   valid_607108 = validateParameter(valid_607108, JString, required = true,
                                  default = newJString("AWSGlue.GetJobs"))
@@ -7320,8 +7198,6 @@ proc validate_GetMLTaskRun_607122(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607124 = header.getOrDefault("X-Amz-Target")
   valid_607124 = validateParameter(valid_607124, JString, required = true,
                                  default = newJString("AWSGlue.GetMLTaskRun"))
@@ -7448,8 +7324,6 @@ proc validate_GetMLTaskRuns_607137(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607141 = header.getOrDefault("X-Amz-Target")
   valid_607141 = validateParameter(valid_607141, JString, required = true,
                                  default = newJString("AWSGlue.GetMLTaskRuns"))
@@ -7570,8 +7444,6 @@ proc validate_GetMLTransform_607155(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607157 = header.getOrDefault("X-Amz-Target")
   valid_607157 = validateParameter(valid_607157, JString, required = true,
                                  default = newJString("AWSGlue.GetMLTransform"))
@@ -7699,8 +7571,6 @@ proc validate_GetMLTransforms_607170(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607174 = header.getOrDefault("X-Amz-Target")
   valid_607174 = validateParameter(valid_607174, JString, required = true, default = newJString(
       "AWSGlue.GetMLTransforms"))
@@ -7820,8 +7690,6 @@ proc validate_GetMapping_607188(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607190 = header.getOrDefault("X-Amz-Target")
   valid_607190 = validateParameter(valid_607190, JString, required = true,
                                  default = newJString("AWSGlue.GetMapping"))
@@ -7934,8 +7802,6 @@ proc validate_GetPartition_607203(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607205 = header.getOrDefault("X-Amz-Target")
   valid_607205 = validateParameter(valid_607205, JString, required = true,
                                  default = newJString("AWSGlue.GetPartition"))
@@ -8062,8 +7928,6 @@ proc validate_GetPartitions_607218(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607222 = header.getOrDefault("X-Amz-Target")
   valid_607222 = validateParameter(valid_607222, JString, required = true,
                                  default = newJString("AWSGlue.GetPartitions"))
@@ -8183,8 +8047,6 @@ proc validate_GetPlan_607236(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607238 = header.getOrDefault("X-Amz-Target")
   valid_607238 = validateParameter(valid_607238, JString, required = true,
                                  default = newJString("AWSGlue.GetPlan"))
@@ -8298,8 +8160,6 @@ proc validate_GetResourcePolicy_607251(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607253 = header.getOrDefault("X-Amz-Target")
   valid_607253 = validateParameter(valid_607253, JString, required = true, default = newJString(
       "AWSGlue.GetResourcePolicy"))
@@ -8412,8 +8272,6 @@ proc validate_GetSecurityConfiguration_607266(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607268 = header.getOrDefault("X-Amz-Target")
   valid_607268 = validateParameter(valid_607268, JString, required = true, default = newJString(
       "AWSGlue.GetSecurityConfiguration"))
@@ -8541,8 +8399,6 @@ proc validate_GetSecurityConfigurations_607281(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607285 = header.getOrDefault("X-Amz-Target")
   valid_607285 = validateParameter(valid_607285, JString, required = true, default = newJString(
       "AWSGlue.GetSecurityConfigurations"))
@@ -8664,8 +8520,6 @@ proc validate_GetTable_607299(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607301 = header.getOrDefault("X-Amz-Target")
   valid_607301 = validateParameter(valid_607301, JString, required = true,
                                  default = newJString("AWSGlue.GetTable"))
@@ -8779,8 +8633,6 @@ proc validate_GetTableVersion_607314(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607316 = header.getOrDefault("X-Amz-Target")
   valid_607316 = validateParameter(valid_607316, JString, required = true, default = newJString(
       "AWSGlue.GetTableVersion"))
@@ -8908,8 +8760,6 @@ proc validate_GetTableVersions_607329(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607333 = header.getOrDefault("X-Amz-Target")
   valid_607333 = validateParameter(valid_607333, JString, required = true, default = newJString(
       "AWSGlue.GetTableVersions"))
@@ -9044,8 +8894,6 @@ proc validate_GetTables_607347(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607351 = header.getOrDefault("X-Amz-Target")
   valid_607351 = validateParameter(valid_607351, JString, required = true,
                                  default = newJString("AWSGlue.GetTables"))
@@ -9166,8 +9014,6 @@ proc validate_GetTags_607365(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607367 = header.getOrDefault("X-Amz-Target")
   valid_607367 = validateParameter(valid_607367, JString, required = true,
                                  default = newJString("AWSGlue.GetTags"))
@@ -9280,8 +9126,6 @@ proc validate_GetTrigger_607380(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607382 = header.getOrDefault("X-Amz-Target")
   valid_607382 = validateParameter(valid_607382, JString, required = true,
                                  default = newJString("AWSGlue.GetTrigger"))
@@ -9409,8 +9253,6 @@ proc validate_GetTriggers_607395(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607399 = header.getOrDefault("X-Amz-Target")
   valid_607399 = validateParameter(valid_607399, JString, required = true,
                                  default = newJString("AWSGlue.GetTriggers"))
@@ -9531,8 +9373,6 @@ proc validate_GetUserDefinedFunction_607413(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607415 = header.getOrDefault("X-Amz-Target")
   valid_607415 = validateParameter(valid_607415, JString, required = true, default = newJString(
       "AWSGlue.GetUserDefinedFunction"))
@@ -9661,8 +9501,6 @@ proc validate_GetUserDefinedFunctions_607428(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607432 = header.getOrDefault("X-Amz-Target")
   valid_607432 = validateParameter(valid_607432, JString, required = true, default = newJString(
       "AWSGlue.GetUserDefinedFunctions"))
@@ -9783,8 +9621,6 @@ proc validate_GetWorkflow_607446(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607448 = header.getOrDefault("X-Amz-Target")
   valid_607448 = validateParameter(valid_607448, JString, required = true,
                                  default = newJString("AWSGlue.GetWorkflow"))
@@ -9898,8 +9734,6 @@ proc validate_GetWorkflowRun_607461(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607463 = header.getOrDefault("X-Amz-Target")
   valid_607463 = validateParameter(valid_607463, JString, required = true,
                                  default = newJString("AWSGlue.GetWorkflowRun"))
@@ -10012,8 +9846,6 @@ proc validate_GetWorkflowRunProperties_607476(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607478 = header.getOrDefault("X-Amz-Target")
   valid_607478 = validateParameter(valid_607478, JString, required = true, default = newJString(
       "AWSGlue.GetWorkflowRunProperties"))
@@ -10142,8 +9974,6 @@ proc validate_GetWorkflowRuns_607491(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607495 = header.getOrDefault("X-Amz-Target")
   valid_607495 = validateParameter(valid_607495, JString, required = true, default = newJString(
       "AWSGlue.GetWorkflowRuns"))
@@ -10264,8 +10094,6 @@ proc validate_ImportCatalogToGlue_607509(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607511 = header.getOrDefault("X-Amz-Target")
   valid_607511 = validateParameter(valid_607511, JString, required = true, default = newJString(
       "AWSGlue.ImportCatalogToGlue"))
@@ -10393,8 +10221,6 @@ proc validate_ListCrawlers_607524(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607528 = header.getOrDefault("X-Amz-Target")
   valid_607528 = validateParameter(valid_607528, JString, required = true,
                                  default = newJString("AWSGlue.ListCrawlers"))
@@ -10530,8 +10356,6 @@ proc validate_ListDevEndpoints_607542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607546 = header.getOrDefault("X-Amz-Target")
   valid_607546 = validateParameter(valid_607546, JString, required = true, default = newJString(
       "AWSGlue.ListDevEndpoints"))
@@ -10666,8 +10490,6 @@ proc validate_ListJobs_607560(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607564 = header.getOrDefault("X-Amz-Target")
   valid_607564 = validateParameter(valid_607564, JString, required = true,
                                  default = newJString("AWSGlue.ListJobs"))
@@ -10803,8 +10625,6 @@ proc validate_ListTriggers_607578(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607582 = header.getOrDefault("X-Amz-Target")
   valid_607582 = validateParameter(valid_607582, JString, required = true,
                                  default = newJString("AWSGlue.ListTriggers"))
@@ -10939,8 +10759,6 @@ proc validate_ListWorkflows_607596(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607600 = header.getOrDefault("X-Amz-Target")
   valid_607600 = validateParameter(valid_607600, JString, required = true,
                                  default = newJString("AWSGlue.ListWorkflows"))
@@ -11060,8 +10878,6 @@ proc validate_PutDataCatalogEncryptionSettings_607614(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607616 = header.getOrDefault("X-Amz-Target")
   valid_607616 = validateParameter(valid_607616, JString, required = true, default = newJString(
       "AWSGlue.PutDataCatalogEncryptionSettings"))
@@ -11178,8 +10994,6 @@ proc validate_PutResourcePolicy_607629(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607631 = header.getOrDefault("X-Amz-Target")
   valid_607631 = validateParameter(valid_607631, JString, required = true, default = newJString(
       "AWSGlue.PutResourcePolicy"))
@@ -11292,8 +11106,6 @@ proc validate_PutWorkflowRunProperties_607644(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607646 = header.getOrDefault("X-Amz-Target")
   valid_607646 = validateParameter(valid_607646, JString, required = true, default = newJString(
       "AWSGlue.PutWorkflowRunProperties"))
@@ -11407,8 +11219,6 @@ proc validate_ResetJobBookmark_607659(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607661 = header.getOrDefault("X-Amz-Target")
   valid_607661 = validateParameter(valid_607661, JString, required = true, default = newJString(
       "AWSGlue.ResetJobBookmark"))
@@ -11535,8 +11345,6 @@ proc validate_SearchTables_607674(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607678 = header.getOrDefault("X-Amz-Target")
   valid_607678 = validateParameter(valid_607678, JString, required = true,
                                  default = newJString("AWSGlue.SearchTables"))
@@ -11656,8 +11464,6 @@ proc validate_StartCrawler_607692(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607694 = header.getOrDefault("X-Amz-Target")
   valid_607694 = validateParameter(valid_607694, JString, required = true,
                                  default = newJString("AWSGlue.StartCrawler"))
@@ -11769,8 +11575,6 @@ proc validate_StartCrawlerSchedule_607707(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607709 = header.getOrDefault("X-Amz-Target")
   valid_607709 = validateParameter(valid_607709, JString, required = true, default = newJString(
       "AWSGlue.StartCrawlerSchedule"))
@@ -11884,8 +11688,6 @@ proc validate_StartExportLabelsTaskRun_607722(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607724 = header.getOrDefault("X-Amz-Target")
   valid_607724 = validateParameter(valid_607724, JString, required = true, default = newJString(
       "AWSGlue.StartExportLabelsTaskRun"))
@@ -11999,8 +11801,6 @@ proc validate_StartImportLabelsTaskRun_607737(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607739 = header.getOrDefault("X-Amz-Target")
   valid_607739 = validateParameter(valid_607739, JString, required = true, default = newJString(
       "AWSGlue.StartImportLabelsTaskRun"))
@@ -12113,8 +11913,6 @@ proc validate_StartJobRun_607752(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607754 = header.getOrDefault("X-Amz-Target")
   valid_607754 = validateParameter(valid_607754, JString, required = true,
                                  default = newJString("AWSGlue.StartJobRun"))
@@ -12228,8 +12026,6 @@ proc validate_StartMLEvaluationTaskRun_607767(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607769 = header.getOrDefault("X-Amz-Target")
   valid_607769 = validateParameter(valid_607769, JString, required = true, default = newJString(
       "AWSGlue.StartMLEvaluationTaskRun"))
@@ -12342,8 +12138,6 @@ proc validate_StartMLLabelingSetGenerationTaskRun_607782(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607784 = header.getOrDefault("X-Amz-Target")
   valid_607784 = validateParameter(valid_607784, JString, required = true, default = newJString(
       "AWSGlue.StartMLLabelingSetGenerationTaskRun"))
@@ -12459,8 +12253,6 @@ proc validate_StartTrigger_607797(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607799 = header.getOrDefault("X-Amz-Target")
   valid_607799 = validateParameter(valid_607799, JString, required = true,
                                  default = newJString("AWSGlue.StartTrigger"))
@@ -12573,8 +12365,6 @@ proc validate_StartWorkflowRun_607812(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607814 = header.getOrDefault("X-Amz-Target")
   valid_607814 = validateParameter(valid_607814, JString, required = true, default = newJString(
       "AWSGlue.StartWorkflowRun"))
@@ -12686,8 +12476,6 @@ proc validate_StopCrawler_607827(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607829 = header.getOrDefault("X-Amz-Target")
   valid_607829 = validateParameter(valid_607829, JString, required = true,
                                  default = newJString("AWSGlue.StopCrawler"))
@@ -12801,8 +12589,6 @@ proc validate_StopCrawlerSchedule_607842(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607844 = header.getOrDefault("X-Amz-Target")
   valid_607844 = validateParameter(valid_607844, JString, required = true, default = newJString(
       "AWSGlue.StopCrawlerSchedule"))
@@ -12915,8 +12701,6 @@ proc validate_StopTrigger_607857(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607859 = header.getOrDefault("X-Amz-Target")
   valid_607859 = validateParameter(valid_607859, JString, required = true,
                                  default = newJString("AWSGlue.StopTrigger"))
@@ -13029,8 +12813,6 @@ proc validate_TagResource_607872(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607874 = header.getOrDefault("X-Amz-Target")
   valid_607874 = validateParameter(valid_607874, JString, required = true,
                                  default = newJString("AWSGlue.TagResource"))
@@ -13143,8 +12925,6 @@ proc validate_UntagResource_607887(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607889 = header.getOrDefault("X-Amz-Target")
   valid_607889 = validateParameter(valid_607889, JString, required = true,
                                  default = newJString("AWSGlue.UntagResource"))
@@ -13257,8 +13037,6 @@ proc validate_UpdateClassifier_607902(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607904 = header.getOrDefault("X-Amz-Target")
   valid_607904 = validateParameter(valid_607904, JString, required = true, default = newJString(
       "AWSGlue.UpdateClassifier"))
@@ -13371,8 +13149,6 @@ proc validate_UpdateConnection_607917(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607919 = header.getOrDefault("X-Amz-Target")
   valid_607919 = validateParameter(valid_607919, JString, required = true, default = newJString(
       "AWSGlue.UpdateConnection"))
@@ -13484,8 +13260,6 @@ proc validate_UpdateCrawler_607932(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607934 = header.getOrDefault("X-Amz-Target")
   valid_607934 = validateParameter(valid_607934, JString, required = true,
                                  default = newJString("AWSGlue.UpdateCrawler"))
@@ -13597,8 +13371,6 @@ proc validate_UpdateCrawlerSchedule_607947(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607949 = header.getOrDefault("X-Amz-Target")
   valid_607949 = validateParameter(valid_607949, JString, required = true, default = newJString(
       "AWSGlue.UpdateCrawlerSchedule"))
@@ -13712,8 +13484,6 @@ proc validate_UpdateDatabase_607962(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607964 = header.getOrDefault("X-Amz-Target")
   valid_607964 = validateParameter(valid_607964, JString, required = true,
                                  default = newJString("AWSGlue.UpdateDatabase"))
@@ -13826,8 +13596,6 @@ proc validate_UpdateDevEndpoint_607977(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607979 = header.getOrDefault("X-Amz-Target")
   valid_607979 = validateParameter(valid_607979, JString, required = true, default = newJString(
       "AWSGlue.UpdateDevEndpoint"))
@@ -13939,8 +13707,6 @@ proc validate_UpdateJob_607992(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607994 = header.getOrDefault("X-Amz-Target")
   valid_607994 = validateParameter(valid_607994, JString, required = true,
                                  default = newJString("AWSGlue.UpdateJob"))
@@ -14054,8 +13820,6 @@ proc validate_UpdateMLTransform_608007(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608009 = header.getOrDefault("X-Amz-Target")
   valid_608009 = validateParameter(valid_608009, JString, required = true, default = newJString(
       "AWSGlue.UpdateMLTransform"))
@@ -14168,8 +13932,6 @@ proc validate_UpdatePartition_608022(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608024 = header.getOrDefault("X-Amz-Target")
   valid_608024 = validateParameter(valid_608024, JString, required = true, default = newJString(
       "AWSGlue.UpdatePartition"))
@@ -14281,8 +14043,6 @@ proc validate_UpdateTable_608037(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608039 = header.getOrDefault("X-Amz-Target")
   valid_608039 = validateParameter(valid_608039, JString, required = true,
                                  default = newJString("AWSGlue.UpdateTable"))
@@ -14395,8 +14155,6 @@ proc validate_UpdateTrigger_608052(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608054 = header.getOrDefault("X-Amz-Target")
   valid_608054 = validateParameter(valid_608054, JString, required = true,
                                  default = newJString("AWSGlue.UpdateTrigger"))
@@ -14508,8 +14266,6 @@ proc validate_UpdateUserDefinedFunction_608067(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608069 = header.getOrDefault("X-Amz-Target")
   valid_608069 = validateParameter(valid_608069, JString, required = true, default = newJString(
       "AWSGlue.UpdateUserDefinedFunction"))
@@ -14624,8 +14380,6 @@ proc validate_UpdateWorkflow_608082(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_608084 = header.getOrDefault("X-Amz-Target")
   valid_608084 = validateParameter(valid_608084, JString, required = true,
                                  default = newJString("AWSGlue.UpdateWorkflow"))

@@ -167,8 +167,6 @@ proc validate_CloseTunnel_605919(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606045 = header.getOrDefault("X-Amz-Target")
   valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
       "IoTSecuredTunneling.CloseTunnel"))
@@ -281,8 +279,6 @@ proc validate_DescribeTunnel_606188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606190 = header.getOrDefault("X-Amz-Target")
   valid_606190 = validateParameter(valid_606190, JString, required = true, default = newJString(
       "IoTSecuredTunneling.DescribeTunnel"))
@@ -395,8 +391,6 @@ proc validate_ListTagsForResource_606203(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606205 = header.getOrDefault("X-Amz-Target")
   valid_606205 = validateParameter(valid_606205, JString, required = true, default = newJString(
       "IoTSecuredTunneling.ListTagsForResource"))
@@ -524,8 +518,6 @@ proc validate_ListTunnels_606218(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606222 = header.getOrDefault("X-Amz-Target")
   valid_606222 = validateParameter(valid_606222, JString, required = true, default = newJString(
       "IoTSecuredTunneling.ListTunnels"))
@@ -645,8 +637,6 @@ proc validate_OpenTunnel_606237(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606239 = header.getOrDefault("X-Amz-Target")
   valid_606239 = validateParameter(valid_606239, JString, required = true, default = newJString(
       "IoTSecuredTunneling.OpenTunnel"))
@@ -759,8 +749,6 @@ proc validate_TagResource_606252(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606254 = header.getOrDefault("X-Amz-Target")
   valid_606254 = validateParameter(valid_606254, JString, required = true, default = newJString(
       "IoTSecuredTunneling.TagResource"))
@@ -872,8 +860,6 @@ proc validate_UntagResource_606267(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606269 = header.getOrDefault("X-Amz-Target")
   valid_606269 = validateParameter(valid_606269, JString, required = true, default = newJString(
       "IoTSecuredTunneling.UntagResource"))

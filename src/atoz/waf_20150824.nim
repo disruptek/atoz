@@ -150,8 +150,6 @@ proc validate_CreateByteMatchSet_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateByteMatchSet"))
@@ -265,8 +263,6 @@ proc validate_CreateGeoMatchSet_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateGeoMatchSet"))
@@ -378,8 +374,6 @@ proc validate_CreateIPSet_606212(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateIPSet"))
@@ -493,8 +487,6 @@ proc validate_CreateRateBasedRule_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateRateBasedRule"))
@@ -608,8 +600,6 @@ proc validate_CreateRegexMatchSet_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateRegexMatchSet"))
@@ -722,8 +712,6 @@ proc validate_CreateRegexPatternSet_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateRegexPatternSet"))
@@ -836,8 +824,6 @@ proc validate_CreateRule_606272(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateRule"))
@@ -951,8 +937,6 @@ proc validate_CreateRuleGroup_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateRuleGroup"))
@@ -1065,8 +1049,6 @@ proc validate_CreateSizeConstraintSet_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateSizeConstraintSet"))
@@ -1179,8 +1161,6 @@ proc validate_CreateSqlInjectionMatchSet_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateSqlInjectionMatchSet"))
@@ -1294,8 +1274,6 @@ proc validate_CreateWebACL_606332(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateWebACL"))
@@ -1408,8 +1386,6 @@ proc validate_CreateXssMatchSet_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "AWSWAF_20150824.CreateXssMatchSet"))
@@ -1522,8 +1498,6 @@ proc validate_DeleteByteMatchSet_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteByteMatchSet"))
@@ -1637,8 +1611,6 @@ proc validate_DeleteGeoMatchSet_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteGeoMatchSet"))
@@ -1750,8 +1722,6 @@ proc validate_DeleteIPSet_606392(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteIPSet"))
@@ -1864,8 +1834,6 @@ proc validate_DeleteLoggingConfiguration_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteLoggingConfiguration"))
@@ -1979,8 +1947,6 @@ proc validate_DeletePermissionPolicy_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeletePermissionPolicy"))
@@ -2094,8 +2060,6 @@ proc validate_DeleteRateBasedRule_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteRateBasedRule"))
@@ -2209,8 +2173,6 @@ proc validate_DeleteRegexMatchSet_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteRegexMatchSet"))
@@ -2323,8 +2285,6 @@ proc validate_DeleteRegexPatternSet_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteRegexPatternSet"))
@@ -2437,8 +2397,6 @@ proc validate_DeleteRule_606482(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteRule"))
@@ -2552,8 +2510,6 @@ proc validate_DeleteRuleGroup_606497(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteRuleGroup"))
@@ -2666,8 +2622,6 @@ proc validate_DeleteSizeConstraintSet_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteSizeConstraintSet"))
@@ -2780,8 +2734,6 @@ proc validate_DeleteSqlInjectionMatchSet_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteSqlInjectionMatchSet"))
@@ -2895,8 +2847,6 @@ proc validate_DeleteWebACL_606542(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteWebACL"))
@@ -3009,8 +2959,6 @@ proc validate_DeleteXssMatchSet_606557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "AWSWAF_20150824.DeleteXssMatchSet"))
@@ -3123,8 +3071,6 @@ proc validate_GetByteMatchSet_606572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetByteMatchSet"))
@@ -3237,8 +3183,6 @@ proc validate_GetChangeToken_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetChangeToken"))
@@ -3350,8 +3294,6 @@ proc validate_GetChangeTokenStatus_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetChangeTokenStatus"))
@@ -3465,8 +3407,6 @@ proc validate_GetGeoMatchSet_606617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetGeoMatchSet"))
@@ -3578,8 +3518,6 @@ proc validate_GetIPSet_606632(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetIPSet"))
@@ -3692,8 +3630,6 @@ proc validate_GetLoggingConfiguration_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetLoggingConfiguration"))
@@ -3807,8 +3743,6 @@ proc validate_GetPermissionPolicy_606662(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetPermissionPolicy"))
@@ -3922,8 +3856,6 @@ proc validate_GetRateBasedRule_606677(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetRateBasedRule"))
@@ -4035,8 +3967,6 @@ proc validate_GetRateBasedRuleManagedKeys_606692(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetRateBasedRuleManagedKeys"))
@@ -4151,8 +4081,6 @@ proc validate_GetRegexMatchSet_606707(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetRegexMatchSet"))
@@ -4265,8 +4193,6 @@ proc validate_GetRegexPatternSet_606722(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetRegexPatternSet"))
@@ -4379,8 +4305,6 @@ proc validate_GetRule_606737(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetRule"))
@@ -4492,8 +4416,6 @@ proc validate_GetRuleGroup_606752(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606754 = header.getOrDefault("X-Amz-Target")
   valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetRuleGroup"))
@@ -4606,8 +4528,6 @@ proc validate_GetSampledRequests_606767(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetSampledRequests"))
@@ -4720,8 +4640,6 @@ proc validate_GetSizeConstraintSet_606782(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606784 = header.getOrDefault("X-Amz-Target")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetSizeConstraintSet"))
@@ -4835,8 +4753,6 @@ proc validate_GetSqlInjectionMatchSet_606797(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606799 = header.getOrDefault("X-Amz-Target")
   valid_606799 = validateParameter(valid_606799, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetSqlInjectionMatchSet"))
@@ -4949,8 +4865,6 @@ proc validate_GetWebACL_606812(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606814 = header.getOrDefault("X-Amz-Target")
   valid_606814 = validateParameter(valid_606814, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetWebACL"))
@@ -5063,8 +4977,6 @@ proc validate_GetXssMatchSet_606827(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606829 = header.getOrDefault("X-Amz-Target")
   valid_606829 = validateParameter(valid_606829, JString, required = true, default = newJString(
       "AWSWAF_20150824.GetXssMatchSet"))
@@ -5176,8 +5088,6 @@ proc validate_ListActivatedRulesInRuleGroup_606842(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606844 = header.getOrDefault("X-Amz-Target")
   valid_606844 = validateParameter(valid_606844, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListActivatedRulesInRuleGroup"))
@@ -5292,8 +5202,6 @@ proc validate_ListByteMatchSets_606857(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606859 = header.getOrDefault("X-Amz-Target")
   valid_606859 = validateParameter(valid_606859, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListByteMatchSets"))
@@ -5406,8 +5314,6 @@ proc validate_ListGeoMatchSets_606872(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606874 = header.getOrDefault("X-Amz-Target")
   valid_606874 = validateParameter(valid_606874, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListGeoMatchSets"))
@@ -5519,8 +5425,6 @@ proc validate_ListIPSets_606887(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606889 = header.getOrDefault("X-Amz-Target")
   valid_606889 = validateParameter(valid_606889, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListIPSets"))
@@ -5633,8 +5537,6 @@ proc validate_ListLoggingConfigurations_606902(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606904 = header.getOrDefault("X-Amz-Target")
   valid_606904 = validateParameter(valid_606904, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListLoggingConfigurations"))
@@ -5749,8 +5651,6 @@ proc validate_ListRateBasedRules_606917(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606919 = header.getOrDefault("X-Amz-Target")
   valid_606919 = validateParameter(valid_606919, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListRateBasedRules"))
@@ -5864,8 +5764,6 @@ proc validate_ListRegexMatchSets_606932(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606934 = header.getOrDefault("X-Amz-Target")
   valid_606934 = validateParameter(valid_606934, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListRegexMatchSets"))
@@ -5978,8 +5876,6 @@ proc validate_ListRegexPatternSets_606947(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606949 = header.getOrDefault("X-Amz-Target")
   valid_606949 = validateParameter(valid_606949, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListRegexPatternSets"))
@@ -6093,8 +5989,6 @@ proc validate_ListRuleGroups_606962(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606964 = header.getOrDefault("X-Amz-Target")
   valid_606964 = validateParameter(valid_606964, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListRuleGroups"))
@@ -6206,8 +6100,6 @@ proc validate_ListRules_606977(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606979 = header.getOrDefault("X-Amz-Target")
   valid_606979 = validateParameter(valid_606979, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListRules"))
@@ -6319,8 +6211,6 @@ proc validate_ListSizeConstraintSets_606992(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606994 = header.getOrDefault("X-Amz-Target")
   valid_606994 = validateParameter(valid_606994, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListSizeConstraintSets"))
@@ -6433,8 +6323,6 @@ proc validate_ListSqlInjectionMatchSets_607007(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607009 = header.getOrDefault("X-Amz-Target")
   valid_607009 = validateParameter(valid_607009, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListSqlInjectionMatchSets"))
@@ -6549,8 +6437,6 @@ proc validate_ListSubscribedRuleGroups_607022(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607024 = header.getOrDefault("X-Amz-Target")
   valid_607024 = validateParameter(valid_607024, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListSubscribedRuleGroups"))
@@ -6662,8 +6548,6 @@ proc validate_ListTagsForResource_607037(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607039 = header.getOrDefault("X-Amz-Target")
   valid_607039 = validateParameter(valid_607039, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListTagsForResource"))
@@ -6773,8 +6657,6 @@ proc validate_ListWebACLs_607052(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607054 = header.getOrDefault("X-Amz-Target")
   valid_607054 = validateParameter(valid_607054, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListWebACLs"))
@@ -6888,8 +6770,6 @@ proc validate_ListXssMatchSets_607067(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607069 = header.getOrDefault("X-Amz-Target")
   valid_607069 = validateParameter(valid_607069, JString, required = true, default = newJString(
       "AWSWAF_20150824.ListXssMatchSets"))
@@ -7002,8 +6882,6 @@ proc validate_PutLoggingConfiguration_607082(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607084 = header.getOrDefault("X-Amz-Target")
   valid_607084 = validateParameter(valid_607084, JString, required = true, default = newJString(
       "AWSWAF_20150824.PutLoggingConfiguration"))
@@ -7117,8 +6995,6 @@ proc validate_PutPermissionPolicy_607097(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607099 = header.getOrDefault("X-Amz-Target")
   valid_607099 = validateParameter(valid_607099, JString, required = true, default = newJString(
       "AWSWAF_20150824.PutPermissionPolicy"))
@@ -7229,8 +7105,6 @@ proc validate_TagResource_607112(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607114 = header.getOrDefault("X-Amz-Target")
   valid_607114 = validateParameter(valid_607114, JString, required = true, default = newJString(
       "AWSWAF_20150824.TagResource"))
@@ -7338,8 +7212,6 @@ proc validate_UntagResource_607127(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607129 = header.getOrDefault("X-Amz-Target")
   valid_607129 = validateParameter(valid_607129, JString, required = true, default = newJString(
       "AWSWAF_20150824.UntagResource"))
@@ -7449,8 +7321,6 @@ proc validate_UpdateByteMatchSet_607142(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607144 = header.getOrDefault("X-Amz-Target")
   valid_607144 = validateParameter(valid_607144, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateByteMatchSet"))
@@ -7564,8 +7434,6 @@ proc validate_UpdateGeoMatchSet_607157(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607159 = header.getOrDefault("X-Amz-Target")
   valid_607159 = validateParameter(valid_607159, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateGeoMatchSet"))
@@ -7677,8 +7545,6 @@ proc validate_UpdateIPSet_607172(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607174 = header.getOrDefault("X-Amz-Target")
   valid_607174 = validateParameter(valid_607174, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateIPSet"))
@@ -7792,8 +7658,6 @@ proc validate_UpdateRateBasedRule_607187(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607189 = header.getOrDefault("X-Amz-Target")
   valid_607189 = validateParameter(valid_607189, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateRateBasedRule"))
@@ -7907,8 +7771,6 @@ proc validate_UpdateRegexMatchSet_607202(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607204 = header.getOrDefault("X-Amz-Target")
   valid_607204 = validateParameter(valid_607204, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateRegexMatchSet"))
@@ -8021,8 +7883,6 @@ proc validate_UpdateRegexPatternSet_607217(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607219 = header.getOrDefault("X-Amz-Target")
   valid_607219 = validateParameter(valid_607219, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateRegexPatternSet"))
@@ -8135,8 +7995,6 @@ proc validate_UpdateRule_607232(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607234 = header.getOrDefault("X-Amz-Target")
   valid_607234 = validateParameter(valid_607234, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateRule"))
@@ -8250,8 +8108,6 @@ proc validate_UpdateRuleGroup_607247(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607249 = header.getOrDefault("X-Amz-Target")
   valid_607249 = validateParameter(valid_607249, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateRuleGroup"))
@@ -8364,8 +8220,6 @@ proc validate_UpdateSizeConstraintSet_607262(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607264 = header.getOrDefault("X-Amz-Target")
   valid_607264 = validateParameter(valid_607264, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateSizeConstraintSet"))
@@ -8478,8 +8332,6 @@ proc validate_UpdateSqlInjectionMatchSet_607277(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607279 = header.getOrDefault("X-Amz-Target")
   valid_607279 = validateParameter(valid_607279, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateSqlInjectionMatchSet"))
@@ -8593,8 +8445,6 @@ proc validate_UpdateWebACL_607292(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607294 = header.getOrDefault("X-Amz-Target")
   valid_607294 = validateParameter(valid_607294, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateWebACL"))
@@ -8707,8 +8557,6 @@ proc validate_UpdateXssMatchSet_607307(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607309 = header.getOrDefault("X-Amz-Target")
   valid_607309 = validateParameter(valid_607309, JString, required = true, default = newJString(
       "AWSWAF_20150824.UpdateXssMatchSet"))

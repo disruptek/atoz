@@ -2154,7 +2154,6 @@ proc validate_UpdateJobStatus_606419(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606422 != nil:
     section.add "statusUpdateReason", valid_606422
-  assert query != nil, "query argument is necessary due to required `requestedJobStatus` field"
   var valid_606436 = query.getOrDefault("requestedJobStatus")
   valid_606436 = validateParameter(valid_606436, JString, required = true,
                                  default = newJString("Cancelled"))

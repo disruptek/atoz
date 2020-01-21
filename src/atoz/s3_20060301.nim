@@ -10486,8 +10486,6 @@ proc validate_ListObjectsV2_607311(path: JsonNode; query: JsonNode; header: Json
                                  default = nil)
   if valid_607317 != nil:
     section.add "prefix", valid_607317
-  assert query != nil,
-        "query argument is necessary due to required `list-type` field"
   var valid_607318 = query.getOrDefault("list-type")
   valid_607318 = validateParameter(valid_607318, JString, required = true,
                                  default = newJString("2"))

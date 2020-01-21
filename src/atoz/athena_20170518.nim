@@ -181,8 +181,6 @@ proc validate_BatchGetNamedQuery_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AmazonAthena.BatchGetNamedQuery"))
@@ -295,8 +293,6 @@ proc validate_BatchGetQueryExecution_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AmazonAthena.BatchGetQueryExecution"))
@@ -410,8 +406,6 @@ proc validate_CreateNamedQuery_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AmazonAthena.CreateNamedQuery"))
@@ -524,8 +518,6 @@ proc validate_CreateWorkGroup_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AmazonAthena.CreateWorkGroup"))
@@ -638,8 +630,6 @@ proc validate_DeleteNamedQuery_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AmazonAthena.DeleteNamedQuery"))
@@ -752,8 +742,6 @@ proc validate_DeleteWorkGroup_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AmazonAthena.DeleteWorkGroup"))
@@ -865,8 +853,6 @@ proc validate_GetNamedQuery_606272(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AmazonAthena.GetNamedQuery"))
@@ -979,8 +965,6 @@ proc validate_GetQueryExecution_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AmazonAthena.GetQueryExecution"))
@@ -1108,8 +1092,6 @@ proc validate_GetQueryResults_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606306 = header.getOrDefault("X-Amz-Target")
   valid_606306 = validateParameter(valid_606306, JString, required = true, default = newJString(
       "AmazonAthena.GetQueryResults"))
@@ -1229,8 +1211,6 @@ proc validate_GetWorkGroup_606321(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606323 = header.getOrDefault("X-Amz-Target")
   valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
       "AmazonAthena.GetWorkGroup"))
@@ -1358,8 +1338,6 @@ proc validate_ListNamedQueries_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606340 = header.getOrDefault("X-Amz-Target")
   valid_606340 = validateParameter(valid_606340, JString, required = true, default = newJString(
       "AmazonAthena.ListNamedQueries"))
@@ -1495,8 +1473,6 @@ proc validate_ListQueryExecutions_606354(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606358 = header.getOrDefault("X-Amz-Target")
   valid_606358 = validateParameter(valid_606358, JString, required = true, default = newJString(
       "AmazonAthena.ListQueryExecutions"))
@@ -1618,8 +1594,6 @@ proc validate_ListTagsForResource_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606374 = header.getOrDefault("X-Amz-Target")
   valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString(
       "AmazonAthena.ListTagsForResource"))
@@ -1748,8 +1722,6 @@ proc validate_ListWorkGroups_606387(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606391 = header.getOrDefault("X-Amz-Target")
   valid_606391 = validateParameter(valid_606391, JString, required = true, default = newJString(
       "AmazonAthena.ListWorkGroups"))
@@ -1870,8 +1842,6 @@ proc validate_StartQueryExecution_606405(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606407 = header.getOrDefault("X-Amz-Target")
   valid_606407 = validateParameter(valid_606407, JString, required = true, default = newJString(
       "AmazonAthena.StartQueryExecution"))
@@ -1985,8 +1955,6 @@ proc validate_StopQueryExecution_606420(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606422 = header.getOrDefault("X-Amz-Target")
   valid_606422 = validateParameter(valid_606422, JString, required = true, default = newJString(
       "AmazonAthena.StopQueryExecution"))
@@ -2099,8 +2067,6 @@ proc validate_TagResource_606435(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606437 = header.getOrDefault("X-Amz-Target")
   valid_606437 = validateParameter(valid_606437, JString, required = true, default = newJString(
       "AmazonAthena.TagResource"))
@@ -2213,8 +2179,6 @@ proc validate_UntagResource_606450(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606452 = header.getOrDefault("X-Amz-Target")
   valid_606452 = validateParameter(valid_606452, JString, required = true, default = newJString(
       "AmazonAthena.UntagResource"))
@@ -2327,8 +2291,6 @@ proc validate_UpdateWorkGroup_606465(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606467 = header.getOrDefault("X-Amz-Target")
   valid_606467 = validateParameter(valid_606467, JString, required = true, default = newJString(
       "AmazonAthena.UpdateWorkGroup"))

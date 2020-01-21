@@ -180,8 +180,6 @@ proc validate_CreateEnvironmentEC2_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.CreateEnvironmentEC2"))
@@ -293,8 +291,6 @@ proc validate_CreateEnvironmentMembership_606197(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.CreateEnvironmentMembership"))
@@ -408,8 +404,6 @@ proc validate_DeleteEnvironment_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DeleteEnvironment"))
@@ -520,8 +514,6 @@ proc validate_DeleteEnvironmentMembership_606227(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DeleteEnvironmentMembership"))
@@ -649,8 +641,6 @@ proc validate_DescribeEnvironmentMemberships_606242(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606246 = header.getOrDefault("X-Amz-Target")
   valid_606246 = validateParameter(valid_606246, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DescribeEnvironmentMemberships"))
@@ -771,8 +761,6 @@ proc validate_DescribeEnvironmentStatus_606261(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606263 = header.getOrDefault("X-Amz-Target")
   valid_606263 = validateParameter(valid_606263, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DescribeEnvironmentStatus"))
@@ -885,8 +873,6 @@ proc validate_DescribeEnvironments_606276(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606278 = header.getOrDefault("X-Amz-Target")
   valid_606278 = validateParameter(valid_606278, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.DescribeEnvironments"))
@@ -1014,8 +1000,6 @@ proc validate_ListEnvironments_606291(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606295 = header.getOrDefault("X-Amz-Target")
   valid_606295 = validateParameter(valid_606295, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.ListEnvironments"))
@@ -1135,8 +1119,6 @@ proc validate_UpdateEnvironment_606309(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606311 = header.getOrDefault("X-Amz-Target")
   valid_606311 = validateParameter(valid_606311, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.UpdateEnvironment"))
@@ -1247,8 +1229,6 @@ proc validate_UpdateEnvironmentMembership_606324(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606326 = header.getOrDefault("X-Amz-Target")
   valid_606326 = validateParameter(valid_606326, JString, required = true, default = newJString(
       "AWSCloud9WorkspaceManagementService.UpdateEnvironmentMembership"))

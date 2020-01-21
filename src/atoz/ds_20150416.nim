@@ -186,8 +186,6 @@ proc validate_AcceptSharedDirectory_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "DirectoryService_20150416.AcceptSharedDirectory"))
@@ -300,8 +298,6 @@ proc validate_AddIpRoutes_606197(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "DirectoryService_20150416.AddIpRoutes"))
@@ -415,8 +411,6 @@ proc validate_AddTagsToResource_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "DirectoryService_20150416.AddTagsToResource"))
@@ -528,8 +522,6 @@ proc validate_CancelSchemaExtension_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "DirectoryService_20150416.CancelSchemaExtension"))
@@ -643,8 +635,6 @@ proc validate_ConnectDirectory_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "DirectoryService_20150416.ConnectDirectory"))
@@ -756,8 +746,6 @@ proc validate_CreateAlias_606257(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "DirectoryService_20150416.CreateAlias"))
@@ -871,8 +859,6 @@ proc validate_CreateComputer_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "DirectoryService_20150416.CreateComputer"))
@@ -984,8 +970,6 @@ proc validate_CreateConditionalForwarder_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "DirectoryService_20150416.CreateConditionalForwarder"))
@@ -1099,8 +1083,6 @@ proc validate_CreateDirectory_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "DirectoryService_20150416.CreateDirectory"))
@@ -1212,8 +1194,6 @@ proc validate_CreateLogSubscription_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "DirectoryService_20150416.CreateLogSubscription"))
@@ -1327,8 +1307,6 @@ proc validate_CreateMicrosoftAD_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "DirectoryService_20150416.CreateMicrosoftAD"))
@@ -1441,8 +1419,6 @@ proc validate_CreateSnapshot_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "DirectoryService_20150416.CreateSnapshot"))
@@ -1554,8 +1530,6 @@ proc validate_CreateTrust_606362(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "DirectoryService_20150416.CreateTrust"))
@@ -1668,8 +1642,6 @@ proc validate_DeleteConditionalForwarder_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "DirectoryService_20150416.DeleteConditionalForwarder"))
@@ -1783,8 +1755,6 @@ proc validate_DeleteDirectory_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "DirectoryService_20150416.DeleteDirectory"))
@@ -1896,8 +1866,6 @@ proc validate_DeleteLogSubscription_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "DirectoryService_20150416.DeleteLogSubscription"))
@@ -2011,8 +1979,6 @@ proc validate_DeleteSnapshot_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "DirectoryService_20150416.DeleteSnapshot"))
@@ -2124,8 +2090,6 @@ proc validate_DeleteTrust_606437(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "DirectoryService_20150416.DeleteTrust"))
@@ -2238,8 +2202,6 @@ proc validate_DeregisterCertificate_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "DirectoryService_20150416.DeregisterCertificate"))
@@ -2352,8 +2314,6 @@ proc validate_DeregisterEventTopic_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "DirectoryService_20150416.DeregisterEventTopic"))
@@ -2467,8 +2427,6 @@ proc validate_DescribeCertificate_606482(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeCertificate"))
@@ -2581,8 +2539,6 @@ proc validate_DescribeConditionalForwarders_606497(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeConditionalForwarders"))
@@ -2696,8 +2652,6 @@ proc validate_DescribeDirectories_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeDirectories"))
@@ -2825,8 +2779,6 @@ proc validate_DescribeDomainControllers_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606531 = header.getOrDefault("X-Amz-Target")
   valid_606531 = validateParameter(valid_606531, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeDomainControllers"))
@@ -2948,8 +2900,6 @@ proc validate_DescribeEventTopics_606546(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606548 = header.getOrDefault("X-Amz-Target")
   valid_606548 = validateParameter(valid_606548, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeEventTopics"))
@@ -3062,8 +3012,6 @@ proc validate_DescribeLDAPSSettings_606561(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606563 = header.getOrDefault("X-Amz-Target")
   valid_606563 = validateParameter(valid_606563, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeLDAPSSettings"))
@@ -3176,8 +3124,6 @@ proc validate_DescribeSharedDirectories_606576(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606578 = header.getOrDefault("X-Amz-Target")
   valid_606578 = validateParameter(valid_606578, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeSharedDirectories"))
@@ -3291,8 +3237,6 @@ proc validate_DescribeSnapshots_606591(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606593 = header.getOrDefault("X-Amz-Target")
   valid_606593 = validateParameter(valid_606593, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeSnapshots"))
@@ -3405,8 +3349,6 @@ proc validate_DescribeTrusts_606606(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606608 = header.getOrDefault("X-Amz-Target")
   valid_606608 = validateParameter(valid_606608, JString, required = true, default = newJString(
       "DirectoryService_20150416.DescribeTrusts"))
@@ -3518,8 +3460,6 @@ proc validate_DisableLDAPS_606621(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606623 = header.getOrDefault("X-Amz-Target")
   valid_606623 = validateParameter(valid_606623, JString, required = true, default = newJString(
       "DirectoryService_20150416.DisableLDAPS"))
@@ -3631,8 +3571,6 @@ proc validate_DisableRadius_606636(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606638 = header.getOrDefault("X-Amz-Target")
   valid_606638 = validateParameter(valid_606638, JString, required = true, default = newJString(
       "DirectoryService_20150416.DisableRadius"))
@@ -3744,8 +3682,6 @@ proc validate_DisableSso_606651(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606653 = header.getOrDefault("X-Amz-Target")
   valid_606653 = validateParameter(valid_606653, JString, required = true, default = newJString(
       "DirectoryService_20150416.DisableSso"))
@@ -3858,8 +3794,6 @@ proc validate_EnableLDAPS_606666(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606668 = header.getOrDefault("X-Amz-Target")
   valid_606668 = validateParameter(valid_606668, JString, required = true, default = newJString(
       "DirectoryService_20150416.EnableLDAPS"))
@@ -3972,8 +3906,6 @@ proc validate_EnableRadius_606681(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606683 = header.getOrDefault("X-Amz-Target")
   valid_606683 = validateParameter(valid_606683, JString, required = true, default = newJString(
       "DirectoryService_20150416.EnableRadius"))
@@ -4085,8 +4017,6 @@ proc validate_EnableSso_606696(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606698 = header.getOrDefault("X-Amz-Target")
   valid_606698 = validateParameter(valid_606698, JString, required = true, default = newJString(
       "DirectoryService_20150416.EnableSso"))
@@ -4199,8 +4129,6 @@ proc validate_GetDirectoryLimits_606711(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606713 = header.getOrDefault("X-Amz-Target")
   valid_606713 = validateParameter(valid_606713, JString, required = true, default = newJString(
       "DirectoryService_20150416.GetDirectoryLimits"))
@@ -4313,8 +4241,6 @@ proc validate_GetSnapshotLimits_606726(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606728 = header.getOrDefault("X-Amz-Target")
   valid_606728 = validateParameter(valid_606728, JString, required = true, default = newJString(
       "DirectoryService_20150416.GetSnapshotLimits"))
@@ -4427,8 +4353,6 @@ proc validate_ListCertificates_606741(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606743 = header.getOrDefault("X-Amz-Target")
   valid_606743 = validateParameter(valid_606743, JString, required = true, default = newJString(
       "DirectoryService_20150416.ListCertificates"))
@@ -4540,8 +4464,6 @@ proc validate_ListIpRoutes_606756(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606758 = header.getOrDefault("X-Amz-Target")
   valid_606758 = validateParameter(valid_606758, JString, required = true, default = newJString(
       "DirectoryService_20150416.ListIpRoutes"))
@@ -4653,8 +4575,6 @@ proc validate_ListLogSubscriptions_606771(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606773 = header.getOrDefault("X-Amz-Target")
   valid_606773 = validateParameter(valid_606773, JString, required = true, default = newJString(
       "DirectoryService_20150416.ListLogSubscriptions"))
@@ -4767,8 +4687,6 @@ proc validate_ListSchemaExtensions_606786(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606788 = header.getOrDefault("X-Amz-Target")
   valid_606788 = validateParameter(valid_606788, JString, required = true, default = newJString(
       "DirectoryService_20150416.ListSchemaExtensions"))
@@ -4882,8 +4800,6 @@ proc validate_ListTagsForResource_606801(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606803 = header.getOrDefault("X-Amz-Target")
   valid_606803 = validateParameter(valid_606803, JString, required = true, default = newJString(
       "DirectoryService_20150416.ListTagsForResource"))
@@ -4997,8 +4913,6 @@ proc validate_RegisterCertificate_606816(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606818 = header.getOrDefault("X-Amz-Target")
   valid_606818 = validateParameter(valid_606818, JString, required = true, default = newJString(
       "DirectoryService_20150416.RegisterCertificate"))
@@ -5112,8 +5026,6 @@ proc validate_RegisterEventTopic_606831(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606833 = header.getOrDefault("X-Amz-Target")
   valid_606833 = validateParameter(valid_606833, JString, required = true, default = newJString(
       "DirectoryService_20150416.RegisterEventTopic"))
@@ -5225,8 +5137,6 @@ proc validate_RejectSharedDirectory_606846(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606848 = header.getOrDefault("X-Amz-Target")
   valid_606848 = validateParameter(valid_606848, JString, required = true, default = newJString(
       "DirectoryService_20150416.RejectSharedDirectory"))
@@ -5340,8 +5250,6 @@ proc validate_RemoveIpRoutes_606861(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606863 = header.getOrDefault("X-Amz-Target")
   valid_606863 = validateParameter(valid_606863, JString, required = true, default = newJString(
       "DirectoryService_20150416.RemoveIpRoutes"))
@@ -5453,8 +5361,6 @@ proc validate_RemoveTagsFromResource_606876(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606878 = header.getOrDefault("X-Amz-Target")
   valid_606878 = validateParameter(valid_606878, JString, required = true, default = newJString(
       "DirectoryService_20150416.RemoveTagsFromResource"))
@@ -5568,8 +5474,6 @@ proc validate_ResetUserPassword_606891(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606893 = header.getOrDefault("X-Amz-Target")
   valid_606893 = validateParameter(valid_606893, JString, required = true, default = newJString(
       "DirectoryService_20150416.ResetUserPassword"))
@@ -5682,8 +5586,6 @@ proc validate_RestoreFromSnapshot_606906(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606908 = header.getOrDefault("X-Amz-Target")
   valid_606908 = validateParameter(valid_606908, JString, required = true, default = newJString(
       "DirectoryService_20150416.RestoreFromSnapshot"))
@@ -5797,8 +5699,6 @@ proc validate_ShareDirectory_606921(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606923 = header.getOrDefault("X-Amz-Target")
   valid_606923 = validateParameter(valid_606923, JString, required = true, default = newJString(
       "DirectoryService_20150416.ShareDirectory"))
@@ -5910,8 +5810,6 @@ proc validate_StartSchemaExtension_606936(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606938 = header.getOrDefault("X-Amz-Target")
   valid_606938 = validateParameter(valid_606938, JString, required = true, default = newJString(
       "DirectoryService_20150416.StartSchemaExtension"))
@@ -6025,8 +5923,6 @@ proc validate_UnshareDirectory_606951(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606953 = header.getOrDefault("X-Amz-Target")
   valid_606953 = validateParameter(valid_606953, JString, required = true, default = newJString(
       "DirectoryService_20150416.UnshareDirectory"))
@@ -6138,8 +6034,6 @@ proc validate_UpdateConditionalForwarder_606966(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606968 = header.getOrDefault("X-Amz-Target")
   valid_606968 = validateParameter(valid_606968, JString, required = true, default = newJString(
       "DirectoryService_20150416.UpdateConditionalForwarder"))
@@ -6252,8 +6146,6 @@ proc validate_UpdateNumberOfDomainControllers_606981(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606983 = header.getOrDefault("X-Amz-Target")
   valid_606983 = validateParameter(valid_606983, JString, required = true, default = newJString(
       "DirectoryService_20150416.UpdateNumberOfDomainControllers"))
@@ -6367,8 +6259,6 @@ proc validate_UpdateRadius_606996(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606998 = header.getOrDefault("X-Amz-Target")
   valid_606998 = validateParameter(valid_606998, JString, required = true, default = newJString(
       "DirectoryService_20150416.UpdateRadius"))
@@ -6480,8 +6370,6 @@ proc validate_UpdateTrust_607011(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607013 = header.getOrDefault("X-Amz-Target")
   valid_607013 = validateParameter(valid_607013, JString, required = true, default = newJString(
       "DirectoryService_20150416.UpdateTrust"))
@@ -6594,8 +6482,6 @@ proc validate_VerifyTrust_607026(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607028 = header.getOrDefault("X-Amz-Target")
   valid_607028 = validateParameter(valid_607028, JString, required = true, default = newJString(
       "DirectoryService_20150416.VerifyTrust"))

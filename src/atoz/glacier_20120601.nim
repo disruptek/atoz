@@ -1251,8 +1251,6 @@ proc validate_AddTagsToVault_606304(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606321 = query.getOrDefault("operation")
   valid_606321 = validateParameter(valid_606321, JString, required = true,
                                  default = newJString("add"))
@@ -4600,8 +4598,6 @@ proc validate_RemoveTagsFromVault_606702(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606706 = query.getOrDefault("operation")
   valid_606706 = validateParameter(valid_606706, JString, required = true,
                                  default = newJString("remove"))

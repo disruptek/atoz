@@ -176,8 +176,6 @@ proc validate_AddCustomAttributes_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AddCustomAttributes"))
@@ -290,8 +288,6 @@ proc validate_AdminAddUserToGroup_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminAddUserToGroup"))
@@ -404,8 +400,6 @@ proc validate_AdminConfirmSignUp_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminConfirmSignUp"))
@@ -518,8 +512,6 @@ proc validate_AdminCreateUser_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminCreateUser"))
@@ -632,8 +624,6 @@ proc validate_AdminDeleteUser_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminDeleteUser"))
@@ -745,8 +735,6 @@ proc validate_AdminDeleteUserAttributes_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminDeleteUserAttributes"))
@@ -859,8 +847,6 @@ proc validate_AdminDisableProviderForUser_606272(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminDisableProviderForUser"))
@@ -974,8 +960,6 @@ proc validate_AdminDisableUser_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminDisableUser"))
@@ -1088,8 +1072,6 @@ proc validate_AdminEnableUser_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminEnableUser"))
@@ -1202,8 +1184,6 @@ proc validate_AdminForgetDevice_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminForgetDevice"))
@@ -1315,8 +1295,6 @@ proc validate_AdminGetDevice_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminGetDevice"))
@@ -1428,8 +1406,6 @@ proc validate_AdminGetUser_606347(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminGetUser"))
@@ -1542,8 +1518,6 @@ proc validate_AdminInitiateAuth_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminInitiateAuth"))
@@ -1655,8 +1629,6 @@ proc validate_AdminLinkProviderForUser_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminLinkProviderForUser"))
@@ -1769,8 +1741,6 @@ proc validate_AdminListDevices_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminListDevices"))
@@ -1897,8 +1867,6 @@ proc validate_AdminListGroupsForUser_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606411 = header.getOrDefault("X-Amz-Target")
   valid_606411 = validateParameter(valid_606411, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminListGroupsForUser"))
@@ -2034,8 +2002,6 @@ proc validate_AdminListUserAuthEvents_606426(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606430 = header.getOrDefault("X-Amz-Target")
   valid_606430 = validateParameter(valid_606430, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminListUserAuthEvents"))
@@ -2156,8 +2122,6 @@ proc validate_AdminRemoveUserFromGroup_606444(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606446 = header.getOrDefault("X-Amz-Target")
   valid_606446 = validateParameter(valid_606446, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminRemoveUserFromGroup"))
@@ -2269,8 +2233,6 @@ proc validate_AdminResetUserPassword_606459(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606461 = header.getOrDefault("X-Amz-Target")
   valid_606461 = validateParameter(valid_606461, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminResetUserPassword"))
@@ -2382,8 +2344,6 @@ proc validate_AdminRespondToAuthChallenge_606474(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606476 = header.getOrDefault("X-Amz-Target")
   valid_606476 = validateParameter(valid_606476, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminRespondToAuthChallenge"))
@@ -2496,8 +2456,6 @@ proc validate_AdminSetUserMFAPreference_606489(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606491 = header.getOrDefault("X-Amz-Target")
   valid_606491 = validateParameter(valid_606491, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminSetUserMFAPreference"))
@@ -2610,8 +2568,6 @@ proc validate_AdminSetUserPassword_606504(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606506 = header.getOrDefault("X-Amz-Target")
   valid_606506 = validateParameter(valid_606506, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminSetUserPassword"))
@@ -2723,8 +2679,6 @@ proc validate_AdminSetUserSettings_606519(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606521 = header.getOrDefault("X-Amz-Target")
   valid_606521 = validateParameter(valid_606521, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminSetUserSettings"))
@@ -2836,8 +2790,6 @@ proc validate_AdminUpdateAuthEventFeedback_606534(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606536 = header.getOrDefault("X-Amz-Target")
   valid_606536 = validateParameter(valid_606536, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminUpdateAuthEventFeedback"))
@@ -2951,8 +2903,6 @@ proc validate_AdminUpdateDeviceStatus_606549(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606551 = header.getOrDefault("X-Amz-Target")
   valid_606551 = validateParameter(valid_606551, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminUpdateDeviceStatus"))
@@ -3064,8 +3014,6 @@ proc validate_AdminUpdateUserAttributes_606564(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606566 = header.getOrDefault("X-Amz-Target")
   valid_606566 = validateParameter(valid_606566, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminUpdateUserAttributes"))
@@ -3178,8 +3126,6 @@ proc validate_AdminUserGlobalSignOut_606579(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606581 = header.getOrDefault("X-Amz-Target")
   valid_606581 = validateParameter(valid_606581, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AdminUserGlobalSignOut"))
@@ -3291,8 +3237,6 @@ proc validate_AssociateSoftwareToken_606594(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606596 = header.getOrDefault("X-Amz-Target")
   valid_606596 = validateParameter(valid_606596, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.AssociateSoftwareToken"))
@@ -3405,8 +3349,6 @@ proc validate_ChangePassword_606609(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606611 = header.getOrDefault("X-Amz-Target")
   valid_606611 = validateParameter(valid_606611, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ChangePassword"))
@@ -3518,8 +3460,6 @@ proc validate_ConfirmDevice_606624(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606626 = header.getOrDefault("X-Amz-Target")
   valid_606626 = validateParameter(valid_606626, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ConfirmDevice"))
@@ -3631,8 +3571,6 @@ proc validate_ConfirmForgotPassword_606639(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606641 = header.getOrDefault("X-Amz-Target")
   valid_606641 = validateParameter(valid_606641, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ConfirmForgotPassword"))
@@ -3744,8 +3682,6 @@ proc validate_ConfirmSignUp_606654(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606656 = header.getOrDefault("X-Amz-Target")
   valid_606656 = validateParameter(valid_606656, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ConfirmSignUp"))
@@ -3857,8 +3793,6 @@ proc validate_CreateGroup_606669(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606671 = header.getOrDefault("X-Amz-Target")
   valid_606671 = validateParameter(valid_606671, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.CreateGroup"))
@@ -3971,8 +3905,6 @@ proc validate_CreateIdentityProvider_606684(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606686 = header.getOrDefault("X-Amz-Target")
   valid_606686 = validateParameter(valid_606686, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.CreateIdentityProvider"))
@@ -4084,8 +4016,6 @@ proc validate_CreateResourceServer_606699(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606701 = header.getOrDefault("X-Amz-Target")
   valid_606701 = validateParameter(valid_606701, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.CreateResourceServer"))
@@ -4198,8 +4128,6 @@ proc validate_CreateUserImportJob_606714(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606716 = header.getOrDefault("X-Amz-Target")
   valid_606716 = validateParameter(valid_606716, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.CreateUserImportJob"))
@@ -4312,8 +4240,6 @@ proc validate_CreateUserPool_606729(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606731 = header.getOrDefault("X-Amz-Target")
   valid_606731 = validateParameter(valid_606731, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.CreateUserPool"))
@@ -4425,8 +4351,6 @@ proc validate_CreateUserPoolClient_606744(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606746 = header.getOrDefault("X-Amz-Target")
   valid_606746 = validateParameter(valid_606746, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.CreateUserPoolClient"))
@@ -4538,8 +4462,6 @@ proc validate_CreateUserPoolDomain_606759(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606761 = header.getOrDefault("X-Amz-Target")
   valid_606761 = validateParameter(valid_606761, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.CreateUserPoolDomain"))
@@ -4651,8 +4573,6 @@ proc validate_DeleteGroup_606774(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606776 = header.getOrDefault("X-Amz-Target")
   valid_606776 = validateParameter(valid_606776, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DeleteGroup"))
@@ -4765,8 +4685,6 @@ proc validate_DeleteIdentityProvider_606789(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606791 = header.getOrDefault("X-Amz-Target")
   valid_606791 = validateParameter(valid_606791, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DeleteIdentityProvider"))
@@ -4878,8 +4796,6 @@ proc validate_DeleteResourceServer_606804(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606806 = header.getOrDefault("X-Amz-Target")
   valid_606806 = validateParameter(valid_606806, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DeleteResourceServer"))
@@ -4991,8 +4907,6 @@ proc validate_DeleteUser_606819(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606821 = header.getOrDefault("X-Amz-Target")
   valid_606821 = validateParameter(valid_606821, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DeleteUser"))
@@ -5105,8 +5019,6 @@ proc validate_DeleteUserAttributes_606834(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606836 = header.getOrDefault("X-Amz-Target")
   valid_606836 = validateParameter(valid_606836, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DeleteUserAttributes"))
@@ -5219,8 +5131,6 @@ proc validate_DeleteUserPool_606849(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606851 = header.getOrDefault("X-Amz-Target")
   valid_606851 = validateParameter(valid_606851, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DeleteUserPool"))
@@ -5332,8 +5242,6 @@ proc validate_DeleteUserPoolClient_606864(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606866 = header.getOrDefault("X-Amz-Target")
   valid_606866 = validateParameter(valid_606866, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DeleteUserPoolClient"))
@@ -5445,8 +5353,6 @@ proc validate_DeleteUserPoolDomain_606879(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606881 = header.getOrDefault("X-Amz-Target")
   valid_606881 = validateParameter(valid_606881, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DeleteUserPoolDomain"))
@@ -5559,8 +5465,6 @@ proc validate_DescribeIdentityProvider_606894(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606896 = header.getOrDefault("X-Amz-Target")
   valid_606896 = validateParameter(valid_606896, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DescribeIdentityProvider"))
@@ -5672,8 +5576,6 @@ proc validate_DescribeResourceServer_606909(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606911 = header.getOrDefault("X-Amz-Target")
   valid_606911 = validateParameter(valid_606911, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DescribeResourceServer"))
@@ -5785,8 +5687,6 @@ proc validate_DescribeRiskConfiguration_606924(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606926 = header.getOrDefault("X-Amz-Target")
   valid_606926 = validateParameter(valid_606926, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DescribeRiskConfiguration"))
@@ -5899,8 +5799,6 @@ proc validate_DescribeUserImportJob_606939(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606941 = header.getOrDefault("X-Amz-Target")
   valid_606941 = validateParameter(valid_606941, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DescribeUserImportJob"))
@@ -6013,8 +5911,6 @@ proc validate_DescribeUserPool_606954(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606956 = header.getOrDefault("X-Amz-Target")
   valid_606956 = validateParameter(valid_606956, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DescribeUserPool"))
@@ -6126,8 +6022,6 @@ proc validate_DescribeUserPoolClient_606969(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606971 = header.getOrDefault("X-Amz-Target")
   valid_606971 = validateParameter(valid_606971, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DescribeUserPoolClient"))
@@ -6239,8 +6133,6 @@ proc validate_DescribeUserPoolDomain_606984(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606986 = header.getOrDefault("X-Amz-Target")
   valid_606986 = validateParameter(valid_606986, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.DescribeUserPoolDomain"))
@@ -6352,8 +6244,6 @@ proc validate_ForgetDevice_606999(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607001 = header.getOrDefault("X-Amz-Target")
   valid_607001 = validateParameter(valid_607001, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ForgetDevice"))
@@ -6466,8 +6356,6 @@ proc validate_ForgotPassword_607014(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607016 = header.getOrDefault("X-Amz-Target")
   valid_607016 = validateParameter(valid_607016, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ForgotPassword"))
@@ -6579,8 +6467,6 @@ proc validate_GetCSVHeader_607029(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607031 = header.getOrDefault("X-Amz-Target")
   valid_607031 = validateParameter(valid_607031, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetCSVHeader"))
@@ -6692,8 +6578,6 @@ proc validate_GetDevice_607044(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607046 = header.getOrDefault("X-Amz-Target")
   valid_607046 = validateParameter(valid_607046, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetDevice"))
@@ -6805,8 +6689,6 @@ proc validate_GetGroup_607059(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607061 = header.getOrDefault("X-Amz-Target")
   valid_607061 = validateParameter(valid_607061, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetGroup"))
@@ -6918,8 +6800,6 @@ proc validate_GetIdentityProviderByIdentifier_607074(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607076 = header.getOrDefault("X-Amz-Target")
   valid_607076 = validateParameter(valid_607076, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetIdentityProviderByIdentifier"))
@@ -7033,8 +6913,6 @@ proc validate_GetSigningCertificate_607089(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607091 = header.getOrDefault("X-Amz-Target")
   valid_607091 = validateParameter(valid_607091, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetSigningCertificate"))
@@ -7147,8 +7025,6 @@ proc validate_GetUICustomization_607104(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607106 = header.getOrDefault("X-Amz-Target")
   valid_607106 = validateParameter(valid_607106, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetUICustomization"))
@@ -7260,8 +7136,6 @@ proc validate_GetUser_607119(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607121 = header.getOrDefault("X-Amz-Target")
   valid_607121 = validateParameter(valid_607121, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetUser"))
@@ -7373,8 +7247,6 @@ proc validate_GetUserAttributeVerificationCode_607134(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607136 = header.getOrDefault("X-Amz-Target")
   valid_607136 = validateParameter(valid_607136, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetUserAttributeVerificationCode"))
@@ -7489,8 +7361,6 @@ proc validate_GetUserPoolMfaConfig_607149(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607151 = header.getOrDefault("X-Amz-Target")
   valid_607151 = validateParameter(valid_607151, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GetUserPoolMfaConfig"))
@@ -7602,8 +7472,6 @@ proc validate_GlobalSignOut_607164(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607166 = header.getOrDefault("X-Amz-Target")
   valid_607166 = validateParameter(valid_607166, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.GlobalSignOut"))
@@ -7715,8 +7583,6 @@ proc validate_InitiateAuth_607179(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607181 = header.getOrDefault("X-Amz-Target")
   valid_607181 = validateParameter(valid_607181, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.InitiateAuth"))
@@ -7828,8 +7694,6 @@ proc validate_ListDevices_607194(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607196 = header.getOrDefault("X-Amz-Target")
   valid_607196 = validateParameter(valid_607196, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListDevices"))
@@ -7957,8 +7821,6 @@ proc validate_ListGroups_607209(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607213 = header.getOrDefault("X-Amz-Target")
   valid_607213 = validateParameter(valid_607213, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListGroups"))
@@ -8094,8 +7956,6 @@ proc validate_ListIdentityProviders_607227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607231 = header.getOrDefault("X-Amz-Target")
   valid_607231 = validateParameter(valid_607231, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListIdentityProviders"))
@@ -8231,8 +8091,6 @@ proc validate_ListResourceServers_607245(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607249 = header.getOrDefault("X-Amz-Target")
   valid_607249 = validateParameter(valid_607249, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListResourceServers"))
@@ -8353,8 +8211,6 @@ proc validate_ListTagsForResource_607263(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607265 = header.getOrDefault("X-Amz-Target")
   valid_607265 = validateParameter(valid_607265, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListTagsForResource"))
@@ -8467,8 +8323,6 @@ proc validate_ListUserImportJobs_607278(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607280 = header.getOrDefault("X-Amz-Target")
   valid_607280 = validateParameter(valid_607280, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListUserImportJobs"))
@@ -8596,8 +8450,6 @@ proc validate_ListUserPoolClients_607293(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607297 = header.getOrDefault("X-Amz-Target")
   valid_607297 = validateParameter(valid_607297, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListUserPoolClients"))
@@ -8732,8 +8584,6 @@ proc validate_ListUserPools_607311(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607315 = header.getOrDefault("X-Amz-Target")
   valid_607315 = validateParameter(valid_607315, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListUserPools"))
@@ -8868,8 +8718,6 @@ proc validate_ListUsers_607329(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607333 = header.getOrDefault("X-Amz-Target")
   valid_607333 = validateParameter(valid_607333, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListUsers"))
@@ -9005,8 +8853,6 @@ proc validate_ListUsersInGroup_607347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607351 = header.getOrDefault("X-Amz-Target")
   valid_607351 = validateParameter(valid_607351, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ListUsersInGroup"))
@@ -9126,8 +8972,6 @@ proc validate_ResendConfirmationCode_607365(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607367 = header.getOrDefault("X-Amz-Target")
   valid_607367 = validateParameter(valid_607367, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.ResendConfirmationCode"))
@@ -9239,8 +9083,6 @@ proc validate_RespondToAuthChallenge_607380(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607382 = header.getOrDefault("X-Amz-Target")
   valid_607382 = validateParameter(valid_607382, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.RespondToAuthChallenge"))
@@ -9352,8 +9194,6 @@ proc validate_SetRiskConfiguration_607395(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607397 = header.getOrDefault("X-Amz-Target")
   valid_607397 = validateParameter(valid_607397, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.SetRiskConfiguration"))
@@ -9466,8 +9306,6 @@ proc validate_SetUICustomization_607410(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607412 = header.getOrDefault("X-Amz-Target")
   valid_607412 = validateParameter(valid_607412, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.SetUICustomization"))
@@ -9579,8 +9417,6 @@ proc validate_SetUserMFAPreference_607425(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607427 = header.getOrDefault("X-Amz-Target")
   valid_607427 = validateParameter(valid_607427, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.SetUserMFAPreference"))
@@ -9692,8 +9528,6 @@ proc validate_SetUserPoolMfaConfig_607440(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607442 = header.getOrDefault("X-Amz-Target")
   valid_607442 = validateParameter(valid_607442, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.SetUserPoolMfaConfig"))
@@ -9806,8 +9640,6 @@ proc validate_SetUserSettings_607455(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607457 = header.getOrDefault("X-Amz-Target")
   valid_607457 = validateParameter(valid_607457, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.SetUserSettings"))
@@ -9919,8 +9751,6 @@ proc validate_SignUp_607470(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607472 = header.getOrDefault("X-Amz-Target")
   valid_607472 = validateParameter(valid_607472, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.SignUp"))
@@ -10033,8 +9863,6 @@ proc validate_StartUserImportJob_607485(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607487 = header.getOrDefault("X-Amz-Target")
   valid_607487 = validateParameter(valid_607487, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.StartUserImportJob"))
@@ -10147,8 +9975,6 @@ proc validate_StopUserImportJob_607500(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607502 = header.getOrDefault("X-Amz-Target")
   valid_607502 = validateParameter(valid_607502, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.StopUserImportJob"))
@@ -10259,8 +10085,6 @@ proc validate_TagResource_607515(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607517 = header.getOrDefault("X-Amz-Target")
   valid_607517 = validateParameter(valid_607517, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.TagResource"))
@@ -10373,8 +10197,6 @@ proc validate_UntagResource_607530(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607532 = header.getOrDefault("X-Amz-Target")
   valid_607532 = validateParameter(valid_607532, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UntagResource"))
@@ -10487,8 +10309,6 @@ proc validate_UpdateAuthEventFeedback_607545(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607547 = header.getOrDefault("X-Amz-Target")
   valid_607547 = validateParameter(valid_607547, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateAuthEventFeedback"))
@@ -10601,8 +10421,6 @@ proc validate_UpdateDeviceStatus_607560(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607562 = header.getOrDefault("X-Amz-Target")
   valid_607562 = validateParameter(valid_607562, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateDeviceStatus"))
@@ -10714,8 +10532,6 @@ proc validate_UpdateGroup_607575(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607577 = header.getOrDefault("X-Amz-Target")
   valid_607577 = validateParameter(valid_607577, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateGroup"))
@@ -10828,8 +10644,6 @@ proc validate_UpdateIdentityProvider_607590(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607592 = header.getOrDefault("X-Amz-Target")
   valid_607592 = validateParameter(valid_607592, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateIdentityProvider"))
@@ -10941,8 +10755,6 @@ proc validate_UpdateResourceServer_607605(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607607 = header.getOrDefault("X-Amz-Target")
   valid_607607 = validateParameter(valid_607607, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateResourceServer"))
@@ -11054,8 +10866,6 @@ proc validate_UpdateUserAttributes_607620(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607622 = header.getOrDefault("X-Amz-Target")
   valid_607622 = validateParameter(valid_607622, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateUserAttributes"))
@@ -11168,8 +10978,6 @@ proc validate_UpdateUserPool_607635(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607637 = header.getOrDefault("X-Amz-Target")
   valid_607637 = validateParameter(valid_607637, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateUserPool"))
@@ -11281,8 +11089,6 @@ proc validate_UpdateUserPoolClient_607650(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607652 = header.getOrDefault("X-Amz-Target")
   valid_607652 = validateParameter(valid_607652, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateUserPoolClient"))
@@ -11394,8 +11200,6 @@ proc validate_UpdateUserPoolDomain_607665(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607667 = header.getOrDefault("X-Amz-Target")
   valid_607667 = validateParameter(valid_607667, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.UpdateUserPoolDomain"))
@@ -11508,8 +11312,6 @@ proc validate_VerifySoftwareToken_607680(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607682 = header.getOrDefault("X-Amz-Target")
   valid_607682 = validateParameter(valid_607682, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.VerifySoftwareToken"))
@@ -11622,8 +11424,6 @@ proc validate_VerifyUserAttribute_607695(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607697 = header.getOrDefault("X-Amz-Target")
   valid_607697 = validateParameter(valid_607697, JString, required = true, default = newJString(
       "AWSCognitoIdentityProviderService.VerifyUserAttribute"))

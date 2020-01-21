@@ -178,8 +178,6 @@ proc validate_AddAttributesToFindings_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "InspectorService.AddAttributesToFindings"))
@@ -292,8 +290,6 @@ proc validate_CreateAssessmentTarget_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "InspectorService.CreateAssessmentTarget"))
@@ -407,8 +403,6 @@ proc validate_CreateAssessmentTemplate_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "InspectorService.CreateAssessmentTemplate"))
@@ -522,8 +516,6 @@ proc validate_CreateExclusionsPreview_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "InspectorService.CreateExclusionsPreview"))
@@ -637,8 +629,6 @@ proc validate_CreateResourceGroup_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "InspectorService.CreateResourceGroup"))
@@ -752,8 +742,6 @@ proc validate_DeleteAssessmentRun_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "InspectorService.DeleteAssessmentRun"))
@@ -866,8 +854,6 @@ proc validate_DeleteAssessmentTarget_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "InspectorService.DeleteAssessmentTarget"))
@@ -981,8 +967,6 @@ proc validate_DeleteAssessmentTemplate_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "InspectorService.DeleteAssessmentTemplate"))
@@ -1095,8 +1079,6 @@ proc validate_DescribeAssessmentRuns_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "InspectorService.DescribeAssessmentRuns"))
@@ -1209,8 +1191,6 @@ proc validate_DescribeAssessmentTargets_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "InspectorService.DescribeAssessmentTargets"))
@@ -1324,8 +1304,6 @@ proc validate_DescribeAssessmentTemplates_606332(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "InspectorService.DescribeAssessmentTemplates"))
@@ -1439,8 +1417,6 @@ proc validate_DescribeCrossAccountAccessRole_606347(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "InspectorService.DescribeCrossAccountAccessRole"))
@@ -1547,8 +1523,6 @@ proc validate_DescribeExclusions_606360(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606362 = header.getOrDefault("X-Amz-Target")
   valid_606362 = validateParameter(valid_606362, JString, required = true, default = newJString(
       "InspectorService.DescribeExclusions"))
@@ -1662,8 +1636,6 @@ proc validate_DescribeFindings_606375(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606377 = header.getOrDefault("X-Amz-Target")
   valid_606377 = validateParameter(valid_606377, JString, required = true, default = newJString(
       "InspectorService.DescribeFindings"))
@@ -1775,8 +1747,6 @@ proc validate_DescribeResourceGroups_606390(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606392 = header.getOrDefault("X-Amz-Target")
   valid_606392 = validateParameter(valid_606392, JString, required = true, default = newJString(
       "InspectorService.DescribeResourceGroups"))
@@ -1889,8 +1859,6 @@ proc validate_DescribeRulesPackages_606405(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606407 = header.getOrDefault("X-Amz-Target")
   valid_606407 = validateParameter(valid_606407, JString, required = true, default = newJString(
       "InspectorService.DescribeRulesPackages"))
@@ -2004,8 +1972,6 @@ proc validate_GetAssessmentReport_606420(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606422 = header.getOrDefault("X-Amz-Target")
   valid_606422 = validateParameter(valid_606422, JString, required = true, default = newJString(
       "InspectorService.GetAssessmentReport"))
@@ -2133,8 +2099,6 @@ proc validate_GetExclusionsPreview_606435(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "InspectorService.GetExclusionsPreview"))
@@ -2255,8 +2219,6 @@ proc validate_GetTelemetryMetadata_606454(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606456 = header.getOrDefault("X-Amz-Target")
   valid_606456 = validateParameter(valid_606456, JString, required = true, default = newJString(
       "InspectorService.GetTelemetryMetadata"))
@@ -2385,8 +2347,6 @@ proc validate_ListAssessmentRunAgents_606469(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606473 = header.getOrDefault("X-Amz-Target")
   valid_606473 = validateParameter(valid_606473, JString, required = true, default = newJString(
       "InspectorService.ListAssessmentRunAgents"))
@@ -2523,8 +2483,6 @@ proc validate_ListAssessmentRuns_606487(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606491 = header.getOrDefault("X-Amz-Target")
   valid_606491 = validateParameter(valid_606491, JString, required = true, default = newJString(
       "InspectorService.ListAssessmentRuns"))
@@ -2660,8 +2618,6 @@ proc validate_ListAssessmentTargets_606505(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606509 = header.getOrDefault("X-Amz-Target")
   valid_606509 = validateParameter(valid_606509, JString, required = true, default = newJString(
       "InspectorService.ListAssessmentTargets"))
@@ -2798,8 +2754,6 @@ proc validate_ListAssessmentTemplates_606523(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606527 = header.getOrDefault("X-Amz-Target")
   valid_606527 = validateParameter(valid_606527, JString, required = true, default = newJString(
       "InspectorService.ListAssessmentTemplates"))
@@ -2935,8 +2889,6 @@ proc validate_ListEventSubscriptions_606541(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606545 = header.getOrDefault("X-Amz-Target")
   valid_606545 = validateParameter(valid_606545, JString, required = true, default = newJString(
       "InspectorService.ListEventSubscriptions"))
@@ -3073,8 +3025,6 @@ proc validate_ListExclusions_606559(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606563 = header.getOrDefault("X-Amz-Target")
   valid_606563 = validateParameter(valid_606563, JString, required = true, default = newJString(
       "InspectorService.ListExclusions"))
@@ -3209,8 +3159,6 @@ proc validate_ListFindings_606577(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606581 = header.getOrDefault("X-Amz-Target")
   valid_606581 = validateParameter(valid_606581, JString, required = true, default = newJString(
       "InspectorService.ListFindings"))
@@ -3346,8 +3294,6 @@ proc validate_ListRulesPackages_606595(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606599 = header.getOrDefault("X-Amz-Target")
   valid_606599 = validateParameter(valid_606599, JString, required = true, default = newJString(
       "InspectorService.ListRulesPackages"))
@@ -3468,8 +3414,6 @@ proc validate_ListTagsForResource_606613(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606615 = header.getOrDefault("X-Amz-Target")
   valid_606615 = validateParameter(valid_606615, JString, required = true, default = newJString(
       "InspectorService.ListTagsForResource"))
@@ -3597,8 +3541,6 @@ proc validate_PreviewAgents_606628(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606632 = header.getOrDefault("X-Amz-Target")
   valid_606632 = validateParameter(valid_606632, JString, required = true, default = newJString(
       "InspectorService.PreviewAgents"))
@@ -3718,8 +3660,6 @@ proc validate_RegisterCrossAccountAccessRole_606646(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606648 = header.getOrDefault("X-Amz-Target")
   valid_606648 = validateParameter(valid_606648, JString, required = true, default = newJString(
       "InspectorService.RegisterCrossAccountAccessRole"))
@@ -3833,8 +3773,6 @@ proc validate_RemoveAttributesFromFindings_606661(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606663 = header.getOrDefault("X-Amz-Target")
   valid_606663 = validateParameter(valid_606663, JString, required = true, default = newJString(
       "InspectorService.RemoveAttributesFromFindings"))
@@ -3949,8 +3887,6 @@ proc validate_SetTagsForResource_606676(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606678 = header.getOrDefault("X-Amz-Target")
   valid_606678 = validateParameter(valid_606678, JString, required = true, default = newJString(
       "InspectorService.SetTagsForResource"))
@@ -4064,8 +4000,6 @@ proc validate_StartAssessmentRun_606691(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606693 = header.getOrDefault("X-Amz-Target")
   valid_606693 = validateParameter(valid_606693, JString, required = true, default = newJString(
       "InspectorService.StartAssessmentRun"))
@@ -4179,8 +4113,6 @@ proc validate_StopAssessmentRun_606706(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606708 = header.getOrDefault("X-Amz-Target")
   valid_606708 = validateParameter(valid_606708, JString, required = true, default = newJString(
       "InspectorService.StopAssessmentRun"))
@@ -4293,8 +4225,6 @@ proc validate_SubscribeToEvent_606721(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606723 = header.getOrDefault("X-Amz-Target")
   valid_606723 = validateParameter(valid_606723, JString, required = true, default = newJString(
       "InspectorService.SubscribeToEvent"))
@@ -4406,8 +4336,6 @@ proc validate_UnsubscribeFromEvent_606736(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606738 = header.getOrDefault("X-Amz-Target")
   valid_606738 = validateParameter(valid_606738, JString, required = true, default = newJString(
       "InspectorService.UnsubscribeFromEvent"))
@@ -4520,8 +4448,6 @@ proc validate_UpdateAssessmentTarget_606751(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606753 = header.getOrDefault("X-Amz-Target")
   valid_606753 = validateParameter(valid_606753, JString, required = true, default = newJString(
       "InspectorService.UpdateAssessmentTarget"))

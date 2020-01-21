@@ -167,8 +167,6 @@ proc validate_AcceptQualificationRequest_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.AcceptQualificationRequest"))
@@ -282,8 +280,6 @@ proc validate_ApproveAssignment_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ApproveAssignment"))
@@ -395,8 +391,6 @@ proc validate_AssociateQualificationWithWorker_606212(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.AssociateQualificationWithWorker"))
@@ -511,8 +505,6 @@ proc validate_CreateAdditionalAssignmentsForHIT_606227(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.CreateAdditionalAssignmentsForHIT"))
@@ -627,8 +619,6 @@ proc validate_CreateHIT_606242(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.CreateHIT"))
@@ -740,8 +730,6 @@ proc validate_CreateHITType_606257(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.CreateHITType"))
@@ -853,8 +841,6 @@ proc validate_CreateHITWithHITType_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.CreateHITWithHITType"))
@@ -967,8 +953,6 @@ proc validate_CreateQualificationType_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.CreateQualificationType"))
@@ -1081,8 +1065,6 @@ proc validate_CreateWorkerBlock_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.CreateWorkerBlock"))
@@ -1194,8 +1176,6 @@ proc validate_DeleteHIT_606317(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.DeleteHIT"))
@@ -1308,8 +1288,6 @@ proc validate_DeleteQualificationType_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.DeleteQualificationType"))
@@ -1422,8 +1400,6 @@ proc validate_DeleteWorkerBlock_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.DeleteWorkerBlock"))
@@ -1535,8 +1511,6 @@ proc validate_DisassociateQualificationFromWorker_606362(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.DisassociateQualificationFromWorker"))
@@ -1652,8 +1626,6 @@ proc validate_GetAccountBalance_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.GetAccountBalance"))
@@ -1765,8 +1737,6 @@ proc validate_GetAssignment_606392(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.GetAssignment"))
@@ -1879,8 +1849,6 @@ proc validate_GetFileUploadURL_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.GetFileUploadURL"))
@@ -1992,8 +1960,6 @@ proc validate_GetHIT_606422(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.GetHIT"))
@@ -2105,8 +2071,6 @@ proc validate_GetQualificationScore_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.GetQualificationScore"))
@@ -2218,8 +2182,6 @@ proc validate_GetQualificationType_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.GetQualificationType"))
@@ -2346,8 +2308,6 @@ proc validate_ListAssignmentsForHIT_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606471 = header.getOrDefault("X-Amz-Target")
   valid_606471 = validateParameter(valid_606471, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListAssignmentsForHIT"))
@@ -2483,8 +2443,6 @@ proc validate_ListBonusPayments_606486(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606490 = header.getOrDefault("X-Amz-Target")
   valid_606490 = validateParameter(valid_606490, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListBonusPayments"))
@@ -2619,8 +2577,6 @@ proc validate_ListHITs_606504(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606508 = header.getOrDefault("X-Amz-Target")
   valid_606508 = validateParameter(valid_606508, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListHITs"))
@@ -2755,8 +2711,6 @@ proc validate_ListHITsForQualificationType_606522(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606526 = header.getOrDefault("X-Amz-Target")
   valid_606526 = validateParameter(valid_606526, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListHITsForQualificationType"))
@@ -2892,8 +2846,6 @@ proc validate_ListQualificationRequests_606540(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListQualificationRequests"))
@@ -3029,8 +2981,6 @@ proc validate_ListQualificationTypes_606558(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606562 = header.getOrDefault("X-Amz-Target")
   valid_606562 = validateParameter(valid_606562, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListQualificationTypes"))
@@ -3165,8 +3115,6 @@ proc validate_ListReviewPolicyResultsForHIT_606576(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606580 = header.getOrDefault("X-Amz-Target")
   valid_606580 = validateParameter(valid_606580, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListReviewPolicyResultsForHIT"))
@@ -3303,8 +3251,6 @@ proc validate_ListReviewableHITs_606594(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606598 = header.getOrDefault("X-Amz-Target")
   valid_606598 = validateParameter(valid_606598, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListReviewableHITs"))
@@ -3441,8 +3387,6 @@ proc validate_ListWorkerBlocks_606612(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606616 = header.getOrDefault("X-Amz-Target")
   valid_606616 = validateParameter(valid_606616, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListWorkerBlocks"))
@@ -3577,8 +3521,6 @@ proc validate_ListWorkersWithQualificationType_606630(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.ListWorkersWithQualificationType"))
@@ -3700,8 +3642,6 @@ proc validate_NotifyWorkers_606648(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606650 = header.getOrDefault("X-Amz-Target")
   valid_606650 = validateParameter(valid_606650, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.NotifyWorkers"))
@@ -3814,8 +3754,6 @@ proc validate_RejectAssignment_606663(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606665 = header.getOrDefault("X-Amz-Target")
   valid_606665 = validateParameter(valid_606665, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.RejectAssignment"))
@@ -3927,8 +3865,6 @@ proc validate_RejectQualificationRequest_606678(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606680 = header.getOrDefault("X-Amz-Target")
   valid_606680 = validateParameter(valid_606680, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.RejectQualificationRequest"))
@@ -4041,8 +3977,6 @@ proc validate_SendBonus_606693(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606695 = header.getOrDefault("X-Amz-Target")
   valid_606695 = validateParameter(valid_606695, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.SendBonus"))
@@ -4154,8 +4088,6 @@ proc validate_SendTestEventNotification_606708(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606710 = header.getOrDefault("X-Amz-Target")
   valid_606710 = validateParameter(valid_606710, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.SendTestEventNotification"))
@@ -4268,8 +4200,6 @@ proc validate_UpdateExpirationForHIT_606723(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606725 = header.getOrDefault("X-Amz-Target")
   valid_606725 = validateParameter(valid_606725, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.UpdateExpirationForHIT"))
@@ -4381,8 +4311,6 @@ proc validate_UpdateHITReviewStatus_606738(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606740 = header.getOrDefault("X-Amz-Target")
   valid_606740 = validateParameter(valid_606740, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.UpdateHITReviewStatus"))
@@ -4495,8 +4423,6 @@ proc validate_UpdateHITTypeOfHIT_606753(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606755 = header.getOrDefault("X-Amz-Target")
   valid_606755 = validateParameter(valid_606755, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.UpdateHITTypeOfHIT"))
@@ -4609,8 +4535,6 @@ proc validate_UpdateNotificationSettings_606768(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606770 = header.getOrDefault("X-Amz-Target")
   valid_606770 = validateParameter(valid_606770, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.UpdateNotificationSettings"))
@@ -4724,8 +4648,6 @@ proc validate_UpdateQualificationType_606783(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606785 = header.getOrDefault("X-Amz-Target")
   valid_606785 = validateParameter(valid_606785, JString, required = true, default = newJString(
       "MTurkRequesterServiceV20170117.UpdateQualificationType"))

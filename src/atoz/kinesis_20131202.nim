@@ -180,8 +180,6 @@ proc validate_AddTagsToStream_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "Kinesis_20131202.AddTagsToStream"))
@@ -293,8 +291,6 @@ proc validate_CreateStream_606197(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "Kinesis_20131202.CreateStream"))
@@ -406,8 +402,6 @@ proc validate_DecreaseStreamRetentionPeriod_606212(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "Kinesis_20131202.DecreaseStreamRetentionPeriod"))
@@ -521,8 +515,6 @@ proc validate_DeleteStream_606227(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "Kinesis_20131202.DeleteStream"))
@@ -635,8 +627,6 @@ proc validate_DeregisterStreamConsumer_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "Kinesis_20131202.DeregisterStreamConsumer"))
@@ -750,8 +740,6 @@ proc validate_DescribeLimits_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "Kinesis_20131202.DescribeLimits"))
@@ -879,8 +867,6 @@ proc validate_DescribeStream_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606276 = header.getOrDefault("X-Amz-Target")
   valid_606276 = validateParameter(valid_606276, JString, required = true, default = newJString(
       "Kinesis_20131202.DescribeStream"))
@@ -1000,8 +986,6 @@ proc validate_DescribeStreamConsumer_606291(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606293 = header.getOrDefault("X-Amz-Target")
   valid_606293 = validateParameter(valid_606293, JString, required = true, default = newJString(
       "Kinesis_20131202.DescribeStreamConsumer"))
@@ -1114,8 +1098,6 @@ proc validate_DescribeStreamSummary_606306(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606308 = header.getOrDefault("X-Amz-Target")
   valid_606308 = validateParameter(valid_606308, JString, required = true, default = newJString(
       "Kinesis_20131202.DescribeStreamSummary"))
@@ -1228,8 +1210,6 @@ proc validate_DisableEnhancedMonitoring_606321(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606323 = header.getOrDefault("X-Amz-Target")
   valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
       "Kinesis_20131202.DisableEnhancedMonitoring"))
@@ -1344,8 +1324,6 @@ proc validate_EnableEnhancedMonitoring_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606338 = header.getOrDefault("X-Amz-Target")
   valid_606338 = validateParameter(valid_606338, JString, required = true, default = newJString(
       "Kinesis_20131202.EnableEnhancedMonitoring"))
@@ -1458,8 +1436,6 @@ proc validate_GetRecords_606351(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606353 = header.getOrDefault("X-Amz-Target")
   valid_606353 = validateParameter(valid_606353, JString, required = true, default = newJString(
       "Kinesis_20131202.GetRecords"))
@@ -1573,8 +1549,6 @@ proc validate_GetShardIterator_606366(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606368 = header.getOrDefault("X-Amz-Target")
   valid_606368 = validateParameter(valid_606368, JString, required = true, default = newJString(
       "Kinesis_20131202.GetShardIterator"))
@@ -1686,8 +1660,6 @@ proc validate_IncreaseStreamRetentionPeriod_606381(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606383 = header.getOrDefault("X-Amz-Target")
   valid_606383 = validateParameter(valid_606383, JString, required = true, default = newJString(
       "Kinesis_20131202.IncreaseStreamRetentionPeriod"))
@@ -1801,8 +1773,6 @@ proc validate_ListShards_606396(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606398 = header.getOrDefault("X-Amz-Target")
   valid_606398 = validateParameter(valid_606398, JString, required = true, default = newJString(
       "Kinesis_20131202.ListShards"))
@@ -1931,8 +1901,6 @@ proc validate_ListStreamConsumers_606411(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606415 = header.getOrDefault("X-Amz-Target")
   valid_606415 = validateParameter(valid_606415, JString, required = true, default = newJString(
       "Kinesis_20131202.ListStreamConsumers"))
@@ -2068,8 +2036,6 @@ proc validate_ListStreams_606429(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606433 = header.getOrDefault("X-Amz-Target")
   valid_606433 = validateParameter(valid_606433, JString, required = true, default = newJString(
       "Kinesis_20131202.ListStreams"))
@@ -2192,8 +2158,6 @@ proc validate_ListTagsForStream_606447(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606449 = header.getOrDefault("X-Amz-Target")
   valid_606449 = validateParameter(valid_606449, JString, required = true, default = newJString(
       "Kinesis_20131202.ListTagsForStream"))
@@ -2305,8 +2269,6 @@ proc validate_MergeShards_606462(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606464 = header.getOrDefault("X-Amz-Target")
   valid_606464 = validateParameter(valid_606464, JString, required = true, default = newJString(
       "Kinesis_20131202.MergeShards"))
@@ -2419,8 +2381,6 @@ proc validate_PutRecord_606477(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606479 = header.getOrDefault("X-Amz-Target")
   valid_606479 = validateParameter(valid_606479, JString, required = true, default = newJString(
       "Kinesis_20131202.PutRecord"))
@@ -2532,8 +2492,6 @@ proc validate_PutRecords_606492(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606494 = header.getOrDefault("X-Amz-Target")
   valid_606494 = validateParameter(valid_606494, JString, required = true, default = newJString(
       "Kinesis_20131202.PutRecords"))
@@ -2646,8 +2604,6 @@ proc validate_RegisterStreamConsumer_606507(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606509 = header.getOrDefault("X-Amz-Target")
   valid_606509 = validateParameter(valid_606509, JString, required = true, default = newJString(
       "Kinesis_20131202.RegisterStreamConsumer"))
@@ -2760,8 +2716,6 @@ proc validate_RemoveTagsFromStream_606522(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606524 = header.getOrDefault("X-Amz-Target")
   valid_606524 = validateParameter(valid_606524, JString, required = true, default = newJString(
       "Kinesis_20131202.RemoveTagsFromStream"))
@@ -2874,8 +2828,6 @@ proc validate_SplitShard_606537(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606539 = header.getOrDefault("X-Amz-Target")
   valid_606539 = validateParameter(valid_606539, JString, required = true, default = newJString(
       "Kinesis_20131202.SplitShard"))
@@ -2988,8 +2940,6 @@ proc validate_StartStreamEncryption_606552(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606554 = header.getOrDefault("X-Amz-Target")
   valid_606554 = validateParameter(valid_606554, JString, required = true, default = newJString(
       "Kinesis_20131202.StartStreamEncryption"))
@@ -3102,8 +3052,6 @@ proc validate_StopStreamEncryption_606567(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606569 = header.getOrDefault("X-Amz-Target")
   valid_606569 = validateParameter(valid_606569, JString, required = true, default = newJString(
       "Kinesis_20131202.StopStreamEncryption"))
@@ -3217,8 +3165,6 @@ proc validate_UpdateShardCount_606582(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606584 = header.getOrDefault("X-Amz-Target")
   valid_606584 = validateParameter(valid_606584, JString, required = true, default = newJString(
       "Kinesis_20131202.UpdateShardCount"))

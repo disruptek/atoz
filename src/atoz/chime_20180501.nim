@@ -168,8 +168,6 @@ proc validate_AssociatePhoneNumberWithUser_605928(path: JsonNode; query: JsonNod
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606070 = query.getOrDefault("operation")
   valid_606070 = validateParameter(valid_606070, JString, required = true,
                                  default = newJString("associate-phone-number"))
@@ -315,8 +313,6 @@ proc validate_AssociatePhoneNumbersWithVoiceConnector_606216(path: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606219 = query.getOrDefault("operation")
   valid_606219 = validateParameter(valid_606219, JString, required = true, default = newJString(
       "associate-phone-numbers"))
@@ -459,8 +455,6 @@ proc validate_AssociatePhoneNumbersWithVoiceConnectorGroup_606234(path: JsonNode
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606237 = query.getOrDefault("operation")
   valid_606237 = validateParameter(valid_606237, JString, required = true, default = newJString(
       "associate-phone-numbers"))
@@ -602,8 +596,6 @@ proc validate_AssociateSigninDelegateGroupsWithAccount_606252(path: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606255 = query.getOrDefault("operation")
   valid_606255 = validateParameter(valid_606255, JString, required = true, default = newJString(
       "associate-signin-delegate-groups"))
@@ -747,8 +739,6 @@ proc validate_BatchCreateAttendee_606270(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606273 = query.getOrDefault("operation")
   valid_606273 = validateParameter(valid_606273, JString, required = true,
                                  default = newJString("batch-create"))
@@ -898,8 +888,6 @@ proc validate_BatchCreateRoomMembership_606288(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606292 = query.getOrDefault("operation")
   valid_606292 = validateParameter(valid_606292, JString, required = true,
                                  default = newJString("batch-create"))
@@ -1024,8 +1012,6 @@ proc validate_BatchDeletePhoneNumber_606307(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606309 = query.getOrDefault("operation")
   valid_606309 = validateParameter(valid_606309, JString, required = true,
                                  default = newJString("batch-delete"))
@@ -1161,8 +1147,6 @@ proc validate_BatchSuspendUser_606323(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606326 = query.getOrDefault("operation")
   valid_606326 = validateParameter(valid_606326, JString, required = true,
                                  default = newJString("suspend"))
@@ -1302,8 +1286,6 @@ proc validate_BatchUnsuspendUser_606341(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606344 = query.getOrDefault("operation")
   valid_606344 = validateParameter(valid_606344, JString, required = true,
                                  default = newJString("unsuspend"))
@@ -1425,8 +1407,6 @@ proc validate_BatchUpdatePhoneNumber_606359(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606361 = query.getOrDefault("operation")
   valid_606361 = validateParameter(valid_606361, JString, required = true,
                                  default = newJString("batch-update"))
@@ -3821,8 +3801,6 @@ proc validate_CreateUser_606650(path: JsonNode; query: JsonNode; header: JsonNod
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_606653 = query.getOrDefault("operation")
   valid_606653 = validateParameter(valid_606653, JString, required = true,
                                  default = newJString("create"))
@@ -8695,8 +8673,6 @@ proc validate_DeleteVoiceConnectorTerminationCredentials_607224(path: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607227 = query.getOrDefault("operation")
   valid_607227 = validateParameter(valid_607227, JString, required = true,
                                  default = newJString("delete"))
@@ -8847,8 +8823,6 @@ proc validate_DisassociatePhoneNumberFromUser_607242(path: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607246 = query.getOrDefault("operation")
   valid_607246 = validateParameter(valid_607246, JString, required = true, default = newJString(
       "disassociate-phone-number"))
@@ -8987,8 +8961,6 @@ proc validate_DisassociatePhoneNumbersFromVoiceConnector_607259(path: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607262 = query.getOrDefault("operation")
   valid_607262 = validateParameter(valid_607262, JString, required = true, default = newJString(
       "disassociate-phone-numbers"))
@@ -9132,8 +9104,6 @@ proc validate_DisassociatePhoneNumbersFromVoiceConnectorGroup_607277(
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607280 = query.getOrDefault("operation")
   valid_607280 = validateParameter(valid_607280, JString, required = true, default = newJString(
       "disassociate-phone-numbers"))
@@ -9275,8 +9245,6 @@ proc validate_DisassociateSigninDelegateGroupsFromAccount_607295(path: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607298 = query.getOrDefault("operation")
   valid_607298 = validateParameter(valid_607298, JString, required = true, default = newJString(
       "disassociate-signin-delegate-groups"))
@@ -11398,8 +11366,6 @@ proc validate_InviteUsers_607549(path: JsonNode; query: JsonNode; header: JsonNo
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607552 = query.getOrDefault("operation")
   valid_607552 = validateParameter(valid_607552, JString, required = true,
                                  default = newJString("add"))
@@ -11856,8 +11822,6 @@ proc validate_LogoutUser_607602(path: JsonNode; query: JsonNode; header: JsonNod
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607606 = query.getOrDefault("operation")
   valid_607606 = validateParameter(valid_607606, JString, required = true,
                                  default = newJString("logout"))
@@ -11994,8 +11958,6 @@ proc validate_PutVoiceConnectorTerminationCredentials_607619(path: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607622 = query.getOrDefault("operation")
   valid_607622 = validateParameter(valid_607622, JString, required = true,
                                  default = newJString("put"))
@@ -12147,8 +12109,6 @@ proc validate_RegenerateSecurityToken_607637(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607641 = query.getOrDefault("operation")
   valid_607641 = validateParameter(valid_607641, JString, required = true, default = newJString(
       "regenerate-security-token"))
@@ -12293,8 +12253,6 @@ proc validate_ResetPersonalPIN_607654(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607658 = query.getOrDefault("operation")
   valid_607658 = validateParameter(valid_607658, JString, required = true,
                                  default = newJString("reset-personal-pin"))
@@ -12430,8 +12388,6 @@ proc validate_RestorePhoneNumber_607671(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   operation: JString (required)
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `operation` field"
   var valid_607674 = query.getOrDefault("operation")
   valid_607674 = validateParameter(valid_607674, JString, required = true,
                                  default = newJString("restore"))
@@ -12574,7 +12530,6 @@ proc validate_SearchAvailablePhoneNumbers_607687(path: JsonNode; query: JsonNode
                                  default = nil)
   if valid_607691 != nil:
     section.add "toll-free-prefix", valid_607691
-  assert query != nil, "query argument is necessary due to required `type` field"
   var valid_607692 = query.getOrDefault("type")
   valid_607692 = validateParameter(valid_607692, JString, required = true,
                                  default = newJString("phone-numbers"))

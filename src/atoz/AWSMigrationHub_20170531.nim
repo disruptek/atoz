@@ -183,8 +183,6 @@ proc validate_AssociateCreatedArtifact_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSMigrationHub.AssociateCreatedArtifact"))
@@ -297,8 +295,6 @@ proc validate_AssociateDiscoveredResource_606197(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSMigrationHub.AssociateDiscoveredResource"))
@@ -412,8 +408,6 @@ proc validate_CreateProgressUpdateStream_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSMigrationHub.CreateProgressUpdateStream"))
@@ -527,8 +521,6 @@ proc validate_DeleteProgressUpdateStream_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSMigrationHub.DeleteProgressUpdateStream"))
@@ -643,8 +635,6 @@ proc validate_DescribeApplicationState_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSMigrationHub.DescribeApplicationState"))
@@ -757,8 +747,6 @@ proc validate_DescribeMigrationTask_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSMigrationHub.DescribeMigrationTask"))
@@ -871,8 +859,6 @@ proc validate_DisassociateCreatedArtifact_606272(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSMigrationHub.DisassociateCreatedArtifact"))
@@ -986,8 +972,6 @@ proc validate_DisassociateDiscoveredResource_606287(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSMigrationHub.DisassociateDiscoveredResource"))
@@ -1102,8 +1086,6 @@ proc validate_ImportMigrationTask_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSMigrationHub.ImportMigrationTask"))
@@ -1231,8 +1213,6 @@ proc validate_ListApplicationStates_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606321 = header.getOrDefault("X-Amz-Target")
   valid_606321 = validateParameter(valid_606321, JString, required = true, default = newJString(
       "AWSMigrationHub.ListApplicationStates"))
@@ -1368,8 +1348,6 @@ proc validate_ListCreatedArtifacts_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606340 = header.getOrDefault("X-Amz-Target")
   valid_606340 = validateParameter(valid_606340, JString, required = true, default = newJString(
       "AWSMigrationHub.ListCreatedArtifacts"))
@@ -1506,8 +1484,6 @@ proc validate_ListDiscoveredResources_606354(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606358 = header.getOrDefault("X-Amz-Target")
   valid_606358 = validateParameter(valid_606358, JString, required = true, default = newJString(
       "AWSMigrationHub.ListDiscoveredResources"))
@@ -1644,8 +1620,6 @@ proc validate_ListMigrationTasks_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606376 = header.getOrDefault("X-Amz-Target")
   valid_606376 = validateParameter(valid_606376, JString, required = true, default = newJString(
       "AWSMigrationHub.ListMigrationTasks"))
@@ -1781,8 +1755,6 @@ proc validate_ListProgressUpdateStreams_606390(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "AWSMigrationHub.ListProgressUpdateStreams"))
@@ -1904,8 +1876,6 @@ proc validate_NotifyApplicationState_606408(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606410 = header.getOrDefault("X-Amz-Target")
   valid_606410 = validateParameter(valid_606410, JString, required = true, default = newJString(
       "AWSMigrationHub.NotifyApplicationState"))
@@ -2019,8 +1989,6 @@ proc validate_NotifyMigrationTaskState_606423(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606425 = header.getOrDefault("X-Amz-Target")
   valid_606425 = validateParameter(valid_606425, JString, required = true, default = newJString(
       "AWSMigrationHub.NotifyMigrationTaskState"))
@@ -2133,8 +2101,6 @@ proc validate_PutResourceAttributes_606438(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606440 = header.getOrDefault("X-Amz-Target")
   valid_606440 = validateParameter(valid_606440, JString, required = true, default = newJString(
       "AWSMigrationHub.PutResourceAttributes"))

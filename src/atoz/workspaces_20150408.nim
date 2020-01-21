@@ -178,8 +178,6 @@ proc validate_AssociateIpGroups_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "WorkspacesService.AssociateIpGroups"))
@@ -292,8 +290,6 @@ proc validate_AuthorizeIpRules_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "WorkspacesService.AuthorizeIpRules"))
@@ -406,8 +402,6 @@ proc validate_CopyWorkspaceImage_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "WorkspacesService.CopyWorkspaceImage"))
@@ -520,8 +514,6 @@ proc validate_CreateIpGroup_606227(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "WorkspacesService.CreateIpGroup"))
@@ -633,8 +625,6 @@ proc validate_CreateTags_606242(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "WorkspacesService.CreateTags"))
@@ -748,8 +738,6 @@ proc validate_CreateWorkspaces_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "WorkspacesService.CreateWorkspaces"))
@@ -861,8 +849,6 @@ proc validate_DeleteIpGroup_606272(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "WorkspacesService.DeleteIpGroup"))
@@ -974,8 +960,6 @@ proc validate_DeleteTags_606287(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "WorkspacesService.DeleteTags"))
@@ -1088,8 +1072,6 @@ proc validate_DeleteWorkspaceImage_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "WorkspacesService.DeleteWorkspaceImage"))
@@ -1202,8 +1184,6 @@ proc validate_DeregisterWorkspaceDirectory_606317(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "WorkspacesService.DeregisterWorkspaceDirectory"))
@@ -1318,8 +1298,6 @@ proc validate_DescribeAccount_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "WorkspacesService.DescribeAccount"))
@@ -1431,8 +1409,6 @@ proc validate_DescribeAccountModifications_606347(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "WorkspacesService.DescribeAccountModifications"))
@@ -1547,8 +1523,6 @@ proc validate_DescribeClientProperties_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "WorkspacesService.DescribeClientProperties"))
@@ -1662,8 +1636,6 @@ proc validate_DescribeIpGroups_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "WorkspacesService.DescribeIpGroups"))
@@ -1775,8 +1747,6 @@ proc validate_DescribeTags_606392(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "WorkspacesService.DescribeTags"))
@@ -1897,8 +1867,6 @@ proc validate_DescribeWorkspaceBundles_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606410 = header.getOrDefault("X-Amz-Target")
   valid_606410 = validateParameter(valid_606410, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaceBundles"))
@@ -2024,8 +1992,6 @@ proc validate_DescribeWorkspaceDirectories_606425(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606428 = header.getOrDefault("X-Amz-Target")
   valid_606428 = validateParameter(valid_606428, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaceDirectories"))
@@ -2145,8 +2111,6 @@ proc validate_DescribeWorkspaceImages_606442(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606444 = header.getOrDefault("X-Amz-Target")
   valid_606444 = validateParameter(valid_606444, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaceImages"))
@@ -2259,8 +2223,6 @@ proc validate_DescribeWorkspaceSnapshots_606457(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606459 = header.getOrDefault("X-Amz-Target")
   valid_606459 = validateParameter(valid_606459, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaceSnapshots"))
@@ -2390,8 +2352,6 @@ proc validate_DescribeWorkspaces_606472(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606476 = header.getOrDefault("X-Amz-Target")
   valid_606476 = validateParameter(valid_606476, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaces"))
@@ -2512,8 +2472,6 @@ proc validate_DescribeWorkspacesConnectionStatus_606490(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606492 = header.getOrDefault("X-Amz-Target")
   valid_606492 = validateParameter(valid_606492, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspacesConnectionStatus"))
@@ -2628,8 +2586,6 @@ proc validate_DisassociateIpGroups_606505(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606507 = header.getOrDefault("X-Amz-Target")
   valid_606507 = validateParameter(valid_606507, JString, required = true, default = newJString(
       "WorkspacesService.DisassociateIpGroups"))
@@ -2742,8 +2698,6 @@ proc validate_ImportWorkspaceImage_606520(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606522 = header.getOrDefault("X-Amz-Target")
   valid_606522 = validateParameter(valid_606522, JString, required = true, default = newJString(
       "WorkspacesService.ImportWorkspaceImage"))
@@ -2856,8 +2810,6 @@ proc validate_ListAvailableManagementCidrRanges_606535(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606537 = header.getOrDefault("X-Amz-Target")
   valid_606537 = validateParameter(valid_606537, JString, required = true, default = newJString(
       "WorkspacesService.ListAvailableManagementCidrRanges"))
@@ -2973,8 +2925,6 @@ proc validate_MigrateWorkspace_606550(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606552 = header.getOrDefault("X-Amz-Target")
   valid_606552 = validateParameter(valid_606552, JString, required = true, default = newJString(
       "WorkspacesService.MigrateWorkspace"))
@@ -3086,8 +3036,6 @@ proc validate_ModifyAccount_606565(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606567 = header.getOrDefault("X-Amz-Target")
   valid_606567 = validateParameter(valid_606567, JString, required = true, default = newJString(
       "WorkspacesService.ModifyAccount"))
@@ -3199,8 +3147,6 @@ proc validate_ModifyClientProperties_606580(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606582 = header.getOrDefault("X-Amz-Target")
   valid_606582 = validateParameter(valid_606582, JString, required = true, default = newJString(
       "WorkspacesService.ModifyClientProperties"))
@@ -3313,8 +3259,6 @@ proc validate_ModifySelfservicePermissions_606595(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606597 = header.getOrDefault("X-Amz-Target")
   valid_606597 = validateParameter(valid_606597, JString, required = true, default = newJString(
       "WorkspacesService.ModifySelfservicePermissions"))
@@ -3428,8 +3372,6 @@ proc validate_ModifyWorkspaceAccessProperties_606610(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606612 = header.getOrDefault("X-Amz-Target")
   valid_606612 = validateParameter(valid_606612, JString, required = true, default = newJString(
       "WorkspacesService.ModifyWorkspaceAccessProperties"))
@@ -3544,8 +3486,6 @@ proc validate_ModifyWorkspaceCreationProperties_606625(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606627 = header.getOrDefault("X-Amz-Target")
   valid_606627 = validateParameter(valid_606627, JString, required = true, default = newJString(
       "WorkspacesService.ModifyWorkspaceCreationProperties"))
@@ -3660,8 +3600,6 @@ proc validate_ModifyWorkspaceProperties_606640(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606642 = header.getOrDefault("X-Amz-Target")
   valid_606642 = validateParameter(valid_606642, JString, required = true, default = newJString(
       "WorkspacesService.ModifyWorkspaceProperties"))
@@ -3775,8 +3713,6 @@ proc validate_ModifyWorkspaceState_606655(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606657 = header.getOrDefault("X-Amz-Target")
   valid_606657 = validateParameter(valid_606657, JString, required = true, default = newJString(
       "WorkspacesService.ModifyWorkspaceState"))
@@ -3890,8 +3826,6 @@ proc validate_RebootWorkspaces_606670(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606672 = header.getOrDefault("X-Amz-Target")
   valid_606672 = validateParameter(valid_606672, JString, required = true, default = newJString(
       "WorkspacesService.RebootWorkspaces"))
@@ -4004,8 +3938,6 @@ proc validate_RebuildWorkspaces_606685(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606687 = header.getOrDefault("X-Amz-Target")
   valid_606687 = validateParameter(valid_606687, JString, required = true, default = newJString(
       "WorkspacesService.RebuildWorkspaces"))
@@ -4117,8 +4049,6 @@ proc validate_RegisterWorkspaceDirectory_606700(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606702 = header.getOrDefault("X-Amz-Target")
   valid_606702 = validateParameter(valid_606702, JString, required = true, default = newJString(
       "WorkspacesService.RegisterWorkspaceDirectory"))
@@ -4233,8 +4163,6 @@ proc validate_RestoreWorkspace_606715(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606717 = header.getOrDefault("X-Amz-Target")
   valid_606717 = validateParameter(valid_606717, JString, required = true, default = newJString(
       "WorkspacesService.RestoreWorkspace"))
@@ -4346,8 +4274,6 @@ proc validate_RevokeIpRules_606730(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606732 = header.getOrDefault("X-Amz-Target")
   valid_606732 = validateParameter(valid_606732, JString, required = true, default = newJString(
       "WorkspacesService.RevokeIpRules"))
@@ -4460,8 +4386,6 @@ proc validate_StartWorkspaces_606745(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606747 = header.getOrDefault("X-Amz-Target")
   valid_606747 = validateParameter(valid_606747, JString, required = true, default = newJString(
       "WorkspacesService.StartWorkspaces"))
@@ -4574,8 +4498,6 @@ proc validate_StopWorkspaces_606760(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606762 = header.getOrDefault("X-Amz-Target")
   valid_606762 = validateParameter(valid_606762, JString, required = true, default = newJString(
       "WorkspacesService.StopWorkspaces"))
@@ -4688,8 +4610,6 @@ proc validate_TerminateWorkspaces_606775(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606777 = header.getOrDefault("X-Amz-Target")
   valid_606777 = validateParameter(valid_606777, JString, required = true, default = newJString(
       "WorkspacesService.TerminateWorkspaces"))
@@ -4802,8 +4722,6 @@ proc validate_UpdateRulesOfIpGroup_606790(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606792 = header.getOrDefault("X-Amz-Target")
   valid_606792 = validateParameter(valid_606792, JString, required = true, default = newJString(
       "WorkspacesService.UpdateRulesOfIpGroup"))

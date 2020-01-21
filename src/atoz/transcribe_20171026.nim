@@ -178,8 +178,6 @@ proc validate_CreateVocabulary_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "Transcribe.CreateVocabulary"))
@@ -291,8 +289,6 @@ proc validate_CreateVocabularyFilter_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "Transcribe.CreateVocabularyFilter"))
@@ -405,8 +401,6 @@ proc validate_DeleteTranscriptionJob_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "Transcribe.DeleteTranscriptionJob"))
@@ -520,8 +514,6 @@ proc validate_DeleteVocabulary_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "Transcribe.DeleteVocabulary"))
@@ -633,8 +625,6 @@ proc validate_DeleteVocabularyFilter_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "Transcribe.DeleteVocabularyFilter"))
@@ -748,8 +738,6 @@ proc validate_GetTranscriptionJob_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "Transcribe.GetTranscriptionJob"))
@@ -862,8 +850,6 @@ proc validate_GetVocabulary_606272(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "Transcribe.GetVocabulary"))
@@ -976,8 +962,6 @@ proc validate_GetVocabularyFilter_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "Transcribe.GetVocabularyFilter"))
@@ -1105,8 +1089,6 @@ proc validate_ListTranscriptionJobs_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606306 = header.getOrDefault("X-Amz-Target")
   valid_606306 = validateParameter(valid_606306, JString, required = true, default = newJString(
       "Transcribe.ListTranscriptionJobs"))
@@ -1243,8 +1225,6 @@ proc validate_ListVocabularies_606321(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606325 = header.getOrDefault("X-Amz-Target")
   valid_606325 = validateParameter(valid_606325, JString, required = true, default = newJString(
       "Transcribe.ListVocabularies"))
@@ -1379,8 +1359,6 @@ proc validate_ListVocabularyFilters_606339(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606343 = header.getOrDefault("X-Amz-Target")
   valid_606343 = validateParameter(valid_606343, JString, required = true, default = newJString(
       "Transcribe.ListVocabularyFilters"))
@@ -1501,8 +1479,6 @@ proc validate_StartTranscriptionJob_606357(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606359 = header.getOrDefault("X-Amz-Target")
   valid_606359 = validateParameter(valid_606359, JString, required = true, default = newJString(
       "Transcribe.StartTranscriptionJob"))
@@ -1616,8 +1592,6 @@ proc validate_UpdateVocabulary_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606374 = header.getOrDefault("X-Amz-Target")
   valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString(
       "Transcribe.UpdateVocabulary"))
@@ -1729,8 +1703,6 @@ proc validate_UpdateVocabularyFilter_606387(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606389 = header.getOrDefault("X-Amz-Target")
   valid_606389 = validateParameter(valid_606389, JString, required = true, default = newJString(
       "Transcribe.UpdateVocabularyFilter"))

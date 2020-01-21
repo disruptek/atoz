@@ -177,8 +177,6 @@ proc validate_AssociateConfigurationItemsToApplication_605928(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.AssociateConfigurationItemsToApplication"))
@@ -293,8 +291,6 @@ proc validate_BatchDeleteImportData_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.BatchDeleteImportData"))
@@ -407,8 +403,6 @@ proc validate_CreateApplication_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.CreateApplication"))
@@ -520,8 +514,6 @@ proc validate_CreateTags_606227(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.CreateTags"))
@@ -635,8 +627,6 @@ proc validate_DeleteApplications_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DeleteApplications"))
@@ -749,8 +739,6 @@ proc validate_DeleteTags_606257(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DeleteTags"))
@@ -864,8 +852,6 @@ proc validate_DescribeAgents_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DescribeAgents"))
@@ -977,8 +963,6 @@ proc validate_DescribeConfigurations_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DescribeConfigurations"))
@@ -1105,8 +1089,6 @@ proc validate_DescribeContinuousExports_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606306 = header.getOrDefault("X-Amz-Target")
   valid_606306 = validateParameter(valid_606306, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DescribeContinuousExports"))
@@ -1227,8 +1209,6 @@ proc validate_DescribeExportConfigurations_606321(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606323 = header.getOrDefault("X-Amz-Target")
   valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DescribeExportConfigurations"))
@@ -1342,8 +1322,6 @@ proc validate_DescribeExportTasks_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606338 = header.getOrDefault("X-Amz-Target")
   valid_606338 = validateParameter(valid_606338, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DescribeExportTasks"))
@@ -1472,8 +1450,6 @@ proc validate_DescribeImportTasks_606351(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606355 = header.getOrDefault("X-Amz-Target")
   valid_606355 = validateParameter(valid_606355, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DescribeImportTasks"))
@@ -1594,8 +1570,6 @@ proc validate_DescribeTags_606369(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606371 = header.getOrDefault("X-Amz-Target")
   valid_606371 = validateParameter(valid_606371, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.DescribeTags"))
@@ -1708,8 +1682,6 @@ proc validate_DisassociateConfigurationItemsFromApplication_606384(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606386 = header.getOrDefault("X-Amz-Target")
   valid_606386 = validateParameter(valid_606386, JString, required = true, default = newJString("AWSPoseidonService_V2015_11_01.DisassociateConfigurationItemsFromApplication"))
   if valid_606386 != nil:
@@ -1823,8 +1795,6 @@ proc validate_ExportConfigurations_606399(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606401 = header.getOrDefault("X-Amz-Target")
   valid_606401 = validateParameter(valid_606401, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.ExportConfigurations"))
@@ -1929,8 +1899,6 @@ proc validate_GetDiscoverySummary_606412(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606414 = header.getOrDefault("X-Amz-Target")
   valid_606414 = validateParameter(valid_606414, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.GetDiscoverySummary"))
@@ -2044,8 +2012,6 @@ proc validate_ListConfigurations_606427(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606429 = header.getOrDefault("X-Amz-Target")
   valid_606429 = validateParameter(valid_606429, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.ListConfigurations"))
@@ -2159,8 +2125,6 @@ proc validate_ListServerNeighbors_606442(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606444 = header.getOrDefault("X-Amz-Target")
   valid_606444 = validateParameter(valid_606444, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.ListServerNeighbors"))
@@ -2273,8 +2237,6 @@ proc validate_StartContinuousExport_606457(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606459 = header.getOrDefault("X-Amz-Target")
   valid_606459 = validateParameter(valid_606459, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.StartContinuousExport"))
@@ -2386,8 +2348,6 @@ proc validate_StartDataCollectionByAgentIds_606472(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606474 = header.getOrDefault("X-Amz-Target")
   valid_606474 = validateParameter(valid_606474, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.StartDataCollectionByAgentIds"))
@@ -2501,8 +2461,6 @@ proc validate_StartExportTask_606487(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606489 = header.getOrDefault("X-Amz-Target")
   valid_606489 = validateParameter(valid_606489, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.StartExportTask"))
@@ -2615,8 +2573,6 @@ proc validate_StartImportTask_606502(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606504 = header.getOrDefault("X-Amz-Target")
   valid_606504 = validateParameter(valid_606504, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.StartImportTask"))
@@ -2728,8 +2684,6 @@ proc validate_StopContinuousExport_606517(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606519 = header.getOrDefault("X-Amz-Target")
   valid_606519 = validateParameter(valid_606519, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.StopContinuousExport"))
@@ -2841,8 +2795,6 @@ proc validate_StopDataCollectionByAgentIds_606532(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606534 = header.getOrDefault("X-Amz-Target")
   valid_606534 = validateParameter(valid_606534, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.StopDataCollectionByAgentIds"))
@@ -2956,8 +2908,6 @@ proc validate_UpdateApplication_606547(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606549 = header.getOrDefault("X-Amz-Target")
   valid_606549 = validateParameter(valid_606549, JString, required = true, default = newJString(
       "AWSPoseidonService_V2015_11_01.UpdateApplication"))

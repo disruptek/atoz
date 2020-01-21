@@ -167,8 +167,6 @@ proc validate_AssociateServiceQuotaTemplate_605928(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.AssociateServiceQuotaTemplate"))
@@ -282,8 +280,6 @@ proc validate_DeleteServiceQuotaIncreaseRequestFromTemplate_606197(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.DeleteServiceQuotaIncreaseRequestFromTemplate"))
@@ -398,8 +394,6 @@ proc validate_DisassociateServiceQuotaTemplate_606212(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.DisassociateServiceQuotaTemplate"))
@@ -514,8 +508,6 @@ proc validate_GetAWSDefaultServiceQuota_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetAWSDefaultServiceQuota"))
@@ -629,8 +621,6 @@ proc validate_GetAssociationForServiceQuotaTemplate_606242(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetAssociationForServiceQuotaTemplate"))
@@ -745,8 +735,6 @@ proc validate_GetRequestedServiceQuotaChange_606257(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetRequestedServiceQuotaChange"))
@@ -860,8 +848,6 @@ proc validate_GetServiceQuota_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetServiceQuota"))
@@ -973,8 +959,6 @@ proc validate_GetServiceQuotaIncreaseRequestFromTemplate_606287(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.GetServiceQuotaIncreaseRequestFromTemplate"))
@@ -1104,8 +1088,6 @@ proc validate_ListAWSDefaultServiceQuotas_606302(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606306 = header.getOrDefault("X-Amz-Target")
   valid_606306 = validateParameter(valid_606306, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListAWSDefaultServiceQuotas"))
@@ -1242,8 +1224,6 @@ proc validate_ListRequestedServiceQuotaChangeHistory_606321(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606325 = header.getOrDefault("X-Amz-Target")
   valid_606325 = validateParameter(valid_606325, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListRequestedServiceQuotaChangeHistory"))
@@ -1381,8 +1361,6 @@ proc validate_ListRequestedServiceQuotaChangeHistoryByQuota_606339(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606343 = header.getOrDefault("X-Amz-Target")
   valid_606343 = validateParameter(valid_606343, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListRequestedServiceQuotaChangeHistoryByQuota"))
@@ -1519,8 +1497,6 @@ proc validate_ListServiceQuotaIncreaseRequestsInTemplate_606357(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606361 = header.getOrDefault("X-Amz-Target")
   valid_606361 = validateParameter(valid_606361, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListServiceQuotaIncreaseRequestsInTemplate"))
@@ -1658,8 +1634,6 @@ proc validate_ListServiceQuotas_606375(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListServiceQuotas"))
@@ -1794,8 +1768,6 @@ proc validate_ListServices_606393(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606397 = header.getOrDefault("X-Amz-Target")
   valid_606397 = validateParameter(valid_606397, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.ListServices"))
@@ -1915,8 +1887,6 @@ proc validate_PutServiceQuotaIncreaseRequestIntoTemplate_606411(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606413 = header.getOrDefault("X-Amz-Target")
   valid_606413 = validateParameter(valid_606413, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.PutServiceQuotaIncreaseRequestIntoTemplate"))
@@ -2031,8 +2001,6 @@ proc validate_RequestServiceQuotaIncrease_606426(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606428 = header.getOrDefault("X-Amz-Target")
   valid_606428 = validateParameter(valid_606428, JString, required = true, default = newJString(
       "ServiceQuotasV20190624.RequestServiceQuotaIncrease"))

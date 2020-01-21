@@ -168,8 +168,6 @@ proc validate_AcceptDirectConnectGatewayAssociationProposal_605928(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "OvertureService.AcceptDirectConnectGatewayAssociationProposal"))
@@ -284,8 +282,6 @@ proc validate_AllocateConnectionOnInterconnect_606197(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "OvertureService.AllocateConnectionOnInterconnect"))
@@ -402,8 +398,6 @@ proc validate_AllocateHostedConnection_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "OvertureService.AllocateHostedConnection"))
@@ -516,8 +510,6 @@ proc validate_AllocatePrivateVirtualInterface_606227(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "OvertureService.AllocatePrivateVirtualInterface"))
@@ -632,8 +624,6 @@ proc validate_AllocatePublicVirtualInterface_606242(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "OvertureService.AllocatePublicVirtualInterface"))
@@ -747,8 +737,6 @@ proc validate_AllocateTransitVirtualInterface_606257(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "OvertureService.AllocateTransitVirtualInterface"))
@@ -863,8 +851,6 @@ proc validate_AssociateConnectionWithLag_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "OvertureService.AssociateConnectionWithLag"))
@@ -978,8 +964,6 @@ proc validate_AssociateHostedConnection_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "OvertureService.AssociateHostedConnection"))
@@ -1093,8 +1077,6 @@ proc validate_AssociateVirtualInterface_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "OvertureService.AssociateVirtualInterface"))
@@ -1209,8 +1191,6 @@ proc validate_ConfirmConnection_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "OvertureService.ConfirmConnection"))
@@ -1322,8 +1302,6 @@ proc validate_ConfirmPrivateVirtualInterface_606332(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "OvertureService.ConfirmPrivateVirtualInterface"))
@@ -1437,8 +1415,6 @@ proc validate_ConfirmPublicVirtualInterface_606347(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "OvertureService.ConfirmPublicVirtualInterface"))
@@ -1552,8 +1528,6 @@ proc validate_ConfirmTransitVirtualInterface_606362(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "OvertureService.ConfirmTransitVirtualInterface"))
@@ -1667,8 +1641,6 @@ proc validate_CreateBGPPeer_606377(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "OvertureService.CreateBGPPeer"))
@@ -1781,8 +1753,6 @@ proc validate_CreateConnection_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "OvertureService.CreateConnection"))
@@ -1894,8 +1864,6 @@ proc validate_CreateDirectConnectGateway_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "OvertureService.CreateDirectConnectGateway"))
@@ -2009,8 +1977,6 @@ proc validate_CreateDirectConnectGatewayAssociation_606422(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "OvertureService.CreateDirectConnectGatewayAssociation"))
@@ -2126,8 +2092,6 @@ proc validate_CreateDirectConnectGatewayAssociationProposal_606437(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "OvertureService.CreateDirectConnectGatewayAssociationProposal"))
@@ -2243,8 +2207,6 @@ proc validate_CreateInterconnect_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "OvertureService.CreateInterconnect"))
@@ -2357,8 +2319,6 @@ proc validate_CreateLag_606467(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "OvertureService.CreateLag"))
@@ -2470,8 +2430,6 @@ proc validate_CreatePrivateVirtualInterface_606482(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "OvertureService.CreatePrivateVirtualInterface"))
@@ -2585,8 +2543,6 @@ proc validate_CreatePublicVirtualInterface_606497(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "OvertureService.CreatePublicVirtualInterface"))
@@ -2700,8 +2656,6 @@ proc validate_CreateTransitVirtualInterface_606512(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "OvertureService.CreateTransitVirtualInterface"))
@@ -2815,8 +2769,6 @@ proc validate_DeleteBGPPeer_606527(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "OvertureService.DeleteBGPPeer"))
@@ -2929,8 +2881,6 @@ proc validate_DeleteConnection_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "OvertureService.DeleteConnection"))
@@ -3042,8 +2992,6 @@ proc validate_DeleteDirectConnectGateway_606557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "OvertureService.DeleteDirectConnectGateway"))
@@ -3157,8 +3105,6 @@ proc validate_DeleteDirectConnectGatewayAssociation_606572(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "OvertureService.DeleteDirectConnectGatewayAssociation"))
@@ -3274,8 +3220,6 @@ proc validate_DeleteDirectConnectGatewayAssociationProposal_606587(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "OvertureService.DeleteDirectConnectGatewayAssociationProposal"))
@@ -3391,8 +3335,6 @@ proc validate_DeleteInterconnect_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "OvertureService.DeleteInterconnect"))
@@ -3505,8 +3447,6 @@ proc validate_DeleteLag_606617(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "OvertureService.DeleteLag"))
@@ -3618,8 +3558,6 @@ proc validate_DeleteVirtualInterface_606632(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "OvertureService.DeleteVirtualInterface"))
@@ -3732,8 +3670,6 @@ proc validate_DescribeConnectionLoa_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "OvertureService.DescribeConnectionLoa"))
@@ -3847,8 +3783,6 @@ proc validate_DescribeConnections_606662(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
       "OvertureService.DescribeConnections"))
@@ -3961,8 +3895,6 @@ proc validate_DescribeConnectionsOnInterconnect_606677(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "OvertureService.DescribeConnectionsOnInterconnect"))
@@ -4080,8 +4012,6 @@ proc validate_DescribeDirectConnectGatewayAssociationProposals_606692(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "OvertureService.DescribeDirectConnectGatewayAssociationProposals"))
@@ -4196,8 +4126,6 @@ proc validate_DescribeDirectConnectGatewayAssociations_606707(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "OvertureService.DescribeDirectConnectGatewayAssociations"))
@@ -4312,8 +4240,6 @@ proc validate_DescribeDirectConnectGatewayAttachments_606722(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "OvertureService.DescribeDirectConnectGatewayAttachments"))
@@ -4428,8 +4354,6 @@ proc validate_DescribeDirectConnectGateways_606737(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true, default = newJString(
       "OvertureService.DescribeDirectConnectGateways"))
@@ -4543,8 +4467,6 @@ proc validate_DescribeHostedConnections_606752(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606754 = header.getOrDefault("X-Amz-Target")
   valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
       "OvertureService.DescribeHostedConnections"))
@@ -4659,8 +4581,6 @@ proc validate_DescribeInterconnectLoa_606767(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
       "OvertureService.DescribeInterconnectLoa"))
@@ -4773,8 +4693,6 @@ proc validate_DescribeInterconnects_606782(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606784 = header.getOrDefault("X-Amz-Target")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "OvertureService.DescribeInterconnects"))
@@ -4887,8 +4805,6 @@ proc validate_DescribeLags_606797(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606799 = header.getOrDefault("X-Amz-Target")
   valid_606799 = validateParameter(valid_606799, JString, required = true, default = newJString(
       "OvertureService.DescribeLags"))
@@ -5000,8 +4916,6 @@ proc validate_DescribeLoa_606812(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606814 = header.getOrDefault("X-Amz-Target")
   valid_606814 = validateParameter(valid_606814, JString, required = true, default = newJString(
       "OvertureService.DescribeLoa"))
@@ -5115,8 +5029,6 @@ proc validate_DescribeLocations_606827(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606829 = header.getOrDefault("X-Amz-Target")
   valid_606829 = validateParameter(valid_606829, JString, required = true, default = newJString(
       "OvertureService.DescribeLocations"))
@@ -5220,8 +5132,6 @@ proc validate_DescribeTags_606840(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606842 = header.getOrDefault("X-Amz-Target")
   valid_606842 = validateParameter(valid_606842, JString, required = true, default = newJString(
       "OvertureService.DescribeTags"))
@@ -5334,8 +5244,6 @@ proc validate_DescribeVirtualGateways_606855(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606857 = header.getOrDefault("X-Amz-Target")
   valid_606857 = validateParameter(valid_606857, JString, required = true, default = newJString(
       "OvertureService.DescribeVirtualGateways"))
@@ -5440,8 +5348,6 @@ proc validate_DescribeVirtualInterfaces_606868(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606870 = header.getOrDefault("X-Amz-Target")
   valid_606870 = validateParameter(valid_606870, JString, required = true, default = newJString(
       "OvertureService.DescribeVirtualInterfaces"))
@@ -5555,8 +5461,6 @@ proc validate_DisassociateConnectionFromLag_606883(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606885 = header.getOrDefault("X-Amz-Target")
   valid_606885 = validateParameter(valid_606885, JString, required = true, default = newJString(
       "OvertureService.DisassociateConnectionFromLag"))
@@ -5670,8 +5574,6 @@ proc validate_TagResource_606898(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606900 = header.getOrDefault("X-Amz-Target")
   valid_606900 = validateParameter(valid_606900, JString, required = true, default = newJString(
       "OvertureService.TagResource"))
@@ -5784,8 +5686,6 @@ proc validate_UntagResource_606913(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606915 = header.getOrDefault("X-Amz-Target")
   valid_606915 = validateParameter(valid_606915, JString, required = true, default = newJString(
       "OvertureService.UntagResource"))
@@ -5897,8 +5797,6 @@ proc validate_UpdateDirectConnectGatewayAssociation_606928(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606930 = header.getOrDefault("X-Amz-Target")
   valid_606930 = validateParameter(valid_606930, JString, required = true, default = newJString(
       "OvertureService.UpdateDirectConnectGatewayAssociation"))
@@ -6013,8 +5911,6 @@ proc validate_UpdateLag_606943(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606945 = header.getOrDefault("X-Amz-Target")
   valid_606945 = validateParameter(valid_606945, JString, required = true, default = newJString(
       "OvertureService.UpdateLag"))
@@ -6126,8 +6022,6 @@ proc validate_UpdateVirtualInterfaceAttributes_606958(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606960 = header.getOrDefault("X-Amz-Target")
   valid_606960 = validateParameter(valid_606960, JString, required = true, default = newJString(
       "OvertureService.UpdateVirtualInterfaceAttributes"))

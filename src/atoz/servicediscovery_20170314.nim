@@ -168,8 +168,6 @@ proc validate_CreateHttpNamespace_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.CreateHttpNamespace"))
@@ -282,8 +280,6 @@ proc validate_CreatePrivateDnsNamespace_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.CreatePrivateDnsNamespace"))
@@ -397,8 +393,6 @@ proc validate_CreatePublicDnsNamespace_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.CreatePublicDnsNamespace"))
@@ -510,8 +504,6 @@ proc validate_CreateService_606227(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.CreateService"))
@@ -624,8 +616,6 @@ proc validate_DeleteNamespace_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.DeleteNamespace"))
@@ -737,8 +727,6 @@ proc validate_DeleteService_606257(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.DeleteService"))
@@ -851,8 +839,6 @@ proc validate_DeregisterInstance_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.DeregisterInstance"))
@@ -966,8 +952,6 @@ proc validate_DiscoverInstances_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.DiscoverInstances"))
@@ -1079,8 +1063,6 @@ proc validate_GetInstance_606302(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.GetInstance"))
@@ -1209,8 +1191,6 @@ proc validate_GetInstancesHealthStatus_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606321 = header.getOrDefault("X-Amz-Target")
   valid_606321 = validateParameter(valid_606321, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.GetInstancesHealthStatus"))
@@ -1330,8 +1310,6 @@ proc validate_GetNamespace_606336(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606338 = header.getOrDefault("X-Amz-Target")
   valid_606338 = validateParameter(valid_606338, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.GetNamespace"))
@@ -1443,8 +1421,6 @@ proc validate_GetOperation_606351(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606353 = header.getOrDefault("X-Amz-Target")
   valid_606353 = validateParameter(valid_606353, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.GetOperation"))
@@ -1556,8 +1532,6 @@ proc validate_GetService_606366(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606368 = header.getOrDefault("X-Amz-Target")
   valid_606368 = validateParameter(valid_606368, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.GetService"))
@@ -1685,8 +1659,6 @@ proc validate_ListInstances_606381(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606385 = header.getOrDefault("X-Amz-Target")
   valid_606385 = validateParameter(valid_606385, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.ListInstances"))
@@ -1822,8 +1794,6 @@ proc validate_ListNamespaces_606399(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606403 = header.getOrDefault("X-Amz-Target")
   valid_606403 = validateParameter(valid_606403, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.ListNamespaces"))
@@ -1959,8 +1929,6 @@ proc validate_ListOperations_606417(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606421 = header.getOrDefault("X-Amz-Target")
   valid_606421 = validateParameter(valid_606421, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.ListOperations"))
@@ -2095,8 +2063,6 @@ proc validate_ListServices_606435(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.ListServices"))
@@ -2217,8 +2183,6 @@ proc validate_RegisterInstance_606453(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606455 = header.getOrDefault("X-Amz-Target")
   valid_606455 = validateParameter(valid_606455, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.RegisterInstance"))
@@ -2330,8 +2294,6 @@ proc validate_UpdateInstanceCustomHealthStatus_606468(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606470 = header.getOrDefault("X-Amz-Target")
   valid_606470 = validateParameter(valid_606470, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.UpdateInstanceCustomHealthStatus"))
@@ -2446,8 +2408,6 @@ proc validate_UpdateService_606483(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606485 = header.getOrDefault("X-Amz-Target")
   valid_606485 = validateParameter(valid_606485, JString, required = true, default = newJString(
       "Route53AutoNaming_v20170314.UpdateService"))

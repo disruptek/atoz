@@ -4512,7 +4512,6 @@ proc validate_GetAccountLimit_606727(path: JsonNode; query: JsonNode;
   ##   Type: JString (required)
   ##       : <p>The limit that you want to get. Valid values include the following:</p> <ul> <li> <p> <b>MAX_HEALTH_CHECKS_BY_OWNER</b>: The maximum number of health checks that you can create using the current account.</p> </li> <li> <p> <b>MAX_HOSTED_ZONES_BY_OWNER</b>: The maximum number of hosted zones that you can create using the current account.</p> </li> <li> <p> <b>MAX_REUSABLE_DELEGATION_SETS_BY_OWNER</b>: The maximum number of reusable delegation sets that you can create using the current account.</p> </li> <li> <p> <b>MAX_TRAFFIC_POLICIES_BY_OWNER</b>: The maximum number of traffic policies that you can create using the current account.</p> </li> <li> <p> <b>MAX_TRAFFIC_POLICY_INSTANCES_BY_OWNER</b>: The maximum number of traffic policy instances that you can create using the current account. (Traffic policy instances are referred to as traffic flow policy records in the Amazon Route 53 console.)</p> </li> </ul>
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `Type` field"
   var valid_606729 = path.getOrDefault("Type")
   valid_606729 = validateParameter(valid_606729, JString, required = true, default = newJString(
       "MAX_HEALTH_CHECKS_BY_OWNER"))
@@ -5424,7 +5423,6 @@ proc validate_GetHostedZoneLimit_606835(path: JsonNode; query: JsonNode;
   ##   Id: JString (required)
   ##     : The ID of the hosted zone that you want to get a limit for.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `Type` field"
   var valid_606837 = path.getOrDefault("Type")
   valid_606837 = validateParameter(valid_606837, JString, required = true,
                                  default = newJString("MAX_RRSETS_BY_ZONE"))
@@ -5558,7 +5556,6 @@ proc validate_GetReusableDelegationSetLimit_606850(path: JsonNode; query: JsonNo
   ##   Id: JString (required)
   ##     : The ID of the delegation set that you want to get the limit for.
   section = newJObject()
-  assert path != nil, "path argument is necessary due to required `Type` field"
   var valid_606852 = path.getOrDefault("Type")
   valid_606852 = validateParameter(valid_606852, JString, required = true, default = newJString(
       "MAX_ZONES_BY_REUSABLE_DELEGATION_SET"))
@@ -6263,8 +6260,6 @@ proc validate_ListTagsForResources_606933(path: JsonNode; query: JsonNode;
   ##   ResourceType: JString (required)
   ##               : <p>The type of the resources.</p> <ul> <li> <p>The resource type for health checks is <code>healthcheck</code>.</p> </li> <li> <p>The resource type for hosted zones is <code>hostedzone</code>.</p> </li> </ul>
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `ResourceType` field"
   var valid_606935 = path.getOrDefault("ResourceType")
   valid_606935 = validateParameter(valid_606935, JString, required = true,
                                  default = newJString("healthcheck"))

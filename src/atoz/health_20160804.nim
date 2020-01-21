@@ -164,8 +164,6 @@ proc validate_DescribeAffectedAccountsForOrganization_605928(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606056 = header.getOrDefault("X-Amz-Target")
   valid_606056 = validateParameter(valid_606056, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeAffectedAccountsForOrganization"))
@@ -303,8 +301,6 @@ proc validate_DescribeAffectedEntities_606201(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606205 = header.getOrDefault("X-Amz-Target")
   valid_606205 = validateParameter(valid_606205, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeAffectedEntities"))
@@ -440,8 +436,6 @@ proc validate_DescribeAffectedEntitiesForOrganization_606219(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606223 = header.getOrDefault("X-Amz-Target")
   valid_606223 = validateParameter(valid_606223, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeAffectedEntitiesForOrganization"))
@@ -564,8 +558,6 @@ proc validate_DescribeEntityAggregates_606237(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606239 = header.getOrDefault("X-Amz-Target")
   valid_606239 = validateParameter(valid_606239, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEntityAggregates"))
@@ -694,8 +686,6 @@ proc validate_DescribeEventAggregates_606252(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606256 = header.getOrDefault("X-Amz-Target")
   valid_606256 = validateParameter(valid_606256, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEventAggregates"))
@@ -816,8 +806,6 @@ proc validate_DescribeEventDetails_606270(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606272 = header.getOrDefault("X-Amz-Target")
   valid_606272 = validateParameter(valid_606272, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEventDetails"))
@@ -930,8 +918,6 @@ proc validate_DescribeEventDetailsForOrganization_606285(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606287 = header.getOrDefault("X-Amz-Target")
   valid_606287 = validateParameter(valid_606287, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEventDetailsForOrganization"))
@@ -1062,8 +1048,6 @@ proc validate_DescribeEventTypes_606300(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEventTypes"))
@@ -1200,8 +1184,6 @@ proc validate_DescribeEvents_606318(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606322 = header.getOrDefault("X-Amz-Target")
   valid_606322 = validateParameter(valid_606322, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEvents"))
@@ -1336,8 +1318,6 @@ proc validate_DescribeEventsForOrganization_606336(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606340 = header.getOrDefault("X-Amz-Target")
   valid_606340 = validateParameter(valid_606340, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeEventsForOrganization"))
@@ -1459,8 +1439,6 @@ proc validate_DescribeHealthServiceStatusForOrganization_606354(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606356 = header.getOrDefault("X-Amz-Target")
   valid_606356 = validateParameter(valid_606356, JString, required = true, default = newJString(
       "AWSHealth_20160804.DescribeHealthServiceStatusForOrganization"))
@@ -1566,8 +1544,6 @@ proc validate_DisableHealthServiceAccessForOrganization_606367(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606369 = header.getOrDefault("X-Amz-Target")
   valid_606369 = validateParameter(valid_606369, JString, required = true, default = newJString(
       "AWSHealth_20160804.DisableHealthServiceAccessForOrganization"))
@@ -1673,8 +1649,6 @@ proc validate_EnableHealthServiceAccessForOrganization_606380(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606382 = header.getOrDefault("X-Amz-Target")
   valid_606382 = validateParameter(valid_606382, JString, required = true, default = newJString(
       "AWSHealth_20160804.EnableHealthServiceAccessForOrganization"))

@@ -168,8 +168,6 @@ proc validate_AddInstanceFleet_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "ElasticMapReduce.AddInstanceFleet"))
@@ -282,8 +280,6 @@ proc validate_AddInstanceGroups_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "ElasticMapReduce.AddInstanceGroups"))
@@ -396,8 +392,6 @@ proc validate_AddJobFlowSteps_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "ElasticMapReduce.AddJobFlowSteps"))
@@ -509,8 +503,6 @@ proc validate_AddTags_606227(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "ElasticMapReduce.AddTags"))
@@ -622,8 +614,6 @@ proc validate_CancelSteps_606242(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "ElasticMapReduce.CancelSteps"))
@@ -736,8 +726,6 @@ proc validate_CreateSecurityConfiguration_606257(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "ElasticMapReduce.CreateSecurityConfiguration"))
@@ -851,8 +839,6 @@ proc validate_DeleteSecurityConfiguration_606272(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "ElasticMapReduce.DeleteSecurityConfiguration"))
@@ -967,8 +953,6 @@ proc validate_DescribeCluster_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "ElasticMapReduce.DescribeCluster"))
@@ -1081,8 +1065,6 @@ proc validate_DescribeJobFlows_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "ElasticMapReduce.DescribeJobFlows"))
@@ -1194,8 +1176,6 @@ proc validate_DescribeSecurityConfiguration_606317(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "ElasticMapReduce.DescribeSecurityConfiguration"))
@@ -1309,8 +1289,6 @@ proc validate_DescribeStep_606332(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "ElasticMapReduce.DescribeStep"))
@@ -1422,8 +1400,6 @@ proc validate_GetBlockPublicAccessConfiguration_606347(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "ElasticMapReduce.GetBlockPublicAccessConfiguration"))
@@ -1547,8 +1523,6 @@ proc validate_ListBootstrapActions_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606365 = header.getOrDefault("X-Amz-Target")
   valid_606365 = validateParameter(valid_606365, JString, required = true, default = newJString(
       "ElasticMapReduce.ListBootstrapActions"))
@@ -1674,8 +1648,6 @@ proc validate_ListClusters_606380(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606383 = header.getOrDefault("X-Amz-Target")
   valid_606383 = validateParameter(valid_606383, JString, required = true, default = newJString(
       "ElasticMapReduce.ListClusters"))
@@ -1800,8 +1772,6 @@ proc validate_ListInstanceFleets_606397(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606400 = header.getOrDefault("X-Amz-Target")
   valid_606400 = validateParameter(valid_606400, JString, required = true, default = newJString(
       "ElasticMapReduce.ListInstanceFleets"))
@@ -1928,8 +1898,6 @@ proc validate_ListInstanceGroups_606414(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606417 = header.getOrDefault("X-Amz-Target")
   valid_606417 = validateParameter(valid_606417, JString, required = true, default = newJString(
       "ElasticMapReduce.ListInstanceGroups"))
@@ -2055,8 +2023,6 @@ proc validate_ListInstances_606431(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606434 = header.getOrDefault("X-Amz-Target")
   valid_606434 = validateParameter(valid_606434, JString, required = true, default = newJString(
       "ElasticMapReduce.ListInstances"))
@@ -2181,8 +2147,6 @@ proc validate_ListSecurityConfigurations_606448(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606451 = header.getOrDefault("X-Amz-Target")
   valid_606451 = validateParameter(valid_606451, JString, required = true, default = newJString(
       "ElasticMapReduce.ListSecurityConfigurations"))
@@ -2309,8 +2273,6 @@ proc validate_ListSteps_606465(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606468 = header.getOrDefault("X-Amz-Target")
   valid_606468 = validateParameter(valid_606468, JString, required = true, default = newJString(
       "ElasticMapReduce.ListSteps"))
@@ -2426,8 +2388,6 @@ proc validate_ModifyCluster_606482(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "ElasticMapReduce.ModifyCluster"))
@@ -2540,8 +2500,6 @@ proc validate_ModifyInstanceFleet_606497(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "ElasticMapReduce.ModifyInstanceFleet"))
@@ -2654,8 +2612,6 @@ proc validate_ModifyInstanceGroups_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "ElasticMapReduce.ModifyInstanceGroups"))
@@ -2768,8 +2724,6 @@ proc validate_PutAutoScalingPolicy_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "ElasticMapReduce.PutAutoScalingPolicy"))
@@ -2882,8 +2836,6 @@ proc validate_PutBlockPublicAccessConfiguration_606542(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "ElasticMapReduce.PutBlockPublicAccessConfiguration"))
@@ -3000,8 +2952,6 @@ proc validate_RemoveAutoScalingPolicy_606557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "ElasticMapReduce.RemoveAutoScalingPolicy"))
@@ -3114,8 +3064,6 @@ proc validate_RemoveTags_606572(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "ElasticMapReduce.RemoveTags"))
@@ -3228,8 +3176,6 @@ proc validate_RunJobFlow_606587(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "ElasticMapReduce.RunJobFlow"))
@@ -3343,8 +3289,6 @@ proc validate_SetTerminationProtection_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "ElasticMapReduce.SetTerminationProtection"))
@@ -3457,8 +3401,6 @@ proc validate_SetVisibleToAllUsers_606617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "ElasticMapReduce.SetVisibleToAllUsers"))
@@ -3572,8 +3514,6 @@ proc validate_TerminateJobFlows_606632(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "ElasticMapReduce.TerminateJobFlows"))

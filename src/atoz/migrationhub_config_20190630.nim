@@ -168,8 +168,6 @@ proc validate_CreateHomeRegionControl_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606045 = header.getOrDefault("X-Amz-Target")
   valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
       "AWSMigrationHubMultiAccountService.CreateHomeRegionControl"))
@@ -296,8 +294,6 @@ proc validate_DescribeHomeRegionControls_606188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606192 = header.getOrDefault("X-Amz-Target")
   valid_606192 = validateParameter(valid_606192, JString, required = true, default = newJString(
       "AWSMigrationHubMultiAccountService.DescribeHomeRegionControls"))
@@ -418,8 +414,6 @@ proc validate_GetHomeRegion_606207(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606209 = header.getOrDefault("X-Amz-Target")
   valid_606209 = validateParameter(valid_606209, JString, required = true, default = newJString(
       "AWSMigrationHubMultiAccountService.GetHomeRegion"))

@@ -182,8 +182,6 @@ proc validate_AssociateAdminAccount_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSFMS_20180101.AssociateAdminAccount"))
@@ -296,8 +294,6 @@ proc validate_DeleteNotificationChannel_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSFMS_20180101.DeleteNotificationChannel"))
@@ -411,8 +407,6 @@ proc validate_DeletePolicy_606212(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSFMS_20180101.DeletePolicy"))
@@ -525,8 +519,6 @@ proc validate_DisassociateAdminAccount_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSFMS_20180101.DisassociateAdminAccount"))
@@ -640,8 +632,6 @@ proc validate_GetAdminAccount_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSFMS_20180101.GetAdminAccount"))
@@ -754,8 +744,6 @@ proc validate_GetComplianceDetail_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSFMS_20180101.GetComplianceDetail"))
@@ -868,8 +856,6 @@ proc validate_GetNotificationChannel_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSFMS_20180101.GetNotificationChannel"))
@@ -982,8 +968,6 @@ proc validate_GetPolicy_606287(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSFMS_20180101.GetPolicy"))
@@ -1096,8 +1080,6 @@ proc validate_GetProtectionStatus_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSFMS_20180101.GetProtectionStatus"))
@@ -1225,8 +1207,6 @@ proc validate_ListComplianceStatus_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606321 = header.getOrDefault("X-Amz-Target")
   valid_606321 = validateParameter(valid_606321, JString, required = true, default = newJString(
       "AWSFMS_20180101.ListComplianceStatus"))
@@ -1363,8 +1343,6 @@ proc validate_ListMemberAccounts_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606340 = header.getOrDefault("X-Amz-Target")
   valid_606340 = validateParameter(valid_606340, JString, required = true, default = newJString(
       "AWSFMS_20180101.ListMemberAccounts"))
@@ -1500,8 +1478,6 @@ proc validate_ListPolicies_606354(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606358 = header.getOrDefault("X-Amz-Target")
   valid_606358 = validateParameter(valid_606358, JString, required = true, default = newJString(
       "AWSFMS_20180101.ListPolicies"))
@@ -1622,8 +1598,6 @@ proc validate_ListTagsForResource_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606374 = header.getOrDefault("X-Amz-Target")
   valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString(
       "AWSFMS_20180101.ListTagsForResource"))
@@ -1736,8 +1710,6 @@ proc validate_PutNotificationChannel_606387(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606389 = header.getOrDefault("X-Amz-Target")
   valid_606389 = validateParameter(valid_606389, JString, required = true, default = newJString(
       "AWSFMS_20180101.PutNotificationChannel"))
@@ -1850,8 +1822,6 @@ proc validate_PutPolicy_606402(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606404 = header.getOrDefault("X-Amz-Target")
   valid_606404 = validateParameter(valid_606404, JString, required = true, default = newJString(
       "AWSFMS_20180101.PutPolicy"))
@@ -1963,8 +1933,6 @@ proc validate_TagResource_606417(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606419 = header.getOrDefault("X-Amz-Target")
   valid_606419 = validateParameter(valid_606419, JString, required = true, default = newJString(
       "AWSFMS_20180101.TagResource"))
@@ -2077,8 +2045,6 @@ proc validate_UntagResource_606432(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606434 = header.getOrDefault("X-Amz-Target")
   valid_606434 = validateParameter(valid_606434, JString, required = true, default = newJString(
       "AWSFMS_20180101.UntagResource"))

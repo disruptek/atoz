@@ -167,8 +167,6 @@ proc validate_AssociateEntityToThing_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.AssociateEntityToThing"))
@@ -281,8 +279,6 @@ proc validate_CreateFlowTemplate_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.CreateFlowTemplate"))
@@ -395,8 +391,6 @@ proc validate_CreateSystemInstance_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.CreateSystemInstance"))
@@ -509,8 +503,6 @@ proc validate_CreateSystemTemplate_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.CreateSystemTemplate"))
@@ -624,8 +616,6 @@ proc validate_DeleteFlowTemplate_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DeleteFlowTemplate"))
@@ -739,8 +729,6 @@ proc validate_DeleteNamespace_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DeleteNamespace"))
@@ -852,8 +840,6 @@ proc validate_DeleteSystemInstance_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DeleteSystemInstance"))
@@ -966,8 +952,6 @@ proc validate_DeleteSystemTemplate_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DeleteSystemTemplate"))
@@ -1080,8 +1064,6 @@ proc validate_DeploySystemInstance_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DeploySystemInstance"))
@@ -1194,8 +1176,6 @@ proc validate_DeprecateFlowTemplate_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DeprecateFlowTemplate"))
@@ -1308,8 +1288,6 @@ proc validate_DeprecateSystemTemplate_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DeprecateSystemTemplate"))
@@ -1422,8 +1400,6 @@ proc validate_DescribeNamespace_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DescribeNamespace"))
@@ -1535,8 +1511,6 @@ proc validate_DissociateEntityFromThing_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.DissociateEntityFromThing"))
@@ -1649,8 +1623,6 @@ proc validate_GetEntities_606377(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.GetEntities"))
@@ -1764,8 +1736,6 @@ proc validate_GetFlowTemplate_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.GetFlowTemplate"))
@@ -1893,8 +1863,6 @@ proc validate_GetFlowTemplateRevisions_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606411 = header.getOrDefault("X-Amz-Target")
   valid_606411 = validateParameter(valid_606411, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.GetFlowTemplateRevisions"))
@@ -2014,8 +1982,6 @@ proc validate_GetNamespaceDeletionStatus_606426(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606428 = header.getOrDefault("X-Amz-Target")
   valid_606428 = validateParameter(valid_606428, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.GetNamespaceDeletionStatus"))
@@ -2129,8 +2095,6 @@ proc validate_GetSystemInstance_606441(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606443 = header.getOrDefault("X-Amz-Target")
   valid_606443 = validateParameter(valid_606443, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.GetSystemInstance"))
@@ -2243,8 +2207,6 @@ proc validate_GetSystemTemplate_606456(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606458 = header.getOrDefault("X-Amz-Target")
   valid_606458 = validateParameter(valid_606458, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.GetSystemTemplate"))
@@ -2371,8 +2333,6 @@ proc validate_GetSystemTemplateRevisions_606471(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606475 = header.getOrDefault("X-Amz-Target")
   valid_606475 = validateParameter(valid_606475, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.GetSystemTemplateRevisions"))
@@ -2494,8 +2454,6 @@ proc validate_GetUploadStatus_606489(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606491 = header.getOrDefault("X-Amz-Target")
   valid_606491 = validateParameter(valid_606491, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.GetUploadStatus"))
@@ -2622,8 +2580,6 @@ proc validate_ListFlowExecutionMessages_606504(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606508 = header.getOrDefault("X-Amz-Target")
   valid_606508 = validateParameter(valid_606508, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.ListFlowExecutionMessages"))
@@ -2760,8 +2716,6 @@ proc validate_ListTagsForResource_606522(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606526 = header.getOrDefault("X-Amz-Target")
   valid_606526 = validateParameter(valid_606526, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.ListTagsForResource"))
@@ -2898,8 +2852,6 @@ proc validate_SearchEntities_606540(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.SearchEntities"))
@@ -3034,8 +2986,6 @@ proc validate_SearchFlowExecutions_606558(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606562 = header.getOrDefault("X-Amz-Target")
   valid_606562 = validateParameter(valid_606562, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.SearchFlowExecutions"))
@@ -3172,8 +3122,6 @@ proc validate_SearchFlowTemplates_606576(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606580 = header.getOrDefault("X-Amz-Target")
   valid_606580 = validateParameter(valid_606580, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.SearchFlowTemplates"))
@@ -3309,8 +3257,6 @@ proc validate_SearchSystemInstances_606594(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606598 = header.getOrDefault("X-Amz-Target")
   valid_606598 = validateParameter(valid_606598, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.SearchSystemInstances"))
@@ -3445,8 +3391,6 @@ proc validate_SearchSystemTemplates_606612(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606616 = header.getOrDefault("X-Amz-Target")
   valid_606616 = validateParameter(valid_606616, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.SearchSystemTemplates"))
@@ -3581,8 +3525,6 @@ proc validate_SearchThings_606630(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.SearchThings"))
@@ -3702,8 +3644,6 @@ proc validate_TagResource_606648(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606650 = header.getOrDefault("X-Amz-Target")
   valid_606650 = validateParameter(valid_606650, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.TagResource"))
@@ -3816,8 +3756,6 @@ proc validate_UndeploySystemInstance_606663(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606665 = header.getOrDefault("X-Amz-Target")
   valid_606665 = validateParameter(valid_606665, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.UndeploySystemInstance"))
@@ -3929,8 +3867,6 @@ proc validate_UntagResource_606678(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606680 = header.getOrDefault("X-Amz-Target")
   valid_606680 = validateParameter(valid_606680, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.UntagResource"))
@@ -4043,8 +3979,6 @@ proc validate_UpdateFlowTemplate_606693(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606695 = header.getOrDefault("X-Amz-Target")
   valid_606695 = validateParameter(valid_606695, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.UpdateFlowTemplate"))
@@ -4157,8 +4091,6 @@ proc validate_UpdateSystemTemplate_606708(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606710 = header.getOrDefault("X-Amz-Target")
   valid_606710 = validateParameter(valid_606710, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.UpdateSystemTemplate"))
@@ -4272,8 +4204,6 @@ proc validate_UploadEntityDefinitions_606723(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606725 = header.getOrDefault("X-Amz-Target")
   valid_606725 = validateParameter(valid_606725, JString, required = true, default = newJString(
       "IotThingsGraphFrontEndService.UploadEntityDefinitions"))

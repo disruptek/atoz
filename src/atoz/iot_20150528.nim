@@ -21855,8 +21855,6 @@ proc validate_ListThingRegistrationTaskReports_608835(path: JsonNode;
                                  default = nil)
   if valid_608838 != nil:
     section.add "nextToken", valid_608838
-  assert query != nil,
-        "query argument is necessary due to required `reportType` field"
   var valid_608839 = query.getOrDefault("reportType")
   valid_608839 = validateParameter(valid_608839, JString, required = true,
                                  default = newJString("ERRORS"))
@@ -24977,8 +24975,6 @@ proc validate_UpdateCertificate_609229(path: JsonNode; query: JsonNode;
   ##   newStatus: JString (required)
   ##            : <p>The new status.</p> <p> <b>Note:</b> Setting the status to PENDING_TRANSFER will result in an exception being thrown. PENDING_TRANSFER is a status used internally by AWS IoT. It is not intended for developer use.</p> <p> <b>Note:</b> The status value REGISTER_INACTIVE is deprecated and should not be used.</p>
   section = newJObject()
-  assert query != nil,
-        "query argument is necessary due to required `newStatus` field"
   var valid_609232 = query.getOrDefault("newStatus")
   valid_609232 = validateParameter(valid_609232, JString, required = true,
                                  default = newJString("ACTIVE"))

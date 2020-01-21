@@ -168,8 +168,6 @@ proc validate_CheckDomainAvailability_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "Route53Domains_v20140515.CheckDomainAvailability"))
@@ -282,8 +280,6 @@ proc validate_CheckDomainTransferability_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "Route53Domains_v20140515.CheckDomainTransferability"))
@@ -397,8 +393,6 @@ proc validate_DeleteTagsForDomain_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "Route53Domains_v20140515.DeleteTagsForDomain"))
@@ -511,8 +505,6 @@ proc validate_DisableDomainAutoRenew_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "Route53Domains_v20140515.DisableDomainAutoRenew"))
@@ -625,8 +617,6 @@ proc validate_DisableDomainTransferLock_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "Route53Domains_v20140515.DisableDomainTransferLock"))
@@ -740,8 +730,6 @@ proc validate_EnableDomainAutoRenew_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "Route53Domains_v20140515.EnableDomainAutoRenew"))
@@ -855,8 +843,6 @@ proc validate_EnableDomainTransferLock_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "Route53Domains_v20140515.EnableDomainTransferLock"))
@@ -969,8 +955,6 @@ proc validate_GetContactReachabilityStatus_606287(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "Route53Domains_v20140515.GetContactReachabilityStatus"))
@@ -1084,8 +1068,6 @@ proc validate_GetDomainDetail_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "Route53Domains_v20140515.GetDomainDetail"))
@@ -1197,8 +1179,6 @@ proc validate_GetDomainSuggestions_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "Route53Domains_v20140515.GetDomainSuggestions"))
@@ -1312,8 +1292,6 @@ proc validate_GetOperationDetail_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "Route53Domains_v20140515.GetOperationDetail"))
@@ -1441,8 +1419,6 @@ proc validate_ListDomains_606347(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606351 = header.getOrDefault("X-Amz-Target")
   valid_606351 = validateParameter(valid_606351, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ListDomains"))
@@ -1579,8 +1555,6 @@ proc validate_ListOperations_606366(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606370 = header.getOrDefault("X-Amz-Target")
   valid_606370 = validateParameter(valid_606370, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ListOperations"))
@@ -1701,8 +1675,6 @@ proc validate_ListTagsForDomain_606384(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606386 = header.getOrDefault("X-Amz-Target")
   valid_606386 = validateParameter(valid_606386, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ListTagsForDomain"))
@@ -1815,8 +1787,6 @@ proc validate_RegisterDomain_606399(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606401 = header.getOrDefault("X-Amz-Target")
   valid_606401 = validateParameter(valid_606401, JString, required = true, default = newJString(
       "Route53Domains_v20140515.RegisterDomain"))
@@ -1928,8 +1898,6 @@ proc validate_RenewDomain_606414(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606416 = header.getOrDefault("X-Amz-Target")
   valid_606416 = validateParameter(valid_606416, JString, required = true, default = newJString(
       "Route53Domains_v20140515.RenewDomain"))
@@ -2042,8 +2010,6 @@ proc validate_ResendContactReachabilityEmail_606429(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606431 = header.getOrDefault("X-Amz-Target")
   valid_606431 = validateParameter(valid_606431, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ResendContactReachabilityEmail"))
@@ -2156,8 +2122,6 @@ proc validate_RetrieveDomainAuthCode_606444(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606446 = header.getOrDefault("X-Amz-Target")
   valid_606446 = validateParameter(valid_606446, JString, required = true, default = newJString(
       "Route53Domains_v20140515.RetrieveDomainAuthCode"))
@@ -2271,8 +2235,6 @@ proc validate_TransferDomain_606459(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606461 = header.getOrDefault("X-Amz-Target")
   valid_606461 = validateParameter(valid_606461, JString, required = true, default = newJString(
       "Route53Domains_v20140515.TransferDomain"))
@@ -2385,8 +2347,6 @@ proc validate_UpdateDomainContact_606474(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606476 = header.getOrDefault("X-Amz-Target")
   valid_606476 = validateParameter(valid_606476, JString, required = true, default = newJString(
       "Route53Domains_v20140515.UpdateDomainContact"))
@@ -2499,8 +2459,6 @@ proc validate_UpdateDomainContactPrivacy_606489(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606491 = header.getOrDefault("X-Amz-Target")
   valid_606491 = validateParameter(valid_606491, JString, required = true, default = newJString(
       "Route53Domains_v20140515.UpdateDomainContactPrivacy"))
@@ -2614,8 +2572,6 @@ proc validate_UpdateDomainNameservers_606504(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606506 = header.getOrDefault("X-Amz-Target")
   valid_606506 = validateParameter(valid_606506, JString, required = true, default = newJString(
       "Route53Domains_v20140515.UpdateDomainNameservers"))
@@ -2729,8 +2685,6 @@ proc validate_UpdateTagsForDomain_606519(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606521 = header.getOrDefault("X-Amz-Target")
   valid_606521 = validateParameter(valid_606521, JString, required = true, default = newJString(
       "Route53Domains_v20140515.UpdateTagsForDomain"))
@@ -2843,8 +2797,6 @@ proc validate_ViewBilling_606534(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606536 = header.getOrDefault("X-Amz-Target")
   valid_606536 = validateParameter(valid_606536, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ViewBilling"))

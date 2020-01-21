@@ -182,8 +182,6 @@ proc validate_AddTagsToCertificate_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "CertificateManager.AddTagsToCertificate"))
@@ -297,8 +295,6 @@ proc validate_DeleteCertificate_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "CertificateManager.DeleteCertificate"))
@@ -411,8 +407,6 @@ proc validate_DescribeCertificate_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "CertificateManager.DescribeCertificate"))
@@ -526,8 +520,6 @@ proc validate_ExportCertificate_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "CertificateManager.ExportCertificate"))
@@ -640,8 +632,6 @@ proc validate_GetCertificate_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "CertificateManager.GetCertificate"))
@@ -754,8 +744,6 @@ proc validate_ImportCertificate_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "CertificateManager.ImportCertificate"))
@@ -883,8 +871,6 @@ proc validate_ListCertificates_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606276 = header.getOrDefault("X-Amz-Target")
   valid_606276 = validateParameter(valid_606276, JString, required = true, default = newJString(
       "CertificateManager.ListCertificates"))
@@ -1004,8 +990,6 @@ proc validate_ListTagsForCertificate_606291(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606293 = header.getOrDefault("X-Amz-Target")
   valid_606293 = validateParameter(valid_606293, JString, required = true, default = newJString(
       "CertificateManager.ListTagsForCertificate"))
@@ -1118,8 +1102,6 @@ proc validate_RemoveTagsFromCertificate_606306(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606308 = header.getOrDefault("X-Amz-Target")
   valid_606308 = validateParameter(valid_606308, JString, required = true, default = newJString(
       "CertificateManager.RemoveTagsFromCertificate"))
@@ -1234,8 +1216,6 @@ proc validate_RenewCertificate_606321(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606323 = header.getOrDefault("X-Amz-Target")
   valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
       "CertificateManager.RenewCertificate"))
@@ -1348,8 +1328,6 @@ proc validate_RequestCertificate_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606338 = header.getOrDefault("X-Amz-Target")
   valid_606338 = validateParameter(valid_606338, JString, required = true, default = newJString(
       "CertificateManager.RequestCertificate"))
@@ -1462,8 +1440,6 @@ proc validate_ResendValidationEmail_606351(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606353 = header.getOrDefault("X-Amz-Target")
   valid_606353 = validateParameter(valid_606353, JString, required = true, default = newJString(
       "CertificateManager.ResendValidationEmail"))
@@ -1577,8 +1553,6 @@ proc validate_UpdateCertificateOptions_606366(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606368 = header.getOrDefault("X-Amz-Target")
   valid_606368 = validateParameter(valid_606368, JString, required = true, default = newJString(
       "CertificateManager.UpdateCertificateOptions"))

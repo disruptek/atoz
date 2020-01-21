@@ -159,7 +159,6 @@ proc validate_PostAddTags_606200(path: JsonNode; query: JsonNode; header: JsonNo
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606202 = query.getOrDefault("Action")
   valid_606202 = validateParameter(valid_606202, JString, required = true,
                                  default = newJString("AddTags"))
@@ -439,7 +438,6 @@ proc validate_PostApplySecurityGroupsToLoadBalancer_606235(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606237 = query.getOrDefault("Action")
   valid_606237 = validateParameter(valid_606237, JString, required = true, default = newJString(
       "ApplySecurityGroupsToLoadBalancer"))
@@ -728,7 +726,6 @@ proc validate_PostAttachLoadBalancerToSubnets_606270(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606272 = query.getOrDefault("Action")
   valid_606272 = validateParameter(valid_606272, JString, required = true, default = newJString(
       "AttachLoadBalancerToSubnets"))
@@ -1017,7 +1014,6 @@ proc validate_PostConfigureHealthCheck_606309(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606311 = query.getOrDefault("Action")
   valid_606311 = validateParameter(valid_606311, JString, required = true,
                                  default = newJString("ConfigureHealthCheck"))
@@ -1409,7 +1405,6 @@ proc validate_PostCreateAppCookieStickinessPolicy_606349(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606351 = query.getOrDefault("Action")
   valid_606351 = validateParameter(valid_606351, JString, required = true, default = newJString(
       "CreateAppCookieStickinessPolicy"))
@@ -1718,7 +1713,6 @@ proc validate_PostCreateLBCookieStickinessPolicy_606386(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606388 = query.getOrDefault("Action")
   valid_606388 = validateParameter(valid_606388, JString, required = true, default = newJString(
       "CreateLBCookieStickinessPolicy"))
@@ -2026,7 +2020,6 @@ proc validate_PostCreateLoadBalancer_606427(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606429 = query.getOrDefault("Action")
   valid_606429 = validateParameter(valid_606429, JString, required = true,
                                  default = newJString("CreateLoadBalancer"))
@@ -2432,7 +2425,6 @@ proc validate_PostCreateLoadBalancerListeners_606467(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606469 = query.getOrDefault("Action")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "CreateLoadBalancerListeners"))
@@ -2719,7 +2711,6 @@ proc validate_PostCreateLoadBalancerPolicy_606504(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606506 = query.getOrDefault("Action")
   valid_606506 = validateParameter(valid_606506, JString, required = true, default = newJString(
       "CreateLoadBalancerPolicy"))
@@ -3050,7 +3041,6 @@ proc validate_PostDeleteLoadBalancer_606540(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606542 = query.getOrDefault("Action")
   valid_606542 = validateParameter(valid_606542, JString, required = true,
                                  default = newJString("DeleteLoadBalancer"))
@@ -3312,7 +3302,6 @@ proc validate_PostDeleteLoadBalancerListeners_606574(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606576 = query.getOrDefault("Action")
   valid_606576 = validateParameter(valid_606576, JString, required = true, default = newJString(
       "DeleteLoadBalancerListeners"))
@@ -3599,7 +3588,6 @@ proc validate_PostDeleteLoadBalancerPolicy_606609(path: JsonNode; query: JsonNod
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606611 = query.getOrDefault("Action")
   valid_606611 = validateParameter(valid_606611, JString, required = true, default = newJString(
       "DeleteLoadBalancerPolicy"))
@@ -3885,7 +3873,6 @@ proc validate_PostDeregisterInstancesFromLoadBalancer_606644(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606646 = query.getOrDefault("Action")
   valid_606646 = validateParameter(valid_606646, JString, required = true, default = newJString(
       "DeregisterInstancesFromLoadBalancer"))
@@ -4174,7 +4161,6 @@ proc validate_PostDescribeAccountLimits_606679(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606681 = query.getOrDefault("Action")
   valid_606681 = validateParameter(valid_606681, JString, required = true,
                                  default = newJString("DescribeAccountLimits"))
@@ -4329,7 +4315,6 @@ proc validate_GetDescribeAccountLimits_606662(path: JsonNode; query: JsonNode;
   valid_606665 = validateParameter(valid_606665, JInt, required = false, default = nil)
   if valid_606665 != nil:
     section.add "PageSize", valid_606665
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606666 = query.getOrDefault("Action")
   valid_606666 = validateParameter(valid_606666, JString, required = true,
                                  default = newJString("DescribeAccountLimits"))
@@ -4454,7 +4439,6 @@ proc validate_PostDescribeInstanceHealth_606714(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606716 = query.getOrDefault("Action")
   valid_606716 = validateParameter(valid_606716, JString, required = true,
                                  default = newJString("DescribeInstanceHealth"))
@@ -4740,7 +4724,6 @@ proc validate_PostDescribeLoadBalancerAttributes_606748(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606750 = query.getOrDefault("Action")
   valid_606750 = validateParameter(valid_606750, JString, required = true, default = newJString(
       "DescribeLoadBalancerAttributes"))
@@ -5008,7 +4991,6 @@ proc validate_PostDescribeLoadBalancerPolicies_606782(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606784 = query.getOrDefault("Action")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "DescribeLoadBalancerPolicies"))
@@ -5162,7 +5144,6 @@ proc validate_GetDescribeLoadBalancerPolicies_606765(path: JsonNode;
                                  default = nil)
   if valid_606767 != nil:
     section.add "LoadBalancerName", valid_606767
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606768 = query.getOrDefault("Action")
   valid_606768 = validateParameter(valid_606768, JString, required = true, default = newJString(
       "DescribeLoadBalancerPolicies"))
@@ -5296,7 +5277,6 @@ proc validate_PostDescribeLoadBalancerPolicyTypes_606816(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606818 = query.getOrDefault("Action")
   valid_606818 = validateParameter(valid_606818, JString, required = true, default = newJString(
       "DescribeLoadBalancerPolicyTypes"))
@@ -5438,7 +5418,6 @@ proc validate_GetDescribeLoadBalancerPolicyTypes_606800(path: JsonNode;
                                  default = nil)
   if valid_606802 != nil:
     section.add "PolicyTypeNames", valid_606802
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606803 = query.getOrDefault("Action")
   valid_606803 = validateParameter(valid_606803, JString, required = true, default = newJString(
       "DescribeLoadBalancerPolicyTypes"))
@@ -5564,7 +5543,6 @@ proc validate_PostDescribeLoadBalancers_606851(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606853 = query.getOrDefault("Action")
   valid_606853 = validateParameter(valid_606853, JString, required = true,
                                  default = newJString("DescribeLoadBalancers"))
@@ -5733,7 +5711,6 @@ proc validate_GetDescribeLoadBalancers_606833(path: JsonNode; query: JsonNode;
   valid_606836 = validateParameter(valid_606836, JInt, required = false, default = nil)
   if valid_606836 != nil:
     section.add "PageSize", valid_606836
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606837 = query.getOrDefault("Action")
   valid_606837 = validateParameter(valid_606837, JString, required = true,
                                  default = newJString("DescribeLoadBalancers"))
@@ -5868,7 +5845,6 @@ proc validate_PostDescribeTags_606886(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606888 = query.getOrDefault("Action")
   valid_606888 = validateParameter(valid_606888, JString, required = true,
                                  default = newJString("DescribeTags"))
@@ -6001,7 +5977,6 @@ proc validate_GetDescribeTags_606870(path: JsonNode; query: JsonNode;
   ##   LoadBalancerNames: JArray (required)
   ##                    : The names of the load balancers.
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606872 = query.getOrDefault("Action")
   valid_606872 = validateParameter(valid_606872, JString, required = true,
                                  default = newJString("DescribeTags"))
@@ -6125,7 +6100,6 @@ proc validate_PostDetachLoadBalancerFromSubnets_606920(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606922 = query.getOrDefault("Action")
   valid_606922 = validateParameter(valid_606922, JString, required = true, default = newJString(
       "DetachLoadBalancerFromSubnets"))
@@ -6414,7 +6388,6 @@ proc validate_PostDisableAvailabilityZonesForLoadBalancer_606955(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606957 = query.getOrDefault("Action")
   valid_606957 = validateParameter(valid_606957, JString, required = true, default = newJString(
       "DisableAvailabilityZonesForLoadBalancer"))
@@ -6702,7 +6675,6 @@ proc validate_PostEnableAvailabilityZonesForLoadBalancer_606990(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_606992 = query.getOrDefault("Action")
   valid_606992 = validateParameter(valid_606992, JString, required = true, default = newJString(
       "EnableAvailabilityZonesForLoadBalancer"))
@@ -6990,7 +6962,6 @@ proc validate_PostModifyLoadBalancerAttributes_607029(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607031 = query.getOrDefault("Action")
   valid_607031 = validateParameter(valid_607031, JString, required = true, default = newJString(
       "ModifyLoadBalancerAttributes"))
@@ -7416,7 +7387,6 @@ proc validate_PostRegisterInstancesWithLoadBalancer_607068(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607070 = query.getOrDefault("Action")
   valid_607070 = validateParameter(valid_607070, JString, required = true, default = newJString(
       "RegisterInstancesWithLoadBalancer"))
@@ -7706,7 +7676,6 @@ proc validate_PostRemoveTags_607103(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607105 = query.getOrDefault("Action")
   valid_607105 = validateParameter(valid_607105, JString, required = true,
                                  default = newJString("RemoveTags"))
@@ -7983,7 +7952,6 @@ proc validate_PostSetLoadBalancerListenerSSLCertificate_607139(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607141 = query.getOrDefault("Action")
   valid_607141 = validateParameter(valid_607141, JString, required = true, default = newJString(
       "SetLoadBalancerListenerSSLCertificate"))
@@ -8289,7 +8257,6 @@ proc validate_PostSetLoadBalancerPoliciesForBackendServer_607176(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607178 = query.getOrDefault("Action")
   valid_607178 = validateParameter(valid_607178, JString, required = true, default = newJString(
       "SetLoadBalancerPoliciesForBackendServer"))
@@ -8596,7 +8563,6 @@ proc validate_PostSetLoadBalancerPoliciesOfListener_607213(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `Action` field"
   var valid_607215 = query.getOrDefault("Action")
   valid_607215 = validateParameter(valid_607215, JString, required = true, default = newJString(
       "SetLoadBalancerPoliciesOfListener"))

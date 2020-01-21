@@ -179,8 +179,6 @@ proc validate_DescribeReportCreation_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.DescribeReportCreation"))
@@ -307,8 +305,6 @@ proc validate_GetComplianceSummary_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606201 = header.getOrDefault("X-Amz-Target")
   valid_606201 = validateParameter(valid_606201, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.GetComplianceSummary"))
@@ -443,8 +439,6 @@ proc validate_GetResources_606216(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606220 = header.getOrDefault("X-Amz-Target")
   valid_606220 = validateParameter(valid_606220, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.GetResources"))
@@ -572,8 +566,6 @@ proc validate_GetTagKeys_606234(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606237 = header.getOrDefault("X-Amz-Target")
   valid_606237 = validateParameter(valid_606237, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.GetTagKeys"))
@@ -699,8 +691,6 @@ proc validate_GetTagValues_606251(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606254 = header.getOrDefault("X-Amz-Target")
   valid_606254 = validateParameter(valid_606254, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.GetTagValues"))
@@ -818,8 +808,6 @@ proc validate_StartReportCreation_606268(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606270 = header.getOrDefault("X-Amz-Target")
   valid_606270 = validateParameter(valid_606270, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.StartReportCreation"))
@@ -931,8 +919,6 @@ proc validate_TagResources_606283(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606285 = header.getOrDefault("X-Amz-Target")
   valid_606285 = validateParameter(valid_606285, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.TagResources"))
@@ -1045,8 +1031,6 @@ proc validate_UntagResources_606298(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606300 = header.getOrDefault("X-Amz-Target")
   valid_606300 = validateParameter(valid_606300, JString, required = true, default = newJString(
       "ResourceGroupsTaggingAPI_20170126.UntagResources"))

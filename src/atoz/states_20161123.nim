@@ -181,8 +181,6 @@ proc validate_CreateActivity_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSStepFunctions.CreateActivity"))
@@ -295,8 +293,6 @@ proc validate_CreateStateMachine_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSStepFunctions.CreateStateMachine"))
@@ -410,8 +406,6 @@ proc validate_DeleteActivity_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSStepFunctions.DeleteActivity"))
@@ -524,8 +518,6 @@ proc validate_DeleteStateMachine_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSStepFunctions.DeleteStateMachine"))
@@ -639,8 +631,6 @@ proc validate_DescribeActivity_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSStepFunctions.DescribeActivity"))
@@ -753,8 +743,6 @@ proc validate_DescribeExecution_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSStepFunctions.DescribeExecution"))
@@ -866,8 +854,6 @@ proc validate_DescribeStateMachine_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSStepFunctions.DescribeStateMachine"))
@@ -980,8 +966,6 @@ proc validate_DescribeStateMachineForExecution_606287(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSStepFunctions.DescribeStateMachineForExecution"))
@@ -1098,8 +1082,6 @@ proc validate_GetActivityTask_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSStepFunctions.GetActivityTask"))
@@ -1227,8 +1209,6 @@ proc validate_GetExecutionHistory_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606321 = header.getOrDefault("X-Amz-Target")
   valid_606321 = validateParameter(valid_606321, JString, required = true, default = newJString(
       "AWSStepFunctions.GetExecutionHistory"))
@@ -1365,8 +1345,6 @@ proc validate_ListActivities_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606340 = header.getOrDefault("X-Amz-Target")
   valid_606340 = validateParameter(valid_606340, JString, required = true, default = newJString(
       "AWSStepFunctions.ListActivities"))
@@ -1502,8 +1480,6 @@ proc validate_ListExecutions_606354(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606358 = header.getOrDefault("X-Amz-Target")
   valid_606358 = validateParameter(valid_606358, JString, required = true, default = newJString(
       "AWSStepFunctions.ListExecutions"))
@@ -1639,8 +1615,6 @@ proc validate_ListStateMachines_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606376 = header.getOrDefault("X-Amz-Target")
   valid_606376 = validateParameter(valid_606376, JString, required = true, default = newJString(
       "AWSStepFunctions.ListStateMachines"))
@@ -1761,8 +1735,6 @@ proc validate_ListTagsForResource_606390(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606392 = header.getOrDefault("X-Amz-Target")
   valid_606392 = validateParameter(valid_606392, JString, required = true, default = newJString(
       "AWSStepFunctions.ListTagsForResource"))
@@ -1876,8 +1848,6 @@ proc validate_SendTaskFailure_606405(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606407 = header.getOrDefault("X-Amz-Target")
   valid_606407 = validateParameter(valid_606407, JString, required = true, default = newJString(
       "AWSStepFunctions.SendTaskFailure"))
@@ -1990,8 +1960,6 @@ proc validate_SendTaskHeartbeat_606420(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606422 = header.getOrDefault("X-Amz-Target")
   valid_606422 = validateParameter(valid_606422, JString, required = true, default = newJString(
       "AWSStepFunctions.SendTaskHeartbeat"))
@@ -2104,8 +2072,6 @@ proc validate_SendTaskSuccess_606435(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606437 = header.getOrDefault("X-Amz-Target")
   valid_606437 = validateParameter(valid_606437, JString, required = true, default = newJString(
       "AWSStepFunctions.SendTaskSuccess"))
@@ -2218,8 +2184,6 @@ proc validate_StartExecution_606450(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606452 = header.getOrDefault("X-Amz-Target")
   valid_606452 = validateParameter(valid_606452, JString, required = true, default = newJString(
       "AWSStepFunctions.StartExecution"))
@@ -2331,8 +2295,6 @@ proc validate_StopExecution_606465(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606467 = header.getOrDefault("X-Amz-Target")
   valid_606467 = validateParameter(valid_606467, JString, required = true, default = newJString(
       "AWSStepFunctions.StopExecution"))
@@ -2444,8 +2406,6 @@ proc validate_TagResource_606480(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606482 = header.getOrDefault("X-Amz-Target")
   valid_606482 = validateParameter(valid_606482, JString, required = true, default = newJString(
       "AWSStepFunctions.TagResource"))
@@ -2558,8 +2518,6 @@ proc validate_UntagResource_606495(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606497 = header.getOrDefault("X-Amz-Target")
   valid_606497 = validateParameter(valid_606497, JString, required = true, default = newJString(
       "AWSStepFunctions.UntagResource"))
@@ -2672,8 +2630,6 @@ proc validate_UpdateStateMachine_606510(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606512 = header.getOrDefault("X-Amz-Target")
   valid_606512 = validateParameter(valid_606512, JString, required = true, default = newJString(
       "AWSStepFunctions.UpdateStateMachine"))

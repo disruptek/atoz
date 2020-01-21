@@ -592,7 +592,6 @@ proc validate_UploadDocuments_606214(path: JsonNode; query: JsonNode;
   ## parameters in `query` object:
   ##   format: JString (required)
   section = newJObject()
-  assert query != nil, "query argument is necessary due to required `format` field"
   var valid_606216 = query.getOrDefault("format")
   valid_606216 = validateParameter(valid_606216, JString, required = true,
                                  default = newJString("sdk"))
@@ -635,8 +634,6 @@ proc validate_UploadDocuments_606214(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_606221 != nil:
     section.add "X-Amz-Security-Token", valid_606221
-  assert header != nil,
-        "header argument is necessary due to required `Content-Type` field"
   var valid_606222 = header.getOrDefault("Content-Type")
   valid_606222 = validateParameter(valid_606222, JString, required = true,
                                  default = newJString("application/json"))

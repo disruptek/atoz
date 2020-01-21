@@ -181,8 +181,6 @@ proc validate_BatchDeleteDocument_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSKendraFrontendService.BatchDeleteDocument"))
@@ -296,8 +294,6 @@ proc validate_BatchPutDocument_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSKendraFrontendService.BatchPutDocument"))
@@ -410,8 +406,6 @@ proc validate_CreateDataSource_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSKendraFrontendService.CreateDataSource"))
@@ -523,8 +517,6 @@ proc validate_CreateFaq_606227(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSKendraFrontendService.CreateFaq"))
@@ -636,8 +628,6 @@ proc validate_CreateIndex_606242(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "AWSKendraFrontendService.CreateIndex"))
@@ -750,8 +740,6 @@ proc validate_DeleteFaq_606257(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWSKendraFrontendService.DeleteFaq"))
@@ -863,8 +851,6 @@ proc validate_DeleteIndex_606272(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "AWSKendraFrontendService.DeleteIndex"))
@@ -978,8 +964,6 @@ proc validate_DescribeDataSource_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "AWSKendraFrontendService.DescribeDataSource"))
@@ -1092,8 +1076,6 @@ proc validate_DescribeFaq_606302(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWSKendraFrontendService.DescribeFaq"))
@@ -1206,8 +1188,6 @@ proc validate_DescribeIndex_606317(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AWSKendraFrontendService.DescribeIndex"))
@@ -1334,8 +1314,6 @@ proc validate_ListDataSourceSyncJobs_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606336 = header.getOrDefault("X-Amz-Target")
   valid_606336 = validateParameter(valid_606336, JString, required = true, default = newJString(
       "AWSKendraFrontendService.ListDataSourceSyncJobs"))
@@ -1472,8 +1450,6 @@ proc validate_ListDataSources_606351(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606355 = header.getOrDefault("X-Amz-Target")
   valid_606355 = validateParameter(valid_606355, JString, required = true, default = newJString(
       "AWSKendraFrontendService.ListDataSources"))
@@ -1593,8 +1569,6 @@ proc validate_ListFaqs_606369(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606371 = header.getOrDefault("X-Amz-Target")
   valid_606371 = validateParameter(valid_606371, JString, required = true, default = newJString(
       "AWSKendraFrontendService.ListFaqs"))
@@ -1721,8 +1695,6 @@ proc validate_ListIndices_606384(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606388 = header.getOrDefault("X-Amz-Target")
   valid_606388 = validateParameter(valid_606388, JString, required = true, default = newJString(
       "AWSKendraFrontendService.ListIndices"))
@@ -1843,8 +1815,6 @@ proc validate_Query_606402(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606404 = header.getOrDefault("X-Amz-Target")
   valid_606404 = validateParameter(valid_606404, JString, required = true, default = newJString(
       "AWSKendraFrontendService.Query"))
@@ -1956,8 +1926,6 @@ proc validate_StartDataSourceSyncJob_606417(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606419 = header.getOrDefault("X-Amz-Target")
   valid_606419 = validateParameter(valid_606419, JString, required = true, default = newJString(
       "AWSKendraFrontendService.StartDataSourceSyncJob"))
@@ -2070,8 +2038,6 @@ proc validate_StopDataSourceSyncJob_606432(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606434 = header.getOrDefault("X-Amz-Target")
   valid_606434 = validateParameter(valid_606434, JString, required = true, default = newJString(
       "AWSKendraFrontendService.StopDataSourceSyncJob"))
@@ -2185,8 +2151,6 @@ proc validate_SubmitFeedback_606447(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606449 = header.getOrDefault("X-Amz-Target")
   valid_606449 = validateParameter(valid_606449, JString, required = true, default = newJString(
       "AWSKendraFrontendService.SubmitFeedback"))
@@ -2299,8 +2263,6 @@ proc validate_UpdateDataSource_606462(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606464 = header.getOrDefault("X-Amz-Target")
   valid_606464 = validateParameter(valid_606464, JString, required = true, default = newJString(
       "AWSKendraFrontendService.UpdateDataSource"))
@@ -2412,8 +2374,6 @@ proc validate_UpdateIndex_606477(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606479 = header.getOrDefault("X-Amz-Target")
   valid_606479 = validateParameter(valid_606479, JString, required = true, default = newJString(
       "AWSKendraFrontendService.UpdateIndex"))

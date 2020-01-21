@@ -7401,8 +7401,6 @@ proc validate_PutGatewayResponse_607070(path: JsonNode; query: JsonNode;
   ##   restapi_id: JString (required)
   ##             : [Required] The string identifier of the associated <a>RestApi</a>.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `response_type` field"
   var valid_607072 = path.getOrDefault("response_type")
   valid_607072 = validateParameter(valid_607072, JString, required = true,
                                  default = newJString("DEFAULT_4XX"))
@@ -7550,8 +7548,6 @@ proc validate_GetGatewayResponse_607055(path: JsonNode; query: JsonNode;
   ##   restapi_id: JString (required)
   ##             : [Required] The string identifier of the associated <a>RestApi</a>.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `response_type` field"
   var valid_607057 = path.getOrDefault("response_type")
   valid_607057 = validateParameter(valid_607057, JString, required = true,
                                  default = newJString("DEFAULT_4XX"))
@@ -7690,8 +7686,6 @@ proc validate_UpdateGatewayResponse_607102(path: JsonNode; query: JsonNode;
   ##   restapi_id: JString (required)
   ##             : [Required] The string identifier of the associated <a>RestApi</a>.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `response_type` field"
   var valid_607104 = path.getOrDefault("response_type")
   valid_607104 = validateParameter(valid_607104, JString, required = true,
                                  default = newJString("DEFAULT_4XX"))
@@ -7838,8 +7832,6 @@ proc validate_DeleteGatewayResponse_607087(path: JsonNode; query: JsonNode;
   ##   restapi_id: JString (required)
   ##             : [Required] The string identifier of the associated <a>RestApi</a>.
   section = newJObject()
-  assert path != nil,
-        "path argument is necessary due to required `response_type` field"
   var valid_607089 = path.getOrDefault("response_type")
   valid_607089 = validateParameter(valid_607089, JString, required = true,
                                  default = newJString("DEFAULT_4XX"))
@@ -16071,7 +16063,6 @@ proc validate_ImportApiKeys_608060(path: JsonNode; query: JsonNode; header: Json
   valid_608062 = validateParameter(valid_608062, JBool, required = false, default = nil)
   if valid_608062 != nil:
     section.add "failonwarnings", valid_608062
-  assert query != nil, "query argument is necessary due to required `mode` field"
   var valid_608063 = query.getOrDefault("mode")
   valid_608063 = validateParameter(valid_608063, JString, required = true,
                                  default = newJString("import"))
@@ -16220,7 +16211,6 @@ proc validate_ImportRestApi_608078(path: JsonNode; query: JsonNode; header: Json
                                  default = nil)
   if valid_608082 != nil:
     section.add "parameters.1.value", valid_608082
-  assert query != nil, "query argument is necessary due to required `mode` field"
   var valid_608083 = query.getOrDefault("mode")
   valid_608083 = validateParameter(valid_608083, JString, required = true,
                                  default = newJString("import"))

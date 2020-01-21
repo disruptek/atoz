@@ -177,8 +177,6 @@ proc validate_AddTags_605928(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.AddTags"))
@@ -290,8 +288,6 @@ proc validate_CreateTrail_606197(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.CreateTrail"))
@@ -404,8 +400,6 @@ proc validate_DeleteTrail_606212(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.DeleteTrail"))
@@ -519,8 +513,6 @@ proc validate_DescribeTrails_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.DescribeTrails"))
@@ -632,8 +624,6 @@ proc validate_GetEventSelectors_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetEventSelectors"))
   if valid_606244 != nil:
@@ -744,8 +734,6 @@ proc validate_GetInsightSelectors_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetInsightSelectors"))
   if valid_606259 != nil:
@@ -856,8 +844,6 @@ proc validate_GetTrail_606272(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetTrail"))
@@ -970,8 +956,6 @@ proc validate_GetTrailStatus_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetTrailStatus"))
@@ -1091,8 +1075,6 @@ proc validate_ListPublicKeys_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606305 = header.getOrDefault("X-Amz-Target")
   valid_606305 = validateParameter(valid_606305, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListPublicKeys"))
@@ -1216,8 +1198,6 @@ proc validate_ListTags_606320(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606323 = header.getOrDefault("X-Amz-Target")
   valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListTags"))
@@ -1341,8 +1321,6 @@ proc validate_ListTrails_606337(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606340 = header.getOrDefault("X-Amz-Target")
   valid_606340 = validateParameter(valid_606340, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListTrails"))
@@ -1475,8 +1453,6 @@ proc validate_LookupEvents_606354(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606358 = header.getOrDefault("X-Amz-Target")
   valid_606358 = validateParameter(valid_606358, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.LookupEvents"))
@@ -1596,8 +1572,6 @@ proc validate_PutEventSelectors_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606374 = header.getOrDefault("X-Amz-Target")
   valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.PutEventSelectors"))
   if valid_606374 != nil:
@@ -1708,8 +1682,6 @@ proc validate_PutInsightSelectors_606387(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606389 = header.getOrDefault("X-Amz-Target")
   valid_606389 = validateParameter(valid_606389, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.PutInsightSelectors"))
   if valid_606389 != nil:
@@ -1820,8 +1792,6 @@ proc validate_RemoveTags_606402(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606404 = header.getOrDefault("X-Amz-Target")
   valid_606404 = validateParameter(valid_606404, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.RemoveTags"))
@@ -1934,8 +1904,6 @@ proc validate_StartLogging_606417(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606419 = header.getOrDefault("X-Amz-Target")
   valid_606419 = validateParameter(valid_606419, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.StartLogging"))
@@ -2046,8 +2014,6 @@ proc validate_StopLogging_606432(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606434 = header.getOrDefault("X-Amz-Target")
   valid_606434 = validateParameter(valid_606434, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.StopLogging"))
@@ -2160,8 +2126,6 @@ proc validate_UpdateTrail_606447(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606449 = header.getOrDefault("X-Amz-Target")
   valid_606449 = validateParameter(valid_606449, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.UpdateTrail"))

@@ -177,8 +177,6 @@ proc validate_AcceptMatch_605928(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true,
                                  default = newJString("GameLift.AcceptMatch"))
@@ -291,8 +289,6 @@ proc validate_CreateAlias_606197(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true,
                                  default = newJString("GameLift.CreateAlias"))
@@ -405,8 +401,6 @@ proc validate_CreateBuild_606212(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true,
                                  default = newJString("GameLift.CreateBuild"))
@@ -519,8 +513,6 @@ proc validate_CreateFleet_606227(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true,
                                  default = newJString("GameLift.CreateFleet"))
@@ -634,8 +626,6 @@ proc validate_CreateGameSession_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "GameLift.CreateGameSession"))
@@ -747,8 +737,6 @@ proc validate_CreateGameSessionQueue_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "GameLift.CreateGameSessionQueue"))
@@ -861,8 +849,6 @@ proc validate_CreateMatchmakingConfiguration_606272(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
       "GameLift.CreateMatchmakingConfiguration"))
@@ -977,8 +963,6 @@ proc validate_CreateMatchmakingRuleSet_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "GameLift.CreateMatchmakingRuleSet"))
@@ -1092,8 +1076,6 @@ proc validate_CreatePlayerSession_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "GameLift.CreatePlayerSession"))
@@ -1206,8 +1188,6 @@ proc validate_CreatePlayerSessions_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "GameLift.CreatePlayerSessions"))
@@ -1320,8 +1300,6 @@ proc validate_CreateScript_606332(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true,
                                  default = newJString("GameLift.CreateScript"))
@@ -1433,8 +1411,6 @@ proc validate_CreateVpcPeeringAuthorization_606347(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "GameLift.CreateVpcPeeringAuthorization"))
@@ -1548,8 +1524,6 @@ proc validate_CreateVpcPeeringConnection_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "GameLift.CreateVpcPeeringConnection"))
@@ -1663,8 +1637,6 @@ proc validate_DeleteAlias_606377(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true,
                                  default = newJString("GameLift.DeleteAlias"))
@@ -1777,8 +1749,6 @@ proc validate_DeleteBuild_606392(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true,
                                  default = newJString("GameLift.DeleteBuild"))
@@ -1891,8 +1861,6 @@ proc validate_DeleteFleet_606407(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true,
                                  default = newJString("GameLift.DeleteFleet"))
@@ -2005,8 +1973,6 @@ proc validate_DeleteGameSessionQueue_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "GameLift.DeleteGameSessionQueue"))
@@ -2119,8 +2085,6 @@ proc validate_DeleteMatchmakingConfiguration_606437(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "GameLift.DeleteMatchmakingConfiguration"))
@@ -2235,8 +2199,6 @@ proc validate_DeleteMatchmakingRuleSet_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "GameLift.DeleteMatchmakingRuleSet"))
@@ -2350,8 +2312,6 @@ proc validate_DeleteScalingPolicy_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "GameLift.DeleteScalingPolicy"))
@@ -2464,8 +2424,6 @@ proc validate_DeleteScript_606482(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true,
                                  default = newJString("GameLift.DeleteScript"))
@@ -2577,8 +2535,6 @@ proc validate_DeleteVpcPeeringAuthorization_606497(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "GameLift.DeleteVpcPeeringAuthorization"))
@@ -2692,8 +2648,6 @@ proc validate_DeleteVpcPeeringConnection_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "GameLift.DeleteVpcPeeringConnection"))
@@ -2807,8 +2761,6 @@ proc validate_DescribeAlias_606527(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true,
                                  default = newJString("GameLift.DescribeAlias"))
@@ -2920,8 +2872,6 @@ proc validate_DescribeBuild_606542(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true,
                                  default = newJString("GameLift.DescribeBuild"))
@@ -3033,8 +2983,6 @@ proc validate_DescribeEC2InstanceLimits_606557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "GameLift.DescribeEC2InstanceLimits"))
@@ -3149,8 +3097,6 @@ proc validate_DescribeFleetAttributes_606572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "GameLift.DescribeFleetAttributes"))
@@ -3263,8 +3209,6 @@ proc validate_DescribeFleetCapacity_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "GameLift.DescribeFleetCapacity"))
@@ -3378,8 +3322,6 @@ proc validate_DescribeFleetEvents_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "GameLift.DescribeFleetEvents"))
@@ -3492,8 +3434,6 @@ proc validate_DescribeFleetPortSettings_606617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "GameLift.DescribeFleetPortSettings"))
@@ -3608,8 +3548,6 @@ proc validate_DescribeFleetUtilization_606632(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "GameLift.DescribeFleetUtilization"))
@@ -3722,8 +3660,6 @@ proc validate_DescribeGameSessionDetails_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "GameLift.DescribeGameSessionDetails"))
@@ -3837,8 +3773,6 @@ proc validate_DescribeGameSessionPlacement_606662(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
       "GameLift.DescribeGameSessionPlacement"))
@@ -3952,8 +3886,6 @@ proc validate_DescribeGameSessionQueues_606677(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "GameLift.DescribeGameSessionQueues"))
@@ -4067,8 +3999,6 @@ proc validate_DescribeGameSessions_606692(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "GameLift.DescribeGameSessions"))
@@ -4182,8 +4112,6 @@ proc validate_DescribeInstances_606707(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "GameLift.DescribeInstances"))
@@ -4296,8 +4224,6 @@ proc validate_DescribeMatchmaking_606722(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "GameLift.DescribeMatchmaking"))
@@ -4410,8 +4336,6 @@ proc validate_DescribeMatchmakingConfigurations_606737(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true, default = newJString(
       "GameLift.DescribeMatchmakingConfigurations"))
@@ -4527,8 +4451,6 @@ proc validate_DescribeMatchmakingRuleSets_606752(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606754 = header.getOrDefault("X-Amz-Target")
   valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
       "GameLift.DescribeMatchmakingRuleSets"))
@@ -4642,8 +4564,6 @@ proc validate_DescribePlayerSessions_606767(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
       "GameLift.DescribePlayerSessions"))
@@ -4756,8 +4676,6 @@ proc validate_DescribeRuntimeConfiguration_606782(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606784 = header.getOrDefault("X-Amz-Target")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "GameLift.DescribeRuntimeConfiguration"))
@@ -4872,8 +4790,6 @@ proc validate_DescribeScalingPolicies_606797(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606799 = header.getOrDefault("X-Amz-Target")
   valid_606799 = validateParameter(valid_606799, JString, required = true, default = newJString(
       "GameLift.DescribeScalingPolicies"))
@@ -4987,8 +4903,6 @@ proc validate_DescribeScript_606812(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606814 = header.getOrDefault("X-Amz-Target")
   valid_606814 = validateParameter(valid_606814, JString, required = true, default = newJString(
       "GameLift.DescribeScript"))
@@ -5100,8 +5014,6 @@ proc validate_DescribeVpcPeeringAuthorizations_606827(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606829 = header.getOrDefault("X-Amz-Target")
   valid_606829 = validateParameter(valid_606829, JString, required = true, default = newJString(
       "GameLift.DescribeVpcPeeringAuthorizations"))
@@ -5217,8 +5129,6 @@ proc validate_DescribeVpcPeeringConnections_606842(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606844 = header.getOrDefault("X-Amz-Target")
   valid_606844 = validateParameter(valid_606844, JString, required = true, default = newJString(
       "GameLift.DescribeVpcPeeringConnections"))
@@ -5332,8 +5242,6 @@ proc validate_GetGameSessionLogUrl_606857(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606859 = header.getOrDefault("X-Amz-Target")
   valid_606859 = validateParameter(valid_606859, JString, required = true, default = newJString(
       "GameLift.GetGameSessionLogUrl"))
@@ -5447,8 +5355,6 @@ proc validate_GetInstanceAccess_606872(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606874 = header.getOrDefault("X-Amz-Target")
   valid_606874 = validateParameter(valid_606874, JString, required = true, default = newJString(
       "GameLift.GetInstanceAccess"))
@@ -5560,8 +5466,6 @@ proc validate_ListAliases_606887(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606889 = header.getOrDefault("X-Amz-Target")
   valid_606889 = validateParameter(valid_606889, JString, required = true,
                                  default = newJString("GameLift.ListAliases"))
@@ -5674,8 +5578,6 @@ proc validate_ListBuilds_606902(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606904 = header.getOrDefault("X-Amz-Target")
   valid_606904 = validateParameter(valid_606904, JString, required = true,
                                  default = newJString("GameLift.ListBuilds"))
@@ -5788,8 +5690,6 @@ proc validate_ListFleets_606917(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606919 = header.getOrDefault("X-Amz-Target")
   valid_606919 = validateParameter(valid_606919, JString, required = true,
                                  default = newJString("GameLift.ListFleets"))
@@ -5902,8 +5802,6 @@ proc validate_ListScripts_606932(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606934 = header.getOrDefault("X-Amz-Target")
   valid_606934 = validateParameter(valid_606934, JString, required = true,
                                  default = newJString("GameLift.ListScripts"))
@@ -6017,8 +5915,6 @@ proc validate_ListTagsForResource_606947(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606949 = header.getOrDefault("X-Amz-Target")
   valid_606949 = validateParameter(valid_606949, JString, required = true, default = newJString(
       "GameLift.ListTagsForResource"))
@@ -6132,8 +6028,6 @@ proc validate_PutScalingPolicy_606962(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606964 = header.getOrDefault("X-Amz-Target")
   valid_606964 = validateParameter(valid_606964, JString, required = true, default = newJString(
       "GameLift.PutScalingPolicy"))
@@ -6246,8 +6140,6 @@ proc validate_RequestUploadCredentials_606977(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606979 = header.getOrDefault("X-Amz-Target")
   valid_606979 = validateParameter(valid_606979, JString, required = true, default = newJString(
       "GameLift.RequestUploadCredentials"))
@@ -6360,8 +6252,6 @@ proc validate_ResolveAlias_606992(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606994 = header.getOrDefault("X-Amz-Target")
   valid_606994 = validateParameter(valid_606994, JString, required = true,
                                  default = newJString("GameLift.ResolveAlias"))
@@ -6474,8 +6364,6 @@ proc validate_SearchGameSessions_607007(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607009 = header.getOrDefault("X-Amz-Target")
   valid_607009 = validateParameter(valid_607009, JString, required = true, default = newJString(
       "GameLift.SearchGameSessions"))
@@ -6589,8 +6477,6 @@ proc validate_StartFleetActions_607022(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607024 = header.getOrDefault("X-Amz-Target")
   valid_607024 = validateParameter(valid_607024, JString, required = true, default = newJString(
       "GameLift.StartFleetActions"))
@@ -6702,8 +6588,6 @@ proc validate_StartGameSessionPlacement_607037(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607039 = header.getOrDefault("X-Amz-Target")
   valid_607039 = validateParameter(valid_607039, JString, required = true, default = newJString(
       "GameLift.StartGameSessionPlacement"))
@@ -6818,8 +6702,6 @@ proc validate_StartMatchBackfill_607052(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607054 = header.getOrDefault("X-Amz-Target")
   valid_607054 = validateParameter(valid_607054, JString, required = true, default = newJString(
       "GameLift.StartMatchBackfill"))
@@ -6933,8 +6815,6 @@ proc validate_StartMatchmaking_607067(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607069 = header.getOrDefault("X-Amz-Target")
   valid_607069 = validateParameter(valid_607069, JString, required = true, default = newJString(
       "GameLift.StartMatchmaking"))
@@ -7047,8 +6927,6 @@ proc validate_StopFleetActions_607082(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607084 = header.getOrDefault("X-Amz-Target")
   valid_607084 = validateParameter(valid_607084, JString, required = true, default = newJString(
       "GameLift.StopFleetActions"))
@@ -7161,8 +7039,6 @@ proc validate_StopGameSessionPlacement_607097(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607099 = header.getOrDefault("X-Amz-Target")
   valid_607099 = validateParameter(valid_607099, JString, required = true, default = newJString(
       "GameLift.StopGameSessionPlacement"))
@@ -7276,8 +7152,6 @@ proc validate_StopMatchmaking_607112(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607114 = header.getOrDefault("X-Amz-Target")
   valid_607114 = validateParameter(valid_607114, JString, required = true, default = newJString(
       "GameLift.StopMatchmaking"))
@@ -7389,8 +7263,6 @@ proc validate_TagResource_607127(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607129 = header.getOrDefault("X-Amz-Target")
   valid_607129 = validateParameter(valid_607129, JString, required = true,
                                  default = newJString("GameLift.TagResource"))
@@ -7503,8 +7375,6 @@ proc validate_UntagResource_607142(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607144 = header.getOrDefault("X-Amz-Target")
   valid_607144 = validateParameter(valid_607144, JString, required = true,
                                  default = newJString("GameLift.UntagResource"))
@@ -7616,8 +7486,6 @@ proc validate_UpdateAlias_607157(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607159 = header.getOrDefault("X-Amz-Target")
   valid_607159 = validateParameter(valid_607159, JString, required = true,
                                  default = newJString("GameLift.UpdateAlias"))
@@ -7730,8 +7598,6 @@ proc validate_UpdateBuild_607172(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607174 = header.getOrDefault("X-Amz-Target")
   valid_607174 = validateParameter(valid_607174, JString, required = true,
                                  default = newJString("GameLift.UpdateBuild"))
@@ -7844,8 +7710,6 @@ proc validate_UpdateFleetAttributes_607187(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607189 = header.getOrDefault("X-Amz-Target")
   valid_607189 = validateParameter(valid_607189, JString, required = true, default = newJString(
       "GameLift.UpdateFleetAttributes"))
@@ -7959,8 +7823,6 @@ proc validate_UpdateFleetCapacity_607202(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607204 = header.getOrDefault("X-Amz-Target")
   valid_607204 = validateParameter(valid_607204, JString, required = true, default = newJString(
       "GameLift.UpdateFleetCapacity"))
@@ -8074,8 +7936,6 @@ proc validate_UpdateFleetPortSettings_607217(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607219 = header.getOrDefault("X-Amz-Target")
   valid_607219 = validateParameter(valid_607219, JString, required = true, default = newJString(
       "GameLift.UpdateFleetPortSettings"))
@@ -8189,8 +8049,6 @@ proc validate_UpdateGameSession_607232(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607234 = header.getOrDefault("X-Amz-Target")
   valid_607234 = validateParameter(valid_607234, JString, required = true, default = newJString(
       "GameLift.UpdateGameSession"))
@@ -8302,8 +8160,6 @@ proc validate_UpdateGameSessionQueue_607247(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607249 = header.getOrDefault("X-Amz-Target")
   valid_607249 = validateParameter(valid_607249, JString, required = true, default = newJString(
       "GameLift.UpdateGameSessionQueue"))
@@ -8416,8 +8272,6 @@ proc validate_UpdateMatchmakingConfiguration_607262(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607264 = header.getOrDefault("X-Amz-Target")
   valid_607264 = validateParameter(valid_607264, JString, required = true, default = newJString(
       "GameLift.UpdateMatchmakingConfiguration"))
@@ -8531,8 +8385,6 @@ proc validate_UpdateRuntimeConfiguration_607277(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607279 = header.getOrDefault("X-Amz-Target")
   valid_607279 = validateParameter(valid_607279, JString, required = true, default = newJString(
       "GameLift.UpdateRuntimeConfiguration"))
@@ -8646,8 +8498,6 @@ proc validate_UpdateScript_607292(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607294 = header.getOrDefault("X-Amz-Target")
   valid_607294 = validateParameter(valid_607294, JString, required = true,
                                  default = newJString("GameLift.UpdateScript"))
@@ -8759,8 +8609,6 @@ proc validate_ValidateMatchmakingRuleSet_607307(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607309 = header.getOrDefault("X-Amz-Target")
   valid_607309 = validateParameter(valid_607309, JString, required = true, default = newJString(
       "GameLift.ValidateMatchmakingRuleSet"))

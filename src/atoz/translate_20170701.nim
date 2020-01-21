@@ -178,8 +178,6 @@ proc validate_DeleteTerminology_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.DeleteTerminology"))
@@ -291,8 +289,6 @@ proc validate_DescribeTextTranslationJob_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.DescribeTextTranslationJob"))
@@ -406,8 +402,6 @@ proc validate_GetTerminology_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.GetTerminology"))
@@ -520,8 +514,6 @@ proc validate_ImportTerminology_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.ImportTerminology"))
@@ -649,8 +641,6 @@ proc validate_ListTerminologies_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606246 = header.getOrDefault("X-Amz-Target")
   valid_606246 = validateParameter(valid_606246, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.ListTerminologies"))
@@ -786,8 +776,6 @@ proc validate_ListTextTranslationJobs_606261(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606265 = header.getOrDefault("X-Amz-Target")
   valid_606265 = validateParameter(valid_606265, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.ListTextTranslationJobs"))
@@ -908,8 +896,6 @@ proc validate_StartTextTranslationJob_606279(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606281 = header.getOrDefault("X-Amz-Target")
   valid_606281 = validateParameter(valid_606281, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.StartTextTranslationJob"))
@@ -1021,8 +1007,6 @@ proc validate_StopTextTranslationJob_606294(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606296 = header.getOrDefault("X-Amz-Target")
   valid_606296 = validateParameter(valid_606296, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.StopTextTranslationJob"))
@@ -1134,8 +1118,6 @@ proc validate_TranslateText_606309(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606311 = header.getOrDefault("X-Amz-Target")
   valid_606311 = validateParameter(valid_606311, JString, required = true, default = newJString(
       "AWSShineFrontendService_20170701.TranslateText"))

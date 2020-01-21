@@ -167,8 +167,6 @@ proc validate_AcceptPortfolioShare_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.AcceptPortfolioShare"))
@@ -281,8 +279,6 @@ proc validate_AssociateBudgetWithResource_606197(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.AssociateBudgetWithResource"))
@@ -395,8 +391,6 @@ proc validate_AssociatePrincipalWithPortfolio_606212(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.AssociatePrincipalWithPortfolio"))
@@ -510,8 +504,6 @@ proc validate_AssociateProductWithPortfolio_606227(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.AssociateProductWithPortfolio"))
@@ -625,8 +617,6 @@ proc validate_AssociateServiceActionWithProvisioningArtifact_606242(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString("AWS242ServiceCatalogService.AssociateServiceActionWithProvisioningArtifact"))
   if valid_606244 != nil:
@@ -740,8 +730,6 @@ proc validate_AssociateTagOptionWithResource_606257(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.AssociateTagOptionWithResource"))
@@ -856,8 +844,6 @@ proc validate_BatchAssociateServiceActionWithProvisioningArtifact_606272(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString("AWS242ServiceCatalogService.BatchAssociateServiceActionWithProvisioningArtifact"))
   if valid_606274 != nil:
@@ -973,8 +959,6 @@ proc validate_BatchDisassociateServiceActionFromProvisioningArtifact_606287(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString("AWS242ServiceCatalogService.BatchDisassociateServiceActionFromProvisioningArtifact"))
   if valid_606289 != nil:
@@ -1088,8 +1072,6 @@ proc validate_CopyProduct_606302(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CopyProduct"))
@@ -1203,8 +1185,6 @@ proc validate_CreateConstraint_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CreateConstraint"))
@@ -1317,8 +1297,6 @@ proc validate_CreatePortfolio_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CreatePortfolio"))
@@ -1430,8 +1408,6 @@ proc validate_CreatePortfolioShare_606347(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CreatePortfolioShare"))
@@ -1544,8 +1520,6 @@ proc validate_CreateProduct_606362(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CreateProduct"))
@@ -1657,8 +1631,6 @@ proc validate_CreateProvisionedProductPlan_606377(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CreateProvisionedProductPlan"))
@@ -1771,8 +1743,6 @@ proc validate_CreateProvisioningArtifact_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CreateProvisioningArtifact"))
@@ -1886,8 +1856,6 @@ proc validate_CreateServiceAction_606407(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CreateServiceAction"))
@@ -2001,8 +1969,6 @@ proc validate_CreateTagOption_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.CreateTagOption"))
@@ -2115,8 +2081,6 @@ proc validate_DeleteConstraint_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DeleteConstraint"))
@@ -2229,8 +2193,6 @@ proc validate_DeletePortfolio_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DeletePortfolio"))
@@ -2342,8 +2304,6 @@ proc validate_DeletePortfolioShare_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DeletePortfolioShare"))
@@ -2456,8 +2416,6 @@ proc validate_DeleteProduct_606482(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DeleteProduct"))
@@ -2569,8 +2527,6 @@ proc validate_DeleteProvisionedProductPlan_606497(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DeleteProvisionedProductPlan"))
@@ -2683,8 +2639,6 @@ proc validate_DeleteProvisioningArtifact_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DeleteProvisioningArtifact"))
@@ -2798,8 +2752,6 @@ proc validate_DeleteServiceAction_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DeleteServiceAction"))
@@ -2913,8 +2865,6 @@ proc validate_DeleteTagOption_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DeleteTagOption"))
@@ -3027,8 +2977,6 @@ proc validate_DescribeConstraint_606557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeConstraint"))
@@ -3141,8 +3089,6 @@ proc validate_DescribeCopyProductStatus_606572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeCopyProductStatus"))
@@ -3256,8 +3202,6 @@ proc validate_DescribePortfolio_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribePortfolio"))
@@ -3369,8 +3313,6 @@ proc validate_DescribePortfolioShareStatus_606602(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606604 = header.getOrDefault("X-Amz-Target")
   valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribePortfolioShareStatus"))
@@ -3484,8 +3426,6 @@ proc validate_DescribeProduct_606617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606619 = header.getOrDefault("X-Amz-Target")
   valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeProduct"))
@@ -3597,8 +3537,6 @@ proc validate_DescribeProductAsAdmin_606632(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606634 = header.getOrDefault("X-Amz-Target")
   valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeProductAsAdmin"))
@@ -3712,8 +3650,6 @@ proc validate_DescribeProductView_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606649 = header.getOrDefault("X-Amz-Target")
   valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeProductView"))
@@ -3826,8 +3762,6 @@ proc validate_DescribeProvisionedProduct_606662(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606664 = header.getOrDefault("X-Amz-Target")
   valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeProvisionedProduct"))
@@ -3940,8 +3874,6 @@ proc validate_DescribeProvisionedProductPlan_606677(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606679 = header.getOrDefault("X-Amz-Target")
   valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeProvisionedProductPlan"))
@@ -4054,8 +3986,6 @@ proc validate_DescribeProvisioningArtifact_606692(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606694 = header.getOrDefault("X-Amz-Target")
   valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeProvisioningArtifact"))
@@ -4168,8 +4098,6 @@ proc validate_DescribeProvisioningParameters_606707(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606709 = header.getOrDefault("X-Amz-Target")
   valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeProvisioningParameters"))
@@ -4283,8 +4211,6 @@ proc validate_DescribeRecord_606722(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606724 = header.getOrDefault("X-Amz-Target")
   valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeRecord"))
@@ -4396,8 +4322,6 @@ proc validate_DescribeServiceAction_606737(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606739 = header.getOrDefault("X-Amz-Target")
   valid_606739 = validateParameter(valid_606739, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeServiceAction"))
@@ -4508,8 +4432,6 @@ proc validate_DescribeServiceActionExecutionParameters_606752(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606754 = header.getOrDefault("X-Amz-Target")
   valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeServiceActionExecutionParameters"))
@@ -4622,8 +4544,6 @@ proc validate_DescribeTagOption_606767(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606769 = header.getOrDefault("X-Amz-Target")
   valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DescribeTagOption"))
@@ -4735,8 +4655,6 @@ proc validate_DisableAWSOrganizationsAccess_606782(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606784 = header.getOrDefault("X-Amz-Target")
   valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DisableAWSOrganizationsAccess"))
@@ -4849,8 +4767,6 @@ proc validate_DisassociateBudgetFromResource_606797(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606799 = header.getOrDefault("X-Amz-Target")
   valid_606799 = validateParameter(valid_606799, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DisassociateBudgetFromResource"))
@@ -4963,8 +4879,6 @@ proc validate_DisassociatePrincipalFromPortfolio_606812(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606814 = header.getOrDefault("X-Amz-Target")
   valid_606814 = validateParameter(valid_606814, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DisassociatePrincipalFromPortfolio"))
@@ -5079,8 +4993,6 @@ proc validate_DisassociateProductFromPortfolio_606827(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606829 = header.getOrDefault("X-Amz-Target")
   valid_606829 = validateParameter(valid_606829, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DisassociateProductFromPortfolio"))
@@ -5197,8 +5109,6 @@ proc validate_DisassociateServiceActionFromProvisioningArtifact_606842(
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606844 = header.getOrDefault("X-Amz-Target")
   valid_606844 = validateParameter(valid_606844, JString, required = true, default = newJString("AWS242ServiceCatalogService.DisassociateServiceActionFromProvisioningArtifact"))
   if valid_606844 != nil:
@@ -5312,8 +5222,6 @@ proc validate_DisassociateTagOptionFromResource_606857(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606859 = header.getOrDefault("X-Amz-Target")
   valid_606859 = validateParameter(valid_606859, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.DisassociateTagOptionFromResource"))
@@ -5428,8 +5336,6 @@ proc validate_EnableAWSOrganizationsAccess_606872(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606874 = header.getOrDefault("X-Amz-Target")
   valid_606874 = validateParameter(valid_606874, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.EnableAWSOrganizationsAccess"))
@@ -5542,8 +5448,6 @@ proc validate_ExecuteProvisionedProductPlan_606887(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606889 = header.getOrDefault("X-Amz-Target")
   valid_606889 = validateParameter(valid_606889, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ExecuteProvisionedProductPlan"))
@@ -5656,8 +5560,6 @@ proc validate_ExecuteProvisionedProductServiceAction_606902(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606904 = header.getOrDefault("X-Amz-Target")
   valid_606904 = validateParameter(valid_606904, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ExecuteProvisionedProductServiceAction"))
@@ -5772,8 +5674,6 @@ proc validate_GetAWSOrganizationsAccessStatus_606917(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606919 = header.getOrDefault("X-Amz-Target")
   valid_606919 = validateParameter(valid_606919, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.GetAWSOrganizationsAccessStatus"))
@@ -5902,8 +5802,6 @@ proc validate_ListAcceptedPortfolioShares_606932(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606936 = header.getOrDefault("X-Amz-Target")
   valid_606936 = validateParameter(valid_606936, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListAcceptedPortfolioShares"))
@@ -6039,8 +5937,6 @@ proc validate_ListBudgetsForResource_606951(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606955 = header.getOrDefault("X-Amz-Target")
   valid_606955 = validateParameter(valid_606955, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListBudgetsForResource"))
@@ -6176,8 +6072,6 @@ proc validate_ListConstraintsForPortfolio_606969(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606973 = header.getOrDefault("X-Amz-Target")
   valid_606973 = validateParameter(valid_606973, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListConstraintsForPortfolio"))
@@ -6314,8 +6208,6 @@ proc validate_ListLaunchPaths_606987(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606991 = header.getOrDefault("X-Amz-Target")
   valid_606991 = validateParameter(valid_606991, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListLaunchPaths"))
@@ -6450,8 +6342,6 @@ proc validate_ListOrganizationPortfolioAccess_607005(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607009 = header.getOrDefault("X-Amz-Target")
   valid_607009 = validateParameter(valid_607009, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListOrganizationPortfolioAccess"))
@@ -6574,8 +6464,6 @@ proc validate_ListPortfolioAccess_607023(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607025 = header.getOrDefault("X-Amz-Target")
   valid_607025 = validateParameter(valid_607025, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListPortfolioAccess"))
@@ -6704,8 +6592,6 @@ proc validate_ListPortfolios_607038(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607042 = header.getOrDefault("X-Amz-Target")
   valid_607042 = validateParameter(valid_607042, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListPortfolios"))
@@ -6841,8 +6727,6 @@ proc validate_ListPortfoliosForProduct_607056(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607060 = header.getOrDefault("X-Amz-Target")
   valid_607060 = validateParameter(valid_607060, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListPortfoliosForProduct"))
@@ -6977,8 +6861,6 @@ proc validate_ListPrincipalsForPortfolio_607074(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607078 = header.getOrDefault("X-Amz-Target")
   valid_607078 = validateParameter(valid_607078, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListPrincipalsForPortfolio"))
@@ -7099,8 +6981,6 @@ proc validate_ListProvisionedProductPlans_607092(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607094 = header.getOrDefault("X-Amz-Target")
   valid_607094 = validateParameter(valid_607094, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListProvisionedProductPlans"))
@@ -7213,8 +7093,6 @@ proc validate_ListProvisioningArtifacts_607107(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607109 = header.getOrDefault("X-Amz-Target")
   valid_607109 = validateParameter(valid_607109, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListProvisioningArtifacts"))
@@ -7342,8 +7220,6 @@ proc validate_ListProvisioningArtifactsForServiceAction_607122(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607126 = header.getOrDefault("X-Amz-Target")
   valid_607126 = validateParameter(valid_607126, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListProvisioningArtifactsForServiceAction"))
@@ -7466,8 +7342,6 @@ proc validate_ListRecordHistory_607140(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607142 = header.getOrDefault("X-Amz-Target")
   valid_607142 = validateParameter(valid_607142, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListRecordHistory"))
@@ -7594,8 +7468,6 @@ proc validate_ListResourcesForTagOption_607155(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607159 = header.getOrDefault("X-Amz-Target")
   valid_607159 = validateParameter(valid_607159, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListResourcesForTagOption"))
@@ -7732,8 +7604,6 @@ proc validate_ListServiceActions_607173(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607177 = header.getOrDefault("X-Amz-Target")
   valid_607177 = validateParameter(valid_607177, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListServiceActions"))
@@ -7869,8 +7739,6 @@ proc validate_ListServiceActionsForProvisioningArtifact_607191(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607195 = header.getOrDefault("X-Amz-Target")
   valid_607195 = validateParameter(valid_607195, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListServiceActionsForProvisioningArtifact"))
@@ -7992,8 +7860,6 @@ proc validate_ListStackInstancesForProvisionedProduct_607209(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607211 = header.getOrDefault("X-Amz-Target")
   valid_607211 = validateParameter(valid_607211, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListStackInstancesForProvisionedProduct"))
@@ -8124,8 +7990,6 @@ proc validate_ListTagOptions_607224(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607228 = header.getOrDefault("X-Amz-Target")
   valid_607228 = validateParameter(valid_607228, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ListTagOptions"))
@@ -8246,8 +8110,6 @@ proc validate_ProvisionProduct_607242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607244 = header.getOrDefault("X-Amz-Target")
   valid_607244 = validateParameter(valid_607244, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ProvisionProduct"))
@@ -8359,8 +8221,6 @@ proc validate_RejectPortfolioShare_607257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607259 = header.getOrDefault("X-Amz-Target")
   valid_607259 = validateParameter(valid_607259, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.RejectPortfolioShare"))
@@ -8474,8 +8334,6 @@ proc validate_ScanProvisionedProducts_607272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607274 = header.getOrDefault("X-Amz-Target")
   valid_607274 = validateParameter(valid_607274, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.ScanProvisionedProducts"))
@@ -8603,8 +8461,6 @@ proc validate_SearchProducts_607287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607291 = header.getOrDefault("X-Amz-Target")
   valid_607291 = validateParameter(valid_607291, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.SearchProducts"))
@@ -8739,8 +8595,6 @@ proc validate_SearchProductsAsAdmin_607305(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607309 = header.getOrDefault("X-Amz-Target")
   valid_607309 = validateParameter(valid_607309, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.SearchProductsAsAdmin"))
@@ -8876,8 +8730,6 @@ proc validate_SearchProvisionedProducts_607323(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607327 = header.getOrDefault("X-Amz-Target")
   valid_607327 = validateParameter(valid_607327, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.SearchProvisionedProducts"))
@@ -8998,8 +8850,6 @@ proc validate_TerminateProvisionedProduct_607341(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607343 = header.getOrDefault("X-Amz-Target")
   valid_607343 = validateParameter(valid_607343, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.TerminateProvisionedProduct"))
@@ -9113,8 +8963,6 @@ proc validate_UpdateConstraint_607356(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607358 = header.getOrDefault("X-Amz-Target")
   valid_607358 = validateParameter(valid_607358, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.UpdateConstraint"))
@@ -9227,8 +9075,6 @@ proc validate_UpdatePortfolio_607371(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607373 = header.getOrDefault("X-Amz-Target")
   valid_607373 = validateParameter(valid_607373, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.UpdatePortfolio"))
@@ -9340,8 +9186,6 @@ proc validate_UpdateProduct_607386(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607388 = header.getOrDefault("X-Amz-Target")
   valid_607388 = validateParameter(valid_607388, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.UpdateProduct"))
@@ -9454,8 +9298,6 @@ proc validate_UpdateProvisionedProduct_607401(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607403 = header.getOrDefault("X-Amz-Target")
   valid_607403 = validateParameter(valid_607403, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.UpdateProvisionedProduct"))
@@ -9567,8 +9409,6 @@ proc validate_UpdateProvisionedProductProperties_607416(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607418 = header.getOrDefault("X-Amz-Target")
   valid_607418 = validateParameter(valid_607418, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.UpdateProvisionedProductProperties"))
@@ -9683,8 +9523,6 @@ proc validate_UpdateProvisioningArtifact_607431(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607433 = header.getOrDefault("X-Amz-Target")
   valid_607433 = validateParameter(valid_607433, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.UpdateProvisioningArtifact"))
@@ -9798,8 +9636,6 @@ proc validate_UpdateServiceAction_607446(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607448 = header.getOrDefault("X-Amz-Target")
   valid_607448 = validateParameter(valid_607448, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.UpdateServiceAction"))
@@ -9913,8 +9749,6 @@ proc validate_UpdateTagOption_607461(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_607463 = header.getOrDefault("X-Amz-Target")
   valid_607463 = validateParameter(valid_607463, JString, required = true, default = newJString(
       "AWS242ServiceCatalogService.UpdateTagOption"))

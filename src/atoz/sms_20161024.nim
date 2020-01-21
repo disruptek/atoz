@@ -182,8 +182,6 @@ proc validate_CreateApp_605912(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606038 = header.getOrDefault("X-Amz-Target")
   valid_606038 = validateParameter(valid_606038, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.CreateApp"))
@@ -295,8 +293,6 @@ proc validate_CreateReplicationJob_606181(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606183 = header.getOrDefault("X-Amz-Target")
   valid_606183 = validateParameter(valid_606183, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.CreateReplicationJob"))
@@ -408,8 +404,6 @@ proc validate_DeleteApp_606196(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606198 = header.getOrDefault("X-Amz-Target")
   valid_606198 = validateParameter(valid_606198, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.DeleteApp"))
@@ -521,8 +515,6 @@ proc validate_DeleteAppLaunchConfiguration_606211(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606213 = header.getOrDefault("X-Amz-Target")
   valid_606213 = validateParameter(valid_606213, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.DeleteAppLaunchConfiguration"))
@@ -635,8 +627,6 @@ proc validate_DeleteAppReplicationConfiguration_606226(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606228 = header.getOrDefault("X-Amz-Target")
   valid_606228 = validateParameter(valid_606228, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.DeleteAppReplicationConfiguration"))
@@ -751,8 +741,6 @@ proc validate_DeleteReplicationJob_606241(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606243 = header.getOrDefault("X-Amz-Target")
   valid_606243 = validateParameter(valid_606243, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.DeleteReplicationJob"))
@@ -865,8 +853,6 @@ proc validate_DeleteServerCatalog_606256(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606258 = header.getOrDefault("X-Amz-Target")
   valid_606258 = validateParameter(valid_606258, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.DeleteServerCatalog"))
@@ -978,8 +964,6 @@ proc validate_DisassociateConnector_606271(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606273 = header.getOrDefault("X-Amz-Target")
   valid_606273 = validateParameter(valid_606273, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.DisassociateConnector"))
@@ -1092,8 +1076,6 @@ proc validate_GenerateChangeSet_606286(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606288 = header.getOrDefault("X-Amz-Target")
   valid_606288 = validateParameter(valid_606288, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GenerateChangeSet"))
@@ -1205,8 +1187,6 @@ proc validate_GenerateTemplate_606301(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606303 = header.getOrDefault("X-Amz-Target")
   valid_606303 = validateParameter(valid_606303, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GenerateTemplate"))
@@ -1317,8 +1297,6 @@ proc validate_GetApp_606316(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606318 = header.getOrDefault("X-Amz-Target")
   valid_606318 = validateParameter(valid_606318, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GetApp"))
@@ -1430,8 +1408,6 @@ proc validate_GetAppLaunchConfiguration_606331(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606333 = header.getOrDefault("X-Amz-Target")
   valid_606333 = validateParameter(valid_606333, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GetAppLaunchConfiguration"))
@@ -1544,8 +1520,6 @@ proc validate_GetAppReplicationConfiguration_606346(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606348 = header.getOrDefault("X-Amz-Target")
   valid_606348 = validateParameter(valid_606348, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GetAppReplicationConfiguration"))
@@ -1673,8 +1647,6 @@ proc validate_GetConnectors_606361(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606365 = header.getOrDefault("X-Amz-Target")
   valid_606365 = validateParameter(valid_606365, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GetConnectors"))
@@ -1809,8 +1781,6 @@ proc validate_GetReplicationJobs_606380(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606384 = header.getOrDefault("X-Amz-Target")
   valid_606384 = validateParameter(valid_606384, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GetReplicationJobs"))
@@ -1946,8 +1916,6 @@ proc validate_GetReplicationRuns_606398(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606402 = header.getOrDefault("X-Amz-Target")
   valid_606402 = validateParameter(valid_606402, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GetReplicationRuns"))
@@ -2082,8 +2050,6 @@ proc validate_GetServers_606416(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606420 = header.getOrDefault("X-Amz-Target")
   valid_606420 = validateParameter(valid_606420, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.GetServers"))
@@ -2205,8 +2171,6 @@ proc validate_ImportServerCatalog_606434(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606436 = header.getOrDefault("X-Amz-Target")
   valid_606436 = validateParameter(valid_606436, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.ImportServerCatalog"))
@@ -2318,8 +2282,6 @@ proc validate_LaunchApp_606449(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606451 = header.getOrDefault("X-Amz-Target")
   valid_606451 = validateParameter(valid_606451, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.LaunchApp"))
@@ -2431,8 +2393,6 @@ proc validate_ListApps_606464(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606466 = header.getOrDefault("X-Amz-Target")
   valid_606466 = validateParameter(valid_606466, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.ListApps"))
@@ -2544,8 +2504,6 @@ proc validate_PutAppLaunchConfiguration_606479(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606481 = header.getOrDefault("X-Amz-Target")
   valid_606481 = validateParameter(valid_606481, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.PutAppLaunchConfiguration"))
@@ -2658,8 +2616,6 @@ proc validate_PutAppReplicationConfiguration_606494(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606496 = header.getOrDefault("X-Amz-Target")
   valid_606496 = validateParameter(valid_606496, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.PutAppReplicationConfiguration"))
@@ -2773,8 +2729,6 @@ proc validate_StartAppReplication_606509(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606511 = header.getOrDefault("X-Amz-Target")
   valid_606511 = validateParameter(valid_606511, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.StartAppReplication"))
@@ -2886,8 +2840,6 @@ proc validate_StartOnDemandReplicationRun_606524(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606526 = header.getOrDefault("X-Amz-Target")
   valid_606526 = validateParameter(valid_606526, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.StartOnDemandReplicationRun"))
@@ -3001,8 +2953,6 @@ proc validate_StopAppReplication_606539(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606541 = header.getOrDefault("X-Amz-Target")
   valid_606541 = validateParameter(valid_606541, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.StopAppReplication"))
@@ -3114,8 +3064,6 @@ proc validate_TerminateApp_606554(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606556 = header.getOrDefault("X-Amz-Target")
   valid_606556 = validateParameter(valid_606556, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.TerminateApp"))
@@ -3227,8 +3175,6 @@ proc validate_UpdateApp_606569(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606571 = header.getOrDefault("X-Amz-Target")
   valid_606571 = validateParameter(valid_606571, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.UpdateApp"))
@@ -3340,8 +3286,6 @@ proc validate_UpdateReplicationJob_606584(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606586 = header.getOrDefault("X-Amz-Target")
   valid_606586 = validateParameter(valid_606586, JString, required = true, default = newJString(
       "AWSServerMigrationService_V2016_10_24.UpdateReplicationJob"))

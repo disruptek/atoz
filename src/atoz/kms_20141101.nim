@@ -183,8 +183,6 @@ proc validate_CancelKeyDeletion_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606054 = header.getOrDefault("X-Amz-Target")
   valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
       "TrentService.CancelKeyDeletion"))
@@ -296,8 +294,6 @@ proc validate_ConnectCustomKeyStore_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606199 = header.getOrDefault("X-Amz-Target")
   valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
       "TrentService.ConnectCustomKeyStore"))
@@ -410,8 +406,6 @@ proc validate_CreateAlias_606212(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606214 = header.getOrDefault("X-Amz-Target")
   valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
       "TrentService.CreateAlias"))
@@ -524,8 +518,6 @@ proc validate_CreateCustomKeyStore_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606229 = header.getOrDefault("X-Amz-Target")
   valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
       "TrentService.CreateCustomKeyStore"))
@@ -638,8 +630,6 @@ proc validate_CreateGrant_606242(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606244 = header.getOrDefault("X-Amz-Target")
   valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
       "TrentService.CreateGrant"))
@@ -752,8 +742,6 @@ proc validate_CreateKey_606257(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606259 = header.getOrDefault("X-Amz-Target")
   valid_606259 = validateParameter(valid_606259, JString, required = true,
                                  default = newJString("TrentService.CreateKey"))
@@ -865,8 +853,6 @@ proc validate_Decrypt_606272(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606274 = header.getOrDefault("X-Amz-Target")
   valid_606274 = validateParameter(valid_606274, JString, required = true,
                                  default = newJString("TrentService.Decrypt"))
@@ -979,8 +965,6 @@ proc validate_DeleteAlias_606287(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606289 = header.getOrDefault("X-Amz-Target")
   valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
       "TrentService.DeleteAlias"))
@@ -1093,8 +1077,6 @@ proc validate_DeleteCustomKeyStore_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606304 = header.getOrDefault("X-Amz-Target")
   valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
       "TrentService.DeleteCustomKeyStore"))
@@ -1207,8 +1189,6 @@ proc validate_DeleteImportedKeyMaterial_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606319 = header.getOrDefault("X-Amz-Target")
   valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
       "TrentService.DeleteImportedKeyMaterial"))
@@ -1323,8 +1303,6 @@ proc validate_DescribeCustomKeyStores_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606334 = header.getOrDefault("X-Amz-Target")
   valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
       "TrentService.DescribeCustomKeyStores"))
@@ -1437,8 +1415,6 @@ proc validate_DescribeKey_606347(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606349 = header.getOrDefault("X-Amz-Target")
   valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
       "TrentService.DescribeKey"))
@@ -1551,8 +1527,6 @@ proc validate_DisableKey_606362(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606364 = header.getOrDefault("X-Amz-Target")
   valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
       "TrentService.DisableKey"))
@@ -1666,8 +1640,6 @@ proc validate_DisableKeyRotation_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606379 = header.getOrDefault("X-Amz-Target")
   valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
       "TrentService.DisableKeyRotation"))
@@ -1781,8 +1753,6 @@ proc validate_DisconnectCustomKeyStore_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606394 = header.getOrDefault("X-Amz-Target")
   valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
       "TrentService.DisconnectCustomKeyStore"))
@@ -1895,8 +1865,6 @@ proc validate_EnableKey_606407(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606409 = header.getOrDefault("X-Amz-Target")
   valid_606409 = validateParameter(valid_606409, JString, required = true,
                                  default = newJString("TrentService.EnableKey"))
@@ -2009,8 +1977,6 @@ proc validate_EnableKeyRotation_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606424 = header.getOrDefault("X-Amz-Target")
   valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
       "TrentService.EnableKeyRotation"))
@@ -2122,8 +2088,6 @@ proc validate_Encrypt_606437(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606439 = header.getOrDefault("X-Amz-Target")
   valid_606439 = validateParameter(valid_606439, JString, required = true,
                                  default = newJString("TrentService.Encrypt"))
@@ -2237,8 +2201,6 @@ proc validate_GenerateDataKey_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606454 = header.getOrDefault("X-Amz-Target")
   valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
       "TrentService.GenerateDataKey"))
@@ -2351,8 +2313,6 @@ proc validate_GenerateDataKeyPair_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606469 = header.getOrDefault("X-Amz-Target")
   valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
       "TrentService.GenerateDataKeyPair"))
@@ -2465,8 +2425,6 @@ proc validate_GenerateDataKeyPairWithoutPlaintext_606482(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606484 = header.getOrDefault("X-Amz-Target")
   valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
       "TrentService.GenerateDataKeyPairWithoutPlaintext"))
@@ -2582,8 +2540,6 @@ proc validate_GenerateDataKeyWithoutPlaintext_606497(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606499 = header.getOrDefault("X-Amz-Target")
   valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
       "TrentService.GenerateDataKeyWithoutPlaintext"))
@@ -2699,8 +2655,6 @@ proc validate_GenerateRandom_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606514 = header.getOrDefault("X-Amz-Target")
   valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
       "TrentService.GenerateRandom"))
@@ -2812,8 +2766,6 @@ proc validate_GetKeyPolicy_606527(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606529 = header.getOrDefault("X-Amz-Target")
   valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
       "TrentService.GetKeyPolicy"))
@@ -2925,8 +2877,6 @@ proc validate_GetKeyRotationStatus_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606544 = header.getOrDefault("X-Amz-Target")
   valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
       "TrentService.GetKeyRotationStatus"))
@@ -3039,8 +2989,6 @@ proc validate_GetParametersForImport_606557(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606559 = header.getOrDefault("X-Amz-Target")
   valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
       "TrentService.GetParametersForImport"))
@@ -3153,8 +3101,6 @@ proc validate_GetPublicKey_606572(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606574 = header.getOrDefault("X-Amz-Target")
   valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
       "TrentService.GetPublicKey"))
@@ -3267,8 +3213,6 @@ proc validate_ImportKeyMaterial_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606589 = header.getOrDefault("X-Amz-Target")
   valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
       "TrentService.ImportKeyMaterial"))
@@ -3395,8 +3339,6 @@ proc validate_ListAliases_606602(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606606 = header.getOrDefault("X-Amz-Target")
   valid_606606 = validateParameter(valid_606606, JString, required = true, default = newJString(
       "TrentService.ListAliases"))
@@ -3532,8 +3474,6 @@ proc validate_ListGrants_606621(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606625 = header.getOrDefault("X-Amz-Target")
   valid_606625 = validateParameter(valid_606625, JString, required = true, default = newJString(
       "TrentService.ListGrants"))
@@ -3670,8 +3610,6 @@ proc validate_ListKeyPolicies_606639(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606643 = header.getOrDefault("X-Amz-Target")
   valid_606643 = validateParameter(valid_606643, JString, required = true, default = newJString(
       "TrentService.ListKeyPolicies"))
@@ -3806,8 +3744,6 @@ proc validate_ListKeys_606657(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606661 = header.getOrDefault("X-Amz-Target")
   valid_606661 = validateParameter(valid_606661, JString, required = true,
                                  default = newJString("TrentService.ListKeys"))
@@ -3928,8 +3864,6 @@ proc validate_ListResourceTags_606675(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606677 = header.getOrDefault("X-Amz-Target")
   valid_606677 = validateParameter(valid_606677, JString, required = true, default = newJString(
       "TrentService.ListResourceTags"))
@@ -4042,8 +3976,6 @@ proc validate_ListRetirableGrants_606690(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606692 = header.getOrDefault("X-Amz-Target")
   valid_606692 = validateParameter(valid_606692, JString, required = true, default = newJString(
       "TrentService.ListRetirableGrants"))
@@ -4156,8 +4088,6 @@ proc validate_PutKeyPolicy_606705(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606707 = header.getOrDefault("X-Amz-Target")
   valid_606707 = validateParameter(valid_606707, JString, required = true, default = newJString(
       "TrentService.PutKeyPolicy"))
@@ -4269,8 +4199,6 @@ proc validate_ReEncrypt_606720(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606722 = header.getOrDefault("X-Amz-Target")
   valid_606722 = validateParameter(valid_606722, JString, required = true,
                                  default = newJString("TrentService.ReEncrypt"))
@@ -4382,8 +4310,6 @@ proc validate_RetireGrant_606735(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606737 = header.getOrDefault("X-Amz-Target")
   valid_606737 = validateParameter(valid_606737, JString, required = true, default = newJString(
       "TrentService.RetireGrant"))
@@ -4496,8 +4422,6 @@ proc validate_RevokeGrant_606750(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606752 = header.getOrDefault("X-Amz-Target")
   valid_606752 = validateParameter(valid_606752, JString, required = true, default = newJString(
       "TrentService.RevokeGrant"))
@@ -4611,8 +4535,6 @@ proc validate_ScheduleKeyDeletion_606765(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606767 = header.getOrDefault("X-Amz-Target")
   valid_606767 = validateParameter(valid_606767, JString, required = true, default = newJString(
       "TrentService.ScheduleKeyDeletion"))
@@ -4725,8 +4647,6 @@ proc validate_Sign_606780(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606782 = header.getOrDefault("X-Amz-Target")
   valid_606782 = validateParameter(valid_606782, JString, required = true,
                                  default = newJString("TrentService.Sign"))
@@ -4838,8 +4758,6 @@ proc validate_TagResource_606795(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606797 = header.getOrDefault("X-Amz-Target")
   valid_606797 = validateParameter(valid_606797, JString, required = true, default = newJString(
       "TrentService.TagResource"))
@@ -4952,8 +4870,6 @@ proc validate_UntagResource_606810(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606812 = header.getOrDefault("X-Amz-Target")
   valid_606812 = validateParameter(valid_606812, JString, required = true, default = newJString(
       "TrentService.UntagResource"))
@@ -5065,8 +4981,6 @@ proc validate_UpdateAlias_606825(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606827 = header.getOrDefault("X-Amz-Target")
   valid_606827 = validateParameter(valid_606827, JString, required = true, default = newJString(
       "TrentService.UpdateAlias"))
@@ -5179,8 +5093,6 @@ proc validate_UpdateCustomKeyStore_606840(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606842 = header.getOrDefault("X-Amz-Target")
   valid_606842 = validateParameter(valid_606842, JString, required = true, default = newJString(
       "TrentService.UpdateCustomKeyStore"))
@@ -5293,8 +5205,6 @@ proc validate_UpdateKeyDescription_606855(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606857 = header.getOrDefault("X-Amz-Target")
   valid_606857 = validateParameter(valid_606857, JString, required = true, default = newJString(
       "TrentService.UpdateKeyDescription"))
@@ -5407,8 +5317,6 @@ proc validate_Verify_606870(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606872 = header.getOrDefault("X-Amz-Target")
   valid_606872 = validateParameter(valid_606872, JString, required = true,
                                  default = newJString("TrentService.Verify"))

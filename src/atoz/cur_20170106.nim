@@ -182,8 +182,6 @@ proc validate_DeleteReportDefinition_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606045 = header.getOrDefault("X-Amz-Target")
   valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
       "AWSOrigamiServiceGatewayService.DeleteReportDefinition"))
@@ -310,8 +308,6 @@ proc validate_DescribeReportDefinitions_606188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606192 = header.getOrDefault("X-Amz-Target")
   valid_606192 = validateParameter(valid_606192, JString, required = true, default = newJString(
       "AWSOrigamiServiceGatewayService.DescribeReportDefinitions"))
@@ -432,8 +428,6 @@ proc validate_ModifyReportDefinition_606207(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606209 = header.getOrDefault("X-Amz-Target")
   valid_606209 = validateParameter(valid_606209, JString, required = true, default = newJString(
       "AWSOrigamiServiceGatewayService.ModifyReportDefinition"))
@@ -546,8 +540,6 @@ proc validate_PutReportDefinition_606222(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  assert header != nil,
-        "header argument is necessary due to required `X-Amz-Target` field"
   var valid_606224 = header.getOrDefault("X-Amz-Target")
   valid_606224 = validateParameter(valid_606224, JString, required = true, default = newJString(
       "AWSOrigamiServiceGatewayService.PutReportDefinition"))
