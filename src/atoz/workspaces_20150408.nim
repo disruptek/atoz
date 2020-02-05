@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_604658 = ref object of OpenApiRestCall
+  OpenApiRestCall_612658 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_604658](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612658](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_604658): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612658): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -144,8 +144,8 @@ const
   awsServiceName = "workspaces"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AssociateIpGroups_604996 = ref object of OpenApiRestCall_604658
-proc url_AssociateIpGroups_604998(protocol: Scheme; host: string; base: string;
+  Call_AssociateIpGroups_612996 = ref object of OpenApiRestCall_612658
+proc url_AssociateIpGroups_612998(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -157,7 +157,7 @@ proc url_AssociateIpGroups_604998(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_AssociateIpGroups_604997(path: JsonNode; query: JsonNode;
+proc validate_AssociateIpGroups_612997(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Associates the specified IP access control group with the specified directory.
@@ -178,46 +178,46 @@ proc validate_AssociateIpGroups_604997(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605123 = header.getOrDefault("X-Amz-Target")
-  valid_605123 = validateParameter(valid_605123, JString, required = true, default = newJString(
+  var valid_613123 = header.getOrDefault("X-Amz-Target")
+  valid_613123 = validateParameter(valid_613123, JString, required = true, default = newJString(
       "WorkspacesService.AssociateIpGroups"))
-  if valid_605123 != nil:
-    section.add "X-Amz-Target", valid_605123
-  var valid_605124 = header.getOrDefault("X-Amz-Signature")
-  valid_605124 = validateParameter(valid_605124, JString, required = false,
+  if valid_613123 != nil:
+    section.add "X-Amz-Target", valid_613123
+  var valid_613124 = header.getOrDefault("X-Amz-Signature")
+  valid_613124 = validateParameter(valid_613124, JString, required = false,
                                  default = nil)
-  if valid_605124 != nil:
-    section.add "X-Amz-Signature", valid_605124
-  var valid_605125 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605125 = validateParameter(valid_605125, JString, required = false,
+  if valid_613124 != nil:
+    section.add "X-Amz-Signature", valid_613124
+  var valid_613125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613125 = validateParameter(valid_613125, JString, required = false,
                                  default = nil)
-  if valid_605125 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605125
-  var valid_605126 = header.getOrDefault("X-Amz-Date")
-  valid_605126 = validateParameter(valid_605126, JString, required = false,
+  if valid_613125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613125
+  var valid_613126 = header.getOrDefault("X-Amz-Date")
+  valid_613126 = validateParameter(valid_613126, JString, required = false,
                                  default = nil)
-  if valid_605126 != nil:
-    section.add "X-Amz-Date", valid_605126
-  var valid_605127 = header.getOrDefault("X-Amz-Credential")
-  valid_605127 = validateParameter(valid_605127, JString, required = false,
+  if valid_613126 != nil:
+    section.add "X-Amz-Date", valid_613126
+  var valid_613127 = header.getOrDefault("X-Amz-Credential")
+  valid_613127 = validateParameter(valid_613127, JString, required = false,
                                  default = nil)
-  if valid_605127 != nil:
-    section.add "X-Amz-Credential", valid_605127
-  var valid_605128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605128 = validateParameter(valid_605128, JString, required = false,
+  if valid_613127 != nil:
+    section.add "X-Amz-Credential", valid_613127
+  var valid_613128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613128 = validateParameter(valid_613128, JString, required = false,
                                  default = nil)
-  if valid_605128 != nil:
-    section.add "X-Amz-Security-Token", valid_605128
-  var valid_605129 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605129 = validateParameter(valid_605129, JString, required = false,
+  if valid_613128 != nil:
+    section.add "X-Amz-Security-Token", valid_613128
+  var valid_613129 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613129 = validateParameter(valid_613129, JString, required = false,
                                  default = nil)
-  if valid_605129 != nil:
-    section.add "X-Amz-Algorithm", valid_605129
-  var valid_605130 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605130 = validateParameter(valid_605130, JString, required = false,
+  if valid_613129 != nil:
+    section.add "X-Amz-Algorithm", valid_613129
+  var valid_613130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613130 = validateParameter(valid_613130, JString, required = false,
                                  default = nil)
-  if valid_605130 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605130
+  if valid_613130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -228,36 +228,36 @@ proc validate_AssociateIpGroups_604997(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605154: Call_AssociateIpGroups_604996; path: JsonNode;
+proc call*(call_613154: Call_AssociateIpGroups_612996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Associates the specified IP access control group with the specified directory.
   ## 
-  let valid = call_605154.validator(path, query, header, formData, body)
-  let scheme = call_605154.pickScheme
+  let valid = call_613154.validator(path, query, header, formData, body)
+  let scheme = call_613154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605154.url(scheme.get, call_605154.host, call_605154.base,
-                         call_605154.route, valid.getOrDefault("path"),
+  let url = call_613154.url(scheme.get, call_613154.host, call_613154.base,
+                         call_613154.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605154, url, valid)
+  result = atozHook(call_613154, url, valid)
 
-proc call*(call_605225: Call_AssociateIpGroups_604996; body: JsonNode): Recallable =
+proc call*(call_613225: Call_AssociateIpGroups_612996; body: JsonNode): Recallable =
   ## associateIpGroups
   ## Associates the specified IP access control group with the specified directory.
   ##   body: JObject (required)
-  var body_605226 = newJObject()
+  var body_613226 = newJObject()
   if body != nil:
-    body_605226 = body
-  result = call_605225.call(nil, nil, nil, nil, body_605226)
+    body_613226 = body
+  result = call_613225.call(nil, nil, nil, nil, body_613226)
 
-var associateIpGroups* = Call_AssociateIpGroups_604996(name: "associateIpGroups",
+var associateIpGroups* = Call_AssociateIpGroups_612996(name: "associateIpGroups",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.AssociateIpGroups",
-    validator: validate_AssociateIpGroups_604997, base: "/",
-    url: url_AssociateIpGroups_604998, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AssociateIpGroups_612997, base: "/",
+    url: url_AssociateIpGroups_612998, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AuthorizeIpRules_605265 = ref object of OpenApiRestCall_604658
-proc url_AuthorizeIpRules_605267(protocol: Scheme; host: string; base: string;
+  Call_AuthorizeIpRules_613265 = ref object of OpenApiRestCall_612658
+proc url_AuthorizeIpRules_613267(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -269,7 +269,7 @@ proc url_AuthorizeIpRules_605267(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_AuthorizeIpRules_605266(path: JsonNode; query: JsonNode;
+proc validate_AuthorizeIpRules_613266(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Adds one or more rules to the specified IP access control group.</p> <p>This action gives users permission to access their WorkSpaces from the CIDR address ranges specified in the rules.</p>
@@ -290,46 +290,46 @@ proc validate_AuthorizeIpRules_605266(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605268 = header.getOrDefault("X-Amz-Target")
-  valid_605268 = validateParameter(valid_605268, JString, required = true, default = newJString(
+  var valid_613268 = header.getOrDefault("X-Amz-Target")
+  valid_613268 = validateParameter(valid_613268, JString, required = true, default = newJString(
       "WorkspacesService.AuthorizeIpRules"))
-  if valid_605268 != nil:
-    section.add "X-Amz-Target", valid_605268
-  var valid_605269 = header.getOrDefault("X-Amz-Signature")
-  valid_605269 = validateParameter(valid_605269, JString, required = false,
+  if valid_613268 != nil:
+    section.add "X-Amz-Target", valid_613268
+  var valid_613269 = header.getOrDefault("X-Amz-Signature")
+  valid_613269 = validateParameter(valid_613269, JString, required = false,
                                  default = nil)
-  if valid_605269 != nil:
-    section.add "X-Amz-Signature", valid_605269
-  var valid_605270 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605270 = validateParameter(valid_605270, JString, required = false,
+  if valid_613269 != nil:
+    section.add "X-Amz-Signature", valid_613269
+  var valid_613270 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613270 = validateParameter(valid_613270, JString, required = false,
                                  default = nil)
-  if valid_605270 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605270
-  var valid_605271 = header.getOrDefault("X-Amz-Date")
-  valid_605271 = validateParameter(valid_605271, JString, required = false,
+  if valid_613270 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613270
+  var valid_613271 = header.getOrDefault("X-Amz-Date")
+  valid_613271 = validateParameter(valid_613271, JString, required = false,
                                  default = nil)
-  if valid_605271 != nil:
-    section.add "X-Amz-Date", valid_605271
-  var valid_605272 = header.getOrDefault("X-Amz-Credential")
-  valid_605272 = validateParameter(valid_605272, JString, required = false,
+  if valid_613271 != nil:
+    section.add "X-Amz-Date", valid_613271
+  var valid_613272 = header.getOrDefault("X-Amz-Credential")
+  valid_613272 = validateParameter(valid_613272, JString, required = false,
                                  default = nil)
-  if valid_605272 != nil:
-    section.add "X-Amz-Credential", valid_605272
-  var valid_605273 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605273 = validateParameter(valid_605273, JString, required = false,
+  if valid_613272 != nil:
+    section.add "X-Amz-Credential", valid_613272
+  var valid_613273 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613273 = validateParameter(valid_613273, JString, required = false,
                                  default = nil)
-  if valid_605273 != nil:
-    section.add "X-Amz-Security-Token", valid_605273
-  var valid_605274 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605274 = validateParameter(valid_605274, JString, required = false,
+  if valid_613273 != nil:
+    section.add "X-Amz-Security-Token", valid_613273
+  var valid_613274 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613274 = validateParameter(valid_613274, JString, required = false,
                                  default = nil)
-  if valid_605274 != nil:
-    section.add "X-Amz-Algorithm", valid_605274
-  var valid_605275 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605275 = validateParameter(valid_605275, JString, required = false,
+  if valid_613274 != nil:
+    section.add "X-Amz-Algorithm", valid_613274
+  var valid_613275 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613275 = validateParameter(valid_613275, JString, required = false,
                                  default = nil)
-  if valid_605275 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605275
+  if valid_613275 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613275
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -340,36 +340,36 @@ proc validate_AuthorizeIpRules_605266(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605277: Call_AuthorizeIpRules_605265; path: JsonNode;
+proc call*(call_613277: Call_AuthorizeIpRules_613265; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds one or more rules to the specified IP access control group.</p> <p>This action gives users permission to access their WorkSpaces from the CIDR address ranges specified in the rules.</p>
   ## 
-  let valid = call_605277.validator(path, query, header, formData, body)
-  let scheme = call_605277.pickScheme
+  let valid = call_613277.validator(path, query, header, formData, body)
+  let scheme = call_613277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605277.url(scheme.get, call_605277.host, call_605277.base,
-                         call_605277.route, valid.getOrDefault("path"),
+  let url = call_613277.url(scheme.get, call_613277.host, call_613277.base,
+                         call_613277.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605277, url, valid)
+  result = atozHook(call_613277, url, valid)
 
-proc call*(call_605278: Call_AuthorizeIpRules_605265; body: JsonNode): Recallable =
+proc call*(call_613278: Call_AuthorizeIpRules_613265; body: JsonNode): Recallable =
   ## authorizeIpRules
   ## <p>Adds one or more rules to the specified IP access control group.</p> <p>This action gives users permission to access their WorkSpaces from the CIDR address ranges specified in the rules.</p>
   ##   body: JObject (required)
-  var body_605279 = newJObject()
+  var body_613279 = newJObject()
   if body != nil:
-    body_605279 = body
-  result = call_605278.call(nil, nil, nil, nil, body_605279)
+    body_613279 = body
+  result = call_613278.call(nil, nil, nil, nil, body_613279)
 
-var authorizeIpRules* = Call_AuthorizeIpRules_605265(name: "authorizeIpRules",
+var authorizeIpRules* = Call_AuthorizeIpRules_613265(name: "authorizeIpRules",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.AuthorizeIpRules",
-    validator: validate_AuthorizeIpRules_605266, base: "/",
-    url: url_AuthorizeIpRules_605267, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AuthorizeIpRules_613266, base: "/",
+    url: url_AuthorizeIpRules_613267, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CopyWorkspaceImage_605280 = ref object of OpenApiRestCall_604658
-proc url_CopyWorkspaceImage_605282(protocol: Scheme; host: string; base: string;
+  Call_CopyWorkspaceImage_613280 = ref object of OpenApiRestCall_612658
+proc url_CopyWorkspaceImage_613282(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -381,7 +381,7 @@ proc url_CopyWorkspaceImage_605282(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CopyWorkspaceImage_605281(path: JsonNode; query: JsonNode;
+proc validate_CopyWorkspaceImage_613281(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Copies the specified image from the specified Region to the current Region.
@@ -402,46 +402,46 @@ proc validate_CopyWorkspaceImage_605281(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605283 = header.getOrDefault("X-Amz-Target")
-  valid_605283 = validateParameter(valid_605283, JString, required = true, default = newJString(
+  var valid_613283 = header.getOrDefault("X-Amz-Target")
+  valid_613283 = validateParameter(valid_613283, JString, required = true, default = newJString(
       "WorkspacesService.CopyWorkspaceImage"))
-  if valid_605283 != nil:
-    section.add "X-Amz-Target", valid_605283
-  var valid_605284 = header.getOrDefault("X-Amz-Signature")
-  valid_605284 = validateParameter(valid_605284, JString, required = false,
+  if valid_613283 != nil:
+    section.add "X-Amz-Target", valid_613283
+  var valid_613284 = header.getOrDefault("X-Amz-Signature")
+  valid_613284 = validateParameter(valid_613284, JString, required = false,
                                  default = nil)
-  if valid_605284 != nil:
-    section.add "X-Amz-Signature", valid_605284
-  var valid_605285 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605285 = validateParameter(valid_605285, JString, required = false,
+  if valid_613284 != nil:
+    section.add "X-Amz-Signature", valid_613284
+  var valid_613285 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613285 = validateParameter(valid_613285, JString, required = false,
                                  default = nil)
-  if valid_605285 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605285
-  var valid_605286 = header.getOrDefault("X-Amz-Date")
-  valid_605286 = validateParameter(valid_605286, JString, required = false,
+  if valid_613285 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613285
+  var valid_613286 = header.getOrDefault("X-Amz-Date")
+  valid_613286 = validateParameter(valid_613286, JString, required = false,
                                  default = nil)
-  if valid_605286 != nil:
-    section.add "X-Amz-Date", valid_605286
-  var valid_605287 = header.getOrDefault("X-Amz-Credential")
-  valid_605287 = validateParameter(valid_605287, JString, required = false,
+  if valid_613286 != nil:
+    section.add "X-Amz-Date", valid_613286
+  var valid_613287 = header.getOrDefault("X-Amz-Credential")
+  valid_613287 = validateParameter(valid_613287, JString, required = false,
                                  default = nil)
-  if valid_605287 != nil:
-    section.add "X-Amz-Credential", valid_605287
-  var valid_605288 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605288 = validateParameter(valid_605288, JString, required = false,
+  if valid_613287 != nil:
+    section.add "X-Amz-Credential", valid_613287
+  var valid_613288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613288 = validateParameter(valid_613288, JString, required = false,
                                  default = nil)
-  if valid_605288 != nil:
-    section.add "X-Amz-Security-Token", valid_605288
-  var valid_605289 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605289 = validateParameter(valid_605289, JString, required = false,
+  if valid_613288 != nil:
+    section.add "X-Amz-Security-Token", valid_613288
+  var valid_613289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613289 = validateParameter(valid_613289, JString, required = false,
                                  default = nil)
-  if valid_605289 != nil:
-    section.add "X-Amz-Algorithm", valid_605289
-  var valid_605290 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605290 = validateParameter(valid_605290, JString, required = false,
+  if valid_613289 != nil:
+    section.add "X-Amz-Algorithm", valid_613289
+  var valid_613290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613290 = validateParameter(valid_613290, JString, required = false,
                                  default = nil)
-  if valid_605290 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605290
+  if valid_613290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613290
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -452,37 +452,37 @@ proc validate_CopyWorkspaceImage_605281(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605292: Call_CopyWorkspaceImage_605280; path: JsonNode;
+proc call*(call_613292: Call_CopyWorkspaceImage_613280; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Copies the specified image from the specified Region to the current Region.
   ## 
-  let valid = call_605292.validator(path, query, header, formData, body)
-  let scheme = call_605292.pickScheme
+  let valid = call_613292.validator(path, query, header, formData, body)
+  let scheme = call_613292.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605292.url(scheme.get, call_605292.host, call_605292.base,
-                         call_605292.route, valid.getOrDefault("path"),
+  let url = call_613292.url(scheme.get, call_613292.host, call_613292.base,
+                         call_613292.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605292, url, valid)
+  result = atozHook(call_613292, url, valid)
 
-proc call*(call_605293: Call_CopyWorkspaceImage_605280; body: JsonNode): Recallable =
+proc call*(call_613293: Call_CopyWorkspaceImage_613280; body: JsonNode): Recallable =
   ## copyWorkspaceImage
   ## Copies the specified image from the specified Region to the current Region.
   ##   body: JObject (required)
-  var body_605294 = newJObject()
+  var body_613294 = newJObject()
   if body != nil:
-    body_605294 = body
-  result = call_605293.call(nil, nil, nil, nil, body_605294)
+    body_613294 = body
+  result = call_613293.call(nil, nil, nil, nil, body_613294)
 
-var copyWorkspaceImage* = Call_CopyWorkspaceImage_605280(
+var copyWorkspaceImage* = Call_CopyWorkspaceImage_613280(
     name: "copyWorkspaceImage", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.CopyWorkspaceImage",
-    validator: validate_CopyWorkspaceImage_605281, base: "/",
-    url: url_CopyWorkspaceImage_605282, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CopyWorkspaceImage_613281, base: "/",
+    url: url_CopyWorkspaceImage_613282, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateIpGroup_605295 = ref object of OpenApiRestCall_604658
-proc url_CreateIpGroup_605297(protocol: Scheme; host: string; base: string;
+  Call_CreateIpGroup_613295 = ref object of OpenApiRestCall_612658
+proc url_CreateIpGroup_613297(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -494,7 +494,7 @@ proc url_CreateIpGroup_605297(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateIpGroup_605296(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateIpGroup_613296(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an IP access control group.</p> <p>An IP access control group provides you with the ability to control the IP addresses from which users are allowed to access their WorkSpaces. To specify the CIDR address ranges, add rules to your IP access control group and then associate the group with your directory. You can add rules when you create the group or at any time using <a>AuthorizeIpRules</a>.</p> <p>There is a default IP access control group associated with your directory. If you don't associate an IP access control group with your directory, the default group is used. The default group includes a default rule that allows users to access their WorkSpaces from anywhere. You cannot modify the default IP access control group for your directory.</p>
   ## 
@@ -514,46 +514,46 @@ proc validate_CreateIpGroup_605296(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605298 = header.getOrDefault("X-Amz-Target")
-  valid_605298 = validateParameter(valid_605298, JString, required = true, default = newJString(
+  var valid_613298 = header.getOrDefault("X-Amz-Target")
+  valid_613298 = validateParameter(valid_613298, JString, required = true, default = newJString(
       "WorkspacesService.CreateIpGroup"))
-  if valid_605298 != nil:
-    section.add "X-Amz-Target", valid_605298
-  var valid_605299 = header.getOrDefault("X-Amz-Signature")
-  valid_605299 = validateParameter(valid_605299, JString, required = false,
+  if valid_613298 != nil:
+    section.add "X-Amz-Target", valid_613298
+  var valid_613299 = header.getOrDefault("X-Amz-Signature")
+  valid_613299 = validateParameter(valid_613299, JString, required = false,
                                  default = nil)
-  if valid_605299 != nil:
-    section.add "X-Amz-Signature", valid_605299
-  var valid_605300 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605300 = validateParameter(valid_605300, JString, required = false,
+  if valid_613299 != nil:
+    section.add "X-Amz-Signature", valid_613299
+  var valid_613300 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613300 = validateParameter(valid_613300, JString, required = false,
                                  default = nil)
-  if valid_605300 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605300
-  var valid_605301 = header.getOrDefault("X-Amz-Date")
-  valid_605301 = validateParameter(valid_605301, JString, required = false,
+  if valid_613300 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613300
+  var valid_613301 = header.getOrDefault("X-Amz-Date")
+  valid_613301 = validateParameter(valid_613301, JString, required = false,
                                  default = nil)
-  if valid_605301 != nil:
-    section.add "X-Amz-Date", valid_605301
-  var valid_605302 = header.getOrDefault("X-Amz-Credential")
-  valid_605302 = validateParameter(valid_605302, JString, required = false,
+  if valid_613301 != nil:
+    section.add "X-Amz-Date", valid_613301
+  var valid_613302 = header.getOrDefault("X-Amz-Credential")
+  valid_613302 = validateParameter(valid_613302, JString, required = false,
                                  default = nil)
-  if valid_605302 != nil:
-    section.add "X-Amz-Credential", valid_605302
-  var valid_605303 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605303 = validateParameter(valid_605303, JString, required = false,
+  if valid_613302 != nil:
+    section.add "X-Amz-Credential", valid_613302
+  var valid_613303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613303 = validateParameter(valid_613303, JString, required = false,
                                  default = nil)
-  if valid_605303 != nil:
-    section.add "X-Amz-Security-Token", valid_605303
-  var valid_605304 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605304 = validateParameter(valid_605304, JString, required = false,
+  if valid_613303 != nil:
+    section.add "X-Amz-Security-Token", valid_613303
+  var valid_613304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613304 = validateParameter(valid_613304, JString, required = false,
                                  default = nil)
-  if valid_605304 != nil:
-    section.add "X-Amz-Algorithm", valid_605304
-  var valid_605305 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605305 = validateParameter(valid_605305, JString, required = false,
+  if valid_613304 != nil:
+    section.add "X-Amz-Algorithm", valid_613304
+  var valid_613305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613305 = validateParameter(valid_613305, JString, required = false,
                                  default = nil)
-  if valid_605305 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605305
+  if valid_613305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613305
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -564,36 +564,36 @@ proc validate_CreateIpGroup_605296(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_605307: Call_CreateIpGroup_605295; path: JsonNode; query: JsonNode;
+proc call*(call_613307: Call_CreateIpGroup_613295; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an IP access control group.</p> <p>An IP access control group provides you with the ability to control the IP addresses from which users are allowed to access their WorkSpaces. To specify the CIDR address ranges, add rules to your IP access control group and then associate the group with your directory. You can add rules when you create the group or at any time using <a>AuthorizeIpRules</a>.</p> <p>There is a default IP access control group associated with your directory. If you don't associate an IP access control group with your directory, the default group is used. The default group includes a default rule that allows users to access their WorkSpaces from anywhere. You cannot modify the default IP access control group for your directory.</p>
   ## 
-  let valid = call_605307.validator(path, query, header, formData, body)
-  let scheme = call_605307.pickScheme
+  let valid = call_613307.validator(path, query, header, formData, body)
+  let scheme = call_613307.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605307.url(scheme.get, call_605307.host, call_605307.base,
-                         call_605307.route, valid.getOrDefault("path"),
+  let url = call_613307.url(scheme.get, call_613307.host, call_613307.base,
+                         call_613307.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605307, url, valid)
+  result = atozHook(call_613307, url, valid)
 
-proc call*(call_605308: Call_CreateIpGroup_605295; body: JsonNode): Recallable =
+proc call*(call_613308: Call_CreateIpGroup_613295; body: JsonNode): Recallable =
   ## createIpGroup
   ## <p>Creates an IP access control group.</p> <p>An IP access control group provides you with the ability to control the IP addresses from which users are allowed to access their WorkSpaces. To specify the CIDR address ranges, add rules to your IP access control group and then associate the group with your directory. You can add rules when you create the group or at any time using <a>AuthorizeIpRules</a>.</p> <p>There is a default IP access control group associated with your directory. If you don't associate an IP access control group with your directory, the default group is used. The default group includes a default rule that allows users to access their WorkSpaces from anywhere. You cannot modify the default IP access control group for your directory.</p>
   ##   body: JObject (required)
-  var body_605309 = newJObject()
+  var body_613309 = newJObject()
   if body != nil:
-    body_605309 = body
-  result = call_605308.call(nil, nil, nil, nil, body_605309)
+    body_613309 = body
+  result = call_613308.call(nil, nil, nil, nil, body_613309)
 
-var createIpGroup* = Call_CreateIpGroup_605295(name: "createIpGroup",
+var createIpGroup* = Call_CreateIpGroup_613295(name: "createIpGroup",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.CreateIpGroup",
-    validator: validate_CreateIpGroup_605296, base: "/", url: url_CreateIpGroup_605297,
+    validator: validate_CreateIpGroup_613296, base: "/", url: url_CreateIpGroup_613297,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTags_605310 = ref object of OpenApiRestCall_604658
-proc url_CreateTags_605312(protocol: Scheme; host: string; base: string; route: string;
+  Call_CreateTags_613310 = ref object of OpenApiRestCall_612658
+proc url_CreateTags_613312(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -605,7 +605,7 @@ proc url_CreateTags_605312(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_CreateTags_605311(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateTags_613311(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates the specified tags for the specified WorkSpaces resource.
   ## 
@@ -625,46 +625,46 @@ proc validate_CreateTags_605311(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605313 = header.getOrDefault("X-Amz-Target")
-  valid_605313 = validateParameter(valid_605313, JString, required = true, default = newJString(
+  var valid_613313 = header.getOrDefault("X-Amz-Target")
+  valid_613313 = validateParameter(valid_613313, JString, required = true, default = newJString(
       "WorkspacesService.CreateTags"))
-  if valid_605313 != nil:
-    section.add "X-Amz-Target", valid_605313
-  var valid_605314 = header.getOrDefault("X-Amz-Signature")
-  valid_605314 = validateParameter(valid_605314, JString, required = false,
+  if valid_613313 != nil:
+    section.add "X-Amz-Target", valid_613313
+  var valid_613314 = header.getOrDefault("X-Amz-Signature")
+  valid_613314 = validateParameter(valid_613314, JString, required = false,
                                  default = nil)
-  if valid_605314 != nil:
-    section.add "X-Amz-Signature", valid_605314
-  var valid_605315 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605315 = validateParameter(valid_605315, JString, required = false,
+  if valid_613314 != nil:
+    section.add "X-Amz-Signature", valid_613314
+  var valid_613315 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613315 = validateParameter(valid_613315, JString, required = false,
                                  default = nil)
-  if valid_605315 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605315
-  var valid_605316 = header.getOrDefault("X-Amz-Date")
-  valid_605316 = validateParameter(valid_605316, JString, required = false,
+  if valid_613315 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613315
+  var valid_613316 = header.getOrDefault("X-Amz-Date")
+  valid_613316 = validateParameter(valid_613316, JString, required = false,
                                  default = nil)
-  if valid_605316 != nil:
-    section.add "X-Amz-Date", valid_605316
-  var valid_605317 = header.getOrDefault("X-Amz-Credential")
-  valid_605317 = validateParameter(valid_605317, JString, required = false,
+  if valid_613316 != nil:
+    section.add "X-Amz-Date", valid_613316
+  var valid_613317 = header.getOrDefault("X-Amz-Credential")
+  valid_613317 = validateParameter(valid_613317, JString, required = false,
                                  default = nil)
-  if valid_605317 != nil:
-    section.add "X-Amz-Credential", valid_605317
-  var valid_605318 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605318 = validateParameter(valid_605318, JString, required = false,
+  if valid_613317 != nil:
+    section.add "X-Amz-Credential", valid_613317
+  var valid_613318 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613318 = validateParameter(valid_613318, JString, required = false,
                                  default = nil)
-  if valid_605318 != nil:
-    section.add "X-Amz-Security-Token", valid_605318
-  var valid_605319 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605319 = validateParameter(valid_605319, JString, required = false,
+  if valid_613318 != nil:
+    section.add "X-Amz-Security-Token", valid_613318
+  var valid_613319 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613319 = validateParameter(valid_613319, JString, required = false,
                                  default = nil)
-  if valid_605319 != nil:
-    section.add "X-Amz-Algorithm", valid_605319
-  var valid_605320 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605320 = validateParameter(valid_605320, JString, required = false,
+  if valid_613319 != nil:
+    section.add "X-Amz-Algorithm", valid_613319
+  var valid_613320 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613320 = validateParameter(valid_613320, JString, required = false,
                                  default = nil)
-  if valid_605320 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605320
+  if valid_613320 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613320
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -675,37 +675,37 @@ proc validate_CreateTags_605311(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_605322: Call_CreateTags_605310; path: JsonNode; query: JsonNode;
+proc call*(call_613322: Call_CreateTags_613310; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates the specified tags for the specified WorkSpaces resource.
   ## 
-  let valid = call_605322.validator(path, query, header, formData, body)
-  let scheme = call_605322.pickScheme
+  let valid = call_613322.validator(path, query, header, formData, body)
+  let scheme = call_613322.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605322.url(scheme.get, call_605322.host, call_605322.base,
-                         call_605322.route, valid.getOrDefault("path"),
+  let url = call_613322.url(scheme.get, call_613322.host, call_613322.base,
+                         call_613322.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605322, url, valid)
+  result = atozHook(call_613322, url, valid)
 
-proc call*(call_605323: Call_CreateTags_605310; body: JsonNode): Recallable =
+proc call*(call_613323: Call_CreateTags_613310; body: JsonNode): Recallable =
   ## createTags
   ## Creates the specified tags for the specified WorkSpaces resource.
   ##   body: JObject (required)
-  var body_605324 = newJObject()
+  var body_613324 = newJObject()
   if body != nil:
-    body_605324 = body
-  result = call_605323.call(nil, nil, nil, nil, body_605324)
+    body_613324 = body
+  result = call_613323.call(nil, nil, nil, nil, body_613324)
 
-var createTags* = Call_CreateTags_605310(name: "createTags",
+var createTags* = Call_CreateTags_613310(name: "createTags",
                                       meth: HttpMethod.HttpPost,
                                       host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.CreateTags",
-                                      validator: validate_CreateTags_605311,
-                                      base: "/", url: url_CreateTags_605312,
+                                      validator: validate_CreateTags_613311,
+                                      base: "/", url: url_CreateTags_613312,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateWorkspaces_605325 = ref object of OpenApiRestCall_604658
-proc url_CreateWorkspaces_605327(protocol: Scheme; host: string; base: string;
+  Call_CreateWorkspaces_613325 = ref object of OpenApiRestCall_612658
+proc url_CreateWorkspaces_613327(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -717,7 +717,7 @@ proc url_CreateWorkspaces_605327(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateWorkspaces_605326(path: JsonNode; query: JsonNode;
+proc validate_CreateWorkspaces_613326(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Creates one or more WorkSpaces.</p> <p>This operation is asynchronous and returns before the WorkSpaces are created.</p>
@@ -738,46 +738,46 @@ proc validate_CreateWorkspaces_605326(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605328 = header.getOrDefault("X-Amz-Target")
-  valid_605328 = validateParameter(valid_605328, JString, required = true, default = newJString(
+  var valid_613328 = header.getOrDefault("X-Amz-Target")
+  valid_613328 = validateParameter(valid_613328, JString, required = true, default = newJString(
       "WorkspacesService.CreateWorkspaces"))
-  if valid_605328 != nil:
-    section.add "X-Amz-Target", valid_605328
-  var valid_605329 = header.getOrDefault("X-Amz-Signature")
-  valid_605329 = validateParameter(valid_605329, JString, required = false,
+  if valid_613328 != nil:
+    section.add "X-Amz-Target", valid_613328
+  var valid_613329 = header.getOrDefault("X-Amz-Signature")
+  valid_613329 = validateParameter(valid_613329, JString, required = false,
                                  default = nil)
-  if valid_605329 != nil:
-    section.add "X-Amz-Signature", valid_605329
-  var valid_605330 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605330 = validateParameter(valid_605330, JString, required = false,
+  if valid_613329 != nil:
+    section.add "X-Amz-Signature", valid_613329
+  var valid_613330 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613330 = validateParameter(valid_613330, JString, required = false,
                                  default = nil)
-  if valid_605330 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605330
-  var valid_605331 = header.getOrDefault("X-Amz-Date")
-  valid_605331 = validateParameter(valid_605331, JString, required = false,
+  if valid_613330 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613330
+  var valid_613331 = header.getOrDefault("X-Amz-Date")
+  valid_613331 = validateParameter(valid_613331, JString, required = false,
                                  default = nil)
-  if valid_605331 != nil:
-    section.add "X-Amz-Date", valid_605331
-  var valid_605332 = header.getOrDefault("X-Amz-Credential")
-  valid_605332 = validateParameter(valid_605332, JString, required = false,
+  if valid_613331 != nil:
+    section.add "X-Amz-Date", valid_613331
+  var valid_613332 = header.getOrDefault("X-Amz-Credential")
+  valid_613332 = validateParameter(valid_613332, JString, required = false,
                                  default = nil)
-  if valid_605332 != nil:
-    section.add "X-Amz-Credential", valid_605332
-  var valid_605333 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605333 = validateParameter(valid_605333, JString, required = false,
+  if valid_613332 != nil:
+    section.add "X-Amz-Credential", valid_613332
+  var valid_613333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613333 = validateParameter(valid_613333, JString, required = false,
                                  default = nil)
-  if valid_605333 != nil:
-    section.add "X-Amz-Security-Token", valid_605333
-  var valid_605334 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605334 = validateParameter(valid_605334, JString, required = false,
+  if valid_613333 != nil:
+    section.add "X-Amz-Security-Token", valid_613333
+  var valid_613334 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613334 = validateParameter(valid_613334, JString, required = false,
                                  default = nil)
-  if valid_605334 != nil:
-    section.add "X-Amz-Algorithm", valid_605334
-  var valid_605335 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605335 = validateParameter(valid_605335, JString, required = false,
+  if valid_613334 != nil:
+    section.add "X-Amz-Algorithm", valid_613334
+  var valid_613335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613335 = validateParameter(valid_613335, JString, required = false,
                                  default = nil)
-  if valid_605335 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605335
+  if valid_613335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613335
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -788,36 +788,36 @@ proc validate_CreateWorkspaces_605326(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605337: Call_CreateWorkspaces_605325; path: JsonNode;
+proc call*(call_613337: Call_CreateWorkspaces_613325; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates one or more WorkSpaces.</p> <p>This operation is asynchronous and returns before the WorkSpaces are created.</p>
   ## 
-  let valid = call_605337.validator(path, query, header, formData, body)
-  let scheme = call_605337.pickScheme
+  let valid = call_613337.validator(path, query, header, formData, body)
+  let scheme = call_613337.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605337.url(scheme.get, call_605337.host, call_605337.base,
-                         call_605337.route, valid.getOrDefault("path"),
+  let url = call_613337.url(scheme.get, call_613337.host, call_613337.base,
+                         call_613337.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605337, url, valid)
+  result = atozHook(call_613337, url, valid)
 
-proc call*(call_605338: Call_CreateWorkspaces_605325; body: JsonNode): Recallable =
+proc call*(call_613338: Call_CreateWorkspaces_613325; body: JsonNode): Recallable =
   ## createWorkspaces
   ## <p>Creates one or more WorkSpaces.</p> <p>This operation is asynchronous and returns before the WorkSpaces are created.</p>
   ##   body: JObject (required)
-  var body_605339 = newJObject()
+  var body_613339 = newJObject()
   if body != nil:
-    body_605339 = body
-  result = call_605338.call(nil, nil, nil, nil, body_605339)
+    body_613339 = body
+  result = call_613338.call(nil, nil, nil, nil, body_613339)
 
-var createWorkspaces* = Call_CreateWorkspaces_605325(name: "createWorkspaces",
+var createWorkspaces* = Call_CreateWorkspaces_613325(name: "createWorkspaces",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.CreateWorkspaces",
-    validator: validate_CreateWorkspaces_605326, base: "/",
-    url: url_CreateWorkspaces_605327, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateWorkspaces_613326, base: "/",
+    url: url_CreateWorkspaces_613327, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteIpGroup_605340 = ref object of OpenApiRestCall_604658
-proc url_DeleteIpGroup_605342(protocol: Scheme; host: string; base: string;
+  Call_DeleteIpGroup_613340 = ref object of OpenApiRestCall_612658
+proc url_DeleteIpGroup_613342(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -829,7 +829,7 @@ proc url_DeleteIpGroup_605342(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteIpGroup_605341(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteIpGroup_613341(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes the specified IP access control group.</p> <p>You cannot delete an IP access control group that is associated with a directory.</p>
   ## 
@@ -849,46 +849,46 @@ proc validate_DeleteIpGroup_605341(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605343 = header.getOrDefault("X-Amz-Target")
-  valid_605343 = validateParameter(valid_605343, JString, required = true, default = newJString(
+  var valid_613343 = header.getOrDefault("X-Amz-Target")
+  valid_613343 = validateParameter(valid_613343, JString, required = true, default = newJString(
       "WorkspacesService.DeleteIpGroup"))
-  if valid_605343 != nil:
-    section.add "X-Amz-Target", valid_605343
-  var valid_605344 = header.getOrDefault("X-Amz-Signature")
-  valid_605344 = validateParameter(valid_605344, JString, required = false,
+  if valid_613343 != nil:
+    section.add "X-Amz-Target", valid_613343
+  var valid_613344 = header.getOrDefault("X-Amz-Signature")
+  valid_613344 = validateParameter(valid_613344, JString, required = false,
                                  default = nil)
-  if valid_605344 != nil:
-    section.add "X-Amz-Signature", valid_605344
-  var valid_605345 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605345 = validateParameter(valid_605345, JString, required = false,
+  if valid_613344 != nil:
+    section.add "X-Amz-Signature", valid_613344
+  var valid_613345 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613345 = validateParameter(valid_613345, JString, required = false,
                                  default = nil)
-  if valid_605345 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605345
-  var valid_605346 = header.getOrDefault("X-Amz-Date")
-  valid_605346 = validateParameter(valid_605346, JString, required = false,
+  if valid_613345 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613345
+  var valid_613346 = header.getOrDefault("X-Amz-Date")
+  valid_613346 = validateParameter(valid_613346, JString, required = false,
                                  default = nil)
-  if valid_605346 != nil:
-    section.add "X-Amz-Date", valid_605346
-  var valid_605347 = header.getOrDefault("X-Amz-Credential")
-  valid_605347 = validateParameter(valid_605347, JString, required = false,
+  if valid_613346 != nil:
+    section.add "X-Amz-Date", valid_613346
+  var valid_613347 = header.getOrDefault("X-Amz-Credential")
+  valid_613347 = validateParameter(valid_613347, JString, required = false,
                                  default = nil)
-  if valid_605347 != nil:
-    section.add "X-Amz-Credential", valid_605347
-  var valid_605348 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605348 = validateParameter(valid_605348, JString, required = false,
+  if valid_613347 != nil:
+    section.add "X-Amz-Credential", valid_613347
+  var valid_613348 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613348 = validateParameter(valid_613348, JString, required = false,
                                  default = nil)
-  if valid_605348 != nil:
-    section.add "X-Amz-Security-Token", valid_605348
-  var valid_605349 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605349 = validateParameter(valid_605349, JString, required = false,
+  if valid_613348 != nil:
+    section.add "X-Amz-Security-Token", valid_613348
+  var valid_613349 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613349 = validateParameter(valid_613349, JString, required = false,
                                  default = nil)
-  if valid_605349 != nil:
-    section.add "X-Amz-Algorithm", valid_605349
-  var valid_605350 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605350 = validateParameter(valid_605350, JString, required = false,
+  if valid_613349 != nil:
+    section.add "X-Amz-Algorithm", valid_613349
+  var valid_613350 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613350 = validateParameter(valid_613350, JString, required = false,
                                  default = nil)
-  if valid_605350 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605350
+  if valid_613350 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613350
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -899,36 +899,36 @@ proc validate_DeleteIpGroup_605341(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_605352: Call_DeleteIpGroup_605340; path: JsonNode; query: JsonNode;
+proc call*(call_613352: Call_DeleteIpGroup_613340; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes the specified IP access control group.</p> <p>You cannot delete an IP access control group that is associated with a directory.</p>
   ## 
-  let valid = call_605352.validator(path, query, header, formData, body)
-  let scheme = call_605352.pickScheme
+  let valid = call_613352.validator(path, query, header, formData, body)
+  let scheme = call_613352.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605352.url(scheme.get, call_605352.host, call_605352.base,
-                         call_605352.route, valid.getOrDefault("path"),
+  let url = call_613352.url(scheme.get, call_613352.host, call_613352.base,
+                         call_613352.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605352, url, valid)
+  result = atozHook(call_613352, url, valid)
 
-proc call*(call_605353: Call_DeleteIpGroup_605340; body: JsonNode): Recallable =
+proc call*(call_613353: Call_DeleteIpGroup_613340; body: JsonNode): Recallable =
   ## deleteIpGroup
   ## <p>Deletes the specified IP access control group.</p> <p>You cannot delete an IP access control group that is associated with a directory.</p>
   ##   body: JObject (required)
-  var body_605354 = newJObject()
+  var body_613354 = newJObject()
   if body != nil:
-    body_605354 = body
-  result = call_605353.call(nil, nil, nil, nil, body_605354)
+    body_613354 = body
+  result = call_613353.call(nil, nil, nil, nil, body_613354)
 
-var deleteIpGroup* = Call_DeleteIpGroup_605340(name: "deleteIpGroup",
+var deleteIpGroup* = Call_DeleteIpGroup_613340(name: "deleteIpGroup",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DeleteIpGroup",
-    validator: validate_DeleteIpGroup_605341, base: "/", url: url_DeleteIpGroup_605342,
+    validator: validate_DeleteIpGroup_613341, base: "/", url: url_DeleteIpGroup_613342,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTags_605355 = ref object of OpenApiRestCall_604658
-proc url_DeleteTags_605357(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteTags_613355 = ref object of OpenApiRestCall_612658
+proc url_DeleteTags_613357(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -940,7 +940,7 @@ proc url_DeleteTags_605357(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_DeleteTags_605356(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteTags_613356(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified tags from the specified WorkSpaces resource.
   ## 
@@ -960,46 +960,46 @@ proc validate_DeleteTags_605356(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605358 = header.getOrDefault("X-Amz-Target")
-  valid_605358 = validateParameter(valid_605358, JString, required = true, default = newJString(
+  var valid_613358 = header.getOrDefault("X-Amz-Target")
+  valid_613358 = validateParameter(valid_613358, JString, required = true, default = newJString(
       "WorkspacesService.DeleteTags"))
-  if valid_605358 != nil:
-    section.add "X-Amz-Target", valid_605358
-  var valid_605359 = header.getOrDefault("X-Amz-Signature")
-  valid_605359 = validateParameter(valid_605359, JString, required = false,
+  if valid_613358 != nil:
+    section.add "X-Amz-Target", valid_613358
+  var valid_613359 = header.getOrDefault("X-Amz-Signature")
+  valid_613359 = validateParameter(valid_613359, JString, required = false,
                                  default = nil)
-  if valid_605359 != nil:
-    section.add "X-Amz-Signature", valid_605359
-  var valid_605360 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605360 = validateParameter(valid_605360, JString, required = false,
+  if valid_613359 != nil:
+    section.add "X-Amz-Signature", valid_613359
+  var valid_613360 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613360 = validateParameter(valid_613360, JString, required = false,
                                  default = nil)
-  if valid_605360 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605360
-  var valid_605361 = header.getOrDefault("X-Amz-Date")
-  valid_605361 = validateParameter(valid_605361, JString, required = false,
+  if valid_613360 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613360
+  var valid_613361 = header.getOrDefault("X-Amz-Date")
+  valid_613361 = validateParameter(valid_613361, JString, required = false,
                                  default = nil)
-  if valid_605361 != nil:
-    section.add "X-Amz-Date", valid_605361
-  var valid_605362 = header.getOrDefault("X-Amz-Credential")
-  valid_605362 = validateParameter(valid_605362, JString, required = false,
+  if valid_613361 != nil:
+    section.add "X-Amz-Date", valid_613361
+  var valid_613362 = header.getOrDefault("X-Amz-Credential")
+  valid_613362 = validateParameter(valid_613362, JString, required = false,
                                  default = nil)
-  if valid_605362 != nil:
-    section.add "X-Amz-Credential", valid_605362
-  var valid_605363 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605363 = validateParameter(valid_605363, JString, required = false,
+  if valid_613362 != nil:
+    section.add "X-Amz-Credential", valid_613362
+  var valid_613363 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613363 = validateParameter(valid_613363, JString, required = false,
                                  default = nil)
-  if valid_605363 != nil:
-    section.add "X-Amz-Security-Token", valid_605363
-  var valid_605364 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605364 = validateParameter(valid_605364, JString, required = false,
+  if valid_613363 != nil:
+    section.add "X-Amz-Security-Token", valid_613363
+  var valid_613364 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613364 = validateParameter(valid_613364, JString, required = false,
                                  default = nil)
-  if valid_605364 != nil:
-    section.add "X-Amz-Algorithm", valid_605364
-  var valid_605365 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605365 = validateParameter(valid_605365, JString, required = false,
+  if valid_613364 != nil:
+    section.add "X-Amz-Algorithm", valid_613364
+  var valid_613365 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613365 = validateParameter(valid_613365, JString, required = false,
                                  default = nil)
-  if valid_605365 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605365
+  if valid_613365 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613365
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1010,37 +1010,37 @@ proc validate_DeleteTags_605356(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_605367: Call_DeleteTags_605355; path: JsonNode; query: JsonNode;
+proc call*(call_613367: Call_DeleteTags_613355; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified tags from the specified WorkSpaces resource.
   ## 
-  let valid = call_605367.validator(path, query, header, formData, body)
-  let scheme = call_605367.pickScheme
+  let valid = call_613367.validator(path, query, header, formData, body)
+  let scheme = call_613367.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605367.url(scheme.get, call_605367.host, call_605367.base,
-                         call_605367.route, valid.getOrDefault("path"),
+  let url = call_613367.url(scheme.get, call_613367.host, call_613367.base,
+                         call_613367.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605367, url, valid)
+  result = atozHook(call_613367, url, valid)
 
-proc call*(call_605368: Call_DeleteTags_605355; body: JsonNode): Recallable =
+proc call*(call_613368: Call_DeleteTags_613355; body: JsonNode): Recallable =
   ## deleteTags
   ## Deletes the specified tags from the specified WorkSpaces resource.
   ##   body: JObject (required)
-  var body_605369 = newJObject()
+  var body_613369 = newJObject()
   if body != nil:
-    body_605369 = body
-  result = call_605368.call(nil, nil, nil, nil, body_605369)
+    body_613369 = body
+  result = call_613368.call(nil, nil, nil, nil, body_613369)
 
-var deleteTags* = Call_DeleteTags_605355(name: "deleteTags",
+var deleteTags* = Call_DeleteTags_613355(name: "deleteTags",
                                       meth: HttpMethod.HttpPost,
                                       host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.DeleteTags",
-                                      validator: validate_DeleteTags_605356,
-                                      base: "/", url: url_DeleteTags_605357,
+                                      validator: validate_DeleteTags_613356,
+                                      base: "/", url: url_DeleteTags_613357,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteWorkspaceImage_605370 = ref object of OpenApiRestCall_604658
-proc url_DeleteWorkspaceImage_605372(protocol: Scheme; host: string; base: string;
+  Call_DeleteWorkspaceImage_613370 = ref object of OpenApiRestCall_612658
+proc url_DeleteWorkspaceImage_613372(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1052,7 +1052,7 @@ proc url_DeleteWorkspaceImage_605372(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_DeleteWorkspaceImage_605371(path: JsonNode; query: JsonNode;
+proc validate_DeleteWorkspaceImage_613371(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes the specified image from your account. To delete an image, you must first delete any bundles that are associated with the image and un-share the image if it is shared with other accounts. 
   ## 
@@ -1072,46 +1072,46 @@ proc validate_DeleteWorkspaceImage_605371(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605373 = header.getOrDefault("X-Amz-Target")
-  valid_605373 = validateParameter(valid_605373, JString, required = true, default = newJString(
+  var valid_613373 = header.getOrDefault("X-Amz-Target")
+  valid_613373 = validateParameter(valid_613373, JString, required = true, default = newJString(
       "WorkspacesService.DeleteWorkspaceImage"))
-  if valid_605373 != nil:
-    section.add "X-Amz-Target", valid_605373
-  var valid_605374 = header.getOrDefault("X-Amz-Signature")
-  valid_605374 = validateParameter(valid_605374, JString, required = false,
+  if valid_613373 != nil:
+    section.add "X-Amz-Target", valid_613373
+  var valid_613374 = header.getOrDefault("X-Amz-Signature")
+  valid_613374 = validateParameter(valid_613374, JString, required = false,
                                  default = nil)
-  if valid_605374 != nil:
-    section.add "X-Amz-Signature", valid_605374
-  var valid_605375 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605375 = validateParameter(valid_605375, JString, required = false,
+  if valid_613374 != nil:
+    section.add "X-Amz-Signature", valid_613374
+  var valid_613375 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613375 = validateParameter(valid_613375, JString, required = false,
                                  default = nil)
-  if valid_605375 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605375
-  var valid_605376 = header.getOrDefault("X-Amz-Date")
-  valid_605376 = validateParameter(valid_605376, JString, required = false,
+  if valid_613375 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613375
+  var valid_613376 = header.getOrDefault("X-Amz-Date")
+  valid_613376 = validateParameter(valid_613376, JString, required = false,
                                  default = nil)
-  if valid_605376 != nil:
-    section.add "X-Amz-Date", valid_605376
-  var valid_605377 = header.getOrDefault("X-Amz-Credential")
-  valid_605377 = validateParameter(valid_605377, JString, required = false,
+  if valid_613376 != nil:
+    section.add "X-Amz-Date", valid_613376
+  var valid_613377 = header.getOrDefault("X-Amz-Credential")
+  valid_613377 = validateParameter(valid_613377, JString, required = false,
                                  default = nil)
-  if valid_605377 != nil:
-    section.add "X-Amz-Credential", valid_605377
-  var valid_605378 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605378 = validateParameter(valid_605378, JString, required = false,
+  if valid_613377 != nil:
+    section.add "X-Amz-Credential", valid_613377
+  var valid_613378 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613378 = validateParameter(valid_613378, JString, required = false,
                                  default = nil)
-  if valid_605378 != nil:
-    section.add "X-Amz-Security-Token", valid_605378
-  var valid_605379 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605379 = validateParameter(valid_605379, JString, required = false,
+  if valid_613378 != nil:
+    section.add "X-Amz-Security-Token", valid_613378
+  var valid_613379 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613379 = validateParameter(valid_613379, JString, required = false,
                                  default = nil)
-  if valid_605379 != nil:
-    section.add "X-Amz-Algorithm", valid_605379
-  var valid_605380 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605380 = validateParameter(valid_605380, JString, required = false,
+  if valid_613379 != nil:
+    section.add "X-Amz-Algorithm", valid_613379
+  var valid_613380 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613380 = validateParameter(valid_613380, JString, required = false,
                                  default = nil)
-  if valid_605380 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605380
+  if valid_613380 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613380
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1122,37 +1122,37 @@ proc validate_DeleteWorkspaceImage_605371(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605382: Call_DeleteWorkspaceImage_605370; path: JsonNode;
+proc call*(call_613382: Call_DeleteWorkspaceImage_613370; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified image from your account. To delete an image, you must first delete any bundles that are associated with the image and un-share the image if it is shared with other accounts. 
   ## 
-  let valid = call_605382.validator(path, query, header, formData, body)
-  let scheme = call_605382.pickScheme
+  let valid = call_613382.validator(path, query, header, formData, body)
+  let scheme = call_613382.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605382.url(scheme.get, call_605382.host, call_605382.base,
-                         call_605382.route, valid.getOrDefault("path"),
+  let url = call_613382.url(scheme.get, call_613382.host, call_613382.base,
+                         call_613382.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605382, url, valid)
+  result = atozHook(call_613382, url, valid)
 
-proc call*(call_605383: Call_DeleteWorkspaceImage_605370; body: JsonNode): Recallable =
+proc call*(call_613383: Call_DeleteWorkspaceImage_613370; body: JsonNode): Recallable =
   ## deleteWorkspaceImage
   ## Deletes the specified image from your account. To delete an image, you must first delete any bundles that are associated with the image and un-share the image if it is shared with other accounts. 
   ##   body: JObject (required)
-  var body_605384 = newJObject()
+  var body_613384 = newJObject()
   if body != nil:
-    body_605384 = body
-  result = call_605383.call(nil, nil, nil, nil, body_605384)
+    body_613384 = body
+  result = call_613383.call(nil, nil, nil, nil, body_613384)
 
-var deleteWorkspaceImage* = Call_DeleteWorkspaceImage_605370(
+var deleteWorkspaceImage* = Call_DeleteWorkspaceImage_613370(
     name: "deleteWorkspaceImage", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DeleteWorkspaceImage",
-    validator: validate_DeleteWorkspaceImage_605371, base: "/",
-    url: url_DeleteWorkspaceImage_605372, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteWorkspaceImage_613371, base: "/",
+    url: url_DeleteWorkspaceImage_613372, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterWorkspaceDirectory_605385 = ref object of OpenApiRestCall_604658
-proc url_DeregisterWorkspaceDirectory_605387(protocol: Scheme; host: string;
+  Call_DeregisterWorkspaceDirectory_613385 = ref object of OpenApiRestCall_612658
+proc url_DeregisterWorkspaceDirectory_613387(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1164,7 +1164,7 @@ proc url_DeregisterWorkspaceDirectory_605387(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DeregisterWorkspaceDirectory_605386(path: JsonNode; query: JsonNode;
+proc validate_DeregisterWorkspaceDirectory_613386(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deregisters the specified directory. This operation is asynchronous and returns before the WorkSpace directory is deregistered. If any WorkSpaces are registered to this directory, you must remove them before you can deregister the directory.
   ## 
@@ -1184,46 +1184,46 @@ proc validate_DeregisterWorkspaceDirectory_605386(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605388 = header.getOrDefault("X-Amz-Target")
-  valid_605388 = validateParameter(valid_605388, JString, required = true, default = newJString(
+  var valid_613388 = header.getOrDefault("X-Amz-Target")
+  valid_613388 = validateParameter(valid_613388, JString, required = true, default = newJString(
       "WorkspacesService.DeregisterWorkspaceDirectory"))
-  if valid_605388 != nil:
-    section.add "X-Amz-Target", valid_605388
-  var valid_605389 = header.getOrDefault("X-Amz-Signature")
-  valid_605389 = validateParameter(valid_605389, JString, required = false,
+  if valid_613388 != nil:
+    section.add "X-Amz-Target", valid_613388
+  var valid_613389 = header.getOrDefault("X-Amz-Signature")
+  valid_613389 = validateParameter(valid_613389, JString, required = false,
                                  default = nil)
-  if valid_605389 != nil:
-    section.add "X-Amz-Signature", valid_605389
-  var valid_605390 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605390 = validateParameter(valid_605390, JString, required = false,
+  if valid_613389 != nil:
+    section.add "X-Amz-Signature", valid_613389
+  var valid_613390 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613390 = validateParameter(valid_613390, JString, required = false,
                                  default = nil)
-  if valid_605390 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605390
-  var valid_605391 = header.getOrDefault("X-Amz-Date")
-  valid_605391 = validateParameter(valid_605391, JString, required = false,
+  if valid_613390 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613390
+  var valid_613391 = header.getOrDefault("X-Amz-Date")
+  valid_613391 = validateParameter(valid_613391, JString, required = false,
                                  default = nil)
-  if valid_605391 != nil:
-    section.add "X-Amz-Date", valid_605391
-  var valid_605392 = header.getOrDefault("X-Amz-Credential")
-  valid_605392 = validateParameter(valid_605392, JString, required = false,
+  if valid_613391 != nil:
+    section.add "X-Amz-Date", valid_613391
+  var valid_613392 = header.getOrDefault("X-Amz-Credential")
+  valid_613392 = validateParameter(valid_613392, JString, required = false,
                                  default = nil)
-  if valid_605392 != nil:
-    section.add "X-Amz-Credential", valid_605392
-  var valid_605393 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605393 = validateParameter(valid_605393, JString, required = false,
+  if valid_613392 != nil:
+    section.add "X-Amz-Credential", valid_613392
+  var valid_613393 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613393 = validateParameter(valid_613393, JString, required = false,
                                  default = nil)
-  if valid_605393 != nil:
-    section.add "X-Amz-Security-Token", valid_605393
-  var valid_605394 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605394 = validateParameter(valid_605394, JString, required = false,
+  if valid_613393 != nil:
+    section.add "X-Amz-Security-Token", valid_613393
+  var valid_613394 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613394 = validateParameter(valid_613394, JString, required = false,
                                  default = nil)
-  if valid_605394 != nil:
-    section.add "X-Amz-Algorithm", valid_605394
-  var valid_605395 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605395 = validateParameter(valid_605395, JString, required = false,
+  if valid_613394 != nil:
+    section.add "X-Amz-Algorithm", valid_613394
+  var valid_613395 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613395 = validateParameter(valid_613395, JString, required = false,
                                  default = nil)
-  if valid_605395 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605395
+  if valid_613395 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613395
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1234,38 +1234,38 @@ proc validate_DeregisterWorkspaceDirectory_605386(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_605397: Call_DeregisterWorkspaceDirectory_605385; path: JsonNode;
+proc call*(call_613397: Call_DeregisterWorkspaceDirectory_613385; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deregisters the specified directory. This operation is asynchronous and returns before the WorkSpace directory is deregistered. If any WorkSpaces are registered to this directory, you must remove them before you can deregister the directory.
   ## 
-  let valid = call_605397.validator(path, query, header, formData, body)
-  let scheme = call_605397.pickScheme
+  let valid = call_613397.validator(path, query, header, formData, body)
+  let scheme = call_613397.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605397.url(scheme.get, call_605397.host, call_605397.base,
-                         call_605397.route, valid.getOrDefault("path"),
+  let url = call_613397.url(scheme.get, call_613397.host, call_613397.base,
+                         call_613397.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605397, url, valid)
+  result = atozHook(call_613397, url, valid)
 
-proc call*(call_605398: Call_DeregisterWorkspaceDirectory_605385; body: JsonNode): Recallable =
+proc call*(call_613398: Call_DeregisterWorkspaceDirectory_613385; body: JsonNode): Recallable =
   ## deregisterWorkspaceDirectory
   ## Deregisters the specified directory. This operation is asynchronous and returns before the WorkSpace directory is deregistered. If any WorkSpaces are registered to this directory, you must remove them before you can deregister the directory.
   ##   body: JObject (required)
-  var body_605399 = newJObject()
+  var body_613399 = newJObject()
   if body != nil:
-    body_605399 = body
-  result = call_605398.call(nil, nil, nil, nil, body_605399)
+    body_613399 = body
+  result = call_613398.call(nil, nil, nil, nil, body_613399)
 
-var deregisterWorkspaceDirectory* = Call_DeregisterWorkspaceDirectory_605385(
+var deregisterWorkspaceDirectory* = Call_DeregisterWorkspaceDirectory_613385(
     name: "deregisterWorkspaceDirectory", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DeregisterWorkspaceDirectory",
-    validator: validate_DeregisterWorkspaceDirectory_605386, base: "/",
-    url: url_DeregisterWorkspaceDirectory_605387,
+    validator: validate_DeregisterWorkspaceDirectory_613386, base: "/",
+    url: url_DeregisterWorkspaceDirectory_613387,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeAccount_605400 = ref object of OpenApiRestCall_604658
-proc url_DescribeAccount_605402(protocol: Scheme; host: string; base: string;
+  Call_DescribeAccount_613400 = ref object of OpenApiRestCall_612658
+proc url_DescribeAccount_613402(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1277,7 +1277,7 @@ proc url_DescribeAccount_605402(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeAccount_605401(path: JsonNode; query: JsonNode;
+proc validate_DescribeAccount_613401(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Retrieves a list that describes the configuration of Bring Your Own License (BYOL) for the specified account.
@@ -1298,46 +1298,46 @@ proc validate_DescribeAccount_605401(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605403 = header.getOrDefault("X-Amz-Target")
-  valid_605403 = validateParameter(valid_605403, JString, required = true, default = newJString(
+  var valid_613403 = header.getOrDefault("X-Amz-Target")
+  valid_613403 = validateParameter(valid_613403, JString, required = true, default = newJString(
       "WorkspacesService.DescribeAccount"))
-  if valid_605403 != nil:
-    section.add "X-Amz-Target", valid_605403
-  var valid_605404 = header.getOrDefault("X-Amz-Signature")
-  valid_605404 = validateParameter(valid_605404, JString, required = false,
+  if valid_613403 != nil:
+    section.add "X-Amz-Target", valid_613403
+  var valid_613404 = header.getOrDefault("X-Amz-Signature")
+  valid_613404 = validateParameter(valid_613404, JString, required = false,
                                  default = nil)
-  if valid_605404 != nil:
-    section.add "X-Amz-Signature", valid_605404
-  var valid_605405 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605405 = validateParameter(valid_605405, JString, required = false,
+  if valid_613404 != nil:
+    section.add "X-Amz-Signature", valid_613404
+  var valid_613405 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613405 = validateParameter(valid_613405, JString, required = false,
                                  default = nil)
-  if valid_605405 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605405
-  var valid_605406 = header.getOrDefault("X-Amz-Date")
-  valid_605406 = validateParameter(valid_605406, JString, required = false,
+  if valid_613405 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613405
+  var valid_613406 = header.getOrDefault("X-Amz-Date")
+  valid_613406 = validateParameter(valid_613406, JString, required = false,
                                  default = nil)
-  if valid_605406 != nil:
-    section.add "X-Amz-Date", valid_605406
-  var valid_605407 = header.getOrDefault("X-Amz-Credential")
-  valid_605407 = validateParameter(valid_605407, JString, required = false,
+  if valid_613406 != nil:
+    section.add "X-Amz-Date", valid_613406
+  var valid_613407 = header.getOrDefault("X-Amz-Credential")
+  valid_613407 = validateParameter(valid_613407, JString, required = false,
                                  default = nil)
-  if valid_605407 != nil:
-    section.add "X-Amz-Credential", valid_605407
-  var valid_605408 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605408 = validateParameter(valid_605408, JString, required = false,
+  if valid_613407 != nil:
+    section.add "X-Amz-Credential", valid_613407
+  var valid_613408 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613408 = validateParameter(valid_613408, JString, required = false,
                                  default = nil)
-  if valid_605408 != nil:
-    section.add "X-Amz-Security-Token", valid_605408
-  var valid_605409 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605409 = validateParameter(valid_605409, JString, required = false,
+  if valid_613408 != nil:
+    section.add "X-Amz-Security-Token", valid_613408
+  var valid_613409 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613409 = validateParameter(valid_613409, JString, required = false,
                                  default = nil)
-  if valid_605409 != nil:
-    section.add "X-Amz-Algorithm", valid_605409
-  var valid_605410 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605410 = validateParameter(valid_605410, JString, required = false,
+  if valid_613409 != nil:
+    section.add "X-Amz-Algorithm", valid_613409
+  var valid_613410 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613410 = validateParameter(valid_613410, JString, required = false,
                                  default = nil)
-  if valid_605410 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605410
+  if valid_613410 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613410
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1348,36 +1348,36 @@ proc validate_DescribeAccount_605401(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605412: Call_DescribeAccount_605400; path: JsonNode; query: JsonNode;
+proc call*(call_613412: Call_DescribeAccount_613400; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a list that describes the configuration of Bring Your Own License (BYOL) for the specified account.
   ## 
-  let valid = call_605412.validator(path, query, header, formData, body)
-  let scheme = call_605412.pickScheme
+  let valid = call_613412.validator(path, query, header, formData, body)
+  let scheme = call_613412.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605412.url(scheme.get, call_605412.host, call_605412.base,
-                         call_605412.route, valid.getOrDefault("path"),
+  let url = call_613412.url(scheme.get, call_613412.host, call_613412.base,
+                         call_613412.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605412, url, valid)
+  result = atozHook(call_613412, url, valid)
 
-proc call*(call_605413: Call_DescribeAccount_605400; body: JsonNode): Recallable =
+proc call*(call_613413: Call_DescribeAccount_613400; body: JsonNode): Recallable =
   ## describeAccount
   ## Retrieves a list that describes the configuration of Bring Your Own License (BYOL) for the specified account.
   ##   body: JObject (required)
-  var body_605414 = newJObject()
+  var body_613414 = newJObject()
   if body != nil:
-    body_605414 = body
-  result = call_605413.call(nil, nil, nil, nil, body_605414)
+    body_613414 = body
+  result = call_613413.call(nil, nil, nil, nil, body_613414)
 
-var describeAccount* = Call_DescribeAccount_605400(name: "describeAccount",
+var describeAccount* = Call_DescribeAccount_613400(name: "describeAccount",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeAccount",
-    validator: validate_DescribeAccount_605401, base: "/", url: url_DescribeAccount_605402,
+    validator: validate_DescribeAccount_613401, base: "/", url: url_DescribeAccount_613402,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeAccountModifications_605415 = ref object of OpenApiRestCall_604658
-proc url_DescribeAccountModifications_605417(protocol: Scheme; host: string;
+  Call_DescribeAccountModifications_613415 = ref object of OpenApiRestCall_612658
+proc url_DescribeAccountModifications_613417(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1389,7 +1389,7 @@ proc url_DescribeAccountModifications_605417(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeAccountModifications_605416(path: JsonNode; query: JsonNode;
+proc validate_DescribeAccountModifications_613416(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves a list that describes modifications to the configuration of Bring Your Own License (BYOL) for the specified account.
   ## 
@@ -1409,46 +1409,46 @@ proc validate_DescribeAccountModifications_605416(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605418 = header.getOrDefault("X-Amz-Target")
-  valid_605418 = validateParameter(valid_605418, JString, required = true, default = newJString(
+  var valid_613418 = header.getOrDefault("X-Amz-Target")
+  valid_613418 = validateParameter(valid_613418, JString, required = true, default = newJString(
       "WorkspacesService.DescribeAccountModifications"))
-  if valid_605418 != nil:
-    section.add "X-Amz-Target", valid_605418
-  var valid_605419 = header.getOrDefault("X-Amz-Signature")
-  valid_605419 = validateParameter(valid_605419, JString, required = false,
+  if valid_613418 != nil:
+    section.add "X-Amz-Target", valid_613418
+  var valid_613419 = header.getOrDefault("X-Amz-Signature")
+  valid_613419 = validateParameter(valid_613419, JString, required = false,
                                  default = nil)
-  if valid_605419 != nil:
-    section.add "X-Amz-Signature", valid_605419
-  var valid_605420 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605420 = validateParameter(valid_605420, JString, required = false,
+  if valid_613419 != nil:
+    section.add "X-Amz-Signature", valid_613419
+  var valid_613420 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613420 = validateParameter(valid_613420, JString, required = false,
                                  default = nil)
-  if valid_605420 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605420
-  var valid_605421 = header.getOrDefault("X-Amz-Date")
-  valid_605421 = validateParameter(valid_605421, JString, required = false,
+  if valid_613420 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613420
+  var valid_613421 = header.getOrDefault("X-Amz-Date")
+  valid_613421 = validateParameter(valid_613421, JString, required = false,
                                  default = nil)
-  if valid_605421 != nil:
-    section.add "X-Amz-Date", valid_605421
-  var valid_605422 = header.getOrDefault("X-Amz-Credential")
-  valid_605422 = validateParameter(valid_605422, JString, required = false,
+  if valid_613421 != nil:
+    section.add "X-Amz-Date", valid_613421
+  var valid_613422 = header.getOrDefault("X-Amz-Credential")
+  valid_613422 = validateParameter(valid_613422, JString, required = false,
                                  default = nil)
-  if valid_605422 != nil:
-    section.add "X-Amz-Credential", valid_605422
-  var valid_605423 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605423 = validateParameter(valid_605423, JString, required = false,
+  if valid_613422 != nil:
+    section.add "X-Amz-Credential", valid_613422
+  var valid_613423 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613423 = validateParameter(valid_613423, JString, required = false,
                                  default = nil)
-  if valid_605423 != nil:
-    section.add "X-Amz-Security-Token", valid_605423
-  var valid_605424 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605424 = validateParameter(valid_605424, JString, required = false,
+  if valid_613423 != nil:
+    section.add "X-Amz-Security-Token", valid_613423
+  var valid_613424 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613424 = validateParameter(valid_613424, JString, required = false,
                                  default = nil)
-  if valid_605424 != nil:
-    section.add "X-Amz-Algorithm", valid_605424
-  var valid_605425 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605425 = validateParameter(valid_605425, JString, required = false,
+  if valid_613424 != nil:
+    section.add "X-Amz-Algorithm", valid_613424
+  var valid_613425 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613425 = validateParameter(valid_613425, JString, required = false,
                                  default = nil)
-  if valid_605425 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605425
+  if valid_613425 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613425
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1459,38 +1459,38 @@ proc validate_DescribeAccountModifications_605416(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_605427: Call_DescribeAccountModifications_605415; path: JsonNode;
+proc call*(call_613427: Call_DescribeAccountModifications_613415; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a list that describes modifications to the configuration of Bring Your Own License (BYOL) for the specified account.
   ## 
-  let valid = call_605427.validator(path, query, header, formData, body)
-  let scheme = call_605427.pickScheme
+  let valid = call_613427.validator(path, query, header, formData, body)
+  let scheme = call_613427.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605427.url(scheme.get, call_605427.host, call_605427.base,
-                         call_605427.route, valid.getOrDefault("path"),
+  let url = call_613427.url(scheme.get, call_613427.host, call_613427.base,
+                         call_613427.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605427, url, valid)
+  result = atozHook(call_613427, url, valid)
 
-proc call*(call_605428: Call_DescribeAccountModifications_605415; body: JsonNode): Recallable =
+proc call*(call_613428: Call_DescribeAccountModifications_613415; body: JsonNode): Recallable =
   ## describeAccountModifications
   ## Retrieves a list that describes modifications to the configuration of Bring Your Own License (BYOL) for the specified account.
   ##   body: JObject (required)
-  var body_605429 = newJObject()
+  var body_613429 = newJObject()
   if body != nil:
-    body_605429 = body
-  result = call_605428.call(nil, nil, nil, nil, body_605429)
+    body_613429 = body
+  result = call_613428.call(nil, nil, nil, nil, body_613429)
 
-var describeAccountModifications* = Call_DescribeAccountModifications_605415(
+var describeAccountModifications* = Call_DescribeAccountModifications_613415(
     name: "describeAccountModifications", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeAccountModifications",
-    validator: validate_DescribeAccountModifications_605416, base: "/",
-    url: url_DescribeAccountModifications_605417,
+    validator: validate_DescribeAccountModifications_613416, base: "/",
+    url: url_DescribeAccountModifications_613417,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeClientProperties_605430 = ref object of OpenApiRestCall_604658
-proc url_DescribeClientProperties_605432(protocol: Scheme; host: string;
+  Call_DescribeClientProperties_613430 = ref object of OpenApiRestCall_612658
+proc url_DescribeClientProperties_613432(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1503,7 +1503,7 @@ proc url_DescribeClientProperties_605432(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeClientProperties_605431(path: JsonNode; query: JsonNode;
+proc validate_DescribeClientProperties_613431(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves a list that describes one or more specified Amazon WorkSpaces clients.
   ## 
@@ -1523,46 +1523,46 @@ proc validate_DescribeClientProperties_605431(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605433 = header.getOrDefault("X-Amz-Target")
-  valid_605433 = validateParameter(valid_605433, JString, required = true, default = newJString(
+  var valid_613433 = header.getOrDefault("X-Amz-Target")
+  valid_613433 = validateParameter(valid_613433, JString, required = true, default = newJString(
       "WorkspacesService.DescribeClientProperties"))
-  if valid_605433 != nil:
-    section.add "X-Amz-Target", valid_605433
-  var valid_605434 = header.getOrDefault("X-Amz-Signature")
-  valid_605434 = validateParameter(valid_605434, JString, required = false,
+  if valid_613433 != nil:
+    section.add "X-Amz-Target", valid_613433
+  var valid_613434 = header.getOrDefault("X-Amz-Signature")
+  valid_613434 = validateParameter(valid_613434, JString, required = false,
                                  default = nil)
-  if valid_605434 != nil:
-    section.add "X-Amz-Signature", valid_605434
-  var valid_605435 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605435 = validateParameter(valid_605435, JString, required = false,
+  if valid_613434 != nil:
+    section.add "X-Amz-Signature", valid_613434
+  var valid_613435 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613435 = validateParameter(valid_613435, JString, required = false,
                                  default = nil)
-  if valid_605435 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605435
-  var valid_605436 = header.getOrDefault("X-Amz-Date")
-  valid_605436 = validateParameter(valid_605436, JString, required = false,
+  if valid_613435 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613435
+  var valid_613436 = header.getOrDefault("X-Amz-Date")
+  valid_613436 = validateParameter(valid_613436, JString, required = false,
                                  default = nil)
-  if valid_605436 != nil:
-    section.add "X-Amz-Date", valid_605436
-  var valid_605437 = header.getOrDefault("X-Amz-Credential")
-  valid_605437 = validateParameter(valid_605437, JString, required = false,
+  if valid_613436 != nil:
+    section.add "X-Amz-Date", valid_613436
+  var valid_613437 = header.getOrDefault("X-Amz-Credential")
+  valid_613437 = validateParameter(valid_613437, JString, required = false,
                                  default = nil)
-  if valid_605437 != nil:
-    section.add "X-Amz-Credential", valid_605437
-  var valid_605438 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605438 = validateParameter(valid_605438, JString, required = false,
+  if valid_613437 != nil:
+    section.add "X-Amz-Credential", valid_613437
+  var valid_613438 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613438 = validateParameter(valid_613438, JString, required = false,
                                  default = nil)
-  if valid_605438 != nil:
-    section.add "X-Amz-Security-Token", valid_605438
-  var valid_605439 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605439 = validateParameter(valid_605439, JString, required = false,
+  if valid_613438 != nil:
+    section.add "X-Amz-Security-Token", valid_613438
+  var valid_613439 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613439 = validateParameter(valid_613439, JString, required = false,
                                  default = nil)
-  if valid_605439 != nil:
-    section.add "X-Amz-Algorithm", valid_605439
-  var valid_605440 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605440 = validateParameter(valid_605440, JString, required = false,
+  if valid_613439 != nil:
+    section.add "X-Amz-Algorithm", valid_613439
+  var valid_613440 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613440 = validateParameter(valid_613440, JString, required = false,
                                  default = nil)
-  if valid_605440 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605440
+  if valid_613440 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613440
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1573,37 +1573,37 @@ proc validate_DescribeClientProperties_605431(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605442: Call_DescribeClientProperties_605430; path: JsonNode;
+proc call*(call_613442: Call_DescribeClientProperties_613430; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a list that describes one or more specified Amazon WorkSpaces clients.
   ## 
-  let valid = call_605442.validator(path, query, header, formData, body)
-  let scheme = call_605442.pickScheme
+  let valid = call_613442.validator(path, query, header, formData, body)
+  let scheme = call_613442.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605442.url(scheme.get, call_605442.host, call_605442.base,
-                         call_605442.route, valid.getOrDefault("path"),
+  let url = call_613442.url(scheme.get, call_613442.host, call_613442.base,
+                         call_613442.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605442, url, valid)
+  result = atozHook(call_613442, url, valid)
 
-proc call*(call_605443: Call_DescribeClientProperties_605430; body: JsonNode): Recallable =
+proc call*(call_613443: Call_DescribeClientProperties_613430; body: JsonNode): Recallable =
   ## describeClientProperties
   ## Retrieves a list that describes one or more specified Amazon WorkSpaces clients.
   ##   body: JObject (required)
-  var body_605444 = newJObject()
+  var body_613444 = newJObject()
   if body != nil:
-    body_605444 = body
-  result = call_605443.call(nil, nil, nil, nil, body_605444)
+    body_613444 = body
+  result = call_613443.call(nil, nil, nil, nil, body_613444)
 
-var describeClientProperties* = Call_DescribeClientProperties_605430(
+var describeClientProperties* = Call_DescribeClientProperties_613430(
     name: "describeClientProperties", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeClientProperties",
-    validator: validate_DescribeClientProperties_605431, base: "/",
-    url: url_DescribeClientProperties_605432, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeClientProperties_613431, base: "/",
+    url: url_DescribeClientProperties_613432, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeIpGroups_605445 = ref object of OpenApiRestCall_604658
-proc url_DescribeIpGroups_605447(protocol: Scheme; host: string; base: string;
+  Call_DescribeIpGroups_613445 = ref object of OpenApiRestCall_612658
+proc url_DescribeIpGroups_613447(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1615,7 +1615,7 @@ proc url_DescribeIpGroups_605447(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeIpGroups_605446(path: JsonNode; query: JsonNode;
+proc validate_DescribeIpGroups_613446(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Describes one or more of your IP access control groups.
@@ -1636,46 +1636,46 @@ proc validate_DescribeIpGroups_605446(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605448 = header.getOrDefault("X-Amz-Target")
-  valid_605448 = validateParameter(valid_605448, JString, required = true, default = newJString(
+  var valid_613448 = header.getOrDefault("X-Amz-Target")
+  valid_613448 = validateParameter(valid_613448, JString, required = true, default = newJString(
       "WorkspacesService.DescribeIpGroups"))
-  if valid_605448 != nil:
-    section.add "X-Amz-Target", valid_605448
-  var valid_605449 = header.getOrDefault("X-Amz-Signature")
-  valid_605449 = validateParameter(valid_605449, JString, required = false,
+  if valid_613448 != nil:
+    section.add "X-Amz-Target", valid_613448
+  var valid_613449 = header.getOrDefault("X-Amz-Signature")
+  valid_613449 = validateParameter(valid_613449, JString, required = false,
                                  default = nil)
-  if valid_605449 != nil:
-    section.add "X-Amz-Signature", valid_605449
-  var valid_605450 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605450 = validateParameter(valid_605450, JString, required = false,
+  if valid_613449 != nil:
+    section.add "X-Amz-Signature", valid_613449
+  var valid_613450 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613450 = validateParameter(valid_613450, JString, required = false,
                                  default = nil)
-  if valid_605450 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605450
-  var valid_605451 = header.getOrDefault("X-Amz-Date")
-  valid_605451 = validateParameter(valid_605451, JString, required = false,
+  if valid_613450 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613450
+  var valid_613451 = header.getOrDefault("X-Amz-Date")
+  valid_613451 = validateParameter(valid_613451, JString, required = false,
                                  default = nil)
-  if valid_605451 != nil:
-    section.add "X-Amz-Date", valid_605451
-  var valid_605452 = header.getOrDefault("X-Amz-Credential")
-  valid_605452 = validateParameter(valid_605452, JString, required = false,
+  if valid_613451 != nil:
+    section.add "X-Amz-Date", valid_613451
+  var valid_613452 = header.getOrDefault("X-Amz-Credential")
+  valid_613452 = validateParameter(valid_613452, JString, required = false,
                                  default = nil)
-  if valid_605452 != nil:
-    section.add "X-Amz-Credential", valid_605452
-  var valid_605453 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605453 = validateParameter(valid_605453, JString, required = false,
+  if valid_613452 != nil:
+    section.add "X-Amz-Credential", valid_613452
+  var valid_613453 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613453 = validateParameter(valid_613453, JString, required = false,
                                  default = nil)
-  if valid_605453 != nil:
-    section.add "X-Amz-Security-Token", valid_605453
-  var valid_605454 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605454 = validateParameter(valid_605454, JString, required = false,
+  if valid_613453 != nil:
+    section.add "X-Amz-Security-Token", valid_613453
+  var valid_613454 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613454 = validateParameter(valid_613454, JString, required = false,
                                  default = nil)
-  if valid_605454 != nil:
-    section.add "X-Amz-Algorithm", valid_605454
-  var valid_605455 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605455 = validateParameter(valid_605455, JString, required = false,
+  if valid_613454 != nil:
+    section.add "X-Amz-Algorithm", valid_613454
+  var valid_613455 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613455 = validateParameter(valid_613455, JString, required = false,
                                  default = nil)
-  if valid_605455 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605455
+  if valid_613455 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613455
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1686,36 +1686,36 @@ proc validate_DescribeIpGroups_605446(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605457: Call_DescribeIpGroups_605445; path: JsonNode;
+proc call*(call_613457: Call_DescribeIpGroups_613445; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes one or more of your IP access control groups.
   ## 
-  let valid = call_605457.validator(path, query, header, formData, body)
-  let scheme = call_605457.pickScheme
+  let valid = call_613457.validator(path, query, header, formData, body)
+  let scheme = call_613457.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605457.url(scheme.get, call_605457.host, call_605457.base,
-                         call_605457.route, valid.getOrDefault("path"),
+  let url = call_613457.url(scheme.get, call_613457.host, call_613457.base,
+                         call_613457.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605457, url, valid)
+  result = atozHook(call_613457, url, valid)
 
-proc call*(call_605458: Call_DescribeIpGroups_605445; body: JsonNode): Recallable =
+proc call*(call_613458: Call_DescribeIpGroups_613445; body: JsonNode): Recallable =
   ## describeIpGroups
   ## Describes one or more of your IP access control groups.
   ##   body: JObject (required)
-  var body_605459 = newJObject()
+  var body_613459 = newJObject()
   if body != nil:
-    body_605459 = body
-  result = call_605458.call(nil, nil, nil, nil, body_605459)
+    body_613459 = body
+  result = call_613458.call(nil, nil, nil, nil, body_613459)
 
-var describeIpGroups* = Call_DescribeIpGroups_605445(name: "describeIpGroups",
+var describeIpGroups* = Call_DescribeIpGroups_613445(name: "describeIpGroups",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeIpGroups",
-    validator: validate_DescribeIpGroups_605446, base: "/",
-    url: url_DescribeIpGroups_605447, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeIpGroups_613446, base: "/",
+    url: url_DescribeIpGroups_613447, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTags_605460 = ref object of OpenApiRestCall_604658
-proc url_DescribeTags_605462(protocol: Scheme; host: string; base: string;
+  Call_DescribeTags_613460 = ref object of OpenApiRestCall_612658
+proc url_DescribeTags_613462(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1727,7 +1727,7 @@ proc url_DescribeTags_605462(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeTags_605461(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeTags_613461(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the specified tags for the specified WorkSpaces resource.
   ## 
@@ -1747,46 +1747,46 @@ proc validate_DescribeTags_605461(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605463 = header.getOrDefault("X-Amz-Target")
-  valid_605463 = validateParameter(valid_605463, JString, required = true, default = newJString(
+  var valid_613463 = header.getOrDefault("X-Amz-Target")
+  valid_613463 = validateParameter(valid_613463, JString, required = true, default = newJString(
       "WorkspacesService.DescribeTags"))
-  if valid_605463 != nil:
-    section.add "X-Amz-Target", valid_605463
-  var valid_605464 = header.getOrDefault("X-Amz-Signature")
-  valid_605464 = validateParameter(valid_605464, JString, required = false,
+  if valid_613463 != nil:
+    section.add "X-Amz-Target", valid_613463
+  var valid_613464 = header.getOrDefault("X-Amz-Signature")
+  valid_613464 = validateParameter(valid_613464, JString, required = false,
                                  default = nil)
-  if valid_605464 != nil:
-    section.add "X-Amz-Signature", valid_605464
-  var valid_605465 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605465 = validateParameter(valid_605465, JString, required = false,
+  if valid_613464 != nil:
+    section.add "X-Amz-Signature", valid_613464
+  var valid_613465 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613465 = validateParameter(valid_613465, JString, required = false,
                                  default = nil)
-  if valid_605465 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605465
-  var valid_605466 = header.getOrDefault("X-Amz-Date")
-  valid_605466 = validateParameter(valid_605466, JString, required = false,
+  if valid_613465 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613465
+  var valid_613466 = header.getOrDefault("X-Amz-Date")
+  valid_613466 = validateParameter(valid_613466, JString, required = false,
                                  default = nil)
-  if valid_605466 != nil:
-    section.add "X-Amz-Date", valid_605466
-  var valid_605467 = header.getOrDefault("X-Amz-Credential")
-  valid_605467 = validateParameter(valid_605467, JString, required = false,
+  if valid_613466 != nil:
+    section.add "X-Amz-Date", valid_613466
+  var valid_613467 = header.getOrDefault("X-Amz-Credential")
+  valid_613467 = validateParameter(valid_613467, JString, required = false,
                                  default = nil)
-  if valid_605467 != nil:
-    section.add "X-Amz-Credential", valid_605467
-  var valid_605468 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605468 = validateParameter(valid_605468, JString, required = false,
+  if valid_613467 != nil:
+    section.add "X-Amz-Credential", valid_613467
+  var valid_613468 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613468 = validateParameter(valid_613468, JString, required = false,
                                  default = nil)
-  if valid_605468 != nil:
-    section.add "X-Amz-Security-Token", valid_605468
-  var valid_605469 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605469 = validateParameter(valid_605469, JString, required = false,
+  if valid_613468 != nil:
+    section.add "X-Amz-Security-Token", valid_613468
+  var valid_613469 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613469 = validateParameter(valid_613469, JString, required = false,
                                  default = nil)
-  if valid_605469 != nil:
-    section.add "X-Amz-Algorithm", valid_605469
-  var valid_605470 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605470 = validateParameter(valid_605470, JString, required = false,
+  if valid_613469 != nil:
+    section.add "X-Amz-Algorithm", valid_613469
+  var valid_613470 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613470 = validateParameter(valid_613470, JString, required = false,
                                  default = nil)
-  if valid_605470 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605470
+  if valid_613470 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613470
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1797,36 +1797,36 @@ proc validate_DescribeTags_605461(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_605472: Call_DescribeTags_605460; path: JsonNode; query: JsonNode;
+proc call*(call_613472: Call_DescribeTags_613460; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the specified tags for the specified WorkSpaces resource.
   ## 
-  let valid = call_605472.validator(path, query, header, formData, body)
-  let scheme = call_605472.pickScheme
+  let valid = call_613472.validator(path, query, header, formData, body)
+  let scheme = call_613472.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605472.url(scheme.get, call_605472.host, call_605472.base,
-                         call_605472.route, valid.getOrDefault("path"),
+  let url = call_613472.url(scheme.get, call_613472.host, call_613472.base,
+                         call_613472.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605472, url, valid)
+  result = atozHook(call_613472, url, valid)
 
-proc call*(call_605473: Call_DescribeTags_605460; body: JsonNode): Recallable =
+proc call*(call_613473: Call_DescribeTags_613460; body: JsonNode): Recallable =
   ## describeTags
   ## Describes the specified tags for the specified WorkSpaces resource.
   ##   body: JObject (required)
-  var body_605474 = newJObject()
+  var body_613474 = newJObject()
   if body != nil:
-    body_605474 = body
-  result = call_605473.call(nil, nil, nil, nil, body_605474)
+    body_613474 = body
+  result = call_613473.call(nil, nil, nil, nil, body_613474)
 
-var describeTags* = Call_DescribeTags_605460(name: "describeTags",
+var describeTags* = Call_DescribeTags_613460(name: "describeTags",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeTags",
-    validator: validate_DescribeTags_605461, base: "/", url: url_DescribeTags_605462,
+    validator: validate_DescribeTags_613461, base: "/", url: url_DescribeTags_613462,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkspaceBundles_605475 = ref object of OpenApiRestCall_604658
-proc url_DescribeWorkspaceBundles_605477(protocol: Scheme; host: string;
+  Call_DescribeWorkspaceBundles_613475 = ref object of OpenApiRestCall_612658
+proc url_DescribeWorkspaceBundles_613477(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1839,7 +1839,7 @@ proc url_DescribeWorkspaceBundles_605477(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeWorkspaceBundles_605476(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkspaceBundles_613476(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves a list that describes the available WorkSpace bundles.</p> <p>You can filter the results using either bundle ID or owner, but not both.</p>
   ## 
@@ -1851,11 +1851,11 @@ proc validate_DescribeWorkspaceBundles_605476(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_605478 = query.getOrDefault("NextToken")
-  valid_605478 = validateParameter(valid_605478, JString, required = false,
+  var valid_613478 = query.getOrDefault("NextToken")
+  valid_613478 = validateParameter(valid_613478, JString, required = false,
                                  default = nil)
-  if valid_605478 != nil:
-    section.add "NextToken", valid_605478
+  if valid_613478 != nil:
+    section.add "NextToken", valid_613478
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -1867,46 +1867,46 @@ proc validate_DescribeWorkspaceBundles_605476(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605479 = header.getOrDefault("X-Amz-Target")
-  valid_605479 = validateParameter(valid_605479, JString, required = true, default = newJString(
+  var valid_613479 = header.getOrDefault("X-Amz-Target")
+  valid_613479 = validateParameter(valid_613479, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaceBundles"))
-  if valid_605479 != nil:
-    section.add "X-Amz-Target", valid_605479
-  var valid_605480 = header.getOrDefault("X-Amz-Signature")
-  valid_605480 = validateParameter(valid_605480, JString, required = false,
+  if valid_613479 != nil:
+    section.add "X-Amz-Target", valid_613479
+  var valid_613480 = header.getOrDefault("X-Amz-Signature")
+  valid_613480 = validateParameter(valid_613480, JString, required = false,
                                  default = nil)
-  if valid_605480 != nil:
-    section.add "X-Amz-Signature", valid_605480
-  var valid_605481 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605481 = validateParameter(valid_605481, JString, required = false,
+  if valid_613480 != nil:
+    section.add "X-Amz-Signature", valid_613480
+  var valid_613481 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613481 = validateParameter(valid_613481, JString, required = false,
                                  default = nil)
-  if valid_605481 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605481
-  var valid_605482 = header.getOrDefault("X-Amz-Date")
-  valid_605482 = validateParameter(valid_605482, JString, required = false,
+  if valid_613481 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613481
+  var valid_613482 = header.getOrDefault("X-Amz-Date")
+  valid_613482 = validateParameter(valid_613482, JString, required = false,
                                  default = nil)
-  if valid_605482 != nil:
-    section.add "X-Amz-Date", valid_605482
-  var valid_605483 = header.getOrDefault("X-Amz-Credential")
-  valid_605483 = validateParameter(valid_605483, JString, required = false,
+  if valid_613482 != nil:
+    section.add "X-Amz-Date", valid_613482
+  var valid_613483 = header.getOrDefault("X-Amz-Credential")
+  valid_613483 = validateParameter(valid_613483, JString, required = false,
                                  default = nil)
-  if valid_605483 != nil:
-    section.add "X-Amz-Credential", valid_605483
-  var valid_605484 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605484 = validateParameter(valid_605484, JString, required = false,
+  if valid_613483 != nil:
+    section.add "X-Amz-Credential", valid_613483
+  var valid_613484 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613484 = validateParameter(valid_613484, JString, required = false,
                                  default = nil)
-  if valid_605484 != nil:
-    section.add "X-Amz-Security-Token", valid_605484
-  var valid_605485 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605485 = validateParameter(valid_605485, JString, required = false,
+  if valid_613484 != nil:
+    section.add "X-Amz-Security-Token", valid_613484
+  var valid_613485 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613485 = validateParameter(valid_613485, JString, required = false,
                                  default = nil)
-  if valid_605485 != nil:
-    section.add "X-Amz-Algorithm", valid_605485
-  var valid_605486 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605486 = validateParameter(valid_605486, JString, required = false,
+  if valid_613485 != nil:
+    section.add "X-Amz-Algorithm", valid_613485
+  var valid_613486 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613486 = validateParameter(valid_613486, JString, required = false,
                                  default = nil)
-  if valid_605486 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605486
+  if valid_613486 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613486
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1917,42 +1917,42 @@ proc validate_DescribeWorkspaceBundles_605476(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605488: Call_DescribeWorkspaceBundles_605475; path: JsonNode;
+proc call*(call_613488: Call_DescribeWorkspaceBundles_613475; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Retrieves a list that describes the available WorkSpace bundles.</p> <p>You can filter the results using either bundle ID or owner, but not both.</p>
   ## 
-  let valid = call_605488.validator(path, query, header, formData, body)
-  let scheme = call_605488.pickScheme
+  let valid = call_613488.validator(path, query, header, formData, body)
+  let scheme = call_613488.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605488.url(scheme.get, call_605488.host, call_605488.base,
-                         call_605488.route, valid.getOrDefault("path"),
+  let url = call_613488.url(scheme.get, call_613488.host, call_613488.base,
+                         call_613488.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605488, url, valid)
+  result = atozHook(call_613488, url, valid)
 
-proc call*(call_605489: Call_DescribeWorkspaceBundles_605475; body: JsonNode;
+proc call*(call_613489: Call_DescribeWorkspaceBundles_613475; body: JsonNode;
           NextToken: string = ""): Recallable =
   ## describeWorkspaceBundles
   ## <p>Retrieves a list that describes the available WorkSpace bundles.</p> <p>You can filter the results using either bundle ID or owner, but not both.</p>
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_605490 = newJObject()
-  var body_605491 = newJObject()
-  add(query_605490, "NextToken", newJString(NextToken))
+  var query_613490 = newJObject()
+  var body_613491 = newJObject()
+  add(query_613490, "NextToken", newJString(NextToken))
   if body != nil:
-    body_605491 = body
-  result = call_605489.call(nil, query_605490, nil, nil, body_605491)
+    body_613491 = body
+  result = call_613489.call(nil, query_613490, nil, nil, body_613491)
 
-var describeWorkspaceBundles* = Call_DescribeWorkspaceBundles_605475(
+var describeWorkspaceBundles* = Call_DescribeWorkspaceBundles_613475(
     name: "describeWorkspaceBundles", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspaceBundles",
-    validator: validate_DescribeWorkspaceBundles_605476, base: "/",
-    url: url_DescribeWorkspaceBundles_605477, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeWorkspaceBundles_613476, base: "/",
+    url: url_DescribeWorkspaceBundles_613477, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkspaceDirectories_605493 = ref object of OpenApiRestCall_604658
-proc url_DescribeWorkspaceDirectories_605495(protocol: Scheme; host: string;
+  Call_DescribeWorkspaceDirectories_613493 = ref object of OpenApiRestCall_612658
+proc url_DescribeWorkspaceDirectories_613495(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1964,7 +1964,7 @@ proc url_DescribeWorkspaceDirectories_605495(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeWorkspaceDirectories_605494(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkspaceDirectories_613494(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the available directories that are registered with Amazon WorkSpaces.
   ## 
@@ -1976,11 +1976,11 @@ proc validate_DescribeWorkspaceDirectories_605494(path: JsonNode; query: JsonNod
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_605496 = query.getOrDefault("NextToken")
-  valid_605496 = validateParameter(valid_605496, JString, required = false,
+  var valid_613496 = query.getOrDefault("NextToken")
+  valid_613496 = validateParameter(valid_613496, JString, required = false,
                                  default = nil)
-  if valid_605496 != nil:
-    section.add "NextToken", valid_605496
+  if valid_613496 != nil:
+    section.add "NextToken", valid_613496
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -1992,46 +1992,46 @@ proc validate_DescribeWorkspaceDirectories_605494(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605497 = header.getOrDefault("X-Amz-Target")
-  valid_605497 = validateParameter(valid_605497, JString, required = true, default = newJString(
+  var valid_613497 = header.getOrDefault("X-Amz-Target")
+  valid_613497 = validateParameter(valid_613497, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaceDirectories"))
-  if valid_605497 != nil:
-    section.add "X-Amz-Target", valid_605497
-  var valid_605498 = header.getOrDefault("X-Amz-Signature")
-  valid_605498 = validateParameter(valid_605498, JString, required = false,
+  if valid_613497 != nil:
+    section.add "X-Amz-Target", valid_613497
+  var valid_613498 = header.getOrDefault("X-Amz-Signature")
+  valid_613498 = validateParameter(valid_613498, JString, required = false,
                                  default = nil)
-  if valid_605498 != nil:
-    section.add "X-Amz-Signature", valid_605498
-  var valid_605499 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605499 = validateParameter(valid_605499, JString, required = false,
+  if valid_613498 != nil:
+    section.add "X-Amz-Signature", valid_613498
+  var valid_613499 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613499 = validateParameter(valid_613499, JString, required = false,
                                  default = nil)
-  if valid_605499 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605499
-  var valid_605500 = header.getOrDefault("X-Amz-Date")
-  valid_605500 = validateParameter(valid_605500, JString, required = false,
+  if valid_613499 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613499
+  var valid_613500 = header.getOrDefault("X-Amz-Date")
+  valid_613500 = validateParameter(valid_613500, JString, required = false,
                                  default = nil)
-  if valid_605500 != nil:
-    section.add "X-Amz-Date", valid_605500
-  var valid_605501 = header.getOrDefault("X-Amz-Credential")
-  valid_605501 = validateParameter(valid_605501, JString, required = false,
+  if valid_613500 != nil:
+    section.add "X-Amz-Date", valid_613500
+  var valid_613501 = header.getOrDefault("X-Amz-Credential")
+  valid_613501 = validateParameter(valid_613501, JString, required = false,
                                  default = nil)
-  if valid_605501 != nil:
-    section.add "X-Amz-Credential", valid_605501
-  var valid_605502 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605502 = validateParameter(valid_605502, JString, required = false,
+  if valid_613501 != nil:
+    section.add "X-Amz-Credential", valid_613501
+  var valid_613502 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613502 = validateParameter(valid_613502, JString, required = false,
                                  default = nil)
-  if valid_605502 != nil:
-    section.add "X-Amz-Security-Token", valid_605502
-  var valid_605503 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605503 = validateParameter(valid_605503, JString, required = false,
+  if valid_613502 != nil:
+    section.add "X-Amz-Security-Token", valid_613502
+  var valid_613503 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613503 = validateParameter(valid_613503, JString, required = false,
                                  default = nil)
-  if valid_605503 != nil:
-    section.add "X-Amz-Algorithm", valid_605503
-  var valid_605504 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605504 = validateParameter(valid_605504, JString, required = false,
+  if valid_613503 != nil:
+    section.add "X-Amz-Algorithm", valid_613503
+  var valid_613504 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613504 = validateParameter(valid_613504, JString, required = false,
                                  default = nil)
-  if valid_605504 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605504
+  if valid_613504 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613504
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2042,43 +2042,43 @@ proc validate_DescribeWorkspaceDirectories_605494(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_605506: Call_DescribeWorkspaceDirectories_605493; path: JsonNode;
+proc call*(call_613506: Call_DescribeWorkspaceDirectories_613493; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the available directories that are registered with Amazon WorkSpaces.
   ## 
-  let valid = call_605506.validator(path, query, header, formData, body)
-  let scheme = call_605506.pickScheme
+  let valid = call_613506.validator(path, query, header, formData, body)
+  let scheme = call_613506.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605506.url(scheme.get, call_605506.host, call_605506.base,
-                         call_605506.route, valid.getOrDefault("path"),
+  let url = call_613506.url(scheme.get, call_613506.host, call_613506.base,
+                         call_613506.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605506, url, valid)
+  result = atozHook(call_613506, url, valid)
 
-proc call*(call_605507: Call_DescribeWorkspaceDirectories_605493; body: JsonNode;
+proc call*(call_613507: Call_DescribeWorkspaceDirectories_613493; body: JsonNode;
           NextToken: string = ""): Recallable =
   ## describeWorkspaceDirectories
   ## Describes the available directories that are registered with Amazon WorkSpaces.
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_605508 = newJObject()
-  var body_605509 = newJObject()
-  add(query_605508, "NextToken", newJString(NextToken))
+  var query_613508 = newJObject()
+  var body_613509 = newJObject()
+  add(query_613508, "NextToken", newJString(NextToken))
   if body != nil:
-    body_605509 = body
-  result = call_605507.call(nil, query_605508, nil, nil, body_605509)
+    body_613509 = body
+  result = call_613507.call(nil, query_613508, nil, nil, body_613509)
 
-var describeWorkspaceDirectories* = Call_DescribeWorkspaceDirectories_605493(
+var describeWorkspaceDirectories* = Call_DescribeWorkspaceDirectories_613493(
     name: "describeWorkspaceDirectories", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspaceDirectories",
-    validator: validate_DescribeWorkspaceDirectories_605494, base: "/",
-    url: url_DescribeWorkspaceDirectories_605495,
+    validator: validate_DescribeWorkspaceDirectories_613494, base: "/",
+    url: url_DescribeWorkspaceDirectories_613495,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkspaceImages_605510 = ref object of OpenApiRestCall_604658
-proc url_DescribeWorkspaceImages_605512(protocol: Scheme; host: string; base: string;
+  Call_DescribeWorkspaceImages_613510 = ref object of OpenApiRestCall_612658
+proc url_DescribeWorkspaceImages_613512(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -2091,7 +2091,7 @@ proc url_DescribeWorkspaceImages_605512(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_DescribeWorkspaceImages_605511(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkspaceImages_613511(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves a list that describes one or more specified images, if the image identifiers are provided. Otherwise, all images in the account are described. 
   ## 
@@ -2111,46 +2111,46 @@ proc validate_DescribeWorkspaceImages_605511(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605513 = header.getOrDefault("X-Amz-Target")
-  valid_605513 = validateParameter(valid_605513, JString, required = true, default = newJString(
+  var valid_613513 = header.getOrDefault("X-Amz-Target")
+  valid_613513 = validateParameter(valid_613513, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaceImages"))
-  if valid_605513 != nil:
-    section.add "X-Amz-Target", valid_605513
-  var valid_605514 = header.getOrDefault("X-Amz-Signature")
-  valid_605514 = validateParameter(valid_605514, JString, required = false,
+  if valid_613513 != nil:
+    section.add "X-Amz-Target", valid_613513
+  var valid_613514 = header.getOrDefault("X-Amz-Signature")
+  valid_613514 = validateParameter(valid_613514, JString, required = false,
                                  default = nil)
-  if valid_605514 != nil:
-    section.add "X-Amz-Signature", valid_605514
-  var valid_605515 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605515 = validateParameter(valid_605515, JString, required = false,
+  if valid_613514 != nil:
+    section.add "X-Amz-Signature", valid_613514
+  var valid_613515 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613515 = validateParameter(valid_613515, JString, required = false,
                                  default = nil)
-  if valid_605515 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605515
-  var valid_605516 = header.getOrDefault("X-Amz-Date")
-  valid_605516 = validateParameter(valid_605516, JString, required = false,
+  if valid_613515 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613515
+  var valid_613516 = header.getOrDefault("X-Amz-Date")
+  valid_613516 = validateParameter(valid_613516, JString, required = false,
                                  default = nil)
-  if valid_605516 != nil:
-    section.add "X-Amz-Date", valid_605516
-  var valid_605517 = header.getOrDefault("X-Amz-Credential")
-  valid_605517 = validateParameter(valid_605517, JString, required = false,
+  if valid_613516 != nil:
+    section.add "X-Amz-Date", valid_613516
+  var valid_613517 = header.getOrDefault("X-Amz-Credential")
+  valid_613517 = validateParameter(valid_613517, JString, required = false,
                                  default = nil)
-  if valid_605517 != nil:
-    section.add "X-Amz-Credential", valid_605517
-  var valid_605518 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605518 = validateParameter(valid_605518, JString, required = false,
+  if valid_613517 != nil:
+    section.add "X-Amz-Credential", valid_613517
+  var valid_613518 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613518 = validateParameter(valid_613518, JString, required = false,
                                  default = nil)
-  if valid_605518 != nil:
-    section.add "X-Amz-Security-Token", valid_605518
-  var valid_605519 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605519 = validateParameter(valid_605519, JString, required = false,
+  if valid_613518 != nil:
+    section.add "X-Amz-Security-Token", valid_613518
+  var valid_613519 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613519 = validateParameter(valid_613519, JString, required = false,
                                  default = nil)
-  if valid_605519 != nil:
-    section.add "X-Amz-Algorithm", valid_605519
-  var valid_605520 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605520 = validateParameter(valid_605520, JString, required = false,
+  if valid_613519 != nil:
+    section.add "X-Amz-Algorithm", valid_613519
+  var valid_613520 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613520 = validateParameter(valid_613520, JString, required = false,
                                  default = nil)
-  if valid_605520 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605520
+  if valid_613520 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613520
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2161,37 +2161,37 @@ proc validate_DescribeWorkspaceImages_605511(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605522: Call_DescribeWorkspaceImages_605510; path: JsonNode;
+proc call*(call_613522: Call_DescribeWorkspaceImages_613510; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a list that describes one or more specified images, if the image identifiers are provided. Otherwise, all images in the account are described. 
   ## 
-  let valid = call_605522.validator(path, query, header, formData, body)
-  let scheme = call_605522.pickScheme
+  let valid = call_613522.validator(path, query, header, formData, body)
+  let scheme = call_613522.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605522.url(scheme.get, call_605522.host, call_605522.base,
-                         call_605522.route, valid.getOrDefault("path"),
+  let url = call_613522.url(scheme.get, call_613522.host, call_613522.base,
+                         call_613522.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605522, url, valid)
+  result = atozHook(call_613522, url, valid)
 
-proc call*(call_605523: Call_DescribeWorkspaceImages_605510; body: JsonNode): Recallable =
+proc call*(call_613523: Call_DescribeWorkspaceImages_613510; body: JsonNode): Recallable =
   ## describeWorkspaceImages
   ## Retrieves a list that describes one or more specified images, if the image identifiers are provided. Otherwise, all images in the account are described. 
   ##   body: JObject (required)
-  var body_605524 = newJObject()
+  var body_613524 = newJObject()
   if body != nil:
-    body_605524 = body
-  result = call_605523.call(nil, nil, nil, nil, body_605524)
+    body_613524 = body
+  result = call_613523.call(nil, nil, nil, nil, body_613524)
 
-var describeWorkspaceImages* = Call_DescribeWorkspaceImages_605510(
+var describeWorkspaceImages* = Call_DescribeWorkspaceImages_613510(
     name: "describeWorkspaceImages", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspaceImages",
-    validator: validate_DescribeWorkspaceImages_605511, base: "/",
-    url: url_DescribeWorkspaceImages_605512, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeWorkspaceImages_613511, base: "/",
+    url: url_DescribeWorkspaceImages_613512, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkspaceSnapshots_605525 = ref object of OpenApiRestCall_604658
-proc url_DescribeWorkspaceSnapshots_605527(protocol: Scheme; host: string;
+  Call_DescribeWorkspaceSnapshots_613525 = ref object of OpenApiRestCall_612658
+proc url_DescribeWorkspaceSnapshots_613527(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2203,7 +2203,7 @@ proc url_DescribeWorkspaceSnapshots_605527(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeWorkspaceSnapshots_605526(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkspaceSnapshots_613526(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the snapshots for the specified WorkSpace.
   ## 
@@ -2223,46 +2223,46 @@ proc validate_DescribeWorkspaceSnapshots_605526(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605528 = header.getOrDefault("X-Amz-Target")
-  valid_605528 = validateParameter(valid_605528, JString, required = true, default = newJString(
+  var valid_613528 = header.getOrDefault("X-Amz-Target")
+  valid_613528 = validateParameter(valid_613528, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaceSnapshots"))
-  if valid_605528 != nil:
-    section.add "X-Amz-Target", valid_605528
-  var valid_605529 = header.getOrDefault("X-Amz-Signature")
-  valid_605529 = validateParameter(valid_605529, JString, required = false,
+  if valid_613528 != nil:
+    section.add "X-Amz-Target", valid_613528
+  var valid_613529 = header.getOrDefault("X-Amz-Signature")
+  valid_613529 = validateParameter(valid_613529, JString, required = false,
                                  default = nil)
-  if valid_605529 != nil:
-    section.add "X-Amz-Signature", valid_605529
-  var valid_605530 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605530 = validateParameter(valid_605530, JString, required = false,
+  if valid_613529 != nil:
+    section.add "X-Amz-Signature", valid_613529
+  var valid_613530 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613530 = validateParameter(valid_613530, JString, required = false,
                                  default = nil)
-  if valid_605530 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605530
-  var valid_605531 = header.getOrDefault("X-Amz-Date")
-  valid_605531 = validateParameter(valid_605531, JString, required = false,
+  if valid_613530 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613530
+  var valid_613531 = header.getOrDefault("X-Amz-Date")
+  valid_613531 = validateParameter(valid_613531, JString, required = false,
                                  default = nil)
-  if valid_605531 != nil:
-    section.add "X-Amz-Date", valid_605531
-  var valid_605532 = header.getOrDefault("X-Amz-Credential")
-  valid_605532 = validateParameter(valid_605532, JString, required = false,
+  if valid_613531 != nil:
+    section.add "X-Amz-Date", valid_613531
+  var valid_613532 = header.getOrDefault("X-Amz-Credential")
+  valid_613532 = validateParameter(valid_613532, JString, required = false,
                                  default = nil)
-  if valid_605532 != nil:
-    section.add "X-Amz-Credential", valid_605532
-  var valid_605533 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605533 = validateParameter(valid_605533, JString, required = false,
+  if valid_613532 != nil:
+    section.add "X-Amz-Credential", valid_613532
+  var valid_613533 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613533 = validateParameter(valid_613533, JString, required = false,
                                  default = nil)
-  if valid_605533 != nil:
-    section.add "X-Amz-Security-Token", valid_605533
-  var valid_605534 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605534 = validateParameter(valid_605534, JString, required = false,
+  if valid_613533 != nil:
+    section.add "X-Amz-Security-Token", valid_613533
+  var valid_613534 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613534 = validateParameter(valid_613534, JString, required = false,
                                  default = nil)
-  if valid_605534 != nil:
-    section.add "X-Amz-Algorithm", valid_605534
-  var valid_605535 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605535 = validateParameter(valid_605535, JString, required = false,
+  if valid_613534 != nil:
+    section.add "X-Amz-Algorithm", valid_613534
+  var valid_613535 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613535 = validateParameter(valid_613535, JString, required = false,
                                  default = nil)
-  if valid_605535 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605535
+  if valid_613535 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613535
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2273,38 +2273,38 @@ proc validate_DescribeWorkspaceSnapshots_605526(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605537: Call_DescribeWorkspaceSnapshots_605525; path: JsonNode;
+proc call*(call_613537: Call_DescribeWorkspaceSnapshots_613525; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the snapshots for the specified WorkSpace.
   ## 
-  let valid = call_605537.validator(path, query, header, formData, body)
-  let scheme = call_605537.pickScheme
+  let valid = call_613537.validator(path, query, header, formData, body)
+  let scheme = call_613537.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605537.url(scheme.get, call_605537.host, call_605537.base,
-                         call_605537.route, valid.getOrDefault("path"),
+  let url = call_613537.url(scheme.get, call_613537.host, call_613537.base,
+                         call_613537.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605537, url, valid)
+  result = atozHook(call_613537, url, valid)
 
-proc call*(call_605538: Call_DescribeWorkspaceSnapshots_605525; body: JsonNode): Recallable =
+proc call*(call_613538: Call_DescribeWorkspaceSnapshots_613525; body: JsonNode): Recallable =
   ## describeWorkspaceSnapshots
   ## Describes the snapshots for the specified WorkSpace.
   ##   body: JObject (required)
-  var body_605539 = newJObject()
+  var body_613539 = newJObject()
   if body != nil:
-    body_605539 = body
-  result = call_605538.call(nil, nil, nil, nil, body_605539)
+    body_613539 = body
+  result = call_613538.call(nil, nil, nil, nil, body_613539)
 
-var describeWorkspaceSnapshots* = Call_DescribeWorkspaceSnapshots_605525(
+var describeWorkspaceSnapshots* = Call_DescribeWorkspaceSnapshots_613525(
     name: "describeWorkspaceSnapshots", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspaceSnapshots",
-    validator: validate_DescribeWorkspaceSnapshots_605526, base: "/",
-    url: url_DescribeWorkspaceSnapshots_605527,
+    validator: validate_DescribeWorkspaceSnapshots_613526, base: "/",
+    url: url_DescribeWorkspaceSnapshots_613527,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkspaces_605540 = ref object of OpenApiRestCall_604658
-proc url_DescribeWorkspaces_605542(protocol: Scheme; host: string; base: string;
+  Call_DescribeWorkspaces_613540 = ref object of OpenApiRestCall_612658
+proc url_DescribeWorkspaces_613542(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2316,7 +2316,7 @@ proc url_DescribeWorkspaces_605542(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeWorkspaces_605541(path: JsonNode; query: JsonNode;
+proc validate_DescribeWorkspaces_613541(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Describes the specified WorkSpaces.</p> <p>You can filter the results by using the bundle identifier, directory identifier, or owner, but you can specify only one filter at a time.</p>
@@ -2331,16 +2331,16 @@ proc validate_DescribeWorkspaces_605541(path: JsonNode; query: JsonNode;
   ##   Limit: JString
   ##        : Pagination limit
   section = newJObject()
-  var valid_605543 = query.getOrDefault("NextToken")
-  valid_605543 = validateParameter(valid_605543, JString, required = false,
+  var valid_613543 = query.getOrDefault("NextToken")
+  valid_613543 = validateParameter(valid_613543, JString, required = false,
                                  default = nil)
-  if valid_605543 != nil:
-    section.add "NextToken", valid_605543
-  var valid_605544 = query.getOrDefault("Limit")
-  valid_605544 = validateParameter(valid_605544, JString, required = false,
+  if valid_613543 != nil:
+    section.add "NextToken", valid_613543
+  var valid_613544 = query.getOrDefault("Limit")
+  valid_613544 = validateParameter(valid_613544, JString, required = false,
                                  default = nil)
-  if valid_605544 != nil:
-    section.add "Limit", valid_605544
+  if valid_613544 != nil:
+    section.add "Limit", valid_613544
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -2352,46 +2352,46 @@ proc validate_DescribeWorkspaces_605541(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605545 = header.getOrDefault("X-Amz-Target")
-  valid_605545 = validateParameter(valid_605545, JString, required = true, default = newJString(
+  var valid_613545 = header.getOrDefault("X-Amz-Target")
+  valid_613545 = validateParameter(valid_613545, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspaces"))
-  if valid_605545 != nil:
-    section.add "X-Amz-Target", valid_605545
-  var valid_605546 = header.getOrDefault("X-Amz-Signature")
-  valid_605546 = validateParameter(valid_605546, JString, required = false,
+  if valid_613545 != nil:
+    section.add "X-Amz-Target", valid_613545
+  var valid_613546 = header.getOrDefault("X-Amz-Signature")
+  valid_613546 = validateParameter(valid_613546, JString, required = false,
                                  default = nil)
-  if valid_605546 != nil:
-    section.add "X-Amz-Signature", valid_605546
-  var valid_605547 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605547 = validateParameter(valid_605547, JString, required = false,
+  if valid_613546 != nil:
+    section.add "X-Amz-Signature", valid_613546
+  var valid_613547 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613547 = validateParameter(valid_613547, JString, required = false,
                                  default = nil)
-  if valid_605547 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605547
-  var valid_605548 = header.getOrDefault("X-Amz-Date")
-  valid_605548 = validateParameter(valid_605548, JString, required = false,
+  if valid_613547 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613547
+  var valid_613548 = header.getOrDefault("X-Amz-Date")
+  valid_613548 = validateParameter(valid_613548, JString, required = false,
                                  default = nil)
-  if valid_605548 != nil:
-    section.add "X-Amz-Date", valid_605548
-  var valid_605549 = header.getOrDefault("X-Amz-Credential")
-  valid_605549 = validateParameter(valid_605549, JString, required = false,
+  if valid_613548 != nil:
+    section.add "X-Amz-Date", valid_613548
+  var valid_613549 = header.getOrDefault("X-Amz-Credential")
+  valid_613549 = validateParameter(valid_613549, JString, required = false,
                                  default = nil)
-  if valid_605549 != nil:
-    section.add "X-Amz-Credential", valid_605549
-  var valid_605550 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605550 = validateParameter(valid_605550, JString, required = false,
+  if valid_613549 != nil:
+    section.add "X-Amz-Credential", valid_613549
+  var valid_613550 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613550 = validateParameter(valid_613550, JString, required = false,
                                  default = nil)
-  if valid_605550 != nil:
-    section.add "X-Amz-Security-Token", valid_605550
-  var valid_605551 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605551 = validateParameter(valid_605551, JString, required = false,
+  if valid_613550 != nil:
+    section.add "X-Amz-Security-Token", valid_613550
+  var valid_613551 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613551 = validateParameter(valid_613551, JString, required = false,
                                  default = nil)
-  if valid_605551 != nil:
-    section.add "X-Amz-Algorithm", valid_605551
-  var valid_605552 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605552 = validateParameter(valid_605552, JString, required = false,
+  if valid_613551 != nil:
+    section.add "X-Amz-Algorithm", valid_613551
+  var valid_613552 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613552 = validateParameter(valid_613552, JString, required = false,
                                  default = nil)
-  if valid_605552 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605552
+  if valid_613552 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613552
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2402,20 +2402,20 @@ proc validate_DescribeWorkspaces_605541(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605554: Call_DescribeWorkspaces_605540; path: JsonNode;
+proc call*(call_613554: Call_DescribeWorkspaces_613540; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the specified WorkSpaces.</p> <p>You can filter the results by using the bundle identifier, directory identifier, or owner, but you can specify only one filter at a time.</p>
   ## 
-  let valid = call_605554.validator(path, query, header, formData, body)
-  let scheme = call_605554.pickScheme
+  let valid = call_613554.validator(path, query, header, formData, body)
+  let scheme = call_613554.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605554.url(scheme.get, call_605554.host, call_605554.base,
-                         call_605554.route, valid.getOrDefault("path"),
+  let url = call_613554.url(scheme.get, call_613554.host, call_613554.base,
+                         call_613554.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605554, url, valid)
+  result = atozHook(call_613554, url, valid)
 
-proc call*(call_605555: Call_DescribeWorkspaces_605540; body: JsonNode;
+proc call*(call_613555: Call_DescribeWorkspaces_613540; body: JsonNode;
           NextToken: string = ""; Limit: string = ""): Recallable =
   ## describeWorkspaces
   ## <p>Describes the specified WorkSpaces.</p> <p>You can filter the results by using the bundle identifier, directory identifier, or owner, but you can specify only one filter at a time.</p>
@@ -2424,23 +2424,23 @@ proc call*(call_605555: Call_DescribeWorkspaces_605540; body: JsonNode;
   ##   Limit: string
   ##        : Pagination limit
   ##   body: JObject (required)
-  var query_605556 = newJObject()
-  var body_605557 = newJObject()
-  add(query_605556, "NextToken", newJString(NextToken))
-  add(query_605556, "Limit", newJString(Limit))
+  var query_613556 = newJObject()
+  var body_613557 = newJObject()
+  add(query_613556, "NextToken", newJString(NextToken))
+  add(query_613556, "Limit", newJString(Limit))
   if body != nil:
-    body_605557 = body
-  result = call_605555.call(nil, query_605556, nil, nil, body_605557)
+    body_613557 = body
+  result = call_613555.call(nil, query_613556, nil, nil, body_613557)
 
-var describeWorkspaces* = Call_DescribeWorkspaces_605540(
+var describeWorkspaces* = Call_DescribeWorkspaces_613540(
     name: "describeWorkspaces", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspaces",
-    validator: validate_DescribeWorkspaces_605541, base: "/",
-    url: url_DescribeWorkspaces_605542, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeWorkspaces_613541, base: "/",
+    url: url_DescribeWorkspaces_613542, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeWorkspacesConnectionStatus_605558 = ref object of OpenApiRestCall_604658
-proc url_DescribeWorkspacesConnectionStatus_605560(protocol: Scheme; host: string;
+  Call_DescribeWorkspacesConnectionStatus_613558 = ref object of OpenApiRestCall_612658
+proc url_DescribeWorkspacesConnectionStatus_613560(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2452,7 +2452,7 @@ proc url_DescribeWorkspacesConnectionStatus_605560(protocol: Scheme; host: strin
   else:
     result.path = base & route
 
-proc validate_DescribeWorkspacesConnectionStatus_605559(path: JsonNode;
+proc validate_DescribeWorkspacesConnectionStatus_613559(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the connection status of the specified WorkSpaces.
   ## 
@@ -2472,46 +2472,46 @@ proc validate_DescribeWorkspacesConnectionStatus_605559(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605561 = header.getOrDefault("X-Amz-Target")
-  valid_605561 = validateParameter(valid_605561, JString, required = true, default = newJString(
+  var valid_613561 = header.getOrDefault("X-Amz-Target")
+  valid_613561 = validateParameter(valid_613561, JString, required = true, default = newJString(
       "WorkspacesService.DescribeWorkspacesConnectionStatus"))
-  if valid_605561 != nil:
-    section.add "X-Amz-Target", valid_605561
-  var valid_605562 = header.getOrDefault("X-Amz-Signature")
-  valid_605562 = validateParameter(valid_605562, JString, required = false,
+  if valid_613561 != nil:
+    section.add "X-Amz-Target", valid_613561
+  var valid_613562 = header.getOrDefault("X-Amz-Signature")
+  valid_613562 = validateParameter(valid_613562, JString, required = false,
                                  default = nil)
-  if valid_605562 != nil:
-    section.add "X-Amz-Signature", valid_605562
-  var valid_605563 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605563 = validateParameter(valid_605563, JString, required = false,
+  if valid_613562 != nil:
+    section.add "X-Amz-Signature", valid_613562
+  var valid_613563 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613563 = validateParameter(valid_613563, JString, required = false,
                                  default = nil)
-  if valid_605563 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605563
-  var valid_605564 = header.getOrDefault("X-Amz-Date")
-  valid_605564 = validateParameter(valid_605564, JString, required = false,
+  if valid_613563 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613563
+  var valid_613564 = header.getOrDefault("X-Amz-Date")
+  valid_613564 = validateParameter(valid_613564, JString, required = false,
                                  default = nil)
-  if valid_605564 != nil:
-    section.add "X-Amz-Date", valid_605564
-  var valid_605565 = header.getOrDefault("X-Amz-Credential")
-  valid_605565 = validateParameter(valid_605565, JString, required = false,
+  if valid_613564 != nil:
+    section.add "X-Amz-Date", valid_613564
+  var valid_613565 = header.getOrDefault("X-Amz-Credential")
+  valid_613565 = validateParameter(valid_613565, JString, required = false,
                                  default = nil)
-  if valid_605565 != nil:
-    section.add "X-Amz-Credential", valid_605565
-  var valid_605566 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605566 = validateParameter(valid_605566, JString, required = false,
+  if valid_613565 != nil:
+    section.add "X-Amz-Credential", valid_613565
+  var valid_613566 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613566 = validateParameter(valid_613566, JString, required = false,
                                  default = nil)
-  if valid_605566 != nil:
-    section.add "X-Amz-Security-Token", valid_605566
-  var valid_605567 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605567 = validateParameter(valid_605567, JString, required = false,
+  if valid_613566 != nil:
+    section.add "X-Amz-Security-Token", valid_613566
+  var valid_613567 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613567 = validateParameter(valid_613567, JString, required = false,
                                  default = nil)
-  if valid_605567 != nil:
-    section.add "X-Amz-Algorithm", valid_605567
-  var valid_605568 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605568 = validateParameter(valid_605568, JString, required = false,
+  if valid_613567 != nil:
+    section.add "X-Amz-Algorithm", valid_613567
+  var valid_613568 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613568 = validateParameter(valid_613568, JString, required = false,
                                  default = nil)
-  if valid_605568 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605568
+  if valid_613568 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613568
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2522,39 +2522,39 @@ proc validate_DescribeWorkspacesConnectionStatus_605559(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605570: Call_DescribeWorkspacesConnectionStatus_605558;
+proc call*(call_613570: Call_DescribeWorkspacesConnectionStatus_613558;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Describes the connection status of the specified WorkSpaces.
   ## 
-  let valid = call_605570.validator(path, query, header, formData, body)
-  let scheme = call_605570.pickScheme
+  let valid = call_613570.validator(path, query, header, formData, body)
+  let scheme = call_613570.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605570.url(scheme.get, call_605570.host, call_605570.base,
-                         call_605570.route, valid.getOrDefault("path"),
+  let url = call_613570.url(scheme.get, call_613570.host, call_613570.base,
+                         call_613570.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605570, url, valid)
+  result = atozHook(call_613570, url, valid)
 
-proc call*(call_605571: Call_DescribeWorkspacesConnectionStatus_605558;
+proc call*(call_613571: Call_DescribeWorkspacesConnectionStatus_613558;
           body: JsonNode): Recallable =
   ## describeWorkspacesConnectionStatus
   ## Describes the connection status of the specified WorkSpaces.
   ##   body: JObject (required)
-  var body_605572 = newJObject()
+  var body_613572 = newJObject()
   if body != nil:
-    body_605572 = body
-  result = call_605571.call(nil, nil, nil, nil, body_605572)
+    body_613572 = body
+  result = call_613571.call(nil, nil, nil, nil, body_613572)
 
-var describeWorkspacesConnectionStatus* = Call_DescribeWorkspacesConnectionStatus_605558(
+var describeWorkspacesConnectionStatus* = Call_DescribeWorkspacesConnectionStatus_613558(
     name: "describeWorkspacesConnectionStatus", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.DescribeWorkspacesConnectionStatus",
-    validator: validate_DescribeWorkspacesConnectionStatus_605559, base: "/",
-    url: url_DescribeWorkspacesConnectionStatus_605560,
+    validator: validate_DescribeWorkspacesConnectionStatus_613559, base: "/",
+    url: url_DescribeWorkspacesConnectionStatus_613560,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateIpGroups_605573 = ref object of OpenApiRestCall_604658
-proc url_DisassociateIpGroups_605575(protocol: Scheme; host: string; base: string;
+  Call_DisassociateIpGroups_613573 = ref object of OpenApiRestCall_612658
+proc url_DisassociateIpGroups_613575(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2566,7 +2566,7 @@ proc url_DisassociateIpGroups_605575(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_DisassociateIpGroups_605574(path: JsonNode; query: JsonNode;
+proc validate_DisassociateIpGroups_613574(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Disassociates the specified IP access control group from the specified directory.
   ## 
@@ -2586,46 +2586,46 @@ proc validate_DisassociateIpGroups_605574(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605576 = header.getOrDefault("X-Amz-Target")
-  valid_605576 = validateParameter(valid_605576, JString, required = true, default = newJString(
+  var valid_613576 = header.getOrDefault("X-Amz-Target")
+  valid_613576 = validateParameter(valid_613576, JString, required = true, default = newJString(
       "WorkspacesService.DisassociateIpGroups"))
-  if valid_605576 != nil:
-    section.add "X-Amz-Target", valid_605576
-  var valid_605577 = header.getOrDefault("X-Amz-Signature")
-  valid_605577 = validateParameter(valid_605577, JString, required = false,
+  if valid_613576 != nil:
+    section.add "X-Amz-Target", valid_613576
+  var valid_613577 = header.getOrDefault("X-Amz-Signature")
+  valid_613577 = validateParameter(valid_613577, JString, required = false,
                                  default = nil)
-  if valid_605577 != nil:
-    section.add "X-Amz-Signature", valid_605577
-  var valid_605578 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605578 = validateParameter(valid_605578, JString, required = false,
+  if valid_613577 != nil:
+    section.add "X-Amz-Signature", valid_613577
+  var valid_613578 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613578 = validateParameter(valid_613578, JString, required = false,
                                  default = nil)
-  if valid_605578 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605578
-  var valid_605579 = header.getOrDefault("X-Amz-Date")
-  valid_605579 = validateParameter(valid_605579, JString, required = false,
+  if valid_613578 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613578
+  var valid_613579 = header.getOrDefault("X-Amz-Date")
+  valid_613579 = validateParameter(valid_613579, JString, required = false,
                                  default = nil)
-  if valid_605579 != nil:
-    section.add "X-Amz-Date", valid_605579
-  var valid_605580 = header.getOrDefault("X-Amz-Credential")
-  valid_605580 = validateParameter(valid_605580, JString, required = false,
+  if valid_613579 != nil:
+    section.add "X-Amz-Date", valid_613579
+  var valid_613580 = header.getOrDefault("X-Amz-Credential")
+  valid_613580 = validateParameter(valid_613580, JString, required = false,
                                  default = nil)
-  if valid_605580 != nil:
-    section.add "X-Amz-Credential", valid_605580
-  var valid_605581 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605581 = validateParameter(valid_605581, JString, required = false,
+  if valid_613580 != nil:
+    section.add "X-Amz-Credential", valid_613580
+  var valid_613581 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613581 = validateParameter(valid_613581, JString, required = false,
                                  default = nil)
-  if valid_605581 != nil:
-    section.add "X-Amz-Security-Token", valid_605581
-  var valid_605582 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605582 = validateParameter(valid_605582, JString, required = false,
+  if valid_613581 != nil:
+    section.add "X-Amz-Security-Token", valid_613581
+  var valid_613582 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613582 = validateParameter(valid_613582, JString, required = false,
                                  default = nil)
-  if valid_605582 != nil:
-    section.add "X-Amz-Algorithm", valid_605582
-  var valid_605583 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605583 = validateParameter(valid_605583, JString, required = false,
+  if valid_613582 != nil:
+    section.add "X-Amz-Algorithm", valid_613582
+  var valid_613583 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613583 = validateParameter(valid_613583, JString, required = false,
                                  default = nil)
-  if valid_605583 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605583
+  if valid_613583 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613583
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2636,37 +2636,37 @@ proc validate_DisassociateIpGroups_605574(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605585: Call_DisassociateIpGroups_605573; path: JsonNode;
+proc call*(call_613585: Call_DisassociateIpGroups_613573; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Disassociates the specified IP access control group from the specified directory.
   ## 
-  let valid = call_605585.validator(path, query, header, formData, body)
-  let scheme = call_605585.pickScheme
+  let valid = call_613585.validator(path, query, header, formData, body)
+  let scheme = call_613585.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605585.url(scheme.get, call_605585.host, call_605585.base,
-                         call_605585.route, valid.getOrDefault("path"),
+  let url = call_613585.url(scheme.get, call_613585.host, call_613585.base,
+                         call_613585.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605585, url, valid)
+  result = atozHook(call_613585, url, valid)
 
-proc call*(call_605586: Call_DisassociateIpGroups_605573; body: JsonNode): Recallable =
+proc call*(call_613586: Call_DisassociateIpGroups_613573; body: JsonNode): Recallable =
   ## disassociateIpGroups
   ## Disassociates the specified IP access control group from the specified directory.
   ##   body: JObject (required)
-  var body_605587 = newJObject()
+  var body_613587 = newJObject()
   if body != nil:
-    body_605587 = body
-  result = call_605586.call(nil, nil, nil, nil, body_605587)
+    body_613587 = body
+  result = call_613586.call(nil, nil, nil, nil, body_613587)
 
-var disassociateIpGroups* = Call_DisassociateIpGroups_605573(
+var disassociateIpGroups* = Call_DisassociateIpGroups_613573(
     name: "disassociateIpGroups", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.DisassociateIpGroups",
-    validator: validate_DisassociateIpGroups_605574, base: "/",
-    url: url_DisassociateIpGroups_605575, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisassociateIpGroups_613574, base: "/",
+    url: url_DisassociateIpGroups_613575, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ImportWorkspaceImage_605588 = ref object of OpenApiRestCall_604658
-proc url_ImportWorkspaceImage_605590(protocol: Scheme; host: string; base: string;
+  Call_ImportWorkspaceImage_613588 = ref object of OpenApiRestCall_612658
+proc url_ImportWorkspaceImage_613590(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2678,7 +2678,7 @@ proc url_ImportWorkspaceImage_605590(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ImportWorkspaceImage_605589(path: JsonNode; query: JsonNode;
+proc validate_ImportWorkspaceImage_613589(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Imports the specified Windows 7 or Windows 10 Bring Your Own License (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
   ## 
@@ -2698,46 +2698,46 @@ proc validate_ImportWorkspaceImage_605589(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605591 = header.getOrDefault("X-Amz-Target")
-  valid_605591 = validateParameter(valid_605591, JString, required = true, default = newJString(
+  var valid_613591 = header.getOrDefault("X-Amz-Target")
+  valid_613591 = validateParameter(valid_613591, JString, required = true, default = newJString(
       "WorkspacesService.ImportWorkspaceImage"))
-  if valid_605591 != nil:
-    section.add "X-Amz-Target", valid_605591
-  var valid_605592 = header.getOrDefault("X-Amz-Signature")
-  valid_605592 = validateParameter(valid_605592, JString, required = false,
+  if valid_613591 != nil:
+    section.add "X-Amz-Target", valid_613591
+  var valid_613592 = header.getOrDefault("X-Amz-Signature")
+  valid_613592 = validateParameter(valid_613592, JString, required = false,
                                  default = nil)
-  if valid_605592 != nil:
-    section.add "X-Amz-Signature", valid_605592
-  var valid_605593 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605593 = validateParameter(valid_605593, JString, required = false,
+  if valid_613592 != nil:
+    section.add "X-Amz-Signature", valid_613592
+  var valid_613593 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613593 = validateParameter(valid_613593, JString, required = false,
                                  default = nil)
-  if valid_605593 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605593
-  var valid_605594 = header.getOrDefault("X-Amz-Date")
-  valid_605594 = validateParameter(valid_605594, JString, required = false,
+  if valid_613593 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613593
+  var valid_613594 = header.getOrDefault("X-Amz-Date")
+  valid_613594 = validateParameter(valid_613594, JString, required = false,
                                  default = nil)
-  if valid_605594 != nil:
-    section.add "X-Amz-Date", valid_605594
-  var valid_605595 = header.getOrDefault("X-Amz-Credential")
-  valid_605595 = validateParameter(valid_605595, JString, required = false,
+  if valid_613594 != nil:
+    section.add "X-Amz-Date", valid_613594
+  var valid_613595 = header.getOrDefault("X-Amz-Credential")
+  valid_613595 = validateParameter(valid_613595, JString, required = false,
                                  default = nil)
-  if valid_605595 != nil:
-    section.add "X-Amz-Credential", valid_605595
-  var valid_605596 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605596 = validateParameter(valid_605596, JString, required = false,
+  if valid_613595 != nil:
+    section.add "X-Amz-Credential", valid_613595
+  var valid_613596 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613596 = validateParameter(valid_613596, JString, required = false,
                                  default = nil)
-  if valid_605596 != nil:
-    section.add "X-Amz-Security-Token", valid_605596
-  var valid_605597 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605597 = validateParameter(valid_605597, JString, required = false,
+  if valid_613596 != nil:
+    section.add "X-Amz-Security-Token", valid_613596
+  var valid_613597 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613597 = validateParameter(valid_613597, JString, required = false,
                                  default = nil)
-  if valid_605597 != nil:
-    section.add "X-Amz-Algorithm", valid_605597
-  var valid_605598 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605598 = validateParameter(valid_605598, JString, required = false,
+  if valid_613597 != nil:
+    section.add "X-Amz-Algorithm", valid_613597
+  var valid_613598 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613598 = validateParameter(valid_613598, JString, required = false,
                                  default = nil)
-  if valid_605598 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605598
+  if valid_613598 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613598
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2748,37 +2748,37 @@ proc validate_ImportWorkspaceImage_605589(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605600: Call_ImportWorkspaceImage_605588; path: JsonNode;
+proc call*(call_613600: Call_ImportWorkspaceImage_613588; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Imports the specified Windows 7 or Windows 10 Bring Your Own License (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
   ## 
-  let valid = call_605600.validator(path, query, header, formData, body)
-  let scheme = call_605600.pickScheme
+  let valid = call_613600.validator(path, query, header, formData, body)
+  let scheme = call_613600.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605600.url(scheme.get, call_605600.host, call_605600.base,
-                         call_605600.route, valid.getOrDefault("path"),
+  let url = call_613600.url(scheme.get, call_613600.host, call_613600.base,
+                         call_613600.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605600, url, valid)
+  result = atozHook(call_613600, url, valid)
 
-proc call*(call_605601: Call_ImportWorkspaceImage_605588; body: JsonNode): Recallable =
+proc call*(call_613601: Call_ImportWorkspaceImage_613588; body: JsonNode): Recallable =
   ## importWorkspaceImage
   ## Imports the specified Windows 7 or Windows 10 Bring Your Own License (BYOL) image into Amazon WorkSpaces. The image must be an already licensed EC2 image that is in your AWS account, and you must own the image. 
   ##   body: JObject (required)
-  var body_605602 = newJObject()
+  var body_613602 = newJObject()
   if body != nil:
-    body_605602 = body
-  result = call_605601.call(nil, nil, nil, nil, body_605602)
+    body_613602 = body
+  result = call_613601.call(nil, nil, nil, nil, body_613602)
 
-var importWorkspaceImage* = Call_ImportWorkspaceImage_605588(
+var importWorkspaceImage* = Call_ImportWorkspaceImage_613588(
     name: "importWorkspaceImage", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.ImportWorkspaceImage",
-    validator: validate_ImportWorkspaceImage_605589, base: "/",
-    url: url_ImportWorkspaceImage_605590, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ImportWorkspaceImage_613589, base: "/",
+    url: url_ImportWorkspaceImage_613590, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListAvailableManagementCidrRanges_605603 = ref object of OpenApiRestCall_604658
-proc url_ListAvailableManagementCidrRanges_605605(protocol: Scheme; host: string;
+  Call_ListAvailableManagementCidrRanges_613603 = ref object of OpenApiRestCall_612658
+proc url_ListAvailableManagementCidrRanges_613605(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2790,7 +2790,7 @@ proc url_ListAvailableManagementCidrRanges_605605(protocol: Scheme; host: string
   else:
     result.path = base & route
 
-proc validate_ListAvailableManagementCidrRanges_605604(path: JsonNode;
+proc validate_ListAvailableManagementCidrRanges_613604(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable Bring Your Own License (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
   ## 
@@ -2810,46 +2810,46 @@ proc validate_ListAvailableManagementCidrRanges_605604(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605606 = header.getOrDefault("X-Amz-Target")
-  valid_605606 = validateParameter(valid_605606, JString, required = true, default = newJString(
+  var valid_613606 = header.getOrDefault("X-Amz-Target")
+  valid_613606 = validateParameter(valid_613606, JString, required = true, default = newJString(
       "WorkspacesService.ListAvailableManagementCidrRanges"))
-  if valid_605606 != nil:
-    section.add "X-Amz-Target", valid_605606
-  var valid_605607 = header.getOrDefault("X-Amz-Signature")
-  valid_605607 = validateParameter(valid_605607, JString, required = false,
+  if valid_613606 != nil:
+    section.add "X-Amz-Target", valid_613606
+  var valid_613607 = header.getOrDefault("X-Amz-Signature")
+  valid_613607 = validateParameter(valid_613607, JString, required = false,
                                  default = nil)
-  if valid_605607 != nil:
-    section.add "X-Amz-Signature", valid_605607
-  var valid_605608 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605608 = validateParameter(valid_605608, JString, required = false,
+  if valid_613607 != nil:
+    section.add "X-Amz-Signature", valid_613607
+  var valid_613608 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613608 = validateParameter(valid_613608, JString, required = false,
                                  default = nil)
-  if valid_605608 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605608
-  var valid_605609 = header.getOrDefault("X-Amz-Date")
-  valid_605609 = validateParameter(valid_605609, JString, required = false,
+  if valid_613608 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613608
+  var valid_613609 = header.getOrDefault("X-Amz-Date")
+  valid_613609 = validateParameter(valid_613609, JString, required = false,
                                  default = nil)
-  if valid_605609 != nil:
-    section.add "X-Amz-Date", valid_605609
-  var valid_605610 = header.getOrDefault("X-Amz-Credential")
-  valid_605610 = validateParameter(valid_605610, JString, required = false,
+  if valid_613609 != nil:
+    section.add "X-Amz-Date", valid_613609
+  var valid_613610 = header.getOrDefault("X-Amz-Credential")
+  valid_613610 = validateParameter(valid_613610, JString, required = false,
                                  default = nil)
-  if valid_605610 != nil:
-    section.add "X-Amz-Credential", valid_605610
-  var valid_605611 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605611 = validateParameter(valid_605611, JString, required = false,
+  if valid_613610 != nil:
+    section.add "X-Amz-Credential", valid_613610
+  var valid_613611 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613611 = validateParameter(valid_613611, JString, required = false,
                                  default = nil)
-  if valid_605611 != nil:
-    section.add "X-Amz-Security-Token", valid_605611
-  var valid_605612 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605612 = validateParameter(valid_605612, JString, required = false,
+  if valid_613611 != nil:
+    section.add "X-Amz-Security-Token", valid_613611
+  var valid_613612 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613612 = validateParameter(valid_613612, JString, required = false,
                                  default = nil)
-  if valid_605612 != nil:
-    section.add "X-Amz-Algorithm", valid_605612
-  var valid_605613 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605613 = validateParameter(valid_605613, JString, required = false,
+  if valid_613612 != nil:
+    section.add "X-Amz-Algorithm", valid_613612
+  var valid_613613 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613613 = validateParameter(valid_613613, JString, required = false,
                                  default = nil)
-  if valid_605613 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605613
+  if valid_613613 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613613
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2860,39 +2860,39 @@ proc validate_ListAvailableManagementCidrRanges_605604(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605615: Call_ListAvailableManagementCidrRanges_605603;
+proc call*(call_613615: Call_ListAvailableManagementCidrRanges_613603;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable Bring Your Own License (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
   ## 
-  let valid = call_605615.validator(path, query, header, formData, body)
-  let scheme = call_605615.pickScheme
+  let valid = call_613615.validator(path, query, header, formData, body)
+  let scheme = call_613615.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605615.url(scheme.get, call_605615.host, call_605615.base,
-                         call_605615.route, valid.getOrDefault("path"),
+  let url = call_613615.url(scheme.get, call_613615.host, call_613615.base,
+                         call_613615.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605615, url, valid)
+  result = atozHook(call_613615, url, valid)
 
-proc call*(call_605616: Call_ListAvailableManagementCidrRanges_605603;
+proc call*(call_613616: Call_ListAvailableManagementCidrRanges_613603;
           body: JsonNode): Recallable =
   ## listAvailableManagementCidrRanges
   ## <p>Retrieves a list of IP address ranges, specified as IPv4 CIDR blocks, that you can use for the network management interface when you enable Bring Your Own License (BYOL). </p> <p>The management network interface is connected to a secure Amazon WorkSpaces management network. It is used for interactive streaming of the WorkSpace desktop to Amazon WorkSpaces clients, and to allow Amazon WorkSpaces to manage the WorkSpace.</p>
   ##   body: JObject (required)
-  var body_605617 = newJObject()
+  var body_613617 = newJObject()
   if body != nil:
-    body_605617 = body
-  result = call_605616.call(nil, nil, nil, nil, body_605617)
+    body_613617 = body
+  result = call_613616.call(nil, nil, nil, nil, body_613617)
 
-var listAvailableManagementCidrRanges* = Call_ListAvailableManagementCidrRanges_605603(
+var listAvailableManagementCidrRanges* = Call_ListAvailableManagementCidrRanges_613603(
     name: "listAvailableManagementCidrRanges", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.ListAvailableManagementCidrRanges",
-    validator: validate_ListAvailableManagementCidrRanges_605604, base: "/",
-    url: url_ListAvailableManagementCidrRanges_605605,
+    validator: validate_ListAvailableManagementCidrRanges_613604, base: "/",
+    url: url_ListAvailableManagementCidrRanges_613605,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_MigrateWorkspace_605618 = ref object of OpenApiRestCall_604658
-proc url_MigrateWorkspace_605620(protocol: Scheme; host: string; base: string;
+  Call_MigrateWorkspace_613618 = ref object of OpenApiRestCall_612658
+proc url_MigrateWorkspace_613620(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2904,7 +2904,7 @@ proc url_MigrateWorkspace_605620(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_MigrateWorkspace_605619(path: JsonNode; query: JsonNode;
+proc validate_MigrateWorkspace_613619(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Migrates a WorkSpace from one operating system or bundle type to another, while retaining the data on the user volume.</p> <p>The migration process recreates the WorkSpace by using a new root volume from the target bundle image and the user volume from the last available snapshot of the original WorkSpace. During migration, the original <code>D:\Users\%USERNAME%</code> user profile folder is renamed to <code>D:\Users\%USERNAME%MMddyyTHHmmss%.NotMigrated</code>. A new <code>D:\Users\%USERNAME%\</code> folder is generated by the new OS. Certain files in the old user profile are moved to the new user profile.</p> <p>For available migration scenarios, details about what happens during migration, and best practices, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/migrate-workspaces.html">Migrate a WorkSpace</a>.</p>
@@ -2925,46 +2925,46 @@ proc validate_MigrateWorkspace_605619(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605621 = header.getOrDefault("X-Amz-Target")
-  valid_605621 = validateParameter(valid_605621, JString, required = true, default = newJString(
+  var valid_613621 = header.getOrDefault("X-Amz-Target")
+  valid_613621 = validateParameter(valid_613621, JString, required = true, default = newJString(
       "WorkspacesService.MigrateWorkspace"))
-  if valid_605621 != nil:
-    section.add "X-Amz-Target", valid_605621
-  var valid_605622 = header.getOrDefault("X-Amz-Signature")
-  valid_605622 = validateParameter(valid_605622, JString, required = false,
+  if valid_613621 != nil:
+    section.add "X-Amz-Target", valid_613621
+  var valid_613622 = header.getOrDefault("X-Amz-Signature")
+  valid_613622 = validateParameter(valid_613622, JString, required = false,
                                  default = nil)
-  if valid_605622 != nil:
-    section.add "X-Amz-Signature", valid_605622
-  var valid_605623 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605623 = validateParameter(valid_605623, JString, required = false,
+  if valid_613622 != nil:
+    section.add "X-Amz-Signature", valid_613622
+  var valid_613623 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613623 = validateParameter(valid_613623, JString, required = false,
                                  default = nil)
-  if valid_605623 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605623
-  var valid_605624 = header.getOrDefault("X-Amz-Date")
-  valid_605624 = validateParameter(valid_605624, JString, required = false,
+  if valid_613623 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613623
+  var valid_613624 = header.getOrDefault("X-Amz-Date")
+  valid_613624 = validateParameter(valid_613624, JString, required = false,
                                  default = nil)
-  if valid_605624 != nil:
-    section.add "X-Amz-Date", valid_605624
-  var valid_605625 = header.getOrDefault("X-Amz-Credential")
-  valid_605625 = validateParameter(valid_605625, JString, required = false,
+  if valid_613624 != nil:
+    section.add "X-Amz-Date", valid_613624
+  var valid_613625 = header.getOrDefault("X-Amz-Credential")
+  valid_613625 = validateParameter(valid_613625, JString, required = false,
                                  default = nil)
-  if valid_605625 != nil:
-    section.add "X-Amz-Credential", valid_605625
-  var valid_605626 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605626 = validateParameter(valid_605626, JString, required = false,
+  if valid_613625 != nil:
+    section.add "X-Amz-Credential", valid_613625
+  var valid_613626 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613626 = validateParameter(valid_613626, JString, required = false,
                                  default = nil)
-  if valid_605626 != nil:
-    section.add "X-Amz-Security-Token", valid_605626
-  var valid_605627 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605627 = validateParameter(valid_605627, JString, required = false,
+  if valid_613626 != nil:
+    section.add "X-Amz-Security-Token", valid_613626
+  var valid_613627 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613627 = validateParameter(valid_613627, JString, required = false,
                                  default = nil)
-  if valid_605627 != nil:
-    section.add "X-Amz-Algorithm", valid_605627
-  var valid_605628 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605628 = validateParameter(valid_605628, JString, required = false,
+  if valid_613627 != nil:
+    section.add "X-Amz-Algorithm", valid_613627
+  var valid_613628 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613628 = validateParameter(valid_613628, JString, required = false,
                                  default = nil)
-  if valid_605628 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605628
+  if valid_613628 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613628
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2975,36 +2975,36 @@ proc validate_MigrateWorkspace_605619(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605630: Call_MigrateWorkspace_605618; path: JsonNode;
+proc call*(call_613630: Call_MigrateWorkspace_613618; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Migrates a WorkSpace from one operating system or bundle type to another, while retaining the data on the user volume.</p> <p>The migration process recreates the WorkSpace by using a new root volume from the target bundle image and the user volume from the last available snapshot of the original WorkSpace. During migration, the original <code>D:\Users\%USERNAME%</code> user profile folder is renamed to <code>D:\Users\%USERNAME%MMddyyTHHmmss%.NotMigrated</code>. A new <code>D:\Users\%USERNAME%\</code> folder is generated by the new OS. Certain files in the old user profile are moved to the new user profile.</p> <p>For available migration scenarios, details about what happens during migration, and best practices, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/migrate-workspaces.html">Migrate a WorkSpace</a>.</p>
   ## 
-  let valid = call_605630.validator(path, query, header, formData, body)
-  let scheme = call_605630.pickScheme
+  let valid = call_613630.validator(path, query, header, formData, body)
+  let scheme = call_613630.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605630.url(scheme.get, call_605630.host, call_605630.base,
-                         call_605630.route, valid.getOrDefault("path"),
+  let url = call_613630.url(scheme.get, call_613630.host, call_613630.base,
+                         call_613630.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605630, url, valid)
+  result = atozHook(call_613630, url, valid)
 
-proc call*(call_605631: Call_MigrateWorkspace_605618; body: JsonNode): Recallable =
+proc call*(call_613631: Call_MigrateWorkspace_613618; body: JsonNode): Recallable =
   ## migrateWorkspace
   ## <p>Migrates a WorkSpace from one operating system or bundle type to another, while retaining the data on the user volume.</p> <p>The migration process recreates the WorkSpace by using a new root volume from the target bundle image and the user volume from the last available snapshot of the original WorkSpace. During migration, the original <code>D:\Users\%USERNAME%</code> user profile folder is renamed to <code>D:\Users\%USERNAME%MMddyyTHHmmss%.NotMigrated</code>. A new <code>D:\Users\%USERNAME%\</code> folder is generated by the new OS. Certain files in the old user profile are moved to the new user profile.</p> <p>For available migration scenarios, details about what happens during migration, and best practices, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/migrate-workspaces.html">Migrate a WorkSpace</a>.</p>
   ##   body: JObject (required)
-  var body_605632 = newJObject()
+  var body_613632 = newJObject()
   if body != nil:
-    body_605632 = body
-  result = call_605631.call(nil, nil, nil, nil, body_605632)
+    body_613632 = body
+  result = call_613631.call(nil, nil, nil, nil, body_613632)
 
-var migrateWorkspace* = Call_MigrateWorkspace_605618(name: "migrateWorkspace",
+var migrateWorkspace* = Call_MigrateWorkspace_613618(name: "migrateWorkspace",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.MigrateWorkspace",
-    validator: validate_MigrateWorkspace_605619, base: "/",
-    url: url_MigrateWorkspace_605620, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_MigrateWorkspace_613619, base: "/",
+    url: url_MigrateWorkspace_613620, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyAccount_605633 = ref object of OpenApiRestCall_604658
-proc url_ModifyAccount_605635(protocol: Scheme; host: string; base: string;
+  Call_ModifyAccount_613633 = ref object of OpenApiRestCall_612658
+proc url_ModifyAccount_613635(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3016,7 +3016,7 @@ proc url_ModifyAccount_605635(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ModifyAccount_605634(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ModifyAccount_613634(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies the configuration of Bring Your Own License (BYOL) for the specified account.
   ## 
@@ -3036,46 +3036,46 @@ proc validate_ModifyAccount_605634(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605636 = header.getOrDefault("X-Amz-Target")
-  valid_605636 = validateParameter(valid_605636, JString, required = true, default = newJString(
+  var valid_613636 = header.getOrDefault("X-Amz-Target")
+  valid_613636 = validateParameter(valid_613636, JString, required = true, default = newJString(
       "WorkspacesService.ModifyAccount"))
-  if valid_605636 != nil:
-    section.add "X-Amz-Target", valid_605636
-  var valid_605637 = header.getOrDefault("X-Amz-Signature")
-  valid_605637 = validateParameter(valid_605637, JString, required = false,
+  if valid_613636 != nil:
+    section.add "X-Amz-Target", valid_613636
+  var valid_613637 = header.getOrDefault("X-Amz-Signature")
+  valid_613637 = validateParameter(valid_613637, JString, required = false,
                                  default = nil)
-  if valid_605637 != nil:
-    section.add "X-Amz-Signature", valid_605637
-  var valid_605638 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605638 = validateParameter(valid_605638, JString, required = false,
+  if valid_613637 != nil:
+    section.add "X-Amz-Signature", valid_613637
+  var valid_613638 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613638 = validateParameter(valid_613638, JString, required = false,
                                  default = nil)
-  if valid_605638 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605638
-  var valid_605639 = header.getOrDefault("X-Amz-Date")
-  valid_605639 = validateParameter(valid_605639, JString, required = false,
+  if valid_613638 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613638
+  var valid_613639 = header.getOrDefault("X-Amz-Date")
+  valid_613639 = validateParameter(valid_613639, JString, required = false,
                                  default = nil)
-  if valid_605639 != nil:
-    section.add "X-Amz-Date", valid_605639
-  var valid_605640 = header.getOrDefault("X-Amz-Credential")
-  valid_605640 = validateParameter(valid_605640, JString, required = false,
+  if valid_613639 != nil:
+    section.add "X-Amz-Date", valid_613639
+  var valid_613640 = header.getOrDefault("X-Amz-Credential")
+  valid_613640 = validateParameter(valid_613640, JString, required = false,
                                  default = nil)
-  if valid_605640 != nil:
-    section.add "X-Amz-Credential", valid_605640
-  var valid_605641 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605641 = validateParameter(valid_605641, JString, required = false,
+  if valid_613640 != nil:
+    section.add "X-Amz-Credential", valid_613640
+  var valid_613641 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613641 = validateParameter(valid_613641, JString, required = false,
                                  default = nil)
-  if valid_605641 != nil:
-    section.add "X-Amz-Security-Token", valid_605641
-  var valid_605642 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605642 = validateParameter(valid_605642, JString, required = false,
+  if valid_613641 != nil:
+    section.add "X-Amz-Security-Token", valid_613641
+  var valid_613642 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613642 = validateParameter(valid_613642, JString, required = false,
                                  default = nil)
-  if valid_605642 != nil:
-    section.add "X-Amz-Algorithm", valid_605642
-  var valid_605643 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605643 = validateParameter(valid_605643, JString, required = false,
+  if valid_613642 != nil:
+    section.add "X-Amz-Algorithm", valid_613642
+  var valid_613643 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613643 = validateParameter(valid_613643, JString, required = false,
                                  default = nil)
-  if valid_605643 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605643
+  if valid_613643 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613643
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3086,36 +3086,36 @@ proc validate_ModifyAccount_605634(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_605645: Call_ModifyAccount_605633; path: JsonNode; query: JsonNode;
+proc call*(call_613645: Call_ModifyAccount_613633; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Modifies the configuration of Bring Your Own License (BYOL) for the specified account.
   ## 
-  let valid = call_605645.validator(path, query, header, formData, body)
-  let scheme = call_605645.pickScheme
+  let valid = call_613645.validator(path, query, header, formData, body)
+  let scheme = call_613645.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605645.url(scheme.get, call_605645.host, call_605645.base,
-                         call_605645.route, valid.getOrDefault("path"),
+  let url = call_613645.url(scheme.get, call_613645.host, call_613645.base,
+                         call_613645.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605645, url, valid)
+  result = atozHook(call_613645, url, valid)
 
-proc call*(call_605646: Call_ModifyAccount_605633; body: JsonNode): Recallable =
+proc call*(call_613646: Call_ModifyAccount_613633; body: JsonNode): Recallable =
   ## modifyAccount
   ## Modifies the configuration of Bring Your Own License (BYOL) for the specified account.
   ##   body: JObject (required)
-  var body_605647 = newJObject()
+  var body_613647 = newJObject()
   if body != nil:
-    body_605647 = body
-  result = call_605646.call(nil, nil, nil, nil, body_605647)
+    body_613647 = body
+  result = call_613646.call(nil, nil, nil, nil, body_613647)
 
-var modifyAccount* = Call_ModifyAccount_605633(name: "modifyAccount",
+var modifyAccount* = Call_ModifyAccount_613633(name: "modifyAccount",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.ModifyAccount",
-    validator: validate_ModifyAccount_605634, base: "/", url: url_ModifyAccount_605635,
+    validator: validate_ModifyAccount_613634, base: "/", url: url_ModifyAccount_613635,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyClientProperties_605648 = ref object of OpenApiRestCall_604658
-proc url_ModifyClientProperties_605650(protocol: Scheme; host: string; base: string;
+  Call_ModifyClientProperties_613648 = ref object of OpenApiRestCall_612658
+proc url_ModifyClientProperties_613650(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3127,7 +3127,7 @@ proc url_ModifyClientProperties_605650(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_ModifyClientProperties_605649(path: JsonNode; query: JsonNode;
+proc validate_ModifyClientProperties_613649(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies the properties of the specified Amazon WorkSpaces clients.
   ## 
@@ -3147,46 +3147,46 @@ proc validate_ModifyClientProperties_605649(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605651 = header.getOrDefault("X-Amz-Target")
-  valid_605651 = validateParameter(valid_605651, JString, required = true, default = newJString(
+  var valid_613651 = header.getOrDefault("X-Amz-Target")
+  valid_613651 = validateParameter(valid_613651, JString, required = true, default = newJString(
       "WorkspacesService.ModifyClientProperties"))
-  if valid_605651 != nil:
-    section.add "X-Amz-Target", valid_605651
-  var valid_605652 = header.getOrDefault("X-Amz-Signature")
-  valid_605652 = validateParameter(valid_605652, JString, required = false,
+  if valid_613651 != nil:
+    section.add "X-Amz-Target", valid_613651
+  var valid_613652 = header.getOrDefault("X-Amz-Signature")
+  valid_613652 = validateParameter(valid_613652, JString, required = false,
                                  default = nil)
-  if valid_605652 != nil:
-    section.add "X-Amz-Signature", valid_605652
-  var valid_605653 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605653 = validateParameter(valid_605653, JString, required = false,
+  if valid_613652 != nil:
+    section.add "X-Amz-Signature", valid_613652
+  var valid_613653 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613653 = validateParameter(valid_613653, JString, required = false,
                                  default = nil)
-  if valid_605653 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605653
-  var valid_605654 = header.getOrDefault("X-Amz-Date")
-  valid_605654 = validateParameter(valid_605654, JString, required = false,
+  if valid_613653 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613653
+  var valid_613654 = header.getOrDefault("X-Amz-Date")
+  valid_613654 = validateParameter(valid_613654, JString, required = false,
                                  default = nil)
-  if valid_605654 != nil:
-    section.add "X-Amz-Date", valid_605654
-  var valid_605655 = header.getOrDefault("X-Amz-Credential")
-  valid_605655 = validateParameter(valid_605655, JString, required = false,
+  if valid_613654 != nil:
+    section.add "X-Amz-Date", valid_613654
+  var valid_613655 = header.getOrDefault("X-Amz-Credential")
+  valid_613655 = validateParameter(valid_613655, JString, required = false,
                                  default = nil)
-  if valid_605655 != nil:
-    section.add "X-Amz-Credential", valid_605655
-  var valid_605656 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605656 = validateParameter(valid_605656, JString, required = false,
+  if valid_613655 != nil:
+    section.add "X-Amz-Credential", valid_613655
+  var valid_613656 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613656 = validateParameter(valid_613656, JString, required = false,
                                  default = nil)
-  if valid_605656 != nil:
-    section.add "X-Amz-Security-Token", valid_605656
-  var valid_605657 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605657 = validateParameter(valid_605657, JString, required = false,
+  if valid_613656 != nil:
+    section.add "X-Amz-Security-Token", valid_613656
+  var valid_613657 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613657 = validateParameter(valid_613657, JString, required = false,
                                  default = nil)
-  if valid_605657 != nil:
-    section.add "X-Amz-Algorithm", valid_605657
-  var valid_605658 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605658 = validateParameter(valid_605658, JString, required = false,
+  if valid_613657 != nil:
+    section.add "X-Amz-Algorithm", valid_613657
+  var valid_613658 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613658 = validateParameter(valid_613658, JString, required = false,
                                  default = nil)
-  if valid_605658 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605658
+  if valid_613658 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613658
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3197,37 +3197,37 @@ proc validate_ModifyClientProperties_605649(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605660: Call_ModifyClientProperties_605648; path: JsonNode;
+proc call*(call_613660: Call_ModifyClientProperties_613648; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Modifies the properties of the specified Amazon WorkSpaces clients.
   ## 
-  let valid = call_605660.validator(path, query, header, formData, body)
-  let scheme = call_605660.pickScheme
+  let valid = call_613660.validator(path, query, header, formData, body)
+  let scheme = call_613660.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605660.url(scheme.get, call_605660.host, call_605660.base,
-                         call_605660.route, valid.getOrDefault("path"),
+  let url = call_613660.url(scheme.get, call_613660.host, call_613660.base,
+                         call_613660.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605660, url, valid)
+  result = atozHook(call_613660, url, valid)
 
-proc call*(call_605661: Call_ModifyClientProperties_605648; body: JsonNode): Recallable =
+proc call*(call_613661: Call_ModifyClientProperties_613648; body: JsonNode): Recallable =
   ## modifyClientProperties
   ## Modifies the properties of the specified Amazon WorkSpaces clients.
   ##   body: JObject (required)
-  var body_605662 = newJObject()
+  var body_613662 = newJObject()
   if body != nil:
-    body_605662 = body
-  result = call_605661.call(nil, nil, nil, nil, body_605662)
+    body_613662 = body
+  result = call_613661.call(nil, nil, nil, nil, body_613662)
 
-var modifyClientProperties* = Call_ModifyClientProperties_605648(
+var modifyClientProperties* = Call_ModifyClientProperties_613648(
     name: "modifyClientProperties", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.ModifyClientProperties",
-    validator: validate_ModifyClientProperties_605649, base: "/",
-    url: url_ModifyClientProperties_605650, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ModifyClientProperties_613649, base: "/",
+    url: url_ModifyClientProperties_613650, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifySelfservicePermissions_605663 = ref object of OpenApiRestCall_604658
-proc url_ModifySelfservicePermissions_605665(protocol: Scheme; host: string;
+  Call_ModifySelfservicePermissions_613663 = ref object of OpenApiRestCall_612658
+proc url_ModifySelfservicePermissions_613665(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3239,7 +3239,7 @@ proc url_ModifySelfservicePermissions_605665(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ModifySelfservicePermissions_605664(path: JsonNode; query: JsonNode;
+proc validate_ModifySelfservicePermissions_613664(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies the self-service WorkSpace management capabilities for your users. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/enable-user-self-service-workspace-management.html">Enable Self-Service WorkSpace Management Capabilities for Your Users</a>.
   ## 
@@ -3259,46 +3259,46 @@ proc validate_ModifySelfservicePermissions_605664(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605666 = header.getOrDefault("X-Amz-Target")
-  valid_605666 = validateParameter(valid_605666, JString, required = true, default = newJString(
+  var valid_613666 = header.getOrDefault("X-Amz-Target")
+  valid_613666 = validateParameter(valid_613666, JString, required = true, default = newJString(
       "WorkspacesService.ModifySelfservicePermissions"))
-  if valid_605666 != nil:
-    section.add "X-Amz-Target", valid_605666
-  var valid_605667 = header.getOrDefault("X-Amz-Signature")
-  valid_605667 = validateParameter(valid_605667, JString, required = false,
+  if valid_613666 != nil:
+    section.add "X-Amz-Target", valid_613666
+  var valid_613667 = header.getOrDefault("X-Amz-Signature")
+  valid_613667 = validateParameter(valid_613667, JString, required = false,
                                  default = nil)
-  if valid_605667 != nil:
-    section.add "X-Amz-Signature", valid_605667
-  var valid_605668 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605668 = validateParameter(valid_605668, JString, required = false,
+  if valid_613667 != nil:
+    section.add "X-Amz-Signature", valid_613667
+  var valid_613668 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613668 = validateParameter(valid_613668, JString, required = false,
                                  default = nil)
-  if valid_605668 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605668
-  var valid_605669 = header.getOrDefault("X-Amz-Date")
-  valid_605669 = validateParameter(valid_605669, JString, required = false,
+  if valid_613668 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613668
+  var valid_613669 = header.getOrDefault("X-Amz-Date")
+  valid_613669 = validateParameter(valid_613669, JString, required = false,
                                  default = nil)
-  if valid_605669 != nil:
-    section.add "X-Amz-Date", valid_605669
-  var valid_605670 = header.getOrDefault("X-Amz-Credential")
-  valid_605670 = validateParameter(valid_605670, JString, required = false,
+  if valid_613669 != nil:
+    section.add "X-Amz-Date", valid_613669
+  var valid_613670 = header.getOrDefault("X-Amz-Credential")
+  valid_613670 = validateParameter(valid_613670, JString, required = false,
                                  default = nil)
-  if valid_605670 != nil:
-    section.add "X-Amz-Credential", valid_605670
-  var valid_605671 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605671 = validateParameter(valid_605671, JString, required = false,
+  if valid_613670 != nil:
+    section.add "X-Amz-Credential", valid_613670
+  var valid_613671 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613671 = validateParameter(valid_613671, JString, required = false,
                                  default = nil)
-  if valid_605671 != nil:
-    section.add "X-Amz-Security-Token", valid_605671
-  var valid_605672 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605672 = validateParameter(valid_605672, JString, required = false,
+  if valid_613671 != nil:
+    section.add "X-Amz-Security-Token", valid_613671
+  var valid_613672 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613672 = validateParameter(valid_613672, JString, required = false,
                                  default = nil)
-  if valid_605672 != nil:
-    section.add "X-Amz-Algorithm", valid_605672
-  var valid_605673 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605673 = validateParameter(valid_605673, JString, required = false,
+  if valid_613672 != nil:
+    section.add "X-Amz-Algorithm", valid_613672
+  var valid_613673 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613673 = validateParameter(valid_613673, JString, required = false,
                                  default = nil)
-  if valid_605673 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605673
+  if valid_613673 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613673
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3309,38 +3309,38 @@ proc validate_ModifySelfservicePermissions_605664(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_605675: Call_ModifySelfservicePermissions_605663; path: JsonNode;
+proc call*(call_613675: Call_ModifySelfservicePermissions_613663; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Modifies the self-service WorkSpace management capabilities for your users. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/enable-user-self-service-workspace-management.html">Enable Self-Service WorkSpace Management Capabilities for Your Users</a>.
   ## 
-  let valid = call_605675.validator(path, query, header, formData, body)
-  let scheme = call_605675.pickScheme
+  let valid = call_613675.validator(path, query, header, formData, body)
+  let scheme = call_613675.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605675.url(scheme.get, call_605675.host, call_605675.base,
-                         call_605675.route, valid.getOrDefault("path"),
+  let url = call_613675.url(scheme.get, call_613675.host, call_613675.base,
+                         call_613675.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605675, url, valid)
+  result = atozHook(call_613675, url, valid)
 
-proc call*(call_605676: Call_ModifySelfservicePermissions_605663; body: JsonNode): Recallable =
+proc call*(call_613676: Call_ModifySelfservicePermissions_613663; body: JsonNode): Recallable =
   ## modifySelfservicePermissions
   ## Modifies the self-service WorkSpace management capabilities for your users. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/enable-user-self-service-workspace-management.html">Enable Self-Service WorkSpace Management Capabilities for Your Users</a>.
   ##   body: JObject (required)
-  var body_605677 = newJObject()
+  var body_613677 = newJObject()
   if body != nil:
-    body_605677 = body
-  result = call_605676.call(nil, nil, nil, nil, body_605677)
+    body_613677 = body
+  result = call_613676.call(nil, nil, nil, nil, body_613677)
 
-var modifySelfservicePermissions* = Call_ModifySelfservicePermissions_605663(
+var modifySelfservicePermissions* = Call_ModifySelfservicePermissions_613663(
     name: "modifySelfservicePermissions", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.ModifySelfservicePermissions",
-    validator: validate_ModifySelfservicePermissions_605664, base: "/",
-    url: url_ModifySelfservicePermissions_605665,
+    validator: validate_ModifySelfservicePermissions_613664, base: "/",
+    url: url_ModifySelfservicePermissions_613665,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyWorkspaceAccessProperties_605678 = ref object of OpenApiRestCall_604658
-proc url_ModifyWorkspaceAccessProperties_605680(protocol: Scheme; host: string;
+  Call_ModifyWorkspaceAccessProperties_613678 = ref object of OpenApiRestCall_612658
+proc url_ModifyWorkspaceAccessProperties_613680(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3352,7 +3352,7 @@ proc url_ModifyWorkspaceAccessProperties_605680(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ModifyWorkspaceAccessProperties_605679(path: JsonNode;
+proc validate_ModifyWorkspaceAccessProperties_613679(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Specifies which devices and operating systems users can use to access their WorkSpaces. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/update-directory-details.html#control-device-access"> Control Device Access</a>.
   ## 
@@ -3372,46 +3372,46 @@ proc validate_ModifyWorkspaceAccessProperties_605679(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605681 = header.getOrDefault("X-Amz-Target")
-  valid_605681 = validateParameter(valid_605681, JString, required = true, default = newJString(
+  var valid_613681 = header.getOrDefault("X-Amz-Target")
+  valid_613681 = validateParameter(valid_613681, JString, required = true, default = newJString(
       "WorkspacesService.ModifyWorkspaceAccessProperties"))
-  if valid_605681 != nil:
-    section.add "X-Amz-Target", valid_605681
-  var valid_605682 = header.getOrDefault("X-Amz-Signature")
-  valid_605682 = validateParameter(valid_605682, JString, required = false,
+  if valid_613681 != nil:
+    section.add "X-Amz-Target", valid_613681
+  var valid_613682 = header.getOrDefault("X-Amz-Signature")
+  valid_613682 = validateParameter(valid_613682, JString, required = false,
                                  default = nil)
-  if valid_605682 != nil:
-    section.add "X-Amz-Signature", valid_605682
-  var valid_605683 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605683 = validateParameter(valid_605683, JString, required = false,
+  if valid_613682 != nil:
+    section.add "X-Amz-Signature", valid_613682
+  var valid_613683 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613683 = validateParameter(valid_613683, JString, required = false,
                                  default = nil)
-  if valid_605683 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605683
-  var valid_605684 = header.getOrDefault("X-Amz-Date")
-  valid_605684 = validateParameter(valid_605684, JString, required = false,
+  if valid_613683 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613683
+  var valid_613684 = header.getOrDefault("X-Amz-Date")
+  valid_613684 = validateParameter(valid_613684, JString, required = false,
                                  default = nil)
-  if valid_605684 != nil:
-    section.add "X-Amz-Date", valid_605684
-  var valid_605685 = header.getOrDefault("X-Amz-Credential")
-  valid_605685 = validateParameter(valid_605685, JString, required = false,
+  if valid_613684 != nil:
+    section.add "X-Amz-Date", valid_613684
+  var valid_613685 = header.getOrDefault("X-Amz-Credential")
+  valid_613685 = validateParameter(valid_613685, JString, required = false,
                                  default = nil)
-  if valid_605685 != nil:
-    section.add "X-Amz-Credential", valid_605685
-  var valid_605686 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605686 = validateParameter(valid_605686, JString, required = false,
+  if valid_613685 != nil:
+    section.add "X-Amz-Credential", valid_613685
+  var valid_613686 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613686 = validateParameter(valid_613686, JString, required = false,
                                  default = nil)
-  if valid_605686 != nil:
-    section.add "X-Amz-Security-Token", valid_605686
-  var valid_605687 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605687 = validateParameter(valid_605687, JString, required = false,
+  if valid_613686 != nil:
+    section.add "X-Amz-Security-Token", valid_613686
+  var valid_613687 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613687 = validateParameter(valid_613687, JString, required = false,
                                  default = nil)
-  if valid_605687 != nil:
-    section.add "X-Amz-Algorithm", valid_605687
-  var valid_605688 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605688 = validateParameter(valid_605688, JString, required = false,
+  if valid_613687 != nil:
+    section.add "X-Amz-Algorithm", valid_613687
+  var valid_613688 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613688 = validateParameter(valid_613688, JString, required = false,
                                  default = nil)
-  if valid_605688 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605688
+  if valid_613688 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613688
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3422,39 +3422,39 @@ proc validate_ModifyWorkspaceAccessProperties_605679(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605690: Call_ModifyWorkspaceAccessProperties_605678;
+proc call*(call_613690: Call_ModifyWorkspaceAccessProperties_613678;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Specifies which devices and operating systems users can use to access their WorkSpaces. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/update-directory-details.html#control-device-access"> Control Device Access</a>.
   ## 
-  let valid = call_605690.validator(path, query, header, formData, body)
-  let scheme = call_605690.pickScheme
+  let valid = call_613690.validator(path, query, header, formData, body)
+  let scheme = call_613690.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605690.url(scheme.get, call_605690.host, call_605690.base,
-                         call_605690.route, valid.getOrDefault("path"),
+  let url = call_613690.url(scheme.get, call_613690.host, call_613690.base,
+                         call_613690.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605690, url, valid)
+  result = atozHook(call_613690, url, valid)
 
-proc call*(call_605691: Call_ModifyWorkspaceAccessProperties_605678; body: JsonNode): Recallable =
+proc call*(call_613691: Call_ModifyWorkspaceAccessProperties_613678; body: JsonNode): Recallable =
   ## modifyWorkspaceAccessProperties
   ## Specifies which devices and operating systems users can use to access their WorkSpaces. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/update-directory-details.html#control-device-access"> Control Device Access</a>.
   ##   body: JObject (required)
-  var body_605692 = newJObject()
+  var body_613692 = newJObject()
   if body != nil:
-    body_605692 = body
-  result = call_605691.call(nil, nil, nil, nil, body_605692)
+    body_613692 = body
+  result = call_613691.call(nil, nil, nil, nil, body_613692)
 
-var modifyWorkspaceAccessProperties* = Call_ModifyWorkspaceAccessProperties_605678(
+var modifyWorkspaceAccessProperties* = Call_ModifyWorkspaceAccessProperties_613678(
     name: "modifyWorkspaceAccessProperties", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.ModifyWorkspaceAccessProperties",
-    validator: validate_ModifyWorkspaceAccessProperties_605679, base: "/",
-    url: url_ModifyWorkspaceAccessProperties_605680,
+    validator: validate_ModifyWorkspaceAccessProperties_613679, base: "/",
+    url: url_ModifyWorkspaceAccessProperties_613680,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyWorkspaceCreationProperties_605693 = ref object of OpenApiRestCall_604658
-proc url_ModifyWorkspaceCreationProperties_605695(protocol: Scheme; host: string;
+  Call_ModifyWorkspaceCreationProperties_613693 = ref object of OpenApiRestCall_612658
+proc url_ModifyWorkspaceCreationProperties_613695(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3466,7 +3466,7 @@ proc url_ModifyWorkspaceCreationProperties_605695(protocol: Scheme; host: string
   else:
     result.path = base & route
 
-proc validate_ModifyWorkspaceCreationProperties_605694(path: JsonNode;
+proc validate_ModifyWorkspaceCreationProperties_613694(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Modify the default properties used to create WorkSpaces.
   ## 
@@ -3486,46 +3486,46 @@ proc validate_ModifyWorkspaceCreationProperties_605694(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605696 = header.getOrDefault("X-Amz-Target")
-  valid_605696 = validateParameter(valid_605696, JString, required = true, default = newJString(
+  var valid_613696 = header.getOrDefault("X-Amz-Target")
+  valid_613696 = validateParameter(valid_613696, JString, required = true, default = newJString(
       "WorkspacesService.ModifyWorkspaceCreationProperties"))
-  if valid_605696 != nil:
-    section.add "X-Amz-Target", valid_605696
-  var valid_605697 = header.getOrDefault("X-Amz-Signature")
-  valid_605697 = validateParameter(valid_605697, JString, required = false,
+  if valid_613696 != nil:
+    section.add "X-Amz-Target", valid_613696
+  var valid_613697 = header.getOrDefault("X-Amz-Signature")
+  valid_613697 = validateParameter(valid_613697, JString, required = false,
                                  default = nil)
-  if valid_605697 != nil:
-    section.add "X-Amz-Signature", valid_605697
-  var valid_605698 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605698 = validateParameter(valid_605698, JString, required = false,
+  if valid_613697 != nil:
+    section.add "X-Amz-Signature", valid_613697
+  var valid_613698 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613698 = validateParameter(valid_613698, JString, required = false,
                                  default = nil)
-  if valid_605698 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605698
-  var valid_605699 = header.getOrDefault("X-Amz-Date")
-  valid_605699 = validateParameter(valid_605699, JString, required = false,
+  if valid_613698 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613698
+  var valid_613699 = header.getOrDefault("X-Amz-Date")
+  valid_613699 = validateParameter(valid_613699, JString, required = false,
                                  default = nil)
-  if valid_605699 != nil:
-    section.add "X-Amz-Date", valid_605699
-  var valid_605700 = header.getOrDefault("X-Amz-Credential")
-  valid_605700 = validateParameter(valid_605700, JString, required = false,
+  if valid_613699 != nil:
+    section.add "X-Amz-Date", valid_613699
+  var valid_613700 = header.getOrDefault("X-Amz-Credential")
+  valid_613700 = validateParameter(valid_613700, JString, required = false,
                                  default = nil)
-  if valid_605700 != nil:
-    section.add "X-Amz-Credential", valid_605700
-  var valid_605701 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605701 = validateParameter(valid_605701, JString, required = false,
+  if valid_613700 != nil:
+    section.add "X-Amz-Credential", valid_613700
+  var valid_613701 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613701 = validateParameter(valid_613701, JString, required = false,
                                  default = nil)
-  if valid_605701 != nil:
-    section.add "X-Amz-Security-Token", valid_605701
-  var valid_605702 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605702 = validateParameter(valid_605702, JString, required = false,
+  if valid_613701 != nil:
+    section.add "X-Amz-Security-Token", valid_613701
+  var valid_613702 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613702 = validateParameter(valid_613702, JString, required = false,
                                  default = nil)
-  if valid_605702 != nil:
-    section.add "X-Amz-Algorithm", valid_605702
-  var valid_605703 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605703 = validateParameter(valid_605703, JString, required = false,
+  if valid_613702 != nil:
+    section.add "X-Amz-Algorithm", valid_613702
+  var valid_613703 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613703 = validateParameter(valid_613703, JString, required = false,
                                  default = nil)
-  if valid_605703 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605703
+  if valid_613703 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613703
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3536,39 +3536,39 @@ proc validate_ModifyWorkspaceCreationProperties_605694(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605705: Call_ModifyWorkspaceCreationProperties_605693;
+proc call*(call_613705: Call_ModifyWorkspaceCreationProperties_613693;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## Modify the default properties used to create WorkSpaces.
   ## 
-  let valid = call_605705.validator(path, query, header, formData, body)
-  let scheme = call_605705.pickScheme
+  let valid = call_613705.validator(path, query, header, formData, body)
+  let scheme = call_613705.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605705.url(scheme.get, call_605705.host, call_605705.base,
-                         call_605705.route, valid.getOrDefault("path"),
+  let url = call_613705.url(scheme.get, call_613705.host, call_613705.base,
+                         call_613705.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605705, url, valid)
+  result = atozHook(call_613705, url, valid)
 
-proc call*(call_605706: Call_ModifyWorkspaceCreationProperties_605693;
+proc call*(call_613706: Call_ModifyWorkspaceCreationProperties_613693;
           body: JsonNode): Recallable =
   ## modifyWorkspaceCreationProperties
   ## Modify the default properties used to create WorkSpaces.
   ##   body: JObject (required)
-  var body_605707 = newJObject()
+  var body_613707 = newJObject()
   if body != nil:
-    body_605707 = body
-  result = call_605706.call(nil, nil, nil, nil, body_605707)
+    body_613707 = body
+  result = call_613706.call(nil, nil, nil, nil, body_613707)
 
-var modifyWorkspaceCreationProperties* = Call_ModifyWorkspaceCreationProperties_605693(
+var modifyWorkspaceCreationProperties* = Call_ModifyWorkspaceCreationProperties_613693(
     name: "modifyWorkspaceCreationProperties", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com", route: "/#X-Amz-Target=WorkspacesService.ModifyWorkspaceCreationProperties",
-    validator: validate_ModifyWorkspaceCreationProperties_605694, base: "/",
-    url: url_ModifyWorkspaceCreationProperties_605695,
+    validator: validate_ModifyWorkspaceCreationProperties_613694, base: "/",
+    url: url_ModifyWorkspaceCreationProperties_613695,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyWorkspaceProperties_605708 = ref object of OpenApiRestCall_604658
-proc url_ModifyWorkspaceProperties_605710(protocol: Scheme; host: string;
+  Call_ModifyWorkspaceProperties_613708 = ref object of OpenApiRestCall_612658
+proc url_ModifyWorkspaceProperties_613710(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3580,7 +3580,7 @@ proc url_ModifyWorkspaceProperties_605710(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ModifyWorkspaceProperties_605709(path: JsonNode; query: JsonNode;
+proc validate_ModifyWorkspaceProperties_613709(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Modifies the specified WorkSpace properties.
   ## 
@@ -3600,46 +3600,46 @@ proc validate_ModifyWorkspaceProperties_605709(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605711 = header.getOrDefault("X-Amz-Target")
-  valid_605711 = validateParameter(valid_605711, JString, required = true, default = newJString(
+  var valid_613711 = header.getOrDefault("X-Amz-Target")
+  valid_613711 = validateParameter(valid_613711, JString, required = true, default = newJString(
       "WorkspacesService.ModifyWorkspaceProperties"))
-  if valid_605711 != nil:
-    section.add "X-Amz-Target", valid_605711
-  var valid_605712 = header.getOrDefault("X-Amz-Signature")
-  valid_605712 = validateParameter(valid_605712, JString, required = false,
+  if valid_613711 != nil:
+    section.add "X-Amz-Target", valid_613711
+  var valid_613712 = header.getOrDefault("X-Amz-Signature")
+  valid_613712 = validateParameter(valid_613712, JString, required = false,
                                  default = nil)
-  if valid_605712 != nil:
-    section.add "X-Amz-Signature", valid_605712
-  var valid_605713 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605713 = validateParameter(valid_605713, JString, required = false,
+  if valid_613712 != nil:
+    section.add "X-Amz-Signature", valid_613712
+  var valid_613713 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613713 = validateParameter(valid_613713, JString, required = false,
                                  default = nil)
-  if valid_605713 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605713
-  var valid_605714 = header.getOrDefault("X-Amz-Date")
-  valid_605714 = validateParameter(valid_605714, JString, required = false,
+  if valid_613713 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613713
+  var valid_613714 = header.getOrDefault("X-Amz-Date")
+  valid_613714 = validateParameter(valid_613714, JString, required = false,
                                  default = nil)
-  if valid_605714 != nil:
-    section.add "X-Amz-Date", valid_605714
-  var valid_605715 = header.getOrDefault("X-Amz-Credential")
-  valid_605715 = validateParameter(valid_605715, JString, required = false,
+  if valid_613714 != nil:
+    section.add "X-Amz-Date", valid_613714
+  var valid_613715 = header.getOrDefault("X-Amz-Credential")
+  valid_613715 = validateParameter(valid_613715, JString, required = false,
                                  default = nil)
-  if valid_605715 != nil:
-    section.add "X-Amz-Credential", valid_605715
-  var valid_605716 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605716 = validateParameter(valid_605716, JString, required = false,
+  if valid_613715 != nil:
+    section.add "X-Amz-Credential", valid_613715
+  var valid_613716 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613716 = validateParameter(valid_613716, JString, required = false,
                                  default = nil)
-  if valid_605716 != nil:
-    section.add "X-Amz-Security-Token", valid_605716
-  var valid_605717 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605717 = validateParameter(valid_605717, JString, required = false,
+  if valid_613716 != nil:
+    section.add "X-Amz-Security-Token", valid_613716
+  var valid_613717 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613717 = validateParameter(valid_613717, JString, required = false,
                                  default = nil)
-  if valid_605717 != nil:
-    section.add "X-Amz-Algorithm", valid_605717
-  var valid_605718 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605718 = validateParameter(valid_605718, JString, required = false,
+  if valid_613717 != nil:
+    section.add "X-Amz-Algorithm", valid_613717
+  var valid_613718 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613718 = validateParameter(valid_613718, JString, required = false,
                                  default = nil)
-  if valid_605718 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605718
+  if valid_613718 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613718
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3650,38 +3650,38 @@ proc validate_ModifyWorkspaceProperties_605709(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605720: Call_ModifyWorkspaceProperties_605708; path: JsonNode;
+proc call*(call_613720: Call_ModifyWorkspaceProperties_613708; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Modifies the specified WorkSpace properties.
   ## 
-  let valid = call_605720.validator(path, query, header, formData, body)
-  let scheme = call_605720.pickScheme
+  let valid = call_613720.validator(path, query, header, formData, body)
+  let scheme = call_613720.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605720.url(scheme.get, call_605720.host, call_605720.base,
-                         call_605720.route, valid.getOrDefault("path"),
+  let url = call_613720.url(scheme.get, call_613720.host, call_613720.base,
+                         call_613720.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605720, url, valid)
+  result = atozHook(call_613720, url, valid)
 
-proc call*(call_605721: Call_ModifyWorkspaceProperties_605708; body: JsonNode): Recallable =
+proc call*(call_613721: Call_ModifyWorkspaceProperties_613708; body: JsonNode): Recallable =
   ## modifyWorkspaceProperties
   ## Modifies the specified WorkSpace properties.
   ##   body: JObject (required)
-  var body_605722 = newJObject()
+  var body_613722 = newJObject()
   if body != nil:
-    body_605722 = body
-  result = call_605721.call(nil, nil, nil, nil, body_605722)
+    body_613722 = body
+  result = call_613721.call(nil, nil, nil, nil, body_613722)
 
-var modifyWorkspaceProperties* = Call_ModifyWorkspaceProperties_605708(
+var modifyWorkspaceProperties* = Call_ModifyWorkspaceProperties_613708(
     name: "modifyWorkspaceProperties", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.ModifyWorkspaceProperties",
-    validator: validate_ModifyWorkspaceProperties_605709, base: "/",
-    url: url_ModifyWorkspaceProperties_605710,
+    validator: validate_ModifyWorkspaceProperties_613709, base: "/",
+    url: url_ModifyWorkspaceProperties_613710,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ModifyWorkspaceState_605723 = ref object of OpenApiRestCall_604658
-proc url_ModifyWorkspaceState_605725(protocol: Scheme; host: string; base: string;
+  Call_ModifyWorkspaceState_613723 = ref object of OpenApiRestCall_612658
+proc url_ModifyWorkspaceState_613725(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3693,7 +3693,7 @@ proc url_ModifyWorkspaceState_605725(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ModifyWorkspaceState_605724(path: JsonNode; query: JsonNode;
+proc validate_ModifyWorkspaceState_613724(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
   ## 
@@ -3713,46 +3713,46 @@ proc validate_ModifyWorkspaceState_605724(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605726 = header.getOrDefault("X-Amz-Target")
-  valid_605726 = validateParameter(valid_605726, JString, required = true, default = newJString(
+  var valid_613726 = header.getOrDefault("X-Amz-Target")
+  valid_613726 = validateParameter(valid_613726, JString, required = true, default = newJString(
       "WorkspacesService.ModifyWorkspaceState"))
-  if valid_605726 != nil:
-    section.add "X-Amz-Target", valid_605726
-  var valid_605727 = header.getOrDefault("X-Amz-Signature")
-  valid_605727 = validateParameter(valid_605727, JString, required = false,
+  if valid_613726 != nil:
+    section.add "X-Amz-Target", valid_613726
+  var valid_613727 = header.getOrDefault("X-Amz-Signature")
+  valid_613727 = validateParameter(valid_613727, JString, required = false,
                                  default = nil)
-  if valid_605727 != nil:
-    section.add "X-Amz-Signature", valid_605727
-  var valid_605728 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605728 = validateParameter(valid_605728, JString, required = false,
+  if valid_613727 != nil:
+    section.add "X-Amz-Signature", valid_613727
+  var valid_613728 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613728 = validateParameter(valid_613728, JString, required = false,
                                  default = nil)
-  if valid_605728 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605728
-  var valid_605729 = header.getOrDefault("X-Amz-Date")
-  valid_605729 = validateParameter(valid_605729, JString, required = false,
+  if valid_613728 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613728
+  var valid_613729 = header.getOrDefault("X-Amz-Date")
+  valid_613729 = validateParameter(valid_613729, JString, required = false,
                                  default = nil)
-  if valid_605729 != nil:
-    section.add "X-Amz-Date", valid_605729
-  var valid_605730 = header.getOrDefault("X-Amz-Credential")
-  valid_605730 = validateParameter(valid_605730, JString, required = false,
+  if valid_613729 != nil:
+    section.add "X-Amz-Date", valid_613729
+  var valid_613730 = header.getOrDefault("X-Amz-Credential")
+  valid_613730 = validateParameter(valid_613730, JString, required = false,
                                  default = nil)
-  if valid_605730 != nil:
-    section.add "X-Amz-Credential", valid_605730
-  var valid_605731 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605731 = validateParameter(valid_605731, JString, required = false,
+  if valid_613730 != nil:
+    section.add "X-Amz-Credential", valid_613730
+  var valid_613731 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613731 = validateParameter(valid_613731, JString, required = false,
                                  default = nil)
-  if valid_605731 != nil:
-    section.add "X-Amz-Security-Token", valid_605731
-  var valid_605732 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605732 = validateParameter(valid_605732, JString, required = false,
+  if valid_613731 != nil:
+    section.add "X-Amz-Security-Token", valid_613731
+  var valid_613732 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613732 = validateParameter(valid_613732, JString, required = false,
                                  default = nil)
-  if valid_605732 != nil:
-    section.add "X-Amz-Algorithm", valid_605732
-  var valid_605733 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605733 = validateParameter(valid_605733, JString, required = false,
+  if valid_613732 != nil:
+    section.add "X-Amz-Algorithm", valid_613732
+  var valid_613733 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613733 = validateParameter(valid_613733, JString, required = false,
                                  default = nil)
-  if valid_605733 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605733
+  if valid_613733 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613733
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3763,37 +3763,37 @@ proc validate_ModifyWorkspaceState_605724(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605735: Call_ModifyWorkspaceState_605723; path: JsonNode;
+proc call*(call_613735: Call_ModifyWorkspaceState_613723; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
   ## 
-  let valid = call_605735.validator(path, query, header, formData, body)
-  let scheme = call_605735.pickScheme
+  let valid = call_613735.validator(path, query, header, formData, body)
+  let scheme = call_613735.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605735.url(scheme.get, call_605735.host, call_605735.base,
-                         call_605735.route, valid.getOrDefault("path"),
+  let url = call_613735.url(scheme.get, call_613735.host, call_613735.base,
+                         call_613735.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605735, url, valid)
+  result = atozHook(call_613735, url, valid)
 
-proc call*(call_605736: Call_ModifyWorkspaceState_605723; body: JsonNode): Recallable =
+proc call*(call_613736: Call_ModifyWorkspaceState_613723; body: JsonNode): Recallable =
   ## modifyWorkspaceState
   ## <p>Sets the state of the specified WorkSpace.</p> <p>To maintain a WorkSpace without being interrupted, set the WorkSpace state to <code>ADMIN_MAINTENANCE</code>. WorkSpaces in this state do not respond to requests to reboot, stop, start, rebuild, or restore. An AutoStop WorkSpace in this state is not stopped. Users cannot log into a WorkSpace in the <code>ADMIN_MAINTENANCE</code> state.</p>
   ##   body: JObject (required)
-  var body_605737 = newJObject()
+  var body_613737 = newJObject()
   if body != nil:
-    body_605737 = body
-  result = call_605736.call(nil, nil, nil, nil, body_605737)
+    body_613737 = body
+  result = call_613736.call(nil, nil, nil, nil, body_613737)
 
-var modifyWorkspaceState* = Call_ModifyWorkspaceState_605723(
+var modifyWorkspaceState* = Call_ModifyWorkspaceState_613723(
     name: "modifyWorkspaceState", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.ModifyWorkspaceState",
-    validator: validate_ModifyWorkspaceState_605724, base: "/",
-    url: url_ModifyWorkspaceState_605725, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ModifyWorkspaceState_613724, base: "/",
+    url: url_ModifyWorkspaceState_613725, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RebootWorkspaces_605738 = ref object of OpenApiRestCall_604658
-proc url_RebootWorkspaces_605740(protocol: Scheme; host: string; base: string;
+  Call_RebootWorkspaces_613738 = ref object of OpenApiRestCall_612658
+proc url_RebootWorkspaces_613740(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3805,7 +3805,7 @@ proc url_RebootWorkspaces_605740(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RebootWorkspaces_605739(path: JsonNode; query: JsonNode;
+proc validate_RebootWorkspaces_613739(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
@@ -3826,46 +3826,46 @@ proc validate_RebootWorkspaces_605739(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605741 = header.getOrDefault("X-Amz-Target")
-  valid_605741 = validateParameter(valid_605741, JString, required = true, default = newJString(
+  var valid_613741 = header.getOrDefault("X-Amz-Target")
+  valid_613741 = validateParameter(valid_613741, JString, required = true, default = newJString(
       "WorkspacesService.RebootWorkspaces"))
-  if valid_605741 != nil:
-    section.add "X-Amz-Target", valid_605741
-  var valid_605742 = header.getOrDefault("X-Amz-Signature")
-  valid_605742 = validateParameter(valid_605742, JString, required = false,
+  if valid_613741 != nil:
+    section.add "X-Amz-Target", valid_613741
+  var valid_613742 = header.getOrDefault("X-Amz-Signature")
+  valid_613742 = validateParameter(valid_613742, JString, required = false,
                                  default = nil)
-  if valid_605742 != nil:
-    section.add "X-Amz-Signature", valid_605742
-  var valid_605743 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605743 = validateParameter(valid_605743, JString, required = false,
+  if valid_613742 != nil:
+    section.add "X-Amz-Signature", valid_613742
+  var valid_613743 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613743 = validateParameter(valid_613743, JString, required = false,
                                  default = nil)
-  if valid_605743 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605743
-  var valid_605744 = header.getOrDefault("X-Amz-Date")
-  valid_605744 = validateParameter(valid_605744, JString, required = false,
+  if valid_613743 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613743
+  var valid_613744 = header.getOrDefault("X-Amz-Date")
+  valid_613744 = validateParameter(valid_613744, JString, required = false,
                                  default = nil)
-  if valid_605744 != nil:
-    section.add "X-Amz-Date", valid_605744
-  var valid_605745 = header.getOrDefault("X-Amz-Credential")
-  valid_605745 = validateParameter(valid_605745, JString, required = false,
+  if valid_613744 != nil:
+    section.add "X-Amz-Date", valid_613744
+  var valid_613745 = header.getOrDefault("X-Amz-Credential")
+  valid_613745 = validateParameter(valid_613745, JString, required = false,
                                  default = nil)
-  if valid_605745 != nil:
-    section.add "X-Amz-Credential", valid_605745
-  var valid_605746 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605746 = validateParameter(valid_605746, JString, required = false,
+  if valid_613745 != nil:
+    section.add "X-Amz-Credential", valid_613745
+  var valid_613746 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613746 = validateParameter(valid_613746, JString, required = false,
                                  default = nil)
-  if valid_605746 != nil:
-    section.add "X-Amz-Security-Token", valid_605746
-  var valid_605747 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605747 = validateParameter(valid_605747, JString, required = false,
+  if valid_613746 != nil:
+    section.add "X-Amz-Security-Token", valid_613746
+  var valid_613747 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613747 = validateParameter(valid_613747, JString, required = false,
                                  default = nil)
-  if valid_605747 != nil:
-    section.add "X-Amz-Algorithm", valid_605747
-  var valid_605748 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605748 = validateParameter(valid_605748, JString, required = false,
+  if valid_613747 != nil:
+    section.add "X-Amz-Algorithm", valid_613747
+  var valid_613748 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613748 = validateParameter(valid_613748, JString, required = false,
                                  default = nil)
-  if valid_605748 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605748
+  if valid_613748 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613748
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3876,36 +3876,36 @@ proc validate_RebootWorkspaces_605739(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605750: Call_RebootWorkspaces_605738; path: JsonNode;
+proc call*(call_613750: Call_RebootWorkspaces_613738; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
   ## 
-  let valid = call_605750.validator(path, query, header, formData, body)
-  let scheme = call_605750.pickScheme
+  let valid = call_613750.validator(path, query, header, formData, body)
+  let scheme = call_613750.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605750.url(scheme.get, call_605750.host, call_605750.base,
-                         call_605750.route, valid.getOrDefault("path"),
+  let url = call_613750.url(scheme.get, call_613750.host, call_613750.base,
+                         call_613750.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605750, url, valid)
+  result = atozHook(call_613750, url, valid)
 
-proc call*(call_605751: Call_RebootWorkspaces_605738; body: JsonNode): Recallable =
+proc call*(call_613751: Call_RebootWorkspaces_613738; body: JsonNode): Recallable =
   ## rebootWorkspaces
   ## <p>Reboots the specified WorkSpaces.</p> <p>You cannot reboot a WorkSpace unless its state is <code>AVAILABLE</code> or <code>UNHEALTHY</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have rebooted.</p>
   ##   body: JObject (required)
-  var body_605752 = newJObject()
+  var body_613752 = newJObject()
   if body != nil:
-    body_605752 = body
-  result = call_605751.call(nil, nil, nil, nil, body_605752)
+    body_613752 = body
+  result = call_613751.call(nil, nil, nil, nil, body_613752)
 
-var rebootWorkspaces* = Call_RebootWorkspaces_605738(name: "rebootWorkspaces",
+var rebootWorkspaces* = Call_RebootWorkspaces_613738(name: "rebootWorkspaces",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.RebootWorkspaces",
-    validator: validate_RebootWorkspaces_605739, base: "/",
-    url: url_RebootWorkspaces_605740, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RebootWorkspaces_613739, base: "/",
+    url: url_RebootWorkspaces_613740, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RebuildWorkspaces_605753 = ref object of OpenApiRestCall_604658
-proc url_RebuildWorkspaces_605755(protocol: Scheme; host: string; base: string;
+  Call_RebuildWorkspaces_613753 = ref object of OpenApiRestCall_612658
+proc url_RebuildWorkspaces_613755(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3917,7 +3917,7 @@ proc url_RebuildWorkspaces_605755(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RebuildWorkspaces_605754(path: JsonNode; query: JsonNode;
+proc validate_RebuildWorkspaces_613754(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, <code>UNHEALTHY</code>, or <code>STOPPED</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
@@ -3938,46 +3938,46 @@ proc validate_RebuildWorkspaces_605754(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605756 = header.getOrDefault("X-Amz-Target")
-  valid_605756 = validateParameter(valid_605756, JString, required = true, default = newJString(
+  var valid_613756 = header.getOrDefault("X-Amz-Target")
+  valid_613756 = validateParameter(valid_613756, JString, required = true, default = newJString(
       "WorkspacesService.RebuildWorkspaces"))
-  if valid_605756 != nil:
-    section.add "X-Amz-Target", valid_605756
-  var valid_605757 = header.getOrDefault("X-Amz-Signature")
-  valid_605757 = validateParameter(valid_605757, JString, required = false,
+  if valid_613756 != nil:
+    section.add "X-Amz-Target", valid_613756
+  var valid_613757 = header.getOrDefault("X-Amz-Signature")
+  valid_613757 = validateParameter(valid_613757, JString, required = false,
                                  default = nil)
-  if valid_605757 != nil:
-    section.add "X-Amz-Signature", valid_605757
-  var valid_605758 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605758 = validateParameter(valid_605758, JString, required = false,
+  if valid_613757 != nil:
+    section.add "X-Amz-Signature", valid_613757
+  var valid_613758 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613758 = validateParameter(valid_613758, JString, required = false,
                                  default = nil)
-  if valid_605758 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605758
-  var valid_605759 = header.getOrDefault("X-Amz-Date")
-  valid_605759 = validateParameter(valid_605759, JString, required = false,
+  if valid_613758 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613758
+  var valid_613759 = header.getOrDefault("X-Amz-Date")
+  valid_613759 = validateParameter(valid_613759, JString, required = false,
                                  default = nil)
-  if valid_605759 != nil:
-    section.add "X-Amz-Date", valid_605759
-  var valid_605760 = header.getOrDefault("X-Amz-Credential")
-  valid_605760 = validateParameter(valid_605760, JString, required = false,
+  if valid_613759 != nil:
+    section.add "X-Amz-Date", valid_613759
+  var valid_613760 = header.getOrDefault("X-Amz-Credential")
+  valid_613760 = validateParameter(valid_613760, JString, required = false,
                                  default = nil)
-  if valid_605760 != nil:
-    section.add "X-Amz-Credential", valid_605760
-  var valid_605761 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605761 = validateParameter(valid_605761, JString, required = false,
+  if valid_613760 != nil:
+    section.add "X-Amz-Credential", valid_613760
+  var valid_613761 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613761 = validateParameter(valid_613761, JString, required = false,
                                  default = nil)
-  if valid_605761 != nil:
-    section.add "X-Amz-Security-Token", valid_605761
-  var valid_605762 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605762 = validateParameter(valid_605762, JString, required = false,
+  if valid_613761 != nil:
+    section.add "X-Amz-Security-Token", valid_613761
+  var valid_613762 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613762 = validateParameter(valid_613762, JString, required = false,
                                  default = nil)
-  if valid_605762 != nil:
-    section.add "X-Amz-Algorithm", valid_605762
-  var valid_605763 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605763 = validateParameter(valid_605763, JString, required = false,
+  if valid_613762 != nil:
+    section.add "X-Amz-Algorithm", valid_613762
+  var valid_613763 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613763 = validateParameter(valid_613763, JString, required = false,
                                  default = nil)
-  if valid_605763 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605763
+  if valid_613763 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613763
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3988,36 +3988,36 @@ proc validate_RebuildWorkspaces_605754(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605765: Call_RebuildWorkspaces_605753; path: JsonNode;
+proc call*(call_613765: Call_RebuildWorkspaces_613753; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, <code>UNHEALTHY</code>, or <code>STOPPED</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
   ## 
-  let valid = call_605765.validator(path, query, header, formData, body)
-  let scheme = call_605765.pickScheme
+  let valid = call_613765.validator(path, query, header, formData, body)
+  let scheme = call_613765.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605765.url(scheme.get, call_605765.host, call_605765.base,
-                         call_605765.route, valid.getOrDefault("path"),
+  let url = call_613765.url(scheme.get, call_613765.host, call_613765.base,
+                         call_613765.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605765, url, valid)
+  result = atozHook(call_613765, url, valid)
 
-proc call*(call_605766: Call_RebuildWorkspaces_605753; body: JsonNode): Recallable =
+proc call*(call_613766: Call_RebuildWorkspaces_613753; body: JsonNode): Recallable =
   ## rebuildWorkspaces
   ## <p>Rebuilds the specified WorkSpace.</p> <p>You cannot rebuild a WorkSpace unless its state is <code>AVAILABLE</code>, <code>ERROR</code>, <code>UNHEALTHY</code>, or <code>STOPPED</code>.</p> <p>Rebuilding a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/reset-workspace.html">Rebuild a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely rebuilt.</p>
   ##   body: JObject (required)
-  var body_605767 = newJObject()
+  var body_613767 = newJObject()
   if body != nil:
-    body_605767 = body
-  result = call_605766.call(nil, nil, nil, nil, body_605767)
+    body_613767 = body
+  result = call_613766.call(nil, nil, nil, nil, body_613767)
 
-var rebuildWorkspaces* = Call_RebuildWorkspaces_605753(name: "rebuildWorkspaces",
+var rebuildWorkspaces* = Call_RebuildWorkspaces_613753(name: "rebuildWorkspaces",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.RebuildWorkspaces",
-    validator: validate_RebuildWorkspaces_605754, base: "/",
-    url: url_RebuildWorkspaces_605755, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RebuildWorkspaces_613754, base: "/",
+    url: url_RebuildWorkspaces_613755, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterWorkspaceDirectory_605768 = ref object of OpenApiRestCall_604658
-proc url_RegisterWorkspaceDirectory_605770(protocol: Scheme; host: string;
+  Call_RegisterWorkspaceDirectory_613768 = ref object of OpenApiRestCall_612658
+proc url_RegisterWorkspaceDirectory_613770(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4029,7 +4029,7 @@ proc url_RegisterWorkspaceDirectory_605770(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_RegisterWorkspaceDirectory_605769(path: JsonNode; query: JsonNode;
+proc validate_RegisterWorkspaceDirectory_613769(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Registers the specified directory. This operation is asynchronous and returns before the WorkSpace directory is registered. If this is the first time you are registering a directory, you will need to create the workspaces_DefaultRole role before you can register a directory. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/workspaces-access-control.html#create-default-role"> Creating the workspaces_DefaultRole Role</a>.
   ## 
@@ -4049,46 +4049,46 @@ proc validate_RegisterWorkspaceDirectory_605769(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605771 = header.getOrDefault("X-Amz-Target")
-  valid_605771 = validateParameter(valid_605771, JString, required = true, default = newJString(
+  var valid_613771 = header.getOrDefault("X-Amz-Target")
+  valid_613771 = validateParameter(valid_613771, JString, required = true, default = newJString(
       "WorkspacesService.RegisterWorkspaceDirectory"))
-  if valid_605771 != nil:
-    section.add "X-Amz-Target", valid_605771
-  var valid_605772 = header.getOrDefault("X-Amz-Signature")
-  valid_605772 = validateParameter(valid_605772, JString, required = false,
+  if valid_613771 != nil:
+    section.add "X-Amz-Target", valid_613771
+  var valid_613772 = header.getOrDefault("X-Amz-Signature")
+  valid_613772 = validateParameter(valid_613772, JString, required = false,
                                  default = nil)
-  if valid_605772 != nil:
-    section.add "X-Amz-Signature", valid_605772
-  var valid_605773 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605773 = validateParameter(valid_605773, JString, required = false,
+  if valid_613772 != nil:
+    section.add "X-Amz-Signature", valid_613772
+  var valid_613773 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613773 = validateParameter(valid_613773, JString, required = false,
                                  default = nil)
-  if valid_605773 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605773
-  var valid_605774 = header.getOrDefault("X-Amz-Date")
-  valid_605774 = validateParameter(valid_605774, JString, required = false,
+  if valid_613773 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613773
+  var valid_613774 = header.getOrDefault("X-Amz-Date")
+  valid_613774 = validateParameter(valid_613774, JString, required = false,
                                  default = nil)
-  if valid_605774 != nil:
-    section.add "X-Amz-Date", valid_605774
-  var valid_605775 = header.getOrDefault("X-Amz-Credential")
-  valid_605775 = validateParameter(valid_605775, JString, required = false,
+  if valid_613774 != nil:
+    section.add "X-Amz-Date", valid_613774
+  var valid_613775 = header.getOrDefault("X-Amz-Credential")
+  valid_613775 = validateParameter(valid_613775, JString, required = false,
                                  default = nil)
-  if valid_605775 != nil:
-    section.add "X-Amz-Credential", valid_605775
-  var valid_605776 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605776 = validateParameter(valid_605776, JString, required = false,
+  if valid_613775 != nil:
+    section.add "X-Amz-Credential", valid_613775
+  var valid_613776 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613776 = validateParameter(valid_613776, JString, required = false,
                                  default = nil)
-  if valid_605776 != nil:
-    section.add "X-Amz-Security-Token", valid_605776
-  var valid_605777 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605777 = validateParameter(valid_605777, JString, required = false,
+  if valid_613776 != nil:
+    section.add "X-Amz-Security-Token", valid_613776
+  var valid_613777 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613777 = validateParameter(valid_613777, JString, required = false,
                                  default = nil)
-  if valid_605777 != nil:
-    section.add "X-Amz-Algorithm", valid_605777
-  var valid_605778 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605778 = validateParameter(valid_605778, JString, required = false,
+  if valid_613777 != nil:
+    section.add "X-Amz-Algorithm", valid_613777
+  var valid_613778 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613778 = validateParameter(valid_613778, JString, required = false,
                                  default = nil)
-  if valid_605778 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605778
+  if valid_613778 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613778
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4099,38 +4099,38 @@ proc validate_RegisterWorkspaceDirectory_605769(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605780: Call_RegisterWorkspaceDirectory_605768; path: JsonNode;
+proc call*(call_613780: Call_RegisterWorkspaceDirectory_613768; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Registers the specified directory. This operation is asynchronous and returns before the WorkSpace directory is registered. If this is the first time you are registering a directory, you will need to create the workspaces_DefaultRole role before you can register a directory. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/workspaces-access-control.html#create-default-role"> Creating the workspaces_DefaultRole Role</a>.
   ## 
-  let valid = call_605780.validator(path, query, header, formData, body)
-  let scheme = call_605780.pickScheme
+  let valid = call_613780.validator(path, query, header, formData, body)
+  let scheme = call_613780.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605780.url(scheme.get, call_605780.host, call_605780.base,
-                         call_605780.route, valid.getOrDefault("path"),
+  let url = call_613780.url(scheme.get, call_613780.host, call_613780.base,
+                         call_613780.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605780, url, valid)
+  result = atozHook(call_613780, url, valid)
 
-proc call*(call_605781: Call_RegisterWorkspaceDirectory_605768; body: JsonNode): Recallable =
+proc call*(call_613781: Call_RegisterWorkspaceDirectory_613768; body: JsonNode): Recallable =
   ## registerWorkspaceDirectory
   ## Registers the specified directory. This operation is asynchronous and returns before the WorkSpace directory is registered. If this is the first time you are registering a directory, you will need to create the workspaces_DefaultRole role before you can register a directory. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/workspaces-access-control.html#create-default-role"> Creating the workspaces_DefaultRole Role</a>.
   ##   body: JObject (required)
-  var body_605782 = newJObject()
+  var body_613782 = newJObject()
   if body != nil:
-    body_605782 = body
-  result = call_605781.call(nil, nil, nil, nil, body_605782)
+    body_613782 = body
+  result = call_613781.call(nil, nil, nil, nil, body_613782)
 
-var registerWorkspaceDirectory* = Call_RegisterWorkspaceDirectory_605768(
+var registerWorkspaceDirectory* = Call_RegisterWorkspaceDirectory_613768(
     name: "registerWorkspaceDirectory", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.RegisterWorkspaceDirectory",
-    validator: validate_RegisterWorkspaceDirectory_605769, base: "/",
-    url: url_RegisterWorkspaceDirectory_605770,
+    validator: validate_RegisterWorkspaceDirectory_613769, base: "/",
+    url: url_RegisterWorkspaceDirectory_613770,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestoreWorkspace_605783 = ref object of OpenApiRestCall_604658
-proc url_RestoreWorkspace_605785(protocol: Scheme; host: string; base: string;
+  Call_RestoreWorkspace_613783 = ref object of OpenApiRestCall_612658
+proc url_RestoreWorkspace_613785(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4142,7 +4142,7 @@ proc url_RestoreWorkspace_605785(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RestoreWorkspace_605784(path: JsonNode; query: JsonNode;
+proc validate_RestoreWorkspace_613784(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Restores the specified WorkSpace to its last known healthy state.</p> <p>You cannot restore a WorkSpace unless its state is <code> AVAILABLE</code>, <code>ERROR</code>, <code>UNHEALTHY</code>, or <code>STOPPED</code>.</p> <p>Restoring a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/restore-workspace.html">Restore a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpace is completely restored.</p>
@@ -4163,46 +4163,46 @@ proc validate_RestoreWorkspace_605784(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605786 = header.getOrDefault("X-Amz-Target")
-  valid_605786 = validateParameter(valid_605786, JString, required = true, default = newJString(
+  var valid_613786 = header.getOrDefault("X-Amz-Target")
+  valid_613786 = validateParameter(valid_613786, JString, required = true, default = newJString(
       "WorkspacesService.RestoreWorkspace"))
-  if valid_605786 != nil:
-    section.add "X-Amz-Target", valid_605786
-  var valid_605787 = header.getOrDefault("X-Amz-Signature")
-  valid_605787 = validateParameter(valid_605787, JString, required = false,
+  if valid_613786 != nil:
+    section.add "X-Amz-Target", valid_613786
+  var valid_613787 = header.getOrDefault("X-Amz-Signature")
+  valid_613787 = validateParameter(valid_613787, JString, required = false,
                                  default = nil)
-  if valid_605787 != nil:
-    section.add "X-Amz-Signature", valid_605787
-  var valid_605788 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605788 = validateParameter(valid_605788, JString, required = false,
+  if valid_613787 != nil:
+    section.add "X-Amz-Signature", valid_613787
+  var valid_613788 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613788 = validateParameter(valid_613788, JString, required = false,
                                  default = nil)
-  if valid_605788 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605788
-  var valid_605789 = header.getOrDefault("X-Amz-Date")
-  valid_605789 = validateParameter(valid_605789, JString, required = false,
+  if valid_613788 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613788
+  var valid_613789 = header.getOrDefault("X-Amz-Date")
+  valid_613789 = validateParameter(valid_613789, JString, required = false,
                                  default = nil)
-  if valid_605789 != nil:
-    section.add "X-Amz-Date", valid_605789
-  var valid_605790 = header.getOrDefault("X-Amz-Credential")
-  valid_605790 = validateParameter(valid_605790, JString, required = false,
+  if valid_613789 != nil:
+    section.add "X-Amz-Date", valid_613789
+  var valid_613790 = header.getOrDefault("X-Amz-Credential")
+  valid_613790 = validateParameter(valid_613790, JString, required = false,
                                  default = nil)
-  if valid_605790 != nil:
-    section.add "X-Amz-Credential", valid_605790
-  var valid_605791 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605791 = validateParameter(valid_605791, JString, required = false,
+  if valid_613790 != nil:
+    section.add "X-Amz-Credential", valid_613790
+  var valid_613791 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613791 = validateParameter(valid_613791, JString, required = false,
                                  default = nil)
-  if valid_605791 != nil:
-    section.add "X-Amz-Security-Token", valid_605791
-  var valid_605792 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605792 = validateParameter(valid_605792, JString, required = false,
+  if valid_613791 != nil:
+    section.add "X-Amz-Security-Token", valid_613791
+  var valid_613792 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613792 = validateParameter(valid_613792, JString, required = false,
                                  default = nil)
-  if valid_605792 != nil:
-    section.add "X-Amz-Algorithm", valid_605792
-  var valid_605793 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605793 = validateParameter(valid_605793, JString, required = false,
+  if valid_613792 != nil:
+    section.add "X-Amz-Algorithm", valid_613792
+  var valid_613793 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613793 = validateParameter(valid_613793, JString, required = false,
                                  default = nil)
-  if valid_605793 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605793
+  if valid_613793 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613793
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4213,36 +4213,36 @@ proc validate_RestoreWorkspace_605784(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605795: Call_RestoreWorkspace_605783; path: JsonNode;
+proc call*(call_613795: Call_RestoreWorkspace_613783; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Restores the specified WorkSpace to its last known healthy state.</p> <p>You cannot restore a WorkSpace unless its state is <code> AVAILABLE</code>, <code>ERROR</code>, <code>UNHEALTHY</code>, or <code>STOPPED</code>.</p> <p>Restoring a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/restore-workspace.html">Restore a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpace is completely restored.</p>
   ## 
-  let valid = call_605795.validator(path, query, header, formData, body)
-  let scheme = call_605795.pickScheme
+  let valid = call_613795.validator(path, query, header, formData, body)
+  let scheme = call_613795.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605795.url(scheme.get, call_605795.host, call_605795.base,
-                         call_605795.route, valid.getOrDefault("path"),
+  let url = call_613795.url(scheme.get, call_613795.host, call_613795.base,
+                         call_613795.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605795, url, valid)
+  result = atozHook(call_613795, url, valid)
 
-proc call*(call_605796: Call_RestoreWorkspace_605783; body: JsonNode): Recallable =
+proc call*(call_613796: Call_RestoreWorkspace_613783; body: JsonNode): Recallable =
   ## restoreWorkspace
   ## <p>Restores the specified WorkSpace to its last known healthy state.</p> <p>You cannot restore a WorkSpace unless its state is <code> AVAILABLE</code>, <code>ERROR</code>, <code>UNHEALTHY</code>, or <code>STOPPED</code>.</p> <p>Restoring a WorkSpace is a potentially destructive action that can result in the loss of data. For more information, see <a href="https://docs.aws.amazon.com/workspaces/latest/adminguide/restore-workspace.html">Restore a WorkSpace</a>.</p> <p>This operation is asynchronous and returns before the WorkSpace is completely restored.</p>
   ##   body: JObject (required)
-  var body_605797 = newJObject()
+  var body_613797 = newJObject()
   if body != nil:
-    body_605797 = body
-  result = call_605796.call(nil, nil, nil, nil, body_605797)
+    body_613797 = body
+  result = call_613796.call(nil, nil, nil, nil, body_613797)
 
-var restoreWorkspace* = Call_RestoreWorkspace_605783(name: "restoreWorkspace",
+var restoreWorkspace* = Call_RestoreWorkspace_613783(name: "restoreWorkspace",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.RestoreWorkspace",
-    validator: validate_RestoreWorkspace_605784, base: "/",
-    url: url_RestoreWorkspace_605785, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RestoreWorkspace_613784, base: "/",
+    url: url_RestoreWorkspace_613785, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RevokeIpRules_605798 = ref object of OpenApiRestCall_604658
-proc url_RevokeIpRules_605800(protocol: Scheme; host: string; base: string;
+  Call_RevokeIpRules_613798 = ref object of OpenApiRestCall_612658
+proc url_RevokeIpRules_613800(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4254,7 +4254,7 @@ proc url_RevokeIpRules_605800(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RevokeIpRules_605799(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RevokeIpRules_613799(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes one or more rules from the specified IP access control group.
   ## 
@@ -4274,46 +4274,46 @@ proc validate_RevokeIpRules_605799(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605801 = header.getOrDefault("X-Amz-Target")
-  valid_605801 = validateParameter(valid_605801, JString, required = true, default = newJString(
+  var valid_613801 = header.getOrDefault("X-Amz-Target")
+  valid_613801 = validateParameter(valid_613801, JString, required = true, default = newJString(
       "WorkspacesService.RevokeIpRules"))
-  if valid_605801 != nil:
-    section.add "X-Amz-Target", valid_605801
-  var valid_605802 = header.getOrDefault("X-Amz-Signature")
-  valid_605802 = validateParameter(valid_605802, JString, required = false,
+  if valid_613801 != nil:
+    section.add "X-Amz-Target", valid_613801
+  var valid_613802 = header.getOrDefault("X-Amz-Signature")
+  valid_613802 = validateParameter(valid_613802, JString, required = false,
                                  default = nil)
-  if valid_605802 != nil:
-    section.add "X-Amz-Signature", valid_605802
-  var valid_605803 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605803 = validateParameter(valid_605803, JString, required = false,
+  if valid_613802 != nil:
+    section.add "X-Amz-Signature", valid_613802
+  var valid_613803 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613803 = validateParameter(valid_613803, JString, required = false,
                                  default = nil)
-  if valid_605803 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605803
-  var valid_605804 = header.getOrDefault("X-Amz-Date")
-  valid_605804 = validateParameter(valid_605804, JString, required = false,
+  if valid_613803 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613803
+  var valid_613804 = header.getOrDefault("X-Amz-Date")
+  valid_613804 = validateParameter(valid_613804, JString, required = false,
                                  default = nil)
-  if valid_605804 != nil:
-    section.add "X-Amz-Date", valid_605804
-  var valid_605805 = header.getOrDefault("X-Amz-Credential")
-  valid_605805 = validateParameter(valid_605805, JString, required = false,
+  if valid_613804 != nil:
+    section.add "X-Amz-Date", valid_613804
+  var valid_613805 = header.getOrDefault("X-Amz-Credential")
+  valid_613805 = validateParameter(valid_613805, JString, required = false,
                                  default = nil)
-  if valid_605805 != nil:
-    section.add "X-Amz-Credential", valid_605805
-  var valid_605806 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605806 = validateParameter(valid_605806, JString, required = false,
+  if valid_613805 != nil:
+    section.add "X-Amz-Credential", valid_613805
+  var valid_613806 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613806 = validateParameter(valid_613806, JString, required = false,
                                  default = nil)
-  if valid_605806 != nil:
-    section.add "X-Amz-Security-Token", valid_605806
-  var valid_605807 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605807 = validateParameter(valid_605807, JString, required = false,
+  if valid_613806 != nil:
+    section.add "X-Amz-Security-Token", valid_613806
+  var valid_613807 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613807 = validateParameter(valid_613807, JString, required = false,
                                  default = nil)
-  if valid_605807 != nil:
-    section.add "X-Amz-Algorithm", valid_605807
-  var valid_605808 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605808 = validateParameter(valid_605808, JString, required = false,
+  if valid_613807 != nil:
+    section.add "X-Amz-Algorithm", valid_613807
+  var valid_613808 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613808 = validateParameter(valid_613808, JString, required = false,
                                  default = nil)
-  if valid_605808 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605808
+  if valid_613808 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613808
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4324,36 +4324,36 @@ proc validate_RevokeIpRules_605799(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_605810: Call_RevokeIpRules_605798; path: JsonNode; query: JsonNode;
+proc call*(call_613810: Call_RevokeIpRules_613798; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes one or more rules from the specified IP access control group.
   ## 
-  let valid = call_605810.validator(path, query, header, formData, body)
-  let scheme = call_605810.pickScheme
+  let valid = call_613810.validator(path, query, header, formData, body)
+  let scheme = call_613810.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605810.url(scheme.get, call_605810.host, call_605810.base,
-                         call_605810.route, valid.getOrDefault("path"),
+  let url = call_613810.url(scheme.get, call_613810.host, call_613810.base,
+                         call_613810.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605810, url, valid)
+  result = atozHook(call_613810, url, valid)
 
-proc call*(call_605811: Call_RevokeIpRules_605798; body: JsonNode): Recallable =
+proc call*(call_613811: Call_RevokeIpRules_613798; body: JsonNode): Recallable =
   ## revokeIpRules
   ## Removes one or more rules from the specified IP access control group.
   ##   body: JObject (required)
-  var body_605812 = newJObject()
+  var body_613812 = newJObject()
   if body != nil:
-    body_605812 = body
-  result = call_605811.call(nil, nil, nil, nil, body_605812)
+    body_613812 = body
+  result = call_613811.call(nil, nil, nil, nil, body_613812)
 
-var revokeIpRules* = Call_RevokeIpRules_605798(name: "revokeIpRules",
+var revokeIpRules* = Call_RevokeIpRules_613798(name: "revokeIpRules",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.RevokeIpRules",
-    validator: validate_RevokeIpRules_605799, base: "/", url: url_RevokeIpRules_605800,
+    validator: validate_RevokeIpRules_613799, base: "/", url: url_RevokeIpRules_613800,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartWorkspaces_605813 = ref object of OpenApiRestCall_604658
-proc url_StartWorkspaces_605815(protocol: Scheme; host: string; base: string;
+  Call_StartWorkspaces_613813 = ref object of OpenApiRestCall_612658
+proc url_StartWorkspaces_613815(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4365,7 +4365,7 @@ proc url_StartWorkspaces_605815(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StartWorkspaces_605814(path: JsonNode; query: JsonNode;
+proc validate_StartWorkspaces_613814(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
@@ -4386,46 +4386,46 @@ proc validate_StartWorkspaces_605814(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605816 = header.getOrDefault("X-Amz-Target")
-  valid_605816 = validateParameter(valid_605816, JString, required = true, default = newJString(
+  var valid_613816 = header.getOrDefault("X-Amz-Target")
+  valid_613816 = validateParameter(valid_613816, JString, required = true, default = newJString(
       "WorkspacesService.StartWorkspaces"))
-  if valid_605816 != nil:
-    section.add "X-Amz-Target", valid_605816
-  var valid_605817 = header.getOrDefault("X-Amz-Signature")
-  valid_605817 = validateParameter(valid_605817, JString, required = false,
+  if valid_613816 != nil:
+    section.add "X-Amz-Target", valid_613816
+  var valid_613817 = header.getOrDefault("X-Amz-Signature")
+  valid_613817 = validateParameter(valid_613817, JString, required = false,
                                  default = nil)
-  if valid_605817 != nil:
-    section.add "X-Amz-Signature", valid_605817
-  var valid_605818 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605818 = validateParameter(valid_605818, JString, required = false,
+  if valid_613817 != nil:
+    section.add "X-Amz-Signature", valid_613817
+  var valid_613818 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613818 = validateParameter(valid_613818, JString, required = false,
                                  default = nil)
-  if valid_605818 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605818
-  var valid_605819 = header.getOrDefault("X-Amz-Date")
-  valid_605819 = validateParameter(valid_605819, JString, required = false,
+  if valid_613818 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613818
+  var valid_613819 = header.getOrDefault("X-Amz-Date")
+  valid_613819 = validateParameter(valid_613819, JString, required = false,
                                  default = nil)
-  if valid_605819 != nil:
-    section.add "X-Amz-Date", valid_605819
-  var valid_605820 = header.getOrDefault("X-Amz-Credential")
-  valid_605820 = validateParameter(valid_605820, JString, required = false,
+  if valid_613819 != nil:
+    section.add "X-Amz-Date", valid_613819
+  var valid_613820 = header.getOrDefault("X-Amz-Credential")
+  valid_613820 = validateParameter(valid_613820, JString, required = false,
                                  default = nil)
-  if valid_605820 != nil:
-    section.add "X-Amz-Credential", valid_605820
-  var valid_605821 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605821 = validateParameter(valid_605821, JString, required = false,
+  if valid_613820 != nil:
+    section.add "X-Amz-Credential", valid_613820
+  var valid_613821 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613821 = validateParameter(valid_613821, JString, required = false,
                                  default = nil)
-  if valid_605821 != nil:
-    section.add "X-Amz-Security-Token", valid_605821
-  var valid_605822 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605822 = validateParameter(valid_605822, JString, required = false,
+  if valid_613821 != nil:
+    section.add "X-Amz-Security-Token", valid_613821
+  var valid_613822 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613822 = validateParameter(valid_613822, JString, required = false,
                                  default = nil)
-  if valid_605822 != nil:
-    section.add "X-Amz-Algorithm", valid_605822
-  var valid_605823 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605823 = validateParameter(valid_605823, JString, required = false,
+  if valid_613822 != nil:
+    section.add "X-Amz-Algorithm", valid_613822
+  var valid_613823 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613823 = validateParameter(valid_613823, JString, required = false,
                                  default = nil)
-  if valid_605823 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605823
+  if valid_613823 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613823
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4436,36 +4436,36 @@ proc validate_StartWorkspaces_605814(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605825: Call_StartWorkspaces_605813; path: JsonNode; query: JsonNode;
+proc call*(call_613825: Call_StartWorkspaces_613813; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
   ## 
-  let valid = call_605825.validator(path, query, header, formData, body)
-  let scheme = call_605825.pickScheme
+  let valid = call_613825.validator(path, query, header, formData, body)
+  let scheme = call_613825.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605825.url(scheme.get, call_605825.host, call_605825.base,
-                         call_605825.route, valid.getOrDefault("path"),
+  let url = call_613825.url(scheme.get, call_613825.host, call_613825.base,
+                         call_613825.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605825, url, valid)
+  result = atozHook(call_613825, url, valid)
 
-proc call*(call_605826: Call_StartWorkspaces_605813; body: JsonNode): Recallable =
+proc call*(call_613826: Call_StartWorkspaces_613813; body: JsonNode): Recallable =
   ## startWorkspaces
   ## <p>Starts the specified WorkSpaces.</p> <p>You cannot start a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>STOPPED</code>.</p>
   ##   body: JObject (required)
-  var body_605827 = newJObject()
+  var body_613827 = newJObject()
   if body != nil:
-    body_605827 = body
-  result = call_605826.call(nil, nil, nil, nil, body_605827)
+    body_613827 = body
+  result = call_613826.call(nil, nil, nil, nil, body_613827)
 
-var startWorkspaces* = Call_StartWorkspaces_605813(name: "startWorkspaces",
+var startWorkspaces* = Call_StartWorkspaces_613813(name: "startWorkspaces",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.StartWorkspaces",
-    validator: validate_StartWorkspaces_605814, base: "/", url: url_StartWorkspaces_605815,
+    validator: validate_StartWorkspaces_613814, base: "/", url: url_StartWorkspaces_613815,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopWorkspaces_605828 = ref object of OpenApiRestCall_604658
-proc url_StopWorkspaces_605830(protocol: Scheme; host: string; base: string;
+  Call_StopWorkspaces_613828 = ref object of OpenApiRestCall_612658
+proc url_StopWorkspaces_613830(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4477,7 +4477,7 @@ proc url_StopWorkspaces_605830(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopWorkspaces_605829(path: JsonNode; query: JsonNode;
+proc validate_StopWorkspaces_613829(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
@@ -4498,46 +4498,46 @@ proc validate_StopWorkspaces_605829(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605831 = header.getOrDefault("X-Amz-Target")
-  valid_605831 = validateParameter(valid_605831, JString, required = true, default = newJString(
+  var valid_613831 = header.getOrDefault("X-Amz-Target")
+  valid_613831 = validateParameter(valid_613831, JString, required = true, default = newJString(
       "WorkspacesService.StopWorkspaces"))
-  if valid_605831 != nil:
-    section.add "X-Amz-Target", valid_605831
-  var valid_605832 = header.getOrDefault("X-Amz-Signature")
-  valid_605832 = validateParameter(valid_605832, JString, required = false,
+  if valid_613831 != nil:
+    section.add "X-Amz-Target", valid_613831
+  var valid_613832 = header.getOrDefault("X-Amz-Signature")
+  valid_613832 = validateParameter(valid_613832, JString, required = false,
                                  default = nil)
-  if valid_605832 != nil:
-    section.add "X-Amz-Signature", valid_605832
-  var valid_605833 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605833 = validateParameter(valid_605833, JString, required = false,
+  if valid_613832 != nil:
+    section.add "X-Amz-Signature", valid_613832
+  var valid_613833 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613833 = validateParameter(valid_613833, JString, required = false,
                                  default = nil)
-  if valid_605833 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605833
-  var valid_605834 = header.getOrDefault("X-Amz-Date")
-  valid_605834 = validateParameter(valid_605834, JString, required = false,
+  if valid_613833 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613833
+  var valid_613834 = header.getOrDefault("X-Amz-Date")
+  valid_613834 = validateParameter(valid_613834, JString, required = false,
                                  default = nil)
-  if valid_605834 != nil:
-    section.add "X-Amz-Date", valid_605834
-  var valid_605835 = header.getOrDefault("X-Amz-Credential")
-  valid_605835 = validateParameter(valid_605835, JString, required = false,
+  if valid_613834 != nil:
+    section.add "X-Amz-Date", valid_613834
+  var valid_613835 = header.getOrDefault("X-Amz-Credential")
+  valid_613835 = validateParameter(valid_613835, JString, required = false,
                                  default = nil)
-  if valid_605835 != nil:
-    section.add "X-Amz-Credential", valid_605835
-  var valid_605836 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605836 = validateParameter(valid_605836, JString, required = false,
+  if valid_613835 != nil:
+    section.add "X-Amz-Credential", valid_613835
+  var valid_613836 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613836 = validateParameter(valid_613836, JString, required = false,
                                  default = nil)
-  if valid_605836 != nil:
-    section.add "X-Amz-Security-Token", valid_605836
-  var valid_605837 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605837 = validateParameter(valid_605837, JString, required = false,
+  if valid_613836 != nil:
+    section.add "X-Amz-Security-Token", valid_613836
+  var valid_613837 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613837 = validateParameter(valid_613837, JString, required = false,
                                  default = nil)
-  if valid_605837 != nil:
-    section.add "X-Amz-Algorithm", valid_605837
-  var valid_605838 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605838 = validateParameter(valid_605838, JString, required = false,
+  if valid_613837 != nil:
+    section.add "X-Amz-Algorithm", valid_613837
+  var valid_613838 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613838 = validateParameter(valid_613838, JString, required = false,
                                  default = nil)
-  if valid_605838 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605838
+  if valid_613838 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613838
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4548,36 +4548,36 @@ proc validate_StopWorkspaces_605829(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605840: Call_StopWorkspaces_605828; path: JsonNode; query: JsonNode;
+proc call*(call_613840: Call_StopWorkspaces_613828; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
   ## 
-  let valid = call_605840.validator(path, query, header, formData, body)
-  let scheme = call_605840.pickScheme
+  let valid = call_613840.validator(path, query, header, formData, body)
+  let scheme = call_613840.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605840.url(scheme.get, call_605840.host, call_605840.base,
-                         call_605840.route, valid.getOrDefault("path"),
+  let url = call_613840.url(scheme.get, call_613840.host, call_613840.base,
+                         call_613840.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605840, url, valid)
+  result = atozHook(call_613840, url, valid)
 
-proc call*(call_605841: Call_StopWorkspaces_605828; body: JsonNode): Recallable =
+proc call*(call_613841: Call_StopWorkspaces_613828; body: JsonNode): Recallable =
   ## stopWorkspaces
   ## <p> Stops the specified WorkSpaces.</p> <p>You cannot stop a WorkSpace unless it has a running mode of <code>AutoStop</code> and a state of <code>AVAILABLE</code>, <code>IMPAIRED</code>, <code>UNHEALTHY</code>, or <code>ERROR</code>.</p>
   ##   body: JObject (required)
-  var body_605842 = newJObject()
+  var body_613842 = newJObject()
   if body != nil:
-    body_605842 = body
-  result = call_605841.call(nil, nil, nil, nil, body_605842)
+    body_613842 = body
+  result = call_613841.call(nil, nil, nil, nil, body_613842)
 
-var stopWorkspaces* = Call_StopWorkspaces_605828(name: "stopWorkspaces",
+var stopWorkspaces* = Call_StopWorkspaces_613828(name: "stopWorkspaces",
     meth: HttpMethod.HttpPost, host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.StopWorkspaces",
-    validator: validate_StopWorkspaces_605829, base: "/", url: url_StopWorkspaces_605830,
+    validator: validate_StopWorkspaces_613829, base: "/", url: url_StopWorkspaces_613830,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TerminateWorkspaces_605843 = ref object of OpenApiRestCall_604658
-proc url_TerminateWorkspaces_605845(protocol: Scheme; host: string; base: string;
+  Call_TerminateWorkspaces_613843 = ref object of OpenApiRestCall_612658
+proc url_TerminateWorkspaces_613845(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4589,7 +4589,7 @@ proc url_TerminateWorkspaces_605845(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_TerminateWorkspaces_605844(path: JsonNode; query: JsonNode;
+proc validate_TerminateWorkspaces_613844(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
@@ -4610,46 +4610,46 @@ proc validate_TerminateWorkspaces_605844(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605846 = header.getOrDefault("X-Amz-Target")
-  valid_605846 = validateParameter(valid_605846, JString, required = true, default = newJString(
+  var valid_613846 = header.getOrDefault("X-Amz-Target")
+  valid_613846 = validateParameter(valid_613846, JString, required = true, default = newJString(
       "WorkspacesService.TerminateWorkspaces"))
-  if valid_605846 != nil:
-    section.add "X-Amz-Target", valid_605846
-  var valid_605847 = header.getOrDefault("X-Amz-Signature")
-  valid_605847 = validateParameter(valid_605847, JString, required = false,
+  if valid_613846 != nil:
+    section.add "X-Amz-Target", valid_613846
+  var valid_613847 = header.getOrDefault("X-Amz-Signature")
+  valid_613847 = validateParameter(valid_613847, JString, required = false,
                                  default = nil)
-  if valid_605847 != nil:
-    section.add "X-Amz-Signature", valid_605847
-  var valid_605848 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605848 = validateParameter(valid_605848, JString, required = false,
+  if valid_613847 != nil:
+    section.add "X-Amz-Signature", valid_613847
+  var valid_613848 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613848 = validateParameter(valid_613848, JString, required = false,
                                  default = nil)
-  if valid_605848 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605848
-  var valid_605849 = header.getOrDefault("X-Amz-Date")
-  valid_605849 = validateParameter(valid_605849, JString, required = false,
+  if valid_613848 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613848
+  var valid_613849 = header.getOrDefault("X-Amz-Date")
+  valid_613849 = validateParameter(valid_613849, JString, required = false,
                                  default = nil)
-  if valid_605849 != nil:
-    section.add "X-Amz-Date", valid_605849
-  var valid_605850 = header.getOrDefault("X-Amz-Credential")
-  valid_605850 = validateParameter(valid_605850, JString, required = false,
+  if valid_613849 != nil:
+    section.add "X-Amz-Date", valid_613849
+  var valid_613850 = header.getOrDefault("X-Amz-Credential")
+  valid_613850 = validateParameter(valid_613850, JString, required = false,
                                  default = nil)
-  if valid_605850 != nil:
-    section.add "X-Amz-Credential", valid_605850
-  var valid_605851 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605851 = validateParameter(valid_605851, JString, required = false,
+  if valid_613850 != nil:
+    section.add "X-Amz-Credential", valid_613850
+  var valid_613851 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613851 = validateParameter(valid_613851, JString, required = false,
                                  default = nil)
-  if valid_605851 != nil:
-    section.add "X-Amz-Security-Token", valid_605851
-  var valid_605852 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605852 = validateParameter(valid_605852, JString, required = false,
+  if valid_613851 != nil:
+    section.add "X-Amz-Security-Token", valid_613851
+  var valid_613852 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613852 = validateParameter(valid_613852, JString, required = false,
                                  default = nil)
-  if valid_605852 != nil:
-    section.add "X-Amz-Algorithm", valid_605852
-  var valid_605853 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605853 = validateParameter(valid_605853, JString, required = false,
+  if valid_613852 != nil:
+    section.add "X-Amz-Algorithm", valid_613852
+  var valid_613853 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613853 = validateParameter(valid_613853, JString, required = false,
                                  default = nil)
-  if valid_605853 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605853
+  if valid_613853 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613853
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4660,37 +4660,37 @@ proc validate_TerminateWorkspaces_605844(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605855: Call_TerminateWorkspaces_605843; path: JsonNode;
+proc call*(call_613855: Call_TerminateWorkspaces_613843; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
   ## 
-  let valid = call_605855.validator(path, query, header, formData, body)
-  let scheme = call_605855.pickScheme
+  let valid = call_613855.validator(path, query, header, formData, body)
+  let scheme = call_613855.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605855.url(scheme.get, call_605855.host, call_605855.base,
-                         call_605855.route, valid.getOrDefault("path"),
+  let url = call_613855.url(scheme.get, call_613855.host, call_613855.base,
+                         call_613855.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605855, url, valid)
+  result = atozHook(call_613855, url, valid)
 
-proc call*(call_605856: Call_TerminateWorkspaces_605843; body: JsonNode): Recallable =
+proc call*(call_613856: Call_TerminateWorkspaces_613843; body: JsonNode): Recallable =
   ## terminateWorkspaces
   ## <p>Terminates the specified WorkSpaces.</p> <p>Terminating a WorkSpace is a permanent action and cannot be undone. The user's data is destroyed. If you need to archive any user data, contact Amazon Web Services before terminating the WorkSpace.</p> <p>You can terminate a WorkSpace that is in any state except <code>SUSPENDED</code>.</p> <p>This operation is asynchronous and returns before the WorkSpaces have been completely terminated.</p>
   ##   body: JObject (required)
-  var body_605857 = newJObject()
+  var body_613857 = newJObject()
   if body != nil:
-    body_605857 = body
-  result = call_605856.call(nil, nil, nil, nil, body_605857)
+    body_613857 = body
+  result = call_613856.call(nil, nil, nil, nil, body_613857)
 
-var terminateWorkspaces* = Call_TerminateWorkspaces_605843(
+var terminateWorkspaces* = Call_TerminateWorkspaces_613843(
     name: "terminateWorkspaces", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.TerminateWorkspaces",
-    validator: validate_TerminateWorkspaces_605844, base: "/",
-    url: url_TerminateWorkspaces_605845, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_TerminateWorkspaces_613844, base: "/",
+    url: url_TerminateWorkspaces_613845, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRulesOfIpGroup_605858 = ref object of OpenApiRestCall_604658
-proc url_UpdateRulesOfIpGroup_605860(protocol: Scheme; host: string; base: string;
+  Call_UpdateRulesOfIpGroup_613858 = ref object of OpenApiRestCall_612658
+proc url_UpdateRulesOfIpGroup_613860(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4702,7 +4702,7 @@ proc url_UpdateRulesOfIpGroup_605860(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_UpdateRulesOfIpGroup_605859(path: JsonNode; query: JsonNode;
+proc validate_UpdateRulesOfIpGroup_613859(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Replaces the current rules of the specified IP access control group with the specified rules.
   ## 
@@ -4722,46 +4722,46 @@ proc validate_UpdateRulesOfIpGroup_605859(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_605861 = header.getOrDefault("X-Amz-Target")
-  valid_605861 = validateParameter(valid_605861, JString, required = true, default = newJString(
+  var valid_613861 = header.getOrDefault("X-Amz-Target")
+  valid_613861 = validateParameter(valid_613861, JString, required = true, default = newJString(
       "WorkspacesService.UpdateRulesOfIpGroup"))
-  if valid_605861 != nil:
-    section.add "X-Amz-Target", valid_605861
-  var valid_605862 = header.getOrDefault("X-Amz-Signature")
-  valid_605862 = validateParameter(valid_605862, JString, required = false,
+  if valid_613861 != nil:
+    section.add "X-Amz-Target", valid_613861
+  var valid_613862 = header.getOrDefault("X-Amz-Signature")
+  valid_613862 = validateParameter(valid_613862, JString, required = false,
                                  default = nil)
-  if valid_605862 != nil:
-    section.add "X-Amz-Signature", valid_605862
-  var valid_605863 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_605863 = validateParameter(valid_605863, JString, required = false,
+  if valid_613862 != nil:
+    section.add "X-Amz-Signature", valid_613862
+  var valid_613863 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613863 = validateParameter(valid_613863, JString, required = false,
                                  default = nil)
-  if valid_605863 != nil:
-    section.add "X-Amz-Content-Sha256", valid_605863
-  var valid_605864 = header.getOrDefault("X-Amz-Date")
-  valid_605864 = validateParameter(valid_605864, JString, required = false,
+  if valid_613863 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613863
+  var valid_613864 = header.getOrDefault("X-Amz-Date")
+  valid_613864 = validateParameter(valid_613864, JString, required = false,
                                  default = nil)
-  if valid_605864 != nil:
-    section.add "X-Amz-Date", valid_605864
-  var valid_605865 = header.getOrDefault("X-Amz-Credential")
-  valid_605865 = validateParameter(valid_605865, JString, required = false,
+  if valid_613864 != nil:
+    section.add "X-Amz-Date", valid_613864
+  var valid_613865 = header.getOrDefault("X-Amz-Credential")
+  valid_613865 = validateParameter(valid_613865, JString, required = false,
                                  default = nil)
-  if valid_605865 != nil:
-    section.add "X-Amz-Credential", valid_605865
-  var valid_605866 = header.getOrDefault("X-Amz-Security-Token")
-  valid_605866 = validateParameter(valid_605866, JString, required = false,
+  if valid_613865 != nil:
+    section.add "X-Amz-Credential", valid_613865
+  var valid_613866 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613866 = validateParameter(valid_613866, JString, required = false,
                                  default = nil)
-  if valid_605866 != nil:
-    section.add "X-Amz-Security-Token", valid_605866
-  var valid_605867 = header.getOrDefault("X-Amz-Algorithm")
-  valid_605867 = validateParameter(valid_605867, JString, required = false,
+  if valid_613866 != nil:
+    section.add "X-Amz-Security-Token", valid_613866
+  var valid_613867 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613867 = validateParameter(valid_613867, JString, required = false,
                                  default = nil)
-  if valid_605867 != nil:
-    section.add "X-Amz-Algorithm", valid_605867
-  var valid_605868 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_605868 = validateParameter(valid_605868, JString, required = false,
+  if valid_613867 != nil:
+    section.add "X-Amz-Algorithm", valid_613867
+  var valid_613868 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613868 = validateParameter(valid_613868, JString, required = false,
                                  default = nil)
-  if valid_605868 != nil:
-    section.add "X-Amz-SignedHeaders", valid_605868
+  if valid_613868 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613868
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4772,34 +4772,34 @@ proc validate_UpdateRulesOfIpGroup_605859(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_605870: Call_UpdateRulesOfIpGroup_605858; path: JsonNode;
+proc call*(call_613870: Call_UpdateRulesOfIpGroup_613858; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Replaces the current rules of the specified IP access control group with the specified rules.
   ## 
-  let valid = call_605870.validator(path, query, header, formData, body)
-  let scheme = call_605870.pickScheme
+  let valid = call_613870.validator(path, query, header, formData, body)
+  let scheme = call_613870.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_605870.url(scheme.get, call_605870.host, call_605870.base,
-                         call_605870.route, valid.getOrDefault("path"),
+  let url = call_613870.url(scheme.get, call_613870.host, call_613870.base,
+                         call_613870.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_605870, url, valid)
+  result = atozHook(call_613870, url, valid)
 
-proc call*(call_605871: Call_UpdateRulesOfIpGroup_605858; body: JsonNode): Recallable =
+proc call*(call_613871: Call_UpdateRulesOfIpGroup_613858; body: JsonNode): Recallable =
   ## updateRulesOfIpGroup
   ## Replaces the current rules of the specified IP access control group with the specified rules.
   ##   body: JObject (required)
-  var body_605872 = newJObject()
+  var body_613872 = newJObject()
   if body != nil:
-    body_605872 = body
-  result = call_605871.call(nil, nil, nil, nil, body_605872)
+    body_613872 = body
+  result = call_613871.call(nil, nil, nil, nil, body_613872)
 
-var updateRulesOfIpGroup* = Call_UpdateRulesOfIpGroup_605858(
+var updateRulesOfIpGroup* = Call_UpdateRulesOfIpGroup_613858(
     name: "updateRulesOfIpGroup", meth: HttpMethod.HttpPost,
     host: "workspaces.amazonaws.com",
     route: "/#X-Amz-Target=WorkspacesService.UpdateRulesOfIpGroup",
-    validator: validate_UpdateRulesOfIpGroup_605859, base: "/",
-    url: url_UpdateRulesOfIpGroup_605860, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateRulesOfIpGroup_613859, base: "/",
+    url: url_UpdateRulesOfIpGroup_613860, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

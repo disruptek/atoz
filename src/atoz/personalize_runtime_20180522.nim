@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605580 = ref object of OpenApiRestCall
+  OpenApiRestCall_612649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605580](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605580): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,8 +134,8 @@ const
   awsServiceName = "personalize-runtime"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GetPersonalizedRanking_605918 = ref object of OpenApiRestCall_605580
-proc url_GetPersonalizedRanking_605920(protocol: Scheme; host: string; base: string;
+  Call_GetPersonalizedRanking_612987 = ref object of OpenApiRestCall_612649
+proc url_GetPersonalizedRanking_612989(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -147,7 +147,7 @@ proc url_GetPersonalizedRanking_605920(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_GetPersonalizedRanking_605919(path: JsonNode; query: JsonNode;
+proc validate_GetPersonalizedRanking_612988(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Re-ranks a list of recommended items for the given user. The first item in the list is deemed the most likely item to be of interest to the user.</p> <note> <p>The solution backing the campaign must have been created using a recipe of type PERSONALIZED_RANKING.</p> </note>
   ## 
@@ -166,41 +166,41 @@ proc validate_GetPersonalizedRanking_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606032 = header.getOrDefault("X-Amz-Signature")
-  valid_606032 = validateParameter(valid_606032, JString, required = false,
+  var valid_613101 = header.getOrDefault("X-Amz-Signature")
+  valid_613101 = validateParameter(valid_613101, JString, required = false,
                                  default = nil)
-  if valid_606032 != nil:
-    section.add "X-Amz-Signature", valid_606032
-  var valid_606033 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606033 = validateParameter(valid_606033, JString, required = false,
+  if valid_613101 != nil:
+    section.add "X-Amz-Signature", valid_613101
+  var valid_613102 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613102 = validateParameter(valid_613102, JString, required = false,
                                  default = nil)
-  if valid_606033 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606033
-  var valid_606034 = header.getOrDefault("X-Amz-Date")
-  valid_606034 = validateParameter(valid_606034, JString, required = false,
+  if valid_613102 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613102
+  var valid_613103 = header.getOrDefault("X-Amz-Date")
+  valid_613103 = validateParameter(valid_613103, JString, required = false,
                                  default = nil)
-  if valid_606034 != nil:
-    section.add "X-Amz-Date", valid_606034
-  var valid_606035 = header.getOrDefault("X-Amz-Credential")
-  valid_606035 = validateParameter(valid_606035, JString, required = false,
+  if valid_613103 != nil:
+    section.add "X-Amz-Date", valid_613103
+  var valid_613104 = header.getOrDefault("X-Amz-Credential")
+  valid_613104 = validateParameter(valid_613104, JString, required = false,
                                  default = nil)
-  if valid_606035 != nil:
-    section.add "X-Amz-Credential", valid_606035
-  var valid_606036 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606036 = validateParameter(valid_606036, JString, required = false,
+  if valid_613104 != nil:
+    section.add "X-Amz-Credential", valid_613104
+  var valid_613105 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613105 = validateParameter(valid_613105, JString, required = false,
                                  default = nil)
-  if valid_606036 != nil:
-    section.add "X-Amz-Security-Token", valid_606036
-  var valid_606037 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606037 = validateParameter(valid_606037, JString, required = false,
+  if valid_613105 != nil:
+    section.add "X-Amz-Security-Token", valid_613105
+  var valid_613106 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613106 = validateParameter(valid_613106, JString, required = false,
                                  default = nil)
-  if valid_606037 != nil:
-    section.add "X-Amz-Algorithm", valid_606037
-  var valid_606038 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606038 = validateParameter(valid_606038, JString, required = false,
+  if valid_613106 != nil:
+    section.add "X-Amz-Algorithm", valid_613106
+  var valid_613107 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613107 = validateParameter(valid_613107, JString, required = false,
                                  default = nil)
-  if valid_606038 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606038
+  if valid_613107 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613107
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -211,36 +211,36 @@ proc validate_GetPersonalizedRanking_605919(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606062: Call_GetPersonalizedRanking_605918; path: JsonNode;
+proc call*(call_613131: Call_GetPersonalizedRanking_612987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Re-ranks a list of recommended items for the given user. The first item in the list is deemed the most likely item to be of interest to the user.</p> <note> <p>The solution backing the campaign must have been created using a recipe of type PERSONALIZED_RANKING.</p> </note>
   ## 
-  let valid = call_606062.validator(path, query, header, formData, body)
-  let scheme = call_606062.pickScheme
+  let valid = call_613131.validator(path, query, header, formData, body)
+  let scheme = call_613131.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606062.url(scheme.get, call_606062.host, call_606062.base,
-                         call_606062.route, valid.getOrDefault("path"),
+  let url = call_613131.url(scheme.get, call_613131.host, call_613131.base,
+                         call_613131.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606062, url, valid)
+  result = atozHook(call_613131, url, valid)
 
-proc call*(call_606133: Call_GetPersonalizedRanking_605918; body: JsonNode): Recallable =
+proc call*(call_613202: Call_GetPersonalizedRanking_612987; body: JsonNode): Recallable =
   ## getPersonalizedRanking
   ## <p>Re-ranks a list of recommended items for the given user. The first item in the list is deemed the most likely item to be of interest to the user.</p> <note> <p>The solution backing the campaign must have been created using a recipe of type PERSONALIZED_RANKING.</p> </note>
   ##   body: JObject (required)
-  var body_606134 = newJObject()
+  var body_613203 = newJObject()
   if body != nil:
-    body_606134 = body
-  result = call_606133.call(nil, nil, nil, nil, body_606134)
+    body_613203 = body
+  result = call_613202.call(nil, nil, nil, nil, body_613203)
 
-var getPersonalizedRanking* = Call_GetPersonalizedRanking_605918(
+var getPersonalizedRanking* = Call_GetPersonalizedRanking_612987(
     name: "getPersonalizedRanking", meth: HttpMethod.HttpPost,
     host: "personalize-runtime.amazonaws.com", route: "/personalize-ranking",
-    validator: validate_GetPersonalizedRanking_605919, base: "/",
-    url: url_GetPersonalizedRanking_605920, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetPersonalizedRanking_612988, base: "/",
+    url: url_GetPersonalizedRanking_612989, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRecommendations_606173 = ref object of OpenApiRestCall_605580
-proc url_GetRecommendations_606175(protocol: Scheme; host: string; base: string;
+  Call_GetRecommendations_613242 = ref object of OpenApiRestCall_612649
+proc url_GetRecommendations_613244(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -252,7 +252,7 @@ proc url_GetRecommendations_606175(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetRecommendations_606174(path: JsonNode; query: JsonNode;
+proc validate_GetRecommendations_613243(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Returns a list of recommended items. The required input depends on the recipe type used to create the solution backing the campaign, as follows:</p> <ul> <li> <p>RELATED_ITEMS - <code>itemId</code> required, <code>userId</code> not used</p> </li> <li> <p>USER_PERSONALIZATION - <code>itemId</code> optional, <code>userId</code> required</p> </li> </ul> <note> <p>Campaigns that are backed by a solution created using a recipe of type PERSONALIZED_RANKING use the API.</p> </note>
@@ -272,41 +272,41 @@ proc validate_GetRecommendations_606174(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606176 = header.getOrDefault("X-Amz-Signature")
-  valid_606176 = validateParameter(valid_606176, JString, required = false,
+  var valid_613245 = header.getOrDefault("X-Amz-Signature")
+  valid_613245 = validateParameter(valid_613245, JString, required = false,
                                  default = nil)
-  if valid_606176 != nil:
-    section.add "X-Amz-Signature", valid_606176
-  var valid_606177 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606177 = validateParameter(valid_606177, JString, required = false,
+  if valid_613245 != nil:
+    section.add "X-Amz-Signature", valid_613245
+  var valid_613246 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613246 = validateParameter(valid_613246, JString, required = false,
                                  default = nil)
-  if valid_606177 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606177
-  var valid_606178 = header.getOrDefault("X-Amz-Date")
-  valid_606178 = validateParameter(valid_606178, JString, required = false,
+  if valid_613246 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613246
+  var valid_613247 = header.getOrDefault("X-Amz-Date")
+  valid_613247 = validateParameter(valid_613247, JString, required = false,
                                  default = nil)
-  if valid_606178 != nil:
-    section.add "X-Amz-Date", valid_606178
-  var valid_606179 = header.getOrDefault("X-Amz-Credential")
-  valid_606179 = validateParameter(valid_606179, JString, required = false,
+  if valid_613247 != nil:
+    section.add "X-Amz-Date", valid_613247
+  var valid_613248 = header.getOrDefault("X-Amz-Credential")
+  valid_613248 = validateParameter(valid_613248, JString, required = false,
                                  default = nil)
-  if valid_606179 != nil:
-    section.add "X-Amz-Credential", valid_606179
-  var valid_606180 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606180 = validateParameter(valid_606180, JString, required = false,
+  if valid_613248 != nil:
+    section.add "X-Amz-Credential", valid_613248
+  var valid_613249 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613249 = validateParameter(valid_613249, JString, required = false,
                                  default = nil)
-  if valid_606180 != nil:
-    section.add "X-Amz-Security-Token", valid_606180
-  var valid_606181 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606181 = validateParameter(valid_606181, JString, required = false,
+  if valid_613249 != nil:
+    section.add "X-Amz-Security-Token", valid_613249
+  var valid_613250 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613250 = validateParameter(valid_613250, JString, required = false,
                                  default = nil)
-  if valid_606181 != nil:
-    section.add "X-Amz-Algorithm", valid_606181
-  var valid_606182 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606182 = validateParameter(valid_606182, JString, required = false,
+  if valid_613250 != nil:
+    section.add "X-Amz-Algorithm", valid_613250
+  var valid_613251 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613251 = validateParameter(valid_613251, JString, required = false,
                                  default = nil)
-  if valid_606182 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606182
+  if valid_613251 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613251
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -317,33 +317,33 @@ proc validate_GetRecommendations_606174(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606184: Call_GetRecommendations_606173; path: JsonNode;
+proc call*(call_613253: Call_GetRecommendations_613242; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of recommended items. The required input depends on the recipe type used to create the solution backing the campaign, as follows:</p> <ul> <li> <p>RELATED_ITEMS - <code>itemId</code> required, <code>userId</code> not used</p> </li> <li> <p>USER_PERSONALIZATION - <code>itemId</code> optional, <code>userId</code> required</p> </li> </ul> <note> <p>Campaigns that are backed by a solution created using a recipe of type PERSONALIZED_RANKING use the API.</p> </note>
   ## 
-  let valid = call_606184.validator(path, query, header, formData, body)
-  let scheme = call_606184.pickScheme
+  let valid = call_613253.validator(path, query, header, formData, body)
+  let scheme = call_613253.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606184.url(scheme.get, call_606184.host, call_606184.base,
-                         call_606184.route, valid.getOrDefault("path"),
+  let url = call_613253.url(scheme.get, call_613253.host, call_613253.base,
+                         call_613253.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606184, url, valid)
+  result = atozHook(call_613253, url, valid)
 
-proc call*(call_606185: Call_GetRecommendations_606173; body: JsonNode): Recallable =
+proc call*(call_613254: Call_GetRecommendations_613242; body: JsonNode): Recallable =
   ## getRecommendations
   ## <p>Returns a list of recommended items. The required input depends on the recipe type used to create the solution backing the campaign, as follows:</p> <ul> <li> <p>RELATED_ITEMS - <code>itemId</code> required, <code>userId</code> not used</p> </li> <li> <p>USER_PERSONALIZATION - <code>itemId</code> optional, <code>userId</code> required</p> </li> </ul> <note> <p>Campaigns that are backed by a solution created using a recipe of type PERSONALIZED_RANKING use the API.</p> </note>
   ##   body: JObject (required)
-  var body_606186 = newJObject()
+  var body_613255 = newJObject()
   if body != nil:
-    body_606186 = body
-  result = call_606185.call(nil, nil, nil, nil, body_606186)
+    body_613255 = body
+  result = call_613254.call(nil, nil, nil, nil, body_613255)
 
-var getRecommendations* = Call_GetRecommendations_606173(
+var getRecommendations* = Call_GetRecommendations_613242(
     name: "getRecommendations", meth: HttpMethod.HttpPost,
     host: "personalize-runtime.amazonaws.com", route: "/recommendations",
-    validator: validate_GetRecommendations_606174, base: "/",
-    url: url_GetRecommendations_606175, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRecommendations_613243, base: "/",
+    url: url_GetRecommendations_613244, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605564 = ref object of OpenApiRestCall
+  OpenApiRestCall_612633 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605564](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612633](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605564): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612633): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -149,8 +149,8 @@ const
   awsServiceName = "sso-oidc"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateToken_605902 = ref object of OpenApiRestCall_605564
-proc url_CreateToken_605904(protocol: Scheme; host: string; base: string;
+  Call_CreateToken_612971 = ref object of OpenApiRestCall_612633
+proc url_CreateToken_612973(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -162,7 +162,7 @@ proc url_CreateToken_605904(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateToken_605903(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateToken_612972(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates and returns an access token for the authorized client. The access token issued will be used to fetch short-term credentials for the assigned roles in the AWS account.
   ## 
@@ -181,41 +181,41 @@ proc validate_CreateToken_605903(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606016 = header.getOrDefault("X-Amz-Signature")
-  valid_606016 = validateParameter(valid_606016, JString, required = false,
+  var valid_613085 = header.getOrDefault("X-Amz-Signature")
+  valid_613085 = validateParameter(valid_613085, JString, required = false,
                                  default = nil)
-  if valid_606016 != nil:
-    section.add "X-Amz-Signature", valid_606016
-  var valid_606017 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606017 = validateParameter(valid_606017, JString, required = false,
+  if valid_613085 != nil:
+    section.add "X-Amz-Signature", valid_613085
+  var valid_613086 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613086 = validateParameter(valid_613086, JString, required = false,
                                  default = nil)
-  if valid_606017 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606017
-  var valid_606018 = header.getOrDefault("X-Amz-Date")
-  valid_606018 = validateParameter(valid_606018, JString, required = false,
+  if valid_613086 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613086
+  var valid_613087 = header.getOrDefault("X-Amz-Date")
+  valid_613087 = validateParameter(valid_613087, JString, required = false,
                                  default = nil)
-  if valid_606018 != nil:
-    section.add "X-Amz-Date", valid_606018
-  var valid_606019 = header.getOrDefault("X-Amz-Credential")
-  valid_606019 = validateParameter(valid_606019, JString, required = false,
+  if valid_613087 != nil:
+    section.add "X-Amz-Date", valid_613087
+  var valid_613088 = header.getOrDefault("X-Amz-Credential")
+  valid_613088 = validateParameter(valid_613088, JString, required = false,
                                  default = nil)
-  if valid_606019 != nil:
-    section.add "X-Amz-Credential", valid_606019
-  var valid_606020 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606020 = validateParameter(valid_606020, JString, required = false,
+  if valid_613088 != nil:
+    section.add "X-Amz-Credential", valid_613088
+  var valid_613089 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613089 = validateParameter(valid_613089, JString, required = false,
                                  default = nil)
-  if valid_606020 != nil:
-    section.add "X-Amz-Security-Token", valid_606020
-  var valid_606021 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606021 = validateParameter(valid_606021, JString, required = false,
+  if valid_613089 != nil:
+    section.add "X-Amz-Security-Token", valid_613089
+  var valid_613090 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613090 = validateParameter(valid_613090, JString, required = false,
                                  default = nil)
-  if valid_606021 != nil:
-    section.add "X-Amz-Algorithm", valid_606021
-  var valid_606022 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606022 = validateParameter(valid_606022, JString, required = false,
+  if valid_613090 != nil:
+    section.add "X-Amz-Algorithm", valid_613090
+  var valid_613091 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613091 = validateParameter(valid_613091, JString, required = false,
                                  default = nil)
-  if valid_606022 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606022
+  if valid_613091 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613091
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -226,38 +226,38 @@ proc validate_CreateToken_605903(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606046: Call_CreateToken_605902; path: JsonNode; query: JsonNode;
+proc call*(call_613115: Call_CreateToken_612971; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates and returns an access token for the authorized client. The access token issued will be used to fetch short-term credentials for the assigned roles in the AWS account.
   ## 
-  let valid = call_606046.validator(path, query, header, formData, body)
-  let scheme = call_606046.pickScheme
+  let valid = call_613115.validator(path, query, header, formData, body)
+  let scheme = call_613115.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606046.url(scheme.get, call_606046.host, call_606046.base,
-                         call_606046.route, valid.getOrDefault("path"),
+  let url = call_613115.url(scheme.get, call_613115.host, call_613115.base,
+                         call_613115.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606046, url, valid)
+  result = atozHook(call_613115, url, valid)
 
-proc call*(call_606117: Call_CreateToken_605902; body: JsonNode): Recallable =
+proc call*(call_613186: Call_CreateToken_612971; body: JsonNode): Recallable =
   ## createToken
   ## Creates and returns an access token for the authorized client. The access token issued will be used to fetch short-term credentials for the assigned roles in the AWS account.
   ##   body: JObject (required)
-  var body_606118 = newJObject()
+  var body_613187 = newJObject()
   if body != nil:
-    body_606118 = body
-  result = call_606117.call(nil, nil, nil, nil, body_606118)
+    body_613187 = body
+  result = call_613186.call(nil, nil, nil, nil, body_613187)
 
-var createToken* = Call_CreateToken_605902(name: "createToken",
+var createToken* = Call_CreateToken_612971(name: "createToken",
                                         meth: HttpMethod.HttpPost,
                                         host: "oidc.amazonaws.com",
                                         route: "/token",
-                                        validator: validate_CreateToken_605903,
-                                        base: "/", url: url_CreateToken_605904,
+                                        validator: validate_CreateToken_612972,
+                                        base: "/", url: url_CreateToken_612973,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterClient_606157 = ref object of OpenApiRestCall_605564
-proc url_RegisterClient_606159(protocol: Scheme; host: string; base: string;
+  Call_RegisterClient_613226 = ref object of OpenApiRestCall_612633
+proc url_RegisterClient_613228(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -269,7 +269,7 @@ proc url_RegisterClient_606159(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RegisterClient_606158(path: JsonNode; query: JsonNode;
+proc validate_RegisterClient_613227(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Registers a client with AWS SSO. This allows clients to initiate device authorization. The output should be persisted for reuse through many authentication requests.
@@ -289,41 +289,41 @@ proc validate_RegisterClient_606158(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606160 = header.getOrDefault("X-Amz-Signature")
-  valid_606160 = validateParameter(valid_606160, JString, required = false,
+  var valid_613229 = header.getOrDefault("X-Amz-Signature")
+  valid_613229 = validateParameter(valid_613229, JString, required = false,
                                  default = nil)
-  if valid_606160 != nil:
-    section.add "X-Amz-Signature", valid_606160
-  var valid_606161 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606161 = validateParameter(valid_606161, JString, required = false,
+  if valid_613229 != nil:
+    section.add "X-Amz-Signature", valid_613229
+  var valid_613230 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613230 = validateParameter(valid_613230, JString, required = false,
                                  default = nil)
-  if valid_606161 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606161
-  var valid_606162 = header.getOrDefault("X-Amz-Date")
-  valid_606162 = validateParameter(valid_606162, JString, required = false,
+  if valid_613230 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613230
+  var valid_613231 = header.getOrDefault("X-Amz-Date")
+  valid_613231 = validateParameter(valid_613231, JString, required = false,
                                  default = nil)
-  if valid_606162 != nil:
-    section.add "X-Amz-Date", valid_606162
-  var valid_606163 = header.getOrDefault("X-Amz-Credential")
-  valid_606163 = validateParameter(valid_606163, JString, required = false,
+  if valid_613231 != nil:
+    section.add "X-Amz-Date", valid_613231
+  var valid_613232 = header.getOrDefault("X-Amz-Credential")
+  valid_613232 = validateParameter(valid_613232, JString, required = false,
                                  default = nil)
-  if valid_606163 != nil:
-    section.add "X-Amz-Credential", valid_606163
-  var valid_606164 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606164 = validateParameter(valid_606164, JString, required = false,
+  if valid_613232 != nil:
+    section.add "X-Amz-Credential", valid_613232
+  var valid_613233 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613233 = validateParameter(valid_613233, JString, required = false,
                                  default = nil)
-  if valid_606164 != nil:
-    section.add "X-Amz-Security-Token", valid_606164
-  var valid_606165 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606165 = validateParameter(valid_606165, JString, required = false,
+  if valid_613233 != nil:
+    section.add "X-Amz-Security-Token", valid_613233
+  var valid_613234 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613234 = validateParameter(valid_613234, JString, required = false,
                                  default = nil)
-  if valid_606165 != nil:
-    section.add "X-Amz-Algorithm", valid_606165
-  var valid_606166 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606166 = validateParameter(valid_606166, JString, required = false,
+  if valid_613234 != nil:
+    section.add "X-Amz-Algorithm", valid_613234
+  var valid_613235 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613235 = validateParameter(valid_613235, JString, required = false,
                                  default = nil)
-  if valid_606166 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606166
+  if valid_613235 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613235
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -334,35 +334,35 @@ proc validate_RegisterClient_606158(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606168: Call_RegisterClient_606157; path: JsonNode; query: JsonNode;
+proc call*(call_613237: Call_RegisterClient_613226; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Registers a client with AWS SSO. This allows clients to initiate device authorization. The output should be persisted for reuse through many authentication requests.
   ## 
-  let valid = call_606168.validator(path, query, header, formData, body)
-  let scheme = call_606168.pickScheme
+  let valid = call_613237.validator(path, query, header, formData, body)
+  let scheme = call_613237.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606168.url(scheme.get, call_606168.host, call_606168.base,
-                         call_606168.route, valid.getOrDefault("path"),
+  let url = call_613237.url(scheme.get, call_613237.host, call_613237.base,
+                         call_613237.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606168, url, valid)
+  result = atozHook(call_613237, url, valid)
 
-proc call*(call_606169: Call_RegisterClient_606157; body: JsonNode): Recallable =
+proc call*(call_613238: Call_RegisterClient_613226; body: JsonNode): Recallable =
   ## registerClient
   ## Registers a client with AWS SSO. This allows clients to initiate device authorization. The output should be persisted for reuse through many authentication requests.
   ##   body: JObject (required)
-  var body_606170 = newJObject()
+  var body_613239 = newJObject()
   if body != nil:
-    body_606170 = body
-  result = call_606169.call(nil, nil, nil, nil, body_606170)
+    body_613239 = body
+  result = call_613238.call(nil, nil, nil, nil, body_613239)
 
-var registerClient* = Call_RegisterClient_606157(name: "registerClient",
+var registerClient* = Call_RegisterClient_613226(name: "registerClient",
     meth: HttpMethod.HttpPost, host: "oidc.amazonaws.com",
-    route: "/client/register", validator: validate_RegisterClient_606158, base: "/",
-    url: url_RegisterClient_606159, schemes: {Scheme.Https, Scheme.Http})
+    route: "/client/register", validator: validate_RegisterClient_613227, base: "/",
+    url: url_RegisterClient_613228, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartDeviceAuthorization_606171 = ref object of OpenApiRestCall_605564
-proc url_StartDeviceAuthorization_606173(protocol: Scheme; host: string;
+  Call_StartDeviceAuthorization_613240 = ref object of OpenApiRestCall_612633
+proc url_StartDeviceAuthorization_613242(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -375,7 +375,7 @@ proc url_StartDeviceAuthorization_606173(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_StartDeviceAuthorization_606172(path: JsonNode; query: JsonNode;
+proc validate_StartDeviceAuthorization_613241(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Initiates device authorization by requesting a pair of verification codes from the authorization service.
   ## 
@@ -394,41 +394,41 @@ proc validate_StartDeviceAuthorization_606172(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606174 = header.getOrDefault("X-Amz-Signature")
-  valid_606174 = validateParameter(valid_606174, JString, required = false,
+  var valid_613243 = header.getOrDefault("X-Amz-Signature")
+  valid_613243 = validateParameter(valid_613243, JString, required = false,
                                  default = nil)
-  if valid_606174 != nil:
-    section.add "X-Amz-Signature", valid_606174
-  var valid_606175 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606175 = validateParameter(valid_606175, JString, required = false,
+  if valid_613243 != nil:
+    section.add "X-Amz-Signature", valid_613243
+  var valid_613244 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613244 = validateParameter(valid_613244, JString, required = false,
                                  default = nil)
-  if valid_606175 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606175
-  var valid_606176 = header.getOrDefault("X-Amz-Date")
-  valid_606176 = validateParameter(valid_606176, JString, required = false,
+  if valid_613244 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613244
+  var valid_613245 = header.getOrDefault("X-Amz-Date")
+  valid_613245 = validateParameter(valid_613245, JString, required = false,
                                  default = nil)
-  if valid_606176 != nil:
-    section.add "X-Amz-Date", valid_606176
-  var valid_606177 = header.getOrDefault("X-Amz-Credential")
-  valid_606177 = validateParameter(valid_606177, JString, required = false,
+  if valid_613245 != nil:
+    section.add "X-Amz-Date", valid_613245
+  var valid_613246 = header.getOrDefault("X-Amz-Credential")
+  valid_613246 = validateParameter(valid_613246, JString, required = false,
                                  default = nil)
-  if valid_606177 != nil:
-    section.add "X-Amz-Credential", valid_606177
-  var valid_606178 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606178 = validateParameter(valid_606178, JString, required = false,
+  if valid_613246 != nil:
+    section.add "X-Amz-Credential", valid_613246
+  var valid_613247 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613247 = validateParameter(valid_613247, JString, required = false,
                                  default = nil)
-  if valid_606178 != nil:
-    section.add "X-Amz-Security-Token", valid_606178
-  var valid_606179 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606179 = validateParameter(valid_606179, JString, required = false,
+  if valid_613247 != nil:
+    section.add "X-Amz-Security-Token", valid_613247
+  var valid_613248 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613248 = validateParameter(valid_613248, JString, required = false,
                                  default = nil)
-  if valid_606179 != nil:
-    section.add "X-Amz-Algorithm", valid_606179
-  var valid_606180 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606180 = validateParameter(valid_606180, JString, required = false,
+  if valid_613248 != nil:
+    section.add "X-Amz-Algorithm", valid_613248
+  var valid_613249 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613249 = validateParameter(valid_613249, JString, required = false,
                                  default = nil)
-  if valid_606180 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606180
+  if valid_613249 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613249
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -439,33 +439,33 @@ proc validate_StartDeviceAuthorization_606172(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606182: Call_StartDeviceAuthorization_606171; path: JsonNode;
+proc call*(call_613251: Call_StartDeviceAuthorization_613240; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Initiates device authorization by requesting a pair of verification codes from the authorization service.
   ## 
-  let valid = call_606182.validator(path, query, header, formData, body)
-  let scheme = call_606182.pickScheme
+  let valid = call_613251.validator(path, query, header, formData, body)
+  let scheme = call_613251.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606182.url(scheme.get, call_606182.host, call_606182.base,
-                         call_606182.route, valid.getOrDefault("path"),
+  let url = call_613251.url(scheme.get, call_613251.host, call_613251.base,
+                         call_613251.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606182, url, valid)
+  result = atozHook(call_613251, url, valid)
 
-proc call*(call_606183: Call_StartDeviceAuthorization_606171; body: JsonNode): Recallable =
+proc call*(call_613252: Call_StartDeviceAuthorization_613240; body: JsonNode): Recallable =
   ## startDeviceAuthorization
   ## Initiates device authorization by requesting a pair of verification codes from the authorization service.
   ##   body: JObject (required)
-  var body_606184 = newJObject()
+  var body_613253 = newJObject()
   if body != nil:
-    body_606184 = body
-  result = call_606183.call(nil, nil, nil, nil, body_606184)
+    body_613253 = body
+  result = call_613252.call(nil, nil, nil, nil, body_613253)
 
-var startDeviceAuthorization* = Call_StartDeviceAuthorization_606171(
+var startDeviceAuthorization* = Call_StartDeviceAuthorization_613240(
     name: "startDeviceAuthorization", meth: HttpMethod.HttpPost,
     host: "oidc.amazonaws.com", route: "/device_authorization",
-    validator: validate_StartDeviceAuthorization_606172, base: "/",
-    url: url_StartDeviceAuthorization_606173, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartDeviceAuthorization_613241, base: "/",
+    url: url_StartDeviceAuthorization_613242, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

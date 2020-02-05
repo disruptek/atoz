@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_606580 = ref object of OpenApiRestCall
+  OpenApiRestCall_612649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_606580](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_606580): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -125,8 +125,8 @@ const
   awsServiceName = "marketplacecommerceanalytics"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GenerateDataSet_606918 = ref object of OpenApiRestCall_606580
-proc url_GenerateDataSet_606920(protocol: Scheme; host: string; base: string;
+  Call_GenerateDataSet_612987 = ref object of OpenApiRestCall_612649
+proc url_GenerateDataSet_612989(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -138,7 +138,7 @@ proc url_GenerateDataSet_606920(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GenerateDataSet_606919(path: JsonNode; query: JsonNode;
+proc validate_GenerateDataSet_612988(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Given a data set type and data set publication date, asynchronously publishes the requested data set to the specified S3 bucket and notifies the specified SNS topic once the data is available. Returns a unique request identifier that can be used to correlate requests with notifications from the SNS topic. Data sets will be published in comma-separated values (CSV) format with the file name {data_set_type}_YYYY-MM-DD.csv. If a file with the same name already exists (e.g. if the same data set is requested twice), the original file will be overwritten by the new file. Requires a Role with an attached permissions policy providing Allow permissions for the following actions: s3:PutObject, s3:GetBucketLocation, sns:GetTopicAttributes, sns:Publish, iam:GetRolePolicy.
@@ -159,46 +159,46 @@ proc validate_GenerateDataSet_606919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607045 = header.getOrDefault("X-Amz-Target")
-  valid_607045 = validateParameter(valid_607045, JString, required = true, default = newJString(
+  var valid_613114 = header.getOrDefault("X-Amz-Target")
+  valid_613114 = validateParameter(valid_613114, JString, required = true, default = newJString(
       "MarketplaceCommerceAnalytics20150701.GenerateDataSet"))
-  if valid_607045 != nil:
-    section.add "X-Amz-Target", valid_607045
-  var valid_607046 = header.getOrDefault("X-Amz-Signature")
-  valid_607046 = validateParameter(valid_607046, JString, required = false,
+  if valid_613114 != nil:
+    section.add "X-Amz-Target", valid_613114
+  var valid_613115 = header.getOrDefault("X-Amz-Signature")
+  valid_613115 = validateParameter(valid_613115, JString, required = false,
                                  default = nil)
-  if valid_607046 != nil:
-    section.add "X-Amz-Signature", valid_607046
-  var valid_607047 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607047 = validateParameter(valid_607047, JString, required = false,
+  if valid_613115 != nil:
+    section.add "X-Amz-Signature", valid_613115
+  var valid_613116 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613116 = validateParameter(valid_613116, JString, required = false,
                                  default = nil)
-  if valid_607047 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607047
-  var valid_607048 = header.getOrDefault("X-Amz-Date")
-  valid_607048 = validateParameter(valid_607048, JString, required = false,
+  if valid_613116 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613116
+  var valid_613117 = header.getOrDefault("X-Amz-Date")
+  valid_613117 = validateParameter(valid_613117, JString, required = false,
                                  default = nil)
-  if valid_607048 != nil:
-    section.add "X-Amz-Date", valid_607048
-  var valid_607049 = header.getOrDefault("X-Amz-Credential")
-  valid_607049 = validateParameter(valid_607049, JString, required = false,
+  if valid_613117 != nil:
+    section.add "X-Amz-Date", valid_613117
+  var valid_613118 = header.getOrDefault("X-Amz-Credential")
+  valid_613118 = validateParameter(valid_613118, JString, required = false,
                                  default = nil)
-  if valid_607049 != nil:
-    section.add "X-Amz-Credential", valid_607049
-  var valid_607050 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607050 = validateParameter(valid_607050, JString, required = false,
+  if valid_613118 != nil:
+    section.add "X-Amz-Credential", valid_613118
+  var valid_613119 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613119 = validateParameter(valid_613119, JString, required = false,
                                  default = nil)
-  if valid_607050 != nil:
-    section.add "X-Amz-Security-Token", valid_607050
-  var valid_607051 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607051 = validateParameter(valid_607051, JString, required = false,
+  if valid_613119 != nil:
+    section.add "X-Amz-Security-Token", valid_613119
+  var valid_613120 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613120 = validateParameter(valid_613120, JString, required = false,
                                  default = nil)
-  if valid_607051 != nil:
-    section.add "X-Amz-Algorithm", valid_607051
-  var valid_607052 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607052 = validateParameter(valid_607052, JString, required = false,
+  if valid_613120 != nil:
+    section.add "X-Amz-Algorithm", valid_613120
+  var valid_613121 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613121 = validateParameter(valid_613121, JString, required = false,
                                  default = nil)
-  if valid_607052 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607052
+  if valid_613121 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613121
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -209,35 +209,35 @@ proc validate_GenerateDataSet_606919(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607076: Call_GenerateDataSet_606918; path: JsonNode; query: JsonNode;
+proc call*(call_613145: Call_GenerateDataSet_612987; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Given a data set type and data set publication date, asynchronously publishes the requested data set to the specified S3 bucket and notifies the specified SNS topic once the data is available. Returns a unique request identifier that can be used to correlate requests with notifications from the SNS topic. Data sets will be published in comma-separated values (CSV) format with the file name {data_set_type}_YYYY-MM-DD.csv. If a file with the same name already exists (e.g. if the same data set is requested twice), the original file will be overwritten by the new file. Requires a Role with an attached permissions policy providing Allow permissions for the following actions: s3:PutObject, s3:GetBucketLocation, sns:GetTopicAttributes, sns:Publish, iam:GetRolePolicy.
   ## 
-  let valid = call_607076.validator(path, query, header, formData, body)
-  let scheme = call_607076.pickScheme
+  let valid = call_613145.validator(path, query, header, formData, body)
+  let scheme = call_613145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607076.url(scheme.get, call_607076.host, call_607076.base,
-                         call_607076.route, valid.getOrDefault("path"),
+  let url = call_613145.url(scheme.get, call_613145.host, call_613145.base,
+                         call_613145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607076, url, valid)
+  result = atozHook(call_613145, url, valid)
 
-proc call*(call_607147: Call_GenerateDataSet_606918; body: JsonNode): Recallable =
+proc call*(call_613216: Call_GenerateDataSet_612987; body: JsonNode): Recallable =
   ## generateDataSet
   ## Given a data set type and data set publication date, asynchronously publishes the requested data set to the specified S3 bucket and notifies the specified SNS topic once the data is available. Returns a unique request identifier that can be used to correlate requests with notifications from the SNS topic. Data sets will be published in comma-separated values (CSV) format with the file name {data_set_type}_YYYY-MM-DD.csv. If a file with the same name already exists (e.g. if the same data set is requested twice), the original file will be overwritten by the new file. Requires a Role with an attached permissions policy providing Allow permissions for the following actions: s3:PutObject, s3:GetBucketLocation, sns:GetTopicAttributes, sns:Publish, iam:GetRolePolicy.
   ##   body: JObject (required)
-  var body_607148 = newJObject()
+  var body_613217 = newJObject()
   if body != nil:
-    body_607148 = body
-  result = call_607147.call(nil, nil, nil, nil, body_607148)
+    body_613217 = body
+  result = call_613216.call(nil, nil, nil, nil, body_613217)
 
-var generateDataSet* = Call_GenerateDataSet_606918(name: "generateDataSet",
+var generateDataSet* = Call_GenerateDataSet_612987(name: "generateDataSet",
     meth: HttpMethod.HttpPost, host: "marketplacecommerceanalytics.amazonaws.com", route: "/#X-Amz-Target=MarketplaceCommerceAnalytics20150701.GenerateDataSet",
-    validator: validate_GenerateDataSet_606919, base: "/", url: url_GenerateDataSet_606920,
+    validator: validate_GenerateDataSet_612988, base: "/", url: url_GenerateDataSet_612989,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartSupportDataExport_607187 = ref object of OpenApiRestCall_606580
-proc url_StartSupportDataExport_607189(protocol: Scheme; host: string; base: string;
+  Call_StartSupportDataExport_613256 = ref object of OpenApiRestCall_612649
+proc url_StartSupportDataExport_613258(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -249,7 +249,7 @@ proc url_StartSupportDataExport_607189(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_StartSupportDataExport_607188(path: JsonNode; query: JsonNode;
+proc validate_StartSupportDataExport_613257(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Given a data set type and a from date, asynchronously publishes the requested customer support data to the specified S3 bucket and notifies the specified SNS topic once the data is available. Returns a unique request identifier that can be used to correlate requests with notifications from the SNS topic. Data sets will be published in comma-separated values (CSV) format with the file name {data_set_type}_YYYY-MM-DD'T'HH-mm-ss'Z'.csv. If a file with the same name already exists (e.g. if the same data set is requested twice), the original file will be overwritten by the new file. Requires a Role with an attached permissions policy providing Allow permissions for the following actions: s3:PutObject, s3:GetBucketLocation, sns:GetTopicAttributes, sns:Publish, iam:GetRolePolicy.
   ## 
@@ -269,46 +269,46 @@ proc validate_StartSupportDataExport_607188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607190 = header.getOrDefault("X-Amz-Target")
-  valid_607190 = validateParameter(valid_607190, JString, required = true, default = newJString(
+  var valid_613259 = header.getOrDefault("X-Amz-Target")
+  valid_613259 = validateParameter(valid_613259, JString, required = true, default = newJString(
       "MarketplaceCommerceAnalytics20150701.StartSupportDataExport"))
-  if valid_607190 != nil:
-    section.add "X-Amz-Target", valid_607190
-  var valid_607191 = header.getOrDefault("X-Amz-Signature")
-  valid_607191 = validateParameter(valid_607191, JString, required = false,
+  if valid_613259 != nil:
+    section.add "X-Amz-Target", valid_613259
+  var valid_613260 = header.getOrDefault("X-Amz-Signature")
+  valid_613260 = validateParameter(valid_613260, JString, required = false,
                                  default = nil)
-  if valid_607191 != nil:
-    section.add "X-Amz-Signature", valid_607191
-  var valid_607192 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607192 = validateParameter(valid_607192, JString, required = false,
+  if valid_613260 != nil:
+    section.add "X-Amz-Signature", valid_613260
+  var valid_613261 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613261 = validateParameter(valid_613261, JString, required = false,
                                  default = nil)
-  if valid_607192 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607192
-  var valid_607193 = header.getOrDefault("X-Amz-Date")
-  valid_607193 = validateParameter(valid_607193, JString, required = false,
+  if valid_613261 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613261
+  var valid_613262 = header.getOrDefault("X-Amz-Date")
+  valid_613262 = validateParameter(valid_613262, JString, required = false,
                                  default = nil)
-  if valid_607193 != nil:
-    section.add "X-Amz-Date", valid_607193
-  var valid_607194 = header.getOrDefault("X-Amz-Credential")
-  valid_607194 = validateParameter(valid_607194, JString, required = false,
+  if valid_613262 != nil:
+    section.add "X-Amz-Date", valid_613262
+  var valid_613263 = header.getOrDefault("X-Amz-Credential")
+  valid_613263 = validateParameter(valid_613263, JString, required = false,
                                  default = nil)
-  if valid_607194 != nil:
-    section.add "X-Amz-Credential", valid_607194
-  var valid_607195 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607195 = validateParameter(valid_607195, JString, required = false,
+  if valid_613263 != nil:
+    section.add "X-Amz-Credential", valid_613263
+  var valid_613264 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613264 = validateParameter(valid_613264, JString, required = false,
                                  default = nil)
-  if valid_607195 != nil:
-    section.add "X-Amz-Security-Token", valid_607195
-  var valid_607196 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607196 = validateParameter(valid_607196, JString, required = false,
+  if valid_613264 != nil:
+    section.add "X-Amz-Security-Token", valid_613264
+  var valid_613265 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613265 = validateParameter(valid_613265, JString, required = false,
                                  default = nil)
-  if valid_607196 != nil:
-    section.add "X-Amz-Algorithm", valid_607196
-  var valid_607197 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607197 = validateParameter(valid_607197, JString, required = false,
+  if valid_613265 != nil:
+    section.add "X-Amz-Algorithm", valid_613265
+  var valid_613266 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613266 = validateParameter(valid_613266, JString, required = false,
                                  default = nil)
-  if valid_607197 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607197
+  if valid_613266 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613266
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -319,33 +319,33 @@ proc validate_StartSupportDataExport_607188(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607199: Call_StartSupportDataExport_607187; path: JsonNode;
+proc call*(call_613268: Call_StartSupportDataExport_613256; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Given a data set type and a from date, asynchronously publishes the requested customer support data to the specified S3 bucket and notifies the specified SNS topic once the data is available. Returns a unique request identifier that can be used to correlate requests with notifications from the SNS topic. Data sets will be published in comma-separated values (CSV) format with the file name {data_set_type}_YYYY-MM-DD'T'HH-mm-ss'Z'.csv. If a file with the same name already exists (e.g. if the same data set is requested twice), the original file will be overwritten by the new file. Requires a Role with an attached permissions policy providing Allow permissions for the following actions: s3:PutObject, s3:GetBucketLocation, sns:GetTopicAttributes, sns:Publish, iam:GetRolePolicy.
   ## 
-  let valid = call_607199.validator(path, query, header, formData, body)
-  let scheme = call_607199.pickScheme
+  let valid = call_613268.validator(path, query, header, formData, body)
+  let scheme = call_613268.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607199.url(scheme.get, call_607199.host, call_607199.base,
-                         call_607199.route, valid.getOrDefault("path"),
+  let url = call_613268.url(scheme.get, call_613268.host, call_613268.base,
+                         call_613268.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607199, url, valid)
+  result = atozHook(call_613268, url, valid)
 
-proc call*(call_607200: Call_StartSupportDataExport_607187; body: JsonNode): Recallable =
+proc call*(call_613269: Call_StartSupportDataExport_613256; body: JsonNode): Recallable =
   ## startSupportDataExport
   ## Given a data set type and a from date, asynchronously publishes the requested customer support data to the specified S3 bucket and notifies the specified SNS topic once the data is available. Returns a unique request identifier that can be used to correlate requests with notifications from the SNS topic. Data sets will be published in comma-separated values (CSV) format with the file name {data_set_type}_YYYY-MM-DD'T'HH-mm-ss'Z'.csv. If a file with the same name already exists (e.g. if the same data set is requested twice), the original file will be overwritten by the new file. Requires a Role with an attached permissions policy providing Allow permissions for the following actions: s3:PutObject, s3:GetBucketLocation, sns:GetTopicAttributes, sns:Publish, iam:GetRolePolicy.
   ##   body: JObject (required)
-  var body_607201 = newJObject()
+  var body_613270 = newJObject()
   if body != nil:
-    body_607201 = body
-  result = call_607200.call(nil, nil, nil, nil, body_607201)
+    body_613270 = body
+  result = call_613269.call(nil, nil, nil, nil, body_613270)
 
-var startSupportDataExport* = Call_StartSupportDataExport_607187(
+var startSupportDataExport* = Call_StartSupportDataExport_613256(
     name: "startSupportDataExport", meth: HttpMethod.HttpPost,
     host: "marketplacecommerceanalytics.amazonaws.com", route: "/#X-Amz-Target=MarketplaceCommerceAnalytics20150701.StartSupportDataExport",
-    validator: validate_StartSupportDataExport_607188, base: "/",
-    url: url_StartSupportDataExport_607189, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_StartSupportDataExport_613257, base: "/",
+    url: url_StartSupportDataExport_613258, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

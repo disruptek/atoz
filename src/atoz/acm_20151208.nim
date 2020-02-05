@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605589 = ref object of OpenApiRestCall
+  OpenApiRestCall_612658 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612658](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612658): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -149,8 +149,8 @@ const
   awsServiceName = "acm"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AddTagsToCertificate_605927 = ref object of OpenApiRestCall_605589
-proc url_AddTagsToCertificate_605929(protocol: Scheme; host: string; base: string;
+  Call_AddTagsToCertificate_612996 = ref object of OpenApiRestCall_612658
+proc url_AddTagsToCertificate_612998(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -162,7 +162,7 @@ proc url_AddTagsToCertificate_605929(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_AddTagsToCertificate_605928(path: JsonNode; query: JsonNode;
+proc validate_AddTagsToCertificate_612997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds one or more tags to an ACM certificate. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a <code>key</code> and an optional <code>value</code>. You specify the certificate on input by its Amazon Resource Name (ARN). You specify the tag by using a key-value pair. </p> <p>You can apply a tag to just one certificate if you want to identify a specific characteristic of that certificate, or you can apply the same tag to multiple certificates if you want to filter for a common relationship among those certificates. Similarly, you can apply the same tag to multiple resources if you want to specify a relationship among those resources. For example, you can add the same tag to an ACM certificate and an Elastic Load Balancing load balancer to indicate that they are both used by the same website. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/tags.html">Tagging ACM certificates</a>. </p> <p>To remove one or more tags, use the <a>RemoveTagsFromCertificate</a> action. To view all of the tags that have been applied to the certificate, use the <a>ListTagsForCertificate</a> action. </p>
   ## 
@@ -182,46 +182,46 @@ proc validate_AddTagsToCertificate_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606054 = header.getOrDefault("X-Amz-Target")
-  valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
+  var valid_613123 = header.getOrDefault("X-Amz-Target")
+  valid_613123 = validateParameter(valid_613123, JString, required = true, default = newJString(
       "CertificateManager.AddTagsToCertificate"))
-  if valid_606054 != nil:
-    section.add "X-Amz-Target", valid_606054
-  var valid_606055 = header.getOrDefault("X-Amz-Signature")
-  valid_606055 = validateParameter(valid_606055, JString, required = false,
+  if valid_613123 != nil:
+    section.add "X-Amz-Target", valid_613123
+  var valid_613124 = header.getOrDefault("X-Amz-Signature")
+  valid_613124 = validateParameter(valid_613124, JString, required = false,
                                  default = nil)
-  if valid_606055 != nil:
-    section.add "X-Amz-Signature", valid_606055
-  var valid_606056 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606056 = validateParameter(valid_606056, JString, required = false,
+  if valid_613124 != nil:
+    section.add "X-Amz-Signature", valid_613124
+  var valid_613125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613125 = validateParameter(valid_613125, JString, required = false,
                                  default = nil)
-  if valid_606056 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606056
-  var valid_606057 = header.getOrDefault("X-Amz-Date")
-  valid_606057 = validateParameter(valid_606057, JString, required = false,
+  if valid_613125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613125
+  var valid_613126 = header.getOrDefault("X-Amz-Date")
+  valid_613126 = validateParameter(valid_613126, JString, required = false,
                                  default = nil)
-  if valid_606057 != nil:
-    section.add "X-Amz-Date", valid_606057
-  var valid_606058 = header.getOrDefault("X-Amz-Credential")
-  valid_606058 = validateParameter(valid_606058, JString, required = false,
+  if valid_613126 != nil:
+    section.add "X-Amz-Date", valid_613126
+  var valid_613127 = header.getOrDefault("X-Amz-Credential")
+  valid_613127 = validateParameter(valid_613127, JString, required = false,
                                  default = nil)
-  if valid_606058 != nil:
-    section.add "X-Amz-Credential", valid_606058
-  var valid_606059 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606059 = validateParameter(valid_606059, JString, required = false,
+  if valid_613127 != nil:
+    section.add "X-Amz-Credential", valid_613127
+  var valid_613128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613128 = validateParameter(valid_613128, JString, required = false,
                                  default = nil)
-  if valid_606059 != nil:
-    section.add "X-Amz-Security-Token", valid_606059
-  var valid_606060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606060 = validateParameter(valid_606060, JString, required = false,
+  if valid_613128 != nil:
+    section.add "X-Amz-Security-Token", valid_613128
+  var valid_613129 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613129 = validateParameter(valid_613129, JString, required = false,
                                  default = nil)
-  if valid_606060 != nil:
-    section.add "X-Amz-Algorithm", valid_606060
-  var valid_606061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606061 = validateParameter(valid_606061, JString, required = false,
+  if valid_613129 != nil:
+    section.add "X-Amz-Algorithm", valid_613129
+  var valid_613130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613130 = validateParameter(valid_613130, JString, required = false,
                                  default = nil)
-  if valid_606061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606061
+  if valid_613130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -232,37 +232,37 @@ proc validate_AddTagsToCertificate_605928(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606085: Call_AddTagsToCertificate_605927; path: JsonNode;
+proc call*(call_613154: Call_AddTagsToCertificate_612996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds one or more tags to an ACM certificate. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a <code>key</code> and an optional <code>value</code>. You specify the certificate on input by its Amazon Resource Name (ARN). You specify the tag by using a key-value pair. </p> <p>You can apply a tag to just one certificate if you want to identify a specific characteristic of that certificate, or you can apply the same tag to multiple certificates if you want to filter for a common relationship among those certificates. Similarly, you can apply the same tag to multiple resources if you want to specify a relationship among those resources. For example, you can add the same tag to an ACM certificate and an Elastic Load Balancing load balancer to indicate that they are both used by the same website. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/tags.html">Tagging ACM certificates</a>. </p> <p>To remove one or more tags, use the <a>RemoveTagsFromCertificate</a> action. To view all of the tags that have been applied to the certificate, use the <a>ListTagsForCertificate</a> action. </p>
   ## 
-  let valid = call_606085.validator(path, query, header, formData, body)
-  let scheme = call_606085.pickScheme
+  let valid = call_613154.validator(path, query, header, formData, body)
+  let scheme = call_613154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606085.url(scheme.get, call_606085.host, call_606085.base,
-                         call_606085.route, valid.getOrDefault("path"),
+  let url = call_613154.url(scheme.get, call_613154.host, call_613154.base,
+                         call_613154.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606085, url, valid)
+  result = atozHook(call_613154, url, valid)
 
-proc call*(call_606156: Call_AddTagsToCertificate_605927; body: JsonNode): Recallable =
+proc call*(call_613225: Call_AddTagsToCertificate_612996; body: JsonNode): Recallable =
   ## addTagsToCertificate
   ## <p>Adds one or more tags to an ACM certificate. Tags are labels that you can use to identify and organize your AWS resources. Each tag consists of a <code>key</code> and an optional <code>value</code>. You specify the certificate on input by its Amazon Resource Name (ARN). You specify the tag by using a key-value pair. </p> <p>You can apply a tag to just one certificate if you want to identify a specific characteristic of that certificate, or you can apply the same tag to multiple certificates if you want to filter for a common relationship among those certificates. Similarly, you can apply the same tag to multiple resources if you want to specify a relationship among those resources. For example, you can add the same tag to an ACM certificate and an Elastic Load Balancing load balancer to indicate that they are both used by the same website. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/tags.html">Tagging ACM certificates</a>. </p> <p>To remove one or more tags, use the <a>RemoveTagsFromCertificate</a> action. To view all of the tags that have been applied to the certificate, use the <a>ListTagsForCertificate</a> action. </p>
   ##   body: JObject (required)
-  var body_606157 = newJObject()
+  var body_613226 = newJObject()
   if body != nil:
-    body_606157 = body
-  result = call_606156.call(nil, nil, nil, nil, body_606157)
+    body_613226 = body
+  result = call_613225.call(nil, nil, nil, nil, body_613226)
 
-var addTagsToCertificate* = Call_AddTagsToCertificate_605927(
+var addTagsToCertificate* = Call_AddTagsToCertificate_612996(
     name: "addTagsToCertificate", meth: HttpMethod.HttpPost,
     host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.AddTagsToCertificate",
-    validator: validate_AddTagsToCertificate_605928, base: "/",
-    url: url_AddTagsToCertificate_605929, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AddTagsToCertificate_612997, base: "/",
+    url: url_AddTagsToCertificate_612998, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteCertificate_606196 = ref object of OpenApiRestCall_605589
-proc url_DeleteCertificate_606198(protocol: Scheme; host: string; base: string;
+  Call_DeleteCertificate_613265 = ref object of OpenApiRestCall_612658
+proc url_DeleteCertificate_613267(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -274,7 +274,7 @@ proc url_DeleteCertificate_606198(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteCertificate_606197(path: JsonNode; query: JsonNode;
+proc validate_DeleteCertificate_613266(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes a certificate and its associated private key. If this action succeeds, the certificate no longer appears in the list that can be displayed by calling the <a>ListCertificates</a> action or be retrieved by calling the <a>GetCertificate</a> action. The certificate will not be available for use by AWS services integrated with ACM. </p> <note> <p>You cannot delete an ACM certificate that is being used by another AWS service. To delete a certificate that is in use, the certificate association must first be removed.</p> </note>
@@ -295,46 +295,46 @@ proc validate_DeleteCertificate_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606199 = header.getOrDefault("X-Amz-Target")
-  valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
+  var valid_613268 = header.getOrDefault("X-Amz-Target")
+  valid_613268 = validateParameter(valid_613268, JString, required = true, default = newJString(
       "CertificateManager.DeleteCertificate"))
-  if valid_606199 != nil:
-    section.add "X-Amz-Target", valid_606199
-  var valid_606200 = header.getOrDefault("X-Amz-Signature")
-  valid_606200 = validateParameter(valid_606200, JString, required = false,
+  if valid_613268 != nil:
+    section.add "X-Amz-Target", valid_613268
+  var valid_613269 = header.getOrDefault("X-Amz-Signature")
+  valid_613269 = validateParameter(valid_613269, JString, required = false,
                                  default = nil)
-  if valid_606200 != nil:
-    section.add "X-Amz-Signature", valid_606200
-  var valid_606201 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606201 = validateParameter(valid_606201, JString, required = false,
+  if valid_613269 != nil:
+    section.add "X-Amz-Signature", valid_613269
+  var valid_613270 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613270 = validateParameter(valid_613270, JString, required = false,
                                  default = nil)
-  if valid_606201 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606201
-  var valid_606202 = header.getOrDefault("X-Amz-Date")
-  valid_606202 = validateParameter(valid_606202, JString, required = false,
+  if valid_613270 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613270
+  var valid_613271 = header.getOrDefault("X-Amz-Date")
+  valid_613271 = validateParameter(valid_613271, JString, required = false,
                                  default = nil)
-  if valid_606202 != nil:
-    section.add "X-Amz-Date", valid_606202
-  var valid_606203 = header.getOrDefault("X-Amz-Credential")
-  valid_606203 = validateParameter(valid_606203, JString, required = false,
+  if valid_613271 != nil:
+    section.add "X-Amz-Date", valid_613271
+  var valid_613272 = header.getOrDefault("X-Amz-Credential")
+  valid_613272 = validateParameter(valid_613272, JString, required = false,
                                  default = nil)
-  if valid_606203 != nil:
-    section.add "X-Amz-Credential", valid_606203
-  var valid_606204 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606204 = validateParameter(valid_606204, JString, required = false,
+  if valid_613272 != nil:
+    section.add "X-Amz-Credential", valid_613272
+  var valid_613273 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613273 = validateParameter(valid_613273, JString, required = false,
                                  default = nil)
-  if valid_606204 != nil:
-    section.add "X-Amz-Security-Token", valid_606204
-  var valid_606205 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606205 = validateParameter(valid_606205, JString, required = false,
+  if valid_613273 != nil:
+    section.add "X-Amz-Security-Token", valid_613273
+  var valid_613274 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613274 = validateParameter(valid_613274, JString, required = false,
                                  default = nil)
-  if valid_606205 != nil:
-    section.add "X-Amz-Algorithm", valid_606205
-  var valid_606206 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606206 = validateParameter(valid_606206, JString, required = false,
+  if valid_613274 != nil:
+    section.add "X-Amz-Algorithm", valid_613274
+  var valid_613275 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613275 = validateParameter(valid_613275, JString, required = false,
                                  default = nil)
-  if valid_606206 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606206
+  if valid_613275 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613275
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -345,36 +345,36 @@ proc validate_DeleteCertificate_606197(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606208: Call_DeleteCertificate_606196; path: JsonNode;
+proc call*(call_613277: Call_DeleteCertificate_613265; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a certificate and its associated private key. If this action succeeds, the certificate no longer appears in the list that can be displayed by calling the <a>ListCertificates</a> action or be retrieved by calling the <a>GetCertificate</a> action. The certificate will not be available for use by AWS services integrated with ACM. </p> <note> <p>You cannot delete an ACM certificate that is being used by another AWS service. To delete a certificate that is in use, the certificate association must first be removed.</p> </note>
   ## 
-  let valid = call_606208.validator(path, query, header, formData, body)
-  let scheme = call_606208.pickScheme
+  let valid = call_613277.validator(path, query, header, formData, body)
+  let scheme = call_613277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606208.url(scheme.get, call_606208.host, call_606208.base,
-                         call_606208.route, valid.getOrDefault("path"),
+  let url = call_613277.url(scheme.get, call_613277.host, call_613277.base,
+                         call_613277.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606208, url, valid)
+  result = atozHook(call_613277, url, valid)
 
-proc call*(call_606209: Call_DeleteCertificate_606196; body: JsonNode): Recallable =
+proc call*(call_613278: Call_DeleteCertificate_613265; body: JsonNode): Recallable =
   ## deleteCertificate
   ## <p>Deletes a certificate and its associated private key. If this action succeeds, the certificate no longer appears in the list that can be displayed by calling the <a>ListCertificates</a> action or be retrieved by calling the <a>GetCertificate</a> action. The certificate will not be available for use by AWS services integrated with ACM. </p> <note> <p>You cannot delete an ACM certificate that is being used by another AWS service. To delete a certificate that is in use, the certificate association must first be removed.</p> </note>
   ##   body: JObject (required)
-  var body_606210 = newJObject()
+  var body_613279 = newJObject()
   if body != nil:
-    body_606210 = body
-  result = call_606209.call(nil, nil, nil, nil, body_606210)
+    body_613279 = body
+  result = call_613278.call(nil, nil, nil, nil, body_613279)
 
-var deleteCertificate* = Call_DeleteCertificate_606196(name: "deleteCertificate",
+var deleteCertificate* = Call_DeleteCertificate_613265(name: "deleteCertificate",
     meth: HttpMethod.HttpPost, host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.DeleteCertificate",
-    validator: validate_DeleteCertificate_606197, base: "/",
-    url: url_DeleteCertificate_606198, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteCertificate_613266, base: "/",
+    url: url_DeleteCertificate_613267, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCertificate_606211 = ref object of OpenApiRestCall_605589
-proc url_DescribeCertificate_606213(protocol: Scheme; host: string; base: string;
+  Call_DescribeCertificate_613280 = ref object of OpenApiRestCall_612658
+proc url_DescribeCertificate_613282(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -386,7 +386,7 @@ proc url_DescribeCertificate_606213(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_DescribeCertificate_606212(path: JsonNode; query: JsonNode;
+proc validate_DescribeCertificate_613281(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns detailed metadata about the specified ACM certificate.
@@ -407,46 +407,46 @@ proc validate_DescribeCertificate_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606214 = header.getOrDefault("X-Amz-Target")
-  valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
+  var valid_613283 = header.getOrDefault("X-Amz-Target")
+  valid_613283 = validateParameter(valid_613283, JString, required = true, default = newJString(
       "CertificateManager.DescribeCertificate"))
-  if valid_606214 != nil:
-    section.add "X-Amz-Target", valid_606214
-  var valid_606215 = header.getOrDefault("X-Amz-Signature")
-  valid_606215 = validateParameter(valid_606215, JString, required = false,
+  if valid_613283 != nil:
+    section.add "X-Amz-Target", valid_613283
+  var valid_613284 = header.getOrDefault("X-Amz-Signature")
+  valid_613284 = validateParameter(valid_613284, JString, required = false,
                                  default = nil)
-  if valid_606215 != nil:
-    section.add "X-Amz-Signature", valid_606215
-  var valid_606216 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606216 = validateParameter(valid_606216, JString, required = false,
+  if valid_613284 != nil:
+    section.add "X-Amz-Signature", valid_613284
+  var valid_613285 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613285 = validateParameter(valid_613285, JString, required = false,
                                  default = nil)
-  if valid_606216 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606216
-  var valid_606217 = header.getOrDefault("X-Amz-Date")
-  valid_606217 = validateParameter(valid_606217, JString, required = false,
+  if valid_613285 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613285
+  var valid_613286 = header.getOrDefault("X-Amz-Date")
+  valid_613286 = validateParameter(valid_613286, JString, required = false,
                                  default = nil)
-  if valid_606217 != nil:
-    section.add "X-Amz-Date", valid_606217
-  var valid_606218 = header.getOrDefault("X-Amz-Credential")
-  valid_606218 = validateParameter(valid_606218, JString, required = false,
+  if valid_613286 != nil:
+    section.add "X-Amz-Date", valid_613286
+  var valid_613287 = header.getOrDefault("X-Amz-Credential")
+  valid_613287 = validateParameter(valid_613287, JString, required = false,
                                  default = nil)
-  if valid_606218 != nil:
-    section.add "X-Amz-Credential", valid_606218
-  var valid_606219 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606219 = validateParameter(valid_606219, JString, required = false,
+  if valid_613287 != nil:
+    section.add "X-Amz-Credential", valid_613287
+  var valid_613288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613288 = validateParameter(valid_613288, JString, required = false,
                                  default = nil)
-  if valid_606219 != nil:
-    section.add "X-Amz-Security-Token", valid_606219
-  var valid_606220 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606220 = validateParameter(valid_606220, JString, required = false,
+  if valid_613288 != nil:
+    section.add "X-Amz-Security-Token", valid_613288
+  var valid_613289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613289 = validateParameter(valid_613289, JString, required = false,
                                  default = nil)
-  if valid_606220 != nil:
-    section.add "X-Amz-Algorithm", valid_606220
-  var valid_606221 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606221 = validateParameter(valid_606221, JString, required = false,
+  if valid_613289 != nil:
+    section.add "X-Amz-Algorithm", valid_613289
+  var valid_613290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613290 = validateParameter(valid_613290, JString, required = false,
                                  default = nil)
-  if valid_606221 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606221
+  if valid_613290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613290
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -457,37 +457,37 @@ proc validate_DescribeCertificate_606212(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606223: Call_DescribeCertificate_606211; path: JsonNode;
+proc call*(call_613292: Call_DescribeCertificate_613280; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns detailed metadata about the specified ACM certificate.
   ## 
-  let valid = call_606223.validator(path, query, header, formData, body)
-  let scheme = call_606223.pickScheme
+  let valid = call_613292.validator(path, query, header, formData, body)
+  let scheme = call_613292.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606223.url(scheme.get, call_606223.host, call_606223.base,
-                         call_606223.route, valid.getOrDefault("path"),
+  let url = call_613292.url(scheme.get, call_613292.host, call_613292.base,
+                         call_613292.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606223, url, valid)
+  result = atozHook(call_613292, url, valid)
 
-proc call*(call_606224: Call_DescribeCertificate_606211; body: JsonNode): Recallable =
+proc call*(call_613293: Call_DescribeCertificate_613280; body: JsonNode): Recallable =
   ## describeCertificate
   ## Returns detailed metadata about the specified ACM certificate.
   ##   body: JObject (required)
-  var body_606225 = newJObject()
+  var body_613294 = newJObject()
   if body != nil:
-    body_606225 = body
-  result = call_606224.call(nil, nil, nil, nil, body_606225)
+    body_613294 = body
+  result = call_613293.call(nil, nil, nil, nil, body_613294)
 
-var describeCertificate* = Call_DescribeCertificate_606211(
+var describeCertificate* = Call_DescribeCertificate_613280(
     name: "describeCertificate", meth: HttpMethod.HttpPost,
     host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.DescribeCertificate",
-    validator: validate_DescribeCertificate_606212, base: "/",
-    url: url_DescribeCertificate_606213, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeCertificate_613281, base: "/",
+    url: url_DescribeCertificate_613282, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ExportCertificate_606226 = ref object of OpenApiRestCall_605589
-proc url_ExportCertificate_606228(protocol: Scheme; host: string; base: string;
+  Call_ExportCertificate_613295 = ref object of OpenApiRestCall_612658
+proc url_ExportCertificate_613297(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -499,7 +499,7 @@ proc url_ExportCertificate_606228(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ExportCertificate_606227(path: JsonNode; query: JsonNode;
+proc validate_ExportCertificate_613296(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Exports a private certificate issued by a private certificate authority (CA) for use anywhere. The exported file contains the certificate, the certificate chain, and the encrypted private 2048-bit RSA key associated with the public key that is embedded in the certificate. For security, you must assign a passphrase for the private key when exporting it. </p> <p>For information about exporting and formatting a certificate using the ACM console or CLI, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-export-private.html">Export a Private Certificate</a>.</p>
@@ -520,46 +520,46 @@ proc validate_ExportCertificate_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606229 = header.getOrDefault("X-Amz-Target")
-  valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
+  var valid_613298 = header.getOrDefault("X-Amz-Target")
+  valid_613298 = validateParameter(valid_613298, JString, required = true, default = newJString(
       "CertificateManager.ExportCertificate"))
-  if valid_606229 != nil:
-    section.add "X-Amz-Target", valid_606229
-  var valid_606230 = header.getOrDefault("X-Amz-Signature")
-  valid_606230 = validateParameter(valid_606230, JString, required = false,
+  if valid_613298 != nil:
+    section.add "X-Amz-Target", valid_613298
+  var valid_613299 = header.getOrDefault("X-Amz-Signature")
+  valid_613299 = validateParameter(valid_613299, JString, required = false,
                                  default = nil)
-  if valid_606230 != nil:
-    section.add "X-Amz-Signature", valid_606230
-  var valid_606231 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606231 = validateParameter(valid_606231, JString, required = false,
+  if valid_613299 != nil:
+    section.add "X-Amz-Signature", valid_613299
+  var valid_613300 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613300 = validateParameter(valid_613300, JString, required = false,
                                  default = nil)
-  if valid_606231 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606231
-  var valid_606232 = header.getOrDefault("X-Amz-Date")
-  valid_606232 = validateParameter(valid_606232, JString, required = false,
+  if valid_613300 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613300
+  var valid_613301 = header.getOrDefault("X-Amz-Date")
+  valid_613301 = validateParameter(valid_613301, JString, required = false,
                                  default = nil)
-  if valid_606232 != nil:
-    section.add "X-Amz-Date", valid_606232
-  var valid_606233 = header.getOrDefault("X-Amz-Credential")
-  valid_606233 = validateParameter(valid_606233, JString, required = false,
+  if valid_613301 != nil:
+    section.add "X-Amz-Date", valid_613301
+  var valid_613302 = header.getOrDefault("X-Amz-Credential")
+  valid_613302 = validateParameter(valid_613302, JString, required = false,
                                  default = nil)
-  if valid_606233 != nil:
-    section.add "X-Amz-Credential", valid_606233
-  var valid_606234 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606234 = validateParameter(valid_606234, JString, required = false,
+  if valid_613302 != nil:
+    section.add "X-Amz-Credential", valid_613302
+  var valid_613303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613303 = validateParameter(valid_613303, JString, required = false,
                                  default = nil)
-  if valid_606234 != nil:
-    section.add "X-Amz-Security-Token", valid_606234
-  var valid_606235 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606235 = validateParameter(valid_606235, JString, required = false,
+  if valid_613303 != nil:
+    section.add "X-Amz-Security-Token", valid_613303
+  var valid_613304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613304 = validateParameter(valid_613304, JString, required = false,
                                  default = nil)
-  if valid_606235 != nil:
-    section.add "X-Amz-Algorithm", valid_606235
-  var valid_606236 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606236 = validateParameter(valid_606236, JString, required = false,
+  if valid_613304 != nil:
+    section.add "X-Amz-Algorithm", valid_613304
+  var valid_613305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613305 = validateParameter(valid_613305, JString, required = false,
                                  default = nil)
-  if valid_606236 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606236
+  if valid_613305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613305
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -570,36 +570,36 @@ proc validate_ExportCertificate_606227(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606238: Call_ExportCertificate_606226; path: JsonNode;
+proc call*(call_613307: Call_ExportCertificate_613295; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Exports a private certificate issued by a private certificate authority (CA) for use anywhere. The exported file contains the certificate, the certificate chain, and the encrypted private 2048-bit RSA key associated with the public key that is embedded in the certificate. For security, you must assign a passphrase for the private key when exporting it. </p> <p>For information about exporting and formatting a certificate using the ACM console or CLI, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-export-private.html">Export a Private Certificate</a>.</p>
   ## 
-  let valid = call_606238.validator(path, query, header, formData, body)
-  let scheme = call_606238.pickScheme
+  let valid = call_613307.validator(path, query, header, formData, body)
+  let scheme = call_613307.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606238.url(scheme.get, call_606238.host, call_606238.base,
-                         call_606238.route, valid.getOrDefault("path"),
+  let url = call_613307.url(scheme.get, call_613307.host, call_613307.base,
+                         call_613307.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606238, url, valid)
+  result = atozHook(call_613307, url, valid)
 
-proc call*(call_606239: Call_ExportCertificate_606226; body: JsonNode): Recallable =
+proc call*(call_613308: Call_ExportCertificate_613295; body: JsonNode): Recallable =
   ## exportCertificate
   ## <p>Exports a private certificate issued by a private certificate authority (CA) for use anywhere. The exported file contains the certificate, the certificate chain, and the encrypted private 2048-bit RSA key associated with the public key that is embedded in the certificate. For security, you must assign a passphrase for the private key when exporting it. </p> <p>For information about exporting and formatting a certificate using the ACM console or CLI, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-export-private.html">Export a Private Certificate</a>.</p>
   ##   body: JObject (required)
-  var body_606240 = newJObject()
+  var body_613309 = newJObject()
   if body != nil:
-    body_606240 = body
-  result = call_606239.call(nil, nil, nil, nil, body_606240)
+    body_613309 = body
+  result = call_613308.call(nil, nil, nil, nil, body_613309)
 
-var exportCertificate* = Call_ExportCertificate_606226(name: "exportCertificate",
+var exportCertificate* = Call_ExportCertificate_613295(name: "exportCertificate",
     meth: HttpMethod.HttpPost, host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.ExportCertificate",
-    validator: validate_ExportCertificate_606227, base: "/",
-    url: url_ExportCertificate_606228, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ExportCertificate_613296, base: "/",
+    url: url_ExportCertificate_613297, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetCertificate_606241 = ref object of OpenApiRestCall_605589
-proc url_GetCertificate_606243(protocol: Scheme; host: string; base: string;
+  Call_GetCertificate_613310 = ref object of OpenApiRestCall_612658
+proc url_GetCertificate_613312(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -611,7 +611,7 @@ proc url_GetCertificate_606243(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetCertificate_606242(path: JsonNode; query: JsonNode;
+proc validate_GetCertificate_613311(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Retrieves a certificate specified by an ARN and its certificate chain . The chain is an ordered list of certificates that contains the end entity certificate, intermediate certificates of subordinate CAs, and the root certificate in that order. The certificate and certificate chain are base64 encoded. If you want to decode the certificate to see the individual fields, you can use OpenSSL.
@@ -632,46 +632,46 @@ proc validate_GetCertificate_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606244 = header.getOrDefault("X-Amz-Target")
-  valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
+  var valid_613313 = header.getOrDefault("X-Amz-Target")
+  valid_613313 = validateParameter(valid_613313, JString, required = true, default = newJString(
       "CertificateManager.GetCertificate"))
-  if valid_606244 != nil:
-    section.add "X-Amz-Target", valid_606244
-  var valid_606245 = header.getOrDefault("X-Amz-Signature")
-  valid_606245 = validateParameter(valid_606245, JString, required = false,
+  if valid_613313 != nil:
+    section.add "X-Amz-Target", valid_613313
+  var valid_613314 = header.getOrDefault("X-Amz-Signature")
+  valid_613314 = validateParameter(valid_613314, JString, required = false,
                                  default = nil)
-  if valid_606245 != nil:
-    section.add "X-Amz-Signature", valid_606245
-  var valid_606246 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606246 = validateParameter(valid_606246, JString, required = false,
+  if valid_613314 != nil:
+    section.add "X-Amz-Signature", valid_613314
+  var valid_613315 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613315 = validateParameter(valid_613315, JString, required = false,
                                  default = nil)
-  if valid_606246 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606246
-  var valid_606247 = header.getOrDefault("X-Amz-Date")
-  valid_606247 = validateParameter(valid_606247, JString, required = false,
+  if valid_613315 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613315
+  var valid_613316 = header.getOrDefault("X-Amz-Date")
+  valid_613316 = validateParameter(valid_613316, JString, required = false,
                                  default = nil)
-  if valid_606247 != nil:
-    section.add "X-Amz-Date", valid_606247
-  var valid_606248 = header.getOrDefault("X-Amz-Credential")
-  valid_606248 = validateParameter(valid_606248, JString, required = false,
+  if valid_613316 != nil:
+    section.add "X-Amz-Date", valid_613316
+  var valid_613317 = header.getOrDefault("X-Amz-Credential")
+  valid_613317 = validateParameter(valid_613317, JString, required = false,
                                  default = nil)
-  if valid_606248 != nil:
-    section.add "X-Amz-Credential", valid_606248
-  var valid_606249 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606249 = validateParameter(valid_606249, JString, required = false,
+  if valid_613317 != nil:
+    section.add "X-Amz-Credential", valid_613317
+  var valid_613318 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613318 = validateParameter(valid_613318, JString, required = false,
                                  default = nil)
-  if valid_606249 != nil:
-    section.add "X-Amz-Security-Token", valid_606249
-  var valid_606250 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606250 = validateParameter(valid_606250, JString, required = false,
+  if valid_613318 != nil:
+    section.add "X-Amz-Security-Token", valid_613318
+  var valid_613319 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613319 = validateParameter(valid_613319, JString, required = false,
                                  default = nil)
-  if valid_606250 != nil:
-    section.add "X-Amz-Algorithm", valid_606250
-  var valid_606251 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606251 = validateParameter(valid_606251, JString, required = false,
+  if valid_613319 != nil:
+    section.add "X-Amz-Algorithm", valid_613319
+  var valid_613320 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613320 = validateParameter(valid_613320, JString, required = false,
                                  default = nil)
-  if valid_606251 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606251
+  if valid_613320 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613320
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -682,36 +682,36 @@ proc validate_GetCertificate_606242(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606253: Call_GetCertificate_606241; path: JsonNode; query: JsonNode;
+proc call*(call_613322: Call_GetCertificate_613310; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a certificate specified by an ARN and its certificate chain . The chain is an ordered list of certificates that contains the end entity certificate, intermediate certificates of subordinate CAs, and the root certificate in that order. The certificate and certificate chain are base64 encoded. If you want to decode the certificate to see the individual fields, you can use OpenSSL.
   ## 
-  let valid = call_606253.validator(path, query, header, formData, body)
-  let scheme = call_606253.pickScheme
+  let valid = call_613322.validator(path, query, header, formData, body)
+  let scheme = call_613322.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606253.url(scheme.get, call_606253.host, call_606253.base,
-                         call_606253.route, valid.getOrDefault("path"),
+  let url = call_613322.url(scheme.get, call_613322.host, call_613322.base,
+                         call_613322.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606253, url, valid)
+  result = atozHook(call_613322, url, valid)
 
-proc call*(call_606254: Call_GetCertificate_606241; body: JsonNode): Recallable =
+proc call*(call_613323: Call_GetCertificate_613310; body: JsonNode): Recallable =
   ## getCertificate
   ## Retrieves a certificate specified by an ARN and its certificate chain . The chain is an ordered list of certificates that contains the end entity certificate, intermediate certificates of subordinate CAs, and the root certificate in that order. The certificate and certificate chain are base64 encoded. If you want to decode the certificate to see the individual fields, you can use OpenSSL.
   ##   body: JObject (required)
-  var body_606255 = newJObject()
+  var body_613324 = newJObject()
   if body != nil:
-    body_606255 = body
-  result = call_606254.call(nil, nil, nil, nil, body_606255)
+    body_613324 = body
+  result = call_613323.call(nil, nil, nil, nil, body_613324)
 
-var getCertificate* = Call_GetCertificate_606241(name: "getCertificate",
+var getCertificate* = Call_GetCertificate_613310(name: "getCertificate",
     meth: HttpMethod.HttpPost, host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.GetCertificate",
-    validator: validate_GetCertificate_606242, base: "/", url: url_GetCertificate_606243,
+    validator: validate_GetCertificate_613311, base: "/", url: url_GetCertificate_613312,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ImportCertificate_606256 = ref object of OpenApiRestCall_605589
-proc url_ImportCertificate_606258(protocol: Scheme; host: string; base: string;
+  Call_ImportCertificate_613325 = ref object of OpenApiRestCall_612658
+proc url_ImportCertificate_613327(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -723,7 +723,7 @@ proc url_ImportCertificate_606258(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ImportCertificate_606257(path: JsonNode; query: JsonNode;
+proc validate_ImportCertificate_613326(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Imports a certificate into AWS Certificate Manager (ACM) to use with services that are integrated with ACM. Note that <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-services.html">integrated services</a> allow only certificate types and keys they support to be associated with their resources. Further, their support differs depending on whether the certificate is imported into IAM or into ACM. For more information, see the documentation for each service. For more information about importing certificates into ACM, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/import-certificate.html">Importing Certificates</a> in the <i>AWS Certificate Manager User Guide</i>. </p> <note> <p>ACM does not provide <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html">managed renewal</a> for certificates that you import.</p> </note> <p>Note the following guidelines when importing third party certificates:</p> <ul> <li> <p>You must enter the private key that matches the certificate you are importing.</p> </li> <li> <p>The private key must be unencrypted. You cannot import a private key that is protected by a password or a passphrase.</p> </li> <li> <p>If the certificate you are importing is not self-signed, you must enter its certificate chain.</p> </li> <li> <p>If a certificate chain is included, the issuer must be the subject of one of the certificates in the chain.</p> </li> <li> <p>The certificate, private key, and certificate chain must be PEM-encoded.</p> </li> <li> <p>The current time must be between the <code>Not Before</code> and <code>Not After</code> certificate fields.</p> </li> <li> <p>The <code>Issuer</code> field must not be empty.</p> </li> <li> <p>The OCSP authority URL, if present, must not exceed 1000 characters.</p> </li> <li> <p>To import a new certificate, omit the <code>CertificateArn</code> argument. Include this argument only when you want to replace a previously imported certifica</p> </li> <li> <p>When you import a certificate by using the CLI, you must specify the certificate, the certificate chain, and the private key by their file names preceded by <code>file://</code>. For example, you can specify a certificate saved in the <code>C:\temp</code> folder as <code>file://C:\temp\certificate_to_import.pem</code>. If you are making an HTTP or HTTPS Query request, include these arguments as BLOBs. </p> </li> <li> <p>When you import a certificate by using an SDK, you must specify the certificate, the certificate chain, and the private key files in the manner required by the programming language you're using. </p> </li> <li> <p>The cryptographic algorithm of an imported certificate must match the algorithm of the signing CA. For example, if the signing CA key type is RSA, then the certificate key type must also be RSA.</p> </li> </ul> <p>This operation returns the <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html">Amazon Resource Name (ARN)</a> of the imported certificate.</p>
@@ -744,46 +744,46 @@ proc validate_ImportCertificate_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606259 = header.getOrDefault("X-Amz-Target")
-  valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
+  var valid_613328 = header.getOrDefault("X-Amz-Target")
+  valid_613328 = validateParameter(valid_613328, JString, required = true, default = newJString(
       "CertificateManager.ImportCertificate"))
-  if valid_606259 != nil:
-    section.add "X-Amz-Target", valid_606259
-  var valid_606260 = header.getOrDefault("X-Amz-Signature")
-  valid_606260 = validateParameter(valid_606260, JString, required = false,
+  if valid_613328 != nil:
+    section.add "X-Amz-Target", valid_613328
+  var valid_613329 = header.getOrDefault("X-Amz-Signature")
+  valid_613329 = validateParameter(valid_613329, JString, required = false,
                                  default = nil)
-  if valid_606260 != nil:
-    section.add "X-Amz-Signature", valid_606260
-  var valid_606261 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606261 = validateParameter(valid_606261, JString, required = false,
+  if valid_613329 != nil:
+    section.add "X-Amz-Signature", valid_613329
+  var valid_613330 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613330 = validateParameter(valid_613330, JString, required = false,
                                  default = nil)
-  if valid_606261 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606261
-  var valid_606262 = header.getOrDefault("X-Amz-Date")
-  valid_606262 = validateParameter(valid_606262, JString, required = false,
+  if valid_613330 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613330
+  var valid_613331 = header.getOrDefault("X-Amz-Date")
+  valid_613331 = validateParameter(valid_613331, JString, required = false,
                                  default = nil)
-  if valid_606262 != nil:
-    section.add "X-Amz-Date", valid_606262
-  var valid_606263 = header.getOrDefault("X-Amz-Credential")
-  valid_606263 = validateParameter(valid_606263, JString, required = false,
+  if valid_613331 != nil:
+    section.add "X-Amz-Date", valid_613331
+  var valid_613332 = header.getOrDefault("X-Amz-Credential")
+  valid_613332 = validateParameter(valid_613332, JString, required = false,
                                  default = nil)
-  if valid_606263 != nil:
-    section.add "X-Amz-Credential", valid_606263
-  var valid_606264 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606264 = validateParameter(valid_606264, JString, required = false,
+  if valid_613332 != nil:
+    section.add "X-Amz-Credential", valid_613332
+  var valid_613333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613333 = validateParameter(valid_613333, JString, required = false,
                                  default = nil)
-  if valid_606264 != nil:
-    section.add "X-Amz-Security-Token", valid_606264
-  var valid_606265 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606265 = validateParameter(valid_606265, JString, required = false,
+  if valid_613333 != nil:
+    section.add "X-Amz-Security-Token", valid_613333
+  var valid_613334 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613334 = validateParameter(valid_613334, JString, required = false,
                                  default = nil)
-  if valid_606265 != nil:
-    section.add "X-Amz-Algorithm", valid_606265
-  var valid_606266 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606266 = validateParameter(valid_606266, JString, required = false,
+  if valid_613334 != nil:
+    section.add "X-Amz-Algorithm", valid_613334
+  var valid_613335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613335 = validateParameter(valid_613335, JString, required = false,
                                  default = nil)
-  if valid_606266 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606266
+  if valid_613335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613335
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -794,36 +794,36 @@ proc validate_ImportCertificate_606257(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606268: Call_ImportCertificate_606256; path: JsonNode;
+proc call*(call_613337: Call_ImportCertificate_613325; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Imports a certificate into AWS Certificate Manager (ACM) to use with services that are integrated with ACM. Note that <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-services.html">integrated services</a> allow only certificate types and keys they support to be associated with their resources. Further, their support differs depending on whether the certificate is imported into IAM or into ACM. For more information, see the documentation for each service. For more information about importing certificates into ACM, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/import-certificate.html">Importing Certificates</a> in the <i>AWS Certificate Manager User Guide</i>. </p> <note> <p>ACM does not provide <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html">managed renewal</a> for certificates that you import.</p> </note> <p>Note the following guidelines when importing third party certificates:</p> <ul> <li> <p>You must enter the private key that matches the certificate you are importing.</p> </li> <li> <p>The private key must be unencrypted. You cannot import a private key that is protected by a password or a passphrase.</p> </li> <li> <p>If the certificate you are importing is not self-signed, you must enter its certificate chain.</p> </li> <li> <p>If a certificate chain is included, the issuer must be the subject of one of the certificates in the chain.</p> </li> <li> <p>The certificate, private key, and certificate chain must be PEM-encoded.</p> </li> <li> <p>The current time must be between the <code>Not Before</code> and <code>Not After</code> certificate fields.</p> </li> <li> <p>The <code>Issuer</code> field must not be empty.</p> </li> <li> <p>The OCSP authority URL, if present, must not exceed 1000 characters.</p> </li> <li> <p>To import a new certificate, omit the <code>CertificateArn</code> argument. Include this argument only when you want to replace a previously imported certifica</p> </li> <li> <p>When you import a certificate by using the CLI, you must specify the certificate, the certificate chain, and the private key by their file names preceded by <code>file://</code>. For example, you can specify a certificate saved in the <code>C:\temp</code> folder as <code>file://C:\temp\certificate_to_import.pem</code>. If you are making an HTTP or HTTPS Query request, include these arguments as BLOBs. </p> </li> <li> <p>When you import a certificate by using an SDK, you must specify the certificate, the certificate chain, and the private key files in the manner required by the programming language you're using. </p> </li> <li> <p>The cryptographic algorithm of an imported certificate must match the algorithm of the signing CA. For example, if the signing CA key type is RSA, then the certificate key type must also be RSA.</p> </li> </ul> <p>This operation returns the <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html">Amazon Resource Name (ARN)</a> of the imported certificate.</p>
   ## 
-  let valid = call_606268.validator(path, query, header, formData, body)
-  let scheme = call_606268.pickScheme
+  let valid = call_613337.validator(path, query, header, formData, body)
+  let scheme = call_613337.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606268.url(scheme.get, call_606268.host, call_606268.base,
-                         call_606268.route, valid.getOrDefault("path"),
+  let url = call_613337.url(scheme.get, call_613337.host, call_613337.base,
+                         call_613337.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606268, url, valid)
+  result = atozHook(call_613337, url, valid)
 
-proc call*(call_606269: Call_ImportCertificate_606256; body: JsonNode): Recallable =
+proc call*(call_613338: Call_ImportCertificate_613325; body: JsonNode): Recallable =
   ## importCertificate
   ## <p>Imports a certificate into AWS Certificate Manager (ACM) to use with services that are integrated with ACM. Note that <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-services.html">integrated services</a> allow only certificate types and keys they support to be associated with their resources. Further, their support differs depending on whether the certificate is imported into IAM or into ACM. For more information, see the documentation for each service. For more information about importing certificates into ACM, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/import-certificate.html">Importing Certificates</a> in the <i>AWS Certificate Manager User Guide</i>. </p> <note> <p>ACM does not provide <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-renewal.html">managed renewal</a> for certificates that you import.</p> </note> <p>Note the following guidelines when importing third party certificates:</p> <ul> <li> <p>You must enter the private key that matches the certificate you are importing.</p> </li> <li> <p>The private key must be unencrypted. You cannot import a private key that is protected by a password or a passphrase.</p> </li> <li> <p>If the certificate you are importing is not self-signed, you must enter its certificate chain.</p> </li> <li> <p>If a certificate chain is included, the issuer must be the subject of one of the certificates in the chain.</p> </li> <li> <p>The certificate, private key, and certificate chain must be PEM-encoded.</p> </li> <li> <p>The current time must be between the <code>Not Before</code> and <code>Not After</code> certificate fields.</p> </li> <li> <p>The <code>Issuer</code> field must not be empty.</p> </li> <li> <p>The OCSP authority URL, if present, must not exceed 1000 characters.</p> </li> <li> <p>To import a new certificate, omit the <code>CertificateArn</code> argument. Include this argument only when you want to replace a previously imported certifica</p> </li> <li> <p>When you import a certificate by using the CLI, you must specify the certificate, the certificate chain, and the private key by their file names preceded by <code>file://</code>. For example, you can specify a certificate saved in the <code>C:\temp</code> folder as <code>file://C:\temp\certificate_to_import.pem</code>. If you are making an HTTP or HTTPS Query request, include these arguments as BLOBs. </p> </li> <li> <p>When you import a certificate by using an SDK, you must specify the certificate, the certificate chain, and the private key files in the manner required by the programming language you're using. </p> </li> <li> <p>The cryptographic algorithm of an imported certificate must match the algorithm of the signing CA. For example, if the signing CA key type is RSA, then the certificate key type must also be RSA.</p> </li> </ul> <p>This operation returns the <a href="https://docs.aws.amazon.com/general/latest/gr/aws-arns-and-namespaces.html">Amazon Resource Name (ARN)</a> of the imported certificate.</p>
   ##   body: JObject (required)
-  var body_606270 = newJObject()
+  var body_613339 = newJObject()
   if body != nil:
-    body_606270 = body
-  result = call_606269.call(nil, nil, nil, nil, body_606270)
+    body_613339 = body
+  result = call_613338.call(nil, nil, nil, nil, body_613339)
 
-var importCertificate* = Call_ImportCertificate_606256(name: "importCertificate",
+var importCertificate* = Call_ImportCertificate_613325(name: "importCertificate",
     meth: HttpMethod.HttpPost, host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.ImportCertificate",
-    validator: validate_ImportCertificate_606257, base: "/",
-    url: url_ImportCertificate_606258, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ImportCertificate_613326, base: "/",
+    url: url_ImportCertificate_613327, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListCertificates_606271 = ref object of OpenApiRestCall_605589
-proc url_ListCertificates_606273(protocol: Scheme; host: string; base: string;
+  Call_ListCertificates_613340 = ref object of OpenApiRestCall_612658
+proc url_ListCertificates_613342(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -835,7 +835,7 @@ proc url_ListCertificates_606273(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListCertificates_606272(path: JsonNode; query: JsonNode;
+proc validate_ListCertificates_613341(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Retrieves a list of certificate ARNs and domain names. You can request that only certificates that match a specific status be listed. You can also filter by specific attributes of the certificate. Default filtering returns only <code>RSA_2048</code> certificates. For more information, see <a>Filters</a>.
@@ -850,16 +850,16 @@ proc validate_ListCertificates_606272(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606274 = query.getOrDefault("MaxItems")
-  valid_606274 = validateParameter(valid_606274, JString, required = false,
+  var valid_613343 = query.getOrDefault("MaxItems")
+  valid_613343 = validateParameter(valid_613343, JString, required = false,
                                  default = nil)
-  if valid_606274 != nil:
-    section.add "MaxItems", valid_606274
-  var valid_606275 = query.getOrDefault("NextToken")
-  valid_606275 = validateParameter(valid_606275, JString, required = false,
+  if valid_613343 != nil:
+    section.add "MaxItems", valid_613343
+  var valid_613344 = query.getOrDefault("NextToken")
+  valid_613344 = validateParameter(valid_613344, JString, required = false,
                                  default = nil)
-  if valid_606275 != nil:
-    section.add "NextToken", valid_606275
+  if valid_613344 != nil:
+    section.add "NextToken", valid_613344
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -871,46 +871,46 @@ proc validate_ListCertificates_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606276 = header.getOrDefault("X-Amz-Target")
-  valid_606276 = validateParameter(valid_606276, JString, required = true, default = newJString(
+  var valid_613345 = header.getOrDefault("X-Amz-Target")
+  valid_613345 = validateParameter(valid_613345, JString, required = true, default = newJString(
       "CertificateManager.ListCertificates"))
-  if valid_606276 != nil:
-    section.add "X-Amz-Target", valid_606276
-  var valid_606277 = header.getOrDefault("X-Amz-Signature")
-  valid_606277 = validateParameter(valid_606277, JString, required = false,
+  if valid_613345 != nil:
+    section.add "X-Amz-Target", valid_613345
+  var valid_613346 = header.getOrDefault("X-Amz-Signature")
+  valid_613346 = validateParameter(valid_613346, JString, required = false,
                                  default = nil)
-  if valid_606277 != nil:
-    section.add "X-Amz-Signature", valid_606277
-  var valid_606278 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606278 = validateParameter(valid_606278, JString, required = false,
+  if valid_613346 != nil:
+    section.add "X-Amz-Signature", valid_613346
+  var valid_613347 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613347 = validateParameter(valid_613347, JString, required = false,
                                  default = nil)
-  if valid_606278 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606278
-  var valid_606279 = header.getOrDefault("X-Amz-Date")
-  valid_606279 = validateParameter(valid_606279, JString, required = false,
+  if valid_613347 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613347
+  var valid_613348 = header.getOrDefault("X-Amz-Date")
+  valid_613348 = validateParameter(valid_613348, JString, required = false,
                                  default = nil)
-  if valid_606279 != nil:
-    section.add "X-Amz-Date", valid_606279
-  var valid_606280 = header.getOrDefault("X-Amz-Credential")
-  valid_606280 = validateParameter(valid_606280, JString, required = false,
+  if valid_613348 != nil:
+    section.add "X-Amz-Date", valid_613348
+  var valid_613349 = header.getOrDefault("X-Amz-Credential")
+  valid_613349 = validateParameter(valid_613349, JString, required = false,
                                  default = nil)
-  if valid_606280 != nil:
-    section.add "X-Amz-Credential", valid_606280
-  var valid_606281 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606281 = validateParameter(valid_606281, JString, required = false,
+  if valid_613349 != nil:
+    section.add "X-Amz-Credential", valid_613349
+  var valid_613350 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613350 = validateParameter(valid_613350, JString, required = false,
                                  default = nil)
-  if valid_606281 != nil:
-    section.add "X-Amz-Security-Token", valid_606281
-  var valid_606282 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606282 = validateParameter(valid_606282, JString, required = false,
+  if valid_613350 != nil:
+    section.add "X-Amz-Security-Token", valid_613350
+  var valid_613351 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613351 = validateParameter(valid_613351, JString, required = false,
                                  default = nil)
-  if valid_606282 != nil:
-    section.add "X-Amz-Algorithm", valid_606282
-  var valid_606283 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606283 = validateParameter(valid_606283, JString, required = false,
+  if valid_613351 != nil:
+    section.add "X-Amz-Algorithm", valid_613351
+  var valid_613352 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613352 = validateParameter(valid_613352, JString, required = false,
                                  default = nil)
-  if valid_606283 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606283
+  if valid_613352 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613352
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -921,20 +921,20 @@ proc validate_ListCertificates_606272(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606285: Call_ListCertificates_606271; path: JsonNode;
+proc call*(call_613354: Call_ListCertificates_613340; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a list of certificate ARNs and domain names. You can request that only certificates that match a specific status be listed. You can also filter by specific attributes of the certificate. Default filtering returns only <code>RSA_2048</code> certificates. For more information, see <a>Filters</a>.
   ## 
-  let valid = call_606285.validator(path, query, header, formData, body)
-  let scheme = call_606285.pickScheme
+  let valid = call_613354.validator(path, query, header, formData, body)
+  let scheme = call_613354.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606285.url(scheme.get, call_606285.host, call_606285.base,
-                         call_606285.route, valid.getOrDefault("path"),
+  let url = call_613354.url(scheme.get, call_613354.host, call_613354.base,
+                         call_613354.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606285, url, valid)
+  result = atozHook(call_613354, url, valid)
 
-proc call*(call_606286: Call_ListCertificates_606271; body: JsonNode;
+proc call*(call_613355: Call_ListCertificates_613340; body: JsonNode;
           MaxItems: string = ""; NextToken: string = ""): Recallable =
   ## listCertificates
   ## Retrieves a list of certificate ARNs and domain names. You can request that only certificates that match a specific status be listed. You can also filter by specific attributes of the certificate. Default filtering returns only <code>RSA_2048</code> certificates. For more information, see <a>Filters</a>.
@@ -943,22 +943,22 @@ proc call*(call_606286: Call_ListCertificates_606271; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606287 = newJObject()
-  var body_606288 = newJObject()
-  add(query_606287, "MaxItems", newJString(MaxItems))
-  add(query_606287, "NextToken", newJString(NextToken))
+  var query_613356 = newJObject()
+  var body_613357 = newJObject()
+  add(query_613356, "MaxItems", newJString(MaxItems))
+  add(query_613356, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606288 = body
-  result = call_606286.call(nil, query_606287, nil, nil, body_606288)
+    body_613357 = body
+  result = call_613355.call(nil, query_613356, nil, nil, body_613357)
 
-var listCertificates* = Call_ListCertificates_606271(name: "listCertificates",
+var listCertificates* = Call_ListCertificates_613340(name: "listCertificates",
     meth: HttpMethod.HttpPost, host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.ListCertificates",
-    validator: validate_ListCertificates_606272, base: "/",
-    url: url_ListCertificates_606273, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListCertificates_613341, base: "/",
+    url: url_ListCertificates_613342, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForCertificate_606290 = ref object of OpenApiRestCall_605589
-proc url_ListTagsForCertificate_606292(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForCertificate_613359 = ref object of OpenApiRestCall_612658
+proc url_ListTagsForCertificate_613361(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -970,7 +970,7 @@ proc url_ListTagsForCertificate_606292(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_ListTagsForCertificate_606291(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForCertificate_613360(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the tags that have been applied to the ACM certificate. Use the certificate's Amazon Resource Name (ARN) to specify the certificate. To add a tag to an ACM certificate, use the <a>AddTagsToCertificate</a> action. To delete a tag, use the <a>RemoveTagsFromCertificate</a> action. 
   ## 
@@ -990,46 +990,46 @@ proc validate_ListTagsForCertificate_606291(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606293 = header.getOrDefault("X-Amz-Target")
-  valid_606293 = validateParameter(valid_606293, JString, required = true, default = newJString(
+  var valid_613362 = header.getOrDefault("X-Amz-Target")
+  valid_613362 = validateParameter(valid_613362, JString, required = true, default = newJString(
       "CertificateManager.ListTagsForCertificate"))
-  if valid_606293 != nil:
-    section.add "X-Amz-Target", valid_606293
-  var valid_606294 = header.getOrDefault("X-Amz-Signature")
-  valid_606294 = validateParameter(valid_606294, JString, required = false,
+  if valid_613362 != nil:
+    section.add "X-Amz-Target", valid_613362
+  var valid_613363 = header.getOrDefault("X-Amz-Signature")
+  valid_613363 = validateParameter(valid_613363, JString, required = false,
                                  default = nil)
-  if valid_606294 != nil:
-    section.add "X-Amz-Signature", valid_606294
-  var valid_606295 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606295 = validateParameter(valid_606295, JString, required = false,
+  if valid_613363 != nil:
+    section.add "X-Amz-Signature", valid_613363
+  var valid_613364 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613364 = validateParameter(valid_613364, JString, required = false,
                                  default = nil)
-  if valid_606295 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606295
-  var valid_606296 = header.getOrDefault("X-Amz-Date")
-  valid_606296 = validateParameter(valid_606296, JString, required = false,
+  if valid_613364 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613364
+  var valid_613365 = header.getOrDefault("X-Amz-Date")
+  valid_613365 = validateParameter(valid_613365, JString, required = false,
                                  default = nil)
-  if valid_606296 != nil:
-    section.add "X-Amz-Date", valid_606296
-  var valid_606297 = header.getOrDefault("X-Amz-Credential")
-  valid_606297 = validateParameter(valid_606297, JString, required = false,
+  if valid_613365 != nil:
+    section.add "X-Amz-Date", valid_613365
+  var valid_613366 = header.getOrDefault("X-Amz-Credential")
+  valid_613366 = validateParameter(valid_613366, JString, required = false,
                                  default = nil)
-  if valid_606297 != nil:
-    section.add "X-Amz-Credential", valid_606297
-  var valid_606298 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606298 = validateParameter(valid_606298, JString, required = false,
+  if valid_613366 != nil:
+    section.add "X-Amz-Credential", valid_613366
+  var valid_613367 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613367 = validateParameter(valid_613367, JString, required = false,
                                  default = nil)
-  if valid_606298 != nil:
-    section.add "X-Amz-Security-Token", valid_606298
-  var valid_606299 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606299 = validateParameter(valid_606299, JString, required = false,
+  if valid_613367 != nil:
+    section.add "X-Amz-Security-Token", valid_613367
+  var valid_613368 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613368 = validateParameter(valid_613368, JString, required = false,
                                  default = nil)
-  if valid_606299 != nil:
-    section.add "X-Amz-Algorithm", valid_606299
-  var valid_606300 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606300 = validateParameter(valid_606300, JString, required = false,
+  if valid_613368 != nil:
+    section.add "X-Amz-Algorithm", valid_613368
+  var valid_613369 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613369 = validateParameter(valid_613369, JString, required = false,
                                  default = nil)
-  if valid_606300 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606300
+  if valid_613369 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613369
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1040,37 +1040,37 @@ proc validate_ListTagsForCertificate_606291(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606302: Call_ListTagsForCertificate_606290; path: JsonNode;
+proc call*(call_613371: Call_ListTagsForCertificate_613359; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the tags that have been applied to the ACM certificate. Use the certificate's Amazon Resource Name (ARN) to specify the certificate. To add a tag to an ACM certificate, use the <a>AddTagsToCertificate</a> action. To delete a tag, use the <a>RemoveTagsFromCertificate</a> action. 
   ## 
-  let valid = call_606302.validator(path, query, header, formData, body)
-  let scheme = call_606302.pickScheme
+  let valid = call_613371.validator(path, query, header, formData, body)
+  let scheme = call_613371.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606302.url(scheme.get, call_606302.host, call_606302.base,
-                         call_606302.route, valid.getOrDefault("path"),
+  let url = call_613371.url(scheme.get, call_613371.host, call_613371.base,
+                         call_613371.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606302, url, valid)
+  result = atozHook(call_613371, url, valid)
 
-proc call*(call_606303: Call_ListTagsForCertificate_606290; body: JsonNode): Recallable =
+proc call*(call_613372: Call_ListTagsForCertificate_613359; body: JsonNode): Recallable =
   ## listTagsForCertificate
   ## Lists the tags that have been applied to the ACM certificate. Use the certificate's Amazon Resource Name (ARN) to specify the certificate. To add a tag to an ACM certificate, use the <a>AddTagsToCertificate</a> action. To delete a tag, use the <a>RemoveTagsFromCertificate</a> action. 
   ##   body: JObject (required)
-  var body_606304 = newJObject()
+  var body_613373 = newJObject()
   if body != nil:
-    body_606304 = body
-  result = call_606303.call(nil, nil, nil, nil, body_606304)
+    body_613373 = body
+  result = call_613372.call(nil, nil, nil, nil, body_613373)
 
-var listTagsForCertificate* = Call_ListTagsForCertificate_606290(
+var listTagsForCertificate* = Call_ListTagsForCertificate_613359(
     name: "listTagsForCertificate", meth: HttpMethod.HttpPost,
     host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.ListTagsForCertificate",
-    validator: validate_ListTagsForCertificate_606291, base: "/",
-    url: url_ListTagsForCertificate_606292, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForCertificate_613360, base: "/",
+    url: url_ListTagsForCertificate_613361, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RemoveTagsFromCertificate_606305 = ref object of OpenApiRestCall_605589
-proc url_RemoveTagsFromCertificate_606307(protocol: Scheme; host: string;
+  Call_RemoveTagsFromCertificate_613374 = ref object of OpenApiRestCall_612658
+proc url_RemoveTagsFromCertificate_613376(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1082,7 +1082,7 @@ proc url_RemoveTagsFromCertificate_606307(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_RemoveTagsFromCertificate_606306(path: JsonNode; query: JsonNode;
+proc validate_RemoveTagsFromCertificate_613375(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Remove one or more tags from an ACM certificate. A tag consists of a key-value pair. If you do not specify the value portion of the tag when calling this function, the tag will be removed regardless of value. If you specify a value, the tag is removed only if it is associated with the specified value. </p> <p>To add tags to a certificate, use the <a>AddTagsToCertificate</a> action. To view all of the tags that have been applied to a specific ACM certificate, use the <a>ListTagsForCertificate</a> action. </p>
   ## 
@@ -1102,46 +1102,46 @@ proc validate_RemoveTagsFromCertificate_606306(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606308 = header.getOrDefault("X-Amz-Target")
-  valid_606308 = validateParameter(valid_606308, JString, required = true, default = newJString(
+  var valid_613377 = header.getOrDefault("X-Amz-Target")
+  valid_613377 = validateParameter(valid_613377, JString, required = true, default = newJString(
       "CertificateManager.RemoveTagsFromCertificate"))
-  if valid_606308 != nil:
-    section.add "X-Amz-Target", valid_606308
-  var valid_606309 = header.getOrDefault("X-Amz-Signature")
-  valid_606309 = validateParameter(valid_606309, JString, required = false,
+  if valid_613377 != nil:
+    section.add "X-Amz-Target", valid_613377
+  var valid_613378 = header.getOrDefault("X-Amz-Signature")
+  valid_613378 = validateParameter(valid_613378, JString, required = false,
                                  default = nil)
-  if valid_606309 != nil:
-    section.add "X-Amz-Signature", valid_606309
-  var valid_606310 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606310 = validateParameter(valid_606310, JString, required = false,
+  if valid_613378 != nil:
+    section.add "X-Amz-Signature", valid_613378
+  var valid_613379 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613379 = validateParameter(valid_613379, JString, required = false,
                                  default = nil)
-  if valid_606310 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606310
-  var valid_606311 = header.getOrDefault("X-Amz-Date")
-  valid_606311 = validateParameter(valid_606311, JString, required = false,
+  if valid_613379 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613379
+  var valid_613380 = header.getOrDefault("X-Amz-Date")
+  valid_613380 = validateParameter(valid_613380, JString, required = false,
                                  default = nil)
-  if valid_606311 != nil:
-    section.add "X-Amz-Date", valid_606311
-  var valid_606312 = header.getOrDefault("X-Amz-Credential")
-  valid_606312 = validateParameter(valid_606312, JString, required = false,
+  if valid_613380 != nil:
+    section.add "X-Amz-Date", valid_613380
+  var valid_613381 = header.getOrDefault("X-Amz-Credential")
+  valid_613381 = validateParameter(valid_613381, JString, required = false,
                                  default = nil)
-  if valid_606312 != nil:
-    section.add "X-Amz-Credential", valid_606312
-  var valid_606313 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606313 = validateParameter(valid_606313, JString, required = false,
+  if valid_613381 != nil:
+    section.add "X-Amz-Credential", valid_613381
+  var valid_613382 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613382 = validateParameter(valid_613382, JString, required = false,
                                  default = nil)
-  if valid_606313 != nil:
-    section.add "X-Amz-Security-Token", valid_606313
-  var valid_606314 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606314 = validateParameter(valid_606314, JString, required = false,
+  if valid_613382 != nil:
+    section.add "X-Amz-Security-Token", valid_613382
+  var valid_613383 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613383 = validateParameter(valid_613383, JString, required = false,
                                  default = nil)
-  if valid_606314 != nil:
-    section.add "X-Amz-Algorithm", valid_606314
-  var valid_606315 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606315 = validateParameter(valid_606315, JString, required = false,
+  if valid_613383 != nil:
+    section.add "X-Amz-Algorithm", valid_613383
+  var valid_613384 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613384 = validateParameter(valid_613384, JString, required = false,
                                  default = nil)
-  if valid_606315 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606315
+  if valid_613384 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613384
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1152,38 +1152,38 @@ proc validate_RemoveTagsFromCertificate_606306(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606317: Call_RemoveTagsFromCertificate_606305; path: JsonNode;
+proc call*(call_613386: Call_RemoveTagsFromCertificate_613374; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Remove one or more tags from an ACM certificate. A tag consists of a key-value pair. If you do not specify the value portion of the tag when calling this function, the tag will be removed regardless of value. If you specify a value, the tag is removed only if it is associated with the specified value. </p> <p>To add tags to a certificate, use the <a>AddTagsToCertificate</a> action. To view all of the tags that have been applied to a specific ACM certificate, use the <a>ListTagsForCertificate</a> action. </p>
   ## 
-  let valid = call_606317.validator(path, query, header, formData, body)
-  let scheme = call_606317.pickScheme
+  let valid = call_613386.validator(path, query, header, formData, body)
+  let scheme = call_613386.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606317.url(scheme.get, call_606317.host, call_606317.base,
-                         call_606317.route, valid.getOrDefault("path"),
+  let url = call_613386.url(scheme.get, call_613386.host, call_613386.base,
+                         call_613386.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606317, url, valid)
+  result = atozHook(call_613386, url, valid)
 
-proc call*(call_606318: Call_RemoveTagsFromCertificate_606305; body: JsonNode): Recallable =
+proc call*(call_613387: Call_RemoveTagsFromCertificate_613374; body: JsonNode): Recallable =
   ## removeTagsFromCertificate
   ## <p>Remove one or more tags from an ACM certificate. A tag consists of a key-value pair. If you do not specify the value portion of the tag when calling this function, the tag will be removed regardless of value. If you specify a value, the tag is removed only if it is associated with the specified value. </p> <p>To add tags to a certificate, use the <a>AddTagsToCertificate</a> action. To view all of the tags that have been applied to a specific ACM certificate, use the <a>ListTagsForCertificate</a> action. </p>
   ##   body: JObject (required)
-  var body_606319 = newJObject()
+  var body_613388 = newJObject()
   if body != nil:
-    body_606319 = body
-  result = call_606318.call(nil, nil, nil, nil, body_606319)
+    body_613388 = body
+  result = call_613387.call(nil, nil, nil, nil, body_613388)
 
-var removeTagsFromCertificate* = Call_RemoveTagsFromCertificate_606305(
+var removeTagsFromCertificate* = Call_RemoveTagsFromCertificate_613374(
     name: "removeTagsFromCertificate", meth: HttpMethod.HttpPost,
     host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.RemoveTagsFromCertificate",
-    validator: validate_RemoveTagsFromCertificate_606306, base: "/",
-    url: url_RemoveTagsFromCertificate_606307,
+    validator: validate_RemoveTagsFromCertificate_613375, base: "/",
+    url: url_RemoveTagsFromCertificate_613376,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RenewCertificate_606320 = ref object of OpenApiRestCall_605589
-proc url_RenewCertificate_606322(protocol: Scheme; host: string; base: string;
+  Call_RenewCertificate_613389 = ref object of OpenApiRestCall_612658
+proc url_RenewCertificate_613391(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1195,7 +1195,7 @@ proc url_RenewCertificate_606322(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RenewCertificate_606321(path: JsonNode; query: JsonNode;
+proc validate_RenewCertificate_613390(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Renews an eligable ACM certificate. At this time, only exported private certificates can be renewed with this operation. In order to renew your ACM PCA certificates with ACM, you must first <a href="https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaPermissions.html">grant the ACM service principal permission to do so</a>. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/manual-renewal.html">Testing Managed Renewal</a> in the ACM User Guide.
@@ -1216,46 +1216,46 @@ proc validate_RenewCertificate_606321(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606323 = header.getOrDefault("X-Amz-Target")
-  valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
+  var valid_613392 = header.getOrDefault("X-Amz-Target")
+  valid_613392 = validateParameter(valid_613392, JString, required = true, default = newJString(
       "CertificateManager.RenewCertificate"))
-  if valid_606323 != nil:
-    section.add "X-Amz-Target", valid_606323
-  var valid_606324 = header.getOrDefault("X-Amz-Signature")
-  valid_606324 = validateParameter(valid_606324, JString, required = false,
+  if valid_613392 != nil:
+    section.add "X-Amz-Target", valid_613392
+  var valid_613393 = header.getOrDefault("X-Amz-Signature")
+  valid_613393 = validateParameter(valid_613393, JString, required = false,
                                  default = nil)
-  if valid_606324 != nil:
-    section.add "X-Amz-Signature", valid_606324
-  var valid_606325 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606325 = validateParameter(valid_606325, JString, required = false,
+  if valid_613393 != nil:
+    section.add "X-Amz-Signature", valid_613393
+  var valid_613394 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613394 = validateParameter(valid_613394, JString, required = false,
                                  default = nil)
-  if valid_606325 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606325
-  var valid_606326 = header.getOrDefault("X-Amz-Date")
-  valid_606326 = validateParameter(valid_606326, JString, required = false,
+  if valid_613394 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613394
+  var valid_613395 = header.getOrDefault("X-Amz-Date")
+  valid_613395 = validateParameter(valid_613395, JString, required = false,
                                  default = nil)
-  if valid_606326 != nil:
-    section.add "X-Amz-Date", valid_606326
-  var valid_606327 = header.getOrDefault("X-Amz-Credential")
-  valid_606327 = validateParameter(valid_606327, JString, required = false,
+  if valid_613395 != nil:
+    section.add "X-Amz-Date", valid_613395
+  var valid_613396 = header.getOrDefault("X-Amz-Credential")
+  valid_613396 = validateParameter(valid_613396, JString, required = false,
                                  default = nil)
-  if valid_606327 != nil:
-    section.add "X-Amz-Credential", valid_606327
-  var valid_606328 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606328 = validateParameter(valid_606328, JString, required = false,
+  if valid_613396 != nil:
+    section.add "X-Amz-Credential", valid_613396
+  var valid_613397 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613397 = validateParameter(valid_613397, JString, required = false,
                                  default = nil)
-  if valid_606328 != nil:
-    section.add "X-Amz-Security-Token", valid_606328
-  var valid_606329 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606329 = validateParameter(valid_606329, JString, required = false,
+  if valid_613397 != nil:
+    section.add "X-Amz-Security-Token", valid_613397
+  var valid_613398 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613398 = validateParameter(valid_613398, JString, required = false,
                                  default = nil)
-  if valid_606329 != nil:
-    section.add "X-Amz-Algorithm", valid_606329
-  var valid_606330 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606330 = validateParameter(valid_606330, JString, required = false,
+  if valid_613398 != nil:
+    section.add "X-Amz-Algorithm", valid_613398
+  var valid_613399 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613399 = validateParameter(valid_613399, JString, required = false,
                                  default = nil)
-  if valid_606330 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606330
+  if valid_613399 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613399
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1266,36 +1266,36 @@ proc validate_RenewCertificate_606321(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606332: Call_RenewCertificate_606320; path: JsonNode;
+proc call*(call_613401: Call_RenewCertificate_613389; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Renews an eligable ACM certificate. At this time, only exported private certificates can be renewed with this operation. In order to renew your ACM PCA certificates with ACM, you must first <a href="https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaPermissions.html">grant the ACM service principal permission to do so</a>. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/manual-renewal.html">Testing Managed Renewal</a> in the ACM User Guide.
   ## 
-  let valid = call_606332.validator(path, query, header, formData, body)
-  let scheme = call_606332.pickScheme
+  let valid = call_613401.validator(path, query, header, formData, body)
+  let scheme = call_613401.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606332.url(scheme.get, call_606332.host, call_606332.base,
-                         call_606332.route, valid.getOrDefault("path"),
+  let url = call_613401.url(scheme.get, call_613401.host, call_613401.base,
+                         call_613401.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606332, url, valid)
+  result = atozHook(call_613401, url, valid)
 
-proc call*(call_606333: Call_RenewCertificate_606320; body: JsonNode): Recallable =
+proc call*(call_613402: Call_RenewCertificate_613389; body: JsonNode): Recallable =
   ## renewCertificate
   ## Renews an eligable ACM certificate. At this time, only exported private certificates can be renewed with this operation. In order to renew your ACM PCA certificates with ACM, you must first <a href="https://docs.aws.amazon.com/acm-pca/latest/userguide/PcaPermissions.html">grant the ACM service principal permission to do so</a>. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/manual-renewal.html">Testing Managed Renewal</a> in the ACM User Guide.
   ##   body: JObject (required)
-  var body_606334 = newJObject()
+  var body_613403 = newJObject()
   if body != nil:
-    body_606334 = body
-  result = call_606333.call(nil, nil, nil, nil, body_606334)
+    body_613403 = body
+  result = call_613402.call(nil, nil, nil, nil, body_613403)
 
-var renewCertificate* = Call_RenewCertificate_606320(name: "renewCertificate",
+var renewCertificate* = Call_RenewCertificate_613389(name: "renewCertificate",
     meth: HttpMethod.HttpPost, host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.RenewCertificate",
-    validator: validate_RenewCertificate_606321, base: "/",
-    url: url_RenewCertificate_606322, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RenewCertificate_613390, base: "/",
+    url: url_RenewCertificate_613391, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RequestCertificate_606335 = ref object of OpenApiRestCall_605589
-proc url_RequestCertificate_606337(protocol: Scheme; host: string; base: string;
+  Call_RequestCertificate_613404 = ref object of OpenApiRestCall_612658
+proc url_RequestCertificate_613406(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1307,7 +1307,7 @@ proc url_RequestCertificate_606337(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RequestCertificate_606336(path: JsonNode; query: JsonNode;
+proc validate_RequestCertificate_613405(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Requests an ACM certificate for use with other AWS services. To request an ACM certificate, you must specify a fully qualified domain name (FQDN) in the <code>DomainName</code> parameter. You can also specify additional FQDNs in the <code>SubjectAlternativeNames</code> parameter. </p> <p>If you are requesting a private certificate, domain validation is not required. If you are requesting a public certificate, each domain name that you specify must be validated to verify that you own or control the domain. You can use <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-dns.html">DNS validation</a> or <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-email.html">email validation</a>. We recommend that you use DNS validation. ACM issues public certificates after receiving approval from the domain owner. </p>
@@ -1328,46 +1328,46 @@ proc validate_RequestCertificate_606336(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606338 = header.getOrDefault("X-Amz-Target")
-  valid_606338 = validateParameter(valid_606338, JString, required = true, default = newJString(
+  var valid_613407 = header.getOrDefault("X-Amz-Target")
+  valid_613407 = validateParameter(valid_613407, JString, required = true, default = newJString(
       "CertificateManager.RequestCertificate"))
-  if valid_606338 != nil:
-    section.add "X-Amz-Target", valid_606338
-  var valid_606339 = header.getOrDefault("X-Amz-Signature")
-  valid_606339 = validateParameter(valid_606339, JString, required = false,
+  if valid_613407 != nil:
+    section.add "X-Amz-Target", valid_613407
+  var valid_613408 = header.getOrDefault("X-Amz-Signature")
+  valid_613408 = validateParameter(valid_613408, JString, required = false,
                                  default = nil)
-  if valid_606339 != nil:
-    section.add "X-Amz-Signature", valid_606339
-  var valid_606340 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606340 = validateParameter(valid_606340, JString, required = false,
+  if valid_613408 != nil:
+    section.add "X-Amz-Signature", valid_613408
+  var valid_613409 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613409 = validateParameter(valid_613409, JString, required = false,
                                  default = nil)
-  if valid_606340 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606340
-  var valid_606341 = header.getOrDefault("X-Amz-Date")
-  valid_606341 = validateParameter(valid_606341, JString, required = false,
+  if valid_613409 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613409
+  var valid_613410 = header.getOrDefault("X-Amz-Date")
+  valid_613410 = validateParameter(valid_613410, JString, required = false,
                                  default = nil)
-  if valid_606341 != nil:
-    section.add "X-Amz-Date", valid_606341
-  var valid_606342 = header.getOrDefault("X-Amz-Credential")
-  valid_606342 = validateParameter(valid_606342, JString, required = false,
+  if valid_613410 != nil:
+    section.add "X-Amz-Date", valid_613410
+  var valid_613411 = header.getOrDefault("X-Amz-Credential")
+  valid_613411 = validateParameter(valid_613411, JString, required = false,
                                  default = nil)
-  if valid_606342 != nil:
-    section.add "X-Amz-Credential", valid_606342
-  var valid_606343 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606343 = validateParameter(valid_606343, JString, required = false,
+  if valid_613411 != nil:
+    section.add "X-Amz-Credential", valid_613411
+  var valid_613412 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613412 = validateParameter(valid_613412, JString, required = false,
                                  default = nil)
-  if valid_606343 != nil:
-    section.add "X-Amz-Security-Token", valid_606343
-  var valid_606344 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606344 = validateParameter(valid_606344, JString, required = false,
+  if valid_613412 != nil:
+    section.add "X-Amz-Security-Token", valid_613412
+  var valid_613413 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613413 = validateParameter(valid_613413, JString, required = false,
                                  default = nil)
-  if valid_606344 != nil:
-    section.add "X-Amz-Algorithm", valid_606344
-  var valid_606345 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606345 = validateParameter(valid_606345, JString, required = false,
+  if valid_613413 != nil:
+    section.add "X-Amz-Algorithm", valid_613413
+  var valid_613414 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613414 = validateParameter(valid_613414, JString, required = false,
                                  default = nil)
-  if valid_606345 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606345
+  if valid_613414 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613414
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1378,37 +1378,37 @@ proc validate_RequestCertificate_606336(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606347: Call_RequestCertificate_606335; path: JsonNode;
+proc call*(call_613416: Call_RequestCertificate_613404; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Requests an ACM certificate for use with other AWS services. To request an ACM certificate, you must specify a fully qualified domain name (FQDN) in the <code>DomainName</code> parameter. You can also specify additional FQDNs in the <code>SubjectAlternativeNames</code> parameter. </p> <p>If you are requesting a private certificate, domain validation is not required. If you are requesting a public certificate, each domain name that you specify must be validated to verify that you own or control the domain. You can use <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-dns.html">DNS validation</a> or <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-email.html">email validation</a>. We recommend that you use DNS validation. ACM issues public certificates after receiving approval from the domain owner. </p>
   ## 
-  let valid = call_606347.validator(path, query, header, formData, body)
-  let scheme = call_606347.pickScheme
+  let valid = call_613416.validator(path, query, header, formData, body)
+  let scheme = call_613416.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606347.url(scheme.get, call_606347.host, call_606347.base,
-                         call_606347.route, valid.getOrDefault("path"),
+  let url = call_613416.url(scheme.get, call_613416.host, call_613416.base,
+                         call_613416.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606347, url, valid)
+  result = atozHook(call_613416, url, valid)
 
-proc call*(call_606348: Call_RequestCertificate_606335; body: JsonNode): Recallable =
+proc call*(call_613417: Call_RequestCertificate_613404; body: JsonNode): Recallable =
   ## requestCertificate
   ## <p>Requests an ACM certificate for use with other AWS services. To request an ACM certificate, you must specify a fully qualified domain name (FQDN) in the <code>DomainName</code> parameter. You can also specify additional FQDNs in the <code>SubjectAlternativeNames</code> parameter. </p> <p>If you are requesting a private certificate, domain validation is not required. If you are requesting a public certificate, each domain name that you specify must be validated to verify that you own or control the domain. You can use <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-dns.html">DNS validation</a> or <a href="https://docs.aws.amazon.com/acm/latest/userguide/gs-acm-validate-email.html">email validation</a>. We recommend that you use DNS validation. ACM issues public certificates after receiving approval from the domain owner. </p>
   ##   body: JObject (required)
-  var body_606349 = newJObject()
+  var body_613418 = newJObject()
   if body != nil:
-    body_606349 = body
-  result = call_606348.call(nil, nil, nil, nil, body_606349)
+    body_613418 = body
+  result = call_613417.call(nil, nil, nil, nil, body_613418)
 
-var requestCertificate* = Call_RequestCertificate_606335(
+var requestCertificate* = Call_RequestCertificate_613404(
     name: "requestCertificate", meth: HttpMethod.HttpPost,
     host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.RequestCertificate",
-    validator: validate_RequestCertificate_606336, base: "/",
-    url: url_RequestCertificate_606337, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RequestCertificate_613405, base: "/",
+    url: url_RequestCertificate_613406, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ResendValidationEmail_606350 = ref object of OpenApiRestCall_605589
-proc url_ResendValidationEmail_606352(protocol: Scheme; host: string; base: string;
+  Call_ResendValidationEmail_613419 = ref object of OpenApiRestCall_612658
+proc url_ResendValidationEmail_613421(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1420,7 +1420,7 @@ proc url_ResendValidationEmail_606352(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ResendValidationEmail_606351(path: JsonNode; query: JsonNode;
+proc validate_ResendValidationEmail_613420(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Resends the email that requests domain ownership validation. The domain owner or an authorized representative must approve the ACM certificate before it can be issued. The certificate can be approved by clicking a link in the mail to navigate to the Amazon certificate approval website and then clicking <b>I Approve</b>. However, the validation email can be blocked by spam filters. Therefore, if you do not receive the original mail, you can request that the mail be resent within 72 hours of requesting the ACM certificate. If more than 72 hours have elapsed since your original request or since your last attempt to resend validation mail, you must request a new certificate. For more information about setting up your contact email addresses, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/setup-email.html">Configure Email for your Domain</a>. 
   ## 
@@ -1440,46 +1440,46 @@ proc validate_ResendValidationEmail_606351(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606353 = header.getOrDefault("X-Amz-Target")
-  valid_606353 = validateParameter(valid_606353, JString, required = true, default = newJString(
+  var valid_613422 = header.getOrDefault("X-Amz-Target")
+  valid_613422 = validateParameter(valid_613422, JString, required = true, default = newJString(
       "CertificateManager.ResendValidationEmail"))
-  if valid_606353 != nil:
-    section.add "X-Amz-Target", valid_606353
-  var valid_606354 = header.getOrDefault("X-Amz-Signature")
-  valid_606354 = validateParameter(valid_606354, JString, required = false,
+  if valid_613422 != nil:
+    section.add "X-Amz-Target", valid_613422
+  var valid_613423 = header.getOrDefault("X-Amz-Signature")
+  valid_613423 = validateParameter(valid_613423, JString, required = false,
                                  default = nil)
-  if valid_606354 != nil:
-    section.add "X-Amz-Signature", valid_606354
-  var valid_606355 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606355 = validateParameter(valid_606355, JString, required = false,
+  if valid_613423 != nil:
+    section.add "X-Amz-Signature", valid_613423
+  var valid_613424 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613424 = validateParameter(valid_613424, JString, required = false,
                                  default = nil)
-  if valid_606355 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606355
-  var valid_606356 = header.getOrDefault("X-Amz-Date")
-  valid_606356 = validateParameter(valid_606356, JString, required = false,
+  if valid_613424 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613424
+  var valid_613425 = header.getOrDefault("X-Amz-Date")
+  valid_613425 = validateParameter(valid_613425, JString, required = false,
                                  default = nil)
-  if valid_606356 != nil:
-    section.add "X-Amz-Date", valid_606356
-  var valid_606357 = header.getOrDefault("X-Amz-Credential")
-  valid_606357 = validateParameter(valid_606357, JString, required = false,
+  if valid_613425 != nil:
+    section.add "X-Amz-Date", valid_613425
+  var valid_613426 = header.getOrDefault("X-Amz-Credential")
+  valid_613426 = validateParameter(valid_613426, JString, required = false,
                                  default = nil)
-  if valid_606357 != nil:
-    section.add "X-Amz-Credential", valid_606357
-  var valid_606358 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606358 = validateParameter(valid_606358, JString, required = false,
+  if valid_613426 != nil:
+    section.add "X-Amz-Credential", valid_613426
+  var valid_613427 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613427 = validateParameter(valid_613427, JString, required = false,
                                  default = nil)
-  if valid_606358 != nil:
-    section.add "X-Amz-Security-Token", valid_606358
-  var valid_606359 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606359 = validateParameter(valid_606359, JString, required = false,
+  if valid_613427 != nil:
+    section.add "X-Amz-Security-Token", valid_613427
+  var valid_613428 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613428 = validateParameter(valid_613428, JString, required = false,
                                  default = nil)
-  if valid_606359 != nil:
-    section.add "X-Amz-Algorithm", valid_606359
-  var valid_606360 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606360 = validateParameter(valid_606360, JString, required = false,
+  if valid_613428 != nil:
+    section.add "X-Amz-Algorithm", valid_613428
+  var valid_613429 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613429 = validateParameter(valid_613429, JString, required = false,
                                  default = nil)
-  if valid_606360 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606360
+  if valid_613429 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613429
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1490,37 +1490,37 @@ proc validate_ResendValidationEmail_606351(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606362: Call_ResendValidationEmail_606350; path: JsonNode;
+proc call*(call_613431: Call_ResendValidationEmail_613419; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Resends the email that requests domain ownership validation. The domain owner or an authorized representative must approve the ACM certificate before it can be issued. The certificate can be approved by clicking a link in the mail to navigate to the Amazon certificate approval website and then clicking <b>I Approve</b>. However, the validation email can be blocked by spam filters. Therefore, if you do not receive the original mail, you can request that the mail be resent within 72 hours of requesting the ACM certificate. If more than 72 hours have elapsed since your original request or since your last attempt to resend validation mail, you must request a new certificate. For more information about setting up your contact email addresses, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/setup-email.html">Configure Email for your Domain</a>. 
   ## 
-  let valid = call_606362.validator(path, query, header, formData, body)
-  let scheme = call_606362.pickScheme
+  let valid = call_613431.validator(path, query, header, formData, body)
+  let scheme = call_613431.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606362.url(scheme.get, call_606362.host, call_606362.base,
-                         call_606362.route, valid.getOrDefault("path"),
+  let url = call_613431.url(scheme.get, call_613431.host, call_613431.base,
+                         call_613431.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606362, url, valid)
+  result = atozHook(call_613431, url, valid)
 
-proc call*(call_606363: Call_ResendValidationEmail_606350; body: JsonNode): Recallable =
+proc call*(call_613432: Call_ResendValidationEmail_613419; body: JsonNode): Recallable =
   ## resendValidationEmail
   ## Resends the email that requests domain ownership validation. The domain owner or an authorized representative must approve the ACM certificate before it can be issued. The certificate can be approved by clicking a link in the mail to navigate to the Amazon certificate approval website and then clicking <b>I Approve</b>. However, the validation email can be blocked by spam filters. Therefore, if you do not receive the original mail, you can request that the mail be resent within 72 hours of requesting the ACM certificate. If more than 72 hours have elapsed since your original request or since your last attempt to resend validation mail, you must request a new certificate. For more information about setting up your contact email addresses, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/setup-email.html">Configure Email for your Domain</a>. 
   ##   body: JObject (required)
-  var body_606364 = newJObject()
+  var body_613433 = newJObject()
   if body != nil:
-    body_606364 = body
-  result = call_606363.call(nil, nil, nil, nil, body_606364)
+    body_613433 = body
+  result = call_613432.call(nil, nil, nil, nil, body_613433)
 
-var resendValidationEmail* = Call_ResendValidationEmail_606350(
+var resendValidationEmail* = Call_ResendValidationEmail_613419(
     name: "resendValidationEmail", meth: HttpMethod.HttpPost,
     host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.ResendValidationEmail",
-    validator: validate_ResendValidationEmail_606351, base: "/",
-    url: url_ResendValidationEmail_606352, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ResendValidationEmail_613420, base: "/",
+    url: url_ResendValidationEmail_613421, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateCertificateOptions_606365 = ref object of OpenApiRestCall_605589
-proc url_UpdateCertificateOptions_606367(protocol: Scheme; host: string;
+  Call_UpdateCertificateOptions_613434 = ref object of OpenApiRestCall_612658
+proc url_UpdateCertificateOptions_613436(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1533,7 +1533,7 @@ proc url_UpdateCertificateOptions_606367(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateCertificateOptions_606366(path: JsonNode; query: JsonNode;
+proc validate_UpdateCertificateOptions_613435(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates a certificate. Currently, you can use this function to specify whether to opt in to or out of recording your certificate in a certificate transparency log. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-bestpractices.html#best-practices-transparency"> Opting Out of Certificate Transparency Logging</a>. 
   ## 
@@ -1553,46 +1553,46 @@ proc validate_UpdateCertificateOptions_606366(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606368 = header.getOrDefault("X-Amz-Target")
-  valid_606368 = validateParameter(valid_606368, JString, required = true, default = newJString(
+  var valid_613437 = header.getOrDefault("X-Amz-Target")
+  valid_613437 = validateParameter(valid_613437, JString, required = true, default = newJString(
       "CertificateManager.UpdateCertificateOptions"))
-  if valid_606368 != nil:
-    section.add "X-Amz-Target", valid_606368
-  var valid_606369 = header.getOrDefault("X-Amz-Signature")
-  valid_606369 = validateParameter(valid_606369, JString, required = false,
+  if valid_613437 != nil:
+    section.add "X-Amz-Target", valid_613437
+  var valid_613438 = header.getOrDefault("X-Amz-Signature")
+  valid_613438 = validateParameter(valid_613438, JString, required = false,
                                  default = nil)
-  if valid_606369 != nil:
-    section.add "X-Amz-Signature", valid_606369
-  var valid_606370 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606370 = validateParameter(valid_606370, JString, required = false,
+  if valid_613438 != nil:
+    section.add "X-Amz-Signature", valid_613438
+  var valid_613439 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613439 = validateParameter(valid_613439, JString, required = false,
                                  default = nil)
-  if valid_606370 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606370
-  var valid_606371 = header.getOrDefault("X-Amz-Date")
-  valid_606371 = validateParameter(valid_606371, JString, required = false,
+  if valid_613439 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613439
+  var valid_613440 = header.getOrDefault("X-Amz-Date")
+  valid_613440 = validateParameter(valid_613440, JString, required = false,
                                  default = nil)
-  if valid_606371 != nil:
-    section.add "X-Amz-Date", valid_606371
-  var valid_606372 = header.getOrDefault("X-Amz-Credential")
-  valid_606372 = validateParameter(valid_606372, JString, required = false,
+  if valid_613440 != nil:
+    section.add "X-Amz-Date", valid_613440
+  var valid_613441 = header.getOrDefault("X-Amz-Credential")
+  valid_613441 = validateParameter(valid_613441, JString, required = false,
                                  default = nil)
-  if valid_606372 != nil:
-    section.add "X-Amz-Credential", valid_606372
-  var valid_606373 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606373 = validateParameter(valid_606373, JString, required = false,
+  if valid_613441 != nil:
+    section.add "X-Amz-Credential", valid_613441
+  var valid_613442 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613442 = validateParameter(valid_613442, JString, required = false,
                                  default = nil)
-  if valid_606373 != nil:
-    section.add "X-Amz-Security-Token", valid_606373
-  var valid_606374 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606374 = validateParameter(valid_606374, JString, required = false,
+  if valid_613442 != nil:
+    section.add "X-Amz-Security-Token", valid_613442
+  var valid_613443 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613443 = validateParameter(valid_613443, JString, required = false,
                                  default = nil)
-  if valid_606374 != nil:
-    section.add "X-Amz-Algorithm", valid_606374
-  var valid_606375 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606375 = validateParameter(valid_606375, JString, required = false,
+  if valid_613443 != nil:
+    section.add "X-Amz-Algorithm", valid_613443
+  var valid_613444 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613444 = validateParameter(valid_613444, JString, required = false,
                                  default = nil)
-  if valid_606375 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606375
+  if valid_613444 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613444
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1603,34 +1603,34 @@ proc validate_UpdateCertificateOptions_606366(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606377: Call_UpdateCertificateOptions_606365; path: JsonNode;
+proc call*(call_613446: Call_UpdateCertificateOptions_613434; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates a certificate. Currently, you can use this function to specify whether to opt in to or out of recording your certificate in a certificate transparency log. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-bestpractices.html#best-practices-transparency"> Opting Out of Certificate Transparency Logging</a>. 
   ## 
-  let valid = call_606377.validator(path, query, header, formData, body)
-  let scheme = call_606377.pickScheme
+  let valid = call_613446.validator(path, query, header, formData, body)
+  let scheme = call_613446.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606377.url(scheme.get, call_606377.host, call_606377.base,
-                         call_606377.route, valid.getOrDefault("path"),
+  let url = call_613446.url(scheme.get, call_613446.host, call_613446.base,
+                         call_613446.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606377, url, valid)
+  result = atozHook(call_613446, url, valid)
 
-proc call*(call_606378: Call_UpdateCertificateOptions_606365; body: JsonNode): Recallable =
+proc call*(call_613447: Call_UpdateCertificateOptions_613434; body: JsonNode): Recallable =
   ## updateCertificateOptions
   ## Updates a certificate. Currently, you can use this function to specify whether to opt in to or out of recording your certificate in a certificate transparency log. For more information, see <a href="https://docs.aws.amazon.com/acm/latest/userguide/acm-bestpractices.html#best-practices-transparency"> Opting Out of Certificate Transparency Logging</a>. 
   ##   body: JObject (required)
-  var body_606379 = newJObject()
+  var body_613448 = newJObject()
   if body != nil:
-    body_606379 = body
-  result = call_606378.call(nil, nil, nil, nil, body_606379)
+    body_613448 = body
+  result = call_613447.call(nil, nil, nil, nil, body_613448)
 
-var updateCertificateOptions* = Call_UpdateCertificateOptions_606365(
+var updateCertificateOptions* = Call_UpdateCertificateOptions_613434(
     name: "updateCertificateOptions", meth: HttpMethod.HttpPost,
     host: "acm.amazonaws.com",
     route: "/#X-Amz-Target=CertificateManager.UpdateCertificateOptions",
-    validator: validate_UpdateCertificateOptions_606366, base: "/",
-    url: url_UpdateCertificateOptions_606367, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateCertificateOptions_613435, base: "/",
+    url: url_UpdateCertificateOptions_613436, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605589 = ref object of OpenApiRestCall
+  OpenApiRestCall_612658 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612658](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612658): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -144,8 +144,8 @@ const
   awsServiceName = "cloudtrail"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AddTags_605927 = ref object of OpenApiRestCall_605589
-proc url_AddTags_605929(protocol: Scheme; host: string; base: string; route: string;
+  Call_AddTags_612996 = ref object of OpenApiRestCall_612658
+proc url_AddTags_612998(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -157,7 +157,7 @@ proc url_AddTags_605929(protocol: Scheme; host: string; base: string; route: str
   else:
     result.path = base & route
 
-proc validate_AddTags_605928(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_AddTags_612997(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds one or more tags to a trail, up to a limit of 50. Overwrites an existing tag's value when a new value is specified for an existing tag key. Tag key names must be unique for a trail; you cannot have two keys with the same name but different values. If you specify a key without a value, the tag will be created with the specified key and a value of null. You can tag a trail that applies to all AWS Regions only from the Region in which the trail was created (also known as its home region).
   ## 
@@ -177,46 +177,46 @@ proc validate_AddTags_605928(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606054 = header.getOrDefault("X-Amz-Target")
-  valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
+  var valid_613123 = header.getOrDefault("X-Amz-Target")
+  valid_613123 = validateParameter(valid_613123, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.AddTags"))
-  if valid_606054 != nil:
-    section.add "X-Amz-Target", valid_606054
-  var valid_606055 = header.getOrDefault("X-Amz-Signature")
-  valid_606055 = validateParameter(valid_606055, JString, required = false,
+  if valid_613123 != nil:
+    section.add "X-Amz-Target", valid_613123
+  var valid_613124 = header.getOrDefault("X-Amz-Signature")
+  valid_613124 = validateParameter(valid_613124, JString, required = false,
                                  default = nil)
-  if valid_606055 != nil:
-    section.add "X-Amz-Signature", valid_606055
-  var valid_606056 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606056 = validateParameter(valid_606056, JString, required = false,
+  if valid_613124 != nil:
+    section.add "X-Amz-Signature", valid_613124
+  var valid_613125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613125 = validateParameter(valid_613125, JString, required = false,
                                  default = nil)
-  if valid_606056 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606056
-  var valid_606057 = header.getOrDefault("X-Amz-Date")
-  valid_606057 = validateParameter(valid_606057, JString, required = false,
+  if valid_613125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613125
+  var valid_613126 = header.getOrDefault("X-Amz-Date")
+  valid_613126 = validateParameter(valid_613126, JString, required = false,
                                  default = nil)
-  if valid_606057 != nil:
-    section.add "X-Amz-Date", valid_606057
-  var valid_606058 = header.getOrDefault("X-Amz-Credential")
-  valid_606058 = validateParameter(valid_606058, JString, required = false,
+  if valid_613126 != nil:
+    section.add "X-Amz-Date", valid_613126
+  var valid_613127 = header.getOrDefault("X-Amz-Credential")
+  valid_613127 = validateParameter(valid_613127, JString, required = false,
                                  default = nil)
-  if valid_606058 != nil:
-    section.add "X-Amz-Credential", valid_606058
-  var valid_606059 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606059 = validateParameter(valid_606059, JString, required = false,
+  if valid_613127 != nil:
+    section.add "X-Amz-Credential", valid_613127
+  var valid_613128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613128 = validateParameter(valid_613128, JString, required = false,
                                  default = nil)
-  if valid_606059 != nil:
-    section.add "X-Amz-Security-Token", valid_606059
-  var valid_606060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606060 = validateParameter(valid_606060, JString, required = false,
+  if valid_613128 != nil:
+    section.add "X-Amz-Security-Token", valid_613128
+  var valid_613129 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613129 = validateParameter(valid_613129, JString, required = false,
                                  default = nil)
-  if valid_606060 != nil:
-    section.add "X-Amz-Algorithm", valid_606060
-  var valid_606061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606061 = validateParameter(valid_606061, JString, required = false,
+  if valid_613129 != nil:
+    section.add "X-Amz-Algorithm", valid_613129
+  var valid_613130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613130 = validateParameter(valid_613130, JString, required = false,
                                  default = nil)
-  if valid_606061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606061
+  if valid_613130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -227,36 +227,36 @@ proc validate_AddTags_605928(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606085: Call_AddTags_605927; path: JsonNode; query: JsonNode;
+proc call*(call_613154: Call_AddTags_612996; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds one or more tags to a trail, up to a limit of 50. Overwrites an existing tag's value when a new value is specified for an existing tag key. Tag key names must be unique for a trail; you cannot have two keys with the same name but different values. If you specify a key without a value, the tag will be created with the specified key and a value of null. You can tag a trail that applies to all AWS Regions only from the Region in which the trail was created (also known as its home region).
   ## 
-  let valid = call_606085.validator(path, query, header, formData, body)
-  let scheme = call_606085.pickScheme
+  let valid = call_613154.validator(path, query, header, formData, body)
+  let scheme = call_613154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606085.url(scheme.get, call_606085.host, call_606085.base,
-                         call_606085.route, valid.getOrDefault("path"),
+  let url = call_613154.url(scheme.get, call_613154.host, call_613154.base,
+                         call_613154.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606085, url, valid)
+  result = atozHook(call_613154, url, valid)
 
-proc call*(call_606156: Call_AddTags_605927; body: JsonNode): Recallable =
+proc call*(call_613225: Call_AddTags_612996; body: JsonNode): Recallable =
   ## addTags
   ## Adds one or more tags to a trail, up to a limit of 50. Overwrites an existing tag's value when a new value is specified for an existing tag key. Tag key names must be unique for a trail; you cannot have two keys with the same name but different values. If you specify a key without a value, the tag will be created with the specified key and a value of null. You can tag a trail that applies to all AWS Regions only from the Region in which the trail was created (also known as its home region).
   ##   body: JObject (required)
-  var body_606157 = newJObject()
+  var body_613226 = newJObject()
   if body != nil:
-    body_606157 = body
-  result = call_606156.call(nil, nil, nil, nil, body_606157)
+    body_613226 = body
+  result = call_613225.call(nil, nil, nil, nil, body_613226)
 
-var addTags* = Call_AddTags_605927(name: "addTags", meth: HttpMethod.HttpPost,
+var addTags* = Call_AddTags_612996(name: "addTags", meth: HttpMethod.HttpPost,
                                 host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.AddTags",
-                                validator: validate_AddTags_605928, base: "/",
-                                url: url_AddTags_605929,
+                                validator: validate_AddTags_612997, base: "/",
+                                url: url_AddTags_612998,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateTrail_606196 = ref object of OpenApiRestCall_605589
-proc url_CreateTrail_606198(protocol: Scheme; host: string; base: string;
+  Call_CreateTrail_613265 = ref object of OpenApiRestCall_612658
+proc url_CreateTrail_613267(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -268,7 +268,7 @@ proc url_CreateTrail_606198(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateTrail_606197(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateTrail_613266(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Creates a trail that specifies the settings for delivery of log data to an Amazon S3 bucket. 
   ## 
@@ -288,46 +288,46 @@ proc validate_CreateTrail_606197(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606199 = header.getOrDefault("X-Amz-Target")
-  valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
+  var valid_613268 = header.getOrDefault("X-Amz-Target")
+  valid_613268 = validateParameter(valid_613268, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.CreateTrail"))
-  if valid_606199 != nil:
-    section.add "X-Amz-Target", valid_606199
-  var valid_606200 = header.getOrDefault("X-Amz-Signature")
-  valid_606200 = validateParameter(valid_606200, JString, required = false,
+  if valid_613268 != nil:
+    section.add "X-Amz-Target", valid_613268
+  var valid_613269 = header.getOrDefault("X-Amz-Signature")
+  valid_613269 = validateParameter(valid_613269, JString, required = false,
                                  default = nil)
-  if valid_606200 != nil:
-    section.add "X-Amz-Signature", valid_606200
-  var valid_606201 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606201 = validateParameter(valid_606201, JString, required = false,
+  if valid_613269 != nil:
+    section.add "X-Amz-Signature", valid_613269
+  var valid_613270 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613270 = validateParameter(valid_613270, JString, required = false,
                                  default = nil)
-  if valid_606201 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606201
-  var valid_606202 = header.getOrDefault("X-Amz-Date")
-  valid_606202 = validateParameter(valid_606202, JString, required = false,
+  if valid_613270 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613270
+  var valid_613271 = header.getOrDefault("X-Amz-Date")
+  valid_613271 = validateParameter(valid_613271, JString, required = false,
                                  default = nil)
-  if valid_606202 != nil:
-    section.add "X-Amz-Date", valid_606202
-  var valid_606203 = header.getOrDefault("X-Amz-Credential")
-  valid_606203 = validateParameter(valid_606203, JString, required = false,
+  if valid_613271 != nil:
+    section.add "X-Amz-Date", valid_613271
+  var valid_613272 = header.getOrDefault("X-Amz-Credential")
+  valid_613272 = validateParameter(valid_613272, JString, required = false,
                                  default = nil)
-  if valid_606203 != nil:
-    section.add "X-Amz-Credential", valid_606203
-  var valid_606204 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606204 = validateParameter(valid_606204, JString, required = false,
+  if valid_613272 != nil:
+    section.add "X-Amz-Credential", valid_613272
+  var valid_613273 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613273 = validateParameter(valid_613273, JString, required = false,
                                  default = nil)
-  if valid_606204 != nil:
-    section.add "X-Amz-Security-Token", valid_606204
-  var valid_606205 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606205 = validateParameter(valid_606205, JString, required = false,
+  if valid_613273 != nil:
+    section.add "X-Amz-Security-Token", valid_613273
+  var valid_613274 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613274 = validateParameter(valid_613274, JString, required = false,
                                  default = nil)
-  if valid_606205 != nil:
-    section.add "X-Amz-Algorithm", valid_606205
-  var valid_606206 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606206 = validateParameter(valid_606206, JString, required = false,
+  if valid_613274 != nil:
+    section.add "X-Amz-Algorithm", valid_613274
+  var valid_613275 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613275 = validateParameter(valid_613275, JString, required = false,
                                  default = nil)
-  if valid_606206 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606206
+  if valid_613275 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613275
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -338,37 +338,37 @@ proc validate_CreateTrail_606197(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606208: Call_CreateTrail_606196; path: JsonNode; query: JsonNode;
+proc call*(call_613277: Call_CreateTrail_613265; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Creates a trail that specifies the settings for delivery of log data to an Amazon S3 bucket. 
   ## 
-  let valid = call_606208.validator(path, query, header, formData, body)
-  let scheme = call_606208.pickScheme
+  let valid = call_613277.validator(path, query, header, formData, body)
+  let scheme = call_613277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606208.url(scheme.get, call_606208.host, call_606208.base,
-                         call_606208.route, valid.getOrDefault("path"),
+  let url = call_613277.url(scheme.get, call_613277.host, call_613277.base,
+                         call_613277.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606208, url, valid)
+  result = atozHook(call_613277, url, valid)
 
-proc call*(call_606209: Call_CreateTrail_606196; body: JsonNode): Recallable =
+proc call*(call_613278: Call_CreateTrail_613265; body: JsonNode): Recallable =
   ## createTrail
   ## Creates a trail that specifies the settings for delivery of log data to an Amazon S3 bucket. 
   ##   body: JObject (required)
-  var body_606210 = newJObject()
+  var body_613279 = newJObject()
   if body != nil:
-    body_606210 = body
-  result = call_606209.call(nil, nil, nil, nil, body_606210)
+    body_613279 = body
+  result = call_613278.call(nil, nil, nil, nil, body_613279)
 
-var createTrail* = Call_CreateTrail_606196(name: "createTrail",
+var createTrail* = Call_CreateTrail_613265(name: "createTrail",
                                         meth: HttpMethod.HttpPost,
                                         host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.CreateTrail",
-                                        validator: validate_CreateTrail_606197,
-                                        base: "/", url: url_CreateTrail_606198,
+                                        validator: validate_CreateTrail_613266,
+                                        base: "/", url: url_CreateTrail_613267,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTrail_606211 = ref object of OpenApiRestCall_605589
-proc url_DeleteTrail_606213(protocol: Scheme; host: string; base: string;
+  Call_DeleteTrail_613280 = ref object of OpenApiRestCall_612658
+proc url_DeleteTrail_613282(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -380,7 +380,7 @@ proc url_DeleteTrail_606213(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteTrail_606212(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteTrail_613281(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes a trail. This operation must be called from the region in which the trail was created. <code>DeleteTrail</code> cannot be called on the shadow trails (replicated trails in other regions) of a trail that is enabled in all regions.
   ## 
@@ -400,46 +400,46 @@ proc validate_DeleteTrail_606212(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606214 = header.getOrDefault("X-Amz-Target")
-  valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
+  var valid_613283 = header.getOrDefault("X-Amz-Target")
+  valid_613283 = validateParameter(valid_613283, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.DeleteTrail"))
-  if valid_606214 != nil:
-    section.add "X-Amz-Target", valid_606214
-  var valid_606215 = header.getOrDefault("X-Amz-Signature")
-  valid_606215 = validateParameter(valid_606215, JString, required = false,
+  if valid_613283 != nil:
+    section.add "X-Amz-Target", valid_613283
+  var valid_613284 = header.getOrDefault("X-Amz-Signature")
+  valid_613284 = validateParameter(valid_613284, JString, required = false,
                                  default = nil)
-  if valid_606215 != nil:
-    section.add "X-Amz-Signature", valid_606215
-  var valid_606216 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606216 = validateParameter(valid_606216, JString, required = false,
+  if valid_613284 != nil:
+    section.add "X-Amz-Signature", valid_613284
+  var valid_613285 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613285 = validateParameter(valid_613285, JString, required = false,
                                  default = nil)
-  if valid_606216 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606216
-  var valid_606217 = header.getOrDefault("X-Amz-Date")
-  valid_606217 = validateParameter(valid_606217, JString, required = false,
+  if valid_613285 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613285
+  var valid_613286 = header.getOrDefault("X-Amz-Date")
+  valid_613286 = validateParameter(valid_613286, JString, required = false,
                                  default = nil)
-  if valid_606217 != nil:
-    section.add "X-Amz-Date", valid_606217
-  var valid_606218 = header.getOrDefault("X-Amz-Credential")
-  valid_606218 = validateParameter(valid_606218, JString, required = false,
+  if valid_613286 != nil:
+    section.add "X-Amz-Date", valid_613286
+  var valid_613287 = header.getOrDefault("X-Amz-Credential")
+  valid_613287 = validateParameter(valid_613287, JString, required = false,
                                  default = nil)
-  if valid_606218 != nil:
-    section.add "X-Amz-Credential", valid_606218
-  var valid_606219 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606219 = validateParameter(valid_606219, JString, required = false,
+  if valid_613287 != nil:
+    section.add "X-Amz-Credential", valid_613287
+  var valid_613288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613288 = validateParameter(valid_613288, JString, required = false,
                                  default = nil)
-  if valid_606219 != nil:
-    section.add "X-Amz-Security-Token", valid_606219
-  var valid_606220 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606220 = validateParameter(valid_606220, JString, required = false,
+  if valid_613288 != nil:
+    section.add "X-Amz-Security-Token", valid_613288
+  var valid_613289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613289 = validateParameter(valid_613289, JString, required = false,
                                  default = nil)
-  if valid_606220 != nil:
-    section.add "X-Amz-Algorithm", valid_606220
-  var valid_606221 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606221 = validateParameter(valid_606221, JString, required = false,
+  if valid_613289 != nil:
+    section.add "X-Amz-Algorithm", valid_613289
+  var valid_613290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613290 = validateParameter(valid_613290, JString, required = false,
                                  default = nil)
-  if valid_606221 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606221
+  if valid_613290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613290
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -450,37 +450,37 @@ proc validate_DeleteTrail_606212(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606223: Call_DeleteTrail_606211; path: JsonNode; query: JsonNode;
+proc call*(call_613292: Call_DeleteTrail_613280; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a trail. This operation must be called from the region in which the trail was created. <code>DeleteTrail</code> cannot be called on the shadow trails (replicated trails in other regions) of a trail that is enabled in all regions.
   ## 
-  let valid = call_606223.validator(path, query, header, formData, body)
-  let scheme = call_606223.pickScheme
+  let valid = call_613292.validator(path, query, header, formData, body)
+  let scheme = call_613292.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606223.url(scheme.get, call_606223.host, call_606223.base,
-                         call_606223.route, valid.getOrDefault("path"),
+  let url = call_613292.url(scheme.get, call_613292.host, call_613292.base,
+                         call_613292.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606223, url, valid)
+  result = atozHook(call_613292, url, valid)
 
-proc call*(call_606224: Call_DeleteTrail_606211; body: JsonNode): Recallable =
+proc call*(call_613293: Call_DeleteTrail_613280; body: JsonNode): Recallable =
   ## deleteTrail
   ## Deletes a trail. This operation must be called from the region in which the trail was created. <code>DeleteTrail</code> cannot be called on the shadow trails (replicated trails in other regions) of a trail that is enabled in all regions.
   ##   body: JObject (required)
-  var body_606225 = newJObject()
+  var body_613294 = newJObject()
   if body != nil:
-    body_606225 = body
-  result = call_606224.call(nil, nil, nil, nil, body_606225)
+    body_613294 = body
+  result = call_613293.call(nil, nil, nil, nil, body_613294)
 
-var deleteTrail* = Call_DeleteTrail_606211(name: "deleteTrail",
+var deleteTrail* = Call_DeleteTrail_613280(name: "deleteTrail",
                                         meth: HttpMethod.HttpPost,
                                         host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.DeleteTrail",
-                                        validator: validate_DeleteTrail_606212,
-                                        base: "/", url: url_DeleteTrail_606213,
+                                        validator: validate_DeleteTrail_613281,
+                                        base: "/", url: url_DeleteTrail_613282,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTrails_606226 = ref object of OpenApiRestCall_605589
-proc url_DescribeTrails_606228(protocol: Scheme; host: string; base: string;
+  Call_DescribeTrails_613295 = ref object of OpenApiRestCall_612658
+proc url_DescribeTrails_613297(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -492,7 +492,7 @@ proc url_DescribeTrails_606228(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeTrails_606227(path: JsonNode; query: JsonNode;
+proc validate_DescribeTrails_613296(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Retrieves settings for one or more trails associated with the current region for your account.
@@ -513,46 +513,46 @@ proc validate_DescribeTrails_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606229 = header.getOrDefault("X-Amz-Target")
-  valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
+  var valid_613298 = header.getOrDefault("X-Amz-Target")
+  valid_613298 = validateParameter(valid_613298, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.DescribeTrails"))
-  if valid_606229 != nil:
-    section.add "X-Amz-Target", valid_606229
-  var valid_606230 = header.getOrDefault("X-Amz-Signature")
-  valid_606230 = validateParameter(valid_606230, JString, required = false,
+  if valid_613298 != nil:
+    section.add "X-Amz-Target", valid_613298
+  var valid_613299 = header.getOrDefault("X-Amz-Signature")
+  valid_613299 = validateParameter(valid_613299, JString, required = false,
                                  default = nil)
-  if valid_606230 != nil:
-    section.add "X-Amz-Signature", valid_606230
-  var valid_606231 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606231 = validateParameter(valid_606231, JString, required = false,
+  if valid_613299 != nil:
+    section.add "X-Amz-Signature", valid_613299
+  var valid_613300 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613300 = validateParameter(valid_613300, JString, required = false,
                                  default = nil)
-  if valid_606231 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606231
-  var valid_606232 = header.getOrDefault("X-Amz-Date")
-  valid_606232 = validateParameter(valid_606232, JString, required = false,
+  if valid_613300 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613300
+  var valid_613301 = header.getOrDefault("X-Amz-Date")
+  valid_613301 = validateParameter(valid_613301, JString, required = false,
                                  default = nil)
-  if valid_606232 != nil:
-    section.add "X-Amz-Date", valid_606232
-  var valid_606233 = header.getOrDefault("X-Amz-Credential")
-  valid_606233 = validateParameter(valid_606233, JString, required = false,
+  if valid_613301 != nil:
+    section.add "X-Amz-Date", valid_613301
+  var valid_613302 = header.getOrDefault("X-Amz-Credential")
+  valid_613302 = validateParameter(valid_613302, JString, required = false,
                                  default = nil)
-  if valid_606233 != nil:
-    section.add "X-Amz-Credential", valid_606233
-  var valid_606234 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606234 = validateParameter(valid_606234, JString, required = false,
+  if valid_613302 != nil:
+    section.add "X-Amz-Credential", valid_613302
+  var valid_613303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613303 = validateParameter(valid_613303, JString, required = false,
                                  default = nil)
-  if valid_606234 != nil:
-    section.add "X-Amz-Security-Token", valid_606234
-  var valid_606235 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606235 = validateParameter(valid_606235, JString, required = false,
+  if valid_613303 != nil:
+    section.add "X-Amz-Security-Token", valid_613303
+  var valid_613304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613304 = validateParameter(valid_613304, JString, required = false,
                                  default = nil)
-  if valid_606235 != nil:
-    section.add "X-Amz-Algorithm", valid_606235
-  var valid_606236 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606236 = validateParameter(valid_606236, JString, required = false,
+  if valid_613304 != nil:
+    section.add "X-Amz-Algorithm", valid_613304
+  var valid_613305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613305 = validateParameter(valid_613305, JString, required = false,
                                  default = nil)
-  if valid_606236 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606236
+  if valid_613305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613305
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -563,35 +563,35 @@ proc validate_DescribeTrails_606227(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606238: Call_DescribeTrails_606226; path: JsonNode; query: JsonNode;
+proc call*(call_613307: Call_DescribeTrails_613295; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves settings for one or more trails associated with the current region for your account.
   ## 
-  let valid = call_606238.validator(path, query, header, formData, body)
-  let scheme = call_606238.pickScheme
+  let valid = call_613307.validator(path, query, header, formData, body)
+  let scheme = call_613307.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606238.url(scheme.get, call_606238.host, call_606238.base,
-                         call_606238.route, valid.getOrDefault("path"),
+  let url = call_613307.url(scheme.get, call_613307.host, call_613307.base,
+                         call_613307.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606238, url, valid)
+  result = atozHook(call_613307, url, valid)
 
-proc call*(call_606239: Call_DescribeTrails_606226; body: JsonNode): Recallable =
+proc call*(call_613308: Call_DescribeTrails_613295; body: JsonNode): Recallable =
   ## describeTrails
   ## Retrieves settings for one or more trails associated with the current region for your account.
   ##   body: JObject (required)
-  var body_606240 = newJObject()
+  var body_613309 = newJObject()
   if body != nil:
-    body_606240 = body
-  result = call_606239.call(nil, nil, nil, nil, body_606240)
+    body_613309 = body
+  result = call_613308.call(nil, nil, nil, nil, body_613309)
 
-var describeTrails* = Call_DescribeTrails_606226(name: "describeTrails",
+var describeTrails* = Call_DescribeTrails_613295(name: "describeTrails",
     meth: HttpMethod.HttpPost, host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.DescribeTrails",
-    validator: validate_DescribeTrails_606227, base: "/", url: url_DescribeTrails_606228,
+    validator: validate_DescribeTrails_613296, base: "/", url: url_DescribeTrails_613297,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetEventSelectors_606241 = ref object of OpenApiRestCall_605589
-proc url_GetEventSelectors_606243(protocol: Scheme; host: string; base: string;
+  Call_GetEventSelectors_613310 = ref object of OpenApiRestCall_612658
+proc url_GetEventSelectors_613312(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -603,7 +603,7 @@ proc url_GetEventSelectors_606243(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetEventSelectors_606242(path: JsonNode; query: JsonNode;
+proc validate_GetEventSelectors_613311(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Describes the settings for the event selectors that you configured for your trail. The information returned for your event selectors includes the following:</p> <ul> <li> <p>If your event selector includes read-only events, write-only events, or all events. This applies to both management events and data events.</p> </li> <li> <p>If your event selector includes management events.</p> </li> <li> <p>If your event selector includes data events, the Amazon S3 objects or AWS Lambda functions that you are logging for data events.</p> </li> </ul> <p>For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html">Logging Data and Management Events for Trails </a> in the <i>AWS CloudTrail User Guide</i>.</p>
@@ -624,45 +624,45 @@ proc validate_GetEventSelectors_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606244 = header.getOrDefault("X-Amz-Target")
-  valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetEventSelectors"))
-  if valid_606244 != nil:
-    section.add "X-Amz-Target", valid_606244
-  var valid_606245 = header.getOrDefault("X-Amz-Signature")
-  valid_606245 = validateParameter(valid_606245, JString, required = false,
+  var valid_613313 = header.getOrDefault("X-Amz-Target")
+  valid_613313 = validateParameter(valid_613313, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetEventSelectors"))
+  if valid_613313 != nil:
+    section.add "X-Amz-Target", valid_613313
+  var valid_613314 = header.getOrDefault("X-Amz-Signature")
+  valid_613314 = validateParameter(valid_613314, JString, required = false,
                                  default = nil)
-  if valid_606245 != nil:
-    section.add "X-Amz-Signature", valid_606245
-  var valid_606246 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606246 = validateParameter(valid_606246, JString, required = false,
+  if valid_613314 != nil:
+    section.add "X-Amz-Signature", valid_613314
+  var valid_613315 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613315 = validateParameter(valid_613315, JString, required = false,
                                  default = nil)
-  if valid_606246 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606246
-  var valid_606247 = header.getOrDefault("X-Amz-Date")
-  valid_606247 = validateParameter(valid_606247, JString, required = false,
+  if valid_613315 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613315
+  var valid_613316 = header.getOrDefault("X-Amz-Date")
+  valid_613316 = validateParameter(valid_613316, JString, required = false,
                                  default = nil)
-  if valid_606247 != nil:
-    section.add "X-Amz-Date", valid_606247
-  var valid_606248 = header.getOrDefault("X-Amz-Credential")
-  valid_606248 = validateParameter(valid_606248, JString, required = false,
+  if valid_613316 != nil:
+    section.add "X-Amz-Date", valid_613316
+  var valid_613317 = header.getOrDefault("X-Amz-Credential")
+  valid_613317 = validateParameter(valid_613317, JString, required = false,
                                  default = nil)
-  if valid_606248 != nil:
-    section.add "X-Amz-Credential", valid_606248
-  var valid_606249 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606249 = validateParameter(valid_606249, JString, required = false,
+  if valid_613317 != nil:
+    section.add "X-Amz-Credential", valid_613317
+  var valid_613318 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613318 = validateParameter(valid_613318, JString, required = false,
                                  default = nil)
-  if valid_606249 != nil:
-    section.add "X-Amz-Security-Token", valid_606249
-  var valid_606250 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606250 = validateParameter(valid_606250, JString, required = false,
+  if valid_613318 != nil:
+    section.add "X-Amz-Security-Token", valid_613318
+  var valid_613319 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613319 = validateParameter(valid_613319, JString, required = false,
                                  default = nil)
-  if valid_606250 != nil:
-    section.add "X-Amz-Algorithm", valid_606250
-  var valid_606251 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606251 = validateParameter(valid_606251, JString, required = false,
+  if valid_613319 != nil:
+    section.add "X-Amz-Algorithm", valid_613319
+  var valid_613320 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613320 = validateParameter(valid_613320, JString, required = false,
                                  default = nil)
-  if valid_606251 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606251
+  if valid_613320 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613320
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -673,35 +673,35 @@ proc validate_GetEventSelectors_606242(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606253: Call_GetEventSelectors_606241; path: JsonNode;
+proc call*(call_613322: Call_GetEventSelectors_613310; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the settings for the event selectors that you configured for your trail. The information returned for your event selectors includes the following:</p> <ul> <li> <p>If your event selector includes read-only events, write-only events, or all events. This applies to both management events and data events.</p> </li> <li> <p>If your event selector includes management events.</p> </li> <li> <p>If your event selector includes data events, the Amazon S3 objects or AWS Lambda functions that you are logging for data events.</p> </li> </ul> <p>For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html">Logging Data and Management Events for Trails </a> in the <i>AWS CloudTrail User Guide</i>.</p>
   ## 
-  let valid = call_606253.validator(path, query, header, formData, body)
-  let scheme = call_606253.pickScheme
+  let valid = call_613322.validator(path, query, header, formData, body)
+  let scheme = call_613322.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606253.url(scheme.get, call_606253.host, call_606253.base,
-                         call_606253.route, valid.getOrDefault("path"),
+  let url = call_613322.url(scheme.get, call_613322.host, call_613322.base,
+                         call_613322.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606253, url, valid)
+  result = atozHook(call_613322, url, valid)
 
-proc call*(call_606254: Call_GetEventSelectors_606241; body: JsonNode): Recallable =
+proc call*(call_613323: Call_GetEventSelectors_613310; body: JsonNode): Recallable =
   ## getEventSelectors
   ## <p>Describes the settings for the event selectors that you configured for your trail. The information returned for your event selectors includes the following:</p> <ul> <li> <p>If your event selector includes read-only events, write-only events, or all events. This applies to both management events and data events.</p> </li> <li> <p>If your event selector includes management events.</p> </li> <li> <p>If your event selector includes data events, the Amazon S3 objects or AWS Lambda functions that you are logging for data events.</p> </li> </ul> <p>For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html">Logging Data and Management Events for Trails </a> in the <i>AWS CloudTrail User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_606255 = newJObject()
+  var body_613324 = newJObject()
   if body != nil:
-    body_606255 = body
-  result = call_606254.call(nil, nil, nil, nil, body_606255)
+    body_613324 = body
+  result = call_613323.call(nil, nil, nil, nil, body_613324)
 
-var getEventSelectors* = Call_GetEventSelectors_606241(name: "getEventSelectors",
+var getEventSelectors* = Call_GetEventSelectors_613310(name: "getEventSelectors",
     meth: HttpMethod.HttpPost, host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetEventSelectors",
-    validator: validate_GetEventSelectors_606242, base: "/",
-    url: url_GetEventSelectors_606243, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetEventSelectors_613311, base: "/",
+    url: url_GetEventSelectors_613312, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetInsightSelectors_606256 = ref object of OpenApiRestCall_605589
-proc url_GetInsightSelectors_606258(protocol: Scheme; host: string; base: string;
+  Call_GetInsightSelectors_613325 = ref object of OpenApiRestCall_612658
+proc url_GetInsightSelectors_613327(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -713,7 +713,7 @@ proc url_GetInsightSelectors_606258(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_GetInsightSelectors_606257(path: JsonNode; query: JsonNode;
+proc validate_GetInsightSelectors_613326(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Describes the settings for the Insights event selectors that you configured for your trail. <code>GetInsightSelectors</code> shows if CloudTrail Insights event logging is enabled on the trail, and if it is, which insight types are enabled. If you run <code>GetInsightSelectors</code> on a trail that does not have Insights events enabled, the operation throws the exception <code>InsightNotEnabledException</code> </p> <p>For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Logging CloudTrail Insights Events for Trails </a> in the <i>AWS CloudTrail User Guide</i>.</p>
@@ -734,45 +734,45 @@ proc validate_GetInsightSelectors_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606259 = header.getOrDefault("X-Amz-Target")
-  valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetInsightSelectors"))
-  if valid_606259 != nil:
-    section.add "X-Amz-Target", valid_606259
-  var valid_606260 = header.getOrDefault("X-Amz-Signature")
-  valid_606260 = validateParameter(valid_606260, JString, required = false,
+  var valid_613328 = header.getOrDefault("X-Amz-Target")
+  valid_613328 = validateParameter(valid_613328, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetInsightSelectors"))
+  if valid_613328 != nil:
+    section.add "X-Amz-Target", valid_613328
+  var valid_613329 = header.getOrDefault("X-Amz-Signature")
+  valid_613329 = validateParameter(valid_613329, JString, required = false,
                                  default = nil)
-  if valid_606260 != nil:
-    section.add "X-Amz-Signature", valid_606260
-  var valid_606261 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606261 = validateParameter(valid_606261, JString, required = false,
+  if valid_613329 != nil:
+    section.add "X-Amz-Signature", valid_613329
+  var valid_613330 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613330 = validateParameter(valid_613330, JString, required = false,
                                  default = nil)
-  if valid_606261 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606261
-  var valid_606262 = header.getOrDefault("X-Amz-Date")
-  valid_606262 = validateParameter(valid_606262, JString, required = false,
+  if valid_613330 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613330
+  var valid_613331 = header.getOrDefault("X-Amz-Date")
+  valid_613331 = validateParameter(valid_613331, JString, required = false,
                                  default = nil)
-  if valid_606262 != nil:
-    section.add "X-Amz-Date", valid_606262
-  var valid_606263 = header.getOrDefault("X-Amz-Credential")
-  valid_606263 = validateParameter(valid_606263, JString, required = false,
+  if valid_613331 != nil:
+    section.add "X-Amz-Date", valid_613331
+  var valid_613332 = header.getOrDefault("X-Amz-Credential")
+  valid_613332 = validateParameter(valid_613332, JString, required = false,
                                  default = nil)
-  if valid_606263 != nil:
-    section.add "X-Amz-Credential", valid_606263
-  var valid_606264 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606264 = validateParameter(valid_606264, JString, required = false,
+  if valid_613332 != nil:
+    section.add "X-Amz-Credential", valid_613332
+  var valid_613333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613333 = validateParameter(valid_613333, JString, required = false,
                                  default = nil)
-  if valid_606264 != nil:
-    section.add "X-Amz-Security-Token", valid_606264
-  var valid_606265 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606265 = validateParameter(valid_606265, JString, required = false,
+  if valid_613333 != nil:
+    section.add "X-Amz-Security-Token", valid_613333
+  var valid_613334 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613334 = validateParameter(valid_613334, JString, required = false,
                                  default = nil)
-  if valid_606265 != nil:
-    section.add "X-Amz-Algorithm", valid_606265
-  var valid_606266 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606266 = validateParameter(valid_606266, JString, required = false,
+  if valid_613334 != nil:
+    section.add "X-Amz-Algorithm", valid_613334
+  var valid_613335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613335 = validateParameter(valid_613335, JString, required = false,
                                  default = nil)
-  if valid_606266 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606266
+  if valid_613335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613335
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -783,36 +783,36 @@ proc validate_GetInsightSelectors_606257(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606268: Call_GetInsightSelectors_606256; path: JsonNode;
+proc call*(call_613337: Call_GetInsightSelectors_613325; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the settings for the Insights event selectors that you configured for your trail. <code>GetInsightSelectors</code> shows if CloudTrail Insights event logging is enabled on the trail, and if it is, which insight types are enabled. If you run <code>GetInsightSelectors</code> on a trail that does not have Insights events enabled, the operation throws the exception <code>InsightNotEnabledException</code> </p> <p>For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Logging CloudTrail Insights Events for Trails </a> in the <i>AWS CloudTrail User Guide</i>.</p>
   ## 
-  let valid = call_606268.validator(path, query, header, formData, body)
-  let scheme = call_606268.pickScheme
+  let valid = call_613337.validator(path, query, header, formData, body)
+  let scheme = call_613337.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606268.url(scheme.get, call_606268.host, call_606268.base,
-                         call_606268.route, valid.getOrDefault("path"),
+  let url = call_613337.url(scheme.get, call_613337.host, call_613337.base,
+                         call_613337.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606268, url, valid)
+  result = atozHook(call_613337, url, valid)
 
-proc call*(call_606269: Call_GetInsightSelectors_606256; body: JsonNode): Recallable =
+proc call*(call_613338: Call_GetInsightSelectors_613325; body: JsonNode): Recallable =
   ## getInsightSelectors
   ## <p>Describes the settings for the Insights event selectors that you configured for your trail. <code>GetInsightSelectors</code> shows if CloudTrail Insights event logging is enabled on the trail, and if it is, which insight types are enabled. If you run <code>GetInsightSelectors</code> on a trail that does not have Insights events enabled, the operation throws the exception <code>InsightNotEnabledException</code> </p> <p>For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-insights-events-with-cloudtrail.html">Logging CloudTrail Insights Events for Trails </a> in the <i>AWS CloudTrail User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_606270 = newJObject()
+  var body_613339 = newJObject()
   if body != nil:
-    body_606270 = body
-  result = call_606269.call(nil, nil, nil, nil, body_606270)
+    body_613339 = body
+  result = call_613338.call(nil, nil, nil, nil, body_613339)
 
-var getInsightSelectors* = Call_GetInsightSelectors_606256(
+var getInsightSelectors* = Call_GetInsightSelectors_613325(
     name: "getInsightSelectors", meth: HttpMethod.HttpPost,
     host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetInsightSelectors",
-    validator: validate_GetInsightSelectors_606257, base: "/",
-    url: url_GetInsightSelectors_606258, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetInsightSelectors_613326, base: "/",
+    url: url_GetInsightSelectors_613327, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTrail_606271 = ref object of OpenApiRestCall_605589
-proc url_GetTrail_606273(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetTrail_613340 = ref object of OpenApiRestCall_612658
+proc url_GetTrail_613342(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -824,7 +824,7 @@ proc url_GetTrail_606273(protocol: Scheme; host: string; base: string; route: st
   else:
     result.path = base & route
 
-proc validate_GetTrail_606272(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetTrail_613341(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns settings information for a specified trail.
   ## 
@@ -844,46 +844,46 @@ proc validate_GetTrail_606272(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606274 = header.getOrDefault("X-Amz-Target")
-  valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
+  var valid_613343 = header.getOrDefault("X-Amz-Target")
+  valid_613343 = validateParameter(valid_613343, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetTrail"))
-  if valid_606274 != nil:
-    section.add "X-Amz-Target", valid_606274
-  var valid_606275 = header.getOrDefault("X-Amz-Signature")
-  valid_606275 = validateParameter(valid_606275, JString, required = false,
+  if valid_613343 != nil:
+    section.add "X-Amz-Target", valid_613343
+  var valid_613344 = header.getOrDefault("X-Amz-Signature")
+  valid_613344 = validateParameter(valid_613344, JString, required = false,
                                  default = nil)
-  if valid_606275 != nil:
-    section.add "X-Amz-Signature", valid_606275
-  var valid_606276 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606276 = validateParameter(valid_606276, JString, required = false,
+  if valid_613344 != nil:
+    section.add "X-Amz-Signature", valid_613344
+  var valid_613345 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613345 = validateParameter(valid_613345, JString, required = false,
                                  default = nil)
-  if valid_606276 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606276
-  var valid_606277 = header.getOrDefault("X-Amz-Date")
-  valid_606277 = validateParameter(valid_606277, JString, required = false,
+  if valid_613345 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613345
+  var valid_613346 = header.getOrDefault("X-Amz-Date")
+  valid_613346 = validateParameter(valid_613346, JString, required = false,
                                  default = nil)
-  if valid_606277 != nil:
-    section.add "X-Amz-Date", valid_606277
-  var valid_606278 = header.getOrDefault("X-Amz-Credential")
-  valid_606278 = validateParameter(valid_606278, JString, required = false,
+  if valid_613346 != nil:
+    section.add "X-Amz-Date", valid_613346
+  var valid_613347 = header.getOrDefault("X-Amz-Credential")
+  valid_613347 = validateParameter(valid_613347, JString, required = false,
                                  default = nil)
-  if valid_606278 != nil:
-    section.add "X-Amz-Credential", valid_606278
-  var valid_606279 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606279 = validateParameter(valid_606279, JString, required = false,
+  if valid_613347 != nil:
+    section.add "X-Amz-Credential", valid_613347
+  var valid_613348 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613348 = validateParameter(valid_613348, JString, required = false,
                                  default = nil)
-  if valid_606279 != nil:
-    section.add "X-Amz-Security-Token", valid_606279
-  var valid_606280 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606280 = validateParameter(valid_606280, JString, required = false,
+  if valid_613348 != nil:
+    section.add "X-Amz-Security-Token", valid_613348
+  var valid_613349 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613349 = validateParameter(valid_613349, JString, required = false,
                                  default = nil)
-  if valid_606280 != nil:
-    section.add "X-Amz-Algorithm", valid_606280
-  var valid_606281 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606281 = validateParameter(valid_606281, JString, required = false,
+  if valid_613349 != nil:
+    section.add "X-Amz-Algorithm", valid_613349
+  var valid_613350 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613350 = validateParameter(valid_613350, JString, required = false,
                                  default = nil)
-  if valid_606281 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606281
+  if valid_613350 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613350
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -894,36 +894,36 @@ proc validate_GetTrail_606272(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606283: Call_GetTrail_606271; path: JsonNode; query: JsonNode;
+proc call*(call_613352: Call_GetTrail_613340; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns settings information for a specified trail.
   ## 
-  let valid = call_606283.validator(path, query, header, formData, body)
-  let scheme = call_606283.pickScheme
+  let valid = call_613352.validator(path, query, header, formData, body)
+  let scheme = call_613352.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606283.url(scheme.get, call_606283.host, call_606283.base,
-                         call_606283.route, valid.getOrDefault("path"),
+  let url = call_613352.url(scheme.get, call_613352.host, call_613352.base,
+                         call_613352.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606283, url, valid)
+  result = atozHook(call_613352, url, valid)
 
-proc call*(call_606284: Call_GetTrail_606271; body: JsonNode): Recallable =
+proc call*(call_613353: Call_GetTrail_613340; body: JsonNode): Recallable =
   ## getTrail
   ## Returns settings information for a specified trail.
   ##   body: JObject (required)
-  var body_606285 = newJObject()
+  var body_613354 = newJObject()
   if body != nil:
-    body_606285 = body
-  result = call_606284.call(nil, nil, nil, nil, body_606285)
+    body_613354 = body
+  result = call_613353.call(nil, nil, nil, nil, body_613354)
 
-var getTrail* = Call_GetTrail_606271(name: "getTrail", meth: HttpMethod.HttpPost,
+var getTrail* = Call_GetTrail_613340(name: "getTrail", meth: HttpMethod.HttpPost,
                                   host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetTrail",
-                                  validator: validate_GetTrail_606272, base: "/",
-                                  url: url_GetTrail_606273,
+                                  validator: validate_GetTrail_613341, base: "/",
+                                  url: url_GetTrail_613342,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTrailStatus_606286 = ref object of OpenApiRestCall_605589
-proc url_GetTrailStatus_606288(protocol: Scheme; host: string; base: string;
+  Call_GetTrailStatus_613355 = ref object of OpenApiRestCall_612658
+proc url_GetTrailStatus_613357(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -935,7 +935,7 @@ proc url_GetTrailStatus_606288(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetTrailStatus_606287(path: JsonNode; query: JsonNode;
+proc validate_GetTrailStatus_613356(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns a JSON-formatted list of information about the specified trail. Fields include information on delivery errors, Amazon SNS and Amazon S3 errors, and start and stop logging times for each trail. This operation returns trail status from a single region. To return trail status from all regions, you must call the operation on each region.
@@ -956,46 +956,46 @@ proc validate_GetTrailStatus_606287(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606289 = header.getOrDefault("X-Amz-Target")
-  valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
+  var valid_613358 = header.getOrDefault("X-Amz-Target")
+  valid_613358 = validateParameter(valid_613358, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetTrailStatus"))
-  if valid_606289 != nil:
-    section.add "X-Amz-Target", valid_606289
-  var valid_606290 = header.getOrDefault("X-Amz-Signature")
-  valid_606290 = validateParameter(valid_606290, JString, required = false,
+  if valid_613358 != nil:
+    section.add "X-Amz-Target", valid_613358
+  var valid_613359 = header.getOrDefault("X-Amz-Signature")
+  valid_613359 = validateParameter(valid_613359, JString, required = false,
                                  default = nil)
-  if valid_606290 != nil:
-    section.add "X-Amz-Signature", valid_606290
-  var valid_606291 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606291 = validateParameter(valid_606291, JString, required = false,
+  if valid_613359 != nil:
+    section.add "X-Amz-Signature", valid_613359
+  var valid_613360 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613360 = validateParameter(valid_613360, JString, required = false,
                                  default = nil)
-  if valid_606291 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606291
-  var valid_606292 = header.getOrDefault("X-Amz-Date")
-  valid_606292 = validateParameter(valid_606292, JString, required = false,
+  if valid_613360 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613360
+  var valid_613361 = header.getOrDefault("X-Amz-Date")
+  valid_613361 = validateParameter(valid_613361, JString, required = false,
                                  default = nil)
-  if valid_606292 != nil:
-    section.add "X-Amz-Date", valid_606292
-  var valid_606293 = header.getOrDefault("X-Amz-Credential")
-  valid_606293 = validateParameter(valid_606293, JString, required = false,
+  if valid_613361 != nil:
+    section.add "X-Amz-Date", valid_613361
+  var valid_613362 = header.getOrDefault("X-Amz-Credential")
+  valid_613362 = validateParameter(valid_613362, JString, required = false,
                                  default = nil)
-  if valid_606293 != nil:
-    section.add "X-Amz-Credential", valid_606293
-  var valid_606294 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606294 = validateParameter(valid_606294, JString, required = false,
+  if valid_613362 != nil:
+    section.add "X-Amz-Credential", valid_613362
+  var valid_613363 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613363 = validateParameter(valid_613363, JString, required = false,
                                  default = nil)
-  if valid_606294 != nil:
-    section.add "X-Amz-Security-Token", valid_606294
-  var valid_606295 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606295 = validateParameter(valid_606295, JString, required = false,
+  if valid_613363 != nil:
+    section.add "X-Amz-Security-Token", valid_613363
+  var valid_613364 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613364 = validateParameter(valid_613364, JString, required = false,
                                  default = nil)
-  if valid_606295 != nil:
-    section.add "X-Amz-Algorithm", valid_606295
-  var valid_606296 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606296 = validateParameter(valid_606296, JString, required = false,
+  if valid_613364 != nil:
+    section.add "X-Amz-Algorithm", valid_613364
+  var valid_613365 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613365 = validateParameter(valid_613365, JString, required = false,
                                  default = nil)
-  if valid_606296 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606296
+  if valid_613365 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613365
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1006,35 +1006,35 @@ proc validate_GetTrailStatus_606287(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606298: Call_GetTrailStatus_606286; path: JsonNode; query: JsonNode;
+proc call*(call_613367: Call_GetTrailStatus_613355; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a JSON-formatted list of information about the specified trail. Fields include information on delivery errors, Amazon SNS and Amazon S3 errors, and start and stop logging times for each trail. This operation returns trail status from a single region. To return trail status from all regions, you must call the operation on each region.
   ## 
-  let valid = call_606298.validator(path, query, header, formData, body)
-  let scheme = call_606298.pickScheme
+  let valid = call_613367.validator(path, query, header, formData, body)
+  let scheme = call_613367.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606298.url(scheme.get, call_606298.host, call_606298.base,
-                         call_606298.route, valid.getOrDefault("path"),
+  let url = call_613367.url(scheme.get, call_613367.host, call_613367.base,
+                         call_613367.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606298, url, valid)
+  result = atozHook(call_613367, url, valid)
 
-proc call*(call_606299: Call_GetTrailStatus_606286; body: JsonNode): Recallable =
+proc call*(call_613368: Call_GetTrailStatus_613355; body: JsonNode): Recallable =
   ## getTrailStatus
   ## Returns a JSON-formatted list of information about the specified trail. Fields include information on delivery errors, Amazon SNS and Amazon S3 errors, and start and stop logging times for each trail. This operation returns trail status from a single region. To return trail status from all regions, you must call the operation on each region.
   ##   body: JObject (required)
-  var body_606300 = newJObject()
+  var body_613369 = newJObject()
   if body != nil:
-    body_606300 = body
-  result = call_606299.call(nil, nil, nil, nil, body_606300)
+    body_613369 = body
+  result = call_613368.call(nil, nil, nil, nil, body_613369)
 
-var getTrailStatus* = Call_GetTrailStatus_606286(name: "getTrailStatus",
+var getTrailStatus* = Call_GetTrailStatus_613355(name: "getTrailStatus",
     meth: HttpMethod.HttpPost, host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.GetTrailStatus",
-    validator: validate_GetTrailStatus_606287, base: "/", url: url_GetTrailStatus_606288,
+    validator: validate_GetTrailStatus_613356, base: "/", url: url_GetTrailStatus_613357,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListPublicKeys_606301 = ref object of OpenApiRestCall_605589
-proc url_ListPublicKeys_606303(protocol: Scheme; host: string; base: string;
+  Call_ListPublicKeys_613370 = ref object of OpenApiRestCall_612658
+proc url_ListPublicKeys_613372(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1046,7 +1046,7 @@ proc url_ListPublicKeys_606303(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListPublicKeys_606302(path: JsonNode; query: JsonNode;
+proc validate_ListPublicKeys_613371(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Returns all public keys whose private keys were used to sign the digest files within the specified time range. The public key is needed to validate digest files that were signed with its corresponding private key.</p> <note> <p>CloudTrail uses different private/public key pairs per region. Each digest file is signed with a private key unique to its region. Therefore, when you validate a digest file from a particular region, you must look in the same region for its corresponding public key.</p> </note>
@@ -1059,11 +1059,11 @@ proc validate_ListPublicKeys_606302(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606304 = query.getOrDefault("NextToken")
-  valid_606304 = validateParameter(valid_606304, JString, required = false,
+  var valid_613373 = query.getOrDefault("NextToken")
+  valid_613373 = validateParameter(valid_613373, JString, required = false,
                                  default = nil)
-  if valid_606304 != nil:
-    section.add "NextToken", valid_606304
+  if valid_613373 != nil:
+    section.add "NextToken", valid_613373
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -1075,46 +1075,46 @@ proc validate_ListPublicKeys_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606305 = header.getOrDefault("X-Amz-Target")
-  valid_606305 = validateParameter(valid_606305, JString, required = true, default = newJString(
+  var valid_613374 = header.getOrDefault("X-Amz-Target")
+  valid_613374 = validateParameter(valid_613374, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListPublicKeys"))
-  if valid_606305 != nil:
-    section.add "X-Amz-Target", valid_606305
-  var valid_606306 = header.getOrDefault("X-Amz-Signature")
-  valid_606306 = validateParameter(valid_606306, JString, required = false,
+  if valid_613374 != nil:
+    section.add "X-Amz-Target", valid_613374
+  var valid_613375 = header.getOrDefault("X-Amz-Signature")
+  valid_613375 = validateParameter(valid_613375, JString, required = false,
                                  default = nil)
-  if valid_606306 != nil:
-    section.add "X-Amz-Signature", valid_606306
-  var valid_606307 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606307 = validateParameter(valid_606307, JString, required = false,
+  if valid_613375 != nil:
+    section.add "X-Amz-Signature", valid_613375
+  var valid_613376 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613376 = validateParameter(valid_613376, JString, required = false,
                                  default = nil)
-  if valid_606307 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606307
-  var valid_606308 = header.getOrDefault("X-Amz-Date")
-  valid_606308 = validateParameter(valid_606308, JString, required = false,
+  if valid_613376 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613376
+  var valid_613377 = header.getOrDefault("X-Amz-Date")
+  valid_613377 = validateParameter(valid_613377, JString, required = false,
                                  default = nil)
-  if valid_606308 != nil:
-    section.add "X-Amz-Date", valid_606308
-  var valid_606309 = header.getOrDefault("X-Amz-Credential")
-  valid_606309 = validateParameter(valid_606309, JString, required = false,
+  if valid_613377 != nil:
+    section.add "X-Amz-Date", valid_613377
+  var valid_613378 = header.getOrDefault("X-Amz-Credential")
+  valid_613378 = validateParameter(valid_613378, JString, required = false,
                                  default = nil)
-  if valid_606309 != nil:
-    section.add "X-Amz-Credential", valid_606309
-  var valid_606310 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606310 = validateParameter(valid_606310, JString, required = false,
+  if valid_613378 != nil:
+    section.add "X-Amz-Credential", valid_613378
+  var valid_613379 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613379 = validateParameter(valid_613379, JString, required = false,
                                  default = nil)
-  if valid_606310 != nil:
-    section.add "X-Amz-Security-Token", valid_606310
-  var valid_606311 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606311 = validateParameter(valid_606311, JString, required = false,
+  if valid_613379 != nil:
+    section.add "X-Amz-Security-Token", valid_613379
+  var valid_613380 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613380 = validateParameter(valid_613380, JString, required = false,
                                  default = nil)
-  if valid_606311 != nil:
-    section.add "X-Amz-Algorithm", valid_606311
-  var valid_606312 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606312 = validateParameter(valid_606312, JString, required = false,
+  if valid_613380 != nil:
+    section.add "X-Amz-Algorithm", valid_613380
+  var valid_613381 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613381 = validateParameter(valid_613381, JString, required = false,
                                  default = nil)
-  if valid_606312 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606312
+  if valid_613381 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613381
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1125,40 +1125,40 @@ proc validate_ListPublicKeys_606302(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606314: Call_ListPublicKeys_606301; path: JsonNode; query: JsonNode;
+proc call*(call_613383: Call_ListPublicKeys_613370; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns all public keys whose private keys were used to sign the digest files within the specified time range. The public key is needed to validate digest files that were signed with its corresponding private key.</p> <note> <p>CloudTrail uses different private/public key pairs per region. Each digest file is signed with a private key unique to its region. Therefore, when you validate a digest file from a particular region, you must look in the same region for its corresponding public key.</p> </note>
   ## 
-  let valid = call_606314.validator(path, query, header, formData, body)
-  let scheme = call_606314.pickScheme
+  let valid = call_613383.validator(path, query, header, formData, body)
+  let scheme = call_613383.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606314.url(scheme.get, call_606314.host, call_606314.base,
-                         call_606314.route, valid.getOrDefault("path"),
+  let url = call_613383.url(scheme.get, call_613383.host, call_613383.base,
+                         call_613383.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606314, url, valid)
+  result = atozHook(call_613383, url, valid)
 
-proc call*(call_606315: Call_ListPublicKeys_606301; body: JsonNode;
+proc call*(call_613384: Call_ListPublicKeys_613370; body: JsonNode;
           NextToken: string = ""): Recallable =
   ## listPublicKeys
   ## <p>Returns all public keys whose private keys were used to sign the digest files within the specified time range. The public key is needed to validate digest files that were signed with its corresponding private key.</p> <note> <p>CloudTrail uses different private/public key pairs per region. Each digest file is signed with a private key unique to its region. Therefore, when you validate a digest file from a particular region, you must look in the same region for its corresponding public key.</p> </note>
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606316 = newJObject()
-  var body_606317 = newJObject()
-  add(query_606316, "NextToken", newJString(NextToken))
+  var query_613385 = newJObject()
+  var body_613386 = newJObject()
+  add(query_613385, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606317 = body
-  result = call_606315.call(nil, query_606316, nil, nil, body_606317)
+    body_613386 = body
+  result = call_613384.call(nil, query_613385, nil, nil, body_613386)
 
-var listPublicKeys* = Call_ListPublicKeys_606301(name: "listPublicKeys",
+var listPublicKeys* = Call_ListPublicKeys_613370(name: "listPublicKeys",
     meth: HttpMethod.HttpPost, host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListPublicKeys",
-    validator: validate_ListPublicKeys_606302, base: "/", url: url_ListPublicKeys_606303,
+    validator: validate_ListPublicKeys_613371, base: "/", url: url_ListPublicKeys_613372,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTags_606319 = ref object of OpenApiRestCall_605589
-proc url_ListTags_606321(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTags_613388 = ref object of OpenApiRestCall_612658
+proc url_ListTags_613390(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1170,7 +1170,7 @@ proc url_ListTags_606321(protocol: Scheme; host: string; base: string; route: st
   else:
     result.path = base & route
 
-proc validate_ListTags_606320(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTags_613389(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists the tags for the trail in the current region.
   ## 
@@ -1182,11 +1182,11 @@ proc validate_ListTags_606320(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606322 = query.getOrDefault("NextToken")
-  valid_606322 = validateParameter(valid_606322, JString, required = false,
+  var valid_613391 = query.getOrDefault("NextToken")
+  valid_613391 = validateParameter(valid_613391, JString, required = false,
                                  default = nil)
-  if valid_606322 != nil:
-    section.add "NextToken", valid_606322
+  if valid_613391 != nil:
+    section.add "NextToken", valid_613391
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -1198,46 +1198,46 @@ proc validate_ListTags_606320(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606323 = header.getOrDefault("X-Amz-Target")
-  valid_606323 = validateParameter(valid_606323, JString, required = true, default = newJString(
+  var valid_613392 = header.getOrDefault("X-Amz-Target")
+  valid_613392 = validateParameter(valid_613392, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListTags"))
-  if valid_606323 != nil:
-    section.add "X-Amz-Target", valid_606323
-  var valid_606324 = header.getOrDefault("X-Amz-Signature")
-  valid_606324 = validateParameter(valid_606324, JString, required = false,
+  if valid_613392 != nil:
+    section.add "X-Amz-Target", valid_613392
+  var valid_613393 = header.getOrDefault("X-Amz-Signature")
+  valid_613393 = validateParameter(valid_613393, JString, required = false,
                                  default = nil)
-  if valid_606324 != nil:
-    section.add "X-Amz-Signature", valid_606324
-  var valid_606325 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606325 = validateParameter(valid_606325, JString, required = false,
+  if valid_613393 != nil:
+    section.add "X-Amz-Signature", valid_613393
+  var valid_613394 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613394 = validateParameter(valid_613394, JString, required = false,
                                  default = nil)
-  if valid_606325 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606325
-  var valid_606326 = header.getOrDefault("X-Amz-Date")
-  valid_606326 = validateParameter(valid_606326, JString, required = false,
+  if valid_613394 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613394
+  var valid_613395 = header.getOrDefault("X-Amz-Date")
+  valid_613395 = validateParameter(valid_613395, JString, required = false,
                                  default = nil)
-  if valid_606326 != nil:
-    section.add "X-Amz-Date", valid_606326
-  var valid_606327 = header.getOrDefault("X-Amz-Credential")
-  valid_606327 = validateParameter(valid_606327, JString, required = false,
+  if valid_613395 != nil:
+    section.add "X-Amz-Date", valid_613395
+  var valid_613396 = header.getOrDefault("X-Amz-Credential")
+  valid_613396 = validateParameter(valid_613396, JString, required = false,
                                  default = nil)
-  if valid_606327 != nil:
-    section.add "X-Amz-Credential", valid_606327
-  var valid_606328 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606328 = validateParameter(valid_606328, JString, required = false,
+  if valid_613396 != nil:
+    section.add "X-Amz-Credential", valid_613396
+  var valid_613397 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613397 = validateParameter(valid_613397, JString, required = false,
                                  default = nil)
-  if valid_606328 != nil:
-    section.add "X-Amz-Security-Token", valid_606328
-  var valid_606329 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606329 = validateParameter(valid_606329, JString, required = false,
+  if valid_613397 != nil:
+    section.add "X-Amz-Security-Token", valid_613397
+  var valid_613398 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613398 = validateParameter(valid_613398, JString, required = false,
                                  default = nil)
-  if valid_606329 != nil:
-    section.add "X-Amz-Algorithm", valid_606329
-  var valid_606330 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606330 = validateParameter(valid_606330, JString, required = false,
+  if valid_613398 != nil:
+    section.add "X-Amz-Algorithm", valid_613398
+  var valid_613399 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613399 = validateParameter(valid_613399, JString, required = false,
                                  default = nil)
-  if valid_606330 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606330
+  if valid_613399 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613399
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1248,40 +1248,40 @@ proc validate_ListTags_606320(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606332: Call_ListTags_606319; path: JsonNode; query: JsonNode;
+proc call*(call_613401: Call_ListTags_613388; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists the tags for the trail in the current region.
   ## 
-  let valid = call_606332.validator(path, query, header, formData, body)
-  let scheme = call_606332.pickScheme
+  let valid = call_613401.validator(path, query, header, formData, body)
+  let scheme = call_613401.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606332.url(scheme.get, call_606332.host, call_606332.base,
-                         call_606332.route, valid.getOrDefault("path"),
+  let url = call_613401.url(scheme.get, call_613401.host, call_613401.base,
+                         call_613401.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606332, url, valid)
+  result = atozHook(call_613401, url, valid)
 
-proc call*(call_606333: Call_ListTags_606319; body: JsonNode; NextToken: string = ""): Recallable =
+proc call*(call_613402: Call_ListTags_613388; body: JsonNode; NextToken: string = ""): Recallable =
   ## listTags
   ## Lists the tags for the trail in the current region.
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606334 = newJObject()
-  var body_606335 = newJObject()
-  add(query_606334, "NextToken", newJString(NextToken))
+  var query_613403 = newJObject()
+  var body_613404 = newJObject()
+  add(query_613403, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606335 = body
-  result = call_606333.call(nil, query_606334, nil, nil, body_606335)
+    body_613404 = body
+  result = call_613402.call(nil, query_613403, nil, nil, body_613404)
 
-var listTags* = Call_ListTags_606319(name: "listTags", meth: HttpMethod.HttpPost,
+var listTags* = Call_ListTags_613388(name: "listTags", meth: HttpMethod.HttpPost,
                                   host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListTags",
-                                  validator: validate_ListTags_606320, base: "/",
-                                  url: url_ListTags_606321,
+                                  validator: validate_ListTags_613389, base: "/",
+                                  url: url_ListTags_613390,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTrails_606336 = ref object of OpenApiRestCall_605589
-proc url_ListTrails_606338(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTrails_613405 = ref object of OpenApiRestCall_612658
+proc url_ListTrails_613407(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1293,7 +1293,7 @@ proc url_ListTrails_606338(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_ListTrails_606337(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTrails_613406(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Lists trails that are in the current account.
   ## 
@@ -1305,11 +1305,11 @@ proc validate_ListTrails_606337(path: JsonNode; query: JsonNode; header: JsonNod
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606339 = query.getOrDefault("NextToken")
-  valid_606339 = validateParameter(valid_606339, JString, required = false,
+  var valid_613408 = query.getOrDefault("NextToken")
+  valid_613408 = validateParameter(valid_613408, JString, required = false,
                                  default = nil)
-  if valid_606339 != nil:
-    section.add "NextToken", valid_606339
+  if valid_613408 != nil:
+    section.add "NextToken", valid_613408
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -1321,46 +1321,46 @@ proc validate_ListTrails_606337(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606340 = header.getOrDefault("X-Amz-Target")
-  valid_606340 = validateParameter(valid_606340, JString, required = true, default = newJString(
+  var valid_613409 = header.getOrDefault("X-Amz-Target")
+  valid_613409 = validateParameter(valid_613409, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListTrails"))
-  if valid_606340 != nil:
-    section.add "X-Amz-Target", valid_606340
-  var valid_606341 = header.getOrDefault("X-Amz-Signature")
-  valid_606341 = validateParameter(valid_606341, JString, required = false,
+  if valid_613409 != nil:
+    section.add "X-Amz-Target", valid_613409
+  var valid_613410 = header.getOrDefault("X-Amz-Signature")
+  valid_613410 = validateParameter(valid_613410, JString, required = false,
                                  default = nil)
-  if valid_606341 != nil:
-    section.add "X-Amz-Signature", valid_606341
-  var valid_606342 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606342 = validateParameter(valid_606342, JString, required = false,
+  if valid_613410 != nil:
+    section.add "X-Amz-Signature", valid_613410
+  var valid_613411 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613411 = validateParameter(valid_613411, JString, required = false,
                                  default = nil)
-  if valid_606342 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606342
-  var valid_606343 = header.getOrDefault("X-Amz-Date")
-  valid_606343 = validateParameter(valid_606343, JString, required = false,
+  if valid_613411 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613411
+  var valid_613412 = header.getOrDefault("X-Amz-Date")
+  valid_613412 = validateParameter(valid_613412, JString, required = false,
                                  default = nil)
-  if valid_606343 != nil:
-    section.add "X-Amz-Date", valid_606343
-  var valid_606344 = header.getOrDefault("X-Amz-Credential")
-  valid_606344 = validateParameter(valid_606344, JString, required = false,
+  if valid_613412 != nil:
+    section.add "X-Amz-Date", valid_613412
+  var valid_613413 = header.getOrDefault("X-Amz-Credential")
+  valid_613413 = validateParameter(valid_613413, JString, required = false,
                                  default = nil)
-  if valid_606344 != nil:
-    section.add "X-Amz-Credential", valid_606344
-  var valid_606345 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606345 = validateParameter(valid_606345, JString, required = false,
+  if valid_613413 != nil:
+    section.add "X-Amz-Credential", valid_613413
+  var valid_613414 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613414 = validateParameter(valid_613414, JString, required = false,
                                  default = nil)
-  if valid_606345 != nil:
-    section.add "X-Amz-Security-Token", valid_606345
-  var valid_606346 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606346 = validateParameter(valid_606346, JString, required = false,
+  if valid_613414 != nil:
+    section.add "X-Amz-Security-Token", valid_613414
+  var valid_613415 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613415 = validateParameter(valid_613415, JString, required = false,
                                  default = nil)
-  if valid_606346 != nil:
-    section.add "X-Amz-Algorithm", valid_606346
-  var valid_606347 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606347 = validateParameter(valid_606347, JString, required = false,
+  if valid_613415 != nil:
+    section.add "X-Amz-Algorithm", valid_613415
+  var valid_613416 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613416 = validateParameter(valid_613416, JString, required = false,
                                  default = nil)
-  if valid_606347 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606347
+  if valid_613416 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613416
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1371,42 +1371,42 @@ proc validate_ListTrails_606337(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_606349: Call_ListTrails_606336; path: JsonNode; query: JsonNode;
+proc call*(call_613418: Call_ListTrails_613405; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists trails that are in the current account.
   ## 
-  let valid = call_606349.validator(path, query, header, formData, body)
-  let scheme = call_606349.pickScheme
+  let valid = call_613418.validator(path, query, header, formData, body)
+  let scheme = call_613418.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606349.url(scheme.get, call_606349.host, call_606349.base,
-                         call_606349.route, valid.getOrDefault("path"),
+  let url = call_613418.url(scheme.get, call_613418.host, call_613418.base,
+                         call_613418.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606349, url, valid)
+  result = atozHook(call_613418, url, valid)
 
-proc call*(call_606350: Call_ListTrails_606336; body: JsonNode;
+proc call*(call_613419: Call_ListTrails_613405; body: JsonNode;
           NextToken: string = ""): Recallable =
   ## listTrails
   ## Lists trails that are in the current account.
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606351 = newJObject()
-  var body_606352 = newJObject()
-  add(query_606351, "NextToken", newJString(NextToken))
+  var query_613420 = newJObject()
+  var body_613421 = newJObject()
+  add(query_613420, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606352 = body
-  result = call_606350.call(nil, query_606351, nil, nil, body_606352)
+    body_613421 = body
+  result = call_613419.call(nil, query_613420, nil, nil, body_613421)
 
-var listTrails* = Call_ListTrails_606336(name: "listTrails",
+var listTrails* = Call_ListTrails_613405(name: "listTrails",
                                       meth: HttpMethod.HttpPost,
                                       host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.ListTrails",
-                                      validator: validate_ListTrails_606337,
-                                      base: "/", url: url_ListTrails_606338,
+                                      validator: validate_ListTrails_613406,
+                                      base: "/", url: url_ListTrails_613407,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_LookupEvents_606353 = ref object of OpenApiRestCall_605589
-proc url_LookupEvents_606355(protocol: Scheme; host: string; base: string;
+  Call_LookupEvents_613422 = ref object of OpenApiRestCall_612658
+proc url_LookupEvents_613424(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1418,7 +1418,7 @@ proc url_LookupEvents_606355(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_LookupEvents_606354(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_LookupEvents_613423(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Looks up <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events">management events</a> or <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-insights-events">CloudTrail Insights events</a> that are captured by CloudTrail. You can look up events that occurred in a region within the last 90 days. Lookup supports the following attributes for management events:</p> <ul> <li> <p>AWS access key</p> </li> <li> <p>Event ID</p> </li> <li> <p>Event name</p> </li> <li> <p>Event source</p> </li> <li> <p>Read only</p> </li> <li> <p>Resource name</p> </li> <li> <p>Resource type</p> </li> <li> <p>User name</p> </li> </ul> <p>Lookup supports the following attributes for Insights events:</p> <ul> <li> <p>Event ID</p> </li> <li> <p>Event name</p> </li> <li> <p>Event source</p> </li> </ul> <p>All attributes are optional. The default number of results returned is 50, with a maximum of 50 possible. The response includes a token that you can use to get the next page of results.</p> <important> <p>The rate of lookup requests is limited to two per second per account. If this limit is exceeded, a throttling error occurs.</p> </important>
   ## 
@@ -1432,16 +1432,16 @@ proc validate_LookupEvents_606354(path: JsonNode; query: JsonNode; header: JsonN
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606356 = query.getOrDefault("MaxResults")
-  valid_606356 = validateParameter(valid_606356, JString, required = false,
+  var valid_613425 = query.getOrDefault("MaxResults")
+  valid_613425 = validateParameter(valid_613425, JString, required = false,
                                  default = nil)
-  if valid_606356 != nil:
-    section.add "MaxResults", valid_606356
-  var valid_606357 = query.getOrDefault("NextToken")
-  valid_606357 = validateParameter(valid_606357, JString, required = false,
+  if valid_613425 != nil:
+    section.add "MaxResults", valid_613425
+  var valid_613426 = query.getOrDefault("NextToken")
+  valid_613426 = validateParameter(valid_613426, JString, required = false,
                                  default = nil)
-  if valid_606357 != nil:
-    section.add "NextToken", valid_606357
+  if valid_613426 != nil:
+    section.add "NextToken", valid_613426
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -1453,46 +1453,46 @@ proc validate_LookupEvents_606354(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606358 = header.getOrDefault("X-Amz-Target")
-  valid_606358 = validateParameter(valid_606358, JString, required = true, default = newJString(
+  var valid_613427 = header.getOrDefault("X-Amz-Target")
+  valid_613427 = validateParameter(valid_613427, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.LookupEvents"))
-  if valid_606358 != nil:
-    section.add "X-Amz-Target", valid_606358
-  var valid_606359 = header.getOrDefault("X-Amz-Signature")
-  valid_606359 = validateParameter(valid_606359, JString, required = false,
+  if valid_613427 != nil:
+    section.add "X-Amz-Target", valid_613427
+  var valid_613428 = header.getOrDefault("X-Amz-Signature")
+  valid_613428 = validateParameter(valid_613428, JString, required = false,
                                  default = nil)
-  if valid_606359 != nil:
-    section.add "X-Amz-Signature", valid_606359
-  var valid_606360 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606360 = validateParameter(valid_606360, JString, required = false,
+  if valid_613428 != nil:
+    section.add "X-Amz-Signature", valid_613428
+  var valid_613429 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613429 = validateParameter(valid_613429, JString, required = false,
                                  default = nil)
-  if valid_606360 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606360
-  var valid_606361 = header.getOrDefault("X-Amz-Date")
-  valid_606361 = validateParameter(valid_606361, JString, required = false,
+  if valid_613429 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613429
+  var valid_613430 = header.getOrDefault("X-Amz-Date")
+  valid_613430 = validateParameter(valid_613430, JString, required = false,
                                  default = nil)
-  if valid_606361 != nil:
-    section.add "X-Amz-Date", valid_606361
-  var valid_606362 = header.getOrDefault("X-Amz-Credential")
-  valid_606362 = validateParameter(valid_606362, JString, required = false,
+  if valid_613430 != nil:
+    section.add "X-Amz-Date", valid_613430
+  var valid_613431 = header.getOrDefault("X-Amz-Credential")
+  valid_613431 = validateParameter(valid_613431, JString, required = false,
                                  default = nil)
-  if valid_606362 != nil:
-    section.add "X-Amz-Credential", valid_606362
-  var valid_606363 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606363 = validateParameter(valid_606363, JString, required = false,
+  if valid_613431 != nil:
+    section.add "X-Amz-Credential", valid_613431
+  var valid_613432 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613432 = validateParameter(valid_613432, JString, required = false,
                                  default = nil)
-  if valid_606363 != nil:
-    section.add "X-Amz-Security-Token", valid_606363
-  var valid_606364 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606364 = validateParameter(valid_606364, JString, required = false,
+  if valid_613432 != nil:
+    section.add "X-Amz-Security-Token", valid_613432
+  var valid_613433 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613433 = validateParameter(valid_613433, JString, required = false,
                                  default = nil)
-  if valid_606364 != nil:
-    section.add "X-Amz-Algorithm", valid_606364
-  var valid_606365 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606365 = validateParameter(valid_606365, JString, required = false,
+  if valid_613433 != nil:
+    section.add "X-Amz-Algorithm", valid_613433
+  var valid_613434 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613434 = validateParameter(valid_613434, JString, required = false,
                                  default = nil)
-  if valid_606365 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606365
+  if valid_613434 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613434
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1503,20 +1503,20 @@ proc validate_LookupEvents_606354(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_606367: Call_LookupEvents_606353; path: JsonNode; query: JsonNode;
+proc call*(call_613436: Call_LookupEvents_613422; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Looks up <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events">management events</a> or <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-insights-events">CloudTrail Insights events</a> that are captured by CloudTrail. You can look up events that occurred in a region within the last 90 days. Lookup supports the following attributes for management events:</p> <ul> <li> <p>AWS access key</p> </li> <li> <p>Event ID</p> </li> <li> <p>Event name</p> </li> <li> <p>Event source</p> </li> <li> <p>Read only</p> </li> <li> <p>Resource name</p> </li> <li> <p>Resource type</p> </li> <li> <p>User name</p> </li> </ul> <p>Lookup supports the following attributes for Insights events:</p> <ul> <li> <p>Event ID</p> </li> <li> <p>Event name</p> </li> <li> <p>Event source</p> </li> </ul> <p>All attributes are optional. The default number of results returned is 50, with a maximum of 50 possible. The response includes a token that you can use to get the next page of results.</p> <important> <p>The rate of lookup requests is limited to two per second per account. If this limit is exceeded, a throttling error occurs.</p> </important>
   ## 
-  let valid = call_606367.validator(path, query, header, formData, body)
-  let scheme = call_606367.pickScheme
+  let valid = call_613436.validator(path, query, header, formData, body)
+  let scheme = call_613436.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606367.url(scheme.get, call_606367.host, call_606367.base,
-                         call_606367.route, valid.getOrDefault("path"),
+  let url = call_613436.url(scheme.get, call_613436.host, call_613436.base,
+                         call_613436.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606367, url, valid)
+  result = atozHook(call_613436, url, valid)
 
-proc call*(call_606368: Call_LookupEvents_606353; body: JsonNode;
+proc call*(call_613437: Call_LookupEvents_613422; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## lookupEvents
   ## <p>Looks up <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-management-events">management events</a> or <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/cloudtrail-concepts.html#cloudtrail-concepts-insights-events">CloudTrail Insights events</a> that are captured by CloudTrail. You can look up events that occurred in a region within the last 90 days. Lookup supports the following attributes for management events:</p> <ul> <li> <p>AWS access key</p> </li> <li> <p>Event ID</p> </li> <li> <p>Event name</p> </li> <li> <p>Event source</p> </li> <li> <p>Read only</p> </li> <li> <p>Resource name</p> </li> <li> <p>Resource type</p> </li> <li> <p>User name</p> </li> </ul> <p>Lookup supports the following attributes for Insights events:</p> <ul> <li> <p>Event ID</p> </li> <li> <p>Event name</p> </li> <li> <p>Event source</p> </li> </ul> <p>All attributes are optional. The default number of results returned is 50, with a maximum of 50 possible. The response includes a token that you can use to get the next page of results.</p> <important> <p>The rate of lookup requests is limited to two per second per account. If this limit is exceeded, a throttling error occurs.</p> </important>
@@ -1525,21 +1525,21 @@ proc call*(call_606368: Call_LookupEvents_606353; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606369 = newJObject()
-  var body_606370 = newJObject()
-  add(query_606369, "MaxResults", newJString(MaxResults))
-  add(query_606369, "NextToken", newJString(NextToken))
+  var query_613438 = newJObject()
+  var body_613439 = newJObject()
+  add(query_613438, "MaxResults", newJString(MaxResults))
+  add(query_613438, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606370 = body
-  result = call_606368.call(nil, query_606369, nil, nil, body_606370)
+    body_613439 = body
+  result = call_613437.call(nil, query_613438, nil, nil, body_613439)
 
-var lookupEvents* = Call_LookupEvents_606353(name: "lookupEvents",
+var lookupEvents* = Call_LookupEvents_613422(name: "lookupEvents",
     meth: HttpMethod.HttpPost, host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.LookupEvents",
-    validator: validate_LookupEvents_606354, base: "/", url: url_LookupEvents_606355,
+    validator: validate_LookupEvents_613423, base: "/", url: url_LookupEvents_613424,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutEventSelectors_606371 = ref object of OpenApiRestCall_605589
-proc url_PutEventSelectors_606373(protocol: Scheme; host: string; base: string;
+  Call_PutEventSelectors_613440 = ref object of OpenApiRestCall_612658
+proc url_PutEventSelectors_613442(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1551,7 +1551,7 @@ proc url_PutEventSelectors_606373(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_PutEventSelectors_606372(path: JsonNode; query: JsonNode;
+proc validate_PutEventSelectors_613441(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Configures an event selector for your trail. Use event selectors to further specify the management and data event settings for your trail. By default, trails created without specific event selectors will be configured to log all read and write management events, and no data events. </p> <p>When an event occurs in your account, CloudTrail evaluates the event selectors in all trails. For each trail, if the event matches any event selector, the trail processes and logs the event. If the event doesn't match any event selector, the trail doesn't log the event. </p> <p>Example</p> <ol> <li> <p>You create an event selector for a trail and specify that you want write-only events.</p> </li> <li> <p>The EC2 <code>GetConsoleOutput</code> and <code>RunInstances</code> API operations occur in your account.</p> </li> <li> <p>CloudTrail evaluates whether the events match your event selectors.</p> </li> <li> <p>The <code>RunInstances</code> is a write-only event and it matches your event selector. The trail logs the event.</p> </li> <li> <p>The <code>GetConsoleOutput</code> is a read-only event but it doesn't match your event selector. The trail doesn't log the event. </p> </li> </ol> <p>The <code>PutEventSelectors</code> operation must be called from the region in which the trail was created; otherwise, an <code>InvalidHomeRegionException</code> is thrown.</p> <p>You can configure up to five event selectors for each trail. For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html">Logging Data and Management Events for Trails </a> and <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/WhatIsCloudTrail-Limits.html">Limits in AWS CloudTrail</a> in the <i>AWS CloudTrail User Guide</i>.</p>
@@ -1572,45 +1572,45 @@ proc validate_PutEventSelectors_606372(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606374 = header.getOrDefault("X-Amz-Target")
-  valid_606374 = validateParameter(valid_606374, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.PutEventSelectors"))
-  if valid_606374 != nil:
-    section.add "X-Amz-Target", valid_606374
-  var valid_606375 = header.getOrDefault("X-Amz-Signature")
-  valid_606375 = validateParameter(valid_606375, JString, required = false,
+  var valid_613443 = header.getOrDefault("X-Amz-Target")
+  valid_613443 = validateParameter(valid_613443, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.PutEventSelectors"))
+  if valid_613443 != nil:
+    section.add "X-Amz-Target", valid_613443
+  var valid_613444 = header.getOrDefault("X-Amz-Signature")
+  valid_613444 = validateParameter(valid_613444, JString, required = false,
                                  default = nil)
-  if valid_606375 != nil:
-    section.add "X-Amz-Signature", valid_606375
-  var valid_606376 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606376 = validateParameter(valid_606376, JString, required = false,
+  if valid_613444 != nil:
+    section.add "X-Amz-Signature", valid_613444
+  var valid_613445 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613445 = validateParameter(valid_613445, JString, required = false,
                                  default = nil)
-  if valid_606376 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606376
-  var valid_606377 = header.getOrDefault("X-Amz-Date")
-  valid_606377 = validateParameter(valid_606377, JString, required = false,
+  if valid_613445 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613445
+  var valid_613446 = header.getOrDefault("X-Amz-Date")
+  valid_613446 = validateParameter(valid_613446, JString, required = false,
                                  default = nil)
-  if valid_606377 != nil:
-    section.add "X-Amz-Date", valid_606377
-  var valid_606378 = header.getOrDefault("X-Amz-Credential")
-  valid_606378 = validateParameter(valid_606378, JString, required = false,
+  if valid_613446 != nil:
+    section.add "X-Amz-Date", valid_613446
+  var valid_613447 = header.getOrDefault("X-Amz-Credential")
+  valid_613447 = validateParameter(valid_613447, JString, required = false,
                                  default = nil)
-  if valid_606378 != nil:
-    section.add "X-Amz-Credential", valid_606378
-  var valid_606379 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606379 = validateParameter(valid_606379, JString, required = false,
+  if valid_613447 != nil:
+    section.add "X-Amz-Credential", valid_613447
+  var valid_613448 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613448 = validateParameter(valid_613448, JString, required = false,
                                  default = nil)
-  if valid_606379 != nil:
-    section.add "X-Amz-Security-Token", valid_606379
-  var valid_606380 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606380 = validateParameter(valid_606380, JString, required = false,
+  if valid_613448 != nil:
+    section.add "X-Amz-Security-Token", valid_613448
+  var valid_613449 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613449 = validateParameter(valid_613449, JString, required = false,
                                  default = nil)
-  if valid_606380 != nil:
-    section.add "X-Amz-Algorithm", valid_606380
-  var valid_606381 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606381 = validateParameter(valid_606381, JString, required = false,
+  if valid_613449 != nil:
+    section.add "X-Amz-Algorithm", valid_613449
+  var valid_613450 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613450 = validateParameter(valid_613450, JString, required = false,
                                  default = nil)
-  if valid_606381 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606381
+  if valid_613450 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613450
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1621,35 +1621,35 @@ proc validate_PutEventSelectors_606372(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606383: Call_PutEventSelectors_606371; path: JsonNode;
+proc call*(call_613452: Call_PutEventSelectors_613440; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Configures an event selector for your trail. Use event selectors to further specify the management and data event settings for your trail. By default, trails created without specific event selectors will be configured to log all read and write management events, and no data events. </p> <p>When an event occurs in your account, CloudTrail evaluates the event selectors in all trails. For each trail, if the event matches any event selector, the trail processes and logs the event. If the event doesn't match any event selector, the trail doesn't log the event. </p> <p>Example</p> <ol> <li> <p>You create an event selector for a trail and specify that you want write-only events.</p> </li> <li> <p>The EC2 <code>GetConsoleOutput</code> and <code>RunInstances</code> API operations occur in your account.</p> </li> <li> <p>CloudTrail evaluates whether the events match your event selectors.</p> </li> <li> <p>The <code>RunInstances</code> is a write-only event and it matches your event selector. The trail logs the event.</p> </li> <li> <p>The <code>GetConsoleOutput</code> is a read-only event but it doesn't match your event selector. The trail doesn't log the event. </p> </li> </ol> <p>The <code>PutEventSelectors</code> operation must be called from the region in which the trail was created; otherwise, an <code>InvalidHomeRegionException</code> is thrown.</p> <p>You can configure up to five event selectors for each trail. For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html">Logging Data and Management Events for Trails </a> and <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/WhatIsCloudTrail-Limits.html">Limits in AWS CloudTrail</a> in the <i>AWS CloudTrail User Guide</i>.</p>
   ## 
-  let valid = call_606383.validator(path, query, header, formData, body)
-  let scheme = call_606383.pickScheme
+  let valid = call_613452.validator(path, query, header, formData, body)
+  let scheme = call_613452.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606383.url(scheme.get, call_606383.host, call_606383.base,
-                         call_606383.route, valid.getOrDefault("path"),
+  let url = call_613452.url(scheme.get, call_613452.host, call_613452.base,
+                         call_613452.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606383, url, valid)
+  result = atozHook(call_613452, url, valid)
 
-proc call*(call_606384: Call_PutEventSelectors_606371; body: JsonNode): Recallable =
+proc call*(call_613453: Call_PutEventSelectors_613440; body: JsonNode): Recallable =
   ## putEventSelectors
   ## <p>Configures an event selector for your trail. Use event selectors to further specify the management and data event settings for your trail. By default, trails created without specific event selectors will be configured to log all read and write management events, and no data events. </p> <p>When an event occurs in your account, CloudTrail evaluates the event selectors in all trails. For each trail, if the event matches any event selector, the trail processes and logs the event. If the event doesn't match any event selector, the trail doesn't log the event. </p> <p>Example</p> <ol> <li> <p>You create an event selector for a trail and specify that you want write-only events.</p> </li> <li> <p>The EC2 <code>GetConsoleOutput</code> and <code>RunInstances</code> API operations occur in your account.</p> </li> <li> <p>CloudTrail evaluates whether the events match your event selectors.</p> </li> <li> <p>The <code>RunInstances</code> is a write-only event and it matches your event selector. The trail logs the event.</p> </li> <li> <p>The <code>GetConsoleOutput</code> is a read-only event but it doesn't match your event selector. The trail doesn't log the event. </p> </li> </ol> <p>The <code>PutEventSelectors</code> operation must be called from the region in which the trail was created; otherwise, an <code>InvalidHomeRegionException</code> is thrown.</p> <p>You can configure up to five event selectors for each trail. For more information, see <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/logging-management-and-data-events-with-cloudtrail.html">Logging Data and Management Events for Trails </a> and <a href="https://docs.aws.amazon.com/awscloudtrail/latest/userguide/WhatIsCloudTrail-Limits.html">Limits in AWS CloudTrail</a> in the <i>AWS CloudTrail User Guide</i>.</p>
   ##   body: JObject (required)
-  var body_606385 = newJObject()
+  var body_613454 = newJObject()
   if body != nil:
-    body_606385 = body
-  result = call_606384.call(nil, nil, nil, nil, body_606385)
+    body_613454 = body
+  result = call_613453.call(nil, nil, nil, nil, body_613454)
 
-var putEventSelectors* = Call_PutEventSelectors_606371(name: "putEventSelectors",
+var putEventSelectors* = Call_PutEventSelectors_613440(name: "putEventSelectors",
     meth: HttpMethod.HttpPost, host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.PutEventSelectors",
-    validator: validate_PutEventSelectors_606372, base: "/",
-    url: url_PutEventSelectors_606373, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutEventSelectors_613441, base: "/",
+    url: url_PutEventSelectors_613442, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutInsightSelectors_606386 = ref object of OpenApiRestCall_605589
-proc url_PutInsightSelectors_606388(protocol: Scheme; host: string; base: string;
+  Call_PutInsightSelectors_613455 = ref object of OpenApiRestCall_612658
+proc url_PutInsightSelectors_613457(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1661,7 +1661,7 @@ proc url_PutInsightSelectors_606388(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_PutInsightSelectors_606387(path: JsonNode; query: JsonNode;
+proc validate_PutInsightSelectors_613456(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lets you enable Insights event logging by specifying the Insights selectors that you want to enable on an existing trail. You also use <code>PutInsightSelectors</code> to turn off Insights event logging, by passing an empty list of insight types. In this release, only <code>ApiCallRateInsight</code> is supported as an Insights selector.
@@ -1682,45 +1682,45 @@ proc validate_PutInsightSelectors_606387(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606389 = header.getOrDefault("X-Amz-Target")
-  valid_606389 = validateParameter(valid_606389, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.PutInsightSelectors"))
-  if valid_606389 != nil:
-    section.add "X-Amz-Target", valid_606389
-  var valid_606390 = header.getOrDefault("X-Amz-Signature")
-  valid_606390 = validateParameter(valid_606390, JString, required = false,
+  var valid_613458 = header.getOrDefault("X-Amz-Target")
+  valid_613458 = validateParameter(valid_613458, JString, required = true, default = newJString("com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.PutInsightSelectors"))
+  if valid_613458 != nil:
+    section.add "X-Amz-Target", valid_613458
+  var valid_613459 = header.getOrDefault("X-Amz-Signature")
+  valid_613459 = validateParameter(valid_613459, JString, required = false,
                                  default = nil)
-  if valid_606390 != nil:
-    section.add "X-Amz-Signature", valid_606390
-  var valid_606391 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606391 = validateParameter(valid_606391, JString, required = false,
+  if valid_613459 != nil:
+    section.add "X-Amz-Signature", valid_613459
+  var valid_613460 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613460 = validateParameter(valid_613460, JString, required = false,
                                  default = nil)
-  if valid_606391 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606391
-  var valid_606392 = header.getOrDefault("X-Amz-Date")
-  valid_606392 = validateParameter(valid_606392, JString, required = false,
+  if valid_613460 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613460
+  var valid_613461 = header.getOrDefault("X-Amz-Date")
+  valid_613461 = validateParameter(valid_613461, JString, required = false,
                                  default = nil)
-  if valid_606392 != nil:
-    section.add "X-Amz-Date", valid_606392
-  var valid_606393 = header.getOrDefault("X-Amz-Credential")
-  valid_606393 = validateParameter(valid_606393, JString, required = false,
+  if valid_613461 != nil:
+    section.add "X-Amz-Date", valid_613461
+  var valid_613462 = header.getOrDefault("X-Amz-Credential")
+  valid_613462 = validateParameter(valid_613462, JString, required = false,
                                  default = nil)
-  if valid_606393 != nil:
-    section.add "X-Amz-Credential", valid_606393
-  var valid_606394 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606394 = validateParameter(valid_606394, JString, required = false,
+  if valid_613462 != nil:
+    section.add "X-Amz-Credential", valid_613462
+  var valid_613463 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613463 = validateParameter(valid_613463, JString, required = false,
                                  default = nil)
-  if valid_606394 != nil:
-    section.add "X-Amz-Security-Token", valid_606394
-  var valid_606395 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606395 = validateParameter(valid_606395, JString, required = false,
+  if valid_613463 != nil:
+    section.add "X-Amz-Security-Token", valid_613463
+  var valid_613464 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613464 = validateParameter(valid_613464, JString, required = false,
                                  default = nil)
-  if valid_606395 != nil:
-    section.add "X-Amz-Algorithm", valid_606395
-  var valid_606396 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606396 = validateParameter(valid_606396, JString, required = false,
+  if valid_613464 != nil:
+    section.add "X-Amz-Algorithm", valid_613464
+  var valid_613465 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613465 = validateParameter(valid_613465, JString, required = false,
                                  default = nil)
-  if valid_606396 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606396
+  if valid_613465 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613465
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1731,36 +1731,36 @@ proc validate_PutInsightSelectors_606387(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606398: Call_PutInsightSelectors_606386; path: JsonNode;
+proc call*(call_613467: Call_PutInsightSelectors_613455; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lets you enable Insights event logging by specifying the Insights selectors that you want to enable on an existing trail. You also use <code>PutInsightSelectors</code> to turn off Insights event logging, by passing an empty list of insight types. In this release, only <code>ApiCallRateInsight</code> is supported as an Insights selector.
   ## 
-  let valid = call_606398.validator(path, query, header, formData, body)
-  let scheme = call_606398.pickScheme
+  let valid = call_613467.validator(path, query, header, formData, body)
+  let scheme = call_613467.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606398.url(scheme.get, call_606398.host, call_606398.base,
-                         call_606398.route, valid.getOrDefault("path"),
+  let url = call_613467.url(scheme.get, call_613467.host, call_613467.base,
+                         call_613467.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606398, url, valid)
+  result = atozHook(call_613467, url, valid)
 
-proc call*(call_606399: Call_PutInsightSelectors_606386; body: JsonNode): Recallable =
+proc call*(call_613468: Call_PutInsightSelectors_613455; body: JsonNode): Recallable =
   ## putInsightSelectors
   ## Lets you enable Insights event logging by specifying the Insights selectors that you want to enable on an existing trail. You also use <code>PutInsightSelectors</code> to turn off Insights event logging, by passing an empty list of insight types. In this release, only <code>ApiCallRateInsight</code> is supported as an Insights selector.
   ##   body: JObject (required)
-  var body_606400 = newJObject()
+  var body_613469 = newJObject()
   if body != nil:
-    body_606400 = body
-  result = call_606399.call(nil, nil, nil, nil, body_606400)
+    body_613469 = body
+  result = call_613468.call(nil, nil, nil, nil, body_613469)
 
-var putInsightSelectors* = Call_PutInsightSelectors_606386(
+var putInsightSelectors* = Call_PutInsightSelectors_613455(
     name: "putInsightSelectors", meth: HttpMethod.HttpPost,
     host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.PutInsightSelectors",
-    validator: validate_PutInsightSelectors_606387, base: "/",
-    url: url_PutInsightSelectors_606388, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutInsightSelectors_613456, base: "/",
+    url: url_PutInsightSelectors_613457, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RemoveTags_606401 = ref object of OpenApiRestCall_605589
-proc url_RemoveTags_606403(protocol: Scheme; host: string; base: string; route: string;
+  Call_RemoveTags_613470 = ref object of OpenApiRestCall_612658
+proc url_RemoveTags_613472(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1772,7 +1772,7 @@ proc url_RemoveTags_606403(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_RemoveTags_606402(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RemoveTags_613471(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes the specified tags from a trail.
   ## 
@@ -1792,46 +1792,46 @@ proc validate_RemoveTags_606402(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606404 = header.getOrDefault("X-Amz-Target")
-  valid_606404 = validateParameter(valid_606404, JString, required = true, default = newJString(
+  var valid_613473 = header.getOrDefault("X-Amz-Target")
+  valid_613473 = validateParameter(valid_613473, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.RemoveTags"))
-  if valid_606404 != nil:
-    section.add "X-Amz-Target", valid_606404
-  var valid_606405 = header.getOrDefault("X-Amz-Signature")
-  valid_606405 = validateParameter(valid_606405, JString, required = false,
+  if valid_613473 != nil:
+    section.add "X-Amz-Target", valid_613473
+  var valid_613474 = header.getOrDefault("X-Amz-Signature")
+  valid_613474 = validateParameter(valid_613474, JString, required = false,
                                  default = nil)
-  if valid_606405 != nil:
-    section.add "X-Amz-Signature", valid_606405
-  var valid_606406 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606406 = validateParameter(valid_606406, JString, required = false,
+  if valid_613474 != nil:
+    section.add "X-Amz-Signature", valid_613474
+  var valid_613475 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613475 = validateParameter(valid_613475, JString, required = false,
                                  default = nil)
-  if valid_606406 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606406
-  var valid_606407 = header.getOrDefault("X-Amz-Date")
-  valid_606407 = validateParameter(valid_606407, JString, required = false,
+  if valid_613475 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613475
+  var valid_613476 = header.getOrDefault("X-Amz-Date")
+  valid_613476 = validateParameter(valid_613476, JString, required = false,
                                  default = nil)
-  if valid_606407 != nil:
-    section.add "X-Amz-Date", valid_606407
-  var valid_606408 = header.getOrDefault("X-Amz-Credential")
-  valid_606408 = validateParameter(valid_606408, JString, required = false,
+  if valid_613476 != nil:
+    section.add "X-Amz-Date", valid_613476
+  var valid_613477 = header.getOrDefault("X-Amz-Credential")
+  valid_613477 = validateParameter(valid_613477, JString, required = false,
                                  default = nil)
-  if valid_606408 != nil:
-    section.add "X-Amz-Credential", valid_606408
-  var valid_606409 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606409 = validateParameter(valid_606409, JString, required = false,
+  if valid_613477 != nil:
+    section.add "X-Amz-Credential", valid_613477
+  var valid_613478 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613478 = validateParameter(valid_613478, JString, required = false,
                                  default = nil)
-  if valid_606409 != nil:
-    section.add "X-Amz-Security-Token", valid_606409
-  var valid_606410 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606410 = validateParameter(valid_606410, JString, required = false,
+  if valid_613478 != nil:
+    section.add "X-Amz-Security-Token", valid_613478
+  var valid_613479 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613479 = validateParameter(valid_613479, JString, required = false,
                                  default = nil)
-  if valid_606410 != nil:
-    section.add "X-Amz-Algorithm", valid_606410
-  var valid_606411 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606411 = validateParameter(valid_606411, JString, required = false,
+  if valid_613479 != nil:
+    section.add "X-Amz-Algorithm", valid_613479
+  var valid_613480 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613480 = validateParameter(valid_613480, JString, required = false,
                                  default = nil)
-  if valid_606411 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606411
+  if valid_613480 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613480
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1842,37 +1842,37 @@ proc validate_RemoveTags_606402(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_606413: Call_RemoveTags_606401; path: JsonNode; query: JsonNode;
+proc call*(call_613482: Call_RemoveTags_613470; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes the specified tags from a trail.
   ## 
-  let valid = call_606413.validator(path, query, header, formData, body)
-  let scheme = call_606413.pickScheme
+  let valid = call_613482.validator(path, query, header, formData, body)
+  let scheme = call_613482.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606413.url(scheme.get, call_606413.host, call_606413.base,
-                         call_606413.route, valid.getOrDefault("path"),
+  let url = call_613482.url(scheme.get, call_613482.host, call_613482.base,
+                         call_613482.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606413, url, valid)
+  result = atozHook(call_613482, url, valid)
 
-proc call*(call_606414: Call_RemoveTags_606401; body: JsonNode): Recallable =
+proc call*(call_613483: Call_RemoveTags_613470; body: JsonNode): Recallable =
   ## removeTags
   ## Removes the specified tags from a trail.
   ##   body: JObject (required)
-  var body_606415 = newJObject()
+  var body_613484 = newJObject()
   if body != nil:
-    body_606415 = body
-  result = call_606414.call(nil, nil, nil, nil, body_606415)
+    body_613484 = body
+  result = call_613483.call(nil, nil, nil, nil, body_613484)
 
-var removeTags* = Call_RemoveTags_606401(name: "removeTags",
+var removeTags* = Call_RemoveTags_613470(name: "removeTags",
                                       meth: HttpMethod.HttpPost,
                                       host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.RemoveTags",
-                                      validator: validate_RemoveTags_606402,
-                                      base: "/", url: url_RemoveTags_606403,
+                                      validator: validate_RemoveTags_613471,
+                                      base: "/", url: url_RemoveTags_613472,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartLogging_606416 = ref object of OpenApiRestCall_605589
-proc url_StartLogging_606418(protocol: Scheme; host: string; base: string;
+  Call_StartLogging_613485 = ref object of OpenApiRestCall_612658
+proc url_StartLogging_613487(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1884,7 +1884,7 @@ proc url_StartLogging_606418(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StartLogging_606417(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StartLogging_613486(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## Starts the recording of AWS API calls and log file delivery for a trail. For a trail that is enabled in all regions, this operation must be called from the region in which the trail was created. This operation cannot be called on the shadow trails (replicated trails in other regions) of a trail that is enabled in all regions.
   ## 
@@ -1904,46 +1904,46 @@ proc validate_StartLogging_606417(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606419 = header.getOrDefault("X-Amz-Target")
-  valid_606419 = validateParameter(valid_606419, JString, required = true, default = newJString(
+  var valid_613488 = header.getOrDefault("X-Amz-Target")
+  valid_613488 = validateParameter(valid_613488, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.StartLogging"))
-  if valid_606419 != nil:
-    section.add "X-Amz-Target", valid_606419
-  var valid_606420 = header.getOrDefault("X-Amz-Signature")
-  valid_606420 = validateParameter(valid_606420, JString, required = false,
+  if valid_613488 != nil:
+    section.add "X-Amz-Target", valid_613488
+  var valid_613489 = header.getOrDefault("X-Amz-Signature")
+  valid_613489 = validateParameter(valid_613489, JString, required = false,
                                  default = nil)
-  if valid_606420 != nil:
-    section.add "X-Amz-Signature", valid_606420
-  var valid_606421 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606421 = validateParameter(valid_606421, JString, required = false,
+  if valid_613489 != nil:
+    section.add "X-Amz-Signature", valid_613489
+  var valid_613490 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613490 = validateParameter(valid_613490, JString, required = false,
                                  default = nil)
-  if valid_606421 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606421
-  var valid_606422 = header.getOrDefault("X-Amz-Date")
-  valid_606422 = validateParameter(valid_606422, JString, required = false,
+  if valid_613490 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613490
+  var valid_613491 = header.getOrDefault("X-Amz-Date")
+  valid_613491 = validateParameter(valid_613491, JString, required = false,
                                  default = nil)
-  if valid_606422 != nil:
-    section.add "X-Amz-Date", valid_606422
-  var valid_606423 = header.getOrDefault("X-Amz-Credential")
-  valid_606423 = validateParameter(valid_606423, JString, required = false,
+  if valid_613491 != nil:
+    section.add "X-Amz-Date", valid_613491
+  var valid_613492 = header.getOrDefault("X-Amz-Credential")
+  valid_613492 = validateParameter(valid_613492, JString, required = false,
                                  default = nil)
-  if valid_606423 != nil:
-    section.add "X-Amz-Credential", valid_606423
-  var valid_606424 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606424 = validateParameter(valid_606424, JString, required = false,
+  if valid_613492 != nil:
+    section.add "X-Amz-Credential", valid_613492
+  var valid_613493 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613493 = validateParameter(valid_613493, JString, required = false,
                                  default = nil)
-  if valid_606424 != nil:
-    section.add "X-Amz-Security-Token", valid_606424
-  var valid_606425 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606425 = validateParameter(valid_606425, JString, required = false,
+  if valid_613493 != nil:
+    section.add "X-Amz-Security-Token", valid_613493
+  var valid_613494 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613494 = validateParameter(valid_613494, JString, required = false,
                                  default = nil)
-  if valid_606425 != nil:
-    section.add "X-Amz-Algorithm", valid_606425
-  var valid_606426 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606426 = validateParameter(valid_606426, JString, required = false,
+  if valid_613494 != nil:
+    section.add "X-Amz-Algorithm", valid_613494
+  var valid_613495 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613495 = validateParameter(valid_613495, JString, required = false,
                                  default = nil)
-  if valid_606426 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606426
+  if valid_613495 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613495
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1954,35 +1954,35 @@ proc validate_StartLogging_606417(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_606428: Call_StartLogging_606416; path: JsonNode; query: JsonNode;
+proc call*(call_613497: Call_StartLogging_613485; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Starts the recording of AWS API calls and log file delivery for a trail. For a trail that is enabled in all regions, this operation must be called from the region in which the trail was created. This operation cannot be called on the shadow trails (replicated trails in other regions) of a trail that is enabled in all regions.
   ## 
-  let valid = call_606428.validator(path, query, header, formData, body)
-  let scheme = call_606428.pickScheme
+  let valid = call_613497.validator(path, query, header, formData, body)
+  let scheme = call_613497.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606428.url(scheme.get, call_606428.host, call_606428.base,
-                         call_606428.route, valid.getOrDefault("path"),
+  let url = call_613497.url(scheme.get, call_613497.host, call_613497.base,
+                         call_613497.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606428, url, valid)
+  result = atozHook(call_613497, url, valid)
 
-proc call*(call_606429: Call_StartLogging_606416; body: JsonNode): Recallable =
+proc call*(call_613498: Call_StartLogging_613485; body: JsonNode): Recallable =
   ## startLogging
   ## Starts the recording of AWS API calls and log file delivery for a trail. For a trail that is enabled in all regions, this operation must be called from the region in which the trail was created. This operation cannot be called on the shadow trails (replicated trails in other regions) of a trail that is enabled in all regions.
   ##   body: JObject (required)
-  var body_606430 = newJObject()
+  var body_613499 = newJObject()
   if body != nil:
-    body_606430 = body
-  result = call_606429.call(nil, nil, nil, nil, body_606430)
+    body_613499 = body
+  result = call_613498.call(nil, nil, nil, nil, body_613499)
 
-var startLogging* = Call_StartLogging_606416(name: "startLogging",
+var startLogging* = Call_StartLogging_613485(name: "startLogging",
     meth: HttpMethod.HttpPost, host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.StartLogging",
-    validator: validate_StartLogging_606417, base: "/", url: url_StartLogging_606418,
+    validator: validate_StartLogging_613486, base: "/", url: url_StartLogging_613487,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopLogging_606431 = ref object of OpenApiRestCall_605589
-proc url_StopLogging_606433(protocol: Scheme; host: string; base: string;
+  Call_StopLogging_613500 = ref object of OpenApiRestCall_612658
+proc url_StopLogging_613502(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1994,7 +1994,7 @@ proc url_StopLogging_606433(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_StopLogging_606432(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StopLogging_613501(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Suspends the recording of AWS API calls and log file delivery for the specified trail. Under most circumstances, there is no need to use this action. You can update a trail without stopping it first. This action is the only way to stop recording. For a trail enabled in all regions, this operation must be called from the region in which the trail was created, or an <code>InvalidHomeRegionException</code> will occur. This operation cannot be called on the shadow trails (replicated trails in other regions) of a trail enabled in all regions.
   ## 
@@ -2014,46 +2014,46 @@ proc validate_StopLogging_606432(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606434 = header.getOrDefault("X-Amz-Target")
-  valid_606434 = validateParameter(valid_606434, JString, required = true, default = newJString(
+  var valid_613503 = header.getOrDefault("X-Amz-Target")
+  valid_613503 = validateParameter(valid_613503, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.StopLogging"))
-  if valid_606434 != nil:
-    section.add "X-Amz-Target", valid_606434
-  var valid_606435 = header.getOrDefault("X-Amz-Signature")
-  valid_606435 = validateParameter(valid_606435, JString, required = false,
+  if valid_613503 != nil:
+    section.add "X-Amz-Target", valid_613503
+  var valid_613504 = header.getOrDefault("X-Amz-Signature")
+  valid_613504 = validateParameter(valid_613504, JString, required = false,
                                  default = nil)
-  if valid_606435 != nil:
-    section.add "X-Amz-Signature", valid_606435
-  var valid_606436 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606436 = validateParameter(valid_606436, JString, required = false,
+  if valid_613504 != nil:
+    section.add "X-Amz-Signature", valid_613504
+  var valid_613505 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613505 = validateParameter(valid_613505, JString, required = false,
                                  default = nil)
-  if valid_606436 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606436
-  var valid_606437 = header.getOrDefault("X-Amz-Date")
-  valid_606437 = validateParameter(valid_606437, JString, required = false,
+  if valid_613505 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613505
+  var valid_613506 = header.getOrDefault("X-Amz-Date")
+  valid_613506 = validateParameter(valid_613506, JString, required = false,
                                  default = nil)
-  if valid_606437 != nil:
-    section.add "X-Amz-Date", valid_606437
-  var valid_606438 = header.getOrDefault("X-Amz-Credential")
-  valid_606438 = validateParameter(valid_606438, JString, required = false,
+  if valid_613506 != nil:
+    section.add "X-Amz-Date", valid_613506
+  var valid_613507 = header.getOrDefault("X-Amz-Credential")
+  valid_613507 = validateParameter(valid_613507, JString, required = false,
                                  default = nil)
-  if valid_606438 != nil:
-    section.add "X-Amz-Credential", valid_606438
-  var valid_606439 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606439 = validateParameter(valid_606439, JString, required = false,
+  if valid_613507 != nil:
+    section.add "X-Amz-Credential", valid_613507
+  var valid_613508 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613508 = validateParameter(valid_613508, JString, required = false,
                                  default = nil)
-  if valid_606439 != nil:
-    section.add "X-Amz-Security-Token", valid_606439
-  var valid_606440 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606440 = validateParameter(valid_606440, JString, required = false,
+  if valid_613508 != nil:
+    section.add "X-Amz-Security-Token", valid_613508
+  var valid_613509 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613509 = validateParameter(valid_613509, JString, required = false,
                                  default = nil)
-  if valid_606440 != nil:
-    section.add "X-Amz-Algorithm", valid_606440
-  var valid_606441 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606441 = validateParameter(valid_606441, JString, required = false,
+  if valid_613509 != nil:
+    section.add "X-Amz-Algorithm", valid_613509
+  var valid_613510 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613510 = validateParameter(valid_613510, JString, required = false,
                                  default = nil)
-  if valid_606441 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606441
+  if valid_613510 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613510
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2064,37 +2064,37 @@ proc validate_StopLogging_606432(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606443: Call_StopLogging_606431; path: JsonNode; query: JsonNode;
+proc call*(call_613512: Call_StopLogging_613500; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Suspends the recording of AWS API calls and log file delivery for the specified trail. Under most circumstances, there is no need to use this action. You can update a trail without stopping it first. This action is the only way to stop recording. For a trail enabled in all regions, this operation must be called from the region in which the trail was created, or an <code>InvalidHomeRegionException</code> will occur. This operation cannot be called on the shadow trails (replicated trails in other regions) of a trail enabled in all regions.
   ## 
-  let valid = call_606443.validator(path, query, header, formData, body)
-  let scheme = call_606443.pickScheme
+  let valid = call_613512.validator(path, query, header, formData, body)
+  let scheme = call_613512.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606443.url(scheme.get, call_606443.host, call_606443.base,
-                         call_606443.route, valid.getOrDefault("path"),
+  let url = call_613512.url(scheme.get, call_613512.host, call_613512.base,
+                         call_613512.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606443, url, valid)
+  result = atozHook(call_613512, url, valid)
 
-proc call*(call_606444: Call_StopLogging_606431; body: JsonNode): Recallable =
+proc call*(call_613513: Call_StopLogging_613500; body: JsonNode): Recallable =
   ## stopLogging
   ## Suspends the recording of AWS API calls and log file delivery for the specified trail. Under most circumstances, there is no need to use this action. You can update a trail without stopping it first. This action is the only way to stop recording. For a trail enabled in all regions, this operation must be called from the region in which the trail was created, or an <code>InvalidHomeRegionException</code> will occur. This operation cannot be called on the shadow trails (replicated trails in other regions) of a trail enabled in all regions.
   ##   body: JObject (required)
-  var body_606445 = newJObject()
+  var body_613514 = newJObject()
   if body != nil:
-    body_606445 = body
-  result = call_606444.call(nil, nil, nil, nil, body_606445)
+    body_613514 = body
+  result = call_613513.call(nil, nil, nil, nil, body_613514)
 
-var stopLogging* = Call_StopLogging_606431(name: "stopLogging",
+var stopLogging* = Call_StopLogging_613500(name: "stopLogging",
                                         meth: HttpMethod.HttpPost,
                                         host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.StopLogging",
-                                        validator: validate_StopLogging_606432,
-                                        base: "/", url: url_StopLogging_606433,
+                                        validator: validate_StopLogging_613501,
+                                        base: "/", url: url_StopLogging_613502,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTrail_606446 = ref object of OpenApiRestCall_605589
-proc url_UpdateTrail_606448(protocol: Scheme; host: string; base: string;
+  Call_UpdateTrail_613515 = ref object of OpenApiRestCall_612658
+proc url_UpdateTrail_613517(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2106,7 +2106,7 @@ proc url_UpdateTrail_606448(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateTrail_606447(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateTrail_613516(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates the settings that specify delivery of log files. Changes to a trail do not require stopping the CloudTrail service. Use this action to designate an existing bucket for log delivery. If the existing bucket has previously been a target for CloudTrail log files, an IAM policy exists for the bucket. <code>UpdateTrail</code> must be called from the region in which the trail was created; otherwise, an <code>InvalidHomeRegionException</code> is thrown.
   ## 
@@ -2126,46 +2126,46 @@ proc validate_UpdateTrail_606447(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606449 = header.getOrDefault("X-Amz-Target")
-  valid_606449 = validateParameter(valid_606449, JString, required = true, default = newJString(
+  var valid_613518 = header.getOrDefault("X-Amz-Target")
+  valid_613518 = validateParameter(valid_613518, JString, required = true, default = newJString(
       "com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.UpdateTrail"))
-  if valid_606449 != nil:
-    section.add "X-Amz-Target", valid_606449
-  var valid_606450 = header.getOrDefault("X-Amz-Signature")
-  valid_606450 = validateParameter(valid_606450, JString, required = false,
+  if valid_613518 != nil:
+    section.add "X-Amz-Target", valid_613518
+  var valid_613519 = header.getOrDefault("X-Amz-Signature")
+  valid_613519 = validateParameter(valid_613519, JString, required = false,
                                  default = nil)
-  if valid_606450 != nil:
-    section.add "X-Amz-Signature", valid_606450
-  var valid_606451 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606451 = validateParameter(valid_606451, JString, required = false,
+  if valid_613519 != nil:
+    section.add "X-Amz-Signature", valid_613519
+  var valid_613520 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613520 = validateParameter(valid_613520, JString, required = false,
                                  default = nil)
-  if valid_606451 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606451
-  var valid_606452 = header.getOrDefault("X-Amz-Date")
-  valid_606452 = validateParameter(valid_606452, JString, required = false,
+  if valid_613520 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613520
+  var valid_613521 = header.getOrDefault("X-Amz-Date")
+  valid_613521 = validateParameter(valid_613521, JString, required = false,
                                  default = nil)
-  if valid_606452 != nil:
-    section.add "X-Amz-Date", valid_606452
-  var valid_606453 = header.getOrDefault("X-Amz-Credential")
-  valid_606453 = validateParameter(valid_606453, JString, required = false,
+  if valid_613521 != nil:
+    section.add "X-Amz-Date", valid_613521
+  var valid_613522 = header.getOrDefault("X-Amz-Credential")
+  valid_613522 = validateParameter(valid_613522, JString, required = false,
                                  default = nil)
-  if valid_606453 != nil:
-    section.add "X-Amz-Credential", valid_606453
-  var valid_606454 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606454 = validateParameter(valid_606454, JString, required = false,
+  if valid_613522 != nil:
+    section.add "X-Amz-Credential", valid_613522
+  var valid_613523 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613523 = validateParameter(valid_613523, JString, required = false,
                                  default = nil)
-  if valid_606454 != nil:
-    section.add "X-Amz-Security-Token", valid_606454
-  var valid_606455 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606455 = validateParameter(valid_606455, JString, required = false,
+  if valid_613523 != nil:
+    section.add "X-Amz-Security-Token", valid_613523
+  var valid_613524 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613524 = validateParameter(valid_613524, JString, required = false,
                                  default = nil)
-  if valid_606455 != nil:
-    section.add "X-Amz-Algorithm", valid_606455
-  var valid_606456 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606456 = validateParameter(valid_606456, JString, required = false,
+  if valid_613524 != nil:
+    section.add "X-Amz-Algorithm", valid_613524
+  var valid_613525 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613525 = validateParameter(valid_613525, JString, required = false,
                                  default = nil)
-  if valid_606456 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606456
+  if valid_613525 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613525
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2176,33 +2176,33 @@ proc validate_UpdateTrail_606447(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606458: Call_UpdateTrail_606446; path: JsonNode; query: JsonNode;
+proc call*(call_613527: Call_UpdateTrail_613515; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates the settings that specify delivery of log files. Changes to a trail do not require stopping the CloudTrail service. Use this action to designate an existing bucket for log delivery. If the existing bucket has previously been a target for CloudTrail log files, an IAM policy exists for the bucket. <code>UpdateTrail</code> must be called from the region in which the trail was created; otherwise, an <code>InvalidHomeRegionException</code> is thrown.
   ## 
-  let valid = call_606458.validator(path, query, header, formData, body)
-  let scheme = call_606458.pickScheme
+  let valid = call_613527.validator(path, query, header, formData, body)
+  let scheme = call_613527.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606458.url(scheme.get, call_606458.host, call_606458.base,
-                         call_606458.route, valid.getOrDefault("path"),
+  let url = call_613527.url(scheme.get, call_613527.host, call_613527.base,
+                         call_613527.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606458, url, valid)
+  result = atozHook(call_613527, url, valid)
 
-proc call*(call_606459: Call_UpdateTrail_606446; body: JsonNode): Recallable =
+proc call*(call_613528: Call_UpdateTrail_613515; body: JsonNode): Recallable =
   ## updateTrail
   ## Updates the settings that specify delivery of log files. Changes to a trail do not require stopping the CloudTrail service. Use this action to designate an existing bucket for log delivery. If the existing bucket has previously been a target for CloudTrail log files, an IAM policy exists for the bucket. <code>UpdateTrail</code> must be called from the region in which the trail was created; otherwise, an <code>InvalidHomeRegionException</code> is thrown.
   ##   body: JObject (required)
-  var body_606460 = newJObject()
+  var body_613529 = newJObject()
   if body != nil:
-    body_606460 = body
-  result = call_606459.call(nil, nil, nil, nil, body_606460)
+    body_613529 = body
+  result = call_613528.call(nil, nil, nil, nil, body_613529)
 
-var updateTrail* = Call_UpdateTrail_606446(name: "updateTrail",
+var updateTrail* = Call_UpdateTrail_613515(name: "updateTrail",
                                         meth: HttpMethod.HttpPost,
                                         host: "cloudtrail.amazonaws.com", route: "/#X-Amz-Target=com.amazonaws.cloudtrail.v20131101.CloudTrail_20131101.UpdateTrail",
-                                        validator: validate_UpdateTrail_606447,
-                                        base: "/", url: url_UpdateTrail_606448,
+                                        validator: validate_UpdateTrail_613516,
+                                        base: "/", url: url_UpdateTrail_613517,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest

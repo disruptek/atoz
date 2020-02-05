@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605580 = ref object of OpenApiRestCall
+  OpenApiRestCall_612649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605580](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605580): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -142,8 +142,8 @@ const
   awsServiceName = "qldb-session"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_SendCommand_605918 = ref object of OpenApiRestCall_605580
-proc url_SendCommand_605920(protocol: Scheme; host: string; base: string;
+  Call_SendCommand_612987 = ref object of OpenApiRestCall_612649
+proc url_SendCommand_612989(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -155,7 +155,7 @@ proc url_SendCommand_605920(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_SendCommand_605919(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_SendCommand_612988(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Sends a command to an Amazon QLDB ledger.
   ## 
@@ -175,46 +175,46 @@ proc validate_SendCommand_605919(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606045 = header.getOrDefault("X-Amz-Target")
-  valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
+  var valid_613114 = header.getOrDefault("X-Amz-Target")
+  valid_613114 = validateParameter(valid_613114, JString, required = true, default = newJString(
       "QLDBSession.SendCommand"))
-  if valid_606045 != nil:
-    section.add "X-Amz-Target", valid_606045
-  var valid_606046 = header.getOrDefault("X-Amz-Signature")
-  valid_606046 = validateParameter(valid_606046, JString, required = false,
+  if valid_613114 != nil:
+    section.add "X-Amz-Target", valid_613114
+  var valid_613115 = header.getOrDefault("X-Amz-Signature")
+  valid_613115 = validateParameter(valid_613115, JString, required = false,
                                  default = nil)
-  if valid_606046 != nil:
-    section.add "X-Amz-Signature", valid_606046
-  var valid_606047 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606047 = validateParameter(valid_606047, JString, required = false,
+  if valid_613115 != nil:
+    section.add "X-Amz-Signature", valid_613115
+  var valid_613116 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613116 = validateParameter(valid_613116, JString, required = false,
                                  default = nil)
-  if valid_606047 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606047
-  var valid_606048 = header.getOrDefault("X-Amz-Date")
-  valid_606048 = validateParameter(valid_606048, JString, required = false,
+  if valid_613116 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613116
+  var valid_613117 = header.getOrDefault("X-Amz-Date")
+  valid_613117 = validateParameter(valid_613117, JString, required = false,
                                  default = nil)
-  if valid_606048 != nil:
-    section.add "X-Amz-Date", valid_606048
-  var valid_606049 = header.getOrDefault("X-Amz-Credential")
-  valid_606049 = validateParameter(valid_606049, JString, required = false,
+  if valid_613117 != nil:
+    section.add "X-Amz-Date", valid_613117
+  var valid_613118 = header.getOrDefault("X-Amz-Credential")
+  valid_613118 = validateParameter(valid_613118, JString, required = false,
                                  default = nil)
-  if valid_606049 != nil:
-    section.add "X-Amz-Credential", valid_606049
-  var valid_606050 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606050 = validateParameter(valid_606050, JString, required = false,
+  if valid_613118 != nil:
+    section.add "X-Amz-Credential", valid_613118
+  var valid_613119 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613119 = validateParameter(valid_613119, JString, required = false,
                                  default = nil)
-  if valid_606050 != nil:
-    section.add "X-Amz-Security-Token", valid_606050
-  var valid_606051 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606051 = validateParameter(valid_606051, JString, required = false,
+  if valid_613119 != nil:
+    section.add "X-Amz-Security-Token", valid_613119
+  var valid_613120 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613120 = validateParameter(valid_613120, JString, required = false,
                                  default = nil)
-  if valid_606051 != nil:
-    section.add "X-Amz-Algorithm", valid_606051
-  var valid_606052 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606052 = validateParameter(valid_606052, JString, required = false,
+  if valid_613120 != nil:
+    section.add "X-Amz-Algorithm", valid_613120
+  var valid_613121 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613121 = validateParameter(valid_613121, JString, required = false,
                                  default = nil)
-  if valid_606052 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606052
+  if valid_613121 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613121
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -225,33 +225,33 @@ proc validate_SendCommand_605919(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606076: Call_SendCommand_605918; path: JsonNode; query: JsonNode;
+proc call*(call_613145: Call_SendCommand_612987; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sends a command to an Amazon QLDB ledger.
   ## 
-  let valid = call_606076.validator(path, query, header, formData, body)
-  let scheme = call_606076.pickScheme
+  let valid = call_613145.validator(path, query, header, formData, body)
+  let scheme = call_613145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606076.url(scheme.get, call_606076.host, call_606076.base,
-                         call_606076.route, valid.getOrDefault("path"),
+  let url = call_613145.url(scheme.get, call_613145.host, call_613145.base,
+                         call_613145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606076, url, valid)
+  result = atozHook(call_613145, url, valid)
 
-proc call*(call_606147: Call_SendCommand_605918; body: JsonNode): Recallable =
+proc call*(call_613216: Call_SendCommand_612987; body: JsonNode): Recallable =
   ## sendCommand
   ## Sends a command to an Amazon QLDB ledger.
   ##   body: JObject (required)
-  var body_606148 = newJObject()
+  var body_613217 = newJObject()
   if body != nil:
-    body_606148 = body
-  result = call_606147.call(nil, nil, nil, nil, body_606148)
+    body_613217 = body
+  result = call_613216.call(nil, nil, nil, nil, body_613217)
 
-var sendCommand* = Call_SendCommand_605918(name: "sendCommand",
+var sendCommand* = Call_SendCommand_612987(name: "sendCommand",
                                         meth: HttpMethod.HttpPost,
                                         host: "session.qldb.amazonaws.com", route: "/#X-Amz-Target=QLDBSession.SendCommand",
-                                        validator: validate_SendCommand_605919,
-                                        base: "/", url: url_SendCommand_605920,
+                                        validator: validate_SendCommand_612988,
+                                        base: "/", url: url_SendCommand_612989,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest

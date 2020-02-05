@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605580 = ref object of OpenApiRestCall
+  OpenApiRestCall_612649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605580](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605580): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -153,8 +153,8 @@ const
   awsServiceName = "pi"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_DescribeDimensionKeys_605918 = ref object of OpenApiRestCall_605580
-proc url_DescribeDimensionKeys_605920(protocol: Scheme; host: string; base: string;
+  Call_DescribeDimensionKeys_612987 = ref object of OpenApiRestCall_612649
+proc url_DescribeDimensionKeys_612989(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -166,7 +166,7 @@ proc url_DescribeDimensionKeys_605920(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_DescribeDimensionKeys_605919(path: JsonNode; query: JsonNode;
+proc validate_DescribeDimensionKeys_612988(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## For a specific time period, retrieve the top <code>N</code> dimension keys for a metric.
   ## 
@@ -186,46 +186,46 @@ proc validate_DescribeDimensionKeys_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606045 = header.getOrDefault("X-Amz-Target")
-  valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
+  var valid_613114 = header.getOrDefault("X-Amz-Target")
+  valid_613114 = validateParameter(valid_613114, JString, required = true, default = newJString(
       "PerformanceInsightsv20180227.DescribeDimensionKeys"))
-  if valid_606045 != nil:
-    section.add "X-Amz-Target", valid_606045
-  var valid_606046 = header.getOrDefault("X-Amz-Signature")
-  valid_606046 = validateParameter(valid_606046, JString, required = false,
+  if valid_613114 != nil:
+    section.add "X-Amz-Target", valid_613114
+  var valid_613115 = header.getOrDefault("X-Amz-Signature")
+  valid_613115 = validateParameter(valid_613115, JString, required = false,
                                  default = nil)
-  if valid_606046 != nil:
-    section.add "X-Amz-Signature", valid_606046
-  var valid_606047 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606047 = validateParameter(valid_606047, JString, required = false,
+  if valid_613115 != nil:
+    section.add "X-Amz-Signature", valid_613115
+  var valid_613116 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613116 = validateParameter(valid_613116, JString, required = false,
                                  default = nil)
-  if valid_606047 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606047
-  var valid_606048 = header.getOrDefault("X-Amz-Date")
-  valid_606048 = validateParameter(valid_606048, JString, required = false,
+  if valid_613116 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613116
+  var valid_613117 = header.getOrDefault("X-Amz-Date")
+  valid_613117 = validateParameter(valid_613117, JString, required = false,
                                  default = nil)
-  if valid_606048 != nil:
-    section.add "X-Amz-Date", valid_606048
-  var valid_606049 = header.getOrDefault("X-Amz-Credential")
-  valid_606049 = validateParameter(valid_606049, JString, required = false,
+  if valid_613117 != nil:
+    section.add "X-Amz-Date", valid_613117
+  var valid_613118 = header.getOrDefault("X-Amz-Credential")
+  valid_613118 = validateParameter(valid_613118, JString, required = false,
                                  default = nil)
-  if valid_606049 != nil:
-    section.add "X-Amz-Credential", valid_606049
-  var valid_606050 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606050 = validateParameter(valid_606050, JString, required = false,
+  if valid_613118 != nil:
+    section.add "X-Amz-Credential", valid_613118
+  var valid_613119 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613119 = validateParameter(valid_613119, JString, required = false,
                                  default = nil)
-  if valid_606050 != nil:
-    section.add "X-Amz-Security-Token", valid_606050
-  var valid_606051 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606051 = validateParameter(valid_606051, JString, required = false,
+  if valid_613119 != nil:
+    section.add "X-Amz-Security-Token", valid_613119
+  var valid_613120 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613120 = validateParameter(valid_613120, JString, required = false,
                                  default = nil)
-  if valid_606051 != nil:
-    section.add "X-Amz-Algorithm", valid_606051
-  var valid_606052 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606052 = validateParameter(valid_606052, JString, required = false,
+  if valid_613120 != nil:
+    section.add "X-Amz-Algorithm", valid_613120
+  var valid_613121 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613121 = validateParameter(valid_613121, JString, required = false,
                                  default = nil)
-  if valid_606052 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606052
+  if valid_613121 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613121
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -236,37 +236,37 @@ proc validate_DescribeDimensionKeys_605919(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606076: Call_DescribeDimensionKeys_605918; path: JsonNode;
+proc call*(call_613145: Call_DescribeDimensionKeys_612987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## For a specific time period, retrieve the top <code>N</code> dimension keys for a metric.
   ## 
-  let valid = call_606076.validator(path, query, header, formData, body)
-  let scheme = call_606076.pickScheme
+  let valid = call_613145.validator(path, query, header, formData, body)
+  let scheme = call_613145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606076.url(scheme.get, call_606076.host, call_606076.base,
-                         call_606076.route, valid.getOrDefault("path"),
+  let url = call_613145.url(scheme.get, call_613145.host, call_613145.base,
+                         call_613145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606076, url, valid)
+  result = atozHook(call_613145, url, valid)
 
-proc call*(call_606147: Call_DescribeDimensionKeys_605918; body: JsonNode): Recallable =
+proc call*(call_613216: Call_DescribeDimensionKeys_612987; body: JsonNode): Recallable =
   ## describeDimensionKeys
   ## For a specific time period, retrieve the top <code>N</code> dimension keys for a metric.
   ##   body: JObject (required)
-  var body_606148 = newJObject()
+  var body_613217 = newJObject()
   if body != nil:
-    body_606148 = body
-  result = call_606147.call(nil, nil, nil, nil, body_606148)
+    body_613217 = body
+  result = call_613216.call(nil, nil, nil, nil, body_613217)
 
-var describeDimensionKeys* = Call_DescribeDimensionKeys_605918(
+var describeDimensionKeys* = Call_DescribeDimensionKeys_612987(
     name: "describeDimensionKeys", meth: HttpMethod.HttpPost,
     host: "pi.amazonaws.com",
     route: "/#X-Amz-Target=PerformanceInsightsv20180227.DescribeDimensionKeys",
-    validator: validate_DescribeDimensionKeys_605919, base: "/",
-    url: url_DescribeDimensionKeys_605920, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeDimensionKeys_612988, base: "/",
+    url: url_DescribeDimensionKeys_612989, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetResourceMetrics_606187 = ref object of OpenApiRestCall_605580
-proc url_GetResourceMetrics_606189(protocol: Scheme; host: string; base: string;
+  Call_GetResourceMetrics_613256 = ref object of OpenApiRestCall_612649
+proc url_GetResourceMetrics_613258(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -278,7 +278,7 @@ proc url_GetResourceMetrics_606189(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetResourceMetrics_606188(path: JsonNode; query: JsonNode;
+proc validate_GetResourceMetrics_613257(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Retrieve Performance Insights metrics for a set of data sources, over a time period. You can provide specific dimension groups and dimensions, and provide aggregation and filtering criteria for each group.
@@ -299,46 +299,46 @@ proc validate_GetResourceMetrics_606188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606190 = header.getOrDefault("X-Amz-Target")
-  valid_606190 = validateParameter(valid_606190, JString, required = true, default = newJString(
+  var valid_613259 = header.getOrDefault("X-Amz-Target")
+  valid_613259 = validateParameter(valid_613259, JString, required = true, default = newJString(
       "PerformanceInsightsv20180227.GetResourceMetrics"))
-  if valid_606190 != nil:
-    section.add "X-Amz-Target", valid_606190
-  var valid_606191 = header.getOrDefault("X-Amz-Signature")
-  valid_606191 = validateParameter(valid_606191, JString, required = false,
+  if valid_613259 != nil:
+    section.add "X-Amz-Target", valid_613259
+  var valid_613260 = header.getOrDefault("X-Amz-Signature")
+  valid_613260 = validateParameter(valid_613260, JString, required = false,
                                  default = nil)
-  if valid_606191 != nil:
-    section.add "X-Amz-Signature", valid_606191
-  var valid_606192 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606192 = validateParameter(valid_606192, JString, required = false,
+  if valid_613260 != nil:
+    section.add "X-Amz-Signature", valid_613260
+  var valid_613261 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613261 = validateParameter(valid_613261, JString, required = false,
                                  default = nil)
-  if valid_606192 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606192
-  var valid_606193 = header.getOrDefault("X-Amz-Date")
-  valid_606193 = validateParameter(valid_606193, JString, required = false,
+  if valid_613261 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613261
+  var valid_613262 = header.getOrDefault("X-Amz-Date")
+  valid_613262 = validateParameter(valid_613262, JString, required = false,
                                  default = nil)
-  if valid_606193 != nil:
-    section.add "X-Amz-Date", valid_606193
-  var valid_606194 = header.getOrDefault("X-Amz-Credential")
-  valid_606194 = validateParameter(valid_606194, JString, required = false,
+  if valid_613262 != nil:
+    section.add "X-Amz-Date", valid_613262
+  var valid_613263 = header.getOrDefault("X-Amz-Credential")
+  valid_613263 = validateParameter(valid_613263, JString, required = false,
                                  default = nil)
-  if valid_606194 != nil:
-    section.add "X-Amz-Credential", valid_606194
-  var valid_606195 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606195 = validateParameter(valid_606195, JString, required = false,
+  if valid_613263 != nil:
+    section.add "X-Amz-Credential", valid_613263
+  var valid_613264 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613264 = validateParameter(valid_613264, JString, required = false,
                                  default = nil)
-  if valid_606195 != nil:
-    section.add "X-Amz-Security-Token", valid_606195
-  var valid_606196 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606196 = validateParameter(valid_606196, JString, required = false,
+  if valid_613264 != nil:
+    section.add "X-Amz-Security-Token", valid_613264
+  var valid_613265 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613265 = validateParameter(valid_613265, JString, required = false,
                                  default = nil)
-  if valid_606196 != nil:
-    section.add "X-Amz-Algorithm", valid_606196
-  var valid_606197 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606197 = validateParameter(valid_606197, JString, required = false,
+  if valid_613265 != nil:
+    section.add "X-Amz-Algorithm", valid_613265
+  var valid_613266 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613266 = validateParameter(valid_613266, JString, required = false,
                                  default = nil)
-  if valid_606197 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606197
+  if valid_613266 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613266
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -349,33 +349,33 @@ proc validate_GetResourceMetrics_606188(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606199: Call_GetResourceMetrics_606187; path: JsonNode;
+proc call*(call_613268: Call_GetResourceMetrics_613256; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieve Performance Insights metrics for a set of data sources, over a time period. You can provide specific dimension groups and dimensions, and provide aggregation and filtering criteria for each group.
   ## 
-  let valid = call_606199.validator(path, query, header, formData, body)
-  let scheme = call_606199.pickScheme
+  let valid = call_613268.validator(path, query, header, formData, body)
+  let scheme = call_613268.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606199.url(scheme.get, call_606199.host, call_606199.base,
-                         call_606199.route, valid.getOrDefault("path"),
+  let url = call_613268.url(scheme.get, call_613268.host, call_613268.base,
+                         call_613268.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606199, url, valid)
+  result = atozHook(call_613268, url, valid)
 
-proc call*(call_606200: Call_GetResourceMetrics_606187; body: JsonNode): Recallable =
+proc call*(call_613269: Call_GetResourceMetrics_613256; body: JsonNode): Recallable =
   ## getResourceMetrics
   ## Retrieve Performance Insights metrics for a set of data sources, over a time period. You can provide specific dimension groups and dimensions, and provide aggregation and filtering criteria for each group.
   ##   body: JObject (required)
-  var body_606201 = newJObject()
+  var body_613270 = newJObject()
   if body != nil:
-    body_606201 = body
-  result = call_606200.call(nil, nil, nil, nil, body_606201)
+    body_613270 = body
+  result = call_613269.call(nil, nil, nil, nil, body_613270)
 
-var getResourceMetrics* = Call_GetResourceMetrics_606187(
+var getResourceMetrics* = Call_GetResourceMetrics_613256(
     name: "getResourceMetrics", meth: HttpMethod.HttpPost, host: "pi.amazonaws.com",
     route: "/#X-Amz-Target=PerformanceInsightsv20180227.GetResourceMetrics",
-    validator: validate_GetResourceMetrics_606188, base: "/",
-    url: url_GetResourceMetrics_606189, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetResourceMetrics_613257, base: "/",
+    url: url_GetResourceMetrics_613258, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

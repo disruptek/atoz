@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605589 = ref object of OpenApiRestCall
+  OpenApiRestCall_612658 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612658](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612658): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,8 +134,8 @@ const
   awsServiceName = "route53domains"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CheckDomainAvailability_605927 = ref object of OpenApiRestCall_605589
-proc url_CheckDomainAvailability_605929(protocol: Scheme; host: string; base: string;
+  Call_CheckDomainAvailability_612996 = ref object of OpenApiRestCall_612658
+proc url_CheckDomainAvailability_612998(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -148,7 +148,7 @@ proc url_CheckDomainAvailability_605929(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_CheckDomainAvailability_605928(path: JsonNode; query: JsonNode;
+proc validate_CheckDomainAvailability_612997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation checks the availability of one domain name. Note that if the availability status of a domain is pending, you must submit another request to determine the availability of the domain name.
   ## 
@@ -168,46 +168,46 @@ proc validate_CheckDomainAvailability_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606054 = header.getOrDefault("X-Amz-Target")
-  valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
+  var valid_613123 = header.getOrDefault("X-Amz-Target")
+  valid_613123 = validateParameter(valid_613123, JString, required = true, default = newJString(
       "Route53Domains_v20140515.CheckDomainAvailability"))
-  if valid_606054 != nil:
-    section.add "X-Amz-Target", valid_606054
-  var valid_606055 = header.getOrDefault("X-Amz-Signature")
-  valid_606055 = validateParameter(valid_606055, JString, required = false,
+  if valid_613123 != nil:
+    section.add "X-Amz-Target", valid_613123
+  var valid_613124 = header.getOrDefault("X-Amz-Signature")
+  valid_613124 = validateParameter(valid_613124, JString, required = false,
                                  default = nil)
-  if valid_606055 != nil:
-    section.add "X-Amz-Signature", valid_606055
-  var valid_606056 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606056 = validateParameter(valid_606056, JString, required = false,
+  if valid_613124 != nil:
+    section.add "X-Amz-Signature", valid_613124
+  var valid_613125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613125 = validateParameter(valid_613125, JString, required = false,
                                  default = nil)
-  if valid_606056 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606056
-  var valid_606057 = header.getOrDefault("X-Amz-Date")
-  valid_606057 = validateParameter(valid_606057, JString, required = false,
+  if valid_613125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613125
+  var valid_613126 = header.getOrDefault("X-Amz-Date")
+  valid_613126 = validateParameter(valid_613126, JString, required = false,
                                  default = nil)
-  if valid_606057 != nil:
-    section.add "X-Amz-Date", valid_606057
-  var valid_606058 = header.getOrDefault("X-Amz-Credential")
-  valid_606058 = validateParameter(valid_606058, JString, required = false,
+  if valid_613126 != nil:
+    section.add "X-Amz-Date", valid_613126
+  var valid_613127 = header.getOrDefault("X-Amz-Credential")
+  valid_613127 = validateParameter(valid_613127, JString, required = false,
                                  default = nil)
-  if valid_606058 != nil:
-    section.add "X-Amz-Credential", valid_606058
-  var valid_606059 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606059 = validateParameter(valid_606059, JString, required = false,
+  if valid_613127 != nil:
+    section.add "X-Amz-Credential", valid_613127
+  var valid_613128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613128 = validateParameter(valid_613128, JString, required = false,
                                  default = nil)
-  if valid_606059 != nil:
-    section.add "X-Amz-Security-Token", valid_606059
-  var valid_606060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606060 = validateParameter(valid_606060, JString, required = false,
+  if valid_613128 != nil:
+    section.add "X-Amz-Security-Token", valid_613128
+  var valid_613129 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613129 = validateParameter(valid_613129, JString, required = false,
                                  default = nil)
-  if valid_606060 != nil:
-    section.add "X-Amz-Algorithm", valid_606060
-  var valid_606061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606061 = validateParameter(valid_606061, JString, required = false,
+  if valid_613129 != nil:
+    section.add "X-Amz-Algorithm", valid_613129
+  var valid_613130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613130 = validateParameter(valid_613130, JString, required = false,
                                  default = nil)
-  if valid_606061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606061
+  if valid_613130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -218,37 +218,37 @@ proc validate_CheckDomainAvailability_605928(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606085: Call_CheckDomainAvailability_605927; path: JsonNode;
+proc call*(call_613154: Call_CheckDomainAvailability_612996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation checks the availability of one domain name. Note that if the availability status of a domain is pending, you must submit another request to determine the availability of the domain name.
   ## 
-  let valid = call_606085.validator(path, query, header, formData, body)
-  let scheme = call_606085.pickScheme
+  let valid = call_613154.validator(path, query, header, formData, body)
+  let scheme = call_613154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606085.url(scheme.get, call_606085.host, call_606085.base,
-                         call_606085.route, valid.getOrDefault("path"),
+  let url = call_613154.url(scheme.get, call_613154.host, call_613154.base,
+                         call_613154.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606085, url, valid)
+  result = atozHook(call_613154, url, valid)
 
-proc call*(call_606156: Call_CheckDomainAvailability_605927; body: JsonNode): Recallable =
+proc call*(call_613225: Call_CheckDomainAvailability_612996; body: JsonNode): Recallable =
   ## checkDomainAvailability
   ## This operation checks the availability of one domain name. Note that if the availability status of a domain is pending, you must submit another request to determine the availability of the domain name.
   ##   body: JObject (required)
-  var body_606157 = newJObject()
+  var body_613226 = newJObject()
   if body != nil:
-    body_606157 = body
-  result = call_606156.call(nil, nil, nil, nil, body_606157)
+    body_613226 = body
+  result = call_613225.call(nil, nil, nil, nil, body_613226)
 
-var checkDomainAvailability* = Call_CheckDomainAvailability_605927(
+var checkDomainAvailability* = Call_CheckDomainAvailability_612996(
     name: "checkDomainAvailability", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.CheckDomainAvailability",
-    validator: validate_CheckDomainAvailability_605928, base: "/",
-    url: url_CheckDomainAvailability_605929, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CheckDomainAvailability_612997, base: "/",
+    url: url_CheckDomainAvailability_612998, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CheckDomainTransferability_606196 = ref object of OpenApiRestCall_605589
-proc url_CheckDomainTransferability_606198(protocol: Scheme; host: string;
+  Call_CheckDomainTransferability_613265 = ref object of OpenApiRestCall_612658
+proc url_CheckDomainTransferability_613267(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -260,7 +260,7 @@ proc url_CheckDomainTransferability_606198(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CheckDomainTransferability_606197(path: JsonNode; query: JsonNode;
+proc validate_CheckDomainTransferability_613266(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Checks whether a domain name can be transferred to Amazon Route 53. 
   ## 
@@ -280,46 +280,46 @@ proc validate_CheckDomainTransferability_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606199 = header.getOrDefault("X-Amz-Target")
-  valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
+  var valid_613268 = header.getOrDefault("X-Amz-Target")
+  valid_613268 = validateParameter(valid_613268, JString, required = true, default = newJString(
       "Route53Domains_v20140515.CheckDomainTransferability"))
-  if valid_606199 != nil:
-    section.add "X-Amz-Target", valid_606199
-  var valid_606200 = header.getOrDefault("X-Amz-Signature")
-  valid_606200 = validateParameter(valid_606200, JString, required = false,
+  if valid_613268 != nil:
+    section.add "X-Amz-Target", valid_613268
+  var valid_613269 = header.getOrDefault("X-Amz-Signature")
+  valid_613269 = validateParameter(valid_613269, JString, required = false,
                                  default = nil)
-  if valid_606200 != nil:
-    section.add "X-Amz-Signature", valid_606200
-  var valid_606201 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606201 = validateParameter(valid_606201, JString, required = false,
+  if valid_613269 != nil:
+    section.add "X-Amz-Signature", valid_613269
+  var valid_613270 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613270 = validateParameter(valid_613270, JString, required = false,
                                  default = nil)
-  if valid_606201 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606201
-  var valid_606202 = header.getOrDefault("X-Amz-Date")
-  valid_606202 = validateParameter(valid_606202, JString, required = false,
+  if valid_613270 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613270
+  var valid_613271 = header.getOrDefault("X-Amz-Date")
+  valid_613271 = validateParameter(valid_613271, JString, required = false,
                                  default = nil)
-  if valid_606202 != nil:
-    section.add "X-Amz-Date", valid_606202
-  var valid_606203 = header.getOrDefault("X-Amz-Credential")
-  valid_606203 = validateParameter(valid_606203, JString, required = false,
+  if valid_613271 != nil:
+    section.add "X-Amz-Date", valid_613271
+  var valid_613272 = header.getOrDefault("X-Amz-Credential")
+  valid_613272 = validateParameter(valid_613272, JString, required = false,
                                  default = nil)
-  if valid_606203 != nil:
-    section.add "X-Amz-Credential", valid_606203
-  var valid_606204 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606204 = validateParameter(valid_606204, JString, required = false,
+  if valid_613272 != nil:
+    section.add "X-Amz-Credential", valid_613272
+  var valid_613273 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613273 = validateParameter(valid_613273, JString, required = false,
                                  default = nil)
-  if valid_606204 != nil:
-    section.add "X-Amz-Security-Token", valid_606204
-  var valid_606205 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606205 = validateParameter(valid_606205, JString, required = false,
+  if valid_613273 != nil:
+    section.add "X-Amz-Security-Token", valid_613273
+  var valid_613274 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613274 = validateParameter(valid_613274, JString, required = false,
                                  default = nil)
-  if valid_606205 != nil:
-    section.add "X-Amz-Algorithm", valid_606205
-  var valid_606206 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606206 = validateParameter(valid_606206, JString, required = false,
+  if valid_613274 != nil:
+    section.add "X-Amz-Algorithm", valid_613274
+  var valid_613275 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613275 = validateParameter(valid_613275, JString, required = false,
                                  default = nil)
-  if valid_606206 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606206
+  if valid_613275 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613275
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -330,37 +330,37 @@ proc validate_CheckDomainTransferability_606197(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606208: Call_CheckDomainTransferability_606196; path: JsonNode;
+proc call*(call_613277: Call_CheckDomainTransferability_613265; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Checks whether a domain name can be transferred to Amazon Route 53. 
   ## 
-  let valid = call_606208.validator(path, query, header, formData, body)
-  let scheme = call_606208.pickScheme
+  let valid = call_613277.validator(path, query, header, formData, body)
+  let scheme = call_613277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606208.url(scheme.get, call_606208.host, call_606208.base,
-                         call_606208.route, valid.getOrDefault("path"),
+  let url = call_613277.url(scheme.get, call_613277.host, call_613277.base,
+                         call_613277.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606208, url, valid)
+  result = atozHook(call_613277, url, valid)
 
-proc call*(call_606209: Call_CheckDomainTransferability_606196; body: JsonNode): Recallable =
+proc call*(call_613278: Call_CheckDomainTransferability_613265; body: JsonNode): Recallable =
   ## checkDomainTransferability
   ## Checks whether a domain name can be transferred to Amazon Route 53. 
   ##   body: JObject (required)
-  var body_606210 = newJObject()
+  var body_613279 = newJObject()
   if body != nil:
-    body_606210 = body
-  result = call_606209.call(nil, nil, nil, nil, body_606210)
+    body_613279 = body
+  result = call_613278.call(nil, nil, nil, nil, body_613279)
 
-var checkDomainTransferability* = Call_CheckDomainTransferability_606196(
+var checkDomainTransferability* = Call_CheckDomainTransferability_613265(
     name: "checkDomainTransferability", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com", route: "/#X-Amz-Target=Route53Domains_v20140515.CheckDomainTransferability",
-    validator: validate_CheckDomainTransferability_606197, base: "/",
-    url: url_CheckDomainTransferability_606198,
+    validator: validate_CheckDomainTransferability_613266, base: "/",
+    url: url_CheckDomainTransferability_613267,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteTagsForDomain_606211 = ref object of OpenApiRestCall_605589
-proc url_DeleteTagsForDomain_606213(protocol: Scheme; host: string; base: string;
+  Call_DeleteTagsForDomain_613280 = ref object of OpenApiRestCall_612658
+proc url_DeleteTagsForDomain_613282(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -372,7 +372,7 @@ proc url_DeleteTagsForDomain_606213(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_DeleteTagsForDomain_606212(path: JsonNode; query: JsonNode;
+proc validate_DeleteTagsForDomain_613281(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>This operation deletes the specified tags for a domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
@@ -393,46 +393,46 @@ proc validate_DeleteTagsForDomain_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606214 = header.getOrDefault("X-Amz-Target")
-  valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
+  var valid_613283 = header.getOrDefault("X-Amz-Target")
+  valid_613283 = validateParameter(valid_613283, JString, required = true, default = newJString(
       "Route53Domains_v20140515.DeleteTagsForDomain"))
-  if valid_606214 != nil:
-    section.add "X-Amz-Target", valid_606214
-  var valid_606215 = header.getOrDefault("X-Amz-Signature")
-  valid_606215 = validateParameter(valid_606215, JString, required = false,
+  if valid_613283 != nil:
+    section.add "X-Amz-Target", valid_613283
+  var valid_613284 = header.getOrDefault("X-Amz-Signature")
+  valid_613284 = validateParameter(valid_613284, JString, required = false,
                                  default = nil)
-  if valid_606215 != nil:
-    section.add "X-Amz-Signature", valid_606215
-  var valid_606216 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606216 = validateParameter(valid_606216, JString, required = false,
+  if valid_613284 != nil:
+    section.add "X-Amz-Signature", valid_613284
+  var valid_613285 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613285 = validateParameter(valid_613285, JString, required = false,
                                  default = nil)
-  if valid_606216 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606216
-  var valid_606217 = header.getOrDefault("X-Amz-Date")
-  valid_606217 = validateParameter(valid_606217, JString, required = false,
+  if valid_613285 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613285
+  var valid_613286 = header.getOrDefault("X-Amz-Date")
+  valid_613286 = validateParameter(valid_613286, JString, required = false,
                                  default = nil)
-  if valid_606217 != nil:
-    section.add "X-Amz-Date", valid_606217
-  var valid_606218 = header.getOrDefault("X-Amz-Credential")
-  valid_606218 = validateParameter(valid_606218, JString, required = false,
+  if valid_613286 != nil:
+    section.add "X-Amz-Date", valid_613286
+  var valid_613287 = header.getOrDefault("X-Amz-Credential")
+  valid_613287 = validateParameter(valid_613287, JString, required = false,
                                  default = nil)
-  if valid_606218 != nil:
-    section.add "X-Amz-Credential", valid_606218
-  var valid_606219 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606219 = validateParameter(valid_606219, JString, required = false,
+  if valid_613287 != nil:
+    section.add "X-Amz-Credential", valid_613287
+  var valid_613288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613288 = validateParameter(valid_613288, JString, required = false,
                                  default = nil)
-  if valid_606219 != nil:
-    section.add "X-Amz-Security-Token", valid_606219
-  var valid_606220 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606220 = validateParameter(valid_606220, JString, required = false,
+  if valid_613288 != nil:
+    section.add "X-Amz-Security-Token", valid_613288
+  var valid_613289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613289 = validateParameter(valid_613289, JString, required = false,
                                  default = nil)
-  if valid_606220 != nil:
-    section.add "X-Amz-Algorithm", valid_606220
-  var valid_606221 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606221 = validateParameter(valid_606221, JString, required = false,
+  if valid_613289 != nil:
+    section.add "X-Amz-Algorithm", valid_613289
+  var valid_613290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613290 = validateParameter(valid_613290, JString, required = false,
                                  default = nil)
-  if valid_606221 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606221
+  if valid_613290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613290
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -443,37 +443,37 @@ proc validate_DeleteTagsForDomain_606212(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606223: Call_DeleteTagsForDomain_606211; path: JsonNode;
+proc call*(call_613292: Call_DeleteTagsForDomain_613280; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation deletes the specified tags for a domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
   ## 
-  let valid = call_606223.validator(path, query, header, formData, body)
-  let scheme = call_606223.pickScheme
+  let valid = call_613292.validator(path, query, header, formData, body)
+  let scheme = call_613292.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606223.url(scheme.get, call_606223.host, call_606223.base,
-                         call_606223.route, valid.getOrDefault("path"),
+  let url = call_613292.url(scheme.get, call_613292.host, call_613292.base,
+                         call_613292.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606223, url, valid)
+  result = atozHook(call_613292, url, valid)
 
-proc call*(call_606224: Call_DeleteTagsForDomain_606211; body: JsonNode): Recallable =
+proc call*(call_613293: Call_DeleteTagsForDomain_613280; body: JsonNode): Recallable =
   ## deleteTagsForDomain
   ## <p>This operation deletes the specified tags for a domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
   ##   body: JObject (required)
-  var body_606225 = newJObject()
+  var body_613294 = newJObject()
   if body != nil:
-    body_606225 = body
-  result = call_606224.call(nil, nil, nil, nil, body_606225)
+    body_613294 = body
+  result = call_613293.call(nil, nil, nil, nil, body_613294)
 
-var deleteTagsForDomain* = Call_DeleteTagsForDomain_606211(
+var deleteTagsForDomain* = Call_DeleteTagsForDomain_613280(
     name: "deleteTagsForDomain", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.DeleteTagsForDomain",
-    validator: validate_DeleteTagsForDomain_606212, base: "/",
-    url: url_DeleteTagsForDomain_606213, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteTagsForDomain_613281, base: "/",
+    url: url_DeleteTagsForDomain_613282, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableDomainAutoRenew_606226 = ref object of OpenApiRestCall_605589
-proc url_DisableDomainAutoRenew_606228(protocol: Scheme; host: string; base: string;
+  Call_DisableDomainAutoRenew_613295 = ref object of OpenApiRestCall_612658
+proc url_DisableDomainAutoRenew_613297(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -485,7 +485,7 @@ proc url_DisableDomainAutoRenew_606228(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_DisableDomainAutoRenew_606227(path: JsonNode; query: JsonNode;
+proc validate_DisableDomainAutoRenew_613296(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation disables automatic renewal of domain registration for the specified domain.
   ## 
@@ -505,46 +505,46 @@ proc validate_DisableDomainAutoRenew_606227(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606229 = header.getOrDefault("X-Amz-Target")
-  valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
+  var valid_613298 = header.getOrDefault("X-Amz-Target")
+  valid_613298 = validateParameter(valid_613298, JString, required = true, default = newJString(
       "Route53Domains_v20140515.DisableDomainAutoRenew"))
-  if valid_606229 != nil:
-    section.add "X-Amz-Target", valid_606229
-  var valid_606230 = header.getOrDefault("X-Amz-Signature")
-  valid_606230 = validateParameter(valid_606230, JString, required = false,
+  if valid_613298 != nil:
+    section.add "X-Amz-Target", valid_613298
+  var valid_613299 = header.getOrDefault("X-Amz-Signature")
+  valid_613299 = validateParameter(valid_613299, JString, required = false,
                                  default = nil)
-  if valid_606230 != nil:
-    section.add "X-Amz-Signature", valid_606230
-  var valid_606231 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606231 = validateParameter(valid_606231, JString, required = false,
+  if valid_613299 != nil:
+    section.add "X-Amz-Signature", valid_613299
+  var valid_613300 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613300 = validateParameter(valid_613300, JString, required = false,
                                  default = nil)
-  if valid_606231 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606231
-  var valid_606232 = header.getOrDefault("X-Amz-Date")
-  valid_606232 = validateParameter(valid_606232, JString, required = false,
+  if valid_613300 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613300
+  var valid_613301 = header.getOrDefault("X-Amz-Date")
+  valid_613301 = validateParameter(valid_613301, JString, required = false,
                                  default = nil)
-  if valid_606232 != nil:
-    section.add "X-Amz-Date", valid_606232
-  var valid_606233 = header.getOrDefault("X-Amz-Credential")
-  valid_606233 = validateParameter(valid_606233, JString, required = false,
+  if valid_613301 != nil:
+    section.add "X-Amz-Date", valid_613301
+  var valid_613302 = header.getOrDefault("X-Amz-Credential")
+  valid_613302 = validateParameter(valid_613302, JString, required = false,
                                  default = nil)
-  if valid_606233 != nil:
-    section.add "X-Amz-Credential", valid_606233
-  var valid_606234 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606234 = validateParameter(valid_606234, JString, required = false,
+  if valid_613302 != nil:
+    section.add "X-Amz-Credential", valid_613302
+  var valid_613303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613303 = validateParameter(valid_613303, JString, required = false,
                                  default = nil)
-  if valid_606234 != nil:
-    section.add "X-Amz-Security-Token", valid_606234
-  var valid_606235 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606235 = validateParameter(valid_606235, JString, required = false,
+  if valid_613303 != nil:
+    section.add "X-Amz-Security-Token", valid_613303
+  var valid_613304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613304 = validateParameter(valid_613304, JString, required = false,
                                  default = nil)
-  if valid_606235 != nil:
-    section.add "X-Amz-Algorithm", valid_606235
-  var valid_606236 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606236 = validateParameter(valid_606236, JString, required = false,
+  if valid_613304 != nil:
+    section.add "X-Amz-Algorithm", valid_613304
+  var valid_613305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613305 = validateParameter(valid_613305, JString, required = false,
                                  default = nil)
-  if valid_606236 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606236
+  if valid_613305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613305
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -555,37 +555,37 @@ proc validate_DisableDomainAutoRenew_606227(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606238: Call_DisableDomainAutoRenew_606226; path: JsonNode;
+proc call*(call_613307: Call_DisableDomainAutoRenew_613295; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation disables automatic renewal of domain registration for the specified domain.
   ## 
-  let valid = call_606238.validator(path, query, header, formData, body)
-  let scheme = call_606238.pickScheme
+  let valid = call_613307.validator(path, query, header, formData, body)
+  let scheme = call_613307.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606238.url(scheme.get, call_606238.host, call_606238.base,
-                         call_606238.route, valid.getOrDefault("path"),
+  let url = call_613307.url(scheme.get, call_613307.host, call_613307.base,
+                         call_613307.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606238, url, valid)
+  result = atozHook(call_613307, url, valid)
 
-proc call*(call_606239: Call_DisableDomainAutoRenew_606226; body: JsonNode): Recallable =
+proc call*(call_613308: Call_DisableDomainAutoRenew_613295; body: JsonNode): Recallable =
   ## disableDomainAutoRenew
   ## This operation disables automatic renewal of domain registration for the specified domain.
   ##   body: JObject (required)
-  var body_606240 = newJObject()
+  var body_613309 = newJObject()
   if body != nil:
-    body_606240 = body
-  result = call_606239.call(nil, nil, nil, nil, body_606240)
+    body_613309 = body
+  result = call_613308.call(nil, nil, nil, nil, body_613309)
 
-var disableDomainAutoRenew* = Call_DisableDomainAutoRenew_606226(
+var disableDomainAutoRenew* = Call_DisableDomainAutoRenew_613295(
     name: "disableDomainAutoRenew", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.DisableDomainAutoRenew",
-    validator: validate_DisableDomainAutoRenew_606227, base: "/",
-    url: url_DisableDomainAutoRenew_606228, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisableDomainAutoRenew_613296, base: "/",
+    url: url_DisableDomainAutoRenew_613297, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisableDomainTransferLock_606241 = ref object of OpenApiRestCall_605589
-proc url_DisableDomainTransferLock_606243(protocol: Scheme; host: string;
+  Call_DisableDomainTransferLock_613310 = ref object of OpenApiRestCall_612658
+proc url_DisableDomainTransferLock_613312(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -597,7 +597,7 @@ proc url_DisableDomainTransferLock_606243(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DisableDomainTransferLock_606242(path: JsonNode; query: JsonNode;
+proc validate_DisableDomainTransferLock_613311(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation removes the transfer lock on the domain (specifically the <code>clientTransferProhibited</code> status) to allow domain transfers. We recommend you refrain from performing this action unless you intend to transfer the domain to a different registrar. Successful submission returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.
   ## 
@@ -617,46 +617,46 @@ proc validate_DisableDomainTransferLock_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606244 = header.getOrDefault("X-Amz-Target")
-  valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
+  var valid_613313 = header.getOrDefault("X-Amz-Target")
+  valid_613313 = validateParameter(valid_613313, JString, required = true, default = newJString(
       "Route53Domains_v20140515.DisableDomainTransferLock"))
-  if valid_606244 != nil:
-    section.add "X-Amz-Target", valid_606244
-  var valid_606245 = header.getOrDefault("X-Amz-Signature")
-  valid_606245 = validateParameter(valid_606245, JString, required = false,
+  if valid_613313 != nil:
+    section.add "X-Amz-Target", valid_613313
+  var valid_613314 = header.getOrDefault("X-Amz-Signature")
+  valid_613314 = validateParameter(valid_613314, JString, required = false,
                                  default = nil)
-  if valid_606245 != nil:
-    section.add "X-Amz-Signature", valid_606245
-  var valid_606246 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606246 = validateParameter(valid_606246, JString, required = false,
+  if valid_613314 != nil:
+    section.add "X-Amz-Signature", valid_613314
+  var valid_613315 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613315 = validateParameter(valid_613315, JString, required = false,
                                  default = nil)
-  if valid_606246 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606246
-  var valid_606247 = header.getOrDefault("X-Amz-Date")
-  valid_606247 = validateParameter(valid_606247, JString, required = false,
+  if valid_613315 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613315
+  var valid_613316 = header.getOrDefault("X-Amz-Date")
+  valid_613316 = validateParameter(valid_613316, JString, required = false,
                                  default = nil)
-  if valid_606247 != nil:
-    section.add "X-Amz-Date", valid_606247
-  var valid_606248 = header.getOrDefault("X-Amz-Credential")
-  valid_606248 = validateParameter(valid_606248, JString, required = false,
+  if valid_613316 != nil:
+    section.add "X-Amz-Date", valid_613316
+  var valid_613317 = header.getOrDefault("X-Amz-Credential")
+  valid_613317 = validateParameter(valid_613317, JString, required = false,
                                  default = nil)
-  if valid_606248 != nil:
-    section.add "X-Amz-Credential", valid_606248
-  var valid_606249 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606249 = validateParameter(valid_606249, JString, required = false,
+  if valid_613317 != nil:
+    section.add "X-Amz-Credential", valid_613317
+  var valid_613318 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613318 = validateParameter(valid_613318, JString, required = false,
                                  default = nil)
-  if valid_606249 != nil:
-    section.add "X-Amz-Security-Token", valid_606249
-  var valid_606250 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606250 = validateParameter(valid_606250, JString, required = false,
+  if valid_613318 != nil:
+    section.add "X-Amz-Security-Token", valid_613318
+  var valid_613319 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613319 = validateParameter(valid_613319, JString, required = false,
                                  default = nil)
-  if valid_606250 != nil:
-    section.add "X-Amz-Algorithm", valid_606250
-  var valid_606251 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606251 = validateParameter(valid_606251, JString, required = false,
+  if valid_613319 != nil:
+    section.add "X-Amz-Algorithm", valid_613319
+  var valid_613320 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613320 = validateParameter(valid_613320, JString, required = false,
                                  default = nil)
-  if valid_606251 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606251
+  if valid_613320 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613320
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -667,38 +667,38 @@ proc validate_DisableDomainTransferLock_606242(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606253: Call_DisableDomainTransferLock_606241; path: JsonNode;
+proc call*(call_613322: Call_DisableDomainTransferLock_613310; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation removes the transfer lock on the domain (specifically the <code>clientTransferProhibited</code> status) to allow domain transfers. We recommend you refrain from performing this action unless you intend to transfer the domain to a different registrar. Successful submission returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.
   ## 
-  let valid = call_606253.validator(path, query, header, formData, body)
-  let scheme = call_606253.pickScheme
+  let valid = call_613322.validator(path, query, header, formData, body)
+  let scheme = call_613322.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606253.url(scheme.get, call_606253.host, call_606253.base,
-                         call_606253.route, valid.getOrDefault("path"),
+  let url = call_613322.url(scheme.get, call_613322.host, call_613322.base,
+                         call_613322.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606253, url, valid)
+  result = atozHook(call_613322, url, valid)
 
-proc call*(call_606254: Call_DisableDomainTransferLock_606241; body: JsonNode): Recallable =
+proc call*(call_613323: Call_DisableDomainTransferLock_613310; body: JsonNode): Recallable =
   ## disableDomainTransferLock
   ## This operation removes the transfer lock on the domain (specifically the <code>clientTransferProhibited</code> status) to allow domain transfers. We recommend you refrain from performing this action unless you intend to transfer the domain to a different registrar. Successful submission returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.
   ##   body: JObject (required)
-  var body_606255 = newJObject()
+  var body_613324 = newJObject()
   if body != nil:
-    body_606255 = body
-  result = call_606254.call(nil, nil, nil, nil, body_606255)
+    body_613324 = body
+  result = call_613323.call(nil, nil, nil, nil, body_613324)
 
-var disableDomainTransferLock* = Call_DisableDomainTransferLock_606241(
+var disableDomainTransferLock* = Call_DisableDomainTransferLock_613310(
     name: "disableDomainTransferLock", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.DisableDomainTransferLock",
-    validator: validate_DisableDomainTransferLock_606242, base: "/",
-    url: url_DisableDomainTransferLock_606243,
+    validator: validate_DisableDomainTransferLock_613311, base: "/",
+    url: url_DisableDomainTransferLock_613312,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableDomainAutoRenew_606256 = ref object of OpenApiRestCall_605589
-proc url_EnableDomainAutoRenew_606258(protocol: Scheme; host: string; base: string;
+  Call_EnableDomainAutoRenew_613325 = ref object of OpenApiRestCall_612658
+proc url_EnableDomainAutoRenew_613327(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -710,7 +710,7 @@ proc url_EnableDomainAutoRenew_606258(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_EnableDomainAutoRenew_606257(path: JsonNode; query: JsonNode;
+proc validate_EnableDomainAutoRenew_613326(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>This operation configures Amazon Route 53 to automatically renew the specified domain before the domain registration expires. The cost of renewing your domain registration is billed to your AWS account.</p> <p>The period during which you can renew a domain name varies by TLD. For a list of TLDs and their renewal policies, see <a href="http://wiki.gandi.net/en/domains/renew#renewal_restoration_and_deletion_times">"Renewal, restoration, and deletion times"</a> on the website for our registrar associate, Gandi. Amazon Route 53 requires that you renew before the end of the renewal period that is listed on the Gandi website so we can complete processing before the deadline.</p>
   ## 
@@ -730,46 +730,46 @@ proc validate_EnableDomainAutoRenew_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606259 = header.getOrDefault("X-Amz-Target")
-  valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
+  var valid_613328 = header.getOrDefault("X-Amz-Target")
+  valid_613328 = validateParameter(valid_613328, JString, required = true, default = newJString(
       "Route53Domains_v20140515.EnableDomainAutoRenew"))
-  if valid_606259 != nil:
-    section.add "X-Amz-Target", valid_606259
-  var valid_606260 = header.getOrDefault("X-Amz-Signature")
-  valid_606260 = validateParameter(valid_606260, JString, required = false,
+  if valid_613328 != nil:
+    section.add "X-Amz-Target", valid_613328
+  var valid_613329 = header.getOrDefault("X-Amz-Signature")
+  valid_613329 = validateParameter(valid_613329, JString, required = false,
                                  default = nil)
-  if valid_606260 != nil:
-    section.add "X-Amz-Signature", valid_606260
-  var valid_606261 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606261 = validateParameter(valid_606261, JString, required = false,
+  if valid_613329 != nil:
+    section.add "X-Amz-Signature", valid_613329
+  var valid_613330 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613330 = validateParameter(valid_613330, JString, required = false,
                                  default = nil)
-  if valid_606261 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606261
-  var valid_606262 = header.getOrDefault("X-Amz-Date")
-  valid_606262 = validateParameter(valid_606262, JString, required = false,
+  if valid_613330 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613330
+  var valid_613331 = header.getOrDefault("X-Amz-Date")
+  valid_613331 = validateParameter(valid_613331, JString, required = false,
                                  default = nil)
-  if valid_606262 != nil:
-    section.add "X-Amz-Date", valid_606262
-  var valid_606263 = header.getOrDefault("X-Amz-Credential")
-  valid_606263 = validateParameter(valid_606263, JString, required = false,
+  if valid_613331 != nil:
+    section.add "X-Amz-Date", valid_613331
+  var valid_613332 = header.getOrDefault("X-Amz-Credential")
+  valid_613332 = validateParameter(valid_613332, JString, required = false,
                                  default = nil)
-  if valid_606263 != nil:
-    section.add "X-Amz-Credential", valid_606263
-  var valid_606264 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606264 = validateParameter(valid_606264, JString, required = false,
+  if valid_613332 != nil:
+    section.add "X-Amz-Credential", valid_613332
+  var valid_613333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613333 = validateParameter(valid_613333, JString, required = false,
                                  default = nil)
-  if valid_606264 != nil:
-    section.add "X-Amz-Security-Token", valid_606264
-  var valid_606265 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606265 = validateParameter(valid_606265, JString, required = false,
+  if valid_613333 != nil:
+    section.add "X-Amz-Security-Token", valid_613333
+  var valid_613334 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613334 = validateParameter(valid_613334, JString, required = false,
                                  default = nil)
-  if valid_606265 != nil:
-    section.add "X-Amz-Algorithm", valid_606265
-  var valid_606266 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606266 = validateParameter(valid_606266, JString, required = false,
+  if valid_613334 != nil:
+    section.add "X-Amz-Algorithm", valid_613334
+  var valid_613335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613335 = validateParameter(valid_613335, JString, required = false,
                                  default = nil)
-  if valid_606266 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606266
+  if valid_613335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613335
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -780,37 +780,37 @@ proc validate_EnableDomainAutoRenew_606257(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606268: Call_EnableDomainAutoRenew_606256; path: JsonNode;
+proc call*(call_613337: Call_EnableDomainAutoRenew_613325; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation configures Amazon Route 53 to automatically renew the specified domain before the domain registration expires. The cost of renewing your domain registration is billed to your AWS account.</p> <p>The period during which you can renew a domain name varies by TLD. For a list of TLDs and their renewal policies, see <a href="http://wiki.gandi.net/en/domains/renew#renewal_restoration_and_deletion_times">"Renewal, restoration, and deletion times"</a> on the website for our registrar associate, Gandi. Amazon Route 53 requires that you renew before the end of the renewal period that is listed on the Gandi website so we can complete processing before the deadline.</p>
   ## 
-  let valid = call_606268.validator(path, query, header, formData, body)
-  let scheme = call_606268.pickScheme
+  let valid = call_613337.validator(path, query, header, formData, body)
+  let scheme = call_613337.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606268.url(scheme.get, call_606268.host, call_606268.base,
-                         call_606268.route, valid.getOrDefault("path"),
+  let url = call_613337.url(scheme.get, call_613337.host, call_613337.base,
+                         call_613337.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606268, url, valid)
+  result = atozHook(call_613337, url, valid)
 
-proc call*(call_606269: Call_EnableDomainAutoRenew_606256; body: JsonNode): Recallable =
+proc call*(call_613338: Call_EnableDomainAutoRenew_613325; body: JsonNode): Recallable =
   ## enableDomainAutoRenew
   ## <p>This operation configures Amazon Route 53 to automatically renew the specified domain before the domain registration expires. The cost of renewing your domain registration is billed to your AWS account.</p> <p>The period during which you can renew a domain name varies by TLD. For a list of TLDs and their renewal policies, see <a href="http://wiki.gandi.net/en/domains/renew#renewal_restoration_and_deletion_times">"Renewal, restoration, and deletion times"</a> on the website for our registrar associate, Gandi. Amazon Route 53 requires that you renew before the end of the renewal period that is listed on the Gandi website so we can complete processing before the deadline.</p>
   ##   body: JObject (required)
-  var body_606270 = newJObject()
+  var body_613339 = newJObject()
   if body != nil:
-    body_606270 = body
-  result = call_606269.call(nil, nil, nil, nil, body_606270)
+    body_613339 = body
+  result = call_613338.call(nil, nil, nil, nil, body_613339)
 
-var enableDomainAutoRenew* = Call_EnableDomainAutoRenew_606256(
+var enableDomainAutoRenew* = Call_EnableDomainAutoRenew_613325(
     name: "enableDomainAutoRenew", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.EnableDomainAutoRenew",
-    validator: validate_EnableDomainAutoRenew_606257, base: "/",
-    url: url_EnableDomainAutoRenew_606258, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_EnableDomainAutoRenew_613326, base: "/",
+    url: url_EnableDomainAutoRenew_613327, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_EnableDomainTransferLock_606271 = ref object of OpenApiRestCall_605589
-proc url_EnableDomainTransferLock_606273(protocol: Scheme; host: string;
+  Call_EnableDomainTransferLock_613340 = ref object of OpenApiRestCall_612658
+proc url_EnableDomainTransferLock_613342(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -823,7 +823,7 @@ proc url_EnableDomainTransferLock_606273(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_EnableDomainTransferLock_606272(path: JsonNode; query: JsonNode;
+proc validate_EnableDomainTransferLock_613341(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation sets the transfer lock on the domain (specifically the <code>clientTransferProhibited</code> status) to prevent domain transfers. Successful submission returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.
   ## 
@@ -843,46 +843,46 @@ proc validate_EnableDomainTransferLock_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606274 = header.getOrDefault("X-Amz-Target")
-  valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
+  var valid_613343 = header.getOrDefault("X-Amz-Target")
+  valid_613343 = validateParameter(valid_613343, JString, required = true, default = newJString(
       "Route53Domains_v20140515.EnableDomainTransferLock"))
-  if valid_606274 != nil:
-    section.add "X-Amz-Target", valid_606274
-  var valid_606275 = header.getOrDefault("X-Amz-Signature")
-  valid_606275 = validateParameter(valid_606275, JString, required = false,
+  if valid_613343 != nil:
+    section.add "X-Amz-Target", valid_613343
+  var valid_613344 = header.getOrDefault("X-Amz-Signature")
+  valid_613344 = validateParameter(valid_613344, JString, required = false,
                                  default = nil)
-  if valid_606275 != nil:
-    section.add "X-Amz-Signature", valid_606275
-  var valid_606276 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606276 = validateParameter(valid_606276, JString, required = false,
+  if valid_613344 != nil:
+    section.add "X-Amz-Signature", valid_613344
+  var valid_613345 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613345 = validateParameter(valid_613345, JString, required = false,
                                  default = nil)
-  if valid_606276 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606276
-  var valid_606277 = header.getOrDefault("X-Amz-Date")
-  valid_606277 = validateParameter(valid_606277, JString, required = false,
+  if valid_613345 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613345
+  var valid_613346 = header.getOrDefault("X-Amz-Date")
+  valid_613346 = validateParameter(valid_613346, JString, required = false,
                                  default = nil)
-  if valid_606277 != nil:
-    section.add "X-Amz-Date", valid_606277
-  var valid_606278 = header.getOrDefault("X-Amz-Credential")
-  valid_606278 = validateParameter(valid_606278, JString, required = false,
+  if valid_613346 != nil:
+    section.add "X-Amz-Date", valid_613346
+  var valid_613347 = header.getOrDefault("X-Amz-Credential")
+  valid_613347 = validateParameter(valid_613347, JString, required = false,
                                  default = nil)
-  if valid_606278 != nil:
-    section.add "X-Amz-Credential", valid_606278
-  var valid_606279 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606279 = validateParameter(valid_606279, JString, required = false,
+  if valid_613347 != nil:
+    section.add "X-Amz-Credential", valid_613347
+  var valid_613348 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613348 = validateParameter(valid_613348, JString, required = false,
                                  default = nil)
-  if valid_606279 != nil:
-    section.add "X-Amz-Security-Token", valid_606279
-  var valid_606280 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606280 = validateParameter(valid_606280, JString, required = false,
+  if valid_613348 != nil:
+    section.add "X-Amz-Security-Token", valid_613348
+  var valid_613349 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613349 = validateParameter(valid_613349, JString, required = false,
                                  default = nil)
-  if valid_606280 != nil:
-    section.add "X-Amz-Algorithm", valid_606280
-  var valid_606281 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606281 = validateParameter(valid_606281, JString, required = false,
+  if valid_613349 != nil:
+    section.add "X-Amz-Algorithm", valid_613349
+  var valid_613350 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613350 = validateParameter(valid_613350, JString, required = false,
                                  default = nil)
-  if valid_606281 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606281
+  if valid_613350 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613350
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -893,37 +893,37 @@ proc validate_EnableDomainTransferLock_606272(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606283: Call_EnableDomainTransferLock_606271; path: JsonNode;
+proc call*(call_613352: Call_EnableDomainTransferLock_613340; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation sets the transfer lock on the domain (specifically the <code>clientTransferProhibited</code> status) to prevent domain transfers. Successful submission returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.
   ## 
-  let valid = call_606283.validator(path, query, header, formData, body)
-  let scheme = call_606283.pickScheme
+  let valid = call_613352.validator(path, query, header, formData, body)
+  let scheme = call_613352.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606283.url(scheme.get, call_606283.host, call_606283.base,
-                         call_606283.route, valid.getOrDefault("path"),
+  let url = call_613352.url(scheme.get, call_613352.host, call_613352.base,
+                         call_613352.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606283, url, valid)
+  result = atozHook(call_613352, url, valid)
 
-proc call*(call_606284: Call_EnableDomainTransferLock_606271; body: JsonNode): Recallable =
+proc call*(call_613353: Call_EnableDomainTransferLock_613340; body: JsonNode): Recallable =
   ## enableDomainTransferLock
   ## This operation sets the transfer lock on the domain (specifically the <code>clientTransferProhibited</code> status) to prevent domain transfers. Successful submission returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.
   ##   body: JObject (required)
-  var body_606285 = newJObject()
+  var body_613354 = newJObject()
   if body != nil:
-    body_606285 = body
-  result = call_606284.call(nil, nil, nil, nil, body_606285)
+    body_613354 = body
+  result = call_613353.call(nil, nil, nil, nil, body_613354)
 
-var enableDomainTransferLock* = Call_EnableDomainTransferLock_606271(
+var enableDomainTransferLock* = Call_EnableDomainTransferLock_613340(
     name: "enableDomainTransferLock", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.EnableDomainTransferLock",
-    validator: validate_EnableDomainTransferLock_606272, base: "/",
-    url: url_EnableDomainTransferLock_606273, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_EnableDomainTransferLock_613341, base: "/",
+    url: url_EnableDomainTransferLock_613342, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetContactReachabilityStatus_606286 = ref object of OpenApiRestCall_605589
-proc url_GetContactReachabilityStatus_606288(protocol: Scheme; host: string;
+  Call_GetContactReachabilityStatus_613355 = ref object of OpenApiRestCall_612658
+proc url_GetContactReachabilityStatus_613357(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -935,7 +935,7 @@ proc url_GetContactReachabilityStatus_606288(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_GetContactReachabilityStatus_606287(path: JsonNode; query: JsonNode;
+proc validate_GetContactReachabilityStatus_613356(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>For operations that require confirmation that the email address for the registrant contact is valid, such as registering a new domain, this operation returns information about whether the registrant contact has responded.</p> <p>If you want us to resend the email, use the <code>ResendContactReachabilityEmail</code> operation.</p>
   ## 
@@ -955,46 +955,46 @@ proc validate_GetContactReachabilityStatus_606287(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606289 = header.getOrDefault("X-Amz-Target")
-  valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
+  var valid_613358 = header.getOrDefault("X-Amz-Target")
+  valid_613358 = validateParameter(valid_613358, JString, required = true, default = newJString(
       "Route53Domains_v20140515.GetContactReachabilityStatus"))
-  if valid_606289 != nil:
-    section.add "X-Amz-Target", valid_606289
-  var valid_606290 = header.getOrDefault("X-Amz-Signature")
-  valid_606290 = validateParameter(valid_606290, JString, required = false,
+  if valid_613358 != nil:
+    section.add "X-Amz-Target", valid_613358
+  var valid_613359 = header.getOrDefault("X-Amz-Signature")
+  valid_613359 = validateParameter(valid_613359, JString, required = false,
                                  default = nil)
-  if valid_606290 != nil:
-    section.add "X-Amz-Signature", valid_606290
-  var valid_606291 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606291 = validateParameter(valid_606291, JString, required = false,
+  if valid_613359 != nil:
+    section.add "X-Amz-Signature", valid_613359
+  var valid_613360 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613360 = validateParameter(valid_613360, JString, required = false,
                                  default = nil)
-  if valid_606291 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606291
-  var valid_606292 = header.getOrDefault("X-Amz-Date")
-  valid_606292 = validateParameter(valid_606292, JString, required = false,
+  if valid_613360 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613360
+  var valid_613361 = header.getOrDefault("X-Amz-Date")
+  valid_613361 = validateParameter(valid_613361, JString, required = false,
                                  default = nil)
-  if valid_606292 != nil:
-    section.add "X-Amz-Date", valid_606292
-  var valid_606293 = header.getOrDefault("X-Amz-Credential")
-  valid_606293 = validateParameter(valid_606293, JString, required = false,
+  if valid_613361 != nil:
+    section.add "X-Amz-Date", valid_613361
+  var valid_613362 = header.getOrDefault("X-Amz-Credential")
+  valid_613362 = validateParameter(valid_613362, JString, required = false,
                                  default = nil)
-  if valid_606293 != nil:
-    section.add "X-Amz-Credential", valid_606293
-  var valid_606294 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606294 = validateParameter(valid_606294, JString, required = false,
+  if valid_613362 != nil:
+    section.add "X-Amz-Credential", valid_613362
+  var valid_613363 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613363 = validateParameter(valid_613363, JString, required = false,
                                  default = nil)
-  if valid_606294 != nil:
-    section.add "X-Amz-Security-Token", valid_606294
-  var valid_606295 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606295 = validateParameter(valid_606295, JString, required = false,
+  if valid_613363 != nil:
+    section.add "X-Amz-Security-Token", valid_613363
+  var valid_613364 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613364 = validateParameter(valid_613364, JString, required = false,
                                  default = nil)
-  if valid_606295 != nil:
-    section.add "X-Amz-Algorithm", valid_606295
-  var valid_606296 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606296 = validateParameter(valid_606296, JString, required = false,
+  if valid_613364 != nil:
+    section.add "X-Amz-Algorithm", valid_613364
+  var valid_613365 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613365 = validateParameter(valid_613365, JString, required = false,
                                  default = nil)
-  if valid_606296 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606296
+  if valid_613365 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613365
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1005,37 +1005,37 @@ proc validate_GetContactReachabilityStatus_606287(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_606298: Call_GetContactReachabilityStatus_606286; path: JsonNode;
+proc call*(call_613367: Call_GetContactReachabilityStatus_613355; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>For operations that require confirmation that the email address for the registrant contact is valid, such as registering a new domain, this operation returns information about whether the registrant contact has responded.</p> <p>If you want us to resend the email, use the <code>ResendContactReachabilityEmail</code> operation.</p>
   ## 
-  let valid = call_606298.validator(path, query, header, formData, body)
-  let scheme = call_606298.pickScheme
+  let valid = call_613367.validator(path, query, header, formData, body)
+  let scheme = call_613367.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606298.url(scheme.get, call_606298.host, call_606298.base,
-                         call_606298.route, valid.getOrDefault("path"),
+  let url = call_613367.url(scheme.get, call_613367.host, call_613367.base,
+                         call_613367.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606298, url, valid)
+  result = atozHook(call_613367, url, valid)
 
-proc call*(call_606299: Call_GetContactReachabilityStatus_606286; body: JsonNode): Recallable =
+proc call*(call_613368: Call_GetContactReachabilityStatus_613355; body: JsonNode): Recallable =
   ## getContactReachabilityStatus
   ## <p>For operations that require confirmation that the email address for the registrant contact is valid, such as registering a new domain, this operation returns information about whether the registrant contact has responded.</p> <p>If you want us to resend the email, use the <code>ResendContactReachabilityEmail</code> operation.</p>
   ##   body: JObject (required)
-  var body_606300 = newJObject()
+  var body_613369 = newJObject()
   if body != nil:
-    body_606300 = body
-  result = call_606299.call(nil, nil, nil, nil, body_606300)
+    body_613369 = body
+  result = call_613368.call(nil, nil, nil, nil, body_613369)
 
-var getContactReachabilityStatus* = Call_GetContactReachabilityStatus_606286(
+var getContactReachabilityStatus* = Call_GetContactReachabilityStatus_613355(
     name: "getContactReachabilityStatus", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com", route: "/#X-Amz-Target=Route53Domains_v20140515.GetContactReachabilityStatus",
-    validator: validate_GetContactReachabilityStatus_606287, base: "/",
-    url: url_GetContactReachabilityStatus_606288,
+    validator: validate_GetContactReachabilityStatus_613356, base: "/",
+    url: url_GetContactReachabilityStatus_613357,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDomainDetail_606301 = ref object of OpenApiRestCall_605589
-proc url_GetDomainDetail_606303(protocol: Scheme; host: string; base: string;
+  Call_GetDomainDetail_613370 = ref object of OpenApiRestCall_612658
+proc url_GetDomainDetail_613372(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1047,7 +1047,7 @@ proc url_GetDomainDetail_606303(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetDomainDetail_606302(path: JsonNode; query: JsonNode;
+proc validate_GetDomainDetail_613371(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## This operation returns detailed information about a specified domain that is associated with the current AWS account. Contact information for the domain is also returned as part of the output.
@@ -1068,46 +1068,46 @@ proc validate_GetDomainDetail_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606304 = header.getOrDefault("X-Amz-Target")
-  valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
+  var valid_613373 = header.getOrDefault("X-Amz-Target")
+  valid_613373 = validateParameter(valid_613373, JString, required = true, default = newJString(
       "Route53Domains_v20140515.GetDomainDetail"))
-  if valid_606304 != nil:
-    section.add "X-Amz-Target", valid_606304
-  var valid_606305 = header.getOrDefault("X-Amz-Signature")
-  valid_606305 = validateParameter(valid_606305, JString, required = false,
+  if valid_613373 != nil:
+    section.add "X-Amz-Target", valid_613373
+  var valid_613374 = header.getOrDefault("X-Amz-Signature")
+  valid_613374 = validateParameter(valid_613374, JString, required = false,
                                  default = nil)
-  if valid_606305 != nil:
-    section.add "X-Amz-Signature", valid_606305
-  var valid_606306 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606306 = validateParameter(valid_606306, JString, required = false,
+  if valid_613374 != nil:
+    section.add "X-Amz-Signature", valid_613374
+  var valid_613375 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613375 = validateParameter(valid_613375, JString, required = false,
                                  default = nil)
-  if valid_606306 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606306
-  var valid_606307 = header.getOrDefault("X-Amz-Date")
-  valid_606307 = validateParameter(valid_606307, JString, required = false,
+  if valid_613375 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613375
+  var valid_613376 = header.getOrDefault("X-Amz-Date")
+  valid_613376 = validateParameter(valid_613376, JString, required = false,
                                  default = nil)
-  if valid_606307 != nil:
-    section.add "X-Amz-Date", valid_606307
-  var valid_606308 = header.getOrDefault("X-Amz-Credential")
-  valid_606308 = validateParameter(valid_606308, JString, required = false,
+  if valid_613376 != nil:
+    section.add "X-Amz-Date", valid_613376
+  var valid_613377 = header.getOrDefault("X-Amz-Credential")
+  valid_613377 = validateParameter(valid_613377, JString, required = false,
                                  default = nil)
-  if valid_606308 != nil:
-    section.add "X-Amz-Credential", valid_606308
-  var valid_606309 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606309 = validateParameter(valid_606309, JString, required = false,
+  if valid_613377 != nil:
+    section.add "X-Amz-Credential", valid_613377
+  var valid_613378 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613378 = validateParameter(valid_613378, JString, required = false,
                                  default = nil)
-  if valid_606309 != nil:
-    section.add "X-Amz-Security-Token", valid_606309
-  var valid_606310 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606310 = validateParameter(valid_606310, JString, required = false,
+  if valid_613378 != nil:
+    section.add "X-Amz-Security-Token", valid_613378
+  var valid_613379 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613379 = validateParameter(valid_613379, JString, required = false,
                                  default = nil)
-  if valid_606310 != nil:
-    section.add "X-Amz-Algorithm", valid_606310
-  var valid_606311 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606311 = validateParameter(valid_606311, JString, required = false,
+  if valid_613379 != nil:
+    section.add "X-Amz-Algorithm", valid_613379
+  var valid_613380 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613380 = validateParameter(valid_613380, JString, required = false,
                                  default = nil)
-  if valid_606311 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606311
+  if valid_613380 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613380
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1118,36 +1118,36 @@ proc validate_GetDomainDetail_606302(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606313: Call_GetDomainDetail_606301; path: JsonNode; query: JsonNode;
+proc call*(call_613382: Call_GetDomainDetail_613370; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns detailed information about a specified domain that is associated with the current AWS account. Contact information for the domain is also returned as part of the output.
   ## 
-  let valid = call_606313.validator(path, query, header, formData, body)
-  let scheme = call_606313.pickScheme
+  let valid = call_613382.validator(path, query, header, formData, body)
+  let scheme = call_613382.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606313.url(scheme.get, call_606313.host, call_606313.base,
-                         call_606313.route, valid.getOrDefault("path"),
+  let url = call_613382.url(scheme.get, call_613382.host, call_613382.base,
+                         call_613382.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606313, url, valid)
+  result = atozHook(call_613382, url, valid)
 
-proc call*(call_606314: Call_GetDomainDetail_606301; body: JsonNode): Recallable =
+proc call*(call_613383: Call_GetDomainDetail_613370; body: JsonNode): Recallable =
   ## getDomainDetail
   ## This operation returns detailed information about a specified domain that is associated with the current AWS account. Contact information for the domain is also returned as part of the output.
   ##   body: JObject (required)
-  var body_606315 = newJObject()
+  var body_613384 = newJObject()
   if body != nil:
-    body_606315 = body
-  result = call_606314.call(nil, nil, nil, nil, body_606315)
+    body_613384 = body
+  result = call_613383.call(nil, nil, nil, nil, body_613384)
 
-var getDomainDetail* = Call_GetDomainDetail_606301(name: "getDomainDetail",
+var getDomainDetail* = Call_GetDomainDetail_613370(name: "getDomainDetail",
     meth: HttpMethod.HttpPost, host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.GetDomainDetail",
-    validator: validate_GetDomainDetail_606302, base: "/", url: url_GetDomainDetail_606303,
+    validator: validate_GetDomainDetail_613371, base: "/", url: url_GetDomainDetail_613372,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDomainSuggestions_606316 = ref object of OpenApiRestCall_605589
-proc url_GetDomainSuggestions_606318(protocol: Scheme; host: string; base: string;
+  Call_GetDomainSuggestions_613385 = ref object of OpenApiRestCall_612658
+proc url_GetDomainSuggestions_613387(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1159,7 +1159,7 @@ proc url_GetDomainSuggestions_606318(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_GetDomainSuggestions_606317(path: JsonNode; query: JsonNode;
+proc validate_GetDomainSuggestions_613386(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## The GetDomainSuggestions operation returns a list of suggested domain names given a string, which can either be a domain name or simply a word or phrase (without spaces).
   ## 
@@ -1179,46 +1179,46 @@ proc validate_GetDomainSuggestions_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606319 = header.getOrDefault("X-Amz-Target")
-  valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
+  var valid_613388 = header.getOrDefault("X-Amz-Target")
+  valid_613388 = validateParameter(valid_613388, JString, required = true, default = newJString(
       "Route53Domains_v20140515.GetDomainSuggestions"))
-  if valid_606319 != nil:
-    section.add "X-Amz-Target", valid_606319
-  var valid_606320 = header.getOrDefault("X-Amz-Signature")
-  valid_606320 = validateParameter(valid_606320, JString, required = false,
+  if valid_613388 != nil:
+    section.add "X-Amz-Target", valid_613388
+  var valid_613389 = header.getOrDefault("X-Amz-Signature")
+  valid_613389 = validateParameter(valid_613389, JString, required = false,
                                  default = nil)
-  if valid_606320 != nil:
-    section.add "X-Amz-Signature", valid_606320
-  var valid_606321 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606321 = validateParameter(valid_606321, JString, required = false,
+  if valid_613389 != nil:
+    section.add "X-Amz-Signature", valid_613389
+  var valid_613390 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613390 = validateParameter(valid_613390, JString, required = false,
                                  default = nil)
-  if valid_606321 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606321
-  var valid_606322 = header.getOrDefault("X-Amz-Date")
-  valid_606322 = validateParameter(valid_606322, JString, required = false,
+  if valid_613390 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613390
+  var valid_613391 = header.getOrDefault("X-Amz-Date")
+  valid_613391 = validateParameter(valid_613391, JString, required = false,
                                  default = nil)
-  if valid_606322 != nil:
-    section.add "X-Amz-Date", valid_606322
-  var valid_606323 = header.getOrDefault("X-Amz-Credential")
-  valid_606323 = validateParameter(valid_606323, JString, required = false,
+  if valid_613391 != nil:
+    section.add "X-Amz-Date", valid_613391
+  var valid_613392 = header.getOrDefault("X-Amz-Credential")
+  valid_613392 = validateParameter(valid_613392, JString, required = false,
                                  default = nil)
-  if valid_606323 != nil:
-    section.add "X-Amz-Credential", valid_606323
-  var valid_606324 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606324 = validateParameter(valid_606324, JString, required = false,
+  if valid_613392 != nil:
+    section.add "X-Amz-Credential", valid_613392
+  var valid_613393 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613393 = validateParameter(valid_613393, JString, required = false,
                                  default = nil)
-  if valid_606324 != nil:
-    section.add "X-Amz-Security-Token", valid_606324
-  var valid_606325 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606325 = validateParameter(valid_606325, JString, required = false,
+  if valid_613393 != nil:
+    section.add "X-Amz-Security-Token", valid_613393
+  var valid_613394 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613394 = validateParameter(valid_613394, JString, required = false,
                                  default = nil)
-  if valid_606325 != nil:
-    section.add "X-Amz-Algorithm", valid_606325
-  var valid_606326 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606326 = validateParameter(valid_606326, JString, required = false,
+  if valid_613394 != nil:
+    section.add "X-Amz-Algorithm", valid_613394
+  var valid_613395 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613395 = validateParameter(valid_613395, JString, required = false,
                                  default = nil)
-  if valid_606326 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606326
+  if valid_613395 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613395
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1229,37 +1229,37 @@ proc validate_GetDomainSuggestions_606317(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606328: Call_GetDomainSuggestions_606316; path: JsonNode;
+proc call*(call_613397: Call_GetDomainSuggestions_613385; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## The GetDomainSuggestions operation returns a list of suggested domain names given a string, which can either be a domain name or simply a word or phrase (without spaces).
   ## 
-  let valid = call_606328.validator(path, query, header, formData, body)
-  let scheme = call_606328.pickScheme
+  let valid = call_613397.validator(path, query, header, formData, body)
+  let scheme = call_613397.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606328.url(scheme.get, call_606328.host, call_606328.base,
-                         call_606328.route, valid.getOrDefault("path"),
+  let url = call_613397.url(scheme.get, call_613397.host, call_613397.base,
+                         call_613397.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606328, url, valid)
+  result = atozHook(call_613397, url, valid)
 
-proc call*(call_606329: Call_GetDomainSuggestions_606316; body: JsonNode): Recallable =
+proc call*(call_613398: Call_GetDomainSuggestions_613385; body: JsonNode): Recallable =
   ## getDomainSuggestions
   ## The GetDomainSuggestions operation returns a list of suggested domain names given a string, which can either be a domain name or simply a word or phrase (without spaces).
   ##   body: JObject (required)
-  var body_606330 = newJObject()
+  var body_613399 = newJObject()
   if body != nil:
-    body_606330 = body
-  result = call_606329.call(nil, nil, nil, nil, body_606330)
+    body_613399 = body
+  result = call_613398.call(nil, nil, nil, nil, body_613399)
 
-var getDomainSuggestions* = Call_GetDomainSuggestions_606316(
+var getDomainSuggestions* = Call_GetDomainSuggestions_613385(
     name: "getDomainSuggestions", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.GetDomainSuggestions",
-    validator: validate_GetDomainSuggestions_606317, base: "/",
-    url: url_GetDomainSuggestions_606318, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetDomainSuggestions_613386, base: "/",
+    url: url_GetDomainSuggestions_613387, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetOperationDetail_606331 = ref object of OpenApiRestCall_605589
-proc url_GetOperationDetail_606333(protocol: Scheme; host: string; base: string;
+  Call_GetOperationDetail_613400 = ref object of OpenApiRestCall_612658
+proc url_GetOperationDetail_613402(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1271,7 +1271,7 @@ proc url_GetOperationDetail_606333(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetOperationDetail_606332(path: JsonNode; query: JsonNode;
+proc validate_GetOperationDetail_613401(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## This operation returns the current status of an operation that is not completed.
@@ -1292,46 +1292,46 @@ proc validate_GetOperationDetail_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606334 = header.getOrDefault("X-Amz-Target")
-  valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
+  var valid_613403 = header.getOrDefault("X-Amz-Target")
+  valid_613403 = validateParameter(valid_613403, JString, required = true, default = newJString(
       "Route53Domains_v20140515.GetOperationDetail"))
-  if valid_606334 != nil:
-    section.add "X-Amz-Target", valid_606334
-  var valid_606335 = header.getOrDefault("X-Amz-Signature")
-  valid_606335 = validateParameter(valid_606335, JString, required = false,
+  if valid_613403 != nil:
+    section.add "X-Amz-Target", valid_613403
+  var valid_613404 = header.getOrDefault("X-Amz-Signature")
+  valid_613404 = validateParameter(valid_613404, JString, required = false,
                                  default = nil)
-  if valid_606335 != nil:
-    section.add "X-Amz-Signature", valid_606335
-  var valid_606336 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606336 = validateParameter(valid_606336, JString, required = false,
+  if valid_613404 != nil:
+    section.add "X-Amz-Signature", valid_613404
+  var valid_613405 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613405 = validateParameter(valid_613405, JString, required = false,
                                  default = nil)
-  if valid_606336 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606336
-  var valid_606337 = header.getOrDefault("X-Amz-Date")
-  valid_606337 = validateParameter(valid_606337, JString, required = false,
+  if valid_613405 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613405
+  var valid_613406 = header.getOrDefault("X-Amz-Date")
+  valid_613406 = validateParameter(valid_613406, JString, required = false,
                                  default = nil)
-  if valid_606337 != nil:
-    section.add "X-Amz-Date", valid_606337
-  var valid_606338 = header.getOrDefault("X-Amz-Credential")
-  valid_606338 = validateParameter(valid_606338, JString, required = false,
+  if valid_613406 != nil:
+    section.add "X-Amz-Date", valid_613406
+  var valid_613407 = header.getOrDefault("X-Amz-Credential")
+  valid_613407 = validateParameter(valid_613407, JString, required = false,
                                  default = nil)
-  if valid_606338 != nil:
-    section.add "X-Amz-Credential", valid_606338
-  var valid_606339 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606339 = validateParameter(valid_606339, JString, required = false,
+  if valid_613407 != nil:
+    section.add "X-Amz-Credential", valid_613407
+  var valid_613408 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613408 = validateParameter(valid_613408, JString, required = false,
                                  default = nil)
-  if valid_606339 != nil:
-    section.add "X-Amz-Security-Token", valid_606339
-  var valid_606340 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606340 = validateParameter(valid_606340, JString, required = false,
+  if valid_613408 != nil:
+    section.add "X-Amz-Security-Token", valid_613408
+  var valid_613409 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613409 = validateParameter(valid_613409, JString, required = false,
                                  default = nil)
-  if valid_606340 != nil:
-    section.add "X-Amz-Algorithm", valid_606340
-  var valid_606341 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606341 = validateParameter(valid_606341, JString, required = false,
+  if valid_613409 != nil:
+    section.add "X-Amz-Algorithm", valid_613409
+  var valid_613410 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613410 = validateParameter(valid_613410, JString, required = false,
                                  default = nil)
-  if valid_606341 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606341
+  if valid_613410 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613410
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1342,37 +1342,37 @@ proc validate_GetOperationDetail_606332(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606343: Call_GetOperationDetail_606331; path: JsonNode;
+proc call*(call_613412: Call_GetOperationDetail_613400; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns the current status of an operation that is not completed.
   ## 
-  let valid = call_606343.validator(path, query, header, formData, body)
-  let scheme = call_606343.pickScheme
+  let valid = call_613412.validator(path, query, header, formData, body)
+  let scheme = call_613412.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606343.url(scheme.get, call_606343.host, call_606343.base,
-                         call_606343.route, valid.getOrDefault("path"),
+  let url = call_613412.url(scheme.get, call_613412.host, call_613412.base,
+                         call_613412.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606343, url, valid)
+  result = atozHook(call_613412, url, valid)
 
-proc call*(call_606344: Call_GetOperationDetail_606331; body: JsonNode): Recallable =
+proc call*(call_613413: Call_GetOperationDetail_613400; body: JsonNode): Recallable =
   ## getOperationDetail
   ## This operation returns the current status of an operation that is not completed.
   ##   body: JObject (required)
-  var body_606345 = newJObject()
+  var body_613414 = newJObject()
   if body != nil:
-    body_606345 = body
-  result = call_606344.call(nil, nil, nil, nil, body_606345)
+    body_613414 = body
+  result = call_613413.call(nil, nil, nil, nil, body_613414)
 
-var getOperationDetail* = Call_GetOperationDetail_606331(
+var getOperationDetail* = Call_GetOperationDetail_613400(
     name: "getOperationDetail", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.GetOperationDetail",
-    validator: validate_GetOperationDetail_606332, base: "/",
-    url: url_GetOperationDetail_606333, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetOperationDetail_613401, base: "/",
+    url: url_GetOperationDetail_613402, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDomains_606346 = ref object of OpenApiRestCall_605589
-proc url_ListDomains_606348(protocol: Scheme; host: string; base: string;
+  Call_ListDomains_613415 = ref object of OpenApiRestCall_612658
+proc url_ListDomains_613417(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1384,7 +1384,7 @@ proc url_ListDomains_606348(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListDomains_606347(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListDomains_613416(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation returns all the domain names registered with Amazon Route 53 for the current AWS account.
   ## 
@@ -1398,16 +1398,16 @@ proc validate_ListDomains_606347(path: JsonNode; query: JsonNode; header: JsonNo
   ##   MaxItems: JString
   ##           : Pagination limit
   section = newJObject()
-  var valid_606349 = query.getOrDefault("Marker")
-  valid_606349 = validateParameter(valid_606349, JString, required = false,
+  var valid_613418 = query.getOrDefault("Marker")
+  valid_613418 = validateParameter(valid_613418, JString, required = false,
                                  default = nil)
-  if valid_606349 != nil:
-    section.add "Marker", valid_606349
-  var valid_606350 = query.getOrDefault("MaxItems")
-  valid_606350 = validateParameter(valid_606350, JString, required = false,
+  if valid_613418 != nil:
+    section.add "Marker", valid_613418
+  var valid_613419 = query.getOrDefault("MaxItems")
+  valid_613419 = validateParameter(valid_613419, JString, required = false,
                                  default = nil)
-  if valid_606350 != nil:
-    section.add "MaxItems", valid_606350
+  if valid_613419 != nil:
+    section.add "MaxItems", valid_613419
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -1419,46 +1419,46 @@ proc validate_ListDomains_606347(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606351 = header.getOrDefault("X-Amz-Target")
-  valid_606351 = validateParameter(valid_606351, JString, required = true, default = newJString(
+  var valid_613420 = header.getOrDefault("X-Amz-Target")
+  valid_613420 = validateParameter(valid_613420, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ListDomains"))
-  if valid_606351 != nil:
-    section.add "X-Amz-Target", valid_606351
-  var valid_606352 = header.getOrDefault("X-Amz-Signature")
-  valid_606352 = validateParameter(valid_606352, JString, required = false,
+  if valid_613420 != nil:
+    section.add "X-Amz-Target", valid_613420
+  var valid_613421 = header.getOrDefault("X-Amz-Signature")
+  valid_613421 = validateParameter(valid_613421, JString, required = false,
                                  default = nil)
-  if valid_606352 != nil:
-    section.add "X-Amz-Signature", valid_606352
-  var valid_606353 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606353 = validateParameter(valid_606353, JString, required = false,
+  if valid_613421 != nil:
+    section.add "X-Amz-Signature", valid_613421
+  var valid_613422 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613422 = validateParameter(valid_613422, JString, required = false,
                                  default = nil)
-  if valid_606353 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606353
-  var valid_606354 = header.getOrDefault("X-Amz-Date")
-  valid_606354 = validateParameter(valid_606354, JString, required = false,
+  if valid_613422 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613422
+  var valid_613423 = header.getOrDefault("X-Amz-Date")
+  valid_613423 = validateParameter(valid_613423, JString, required = false,
                                  default = nil)
-  if valid_606354 != nil:
-    section.add "X-Amz-Date", valid_606354
-  var valid_606355 = header.getOrDefault("X-Amz-Credential")
-  valid_606355 = validateParameter(valid_606355, JString, required = false,
+  if valid_613423 != nil:
+    section.add "X-Amz-Date", valid_613423
+  var valid_613424 = header.getOrDefault("X-Amz-Credential")
+  valid_613424 = validateParameter(valid_613424, JString, required = false,
                                  default = nil)
-  if valid_606355 != nil:
-    section.add "X-Amz-Credential", valid_606355
-  var valid_606356 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606356 = validateParameter(valid_606356, JString, required = false,
+  if valid_613424 != nil:
+    section.add "X-Amz-Credential", valid_613424
+  var valid_613425 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613425 = validateParameter(valid_613425, JString, required = false,
                                  default = nil)
-  if valid_606356 != nil:
-    section.add "X-Amz-Security-Token", valid_606356
-  var valid_606357 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606357 = validateParameter(valid_606357, JString, required = false,
+  if valid_613425 != nil:
+    section.add "X-Amz-Security-Token", valid_613425
+  var valid_613426 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613426 = validateParameter(valid_613426, JString, required = false,
                                  default = nil)
-  if valid_606357 != nil:
-    section.add "X-Amz-Algorithm", valid_606357
-  var valid_606358 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606358 = validateParameter(valid_606358, JString, required = false,
+  if valid_613426 != nil:
+    section.add "X-Amz-Algorithm", valid_613426
+  var valid_613427 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613427 = validateParameter(valid_613427, JString, required = false,
                                  default = nil)
-  if valid_606358 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606358
+  if valid_613427 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613427
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1469,20 +1469,20 @@ proc validate_ListDomains_606347(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606360: Call_ListDomains_606346; path: JsonNode; query: JsonNode;
+proc call*(call_613429: Call_ListDomains_613415; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns all the domain names registered with Amazon Route 53 for the current AWS account.
   ## 
-  let valid = call_606360.validator(path, query, header, formData, body)
-  let scheme = call_606360.pickScheme
+  let valid = call_613429.validator(path, query, header, formData, body)
+  let scheme = call_613429.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606360.url(scheme.get, call_606360.host, call_606360.base,
-                         call_606360.route, valid.getOrDefault("path"),
+  let url = call_613429.url(scheme.get, call_613429.host, call_613429.base,
+                         call_613429.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606360, url, valid)
+  result = atozHook(call_613429, url, valid)
 
-proc call*(call_606361: Call_ListDomains_606346; body: JsonNode; Marker: string = "";
+proc call*(call_613430: Call_ListDomains_613415; body: JsonNode; Marker: string = "";
           MaxItems: string = ""): Recallable =
   ## listDomains
   ## This operation returns all the domain names registered with Amazon Route 53 for the current AWS account.
@@ -1491,23 +1491,23 @@ proc call*(call_606361: Call_ListDomains_606346; body: JsonNode; Marker: string 
   ##   MaxItems: string
   ##           : Pagination limit
   ##   body: JObject (required)
-  var query_606362 = newJObject()
-  var body_606363 = newJObject()
-  add(query_606362, "Marker", newJString(Marker))
-  add(query_606362, "MaxItems", newJString(MaxItems))
+  var query_613431 = newJObject()
+  var body_613432 = newJObject()
+  add(query_613431, "Marker", newJString(Marker))
+  add(query_613431, "MaxItems", newJString(MaxItems))
   if body != nil:
-    body_606363 = body
-  result = call_606361.call(nil, query_606362, nil, nil, body_606363)
+    body_613432 = body
+  result = call_613430.call(nil, query_613431, nil, nil, body_613432)
 
-var listDomains* = Call_ListDomains_606346(name: "listDomains",
+var listDomains* = Call_ListDomains_613415(name: "listDomains",
                                         meth: HttpMethod.HttpPost,
                                         host: "route53domains.amazonaws.com", route: "/#X-Amz-Target=Route53Domains_v20140515.ListDomains",
-                                        validator: validate_ListDomains_606347,
-                                        base: "/", url: url_ListDomains_606348,
+                                        validator: validate_ListDomains_613416,
+                                        base: "/", url: url_ListDomains_613417,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListOperations_606365 = ref object of OpenApiRestCall_605589
-proc url_ListOperations_606367(protocol: Scheme; host: string; base: string;
+  Call_ListOperations_613434 = ref object of OpenApiRestCall_612658
+proc url_ListOperations_613436(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1519,7 +1519,7 @@ proc url_ListOperations_606367(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListOperations_606366(path: JsonNode; query: JsonNode;
+proc validate_ListOperations_613435(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## This operation returns the operation IDs of operations that are not yet complete.
@@ -1534,16 +1534,16 @@ proc validate_ListOperations_606366(path: JsonNode; query: JsonNode;
   ##   MaxItems: JString
   ##           : Pagination limit
   section = newJObject()
-  var valid_606368 = query.getOrDefault("Marker")
-  valid_606368 = validateParameter(valid_606368, JString, required = false,
+  var valid_613437 = query.getOrDefault("Marker")
+  valid_613437 = validateParameter(valid_613437, JString, required = false,
                                  default = nil)
-  if valid_606368 != nil:
-    section.add "Marker", valid_606368
-  var valid_606369 = query.getOrDefault("MaxItems")
-  valid_606369 = validateParameter(valid_606369, JString, required = false,
+  if valid_613437 != nil:
+    section.add "Marker", valid_613437
+  var valid_613438 = query.getOrDefault("MaxItems")
+  valid_613438 = validateParameter(valid_613438, JString, required = false,
                                  default = nil)
-  if valid_606369 != nil:
-    section.add "MaxItems", valid_606369
+  if valid_613438 != nil:
+    section.add "MaxItems", valid_613438
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -1555,46 +1555,46 @@ proc validate_ListOperations_606366(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606370 = header.getOrDefault("X-Amz-Target")
-  valid_606370 = validateParameter(valid_606370, JString, required = true, default = newJString(
+  var valid_613439 = header.getOrDefault("X-Amz-Target")
+  valid_613439 = validateParameter(valid_613439, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ListOperations"))
-  if valid_606370 != nil:
-    section.add "X-Amz-Target", valid_606370
-  var valid_606371 = header.getOrDefault("X-Amz-Signature")
-  valid_606371 = validateParameter(valid_606371, JString, required = false,
+  if valid_613439 != nil:
+    section.add "X-Amz-Target", valid_613439
+  var valid_613440 = header.getOrDefault("X-Amz-Signature")
+  valid_613440 = validateParameter(valid_613440, JString, required = false,
                                  default = nil)
-  if valid_606371 != nil:
-    section.add "X-Amz-Signature", valid_606371
-  var valid_606372 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606372 = validateParameter(valid_606372, JString, required = false,
+  if valid_613440 != nil:
+    section.add "X-Amz-Signature", valid_613440
+  var valid_613441 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613441 = validateParameter(valid_613441, JString, required = false,
                                  default = nil)
-  if valid_606372 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606372
-  var valid_606373 = header.getOrDefault("X-Amz-Date")
-  valid_606373 = validateParameter(valid_606373, JString, required = false,
+  if valid_613441 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613441
+  var valid_613442 = header.getOrDefault("X-Amz-Date")
+  valid_613442 = validateParameter(valid_613442, JString, required = false,
                                  default = nil)
-  if valid_606373 != nil:
-    section.add "X-Amz-Date", valid_606373
-  var valid_606374 = header.getOrDefault("X-Amz-Credential")
-  valid_606374 = validateParameter(valid_606374, JString, required = false,
+  if valid_613442 != nil:
+    section.add "X-Amz-Date", valid_613442
+  var valid_613443 = header.getOrDefault("X-Amz-Credential")
+  valid_613443 = validateParameter(valid_613443, JString, required = false,
                                  default = nil)
-  if valid_606374 != nil:
-    section.add "X-Amz-Credential", valid_606374
-  var valid_606375 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606375 = validateParameter(valid_606375, JString, required = false,
+  if valid_613443 != nil:
+    section.add "X-Amz-Credential", valid_613443
+  var valid_613444 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613444 = validateParameter(valid_613444, JString, required = false,
                                  default = nil)
-  if valid_606375 != nil:
-    section.add "X-Amz-Security-Token", valid_606375
-  var valid_606376 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606376 = validateParameter(valid_606376, JString, required = false,
+  if valid_613444 != nil:
+    section.add "X-Amz-Security-Token", valid_613444
+  var valid_613445 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613445 = validateParameter(valid_613445, JString, required = false,
                                  default = nil)
-  if valid_606376 != nil:
-    section.add "X-Amz-Algorithm", valid_606376
-  var valid_606377 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606377 = validateParameter(valid_606377, JString, required = false,
+  if valid_613445 != nil:
+    section.add "X-Amz-Algorithm", valid_613445
+  var valid_613446 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613446 = validateParameter(valid_613446, JString, required = false,
                                  default = nil)
-  if valid_606377 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606377
+  if valid_613446 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613446
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1605,20 +1605,20 @@ proc validate_ListOperations_606366(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606379: Call_ListOperations_606365; path: JsonNode; query: JsonNode;
+proc call*(call_613448: Call_ListOperations_613434; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns the operation IDs of operations that are not yet complete.
   ## 
-  let valid = call_606379.validator(path, query, header, formData, body)
-  let scheme = call_606379.pickScheme
+  let valid = call_613448.validator(path, query, header, formData, body)
+  let scheme = call_613448.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606379.url(scheme.get, call_606379.host, call_606379.base,
-                         call_606379.route, valid.getOrDefault("path"),
+  let url = call_613448.url(scheme.get, call_613448.host, call_613448.base,
+                         call_613448.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606379, url, valid)
+  result = atozHook(call_613448, url, valid)
 
-proc call*(call_606380: Call_ListOperations_606365; body: JsonNode;
+proc call*(call_613449: Call_ListOperations_613434; body: JsonNode;
           Marker: string = ""; MaxItems: string = ""): Recallable =
   ## listOperations
   ## This operation returns the operation IDs of operations that are not yet complete.
@@ -1627,22 +1627,22 @@ proc call*(call_606380: Call_ListOperations_606365; body: JsonNode;
   ##   MaxItems: string
   ##           : Pagination limit
   ##   body: JObject (required)
-  var query_606381 = newJObject()
-  var body_606382 = newJObject()
-  add(query_606381, "Marker", newJString(Marker))
-  add(query_606381, "MaxItems", newJString(MaxItems))
+  var query_613450 = newJObject()
+  var body_613451 = newJObject()
+  add(query_613450, "Marker", newJString(Marker))
+  add(query_613450, "MaxItems", newJString(MaxItems))
   if body != nil:
-    body_606382 = body
-  result = call_606380.call(nil, query_606381, nil, nil, body_606382)
+    body_613451 = body
+  result = call_613449.call(nil, query_613450, nil, nil, body_613451)
 
-var listOperations* = Call_ListOperations_606365(name: "listOperations",
+var listOperations* = Call_ListOperations_613434(name: "listOperations",
     meth: HttpMethod.HttpPost, host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.ListOperations",
-    validator: validate_ListOperations_606366, base: "/", url: url_ListOperations_606367,
+    validator: validate_ListOperations_613435, base: "/", url: url_ListOperations_613436,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForDomain_606383 = ref object of OpenApiRestCall_605589
-proc url_ListTagsForDomain_606385(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForDomain_613452 = ref object of OpenApiRestCall_612658
+proc url_ListTagsForDomain_613454(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1654,7 +1654,7 @@ proc url_ListTagsForDomain_606385(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListTagsForDomain_606384(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForDomain_613453(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>This operation returns all of the tags that are associated with the specified domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
@@ -1675,46 +1675,46 @@ proc validate_ListTagsForDomain_606384(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606386 = header.getOrDefault("X-Amz-Target")
-  valid_606386 = validateParameter(valid_606386, JString, required = true, default = newJString(
+  var valid_613455 = header.getOrDefault("X-Amz-Target")
+  valid_613455 = validateParameter(valid_613455, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ListTagsForDomain"))
-  if valid_606386 != nil:
-    section.add "X-Amz-Target", valid_606386
-  var valid_606387 = header.getOrDefault("X-Amz-Signature")
-  valid_606387 = validateParameter(valid_606387, JString, required = false,
+  if valid_613455 != nil:
+    section.add "X-Amz-Target", valid_613455
+  var valid_613456 = header.getOrDefault("X-Amz-Signature")
+  valid_613456 = validateParameter(valid_613456, JString, required = false,
                                  default = nil)
-  if valid_606387 != nil:
-    section.add "X-Amz-Signature", valid_606387
-  var valid_606388 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606388 = validateParameter(valid_606388, JString, required = false,
+  if valid_613456 != nil:
+    section.add "X-Amz-Signature", valid_613456
+  var valid_613457 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613457 = validateParameter(valid_613457, JString, required = false,
                                  default = nil)
-  if valid_606388 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606388
-  var valid_606389 = header.getOrDefault("X-Amz-Date")
-  valid_606389 = validateParameter(valid_606389, JString, required = false,
+  if valid_613457 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613457
+  var valid_613458 = header.getOrDefault("X-Amz-Date")
+  valid_613458 = validateParameter(valid_613458, JString, required = false,
                                  default = nil)
-  if valid_606389 != nil:
-    section.add "X-Amz-Date", valid_606389
-  var valid_606390 = header.getOrDefault("X-Amz-Credential")
-  valid_606390 = validateParameter(valid_606390, JString, required = false,
+  if valid_613458 != nil:
+    section.add "X-Amz-Date", valid_613458
+  var valid_613459 = header.getOrDefault("X-Amz-Credential")
+  valid_613459 = validateParameter(valid_613459, JString, required = false,
                                  default = nil)
-  if valid_606390 != nil:
-    section.add "X-Amz-Credential", valid_606390
-  var valid_606391 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606391 = validateParameter(valid_606391, JString, required = false,
+  if valid_613459 != nil:
+    section.add "X-Amz-Credential", valid_613459
+  var valid_613460 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613460 = validateParameter(valid_613460, JString, required = false,
                                  default = nil)
-  if valid_606391 != nil:
-    section.add "X-Amz-Security-Token", valid_606391
-  var valid_606392 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606392 = validateParameter(valid_606392, JString, required = false,
+  if valid_613460 != nil:
+    section.add "X-Amz-Security-Token", valid_613460
+  var valid_613461 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613461 = validateParameter(valid_613461, JString, required = false,
                                  default = nil)
-  if valid_606392 != nil:
-    section.add "X-Amz-Algorithm", valid_606392
-  var valid_606393 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606393 = validateParameter(valid_606393, JString, required = false,
+  if valid_613461 != nil:
+    section.add "X-Amz-Algorithm", valid_613461
+  var valid_613462 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613462 = validateParameter(valid_613462, JString, required = false,
                                  default = nil)
-  if valid_606393 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606393
+  if valid_613462 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613462
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1725,36 +1725,36 @@ proc validate_ListTagsForDomain_606384(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606395: Call_ListTagsForDomain_606383; path: JsonNode;
+proc call*(call_613464: Call_ListTagsForDomain_613452; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation returns all of the tags that are associated with the specified domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
   ## 
-  let valid = call_606395.validator(path, query, header, formData, body)
-  let scheme = call_606395.pickScheme
+  let valid = call_613464.validator(path, query, header, formData, body)
+  let scheme = call_613464.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606395.url(scheme.get, call_606395.host, call_606395.base,
-                         call_606395.route, valid.getOrDefault("path"),
+  let url = call_613464.url(scheme.get, call_613464.host, call_613464.base,
+                         call_613464.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606395, url, valid)
+  result = atozHook(call_613464, url, valid)
 
-proc call*(call_606396: Call_ListTagsForDomain_606383; body: JsonNode): Recallable =
+proc call*(call_613465: Call_ListTagsForDomain_613452; body: JsonNode): Recallable =
   ## listTagsForDomain
   ## <p>This operation returns all of the tags that are associated with the specified domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
   ##   body: JObject (required)
-  var body_606397 = newJObject()
+  var body_613466 = newJObject()
   if body != nil:
-    body_606397 = body
-  result = call_606396.call(nil, nil, nil, nil, body_606397)
+    body_613466 = body
+  result = call_613465.call(nil, nil, nil, nil, body_613466)
 
-var listTagsForDomain* = Call_ListTagsForDomain_606383(name: "listTagsForDomain",
+var listTagsForDomain* = Call_ListTagsForDomain_613452(name: "listTagsForDomain",
     meth: HttpMethod.HttpPost, host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.ListTagsForDomain",
-    validator: validate_ListTagsForDomain_606384, base: "/",
-    url: url_ListTagsForDomain_606385, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForDomain_613453, base: "/",
+    url: url_ListTagsForDomain_613454, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterDomain_606398 = ref object of OpenApiRestCall_605589
-proc url_RegisterDomain_606400(protocol: Scheme; host: string; base: string;
+  Call_RegisterDomain_613467 = ref object of OpenApiRestCall_612658
+proc url_RegisterDomain_613469(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1766,7 +1766,7 @@ proc url_RegisterDomain_606400(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RegisterDomain_606399(path: JsonNode; query: JsonNode;
+proc validate_RegisterDomain_613468(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>This operation registers a domain. Domains are registered either by Amazon Registrar (for .com, .net, and .org domains) or by our registrar associate, Gandi (for all other domains). For some top-level domains (TLDs), this operation requires extra parameters.</p> <p>When you register a domain, Amazon Route 53 does the following:</p> <ul> <li> <p>Creates a Amazon Route 53 hosted zone that has the same name as the domain. Amazon Route 53 assigns four name servers to your hosted zone and automatically updates your domain registration with the names of these name servers.</p> </li> <li> <p>Enables autorenew, so your domain registration will renew automatically each year. We'll notify you in advance of the renewal date so you can choose whether to renew the registration.</p> </li> <li> <p>Optionally enables privacy protection, so WHOIS queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you don't enable privacy protection, WHOIS queries return the information that you entered for the registrant, admin, and tech contacts.</p> </li> <li> <p>If registration is successful, returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant is notified by email.</p> </li> <li> <p>Charges your AWS account an amount based on the top-level domain. For more information, see <a href="http://aws.amazon.com/route53/pricing/">Amazon Route 53 Pricing</a>.</p> </li> </ul>
@@ -1787,46 +1787,46 @@ proc validate_RegisterDomain_606399(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606401 = header.getOrDefault("X-Amz-Target")
-  valid_606401 = validateParameter(valid_606401, JString, required = true, default = newJString(
+  var valid_613470 = header.getOrDefault("X-Amz-Target")
+  valid_613470 = validateParameter(valid_613470, JString, required = true, default = newJString(
       "Route53Domains_v20140515.RegisterDomain"))
-  if valid_606401 != nil:
-    section.add "X-Amz-Target", valid_606401
-  var valid_606402 = header.getOrDefault("X-Amz-Signature")
-  valid_606402 = validateParameter(valid_606402, JString, required = false,
+  if valid_613470 != nil:
+    section.add "X-Amz-Target", valid_613470
+  var valid_613471 = header.getOrDefault("X-Amz-Signature")
+  valid_613471 = validateParameter(valid_613471, JString, required = false,
                                  default = nil)
-  if valid_606402 != nil:
-    section.add "X-Amz-Signature", valid_606402
-  var valid_606403 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606403 = validateParameter(valid_606403, JString, required = false,
+  if valid_613471 != nil:
+    section.add "X-Amz-Signature", valid_613471
+  var valid_613472 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613472 = validateParameter(valid_613472, JString, required = false,
                                  default = nil)
-  if valid_606403 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606403
-  var valid_606404 = header.getOrDefault("X-Amz-Date")
-  valid_606404 = validateParameter(valid_606404, JString, required = false,
+  if valid_613472 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613472
+  var valid_613473 = header.getOrDefault("X-Amz-Date")
+  valid_613473 = validateParameter(valid_613473, JString, required = false,
                                  default = nil)
-  if valid_606404 != nil:
-    section.add "X-Amz-Date", valid_606404
-  var valid_606405 = header.getOrDefault("X-Amz-Credential")
-  valid_606405 = validateParameter(valid_606405, JString, required = false,
+  if valid_613473 != nil:
+    section.add "X-Amz-Date", valid_613473
+  var valid_613474 = header.getOrDefault("X-Amz-Credential")
+  valid_613474 = validateParameter(valid_613474, JString, required = false,
                                  default = nil)
-  if valid_606405 != nil:
-    section.add "X-Amz-Credential", valid_606405
-  var valid_606406 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606406 = validateParameter(valid_606406, JString, required = false,
+  if valid_613474 != nil:
+    section.add "X-Amz-Credential", valid_613474
+  var valid_613475 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613475 = validateParameter(valid_613475, JString, required = false,
                                  default = nil)
-  if valid_606406 != nil:
-    section.add "X-Amz-Security-Token", valid_606406
-  var valid_606407 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606407 = validateParameter(valid_606407, JString, required = false,
+  if valid_613475 != nil:
+    section.add "X-Amz-Security-Token", valid_613475
+  var valid_613476 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613476 = validateParameter(valid_613476, JString, required = false,
                                  default = nil)
-  if valid_606407 != nil:
-    section.add "X-Amz-Algorithm", valid_606407
-  var valid_606408 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606408 = validateParameter(valid_606408, JString, required = false,
+  if valid_613476 != nil:
+    section.add "X-Amz-Algorithm", valid_613476
+  var valid_613477 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613477 = validateParameter(valid_613477, JString, required = false,
                                  default = nil)
-  if valid_606408 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606408
+  if valid_613477 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613477
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1837,36 +1837,36 @@ proc validate_RegisterDomain_606399(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606410: Call_RegisterDomain_606398; path: JsonNode; query: JsonNode;
+proc call*(call_613479: Call_RegisterDomain_613467; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation registers a domain. Domains are registered either by Amazon Registrar (for .com, .net, and .org domains) or by our registrar associate, Gandi (for all other domains). For some top-level domains (TLDs), this operation requires extra parameters.</p> <p>When you register a domain, Amazon Route 53 does the following:</p> <ul> <li> <p>Creates a Amazon Route 53 hosted zone that has the same name as the domain. Amazon Route 53 assigns four name servers to your hosted zone and automatically updates your domain registration with the names of these name servers.</p> </li> <li> <p>Enables autorenew, so your domain registration will renew automatically each year. We'll notify you in advance of the renewal date so you can choose whether to renew the registration.</p> </li> <li> <p>Optionally enables privacy protection, so WHOIS queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you don't enable privacy protection, WHOIS queries return the information that you entered for the registrant, admin, and tech contacts.</p> </li> <li> <p>If registration is successful, returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant is notified by email.</p> </li> <li> <p>Charges your AWS account an amount based on the top-level domain. For more information, see <a href="http://aws.amazon.com/route53/pricing/">Amazon Route 53 Pricing</a>.</p> </li> </ul>
   ## 
-  let valid = call_606410.validator(path, query, header, formData, body)
-  let scheme = call_606410.pickScheme
+  let valid = call_613479.validator(path, query, header, formData, body)
+  let scheme = call_613479.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606410.url(scheme.get, call_606410.host, call_606410.base,
-                         call_606410.route, valid.getOrDefault("path"),
+  let url = call_613479.url(scheme.get, call_613479.host, call_613479.base,
+                         call_613479.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606410, url, valid)
+  result = atozHook(call_613479, url, valid)
 
-proc call*(call_606411: Call_RegisterDomain_606398; body: JsonNode): Recallable =
+proc call*(call_613480: Call_RegisterDomain_613467; body: JsonNode): Recallable =
   ## registerDomain
   ## <p>This operation registers a domain. Domains are registered either by Amazon Registrar (for .com, .net, and .org domains) or by our registrar associate, Gandi (for all other domains). For some top-level domains (TLDs), this operation requires extra parameters.</p> <p>When you register a domain, Amazon Route 53 does the following:</p> <ul> <li> <p>Creates a Amazon Route 53 hosted zone that has the same name as the domain. Amazon Route 53 assigns four name servers to your hosted zone and automatically updates your domain registration with the names of these name servers.</p> </li> <li> <p>Enables autorenew, so your domain registration will renew automatically each year. We'll notify you in advance of the renewal date so you can choose whether to renew the registration.</p> </li> <li> <p>Optionally enables privacy protection, so WHOIS queries return contact information either for Amazon Registrar (for .com, .net, and .org domains) or for our registrar associate, Gandi (for all other TLDs). If you don't enable privacy protection, WHOIS queries return the information that you entered for the registrant, admin, and tech contacts.</p> </li> <li> <p>If registration is successful, returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant is notified by email.</p> </li> <li> <p>Charges your AWS account an amount based on the top-level domain. For more information, see <a href="http://aws.amazon.com/route53/pricing/">Amazon Route 53 Pricing</a>.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_606412 = newJObject()
+  var body_613481 = newJObject()
   if body != nil:
-    body_606412 = body
-  result = call_606411.call(nil, nil, nil, nil, body_606412)
+    body_613481 = body
+  result = call_613480.call(nil, nil, nil, nil, body_613481)
 
-var registerDomain* = Call_RegisterDomain_606398(name: "registerDomain",
+var registerDomain* = Call_RegisterDomain_613467(name: "registerDomain",
     meth: HttpMethod.HttpPost, host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.RegisterDomain",
-    validator: validate_RegisterDomain_606399, base: "/", url: url_RegisterDomain_606400,
+    validator: validate_RegisterDomain_613468, base: "/", url: url_RegisterDomain_613469,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RenewDomain_606413 = ref object of OpenApiRestCall_605589
-proc url_RenewDomain_606415(protocol: Scheme; host: string; base: string;
+  Call_RenewDomain_613482 = ref object of OpenApiRestCall_612658
+proc url_RenewDomain_613484(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1878,7 +1878,7 @@ proc url_RenewDomain_606415(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RenewDomain_606414(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RenewDomain_613483(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>This operation renews a domain for the specified number of years. The cost of renewing your domain is billed to your AWS account.</p> <p>We recommend that you renew your domain several weeks before the expiration date. Some TLD registries delete domains before the expiration date if you haven't renewed far enough in advance. For more information about renewing domain registration, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-renew.html">Renewing Registration for a Domain</a> in the Amazon Route 53 Developer Guide.</p>
   ## 
@@ -1898,46 +1898,46 @@ proc validate_RenewDomain_606414(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606416 = header.getOrDefault("X-Amz-Target")
-  valid_606416 = validateParameter(valid_606416, JString, required = true, default = newJString(
+  var valid_613485 = header.getOrDefault("X-Amz-Target")
+  valid_613485 = validateParameter(valid_613485, JString, required = true, default = newJString(
       "Route53Domains_v20140515.RenewDomain"))
-  if valid_606416 != nil:
-    section.add "X-Amz-Target", valid_606416
-  var valid_606417 = header.getOrDefault("X-Amz-Signature")
-  valid_606417 = validateParameter(valid_606417, JString, required = false,
+  if valid_613485 != nil:
+    section.add "X-Amz-Target", valid_613485
+  var valid_613486 = header.getOrDefault("X-Amz-Signature")
+  valid_613486 = validateParameter(valid_613486, JString, required = false,
                                  default = nil)
-  if valid_606417 != nil:
-    section.add "X-Amz-Signature", valid_606417
-  var valid_606418 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606418 = validateParameter(valid_606418, JString, required = false,
+  if valid_613486 != nil:
+    section.add "X-Amz-Signature", valid_613486
+  var valid_613487 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613487 = validateParameter(valid_613487, JString, required = false,
                                  default = nil)
-  if valid_606418 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606418
-  var valid_606419 = header.getOrDefault("X-Amz-Date")
-  valid_606419 = validateParameter(valid_606419, JString, required = false,
+  if valid_613487 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613487
+  var valid_613488 = header.getOrDefault("X-Amz-Date")
+  valid_613488 = validateParameter(valid_613488, JString, required = false,
                                  default = nil)
-  if valid_606419 != nil:
-    section.add "X-Amz-Date", valid_606419
-  var valid_606420 = header.getOrDefault("X-Amz-Credential")
-  valid_606420 = validateParameter(valid_606420, JString, required = false,
+  if valid_613488 != nil:
+    section.add "X-Amz-Date", valid_613488
+  var valid_613489 = header.getOrDefault("X-Amz-Credential")
+  valid_613489 = validateParameter(valid_613489, JString, required = false,
                                  default = nil)
-  if valid_606420 != nil:
-    section.add "X-Amz-Credential", valid_606420
-  var valid_606421 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606421 = validateParameter(valid_606421, JString, required = false,
+  if valid_613489 != nil:
+    section.add "X-Amz-Credential", valid_613489
+  var valid_613490 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613490 = validateParameter(valid_613490, JString, required = false,
                                  default = nil)
-  if valid_606421 != nil:
-    section.add "X-Amz-Security-Token", valid_606421
-  var valid_606422 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606422 = validateParameter(valid_606422, JString, required = false,
+  if valid_613490 != nil:
+    section.add "X-Amz-Security-Token", valid_613490
+  var valid_613491 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613491 = validateParameter(valid_613491, JString, required = false,
                                  default = nil)
-  if valid_606422 != nil:
-    section.add "X-Amz-Algorithm", valid_606422
-  var valid_606423 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606423 = validateParameter(valid_606423, JString, required = false,
+  if valid_613491 != nil:
+    section.add "X-Amz-Algorithm", valid_613491
+  var valid_613492 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613492 = validateParameter(valid_613492, JString, required = false,
                                  default = nil)
-  if valid_606423 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606423
+  if valid_613492 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613492
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1948,37 +1948,37 @@ proc validate_RenewDomain_606414(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606425: Call_RenewDomain_606413; path: JsonNode; query: JsonNode;
+proc call*(call_613494: Call_RenewDomain_613482; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation renews a domain for the specified number of years. The cost of renewing your domain is billed to your AWS account.</p> <p>We recommend that you renew your domain several weeks before the expiration date. Some TLD registries delete domains before the expiration date if you haven't renewed far enough in advance. For more information about renewing domain registration, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-renew.html">Renewing Registration for a Domain</a> in the Amazon Route 53 Developer Guide.</p>
   ## 
-  let valid = call_606425.validator(path, query, header, formData, body)
-  let scheme = call_606425.pickScheme
+  let valid = call_613494.validator(path, query, header, formData, body)
+  let scheme = call_613494.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606425.url(scheme.get, call_606425.host, call_606425.base,
-                         call_606425.route, valid.getOrDefault("path"),
+  let url = call_613494.url(scheme.get, call_613494.host, call_613494.base,
+                         call_613494.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606425, url, valid)
+  result = atozHook(call_613494, url, valid)
 
-proc call*(call_606426: Call_RenewDomain_606413; body: JsonNode): Recallable =
+proc call*(call_613495: Call_RenewDomain_613482; body: JsonNode): Recallable =
   ## renewDomain
   ## <p>This operation renews a domain for the specified number of years. The cost of renewing your domain is billed to your AWS account.</p> <p>We recommend that you renew your domain several weeks before the expiration date. Some TLD registries delete domains before the expiration date if you haven't renewed far enough in advance. For more information about renewing domain registration, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-renew.html">Renewing Registration for a Domain</a> in the Amazon Route 53 Developer Guide.</p>
   ##   body: JObject (required)
-  var body_606427 = newJObject()
+  var body_613496 = newJObject()
   if body != nil:
-    body_606427 = body
-  result = call_606426.call(nil, nil, nil, nil, body_606427)
+    body_613496 = body
+  result = call_613495.call(nil, nil, nil, nil, body_613496)
 
-var renewDomain* = Call_RenewDomain_606413(name: "renewDomain",
+var renewDomain* = Call_RenewDomain_613482(name: "renewDomain",
                                         meth: HttpMethod.HttpPost,
                                         host: "route53domains.amazonaws.com", route: "/#X-Amz-Target=Route53Domains_v20140515.RenewDomain",
-                                        validator: validate_RenewDomain_606414,
-                                        base: "/", url: url_RenewDomain_606415,
+                                        validator: validate_RenewDomain_613483,
+                                        base: "/", url: url_RenewDomain_613484,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ResendContactReachabilityEmail_606428 = ref object of OpenApiRestCall_605589
-proc url_ResendContactReachabilityEmail_606430(protocol: Scheme; host: string;
+  Call_ResendContactReachabilityEmail_613497 = ref object of OpenApiRestCall_612658
+proc url_ResendContactReachabilityEmail_613499(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1990,7 +1990,7 @@ proc url_ResendContactReachabilityEmail_606430(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ResendContactReachabilityEmail_606429(path: JsonNode;
+proc validate_ResendContactReachabilityEmail_613498(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## For operations that require confirmation that the email address for the registrant contact is valid, such as registering a new domain, this operation resends the confirmation email to the current email address for the registrant contact.
   ## 
@@ -2010,46 +2010,46 @@ proc validate_ResendContactReachabilityEmail_606429(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606431 = header.getOrDefault("X-Amz-Target")
-  valid_606431 = validateParameter(valid_606431, JString, required = true, default = newJString(
+  var valid_613500 = header.getOrDefault("X-Amz-Target")
+  valid_613500 = validateParameter(valid_613500, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ResendContactReachabilityEmail"))
-  if valid_606431 != nil:
-    section.add "X-Amz-Target", valid_606431
-  var valid_606432 = header.getOrDefault("X-Amz-Signature")
-  valid_606432 = validateParameter(valid_606432, JString, required = false,
+  if valid_613500 != nil:
+    section.add "X-Amz-Target", valid_613500
+  var valid_613501 = header.getOrDefault("X-Amz-Signature")
+  valid_613501 = validateParameter(valid_613501, JString, required = false,
                                  default = nil)
-  if valid_606432 != nil:
-    section.add "X-Amz-Signature", valid_606432
-  var valid_606433 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606433 = validateParameter(valid_606433, JString, required = false,
+  if valid_613501 != nil:
+    section.add "X-Amz-Signature", valid_613501
+  var valid_613502 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613502 = validateParameter(valid_613502, JString, required = false,
                                  default = nil)
-  if valid_606433 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606433
-  var valid_606434 = header.getOrDefault("X-Amz-Date")
-  valid_606434 = validateParameter(valid_606434, JString, required = false,
+  if valid_613502 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613502
+  var valid_613503 = header.getOrDefault("X-Amz-Date")
+  valid_613503 = validateParameter(valid_613503, JString, required = false,
                                  default = nil)
-  if valid_606434 != nil:
-    section.add "X-Amz-Date", valid_606434
-  var valid_606435 = header.getOrDefault("X-Amz-Credential")
-  valid_606435 = validateParameter(valid_606435, JString, required = false,
+  if valid_613503 != nil:
+    section.add "X-Amz-Date", valid_613503
+  var valid_613504 = header.getOrDefault("X-Amz-Credential")
+  valid_613504 = validateParameter(valid_613504, JString, required = false,
                                  default = nil)
-  if valid_606435 != nil:
-    section.add "X-Amz-Credential", valid_606435
-  var valid_606436 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606436 = validateParameter(valid_606436, JString, required = false,
+  if valid_613504 != nil:
+    section.add "X-Amz-Credential", valid_613504
+  var valid_613505 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613505 = validateParameter(valid_613505, JString, required = false,
                                  default = nil)
-  if valid_606436 != nil:
-    section.add "X-Amz-Security-Token", valid_606436
-  var valid_606437 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606437 = validateParameter(valid_606437, JString, required = false,
+  if valid_613505 != nil:
+    section.add "X-Amz-Security-Token", valid_613505
+  var valid_613506 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613506 = validateParameter(valid_613506, JString, required = false,
                                  default = nil)
-  if valid_606437 != nil:
-    section.add "X-Amz-Algorithm", valid_606437
-  var valid_606438 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606438 = validateParameter(valid_606438, JString, required = false,
+  if valid_613506 != nil:
+    section.add "X-Amz-Algorithm", valid_613506
+  var valid_613507 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613507 = validateParameter(valid_613507, JString, required = false,
                                  default = nil)
-  if valid_606438 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606438
+  if valid_613507 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613507
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2060,37 +2060,37 @@ proc validate_ResendContactReachabilityEmail_606429(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606440: Call_ResendContactReachabilityEmail_606428; path: JsonNode;
+proc call*(call_613509: Call_ResendContactReachabilityEmail_613497; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## For operations that require confirmation that the email address for the registrant contact is valid, such as registering a new domain, this operation resends the confirmation email to the current email address for the registrant contact.
   ## 
-  let valid = call_606440.validator(path, query, header, formData, body)
-  let scheme = call_606440.pickScheme
+  let valid = call_613509.validator(path, query, header, formData, body)
+  let scheme = call_613509.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606440.url(scheme.get, call_606440.host, call_606440.base,
-                         call_606440.route, valid.getOrDefault("path"),
+  let url = call_613509.url(scheme.get, call_613509.host, call_613509.base,
+                         call_613509.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606440, url, valid)
+  result = atozHook(call_613509, url, valid)
 
-proc call*(call_606441: Call_ResendContactReachabilityEmail_606428; body: JsonNode): Recallable =
+proc call*(call_613510: Call_ResendContactReachabilityEmail_613497; body: JsonNode): Recallable =
   ## resendContactReachabilityEmail
   ## For operations that require confirmation that the email address for the registrant contact is valid, such as registering a new domain, this operation resends the confirmation email to the current email address for the registrant contact.
   ##   body: JObject (required)
-  var body_606442 = newJObject()
+  var body_613511 = newJObject()
   if body != nil:
-    body_606442 = body
-  result = call_606441.call(nil, nil, nil, nil, body_606442)
+    body_613511 = body
+  result = call_613510.call(nil, nil, nil, nil, body_613511)
 
-var resendContactReachabilityEmail* = Call_ResendContactReachabilityEmail_606428(
+var resendContactReachabilityEmail* = Call_ResendContactReachabilityEmail_613497(
     name: "resendContactReachabilityEmail", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com", route: "/#X-Amz-Target=Route53Domains_v20140515.ResendContactReachabilityEmail",
-    validator: validate_ResendContactReachabilityEmail_606429, base: "/",
-    url: url_ResendContactReachabilityEmail_606430,
+    validator: validate_ResendContactReachabilityEmail_613498, base: "/",
+    url: url_ResendContactReachabilityEmail_613499,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RetrieveDomainAuthCode_606443 = ref object of OpenApiRestCall_605589
-proc url_RetrieveDomainAuthCode_606445(protocol: Scheme; host: string; base: string;
+  Call_RetrieveDomainAuthCode_613512 = ref object of OpenApiRestCall_612658
+proc url_RetrieveDomainAuthCode_613514(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2102,7 +2102,7 @@ proc url_RetrieveDomainAuthCode_606445(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_RetrieveDomainAuthCode_606444(path: JsonNode; query: JsonNode;
+proc validate_RetrieveDomainAuthCode_613513(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This operation returns the AuthCode for the domain. To transfer a domain to another registrar, you provide this value to the new registrar.
   ## 
@@ -2122,46 +2122,46 @@ proc validate_RetrieveDomainAuthCode_606444(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606446 = header.getOrDefault("X-Amz-Target")
-  valid_606446 = validateParameter(valid_606446, JString, required = true, default = newJString(
+  var valid_613515 = header.getOrDefault("X-Amz-Target")
+  valid_613515 = validateParameter(valid_613515, JString, required = true, default = newJString(
       "Route53Domains_v20140515.RetrieveDomainAuthCode"))
-  if valid_606446 != nil:
-    section.add "X-Amz-Target", valid_606446
-  var valid_606447 = header.getOrDefault("X-Amz-Signature")
-  valid_606447 = validateParameter(valid_606447, JString, required = false,
+  if valid_613515 != nil:
+    section.add "X-Amz-Target", valid_613515
+  var valid_613516 = header.getOrDefault("X-Amz-Signature")
+  valid_613516 = validateParameter(valid_613516, JString, required = false,
                                  default = nil)
-  if valid_606447 != nil:
-    section.add "X-Amz-Signature", valid_606447
-  var valid_606448 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606448 = validateParameter(valid_606448, JString, required = false,
+  if valid_613516 != nil:
+    section.add "X-Amz-Signature", valid_613516
+  var valid_613517 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613517 = validateParameter(valid_613517, JString, required = false,
                                  default = nil)
-  if valid_606448 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606448
-  var valid_606449 = header.getOrDefault("X-Amz-Date")
-  valid_606449 = validateParameter(valid_606449, JString, required = false,
+  if valid_613517 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613517
+  var valid_613518 = header.getOrDefault("X-Amz-Date")
+  valid_613518 = validateParameter(valid_613518, JString, required = false,
                                  default = nil)
-  if valid_606449 != nil:
-    section.add "X-Amz-Date", valid_606449
-  var valid_606450 = header.getOrDefault("X-Amz-Credential")
-  valid_606450 = validateParameter(valid_606450, JString, required = false,
+  if valid_613518 != nil:
+    section.add "X-Amz-Date", valid_613518
+  var valid_613519 = header.getOrDefault("X-Amz-Credential")
+  valid_613519 = validateParameter(valid_613519, JString, required = false,
                                  default = nil)
-  if valid_606450 != nil:
-    section.add "X-Amz-Credential", valid_606450
-  var valid_606451 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606451 = validateParameter(valid_606451, JString, required = false,
+  if valid_613519 != nil:
+    section.add "X-Amz-Credential", valid_613519
+  var valid_613520 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613520 = validateParameter(valid_613520, JString, required = false,
                                  default = nil)
-  if valid_606451 != nil:
-    section.add "X-Amz-Security-Token", valid_606451
-  var valid_606452 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606452 = validateParameter(valid_606452, JString, required = false,
+  if valid_613520 != nil:
+    section.add "X-Amz-Security-Token", valid_613520
+  var valid_613521 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613521 = validateParameter(valid_613521, JString, required = false,
                                  default = nil)
-  if valid_606452 != nil:
-    section.add "X-Amz-Algorithm", valid_606452
-  var valid_606453 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606453 = validateParameter(valid_606453, JString, required = false,
+  if valid_613521 != nil:
+    section.add "X-Amz-Algorithm", valid_613521
+  var valid_613522 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613522 = validateParameter(valid_613522, JString, required = false,
                                  default = nil)
-  if valid_606453 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606453
+  if valid_613522 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613522
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2172,37 +2172,37 @@ proc validate_RetrieveDomainAuthCode_606444(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606455: Call_RetrieveDomainAuthCode_606443; path: JsonNode;
+proc call*(call_613524: Call_RetrieveDomainAuthCode_613512; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This operation returns the AuthCode for the domain. To transfer a domain to another registrar, you provide this value to the new registrar.
   ## 
-  let valid = call_606455.validator(path, query, header, formData, body)
-  let scheme = call_606455.pickScheme
+  let valid = call_613524.validator(path, query, header, formData, body)
+  let scheme = call_613524.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606455.url(scheme.get, call_606455.host, call_606455.base,
-                         call_606455.route, valid.getOrDefault("path"),
+  let url = call_613524.url(scheme.get, call_613524.host, call_613524.base,
+                         call_613524.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606455, url, valid)
+  result = atozHook(call_613524, url, valid)
 
-proc call*(call_606456: Call_RetrieveDomainAuthCode_606443; body: JsonNode): Recallable =
+proc call*(call_613525: Call_RetrieveDomainAuthCode_613512; body: JsonNode): Recallable =
   ## retrieveDomainAuthCode
   ## This operation returns the AuthCode for the domain. To transfer a domain to another registrar, you provide this value to the new registrar.
   ##   body: JObject (required)
-  var body_606457 = newJObject()
+  var body_613526 = newJObject()
   if body != nil:
-    body_606457 = body
-  result = call_606456.call(nil, nil, nil, nil, body_606457)
+    body_613526 = body
+  result = call_613525.call(nil, nil, nil, nil, body_613526)
 
-var retrieveDomainAuthCode* = Call_RetrieveDomainAuthCode_606443(
+var retrieveDomainAuthCode* = Call_RetrieveDomainAuthCode_613512(
     name: "retrieveDomainAuthCode", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.RetrieveDomainAuthCode",
-    validator: validate_RetrieveDomainAuthCode_606444, base: "/",
-    url: url_RetrieveDomainAuthCode_606445, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RetrieveDomainAuthCode_613513, base: "/",
+    url: url_RetrieveDomainAuthCode_613514, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TransferDomain_606458 = ref object of OpenApiRestCall_605589
-proc url_TransferDomain_606460(protocol: Scheme; host: string; base: string;
+  Call_TransferDomain_613527 = ref object of OpenApiRestCall_612658
+proc url_TransferDomain_613529(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2214,7 +2214,7 @@ proc url_TransferDomain_606460(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TransferDomain_606459(path: JsonNode; query: JsonNode;
+proc validate_TransferDomain_613528(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>This operation transfers a domain from another registrar to Amazon Route 53. When the transfer is complete, the domain is registered either with Amazon Registrar (for .com, .net, and .org domains) or with our registrar associate, Gandi (for all other TLDs).</p> <p>For transfer requirements, a detailed procedure, and information about viewing the status of a domain transfer, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-transfer-to-route-53.html">Transferring Registration for a Domain to Amazon Route 53</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>If the registrar for your domain is also the DNS service provider for the domain, we highly recommend that you consider transferring your DNS service to Amazon Route 53 or to another DNS service provider before you transfer your registration. Some registrars provide free DNS service when you purchase a domain registration. When you transfer the registration, the previous registrar will not renew your domain registration and could end your DNS service at any time.</p> <important> <p>If the registrar for your domain is also the DNS service provider for the domain and you don't transfer DNS service to another provider, your website, email, and the web applications associated with the domain might become unavailable.</p> </important> <p>If the transfer is successful, this method returns an operation ID that you can use to track the progress and completion of the action. If the transfer doesn't complete successfully, the domain registrant will be notified by email.</p>
@@ -2235,46 +2235,46 @@ proc validate_TransferDomain_606459(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606461 = header.getOrDefault("X-Amz-Target")
-  valid_606461 = validateParameter(valid_606461, JString, required = true, default = newJString(
+  var valid_613530 = header.getOrDefault("X-Amz-Target")
+  valid_613530 = validateParameter(valid_613530, JString, required = true, default = newJString(
       "Route53Domains_v20140515.TransferDomain"))
-  if valid_606461 != nil:
-    section.add "X-Amz-Target", valid_606461
-  var valid_606462 = header.getOrDefault("X-Amz-Signature")
-  valid_606462 = validateParameter(valid_606462, JString, required = false,
+  if valid_613530 != nil:
+    section.add "X-Amz-Target", valid_613530
+  var valid_613531 = header.getOrDefault("X-Amz-Signature")
+  valid_613531 = validateParameter(valid_613531, JString, required = false,
                                  default = nil)
-  if valid_606462 != nil:
-    section.add "X-Amz-Signature", valid_606462
-  var valid_606463 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606463 = validateParameter(valid_606463, JString, required = false,
+  if valid_613531 != nil:
+    section.add "X-Amz-Signature", valid_613531
+  var valid_613532 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613532 = validateParameter(valid_613532, JString, required = false,
                                  default = nil)
-  if valid_606463 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606463
-  var valid_606464 = header.getOrDefault("X-Amz-Date")
-  valid_606464 = validateParameter(valid_606464, JString, required = false,
+  if valid_613532 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613532
+  var valid_613533 = header.getOrDefault("X-Amz-Date")
+  valid_613533 = validateParameter(valid_613533, JString, required = false,
                                  default = nil)
-  if valid_606464 != nil:
-    section.add "X-Amz-Date", valid_606464
-  var valid_606465 = header.getOrDefault("X-Amz-Credential")
-  valid_606465 = validateParameter(valid_606465, JString, required = false,
+  if valid_613533 != nil:
+    section.add "X-Amz-Date", valid_613533
+  var valid_613534 = header.getOrDefault("X-Amz-Credential")
+  valid_613534 = validateParameter(valid_613534, JString, required = false,
                                  default = nil)
-  if valid_606465 != nil:
-    section.add "X-Amz-Credential", valid_606465
-  var valid_606466 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606466 = validateParameter(valid_606466, JString, required = false,
+  if valid_613534 != nil:
+    section.add "X-Amz-Credential", valid_613534
+  var valid_613535 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613535 = validateParameter(valid_613535, JString, required = false,
                                  default = nil)
-  if valid_606466 != nil:
-    section.add "X-Amz-Security-Token", valid_606466
-  var valid_606467 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606467 = validateParameter(valid_606467, JString, required = false,
+  if valid_613535 != nil:
+    section.add "X-Amz-Security-Token", valid_613535
+  var valid_613536 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613536 = validateParameter(valid_613536, JString, required = false,
                                  default = nil)
-  if valid_606467 != nil:
-    section.add "X-Amz-Algorithm", valid_606467
-  var valid_606468 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606468 = validateParameter(valid_606468, JString, required = false,
+  if valid_613536 != nil:
+    section.add "X-Amz-Algorithm", valid_613536
+  var valid_613537 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613537 = validateParameter(valid_613537, JString, required = false,
                                  default = nil)
-  if valid_606468 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606468
+  if valid_613537 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613537
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2285,36 +2285,36 @@ proc validate_TransferDomain_606459(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606470: Call_TransferDomain_606458; path: JsonNode; query: JsonNode;
+proc call*(call_613539: Call_TransferDomain_613527; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation transfers a domain from another registrar to Amazon Route 53. When the transfer is complete, the domain is registered either with Amazon Registrar (for .com, .net, and .org domains) or with our registrar associate, Gandi (for all other TLDs).</p> <p>For transfer requirements, a detailed procedure, and information about viewing the status of a domain transfer, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-transfer-to-route-53.html">Transferring Registration for a Domain to Amazon Route 53</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>If the registrar for your domain is also the DNS service provider for the domain, we highly recommend that you consider transferring your DNS service to Amazon Route 53 or to another DNS service provider before you transfer your registration. Some registrars provide free DNS service when you purchase a domain registration. When you transfer the registration, the previous registrar will not renew your domain registration and could end your DNS service at any time.</p> <important> <p>If the registrar for your domain is also the DNS service provider for the domain and you don't transfer DNS service to another provider, your website, email, and the web applications associated with the domain might become unavailable.</p> </important> <p>If the transfer is successful, this method returns an operation ID that you can use to track the progress and completion of the action. If the transfer doesn't complete successfully, the domain registrant will be notified by email.</p>
   ## 
-  let valid = call_606470.validator(path, query, header, formData, body)
-  let scheme = call_606470.pickScheme
+  let valid = call_613539.validator(path, query, header, formData, body)
+  let scheme = call_613539.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606470.url(scheme.get, call_606470.host, call_606470.base,
-                         call_606470.route, valid.getOrDefault("path"),
+  let url = call_613539.url(scheme.get, call_613539.host, call_613539.base,
+                         call_613539.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606470, url, valid)
+  result = atozHook(call_613539, url, valid)
 
-proc call*(call_606471: Call_TransferDomain_606458; body: JsonNode): Recallable =
+proc call*(call_613540: Call_TransferDomain_613527; body: JsonNode): Recallable =
   ## transferDomain
   ## <p>This operation transfers a domain from another registrar to Amazon Route 53. When the transfer is complete, the domain is registered either with Amazon Registrar (for .com, .net, and .org domains) or with our registrar associate, Gandi (for all other TLDs).</p> <p>For transfer requirements, a detailed procedure, and information about viewing the status of a domain transfer, see <a href="http://docs.aws.amazon.com/Route53/latest/DeveloperGuide/domain-transfer-to-route-53.html">Transferring Registration for a Domain to Amazon Route 53</a> in the <i>Amazon Route 53 Developer Guide</i>.</p> <p>If the registrar for your domain is also the DNS service provider for the domain, we highly recommend that you consider transferring your DNS service to Amazon Route 53 or to another DNS service provider before you transfer your registration. Some registrars provide free DNS service when you purchase a domain registration. When you transfer the registration, the previous registrar will not renew your domain registration and could end your DNS service at any time.</p> <important> <p>If the registrar for your domain is also the DNS service provider for the domain and you don't transfer DNS service to another provider, your website, email, and the web applications associated with the domain might become unavailable.</p> </important> <p>If the transfer is successful, this method returns an operation ID that you can use to track the progress and completion of the action. If the transfer doesn't complete successfully, the domain registrant will be notified by email.</p>
   ##   body: JObject (required)
-  var body_606472 = newJObject()
+  var body_613541 = newJObject()
   if body != nil:
-    body_606472 = body
-  result = call_606471.call(nil, nil, nil, nil, body_606472)
+    body_613541 = body
+  result = call_613540.call(nil, nil, nil, nil, body_613541)
 
-var transferDomain* = Call_TransferDomain_606458(name: "transferDomain",
+var transferDomain* = Call_TransferDomain_613527(name: "transferDomain",
     meth: HttpMethod.HttpPost, host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.TransferDomain",
-    validator: validate_TransferDomain_606459, base: "/", url: url_TransferDomain_606460,
+    validator: validate_TransferDomain_613528, base: "/", url: url_TransferDomain_613529,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateDomainContact_606473 = ref object of OpenApiRestCall_605589
-proc url_UpdateDomainContact_606475(protocol: Scheme; host: string; base: string;
+  Call_UpdateDomainContact_613542 = ref object of OpenApiRestCall_612658
+proc url_UpdateDomainContact_613544(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2326,7 +2326,7 @@ proc url_UpdateDomainContact_606475(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_UpdateDomainContact_606474(path: JsonNode; query: JsonNode;
+proc validate_UpdateDomainContact_613543(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>This operation updates the contact information for a particular domain. You must specify information for at least one contact: registrant, administrator, or technical.</p> <p>If the update is successful, this method returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.</p>
@@ -2347,46 +2347,46 @@ proc validate_UpdateDomainContact_606474(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606476 = header.getOrDefault("X-Amz-Target")
-  valid_606476 = validateParameter(valid_606476, JString, required = true, default = newJString(
+  var valid_613545 = header.getOrDefault("X-Amz-Target")
+  valid_613545 = validateParameter(valid_613545, JString, required = true, default = newJString(
       "Route53Domains_v20140515.UpdateDomainContact"))
-  if valid_606476 != nil:
-    section.add "X-Amz-Target", valid_606476
-  var valid_606477 = header.getOrDefault("X-Amz-Signature")
-  valid_606477 = validateParameter(valid_606477, JString, required = false,
+  if valid_613545 != nil:
+    section.add "X-Amz-Target", valid_613545
+  var valid_613546 = header.getOrDefault("X-Amz-Signature")
+  valid_613546 = validateParameter(valid_613546, JString, required = false,
                                  default = nil)
-  if valid_606477 != nil:
-    section.add "X-Amz-Signature", valid_606477
-  var valid_606478 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606478 = validateParameter(valid_606478, JString, required = false,
+  if valid_613546 != nil:
+    section.add "X-Amz-Signature", valid_613546
+  var valid_613547 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613547 = validateParameter(valid_613547, JString, required = false,
                                  default = nil)
-  if valid_606478 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606478
-  var valid_606479 = header.getOrDefault("X-Amz-Date")
-  valid_606479 = validateParameter(valid_606479, JString, required = false,
+  if valid_613547 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613547
+  var valid_613548 = header.getOrDefault("X-Amz-Date")
+  valid_613548 = validateParameter(valid_613548, JString, required = false,
                                  default = nil)
-  if valid_606479 != nil:
-    section.add "X-Amz-Date", valid_606479
-  var valid_606480 = header.getOrDefault("X-Amz-Credential")
-  valid_606480 = validateParameter(valid_606480, JString, required = false,
+  if valid_613548 != nil:
+    section.add "X-Amz-Date", valid_613548
+  var valid_613549 = header.getOrDefault("X-Amz-Credential")
+  valid_613549 = validateParameter(valid_613549, JString, required = false,
                                  default = nil)
-  if valid_606480 != nil:
-    section.add "X-Amz-Credential", valid_606480
-  var valid_606481 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606481 = validateParameter(valid_606481, JString, required = false,
+  if valid_613549 != nil:
+    section.add "X-Amz-Credential", valid_613549
+  var valid_613550 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613550 = validateParameter(valid_613550, JString, required = false,
                                  default = nil)
-  if valid_606481 != nil:
-    section.add "X-Amz-Security-Token", valid_606481
-  var valid_606482 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606482 = validateParameter(valid_606482, JString, required = false,
+  if valid_613550 != nil:
+    section.add "X-Amz-Security-Token", valid_613550
+  var valid_613551 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613551 = validateParameter(valid_613551, JString, required = false,
                                  default = nil)
-  if valid_606482 != nil:
-    section.add "X-Amz-Algorithm", valid_606482
-  var valid_606483 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606483 = validateParameter(valid_606483, JString, required = false,
+  if valid_613551 != nil:
+    section.add "X-Amz-Algorithm", valid_613551
+  var valid_613552 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613552 = validateParameter(valid_613552, JString, required = false,
                                  default = nil)
-  if valid_606483 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606483
+  if valid_613552 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613552
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2397,37 +2397,37 @@ proc validate_UpdateDomainContact_606474(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606485: Call_UpdateDomainContact_606473; path: JsonNode;
+proc call*(call_613554: Call_UpdateDomainContact_613542; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation updates the contact information for a particular domain. You must specify information for at least one contact: registrant, administrator, or technical.</p> <p>If the update is successful, this method returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.</p>
   ## 
-  let valid = call_606485.validator(path, query, header, formData, body)
-  let scheme = call_606485.pickScheme
+  let valid = call_613554.validator(path, query, header, formData, body)
+  let scheme = call_613554.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606485.url(scheme.get, call_606485.host, call_606485.base,
-                         call_606485.route, valid.getOrDefault("path"),
+  let url = call_613554.url(scheme.get, call_613554.host, call_613554.base,
+                         call_613554.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606485, url, valid)
+  result = atozHook(call_613554, url, valid)
 
-proc call*(call_606486: Call_UpdateDomainContact_606473; body: JsonNode): Recallable =
+proc call*(call_613555: Call_UpdateDomainContact_613542; body: JsonNode): Recallable =
   ## updateDomainContact
   ## <p>This operation updates the contact information for a particular domain. You must specify information for at least one contact: registrant, administrator, or technical.</p> <p>If the update is successful, this method returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.</p>
   ##   body: JObject (required)
-  var body_606487 = newJObject()
+  var body_613556 = newJObject()
   if body != nil:
-    body_606487 = body
-  result = call_606486.call(nil, nil, nil, nil, body_606487)
+    body_613556 = body
+  result = call_613555.call(nil, nil, nil, nil, body_613556)
 
-var updateDomainContact* = Call_UpdateDomainContact_606473(
+var updateDomainContact* = Call_UpdateDomainContact_613542(
     name: "updateDomainContact", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.UpdateDomainContact",
-    validator: validate_UpdateDomainContact_606474, base: "/",
-    url: url_UpdateDomainContact_606475, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateDomainContact_613543, base: "/",
+    url: url_UpdateDomainContact_613544, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateDomainContactPrivacy_606488 = ref object of OpenApiRestCall_605589
-proc url_UpdateDomainContactPrivacy_606490(protocol: Scheme; host: string;
+  Call_UpdateDomainContactPrivacy_613557 = ref object of OpenApiRestCall_612658
+proc url_UpdateDomainContactPrivacy_613559(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2439,7 +2439,7 @@ proc url_UpdateDomainContactPrivacy_606490(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateDomainContactPrivacy_606489(path: JsonNode; query: JsonNode;
+proc validate_UpdateDomainContactPrivacy_613558(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>This operation updates the specified domain contact's privacy setting. When privacy protection is enabled, contact information such as email address is replaced either with contact information for Amazon Registrar (for .com, .net, and .org domains) or with contact information for our registrar associate, Gandi.</p> <p>This operation affects only the contact information for the specified contact type (registrant, administrator, or tech). If the request succeeds, Amazon Route 53 returns an operation ID that you can use with <a>GetOperationDetail</a> to track the progress and completion of the action. If the request doesn't complete successfully, the domain registrant will be notified by email.</p>
   ## 
@@ -2459,46 +2459,46 @@ proc validate_UpdateDomainContactPrivacy_606489(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606491 = header.getOrDefault("X-Amz-Target")
-  valid_606491 = validateParameter(valid_606491, JString, required = true, default = newJString(
+  var valid_613560 = header.getOrDefault("X-Amz-Target")
+  valid_613560 = validateParameter(valid_613560, JString, required = true, default = newJString(
       "Route53Domains_v20140515.UpdateDomainContactPrivacy"))
-  if valid_606491 != nil:
-    section.add "X-Amz-Target", valid_606491
-  var valid_606492 = header.getOrDefault("X-Amz-Signature")
-  valid_606492 = validateParameter(valid_606492, JString, required = false,
+  if valid_613560 != nil:
+    section.add "X-Amz-Target", valid_613560
+  var valid_613561 = header.getOrDefault("X-Amz-Signature")
+  valid_613561 = validateParameter(valid_613561, JString, required = false,
                                  default = nil)
-  if valid_606492 != nil:
-    section.add "X-Amz-Signature", valid_606492
-  var valid_606493 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606493 = validateParameter(valid_606493, JString, required = false,
+  if valid_613561 != nil:
+    section.add "X-Amz-Signature", valid_613561
+  var valid_613562 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613562 = validateParameter(valid_613562, JString, required = false,
                                  default = nil)
-  if valid_606493 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606493
-  var valid_606494 = header.getOrDefault("X-Amz-Date")
-  valid_606494 = validateParameter(valid_606494, JString, required = false,
+  if valid_613562 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613562
+  var valid_613563 = header.getOrDefault("X-Amz-Date")
+  valid_613563 = validateParameter(valid_613563, JString, required = false,
                                  default = nil)
-  if valid_606494 != nil:
-    section.add "X-Amz-Date", valid_606494
-  var valid_606495 = header.getOrDefault("X-Amz-Credential")
-  valid_606495 = validateParameter(valid_606495, JString, required = false,
+  if valid_613563 != nil:
+    section.add "X-Amz-Date", valid_613563
+  var valid_613564 = header.getOrDefault("X-Amz-Credential")
+  valid_613564 = validateParameter(valid_613564, JString, required = false,
                                  default = nil)
-  if valid_606495 != nil:
-    section.add "X-Amz-Credential", valid_606495
-  var valid_606496 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606496 = validateParameter(valid_606496, JString, required = false,
+  if valid_613564 != nil:
+    section.add "X-Amz-Credential", valid_613564
+  var valid_613565 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613565 = validateParameter(valid_613565, JString, required = false,
                                  default = nil)
-  if valid_606496 != nil:
-    section.add "X-Amz-Security-Token", valid_606496
-  var valid_606497 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606497 = validateParameter(valid_606497, JString, required = false,
+  if valid_613565 != nil:
+    section.add "X-Amz-Security-Token", valid_613565
+  var valid_613566 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613566 = validateParameter(valid_613566, JString, required = false,
                                  default = nil)
-  if valid_606497 != nil:
-    section.add "X-Amz-Algorithm", valid_606497
-  var valid_606498 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606498 = validateParameter(valid_606498, JString, required = false,
+  if valid_613566 != nil:
+    section.add "X-Amz-Algorithm", valid_613566
+  var valid_613567 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613567 = validateParameter(valid_613567, JString, required = false,
                                  default = nil)
-  if valid_606498 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606498
+  if valid_613567 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613567
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2509,37 +2509,37 @@ proc validate_UpdateDomainContactPrivacy_606489(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606500: Call_UpdateDomainContactPrivacy_606488; path: JsonNode;
+proc call*(call_613569: Call_UpdateDomainContactPrivacy_613557; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation updates the specified domain contact's privacy setting. When privacy protection is enabled, contact information such as email address is replaced either with contact information for Amazon Registrar (for .com, .net, and .org domains) or with contact information for our registrar associate, Gandi.</p> <p>This operation affects only the contact information for the specified contact type (registrant, administrator, or tech). If the request succeeds, Amazon Route 53 returns an operation ID that you can use with <a>GetOperationDetail</a> to track the progress and completion of the action. If the request doesn't complete successfully, the domain registrant will be notified by email.</p>
   ## 
-  let valid = call_606500.validator(path, query, header, formData, body)
-  let scheme = call_606500.pickScheme
+  let valid = call_613569.validator(path, query, header, formData, body)
+  let scheme = call_613569.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606500.url(scheme.get, call_606500.host, call_606500.base,
-                         call_606500.route, valid.getOrDefault("path"),
+  let url = call_613569.url(scheme.get, call_613569.host, call_613569.base,
+                         call_613569.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606500, url, valid)
+  result = atozHook(call_613569, url, valid)
 
-proc call*(call_606501: Call_UpdateDomainContactPrivacy_606488; body: JsonNode): Recallable =
+proc call*(call_613570: Call_UpdateDomainContactPrivacy_613557; body: JsonNode): Recallable =
   ## updateDomainContactPrivacy
   ## <p>This operation updates the specified domain contact's privacy setting. When privacy protection is enabled, contact information such as email address is replaced either with contact information for Amazon Registrar (for .com, .net, and .org domains) or with contact information for our registrar associate, Gandi.</p> <p>This operation affects only the contact information for the specified contact type (registrant, administrator, or tech). If the request succeeds, Amazon Route 53 returns an operation ID that you can use with <a>GetOperationDetail</a> to track the progress and completion of the action. If the request doesn't complete successfully, the domain registrant will be notified by email.</p>
   ##   body: JObject (required)
-  var body_606502 = newJObject()
+  var body_613571 = newJObject()
   if body != nil:
-    body_606502 = body
-  result = call_606501.call(nil, nil, nil, nil, body_606502)
+    body_613571 = body
+  result = call_613570.call(nil, nil, nil, nil, body_613571)
 
-var updateDomainContactPrivacy* = Call_UpdateDomainContactPrivacy_606488(
+var updateDomainContactPrivacy* = Call_UpdateDomainContactPrivacy_613557(
     name: "updateDomainContactPrivacy", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com", route: "/#X-Amz-Target=Route53Domains_v20140515.UpdateDomainContactPrivacy",
-    validator: validate_UpdateDomainContactPrivacy_606489, base: "/",
-    url: url_UpdateDomainContactPrivacy_606490,
+    validator: validate_UpdateDomainContactPrivacy_613558, base: "/",
+    url: url_UpdateDomainContactPrivacy_613559,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateDomainNameservers_606503 = ref object of OpenApiRestCall_605589
-proc url_UpdateDomainNameservers_606505(protocol: Scheme; host: string; base: string;
+  Call_UpdateDomainNameservers_613572 = ref object of OpenApiRestCall_612658
+proc url_UpdateDomainNameservers_613574(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -2552,7 +2552,7 @@ proc url_UpdateDomainNameservers_606505(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_UpdateDomainNameservers_606504(path: JsonNode; query: JsonNode;
+proc validate_UpdateDomainNameservers_613573(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>This operation replaces the current set of name servers for the domain with the specified set of name servers. If you use Amazon Route 53 as your DNS service, specify the four name servers in the delegation set for the hosted zone for the domain.</p> <p>If successful, this operation returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.</p>
   ## 
@@ -2572,46 +2572,46 @@ proc validate_UpdateDomainNameservers_606504(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606506 = header.getOrDefault("X-Amz-Target")
-  valid_606506 = validateParameter(valid_606506, JString, required = true, default = newJString(
+  var valid_613575 = header.getOrDefault("X-Amz-Target")
+  valid_613575 = validateParameter(valid_613575, JString, required = true, default = newJString(
       "Route53Domains_v20140515.UpdateDomainNameservers"))
-  if valid_606506 != nil:
-    section.add "X-Amz-Target", valid_606506
-  var valid_606507 = header.getOrDefault("X-Amz-Signature")
-  valid_606507 = validateParameter(valid_606507, JString, required = false,
+  if valid_613575 != nil:
+    section.add "X-Amz-Target", valid_613575
+  var valid_613576 = header.getOrDefault("X-Amz-Signature")
+  valid_613576 = validateParameter(valid_613576, JString, required = false,
                                  default = nil)
-  if valid_606507 != nil:
-    section.add "X-Amz-Signature", valid_606507
-  var valid_606508 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606508 = validateParameter(valid_606508, JString, required = false,
+  if valid_613576 != nil:
+    section.add "X-Amz-Signature", valid_613576
+  var valid_613577 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613577 = validateParameter(valid_613577, JString, required = false,
                                  default = nil)
-  if valid_606508 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606508
-  var valid_606509 = header.getOrDefault("X-Amz-Date")
-  valid_606509 = validateParameter(valid_606509, JString, required = false,
+  if valid_613577 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613577
+  var valid_613578 = header.getOrDefault("X-Amz-Date")
+  valid_613578 = validateParameter(valid_613578, JString, required = false,
                                  default = nil)
-  if valid_606509 != nil:
-    section.add "X-Amz-Date", valid_606509
-  var valid_606510 = header.getOrDefault("X-Amz-Credential")
-  valid_606510 = validateParameter(valid_606510, JString, required = false,
+  if valid_613578 != nil:
+    section.add "X-Amz-Date", valid_613578
+  var valid_613579 = header.getOrDefault("X-Amz-Credential")
+  valid_613579 = validateParameter(valid_613579, JString, required = false,
                                  default = nil)
-  if valid_606510 != nil:
-    section.add "X-Amz-Credential", valid_606510
-  var valid_606511 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606511 = validateParameter(valid_606511, JString, required = false,
+  if valid_613579 != nil:
+    section.add "X-Amz-Credential", valid_613579
+  var valid_613580 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613580 = validateParameter(valid_613580, JString, required = false,
                                  default = nil)
-  if valid_606511 != nil:
-    section.add "X-Amz-Security-Token", valid_606511
-  var valid_606512 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606512 = validateParameter(valid_606512, JString, required = false,
+  if valid_613580 != nil:
+    section.add "X-Amz-Security-Token", valid_613580
+  var valid_613581 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613581 = validateParameter(valid_613581, JString, required = false,
                                  default = nil)
-  if valid_606512 != nil:
-    section.add "X-Amz-Algorithm", valid_606512
-  var valid_606513 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606513 = validateParameter(valid_606513, JString, required = false,
+  if valid_613581 != nil:
+    section.add "X-Amz-Algorithm", valid_613581
+  var valid_613582 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613582 = validateParameter(valid_613582, JString, required = false,
                                  default = nil)
-  if valid_606513 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606513
+  if valid_613582 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613582
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2622,37 +2622,37 @@ proc validate_UpdateDomainNameservers_606504(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606515: Call_UpdateDomainNameservers_606503; path: JsonNode;
+proc call*(call_613584: Call_UpdateDomainNameservers_613572; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation replaces the current set of name servers for the domain with the specified set of name servers. If you use Amazon Route 53 as your DNS service, specify the four name servers in the delegation set for the hosted zone for the domain.</p> <p>If successful, this operation returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.</p>
   ## 
-  let valid = call_606515.validator(path, query, header, formData, body)
-  let scheme = call_606515.pickScheme
+  let valid = call_613584.validator(path, query, header, formData, body)
+  let scheme = call_613584.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606515.url(scheme.get, call_606515.host, call_606515.base,
-                         call_606515.route, valid.getOrDefault("path"),
+  let url = call_613584.url(scheme.get, call_613584.host, call_613584.base,
+                         call_613584.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606515, url, valid)
+  result = atozHook(call_613584, url, valid)
 
-proc call*(call_606516: Call_UpdateDomainNameservers_606503; body: JsonNode): Recallable =
+proc call*(call_613585: Call_UpdateDomainNameservers_613572; body: JsonNode): Recallable =
   ## updateDomainNameservers
   ## <p>This operation replaces the current set of name servers for the domain with the specified set of name servers. If you use Amazon Route 53 as your DNS service, specify the four name servers in the delegation set for the hosted zone for the domain.</p> <p>If successful, this operation returns an operation ID that you can use to track the progress and completion of the action. If the request is not completed successfully, the domain registrant will be notified by email.</p>
   ##   body: JObject (required)
-  var body_606517 = newJObject()
+  var body_613586 = newJObject()
   if body != nil:
-    body_606517 = body
-  result = call_606516.call(nil, nil, nil, nil, body_606517)
+    body_613586 = body
+  result = call_613585.call(nil, nil, nil, nil, body_613586)
 
-var updateDomainNameservers* = Call_UpdateDomainNameservers_606503(
+var updateDomainNameservers* = Call_UpdateDomainNameservers_613572(
     name: "updateDomainNameservers", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.UpdateDomainNameservers",
-    validator: validate_UpdateDomainNameservers_606504, base: "/",
-    url: url_UpdateDomainNameservers_606505, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateDomainNameservers_613573, base: "/",
+    url: url_UpdateDomainNameservers_613574, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateTagsForDomain_606518 = ref object of OpenApiRestCall_605589
-proc url_UpdateTagsForDomain_606520(protocol: Scheme; host: string; base: string;
+  Call_UpdateTagsForDomain_613587 = ref object of OpenApiRestCall_612658
+proc url_UpdateTagsForDomain_613589(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2664,7 +2664,7 @@ proc url_UpdateTagsForDomain_606520(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_UpdateTagsForDomain_606519(path: JsonNode; query: JsonNode;
+proc validate_UpdateTagsForDomain_613588(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>This operation adds or updates tags for a specified domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
@@ -2685,46 +2685,46 @@ proc validate_UpdateTagsForDomain_606519(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606521 = header.getOrDefault("X-Amz-Target")
-  valid_606521 = validateParameter(valid_606521, JString, required = true, default = newJString(
+  var valid_613590 = header.getOrDefault("X-Amz-Target")
+  valid_613590 = validateParameter(valid_613590, JString, required = true, default = newJString(
       "Route53Domains_v20140515.UpdateTagsForDomain"))
-  if valid_606521 != nil:
-    section.add "X-Amz-Target", valid_606521
-  var valid_606522 = header.getOrDefault("X-Amz-Signature")
-  valid_606522 = validateParameter(valid_606522, JString, required = false,
+  if valid_613590 != nil:
+    section.add "X-Amz-Target", valid_613590
+  var valid_613591 = header.getOrDefault("X-Amz-Signature")
+  valid_613591 = validateParameter(valid_613591, JString, required = false,
                                  default = nil)
-  if valid_606522 != nil:
-    section.add "X-Amz-Signature", valid_606522
-  var valid_606523 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606523 = validateParameter(valid_606523, JString, required = false,
+  if valid_613591 != nil:
+    section.add "X-Amz-Signature", valid_613591
+  var valid_613592 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613592 = validateParameter(valid_613592, JString, required = false,
                                  default = nil)
-  if valid_606523 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606523
-  var valid_606524 = header.getOrDefault("X-Amz-Date")
-  valid_606524 = validateParameter(valid_606524, JString, required = false,
+  if valid_613592 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613592
+  var valid_613593 = header.getOrDefault("X-Amz-Date")
+  valid_613593 = validateParameter(valid_613593, JString, required = false,
                                  default = nil)
-  if valid_606524 != nil:
-    section.add "X-Amz-Date", valid_606524
-  var valid_606525 = header.getOrDefault("X-Amz-Credential")
-  valid_606525 = validateParameter(valid_606525, JString, required = false,
+  if valid_613593 != nil:
+    section.add "X-Amz-Date", valid_613593
+  var valid_613594 = header.getOrDefault("X-Amz-Credential")
+  valid_613594 = validateParameter(valid_613594, JString, required = false,
                                  default = nil)
-  if valid_606525 != nil:
-    section.add "X-Amz-Credential", valid_606525
-  var valid_606526 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606526 = validateParameter(valid_606526, JString, required = false,
+  if valid_613594 != nil:
+    section.add "X-Amz-Credential", valid_613594
+  var valid_613595 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613595 = validateParameter(valid_613595, JString, required = false,
                                  default = nil)
-  if valid_606526 != nil:
-    section.add "X-Amz-Security-Token", valid_606526
-  var valid_606527 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606527 = validateParameter(valid_606527, JString, required = false,
+  if valid_613595 != nil:
+    section.add "X-Amz-Security-Token", valid_613595
+  var valid_613596 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613596 = validateParameter(valid_613596, JString, required = false,
                                  default = nil)
-  if valid_606527 != nil:
-    section.add "X-Amz-Algorithm", valid_606527
-  var valid_606528 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606528 = validateParameter(valid_606528, JString, required = false,
+  if valid_613596 != nil:
+    section.add "X-Amz-Algorithm", valid_613596
+  var valid_613597 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613597 = validateParameter(valid_613597, JString, required = false,
                                  default = nil)
-  if valid_606528 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606528
+  if valid_613597 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613597
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2735,37 +2735,37 @@ proc validate_UpdateTagsForDomain_606519(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606530: Call_UpdateTagsForDomain_606518; path: JsonNode;
+proc call*(call_613599: Call_UpdateTagsForDomain_613587; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>This operation adds or updates tags for a specified domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
   ## 
-  let valid = call_606530.validator(path, query, header, formData, body)
-  let scheme = call_606530.pickScheme
+  let valid = call_613599.validator(path, query, header, formData, body)
+  let scheme = call_613599.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606530.url(scheme.get, call_606530.host, call_606530.base,
-                         call_606530.route, valid.getOrDefault("path"),
+  let url = call_613599.url(scheme.get, call_613599.host, call_613599.base,
+                         call_613599.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606530, url, valid)
+  result = atozHook(call_613599, url, valid)
 
-proc call*(call_606531: Call_UpdateTagsForDomain_606518; body: JsonNode): Recallable =
+proc call*(call_613600: Call_UpdateTagsForDomain_613587; body: JsonNode): Recallable =
   ## updateTagsForDomain
   ## <p>This operation adds or updates tags for a specified domain.</p> <p>All tag operations are eventually consistent; subsequent operations might not immediately represent all issued operations.</p>
   ##   body: JObject (required)
-  var body_606532 = newJObject()
+  var body_613601 = newJObject()
   if body != nil:
-    body_606532 = body
-  result = call_606531.call(nil, nil, nil, nil, body_606532)
+    body_613601 = body
+  result = call_613600.call(nil, nil, nil, nil, body_613601)
 
-var updateTagsForDomain* = Call_UpdateTagsForDomain_606518(
+var updateTagsForDomain* = Call_UpdateTagsForDomain_613587(
     name: "updateTagsForDomain", meth: HttpMethod.HttpPost,
     host: "route53domains.amazonaws.com",
     route: "/#X-Amz-Target=Route53Domains_v20140515.UpdateTagsForDomain",
-    validator: validate_UpdateTagsForDomain_606519, base: "/",
-    url: url_UpdateTagsForDomain_606520, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateTagsForDomain_613588, base: "/",
+    url: url_UpdateTagsForDomain_613589, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ViewBilling_606533 = ref object of OpenApiRestCall_605589
-proc url_ViewBilling_606535(protocol: Scheme; host: string; base: string;
+  Call_ViewBilling_613602 = ref object of OpenApiRestCall_612658
+proc url_ViewBilling_613604(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2777,7 +2777,7 @@ proc url_ViewBilling_606535(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ViewBilling_606534(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ViewBilling_613603(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns all the domain-related billing records for the current AWS account for a specified period
   ## 
@@ -2797,46 +2797,46 @@ proc validate_ViewBilling_606534(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606536 = header.getOrDefault("X-Amz-Target")
-  valid_606536 = validateParameter(valid_606536, JString, required = true, default = newJString(
+  var valid_613605 = header.getOrDefault("X-Amz-Target")
+  valid_613605 = validateParameter(valid_613605, JString, required = true, default = newJString(
       "Route53Domains_v20140515.ViewBilling"))
-  if valid_606536 != nil:
-    section.add "X-Amz-Target", valid_606536
-  var valid_606537 = header.getOrDefault("X-Amz-Signature")
-  valid_606537 = validateParameter(valid_606537, JString, required = false,
+  if valid_613605 != nil:
+    section.add "X-Amz-Target", valid_613605
+  var valid_613606 = header.getOrDefault("X-Amz-Signature")
+  valid_613606 = validateParameter(valid_613606, JString, required = false,
                                  default = nil)
-  if valid_606537 != nil:
-    section.add "X-Amz-Signature", valid_606537
-  var valid_606538 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606538 = validateParameter(valid_606538, JString, required = false,
+  if valid_613606 != nil:
+    section.add "X-Amz-Signature", valid_613606
+  var valid_613607 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613607 = validateParameter(valid_613607, JString, required = false,
                                  default = nil)
-  if valid_606538 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606538
-  var valid_606539 = header.getOrDefault("X-Amz-Date")
-  valid_606539 = validateParameter(valid_606539, JString, required = false,
+  if valid_613607 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613607
+  var valid_613608 = header.getOrDefault("X-Amz-Date")
+  valid_613608 = validateParameter(valid_613608, JString, required = false,
                                  default = nil)
-  if valid_606539 != nil:
-    section.add "X-Amz-Date", valid_606539
-  var valid_606540 = header.getOrDefault("X-Amz-Credential")
-  valid_606540 = validateParameter(valid_606540, JString, required = false,
+  if valid_613608 != nil:
+    section.add "X-Amz-Date", valid_613608
+  var valid_613609 = header.getOrDefault("X-Amz-Credential")
+  valid_613609 = validateParameter(valid_613609, JString, required = false,
                                  default = nil)
-  if valid_606540 != nil:
-    section.add "X-Amz-Credential", valid_606540
-  var valid_606541 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606541 = validateParameter(valid_606541, JString, required = false,
+  if valid_613609 != nil:
+    section.add "X-Amz-Credential", valid_613609
+  var valid_613610 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613610 = validateParameter(valid_613610, JString, required = false,
                                  default = nil)
-  if valid_606541 != nil:
-    section.add "X-Amz-Security-Token", valid_606541
-  var valid_606542 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606542 = validateParameter(valid_606542, JString, required = false,
+  if valid_613610 != nil:
+    section.add "X-Amz-Security-Token", valid_613610
+  var valid_613611 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613611 = validateParameter(valid_613611, JString, required = false,
                                  default = nil)
-  if valid_606542 != nil:
-    section.add "X-Amz-Algorithm", valid_606542
-  var valid_606543 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606543 = validateParameter(valid_606543, JString, required = false,
+  if valid_613611 != nil:
+    section.add "X-Amz-Algorithm", valid_613611
+  var valid_613612 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613612 = validateParameter(valid_613612, JString, required = false,
                                  default = nil)
-  if valid_606543 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606543
+  if valid_613612 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613612
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2847,33 +2847,33 @@ proc validate_ViewBilling_606534(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606545: Call_ViewBilling_606533; path: JsonNode; query: JsonNode;
+proc call*(call_613614: Call_ViewBilling_613602; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns all the domain-related billing records for the current AWS account for a specified period
   ## 
-  let valid = call_606545.validator(path, query, header, formData, body)
-  let scheme = call_606545.pickScheme
+  let valid = call_613614.validator(path, query, header, formData, body)
+  let scheme = call_613614.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606545.url(scheme.get, call_606545.host, call_606545.base,
-                         call_606545.route, valid.getOrDefault("path"),
+  let url = call_613614.url(scheme.get, call_613614.host, call_613614.base,
+                         call_613614.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606545, url, valid)
+  result = atozHook(call_613614, url, valid)
 
-proc call*(call_606546: Call_ViewBilling_606533; body: JsonNode): Recallable =
+proc call*(call_613615: Call_ViewBilling_613602; body: JsonNode): Recallable =
   ## viewBilling
   ## Returns all the domain-related billing records for the current AWS account for a specified period
   ##   body: JObject (required)
-  var body_606547 = newJObject()
+  var body_613616 = newJObject()
   if body != nil:
-    body_606547 = body
-  result = call_606546.call(nil, nil, nil, nil, body_606547)
+    body_613616 = body
+  result = call_613615.call(nil, nil, nil, nil, body_613616)
 
-var viewBilling* = Call_ViewBilling_606533(name: "viewBilling",
+var viewBilling* = Call_ViewBilling_613602(name: "viewBilling",
                                         meth: HttpMethod.HttpPost,
                                         host: "route53domains.amazonaws.com", route: "/#X-Amz-Target=Route53Domains_v20140515.ViewBilling",
-                                        validator: validate_ViewBilling_606534,
-                                        base: "/", url: url_ViewBilling_606535,
+                                        validator: validate_ViewBilling_613603,
+                                        base: "/", url: url_ViewBilling_613604,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest

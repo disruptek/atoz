@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605580 = ref object of OpenApiRestCall
+  OpenApiRestCall_612649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605580](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605580): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -134,8 +134,8 @@ const
   awsServiceName = "migrationhub-config"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateHomeRegionControl_605918 = ref object of OpenApiRestCall_605580
-proc url_CreateHomeRegionControl_605920(protocol: Scheme; host: string; base: string;
+  Call_CreateHomeRegionControl_612987 = ref object of OpenApiRestCall_612649
+proc url_CreateHomeRegionControl_612989(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -148,7 +148,7 @@ proc url_CreateHomeRegionControl_605920(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_CreateHomeRegionControl_605919(path: JsonNode; query: JsonNode;
+proc validate_CreateHomeRegionControl_612988(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This API sets up the home region for the calling account only.
   ## 
@@ -168,46 +168,46 @@ proc validate_CreateHomeRegionControl_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606045 = header.getOrDefault("X-Amz-Target")
-  valid_606045 = validateParameter(valid_606045, JString, required = true, default = newJString(
+  var valid_613114 = header.getOrDefault("X-Amz-Target")
+  valid_613114 = validateParameter(valid_613114, JString, required = true, default = newJString(
       "AWSMigrationHubMultiAccountService.CreateHomeRegionControl"))
-  if valid_606045 != nil:
-    section.add "X-Amz-Target", valid_606045
-  var valid_606046 = header.getOrDefault("X-Amz-Signature")
-  valid_606046 = validateParameter(valid_606046, JString, required = false,
+  if valid_613114 != nil:
+    section.add "X-Amz-Target", valid_613114
+  var valid_613115 = header.getOrDefault("X-Amz-Signature")
+  valid_613115 = validateParameter(valid_613115, JString, required = false,
                                  default = nil)
-  if valid_606046 != nil:
-    section.add "X-Amz-Signature", valid_606046
-  var valid_606047 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606047 = validateParameter(valid_606047, JString, required = false,
+  if valid_613115 != nil:
+    section.add "X-Amz-Signature", valid_613115
+  var valid_613116 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613116 = validateParameter(valid_613116, JString, required = false,
                                  default = nil)
-  if valid_606047 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606047
-  var valid_606048 = header.getOrDefault("X-Amz-Date")
-  valid_606048 = validateParameter(valid_606048, JString, required = false,
+  if valid_613116 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613116
+  var valid_613117 = header.getOrDefault("X-Amz-Date")
+  valid_613117 = validateParameter(valid_613117, JString, required = false,
                                  default = nil)
-  if valid_606048 != nil:
-    section.add "X-Amz-Date", valid_606048
-  var valid_606049 = header.getOrDefault("X-Amz-Credential")
-  valid_606049 = validateParameter(valid_606049, JString, required = false,
+  if valid_613117 != nil:
+    section.add "X-Amz-Date", valid_613117
+  var valid_613118 = header.getOrDefault("X-Amz-Credential")
+  valid_613118 = validateParameter(valid_613118, JString, required = false,
                                  default = nil)
-  if valid_606049 != nil:
-    section.add "X-Amz-Credential", valid_606049
-  var valid_606050 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606050 = validateParameter(valid_606050, JString, required = false,
+  if valid_613118 != nil:
+    section.add "X-Amz-Credential", valid_613118
+  var valid_613119 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613119 = validateParameter(valid_613119, JString, required = false,
                                  default = nil)
-  if valid_606050 != nil:
-    section.add "X-Amz-Security-Token", valid_606050
-  var valid_606051 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606051 = validateParameter(valid_606051, JString, required = false,
+  if valid_613119 != nil:
+    section.add "X-Amz-Security-Token", valid_613119
+  var valid_613120 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613120 = validateParameter(valid_613120, JString, required = false,
                                  default = nil)
-  if valid_606051 != nil:
-    section.add "X-Amz-Algorithm", valid_606051
-  var valid_606052 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606052 = validateParameter(valid_606052, JString, required = false,
+  if valid_613120 != nil:
+    section.add "X-Amz-Algorithm", valid_613120
+  var valid_613121 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613121 = validateParameter(valid_613121, JString, required = false,
                                  default = nil)
-  if valid_606052 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606052
+  if valid_613121 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613121
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -218,36 +218,36 @@ proc validate_CreateHomeRegionControl_605919(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606076: Call_CreateHomeRegionControl_605918; path: JsonNode;
+proc call*(call_613145: Call_CreateHomeRegionControl_612987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This API sets up the home region for the calling account only.
   ## 
-  let valid = call_606076.validator(path, query, header, formData, body)
-  let scheme = call_606076.pickScheme
+  let valid = call_613145.validator(path, query, header, formData, body)
+  let scheme = call_613145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606076.url(scheme.get, call_606076.host, call_606076.base,
-                         call_606076.route, valid.getOrDefault("path"),
+  let url = call_613145.url(scheme.get, call_613145.host, call_613145.base,
+                         call_613145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606076, url, valid)
+  result = atozHook(call_613145, url, valid)
 
-proc call*(call_606147: Call_CreateHomeRegionControl_605918; body: JsonNode): Recallable =
+proc call*(call_613216: Call_CreateHomeRegionControl_612987; body: JsonNode): Recallable =
   ## createHomeRegionControl
   ## This API sets up the home region for the calling account only.
   ##   body: JObject (required)
-  var body_606148 = newJObject()
+  var body_613217 = newJObject()
   if body != nil:
-    body_606148 = body
-  result = call_606147.call(nil, nil, nil, nil, body_606148)
+    body_613217 = body
+  result = call_613216.call(nil, nil, nil, nil, body_613217)
 
-var createHomeRegionControl* = Call_CreateHomeRegionControl_605918(
+var createHomeRegionControl* = Call_CreateHomeRegionControl_612987(
     name: "createHomeRegionControl", meth: HttpMethod.HttpPost,
     host: "migrationhub-config.amazonaws.com", route: "/#X-Amz-Target=AWSMigrationHubMultiAccountService.CreateHomeRegionControl",
-    validator: validate_CreateHomeRegionControl_605919, base: "/",
-    url: url_CreateHomeRegionControl_605920, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateHomeRegionControl_612988, base: "/",
+    url: url_CreateHomeRegionControl_612989, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeHomeRegionControls_606187 = ref object of OpenApiRestCall_605580
-proc url_DescribeHomeRegionControls_606189(protocol: Scheme; host: string;
+  Call_DescribeHomeRegionControls_613256 = ref object of OpenApiRestCall_612649
+proc url_DescribeHomeRegionControls_613258(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -259,7 +259,7 @@ proc url_DescribeHomeRegionControls_606189(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeHomeRegionControls_606188(path: JsonNode; query: JsonNode;
+proc validate_DescribeHomeRegionControls_613257(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## This API permits filtering on the <code>ControlId</code>, <code>HomeRegion</code>, and <code>RegionControlScope</code> fields.
   ## 
@@ -273,16 +273,16 @@ proc validate_DescribeHomeRegionControls_606188(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606190 = query.getOrDefault("MaxResults")
-  valid_606190 = validateParameter(valid_606190, JString, required = false,
+  var valid_613259 = query.getOrDefault("MaxResults")
+  valid_613259 = validateParameter(valid_613259, JString, required = false,
                                  default = nil)
-  if valid_606190 != nil:
-    section.add "MaxResults", valid_606190
-  var valid_606191 = query.getOrDefault("NextToken")
-  valid_606191 = validateParameter(valid_606191, JString, required = false,
+  if valid_613259 != nil:
+    section.add "MaxResults", valid_613259
+  var valid_613260 = query.getOrDefault("NextToken")
+  valid_613260 = validateParameter(valid_613260, JString, required = false,
                                  default = nil)
-  if valid_606191 != nil:
-    section.add "NextToken", valid_606191
+  if valid_613260 != nil:
+    section.add "NextToken", valid_613260
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -294,46 +294,46 @@ proc validate_DescribeHomeRegionControls_606188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606192 = header.getOrDefault("X-Amz-Target")
-  valid_606192 = validateParameter(valid_606192, JString, required = true, default = newJString(
+  var valid_613261 = header.getOrDefault("X-Amz-Target")
+  valid_613261 = validateParameter(valid_613261, JString, required = true, default = newJString(
       "AWSMigrationHubMultiAccountService.DescribeHomeRegionControls"))
-  if valid_606192 != nil:
-    section.add "X-Amz-Target", valid_606192
-  var valid_606193 = header.getOrDefault("X-Amz-Signature")
-  valid_606193 = validateParameter(valid_606193, JString, required = false,
+  if valid_613261 != nil:
+    section.add "X-Amz-Target", valid_613261
+  var valid_613262 = header.getOrDefault("X-Amz-Signature")
+  valid_613262 = validateParameter(valid_613262, JString, required = false,
                                  default = nil)
-  if valid_606193 != nil:
-    section.add "X-Amz-Signature", valid_606193
-  var valid_606194 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606194 = validateParameter(valid_606194, JString, required = false,
+  if valid_613262 != nil:
+    section.add "X-Amz-Signature", valid_613262
+  var valid_613263 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613263 = validateParameter(valid_613263, JString, required = false,
                                  default = nil)
-  if valid_606194 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606194
-  var valid_606195 = header.getOrDefault("X-Amz-Date")
-  valid_606195 = validateParameter(valid_606195, JString, required = false,
+  if valid_613263 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613263
+  var valid_613264 = header.getOrDefault("X-Amz-Date")
+  valid_613264 = validateParameter(valid_613264, JString, required = false,
                                  default = nil)
-  if valid_606195 != nil:
-    section.add "X-Amz-Date", valid_606195
-  var valid_606196 = header.getOrDefault("X-Amz-Credential")
-  valid_606196 = validateParameter(valid_606196, JString, required = false,
+  if valid_613264 != nil:
+    section.add "X-Amz-Date", valid_613264
+  var valid_613265 = header.getOrDefault("X-Amz-Credential")
+  valid_613265 = validateParameter(valid_613265, JString, required = false,
                                  default = nil)
-  if valid_606196 != nil:
-    section.add "X-Amz-Credential", valid_606196
-  var valid_606197 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606197 = validateParameter(valid_606197, JString, required = false,
+  if valid_613265 != nil:
+    section.add "X-Amz-Credential", valid_613265
+  var valid_613266 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613266 = validateParameter(valid_613266, JString, required = false,
                                  default = nil)
-  if valid_606197 != nil:
-    section.add "X-Amz-Security-Token", valid_606197
-  var valid_606198 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606198 = validateParameter(valid_606198, JString, required = false,
+  if valid_613266 != nil:
+    section.add "X-Amz-Security-Token", valid_613266
+  var valid_613267 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613267 = validateParameter(valid_613267, JString, required = false,
                                  default = nil)
-  if valid_606198 != nil:
-    section.add "X-Amz-Algorithm", valid_606198
-  var valid_606199 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606199 = validateParameter(valid_606199, JString, required = false,
+  if valid_613267 != nil:
+    section.add "X-Amz-Algorithm", valid_613267
+  var valid_613268 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613268 = validateParameter(valid_613268, JString, required = false,
                                  default = nil)
-  if valid_606199 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606199
+  if valid_613268 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613268
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -344,20 +344,20 @@ proc validate_DescribeHomeRegionControls_606188(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606201: Call_DescribeHomeRegionControls_606187; path: JsonNode;
+proc call*(call_613270: Call_DescribeHomeRegionControls_613256; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## This API permits filtering on the <code>ControlId</code>, <code>HomeRegion</code>, and <code>RegionControlScope</code> fields.
   ## 
-  let valid = call_606201.validator(path, query, header, formData, body)
-  let scheme = call_606201.pickScheme
+  let valid = call_613270.validator(path, query, header, formData, body)
+  let scheme = call_613270.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606201.url(scheme.get, call_606201.host, call_606201.base,
-                         call_606201.route, valid.getOrDefault("path"),
+  let url = call_613270.url(scheme.get, call_613270.host, call_613270.base,
+                         call_613270.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606201, url, valid)
+  result = atozHook(call_613270, url, valid)
 
-proc call*(call_606202: Call_DescribeHomeRegionControls_606187; body: JsonNode;
+proc call*(call_613271: Call_DescribeHomeRegionControls_613256; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## describeHomeRegionControls
   ## This API permits filtering on the <code>ControlId</code>, <code>HomeRegion</code>, and <code>RegionControlScope</code> fields.
@@ -366,23 +366,23 @@ proc call*(call_606202: Call_DescribeHomeRegionControls_606187; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606203 = newJObject()
-  var body_606204 = newJObject()
-  add(query_606203, "MaxResults", newJString(MaxResults))
-  add(query_606203, "NextToken", newJString(NextToken))
+  var query_613272 = newJObject()
+  var body_613273 = newJObject()
+  add(query_613272, "MaxResults", newJString(MaxResults))
+  add(query_613272, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606204 = body
-  result = call_606202.call(nil, query_606203, nil, nil, body_606204)
+    body_613273 = body
+  result = call_613271.call(nil, query_613272, nil, nil, body_613273)
 
-var describeHomeRegionControls* = Call_DescribeHomeRegionControls_606187(
+var describeHomeRegionControls* = Call_DescribeHomeRegionControls_613256(
     name: "describeHomeRegionControls", meth: HttpMethod.HttpPost,
     host: "migrationhub-config.amazonaws.com", route: "/#X-Amz-Target=AWSMigrationHubMultiAccountService.DescribeHomeRegionControls",
-    validator: validate_DescribeHomeRegionControls_606188, base: "/",
-    url: url_DescribeHomeRegionControls_606189,
+    validator: validate_DescribeHomeRegionControls_613257, base: "/",
+    url: url_DescribeHomeRegionControls_613258,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHomeRegion_606206 = ref object of OpenApiRestCall_605580
-proc url_GetHomeRegion_606208(protocol: Scheme; host: string; base: string;
+  Call_GetHomeRegion_613275 = ref object of OpenApiRestCall_612649
+proc url_GetHomeRegion_613277(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -394,7 +394,7 @@ proc url_GetHomeRegion_606208(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetHomeRegion_606207(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetHomeRegion_613276(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the calling account’s home region, if configured. This API is used by other AWS services to determine the regional endpoint for calling AWS Application Discovery Service and Migration Hub. You must call <code>GetHomeRegion</code> at least once before you call any other AWS Application Discovery Service and AWS Migration Hub APIs, to obtain the account's Migration Hub home region.
   ## 
@@ -414,46 +414,46 @@ proc validate_GetHomeRegion_606207(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606209 = header.getOrDefault("X-Amz-Target")
-  valid_606209 = validateParameter(valid_606209, JString, required = true, default = newJString(
+  var valid_613278 = header.getOrDefault("X-Amz-Target")
+  valid_613278 = validateParameter(valid_613278, JString, required = true, default = newJString(
       "AWSMigrationHubMultiAccountService.GetHomeRegion"))
-  if valid_606209 != nil:
-    section.add "X-Amz-Target", valid_606209
-  var valid_606210 = header.getOrDefault("X-Amz-Signature")
-  valid_606210 = validateParameter(valid_606210, JString, required = false,
+  if valid_613278 != nil:
+    section.add "X-Amz-Target", valid_613278
+  var valid_613279 = header.getOrDefault("X-Amz-Signature")
+  valid_613279 = validateParameter(valid_613279, JString, required = false,
                                  default = nil)
-  if valid_606210 != nil:
-    section.add "X-Amz-Signature", valid_606210
-  var valid_606211 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606211 = validateParameter(valid_606211, JString, required = false,
+  if valid_613279 != nil:
+    section.add "X-Amz-Signature", valid_613279
+  var valid_613280 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613280 = validateParameter(valid_613280, JString, required = false,
                                  default = nil)
-  if valid_606211 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606211
-  var valid_606212 = header.getOrDefault("X-Amz-Date")
-  valid_606212 = validateParameter(valid_606212, JString, required = false,
+  if valid_613280 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613280
+  var valid_613281 = header.getOrDefault("X-Amz-Date")
+  valid_613281 = validateParameter(valid_613281, JString, required = false,
                                  default = nil)
-  if valid_606212 != nil:
-    section.add "X-Amz-Date", valid_606212
-  var valid_606213 = header.getOrDefault("X-Amz-Credential")
-  valid_606213 = validateParameter(valid_606213, JString, required = false,
+  if valid_613281 != nil:
+    section.add "X-Amz-Date", valid_613281
+  var valid_613282 = header.getOrDefault("X-Amz-Credential")
+  valid_613282 = validateParameter(valid_613282, JString, required = false,
                                  default = nil)
-  if valid_606213 != nil:
-    section.add "X-Amz-Credential", valid_606213
-  var valid_606214 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606214 = validateParameter(valid_606214, JString, required = false,
+  if valid_613282 != nil:
+    section.add "X-Amz-Credential", valid_613282
+  var valid_613283 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613283 = validateParameter(valid_613283, JString, required = false,
                                  default = nil)
-  if valid_606214 != nil:
-    section.add "X-Amz-Security-Token", valid_606214
-  var valid_606215 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606215 = validateParameter(valid_606215, JString, required = false,
+  if valid_613283 != nil:
+    section.add "X-Amz-Security-Token", valid_613283
+  var valid_613284 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613284 = validateParameter(valid_613284, JString, required = false,
                                  default = nil)
-  if valid_606215 != nil:
-    section.add "X-Amz-Algorithm", valid_606215
-  var valid_606216 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606216 = validateParameter(valid_606216, JString, required = false,
+  if valid_613284 != nil:
+    section.add "X-Amz-Algorithm", valid_613284
+  var valid_613285 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613285 = validateParameter(valid_613285, JString, required = false,
                                  default = nil)
-  if valid_606216 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606216
+  if valid_613285 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613285
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -464,32 +464,32 @@ proc validate_GetHomeRegion_606207(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_606218: Call_GetHomeRegion_606206; path: JsonNode; query: JsonNode;
+proc call*(call_613287: Call_GetHomeRegion_613275; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the calling account’s home region, if configured. This API is used by other AWS services to determine the regional endpoint for calling AWS Application Discovery Service and Migration Hub. You must call <code>GetHomeRegion</code> at least once before you call any other AWS Application Discovery Service and AWS Migration Hub APIs, to obtain the account's Migration Hub home region.
   ## 
-  let valid = call_606218.validator(path, query, header, formData, body)
-  let scheme = call_606218.pickScheme
+  let valid = call_613287.validator(path, query, header, formData, body)
+  let scheme = call_613287.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606218.url(scheme.get, call_606218.host, call_606218.base,
-                         call_606218.route, valid.getOrDefault("path"),
+  let url = call_613287.url(scheme.get, call_613287.host, call_613287.base,
+                         call_613287.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606218, url, valid)
+  result = atozHook(call_613287, url, valid)
 
-proc call*(call_606219: Call_GetHomeRegion_606206; body: JsonNode): Recallable =
+proc call*(call_613288: Call_GetHomeRegion_613275; body: JsonNode): Recallable =
   ## getHomeRegion
   ## Returns the calling account’s home region, if configured. This API is used by other AWS services to determine the regional endpoint for calling AWS Application Discovery Service and Migration Hub. You must call <code>GetHomeRegion</code> at least once before you call any other AWS Application Discovery Service and AWS Migration Hub APIs, to obtain the account's Migration Hub home region.
   ##   body: JObject (required)
-  var body_606220 = newJObject()
+  var body_613289 = newJObject()
   if body != nil:
-    body_606220 = body
-  result = call_606219.call(nil, nil, nil, nil, body_606220)
+    body_613289 = body
+  result = call_613288.call(nil, nil, nil, nil, body_613289)
 
-var getHomeRegion* = Call_GetHomeRegion_606206(name: "getHomeRegion",
+var getHomeRegion* = Call_GetHomeRegion_613275(name: "getHomeRegion",
     meth: HttpMethod.HttpPost, host: "migrationhub-config.amazonaws.com",
     route: "/#X-Amz-Target=AWSMigrationHubMultiAccountService.GetHomeRegion",
-    validator: validate_GetHomeRegion_606207, base: "/", url: url_GetHomeRegion_606208,
+    validator: validate_GetHomeRegion_613276, base: "/", url: url_GetHomeRegion_613277,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

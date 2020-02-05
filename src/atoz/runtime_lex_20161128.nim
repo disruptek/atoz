@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605589 = ref object of OpenApiRestCall
+  OpenApiRestCall_612658 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612658](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612658): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -142,8 +142,8 @@ const
   awsServiceName = "runtime.lex"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_PutSession_605927 = ref object of OpenApiRestCall_605589
-proc url_PutSession_605929(protocol: Scheme; host: string; base: string; route: string;
+  Call_PutSession_612996 = ref object of OpenApiRestCall_612658
+proc url_PutSession_612998(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -170,7 +170,7 @@ proc url_PutSession_605929(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & hydrated.get
 
-proc validate_PutSession_605928(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PutSession_612997(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new session or modifies an existing session with an Amazon Lex bot. Use this operation to enable your application to set the state of the bot.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/how-session-api.html">Managing Sessions</a>.</p>
   ## 
@@ -185,21 +185,21 @@ proc validate_PutSession_605928(path: JsonNode; query: JsonNode; header: JsonNod
   ##           : The alias in use for the bot that contains the session data.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_606055 = path.getOrDefault("botName")
-  valid_606055 = validateParameter(valid_606055, JString, required = true,
+  var valid_613124 = path.getOrDefault("botName")
+  valid_613124 = validateParameter(valid_613124, JString, required = true,
                                  default = nil)
-  if valid_606055 != nil:
-    section.add "botName", valid_606055
-  var valid_606056 = path.getOrDefault("userId")
-  valid_606056 = validateParameter(valid_606056, JString, required = true,
+  if valid_613124 != nil:
+    section.add "botName", valid_613124
+  var valid_613125 = path.getOrDefault("userId")
+  valid_613125 = validateParameter(valid_613125, JString, required = true,
                                  default = nil)
-  if valid_606056 != nil:
-    section.add "userId", valid_606056
-  var valid_606057 = path.getOrDefault("botAlias")
-  valid_606057 = validateParameter(valid_606057, JString, required = true,
+  if valid_613125 != nil:
+    section.add "userId", valid_613125
+  var valid_613126 = path.getOrDefault("botAlias")
+  valid_613126 = validateParameter(valid_613126, JString, required = true,
                                  default = nil)
-  if valid_606057 != nil:
-    section.add "botAlias", valid_606057
+  if valid_613126 != nil:
+    section.add "botAlias", valid_613126
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -214,46 +214,46 @@ proc validate_PutSession_605928(path: JsonNode; query: JsonNode; header: JsonNod
   ##         : <p>The message that Amazon Lex returns in the response can be either text or speech based depending on the value of this field.</p> <ul> <li> <p>If the value is <code>text/plain; charset=utf-8</code>, Amazon Lex returns text in the response.</p> </li> <li> <p>If the value begins with <code>audio/</code>, Amazon Lex returns speech in the response. Amazon Lex uses Amazon Polly to generate the speech in the configuration that you specify. For example, if you specify <code>audio/mpeg</code> as the value, Amazon Lex returns speech in the MPEG format.</p> </li> <li> <p>If the value is <code>audio/pcm</code>, the speech is returned as <code>audio/pcm</code> in 16-bit, little endian format.</p> </li> <li> <p>The following are the accepted values:</p> <ul> <li> <p> <code>audio/mpeg</code> </p> </li> <li> <p> <code>audio/ogg</code> </p> </li> <li> <p> <code>audio/pcm</code> </p> </li> <li> <p> <code>audio/*</code> (defaults to mpeg)</p> </li> <li> <p> <code>text/plain; charset=utf-8</code> </p> </li> </ul> </li> </ul>
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606058 = header.getOrDefault("X-Amz-Signature")
-  valid_606058 = validateParameter(valid_606058, JString, required = false,
+  var valid_613127 = header.getOrDefault("X-Amz-Signature")
+  valid_613127 = validateParameter(valid_613127, JString, required = false,
                                  default = nil)
-  if valid_606058 != nil:
-    section.add "X-Amz-Signature", valid_606058
-  var valid_606059 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606059 = validateParameter(valid_606059, JString, required = false,
+  if valid_613127 != nil:
+    section.add "X-Amz-Signature", valid_613127
+  var valid_613128 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613128 = validateParameter(valid_613128, JString, required = false,
                                  default = nil)
-  if valid_606059 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606059
-  var valid_606060 = header.getOrDefault("X-Amz-Date")
-  valid_606060 = validateParameter(valid_606060, JString, required = false,
+  if valid_613128 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613128
+  var valid_613129 = header.getOrDefault("X-Amz-Date")
+  valid_613129 = validateParameter(valid_613129, JString, required = false,
                                  default = nil)
-  if valid_606060 != nil:
-    section.add "X-Amz-Date", valid_606060
-  var valid_606061 = header.getOrDefault("X-Amz-Credential")
-  valid_606061 = validateParameter(valid_606061, JString, required = false,
+  if valid_613129 != nil:
+    section.add "X-Amz-Date", valid_613129
+  var valid_613130 = header.getOrDefault("X-Amz-Credential")
+  valid_613130 = validateParameter(valid_613130, JString, required = false,
                                  default = nil)
-  if valid_606061 != nil:
-    section.add "X-Amz-Credential", valid_606061
-  var valid_606062 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606062 = validateParameter(valid_606062, JString, required = false,
+  if valid_613130 != nil:
+    section.add "X-Amz-Credential", valid_613130
+  var valid_613131 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613131 = validateParameter(valid_613131, JString, required = false,
                                  default = nil)
-  if valid_606062 != nil:
-    section.add "X-Amz-Security-Token", valid_606062
-  var valid_606063 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606063 = validateParameter(valid_606063, JString, required = false,
+  if valid_613131 != nil:
+    section.add "X-Amz-Security-Token", valid_613131
+  var valid_613132 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613132 = validateParameter(valid_613132, JString, required = false,
                                  default = nil)
-  if valid_606063 != nil:
-    section.add "X-Amz-Algorithm", valid_606063
-  var valid_606064 = header.getOrDefault("Accept")
-  valid_606064 = validateParameter(valid_606064, JString, required = false,
+  if valid_613132 != nil:
+    section.add "X-Amz-Algorithm", valid_613132
+  var valid_613133 = header.getOrDefault("Accept")
+  valid_613133 = validateParameter(valid_613133, JString, required = false,
                                  default = nil)
-  if valid_606064 != nil:
-    section.add "Accept", valid_606064
-  var valid_606065 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606065 = validateParameter(valid_606065, JString, required = false,
+  if valid_613133 != nil:
+    section.add "Accept", valid_613133
+  var valid_613134 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613134 = validateParameter(valid_613134, JString, required = false,
                                  default = nil)
-  if valid_606065 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606065
+  if valid_613134 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613134
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -264,20 +264,20 @@ proc validate_PutSession_605928(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_606089: Call_PutSession_605927; path: JsonNode; query: JsonNode;
+proc call*(call_613158: Call_PutSession_612996; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new session or modifies an existing session with an Amazon Lex bot. Use this operation to enable your application to set the state of the bot.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/how-session-api.html">Managing Sessions</a>.</p>
   ## 
-  let valid = call_606089.validator(path, query, header, formData, body)
-  let scheme = call_606089.pickScheme
+  let valid = call_613158.validator(path, query, header, formData, body)
+  let scheme = call_613158.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606089.url(scheme.get, call_606089.host, call_606089.base,
-                         call_606089.route, valid.getOrDefault("path"),
+  let url = call_613158.url(scheme.get, call_613158.host, call_613158.base,
+                         call_613158.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606089, url, valid)
+  result = atozHook(call_613158, url, valid)
 
-proc call*(call_606160: Call_PutSession_605927; botName: string; userId: string;
+proc call*(call_613229: Call_PutSession_612996; botName: string; userId: string;
           botAlias: string; body: JsonNode): Recallable =
   ## putSession
   ## <p>Creates a new session or modifies an existing session with an Amazon Lex bot. Use this operation to enable your application to set the state of the bot.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/how-session-api.html">Managing Sessions</a>.</p>
@@ -288,24 +288,24 @@ proc call*(call_606160: Call_PutSession_605927; botName: string; userId: string;
   ##   botAlias: string (required)
   ##           : The alias in use for the bot that contains the session data.
   ##   body: JObject (required)
-  var path_606161 = newJObject()
-  var body_606163 = newJObject()
-  add(path_606161, "botName", newJString(botName))
-  add(path_606161, "userId", newJString(userId))
-  add(path_606161, "botAlias", newJString(botAlias))
+  var path_613230 = newJObject()
+  var body_613232 = newJObject()
+  add(path_613230, "botName", newJString(botName))
+  add(path_613230, "userId", newJString(userId))
+  add(path_613230, "botAlias", newJString(botAlias))
   if body != nil:
-    body_606163 = body
-  result = call_606160.call(path_606161, nil, nil, nil, body_606163)
+    body_613232 = body
+  result = call_613229.call(path_613230, nil, nil, nil, body_613232)
 
-var putSession* = Call_PutSession_605927(name: "putSession",
+var putSession* = Call_PutSession_612996(name: "putSession",
                                       meth: HttpMethod.HttpPost,
                                       host: "runtime.lex.amazonaws.com", route: "/bot/{botName}/alias/{botAlias}/user/{userId}/session",
-                                      validator: validate_PutSession_605928,
-                                      base: "/", url: url_PutSession_605929,
+                                      validator: validate_PutSession_612997,
+                                      base: "/", url: url_PutSession_612998,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSession_606202 = ref object of OpenApiRestCall_605589
-proc url_DeleteSession_606204(protocol: Scheme; host: string; base: string;
+  Call_DeleteSession_613271 = ref object of OpenApiRestCall_612658
+proc url_DeleteSession_613273(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -332,7 +332,7 @@ proc url_DeleteSession_606204(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteSession_606203(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteSession_613272(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes session information for a specified bot, alias, and user ID. 
   ## 
@@ -347,21 +347,21 @@ proc validate_DeleteSession_606203(path: JsonNode; query: JsonNode; header: Json
   ##           : The alias in use for the bot that contains the session data.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_606205 = path.getOrDefault("botName")
-  valid_606205 = validateParameter(valid_606205, JString, required = true,
+  var valid_613274 = path.getOrDefault("botName")
+  valid_613274 = validateParameter(valid_613274, JString, required = true,
                                  default = nil)
-  if valid_606205 != nil:
-    section.add "botName", valid_606205
-  var valid_606206 = path.getOrDefault("userId")
-  valid_606206 = validateParameter(valid_606206, JString, required = true,
+  if valid_613274 != nil:
+    section.add "botName", valid_613274
+  var valid_613275 = path.getOrDefault("userId")
+  valid_613275 = validateParameter(valid_613275, JString, required = true,
                                  default = nil)
-  if valid_606206 != nil:
-    section.add "userId", valid_606206
-  var valid_606207 = path.getOrDefault("botAlias")
-  valid_606207 = validateParameter(valid_606207, JString, required = true,
+  if valid_613275 != nil:
+    section.add "userId", valid_613275
+  var valid_613276 = path.getOrDefault("botAlias")
+  valid_613276 = validateParameter(valid_613276, JString, required = true,
                                  default = nil)
-  if valid_606207 != nil:
-    section.add "botAlias", valid_606207
+  if valid_613276 != nil:
+    section.add "botAlias", valid_613276
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -374,61 +374,61 @@ proc validate_DeleteSession_606203(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606208 = header.getOrDefault("X-Amz-Signature")
-  valid_606208 = validateParameter(valid_606208, JString, required = false,
+  var valid_613277 = header.getOrDefault("X-Amz-Signature")
+  valid_613277 = validateParameter(valid_613277, JString, required = false,
                                  default = nil)
-  if valid_606208 != nil:
-    section.add "X-Amz-Signature", valid_606208
-  var valid_606209 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606209 = validateParameter(valid_606209, JString, required = false,
+  if valid_613277 != nil:
+    section.add "X-Amz-Signature", valid_613277
+  var valid_613278 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613278 = validateParameter(valid_613278, JString, required = false,
                                  default = nil)
-  if valid_606209 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606209
-  var valid_606210 = header.getOrDefault("X-Amz-Date")
-  valid_606210 = validateParameter(valid_606210, JString, required = false,
+  if valid_613278 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613278
+  var valid_613279 = header.getOrDefault("X-Amz-Date")
+  valid_613279 = validateParameter(valid_613279, JString, required = false,
                                  default = nil)
-  if valid_606210 != nil:
-    section.add "X-Amz-Date", valid_606210
-  var valid_606211 = header.getOrDefault("X-Amz-Credential")
-  valid_606211 = validateParameter(valid_606211, JString, required = false,
+  if valid_613279 != nil:
+    section.add "X-Amz-Date", valid_613279
+  var valid_613280 = header.getOrDefault("X-Amz-Credential")
+  valid_613280 = validateParameter(valid_613280, JString, required = false,
                                  default = nil)
-  if valid_606211 != nil:
-    section.add "X-Amz-Credential", valid_606211
-  var valid_606212 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606212 = validateParameter(valid_606212, JString, required = false,
+  if valid_613280 != nil:
+    section.add "X-Amz-Credential", valid_613280
+  var valid_613281 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613281 = validateParameter(valid_613281, JString, required = false,
                                  default = nil)
-  if valid_606212 != nil:
-    section.add "X-Amz-Security-Token", valid_606212
-  var valid_606213 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606213 = validateParameter(valid_606213, JString, required = false,
+  if valid_613281 != nil:
+    section.add "X-Amz-Security-Token", valid_613281
+  var valid_613282 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613282 = validateParameter(valid_613282, JString, required = false,
                                  default = nil)
-  if valid_606213 != nil:
-    section.add "X-Amz-Algorithm", valid_606213
-  var valid_606214 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606214 = validateParameter(valid_606214, JString, required = false,
+  if valid_613282 != nil:
+    section.add "X-Amz-Algorithm", valid_613282
+  var valid_613283 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613283 = validateParameter(valid_613283, JString, required = false,
                                  default = nil)
-  if valid_606214 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606214
+  if valid_613283 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613283
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_606215: Call_DeleteSession_606202; path: JsonNode; query: JsonNode;
+proc call*(call_613284: Call_DeleteSession_613271; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes session information for a specified bot, alias, and user ID. 
   ## 
-  let valid = call_606215.validator(path, query, header, formData, body)
-  let scheme = call_606215.pickScheme
+  let valid = call_613284.validator(path, query, header, formData, body)
+  let scheme = call_613284.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606215.url(scheme.get, call_606215.host, call_606215.base,
-                         call_606215.route, valid.getOrDefault("path"),
+  let url = call_613284.url(scheme.get, call_613284.host, call_613284.base,
+                         call_613284.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606215, url, valid)
+  result = atozHook(call_613284, url, valid)
 
-proc call*(call_606216: Call_DeleteSession_606202; botName: string; userId: string;
+proc call*(call_613285: Call_DeleteSession_613271; botName: string; userId: string;
           botAlias: string): Recallable =
   ## deleteSession
   ## Removes session information for a specified bot, alias, and user ID. 
@@ -438,20 +438,20 @@ proc call*(call_606216: Call_DeleteSession_606202; botName: string; userId: stri
   ##         : The identifier of the user associated with the session data.
   ##   botAlias: string (required)
   ##           : The alias in use for the bot that contains the session data.
-  var path_606217 = newJObject()
-  add(path_606217, "botName", newJString(botName))
-  add(path_606217, "userId", newJString(userId))
-  add(path_606217, "botAlias", newJString(botAlias))
-  result = call_606216.call(path_606217, nil, nil, nil, nil)
+  var path_613286 = newJObject()
+  add(path_613286, "botName", newJString(botName))
+  add(path_613286, "userId", newJString(userId))
+  add(path_613286, "botAlias", newJString(botAlias))
+  result = call_613285.call(path_613286, nil, nil, nil, nil)
 
-var deleteSession* = Call_DeleteSession_606202(name: "deleteSession",
+var deleteSession* = Call_DeleteSession_613271(name: "deleteSession",
     meth: HttpMethod.HttpDelete, host: "runtime.lex.amazonaws.com",
     route: "/bot/{botName}/alias/{botAlias}/user/{userId}/session",
-    validator: validate_DeleteSession_606203, base: "/", url: url_DeleteSession_606204,
+    validator: validate_DeleteSession_613272, base: "/", url: url_DeleteSession_613273,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSession_606218 = ref object of OpenApiRestCall_605589
-proc url_GetSession_606220(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetSession_613287 = ref object of OpenApiRestCall_612658
+proc url_GetSession_613289(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -478,7 +478,7 @@ proc url_GetSession_606220(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & hydrated.get
 
-proc validate_GetSession_606219(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetSession_613288(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns session information for a specified bot, alias, and user ID.
   ## 
@@ -493,31 +493,31 @@ proc validate_GetSession_606219(path: JsonNode; query: JsonNode; header: JsonNod
   ##           : The alias in use for the bot that contains the session data.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_606221 = path.getOrDefault("botName")
-  valid_606221 = validateParameter(valid_606221, JString, required = true,
+  var valid_613290 = path.getOrDefault("botName")
+  valid_613290 = validateParameter(valid_613290, JString, required = true,
                                  default = nil)
-  if valid_606221 != nil:
-    section.add "botName", valid_606221
-  var valid_606222 = path.getOrDefault("userId")
-  valid_606222 = validateParameter(valid_606222, JString, required = true,
+  if valid_613290 != nil:
+    section.add "botName", valid_613290
+  var valid_613291 = path.getOrDefault("userId")
+  valid_613291 = validateParameter(valid_613291, JString, required = true,
                                  default = nil)
-  if valid_606222 != nil:
-    section.add "userId", valid_606222
-  var valid_606223 = path.getOrDefault("botAlias")
-  valid_606223 = validateParameter(valid_606223, JString, required = true,
+  if valid_613291 != nil:
+    section.add "userId", valid_613291
+  var valid_613292 = path.getOrDefault("botAlias")
+  valid_613292 = validateParameter(valid_613292, JString, required = true,
                                  default = nil)
-  if valid_606223 != nil:
-    section.add "botAlias", valid_606223
+  if valid_613292 != nil:
+    section.add "botAlias", valid_613292
   result.add "path", section
   ## parameters in `query` object:
   ##   checkpointLabelFilter: JString
   ##                        : <p>A string used to filter the intents returned in the <code>recentIntentSummaryView</code> structure. </p> <p>When you specify a filter, only intents with their <code>checkpointLabel</code> field set to that string are returned.</p>
   section = newJObject()
-  var valid_606224 = query.getOrDefault("checkpointLabelFilter")
-  valid_606224 = validateParameter(valid_606224, JString, required = false,
+  var valid_613293 = query.getOrDefault("checkpointLabelFilter")
+  valid_613293 = validateParameter(valid_613293, JString, required = false,
                                  default = nil)
-  if valid_606224 != nil:
-    section.add "checkpointLabelFilter", valid_606224
+  if valid_613293 != nil:
+    section.add "checkpointLabelFilter", valid_613293
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -528,61 +528,61 @@ proc validate_GetSession_606219(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606225 = header.getOrDefault("X-Amz-Signature")
-  valid_606225 = validateParameter(valid_606225, JString, required = false,
+  var valid_613294 = header.getOrDefault("X-Amz-Signature")
+  valid_613294 = validateParameter(valid_613294, JString, required = false,
                                  default = nil)
-  if valid_606225 != nil:
-    section.add "X-Amz-Signature", valid_606225
-  var valid_606226 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606226 = validateParameter(valid_606226, JString, required = false,
+  if valid_613294 != nil:
+    section.add "X-Amz-Signature", valid_613294
+  var valid_613295 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613295 = validateParameter(valid_613295, JString, required = false,
                                  default = nil)
-  if valid_606226 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606226
-  var valid_606227 = header.getOrDefault("X-Amz-Date")
-  valid_606227 = validateParameter(valid_606227, JString, required = false,
+  if valid_613295 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613295
+  var valid_613296 = header.getOrDefault("X-Amz-Date")
+  valid_613296 = validateParameter(valid_613296, JString, required = false,
                                  default = nil)
-  if valid_606227 != nil:
-    section.add "X-Amz-Date", valid_606227
-  var valid_606228 = header.getOrDefault("X-Amz-Credential")
-  valid_606228 = validateParameter(valid_606228, JString, required = false,
+  if valid_613296 != nil:
+    section.add "X-Amz-Date", valid_613296
+  var valid_613297 = header.getOrDefault("X-Amz-Credential")
+  valid_613297 = validateParameter(valid_613297, JString, required = false,
                                  default = nil)
-  if valid_606228 != nil:
-    section.add "X-Amz-Credential", valid_606228
-  var valid_606229 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606229 = validateParameter(valid_606229, JString, required = false,
+  if valid_613297 != nil:
+    section.add "X-Amz-Credential", valid_613297
+  var valid_613298 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613298 = validateParameter(valid_613298, JString, required = false,
                                  default = nil)
-  if valid_606229 != nil:
-    section.add "X-Amz-Security-Token", valid_606229
-  var valid_606230 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606230 = validateParameter(valid_606230, JString, required = false,
+  if valid_613298 != nil:
+    section.add "X-Amz-Security-Token", valid_613298
+  var valid_613299 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613299 = validateParameter(valid_613299, JString, required = false,
                                  default = nil)
-  if valid_606230 != nil:
-    section.add "X-Amz-Algorithm", valid_606230
-  var valid_606231 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606231 = validateParameter(valid_606231, JString, required = false,
+  if valid_613299 != nil:
+    section.add "X-Amz-Algorithm", valid_613299
+  var valid_613300 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613300 = validateParameter(valid_613300, JString, required = false,
                                  default = nil)
-  if valid_606231 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606231
+  if valid_613300 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613300
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_606232: Call_GetSession_606218; path: JsonNode; query: JsonNode;
+proc call*(call_613301: Call_GetSession_613287; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns session information for a specified bot, alias, and user ID.
   ## 
-  let valid = call_606232.validator(path, query, header, formData, body)
-  let scheme = call_606232.pickScheme
+  let valid = call_613301.validator(path, query, header, formData, body)
+  let scheme = call_613301.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606232.url(scheme.get, call_606232.host, call_606232.base,
-                         call_606232.route, valid.getOrDefault("path"),
+  let url = call_613301.url(scheme.get, call_613301.host, call_613301.base,
+                         call_613301.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606232, url, valid)
+  result = atozHook(call_613301, url, valid)
 
-proc call*(call_606233: Call_GetSession_606218; botName: string; userId: string;
+proc call*(call_613302: Call_GetSession_613287; botName: string; userId: string;
           botAlias: string; checkpointLabelFilter: string = ""): Recallable =
   ## getSession
   ## Returns session information for a specified bot, alias, and user ID.
@@ -594,23 +594,23 @@ proc call*(call_606233: Call_GetSession_606218; botName: string; userId: string;
   ##         : The ID of the client application user. Amazon Lex uses this to identify a user's conversation with your bot. 
   ##   botAlias: string (required)
   ##           : The alias in use for the bot that contains the session data.
-  var path_606234 = newJObject()
-  var query_606235 = newJObject()
-  add(path_606234, "botName", newJString(botName))
-  add(query_606235, "checkpointLabelFilter", newJString(checkpointLabelFilter))
-  add(path_606234, "userId", newJString(userId))
-  add(path_606234, "botAlias", newJString(botAlias))
-  result = call_606233.call(path_606234, query_606235, nil, nil, nil)
+  var path_613303 = newJObject()
+  var query_613304 = newJObject()
+  add(path_613303, "botName", newJString(botName))
+  add(query_613304, "checkpointLabelFilter", newJString(checkpointLabelFilter))
+  add(path_613303, "userId", newJString(userId))
+  add(path_613303, "botAlias", newJString(botAlias))
+  result = call_613302.call(path_613303, query_613304, nil, nil, nil)
 
-var getSession* = Call_GetSession_606218(name: "getSession",
+var getSession* = Call_GetSession_613287(name: "getSession",
                                       meth: HttpMethod.HttpGet,
                                       host: "runtime.lex.amazonaws.com", route: "/bot/{botName}/alias/{botAlias}/user/{userId}/session/",
-                                      validator: validate_GetSession_606219,
-                                      base: "/", url: url_GetSession_606220,
+                                      validator: validate_GetSession_613288,
+                                      base: "/", url: url_GetSession_613289,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostContent_606236 = ref object of OpenApiRestCall_605589
-proc url_PostContent_606238(protocol: Scheme; host: string; base: string;
+  Call_PostContent_613305 = ref object of OpenApiRestCall_612658
+proc url_PostContent_613307(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -637,7 +637,7 @@ proc url_PostContent_606238(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_PostContent_606237(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostContent_613306(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p> Sends user input (text or speech) to Amazon Lex. Clients use this API to send text and audio requests to Amazon Lex at runtime. Amazon Lex interprets the user input using the machine learning model that it built for the bot. </p> <p>The <code>PostContent</code> operation supports audio input at 8kHz and 16kHz. You can use 8kHz audio to achieve higher speech recognition accuracy in telephone audio applications. </p> <p> In response, Amazon Lex returns the next message to convey to the user. Consider the following example messages: </p> <ul> <li> <p> For a user input "I would like a pizza," Amazon Lex might return a response with a message eliciting slot data (for example, <code>PizzaSize</code>): "What size pizza would you like?". </p> </li> <li> <p> After the user provides all of the pizza order information, Amazon Lex might return a response with a message to get user confirmation: "Order the pizza?". </p> </li> <li> <p> After the user replies "Yes" to the confirmation prompt, Amazon Lex might return a conclusion statement: "Thank you, your cheese pizza has been ordered.". </p> </li> </ul> <p> Not all Amazon Lex messages require a response from the user. For example, conclusion statements do not require a response. Some messages require only a yes or no response. In addition to the <code>message</code>, Amazon Lex provides additional context about the message in the response that you can use to enhance client behavior, such as displaying the appropriate client user interface. Consider the following examples: </p> <ul> <li> <p> If the message is to elicit slot data, Amazon Lex returns the following context information: </p> <ul> <li> <p> <code>x-amz-lex-dialog-state</code> header set to <code>ElicitSlot</code> </p> </li> <li> <p> <code>x-amz-lex-intent-name</code> header set to the intent name in the current context </p> </li> <li> <p> <code>x-amz-lex-slot-to-elicit</code> header set to the slot name for which the <code>message</code> is eliciting information </p> </li> <li> <p> <code>x-amz-lex-slots</code> header set to a map of slots configured for the intent with their current values </p> </li> </ul> </li> <li> <p> If the message is a confirmation prompt, the <code>x-amz-lex-dialog-state</code> header is set to <code>Confirmation</code> and the <code>x-amz-lex-slot-to-elicit</code> header is omitted. </p> </li> <li> <p> If the message is a clarification prompt configured for the intent, indicating that the user intent is not understood, the <code>x-amz-dialog-state</code> header is set to <code>ElicitIntent</code> and the <code>x-amz-slot-to-elicit</code> header is omitted. </p> </li> </ul> <p> In addition, Amazon Lex also returns your application-specific <code>sessionAttributes</code>. For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html">Managing Conversation Context</a>. </p>
   ## 
@@ -652,21 +652,21 @@ proc validate_PostContent_606237(path: JsonNode; query: JsonNode; header: JsonNo
   ##           : Alias of the Amazon Lex bot.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_606239 = path.getOrDefault("botName")
-  valid_606239 = validateParameter(valid_606239, JString, required = true,
+  var valid_613308 = path.getOrDefault("botName")
+  valid_613308 = validateParameter(valid_613308, JString, required = true,
                                  default = nil)
-  if valid_606239 != nil:
-    section.add "botName", valid_606239
-  var valid_606240 = path.getOrDefault("userId")
-  valid_606240 = validateParameter(valid_606240, JString, required = true,
+  if valid_613308 != nil:
+    section.add "botName", valid_613308
+  var valid_613309 = path.getOrDefault("userId")
+  valid_613309 = validateParameter(valid_613309, JString, required = true,
                                  default = nil)
-  if valid_606240 != nil:
-    section.add "userId", valid_606240
-  var valid_606241 = path.getOrDefault("botAlias")
-  valid_606241 = validateParameter(valid_606241, JString, required = true,
+  if valid_613309 != nil:
+    section.add "userId", valid_613309
+  var valid_613310 = path.getOrDefault("botAlias")
+  valid_613310 = validateParameter(valid_613310, JString, required = true,
                                  default = nil)
-  if valid_606241 != nil:
-    section.add "botAlias", valid_606241
+  if valid_613310 != nil:
+    section.add "botAlias", valid_613310
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -689,63 +689,63 @@ proc validate_PostContent_606237(path: JsonNode; query: JsonNode; header: JsonNo
   ##         : <p> You pass this value as the <code>Accept</code> HTTP header. </p> <p> The message Amazon Lex returns in the response can be either text or speech based on the <code>Accept</code> HTTP header value in the request. </p> <ul> <li> <p> If the value is <code>text/plain; charset=utf-8</code>, Amazon Lex returns text in the response. </p> </li> <li> <p> If the value begins with <code>audio/</code>, Amazon Lex returns speech in the response. Amazon Lex uses Amazon Polly to generate the speech (using the configuration you specified in the <code>Accept</code> header). For example, if you specify <code>audio/mpeg</code> as the value, Amazon Lex returns speech in the MPEG format.</p> </li> <li> <p>If the value is <code>audio/pcm</code>, the speech returned is <code>audio/pcm</code> in 16-bit, little endian format. </p> </li> <li> <p>The following are the accepted values:</p> <ul> <li> <p>audio/mpeg</p> </li> <li> <p>audio/ogg</p> </li> <li> <p>audio/pcm</p> </li> <li> <p>text/plain; charset=utf-8</p> </li> <li> <p>audio/* (defaults to mpeg)</p> </li> </ul> </li> </ul>
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606242 = header.getOrDefault("x-amz-lex-session-attributes")
-  valid_606242 = validateParameter(valid_606242, JString, required = false,
+  var valid_613311 = header.getOrDefault("x-amz-lex-session-attributes")
+  valid_613311 = validateParameter(valid_613311, JString, required = false,
                                  default = nil)
-  if valid_606242 != nil:
-    section.add "x-amz-lex-session-attributes", valid_606242
-  var valid_606243 = header.getOrDefault("x-amz-lex-request-attributes")
-  valid_606243 = validateParameter(valid_606243, JString, required = false,
+  if valid_613311 != nil:
+    section.add "x-amz-lex-session-attributes", valid_613311
+  var valid_613312 = header.getOrDefault("x-amz-lex-request-attributes")
+  valid_613312 = validateParameter(valid_613312, JString, required = false,
                                  default = nil)
-  if valid_606243 != nil:
-    section.add "x-amz-lex-request-attributes", valid_606243
-  var valid_606244 = header.getOrDefault("X-Amz-Signature")
-  valid_606244 = validateParameter(valid_606244, JString, required = false,
+  if valid_613312 != nil:
+    section.add "x-amz-lex-request-attributes", valid_613312
+  var valid_613313 = header.getOrDefault("X-Amz-Signature")
+  valid_613313 = validateParameter(valid_613313, JString, required = false,
                                  default = nil)
-  if valid_606244 != nil:
-    section.add "X-Amz-Signature", valid_606244
-  var valid_606245 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606245 = validateParameter(valid_606245, JString, required = false,
+  if valid_613313 != nil:
+    section.add "X-Amz-Signature", valid_613313
+  var valid_613314 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613314 = validateParameter(valid_613314, JString, required = false,
                                  default = nil)
-  if valid_606245 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606245
-  var valid_606246 = header.getOrDefault("X-Amz-Date")
-  valid_606246 = validateParameter(valid_606246, JString, required = false,
+  if valid_613314 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613314
+  var valid_613315 = header.getOrDefault("X-Amz-Date")
+  valid_613315 = validateParameter(valid_613315, JString, required = false,
                                  default = nil)
-  if valid_606246 != nil:
-    section.add "X-Amz-Date", valid_606246
-  var valid_606247 = header.getOrDefault("X-Amz-Credential")
-  valid_606247 = validateParameter(valid_606247, JString, required = false,
+  if valid_613315 != nil:
+    section.add "X-Amz-Date", valid_613315
+  var valid_613316 = header.getOrDefault("X-Amz-Credential")
+  valid_613316 = validateParameter(valid_613316, JString, required = false,
                                  default = nil)
-  if valid_606247 != nil:
-    section.add "X-Amz-Credential", valid_606247
-  var valid_606248 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606248 = validateParameter(valid_606248, JString, required = false,
+  if valid_613316 != nil:
+    section.add "X-Amz-Credential", valid_613316
+  var valid_613317 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613317 = validateParameter(valid_613317, JString, required = false,
                                  default = nil)
-  if valid_606248 != nil:
-    section.add "X-Amz-Security-Token", valid_606248
+  if valid_613317 != nil:
+    section.add "X-Amz-Security-Token", valid_613317
   assert header != nil,
         "header argument is necessary due to required `Content-Type` field"
-  var valid_606249 = header.getOrDefault("Content-Type")
-  valid_606249 = validateParameter(valid_606249, JString, required = true,
+  var valid_613318 = header.getOrDefault("Content-Type")
+  valid_613318 = validateParameter(valid_613318, JString, required = true,
                                  default = nil)
-  if valid_606249 != nil:
-    section.add "Content-Type", valid_606249
-  var valid_606250 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606250 = validateParameter(valid_606250, JString, required = false,
+  if valid_613318 != nil:
+    section.add "Content-Type", valid_613318
+  var valid_613319 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613319 = validateParameter(valid_613319, JString, required = false,
                                  default = nil)
-  if valid_606250 != nil:
-    section.add "X-Amz-Algorithm", valid_606250
-  var valid_606251 = header.getOrDefault("Accept")
-  valid_606251 = validateParameter(valid_606251, JString, required = false,
+  if valid_613319 != nil:
+    section.add "X-Amz-Algorithm", valid_613319
+  var valid_613320 = header.getOrDefault("Accept")
+  valid_613320 = validateParameter(valid_613320, JString, required = false,
                                  default = nil)
-  if valid_606251 != nil:
-    section.add "Accept", valid_606251
-  var valid_606252 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606252 = validateParameter(valid_606252, JString, required = false,
+  if valid_613320 != nil:
+    section.add "Accept", valid_613320
+  var valid_613321 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613321 = validateParameter(valid_613321, JString, required = false,
                                  default = nil)
-  if valid_606252 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606252
+  if valid_613321 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613321
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -756,20 +756,20 @@ proc validate_PostContent_606237(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606254: Call_PostContent_606236; path: JsonNode; query: JsonNode;
+proc call*(call_613323: Call_PostContent_613305; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Sends user input (text or speech) to Amazon Lex. Clients use this API to send text and audio requests to Amazon Lex at runtime. Amazon Lex interprets the user input using the machine learning model that it built for the bot. </p> <p>The <code>PostContent</code> operation supports audio input at 8kHz and 16kHz. You can use 8kHz audio to achieve higher speech recognition accuracy in telephone audio applications. </p> <p> In response, Amazon Lex returns the next message to convey to the user. Consider the following example messages: </p> <ul> <li> <p> For a user input "I would like a pizza," Amazon Lex might return a response with a message eliciting slot data (for example, <code>PizzaSize</code>): "What size pizza would you like?". </p> </li> <li> <p> After the user provides all of the pizza order information, Amazon Lex might return a response with a message to get user confirmation: "Order the pizza?". </p> </li> <li> <p> After the user replies "Yes" to the confirmation prompt, Amazon Lex might return a conclusion statement: "Thank you, your cheese pizza has been ordered.". </p> </li> </ul> <p> Not all Amazon Lex messages require a response from the user. For example, conclusion statements do not require a response. Some messages require only a yes or no response. In addition to the <code>message</code>, Amazon Lex provides additional context about the message in the response that you can use to enhance client behavior, such as displaying the appropriate client user interface. Consider the following examples: </p> <ul> <li> <p> If the message is to elicit slot data, Amazon Lex returns the following context information: </p> <ul> <li> <p> <code>x-amz-lex-dialog-state</code> header set to <code>ElicitSlot</code> </p> </li> <li> <p> <code>x-amz-lex-intent-name</code> header set to the intent name in the current context </p> </li> <li> <p> <code>x-amz-lex-slot-to-elicit</code> header set to the slot name for which the <code>message</code> is eliciting information </p> </li> <li> <p> <code>x-amz-lex-slots</code> header set to a map of slots configured for the intent with their current values </p> </li> </ul> </li> <li> <p> If the message is a confirmation prompt, the <code>x-amz-lex-dialog-state</code> header is set to <code>Confirmation</code> and the <code>x-amz-lex-slot-to-elicit</code> header is omitted. </p> </li> <li> <p> If the message is a clarification prompt configured for the intent, indicating that the user intent is not understood, the <code>x-amz-dialog-state</code> header is set to <code>ElicitIntent</code> and the <code>x-amz-slot-to-elicit</code> header is omitted. </p> </li> </ul> <p> In addition, Amazon Lex also returns your application-specific <code>sessionAttributes</code>. For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html">Managing Conversation Context</a>. </p>
   ## 
-  let valid = call_606254.validator(path, query, header, formData, body)
-  let scheme = call_606254.pickScheme
+  let valid = call_613323.validator(path, query, header, formData, body)
+  let scheme = call_613323.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606254.url(scheme.get, call_606254.host, call_606254.base,
-                         call_606254.route, valid.getOrDefault("path"),
+  let url = call_613323.url(scheme.get, call_613323.host, call_613323.base,
+                         call_613323.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606254, url, valid)
+  result = atozHook(call_613323, url, valid)
 
-proc call*(call_606255: Call_PostContent_606236; botName: string; userId: string;
+proc call*(call_613324: Call_PostContent_613305; botName: string; userId: string;
           botAlias: string; body: JsonNode): Recallable =
   ## postContent
   ## <p> Sends user input (text or speech) to Amazon Lex. Clients use this API to send text and audio requests to Amazon Lex at runtime. Amazon Lex interprets the user input using the machine learning model that it built for the bot. </p> <p>The <code>PostContent</code> operation supports audio input at 8kHz and 16kHz. You can use 8kHz audio to achieve higher speech recognition accuracy in telephone audio applications. </p> <p> In response, Amazon Lex returns the next message to convey to the user. Consider the following example messages: </p> <ul> <li> <p> For a user input "I would like a pizza," Amazon Lex might return a response with a message eliciting slot data (for example, <code>PizzaSize</code>): "What size pizza would you like?". </p> </li> <li> <p> After the user provides all of the pizza order information, Amazon Lex might return a response with a message to get user confirmation: "Order the pizza?". </p> </li> <li> <p> After the user replies "Yes" to the confirmation prompt, Amazon Lex might return a conclusion statement: "Thank you, your cheese pizza has been ordered.". </p> </li> </ul> <p> Not all Amazon Lex messages require a response from the user. For example, conclusion statements do not require a response. Some messages require only a yes or no response. In addition to the <code>message</code>, Amazon Lex provides additional context about the message in the response that you can use to enhance client behavior, such as displaying the appropriate client user interface. Consider the following examples: </p> <ul> <li> <p> If the message is to elicit slot data, Amazon Lex returns the following context information: </p> <ul> <li> <p> <code>x-amz-lex-dialog-state</code> header set to <code>ElicitSlot</code> </p> </li> <li> <p> <code>x-amz-lex-intent-name</code> header set to the intent name in the current context </p> </li> <li> <p> <code>x-amz-lex-slot-to-elicit</code> header set to the slot name for which the <code>message</code> is eliciting information </p> </li> <li> <p> <code>x-amz-lex-slots</code> header set to a map of slots configured for the intent with their current values </p> </li> </ul> </li> <li> <p> If the message is a confirmation prompt, the <code>x-amz-lex-dialog-state</code> header is set to <code>Confirmation</code> and the <code>x-amz-lex-slot-to-elicit</code> header is omitted. </p> </li> <li> <p> If the message is a clarification prompt configured for the intent, indicating that the user intent is not understood, the <code>x-amz-dialog-state</code> header is set to <code>ElicitIntent</code> and the <code>x-amz-slot-to-elicit</code> header is omitted. </p> </li> </ul> <p> In addition, Amazon Lex also returns your application-specific <code>sessionAttributes</code>. For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html">Managing Conversation Context</a>. </p>
@@ -780,24 +780,24 @@ proc call*(call_606255: Call_PostContent_606236; botName: string; userId: string
   ##   botAlias: string (required)
   ##           : Alias of the Amazon Lex bot.
   ##   body: JObject (required)
-  var path_606256 = newJObject()
-  var body_606257 = newJObject()
-  add(path_606256, "botName", newJString(botName))
-  add(path_606256, "userId", newJString(userId))
-  add(path_606256, "botAlias", newJString(botAlias))
+  var path_613325 = newJObject()
+  var body_613326 = newJObject()
+  add(path_613325, "botName", newJString(botName))
+  add(path_613325, "userId", newJString(userId))
+  add(path_613325, "botAlias", newJString(botAlias))
   if body != nil:
-    body_606257 = body
-  result = call_606255.call(path_606256, nil, nil, nil, body_606257)
+    body_613326 = body
+  result = call_613324.call(path_613325, nil, nil, nil, body_613326)
 
-var postContent* = Call_PostContent_606236(name: "postContent",
+var postContent* = Call_PostContent_613305(name: "postContent",
                                         meth: HttpMethod.HttpPost,
                                         host: "runtime.lex.amazonaws.com", route: "/bot/{botName}/alias/{botAlias}/user/{userId}/content#Content-Type",
-                                        validator: validate_PostContent_606237,
-                                        base: "/", url: url_PostContent_606238,
+                                        validator: validate_PostContent_613306,
+                                        base: "/", url: url_PostContent_613307,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostText_606258 = ref object of OpenApiRestCall_605589
-proc url_PostText_606260(protocol: Scheme; host: string; base: string; route: string;
+  Call_PostText_613327 = ref object of OpenApiRestCall_612658
+proc url_PostText_613329(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -824,7 +824,7 @@ proc url_PostText_606260(protocol: Scheme; host: string; base: string; route: st
   else:
     result.path = base & hydrated.get
 
-proc validate_PostText_606259(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_PostText_613328(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sends user input to Amazon Lex. Client applications can use this API to send requests to Amazon Lex at runtime. Amazon Lex then interprets the user input using the machine learning model it built for the bot. </p> <p> In response, Amazon Lex returns the next <code>message</code> to convey to the user an optional <code>responseCard</code> to display. Consider the following example messages: </p> <ul> <li> <p> For a user input "I would like a pizza", Amazon Lex might return a response with a message eliciting slot data (for example, PizzaSize): "What size pizza would you like?" </p> </li> <li> <p> After the user provides all of the pizza order information, Amazon Lex might return a response with a message to obtain user confirmation "Proceed with the pizza order?". </p> </li> <li> <p> After the user replies to a confirmation prompt with a "yes", Amazon Lex might return a conclusion statement: "Thank you, your cheese pizza has been ordered.". </p> </li> </ul> <p> Not all Amazon Lex messages require a user response. For example, a conclusion statement does not require a response. Some messages require only a "yes" or "no" user response. In addition to the <code>message</code>, Amazon Lex provides additional context about the message in the response that you might use to enhance client behavior, for example, to display the appropriate client user interface. These are the <code>slotToElicit</code>, <code>dialogState</code>, <code>intentName</code>, and <code>slots</code> fields in the response. Consider the following examples: </p> <ul> <li> <p>If the message is to elicit slot data, Amazon Lex returns the following context information:</p> <ul> <li> <p> <code>dialogState</code> set to ElicitSlot </p> </li> <li> <p> <code>intentName</code> set to the intent name in the current context </p> </li> <li> <p> <code>slotToElicit</code> set to the slot name for which the <code>message</code> is eliciting information </p> </li> <li> <p> <code>slots</code> set to a map of slots, configured for the intent, with currently known values </p> </li> </ul> </li> <li> <p> If the message is a confirmation prompt, the <code>dialogState</code> is set to ConfirmIntent and <code>SlotToElicit</code> is set to null. </p> </li> <li> <p>If the message is a clarification prompt (configured for the intent) that indicates that user intent is not understood, the <code>dialogState</code> is set to ElicitIntent and <code>slotToElicit</code> is set to null. </p> </li> </ul> <p> In addition, Amazon Lex also returns your application-specific <code>sessionAttributes</code>. For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html">Managing Conversation Context</a>. </p>
   ## 
@@ -839,21 +839,21 @@ proc validate_PostText_606259(path: JsonNode; query: JsonNode; header: JsonNode;
   ##           : The alias of the Amazon Lex bot.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `botName` field"
-  var valid_606261 = path.getOrDefault("botName")
-  valid_606261 = validateParameter(valid_606261, JString, required = true,
+  var valid_613330 = path.getOrDefault("botName")
+  valid_613330 = validateParameter(valid_613330, JString, required = true,
                                  default = nil)
-  if valid_606261 != nil:
-    section.add "botName", valid_606261
-  var valid_606262 = path.getOrDefault("userId")
-  valid_606262 = validateParameter(valid_606262, JString, required = true,
+  if valid_613330 != nil:
+    section.add "botName", valid_613330
+  var valid_613331 = path.getOrDefault("userId")
+  valid_613331 = validateParameter(valid_613331, JString, required = true,
                                  default = nil)
-  if valid_606262 != nil:
-    section.add "userId", valid_606262
-  var valid_606263 = path.getOrDefault("botAlias")
-  valid_606263 = validateParameter(valid_606263, JString, required = true,
+  if valid_613331 != nil:
+    section.add "userId", valid_613331
+  var valid_613332 = path.getOrDefault("botAlias")
+  valid_613332 = validateParameter(valid_613332, JString, required = true,
                                  default = nil)
-  if valid_606263 != nil:
-    section.add "botAlias", valid_606263
+  if valid_613332 != nil:
+    section.add "botAlias", valid_613332
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -866,41 +866,41 @@ proc validate_PostText_606259(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606264 = header.getOrDefault("X-Amz-Signature")
-  valid_606264 = validateParameter(valid_606264, JString, required = false,
+  var valid_613333 = header.getOrDefault("X-Amz-Signature")
+  valid_613333 = validateParameter(valid_613333, JString, required = false,
                                  default = nil)
-  if valid_606264 != nil:
-    section.add "X-Amz-Signature", valid_606264
-  var valid_606265 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606265 = validateParameter(valid_606265, JString, required = false,
+  if valid_613333 != nil:
+    section.add "X-Amz-Signature", valid_613333
+  var valid_613334 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613334 = validateParameter(valid_613334, JString, required = false,
                                  default = nil)
-  if valid_606265 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606265
-  var valid_606266 = header.getOrDefault("X-Amz-Date")
-  valid_606266 = validateParameter(valid_606266, JString, required = false,
+  if valid_613334 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613334
+  var valid_613335 = header.getOrDefault("X-Amz-Date")
+  valid_613335 = validateParameter(valid_613335, JString, required = false,
                                  default = nil)
-  if valid_606266 != nil:
-    section.add "X-Amz-Date", valid_606266
-  var valid_606267 = header.getOrDefault("X-Amz-Credential")
-  valid_606267 = validateParameter(valid_606267, JString, required = false,
+  if valid_613335 != nil:
+    section.add "X-Amz-Date", valid_613335
+  var valid_613336 = header.getOrDefault("X-Amz-Credential")
+  valid_613336 = validateParameter(valid_613336, JString, required = false,
                                  default = nil)
-  if valid_606267 != nil:
-    section.add "X-Amz-Credential", valid_606267
-  var valid_606268 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606268 = validateParameter(valid_606268, JString, required = false,
+  if valid_613336 != nil:
+    section.add "X-Amz-Credential", valid_613336
+  var valid_613337 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613337 = validateParameter(valid_613337, JString, required = false,
                                  default = nil)
-  if valid_606268 != nil:
-    section.add "X-Amz-Security-Token", valid_606268
-  var valid_606269 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606269 = validateParameter(valid_606269, JString, required = false,
+  if valid_613337 != nil:
+    section.add "X-Amz-Security-Token", valid_613337
+  var valid_613338 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613338 = validateParameter(valid_613338, JString, required = false,
                                  default = nil)
-  if valid_606269 != nil:
-    section.add "X-Amz-Algorithm", valid_606269
-  var valid_606270 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606270 = validateParameter(valid_606270, JString, required = false,
+  if valid_613338 != nil:
+    section.add "X-Amz-Algorithm", valid_613338
+  var valid_613339 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613339 = validateParameter(valid_613339, JString, required = false,
                                  default = nil)
-  if valid_606270 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606270
+  if valid_613339 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613339
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -911,20 +911,20 @@ proc validate_PostText_606259(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606272: Call_PostText_606258; path: JsonNode; query: JsonNode;
+proc call*(call_613341: Call_PostText_613327; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sends user input to Amazon Lex. Client applications can use this API to send requests to Amazon Lex at runtime. Amazon Lex then interprets the user input using the machine learning model it built for the bot. </p> <p> In response, Amazon Lex returns the next <code>message</code> to convey to the user an optional <code>responseCard</code> to display. Consider the following example messages: </p> <ul> <li> <p> For a user input "I would like a pizza", Amazon Lex might return a response with a message eliciting slot data (for example, PizzaSize): "What size pizza would you like?" </p> </li> <li> <p> After the user provides all of the pizza order information, Amazon Lex might return a response with a message to obtain user confirmation "Proceed with the pizza order?". </p> </li> <li> <p> After the user replies to a confirmation prompt with a "yes", Amazon Lex might return a conclusion statement: "Thank you, your cheese pizza has been ordered.". </p> </li> </ul> <p> Not all Amazon Lex messages require a user response. For example, a conclusion statement does not require a response. Some messages require only a "yes" or "no" user response. In addition to the <code>message</code>, Amazon Lex provides additional context about the message in the response that you might use to enhance client behavior, for example, to display the appropriate client user interface. These are the <code>slotToElicit</code>, <code>dialogState</code>, <code>intentName</code>, and <code>slots</code> fields in the response. Consider the following examples: </p> <ul> <li> <p>If the message is to elicit slot data, Amazon Lex returns the following context information:</p> <ul> <li> <p> <code>dialogState</code> set to ElicitSlot </p> </li> <li> <p> <code>intentName</code> set to the intent name in the current context </p> </li> <li> <p> <code>slotToElicit</code> set to the slot name for which the <code>message</code> is eliciting information </p> </li> <li> <p> <code>slots</code> set to a map of slots, configured for the intent, with currently known values </p> </li> </ul> </li> <li> <p> If the message is a confirmation prompt, the <code>dialogState</code> is set to ConfirmIntent and <code>SlotToElicit</code> is set to null. </p> </li> <li> <p>If the message is a clarification prompt (configured for the intent) that indicates that user intent is not understood, the <code>dialogState</code> is set to ElicitIntent and <code>slotToElicit</code> is set to null. </p> </li> </ul> <p> In addition, Amazon Lex also returns your application-specific <code>sessionAttributes</code>. For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html">Managing Conversation Context</a>. </p>
   ## 
-  let valid = call_606272.validator(path, query, header, formData, body)
-  let scheme = call_606272.pickScheme
+  let valid = call_613341.validator(path, query, header, formData, body)
+  let scheme = call_613341.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606272.url(scheme.get, call_606272.host, call_606272.base,
-                         call_606272.route, valid.getOrDefault("path"),
+  let url = call_613341.url(scheme.get, call_613341.host, call_613341.base,
+                         call_613341.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606272, url, valid)
+  result = atozHook(call_613341, url, valid)
 
-proc call*(call_606273: Call_PostText_606258; botName: string; userId: string;
+proc call*(call_613342: Call_PostText_613327; botName: string; userId: string;
           botAlias: string; body: JsonNode): Recallable =
   ## postText
   ## <p>Sends user input to Amazon Lex. Client applications can use this API to send requests to Amazon Lex at runtime. Amazon Lex then interprets the user input using the machine learning model it built for the bot. </p> <p> In response, Amazon Lex returns the next <code>message</code> to convey to the user an optional <code>responseCard</code> to display. Consider the following example messages: </p> <ul> <li> <p> For a user input "I would like a pizza", Amazon Lex might return a response with a message eliciting slot data (for example, PizzaSize): "What size pizza would you like?" </p> </li> <li> <p> After the user provides all of the pizza order information, Amazon Lex might return a response with a message to obtain user confirmation "Proceed with the pizza order?". </p> </li> <li> <p> After the user replies to a confirmation prompt with a "yes", Amazon Lex might return a conclusion statement: "Thank you, your cheese pizza has been ordered.". </p> </li> </ul> <p> Not all Amazon Lex messages require a user response. For example, a conclusion statement does not require a response. Some messages require only a "yes" or "no" user response. In addition to the <code>message</code>, Amazon Lex provides additional context about the message in the response that you might use to enhance client behavior, for example, to display the appropriate client user interface. These are the <code>slotToElicit</code>, <code>dialogState</code>, <code>intentName</code>, and <code>slots</code> fields in the response. Consider the following examples: </p> <ul> <li> <p>If the message is to elicit slot data, Amazon Lex returns the following context information:</p> <ul> <li> <p> <code>dialogState</code> set to ElicitSlot </p> </li> <li> <p> <code>intentName</code> set to the intent name in the current context </p> </li> <li> <p> <code>slotToElicit</code> set to the slot name for which the <code>message</code> is eliciting information </p> </li> <li> <p> <code>slots</code> set to a map of slots, configured for the intent, with currently known values </p> </li> </ul> </li> <li> <p> If the message is a confirmation prompt, the <code>dialogState</code> is set to ConfirmIntent and <code>SlotToElicit</code> is set to null. </p> </li> <li> <p>If the message is a clarification prompt (configured for the intent) that indicates that user intent is not understood, the <code>dialogState</code> is set to ElicitIntent and <code>slotToElicit</code> is set to null. </p> </li> </ul> <p> In addition, Amazon Lex also returns your application-specific <code>sessionAttributes</code>. For more information, see <a href="https://docs.aws.amazon.com/lex/latest/dg/context-mgmt.html">Managing Conversation Context</a>. </p>
@@ -935,19 +935,19 @@ proc call*(call_606273: Call_PostText_606258; botName: string; userId: string;
   ##   botAlias: string (required)
   ##           : The alias of the Amazon Lex bot.
   ##   body: JObject (required)
-  var path_606274 = newJObject()
-  var body_606275 = newJObject()
-  add(path_606274, "botName", newJString(botName))
-  add(path_606274, "userId", newJString(userId))
-  add(path_606274, "botAlias", newJString(botAlias))
+  var path_613343 = newJObject()
+  var body_613344 = newJObject()
+  add(path_613343, "botName", newJString(botName))
+  add(path_613343, "userId", newJString(userId))
+  add(path_613343, "botAlias", newJString(botAlias))
   if body != nil:
-    body_606275 = body
-  result = call_606273.call(path_606274, nil, nil, nil, body_606275)
+    body_613344 = body
+  result = call_613342.call(path_613343, nil, nil, nil, body_613344)
 
-var postText* = Call_PostText_606258(name: "postText", meth: HttpMethod.HttpPost,
+var postText* = Call_PostText_613327(name: "postText", meth: HttpMethod.HttpPost,
                                   host: "runtime.lex.amazonaws.com", route: "/bot/{botName}/alias/{botAlias}/user/{userId}/text",
-                                  validator: validate_PostText_606259, base: "/",
-                                  url: url_PostText_606260,
+                                  validator: validate_PostText_613328, base: "/",
+                                  url: url_PostText_613329,
                                   schemes: {Scheme.Https, Scheme.Http})
 export
   rest

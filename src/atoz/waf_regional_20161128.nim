@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605589 = ref object of OpenApiRestCall
+  OpenApiRestCall_612658 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605589](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612658](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605589): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612658): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -142,8 +142,8 @@ const
   awsServiceName = "waf-regional"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AssociateWebACL_605927 = ref object of OpenApiRestCall_605589
-proc url_AssociateWebACL_605929(protocol: Scheme; host: string; base: string;
+  Call_AssociateWebACL_612996 = ref object of OpenApiRestCall_612658
+proc url_AssociateWebACL_612998(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -155,7 +155,7 @@ proc url_AssociateWebACL_605929(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_AssociateWebACL_605928(path: JsonNode; query: JsonNode;
+proc validate_AssociateWebACL_612997(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Associates a web ACL with a resource, either an application load balancer or Amazon API Gateway stage.
@@ -176,46 +176,46 @@ proc validate_AssociateWebACL_605928(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606054 = header.getOrDefault("X-Amz-Target")
-  valid_606054 = validateParameter(valid_606054, JString, required = true, default = newJString(
+  var valid_613123 = header.getOrDefault("X-Amz-Target")
+  valid_613123 = validateParameter(valid_613123, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.AssociateWebACL"))
-  if valid_606054 != nil:
-    section.add "X-Amz-Target", valid_606054
-  var valid_606055 = header.getOrDefault("X-Amz-Signature")
-  valid_606055 = validateParameter(valid_606055, JString, required = false,
+  if valid_613123 != nil:
+    section.add "X-Amz-Target", valid_613123
+  var valid_613124 = header.getOrDefault("X-Amz-Signature")
+  valid_613124 = validateParameter(valid_613124, JString, required = false,
                                  default = nil)
-  if valid_606055 != nil:
-    section.add "X-Amz-Signature", valid_606055
-  var valid_606056 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606056 = validateParameter(valid_606056, JString, required = false,
+  if valid_613124 != nil:
+    section.add "X-Amz-Signature", valid_613124
+  var valid_613125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613125 = validateParameter(valid_613125, JString, required = false,
                                  default = nil)
-  if valid_606056 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606056
-  var valid_606057 = header.getOrDefault("X-Amz-Date")
-  valid_606057 = validateParameter(valid_606057, JString, required = false,
+  if valid_613125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613125
+  var valid_613126 = header.getOrDefault("X-Amz-Date")
+  valid_613126 = validateParameter(valid_613126, JString, required = false,
                                  default = nil)
-  if valid_606057 != nil:
-    section.add "X-Amz-Date", valid_606057
-  var valid_606058 = header.getOrDefault("X-Amz-Credential")
-  valid_606058 = validateParameter(valid_606058, JString, required = false,
+  if valid_613126 != nil:
+    section.add "X-Amz-Date", valid_613126
+  var valid_613127 = header.getOrDefault("X-Amz-Credential")
+  valid_613127 = validateParameter(valid_613127, JString, required = false,
                                  default = nil)
-  if valid_606058 != nil:
-    section.add "X-Amz-Credential", valid_606058
-  var valid_606059 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606059 = validateParameter(valid_606059, JString, required = false,
+  if valid_613127 != nil:
+    section.add "X-Amz-Credential", valid_613127
+  var valid_613128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613128 = validateParameter(valid_613128, JString, required = false,
                                  default = nil)
-  if valid_606059 != nil:
-    section.add "X-Amz-Security-Token", valid_606059
-  var valid_606060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606060 = validateParameter(valid_606060, JString, required = false,
+  if valid_613128 != nil:
+    section.add "X-Amz-Security-Token", valid_613128
+  var valid_613129 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613129 = validateParameter(valid_613129, JString, required = false,
                                  default = nil)
-  if valid_606060 != nil:
-    section.add "X-Amz-Algorithm", valid_606060
-  var valid_606061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606061 = validateParameter(valid_606061, JString, required = false,
+  if valid_613129 != nil:
+    section.add "X-Amz-Algorithm", valid_613129
+  var valid_613130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613130 = validateParameter(valid_613130, JString, required = false,
                                  default = nil)
-  if valid_606061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606061
+  if valid_613130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -226,36 +226,36 @@ proc validate_AssociateWebACL_605928(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606085: Call_AssociateWebACL_605927; path: JsonNode; query: JsonNode;
+proc call*(call_613154: Call_AssociateWebACL_612996; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Associates a web ACL with a resource, either an application load balancer or Amazon API Gateway stage.
   ## 
-  let valid = call_606085.validator(path, query, header, formData, body)
-  let scheme = call_606085.pickScheme
+  let valid = call_613154.validator(path, query, header, formData, body)
+  let scheme = call_613154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606085.url(scheme.get, call_606085.host, call_606085.base,
-                         call_606085.route, valid.getOrDefault("path"),
+  let url = call_613154.url(scheme.get, call_613154.host, call_613154.base,
+                         call_613154.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606085, url, valid)
+  result = atozHook(call_613154, url, valid)
 
-proc call*(call_606156: Call_AssociateWebACL_605927; body: JsonNode): Recallable =
+proc call*(call_613225: Call_AssociateWebACL_612996; body: JsonNode): Recallable =
   ## associateWebACL
   ## Associates a web ACL with a resource, either an application load balancer or Amazon API Gateway stage.
   ##   body: JObject (required)
-  var body_606157 = newJObject()
+  var body_613226 = newJObject()
   if body != nil:
-    body_606157 = body
-  result = call_606156.call(nil, nil, nil, nil, body_606157)
+    body_613226 = body
+  result = call_613225.call(nil, nil, nil, nil, body_613226)
 
-var associateWebACL* = Call_AssociateWebACL_605927(name: "associateWebACL",
+var associateWebACL* = Call_AssociateWebACL_612996(name: "associateWebACL",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.AssociateWebACL",
-    validator: validate_AssociateWebACL_605928, base: "/", url: url_AssociateWebACL_605929,
+    validator: validate_AssociateWebACL_612997, base: "/", url: url_AssociateWebACL_612998,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateByteMatchSet_606196 = ref object of OpenApiRestCall_605589
-proc url_CreateByteMatchSet_606198(protocol: Scheme; host: string; base: string;
+  Call_CreateByteMatchSet_613265 = ref object of OpenApiRestCall_612658
+proc url_CreateByteMatchSet_613267(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -267,7 +267,7 @@ proc url_CreateByteMatchSet_606198(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateByteMatchSet_606197(path: JsonNode; query: JsonNode;
+proc validate_CreateByteMatchSet_613266(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Creates a <code>ByteMatchSet</code>. You then use <a>UpdateByteMatchSet</a> to identify the part of a web request that you want AWS WAF to inspect, such as the values of the <code>User-Agent</code> header or the query string. For example, you can create a <code>ByteMatchSet</code> that matches any requests with <code>User-Agent</code> headers that contain the string <code>BadBot</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateByteMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateByteMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateByteMatchSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateByteMatchSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -288,46 +288,46 @@ proc validate_CreateByteMatchSet_606197(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606199 = header.getOrDefault("X-Amz-Target")
-  valid_606199 = validateParameter(valid_606199, JString, required = true, default = newJString(
+  var valid_613268 = header.getOrDefault("X-Amz-Target")
+  valid_613268 = validateParameter(valid_613268, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateByteMatchSet"))
-  if valid_606199 != nil:
-    section.add "X-Amz-Target", valid_606199
-  var valid_606200 = header.getOrDefault("X-Amz-Signature")
-  valid_606200 = validateParameter(valid_606200, JString, required = false,
+  if valid_613268 != nil:
+    section.add "X-Amz-Target", valid_613268
+  var valid_613269 = header.getOrDefault("X-Amz-Signature")
+  valid_613269 = validateParameter(valid_613269, JString, required = false,
                                  default = nil)
-  if valid_606200 != nil:
-    section.add "X-Amz-Signature", valid_606200
-  var valid_606201 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606201 = validateParameter(valid_606201, JString, required = false,
+  if valid_613269 != nil:
+    section.add "X-Amz-Signature", valid_613269
+  var valid_613270 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613270 = validateParameter(valid_613270, JString, required = false,
                                  default = nil)
-  if valid_606201 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606201
-  var valid_606202 = header.getOrDefault("X-Amz-Date")
-  valid_606202 = validateParameter(valid_606202, JString, required = false,
+  if valid_613270 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613270
+  var valid_613271 = header.getOrDefault("X-Amz-Date")
+  valid_613271 = validateParameter(valid_613271, JString, required = false,
                                  default = nil)
-  if valid_606202 != nil:
-    section.add "X-Amz-Date", valid_606202
-  var valid_606203 = header.getOrDefault("X-Amz-Credential")
-  valid_606203 = validateParameter(valid_606203, JString, required = false,
+  if valid_613271 != nil:
+    section.add "X-Amz-Date", valid_613271
+  var valid_613272 = header.getOrDefault("X-Amz-Credential")
+  valid_613272 = validateParameter(valid_613272, JString, required = false,
                                  default = nil)
-  if valid_606203 != nil:
-    section.add "X-Amz-Credential", valid_606203
-  var valid_606204 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606204 = validateParameter(valid_606204, JString, required = false,
+  if valid_613272 != nil:
+    section.add "X-Amz-Credential", valid_613272
+  var valid_613273 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613273 = validateParameter(valid_613273, JString, required = false,
                                  default = nil)
-  if valid_606204 != nil:
-    section.add "X-Amz-Security-Token", valid_606204
-  var valid_606205 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606205 = validateParameter(valid_606205, JString, required = false,
+  if valid_613273 != nil:
+    section.add "X-Amz-Security-Token", valid_613273
+  var valid_613274 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613274 = validateParameter(valid_613274, JString, required = false,
                                  default = nil)
-  if valid_606205 != nil:
-    section.add "X-Amz-Algorithm", valid_606205
-  var valid_606206 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606206 = validateParameter(valid_606206, JString, required = false,
+  if valid_613274 != nil:
+    section.add "X-Amz-Algorithm", valid_613274
+  var valid_613275 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613275 = validateParameter(valid_613275, JString, required = false,
                                  default = nil)
-  if valid_606206 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606206
+  if valid_613275 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613275
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -338,37 +338,37 @@ proc validate_CreateByteMatchSet_606197(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606208: Call_CreateByteMatchSet_606196; path: JsonNode;
+proc call*(call_613277: Call_CreateByteMatchSet_613265; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <code>ByteMatchSet</code>. You then use <a>UpdateByteMatchSet</a> to identify the part of a web request that you want AWS WAF to inspect, such as the values of the <code>User-Agent</code> header or the query string. For example, you can create a <code>ByteMatchSet</code> that matches any requests with <code>User-Agent</code> headers that contain the string <code>BadBot</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateByteMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateByteMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateByteMatchSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateByteMatchSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606208.validator(path, query, header, formData, body)
-  let scheme = call_606208.pickScheme
+  let valid = call_613277.validator(path, query, header, formData, body)
+  let scheme = call_613277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606208.url(scheme.get, call_606208.host, call_606208.base,
-                         call_606208.route, valid.getOrDefault("path"),
+  let url = call_613277.url(scheme.get, call_613277.host, call_613277.base,
+                         call_613277.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606208, url, valid)
+  result = atozHook(call_613277, url, valid)
 
-proc call*(call_606209: Call_CreateByteMatchSet_606196; body: JsonNode): Recallable =
+proc call*(call_613278: Call_CreateByteMatchSet_613265; body: JsonNode): Recallable =
   ## createByteMatchSet
   ## <p>Creates a <code>ByteMatchSet</code>. You then use <a>UpdateByteMatchSet</a> to identify the part of a web request that you want AWS WAF to inspect, such as the values of the <code>User-Agent</code> header or the query string. For example, you can create a <code>ByteMatchSet</code> that matches any requests with <code>User-Agent</code> headers that contain the string <code>BadBot</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateByteMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateByteMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateByteMatchSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateByteMatchSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606210 = newJObject()
+  var body_613279 = newJObject()
   if body != nil:
-    body_606210 = body
-  result = call_606209.call(nil, nil, nil, nil, body_606210)
+    body_613279 = body
+  result = call_613278.call(nil, nil, nil, nil, body_613279)
 
-var createByteMatchSet* = Call_CreateByteMatchSet_606196(
+var createByteMatchSet* = Call_CreateByteMatchSet_613265(
     name: "createByteMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateByteMatchSet",
-    validator: validate_CreateByteMatchSet_606197, base: "/",
-    url: url_CreateByteMatchSet_606198, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateByteMatchSet_613266, base: "/",
+    url: url_CreateByteMatchSet_613267, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateGeoMatchSet_606211 = ref object of OpenApiRestCall_605589
-proc url_CreateGeoMatchSet_606213(protocol: Scheme; host: string; base: string;
+  Call_CreateGeoMatchSet_613280 = ref object of OpenApiRestCall_612658
+proc url_CreateGeoMatchSet_613282(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -380,7 +380,7 @@ proc url_CreateGeoMatchSet_606213(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateGeoMatchSet_606212(path: JsonNode; query: JsonNode;
+proc validate_CreateGeoMatchSet_613281(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Creates an <a>GeoMatchSet</a>, which you use to specify which web requests you want to allow or block based on the country that the requests originate from. For example, if you're receiving a lot of requests from one or more countries and you want to block the requests, you can create an <code>GeoMatchSet</code> that contains those countries and then configure AWS WAF to block the requests. </p> <p>To create and configure a <code>GeoMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateGeoMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateGeoMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateGeoMatchSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateGeoMatchSetSet</code> request to specify the countries that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -401,46 +401,46 @@ proc validate_CreateGeoMatchSet_606212(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606214 = header.getOrDefault("X-Amz-Target")
-  valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
+  var valid_613283 = header.getOrDefault("X-Amz-Target")
+  valid_613283 = validateParameter(valid_613283, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateGeoMatchSet"))
-  if valid_606214 != nil:
-    section.add "X-Amz-Target", valid_606214
-  var valid_606215 = header.getOrDefault("X-Amz-Signature")
-  valid_606215 = validateParameter(valid_606215, JString, required = false,
+  if valid_613283 != nil:
+    section.add "X-Amz-Target", valid_613283
+  var valid_613284 = header.getOrDefault("X-Amz-Signature")
+  valid_613284 = validateParameter(valid_613284, JString, required = false,
                                  default = nil)
-  if valid_606215 != nil:
-    section.add "X-Amz-Signature", valid_606215
-  var valid_606216 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606216 = validateParameter(valid_606216, JString, required = false,
+  if valid_613284 != nil:
+    section.add "X-Amz-Signature", valid_613284
+  var valid_613285 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613285 = validateParameter(valid_613285, JString, required = false,
                                  default = nil)
-  if valid_606216 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606216
-  var valid_606217 = header.getOrDefault("X-Amz-Date")
-  valid_606217 = validateParameter(valid_606217, JString, required = false,
+  if valid_613285 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613285
+  var valid_613286 = header.getOrDefault("X-Amz-Date")
+  valid_613286 = validateParameter(valid_613286, JString, required = false,
                                  default = nil)
-  if valid_606217 != nil:
-    section.add "X-Amz-Date", valid_606217
-  var valid_606218 = header.getOrDefault("X-Amz-Credential")
-  valid_606218 = validateParameter(valid_606218, JString, required = false,
+  if valid_613286 != nil:
+    section.add "X-Amz-Date", valid_613286
+  var valid_613287 = header.getOrDefault("X-Amz-Credential")
+  valid_613287 = validateParameter(valid_613287, JString, required = false,
                                  default = nil)
-  if valid_606218 != nil:
-    section.add "X-Amz-Credential", valid_606218
-  var valid_606219 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606219 = validateParameter(valid_606219, JString, required = false,
+  if valid_613287 != nil:
+    section.add "X-Amz-Credential", valid_613287
+  var valid_613288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613288 = validateParameter(valid_613288, JString, required = false,
                                  default = nil)
-  if valid_606219 != nil:
-    section.add "X-Amz-Security-Token", valid_606219
-  var valid_606220 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606220 = validateParameter(valid_606220, JString, required = false,
+  if valid_613288 != nil:
+    section.add "X-Amz-Security-Token", valid_613288
+  var valid_613289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613289 = validateParameter(valid_613289, JString, required = false,
                                  default = nil)
-  if valid_606220 != nil:
-    section.add "X-Amz-Algorithm", valid_606220
-  var valid_606221 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606221 = validateParameter(valid_606221, JString, required = false,
+  if valid_613289 != nil:
+    section.add "X-Amz-Algorithm", valid_613289
+  var valid_613290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613290 = validateParameter(valid_613290, JString, required = false,
                                  default = nil)
-  if valid_606221 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606221
+  if valid_613290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613290
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -451,36 +451,36 @@ proc validate_CreateGeoMatchSet_606212(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606223: Call_CreateGeoMatchSet_606211; path: JsonNode;
+proc call*(call_613292: Call_CreateGeoMatchSet_613280; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an <a>GeoMatchSet</a>, which you use to specify which web requests you want to allow or block based on the country that the requests originate from. For example, if you're receiving a lot of requests from one or more countries and you want to block the requests, you can create an <code>GeoMatchSet</code> that contains those countries and then configure AWS WAF to block the requests. </p> <p>To create and configure a <code>GeoMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateGeoMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateGeoMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateGeoMatchSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateGeoMatchSetSet</code> request to specify the countries that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606223.validator(path, query, header, formData, body)
-  let scheme = call_606223.pickScheme
+  let valid = call_613292.validator(path, query, header, formData, body)
+  let scheme = call_613292.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606223.url(scheme.get, call_606223.host, call_606223.base,
-                         call_606223.route, valid.getOrDefault("path"),
+  let url = call_613292.url(scheme.get, call_613292.host, call_613292.base,
+                         call_613292.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606223, url, valid)
+  result = atozHook(call_613292, url, valid)
 
-proc call*(call_606224: Call_CreateGeoMatchSet_606211; body: JsonNode): Recallable =
+proc call*(call_613293: Call_CreateGeoMatchSet_613280; body: JsonNode): Recallable =
   ## createGeoMatchSet
   ## <p>Creates an <a>GeoMatchSet</a>, which you use to specify which web requests you want to allow or block based on the country that the requests originate from. For example, if you're receiving a lot of requests from one or more countries and you want to block the requests, you can create an <code>GeoMatchSet</code> that contains those countries and then configure AWS WAF to block the requests. </p> <p>To create and configure a <code>GeoMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateGeoMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateGeoMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateGeoMatchSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateGeoMatchSetSet</code> request to specify the countries that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606225 = newJObject()
+  var body_613294 = newJObject()
   if body != nil:
-    body_606225 = body
-  result = call_606224.call(nil, nil, nil, nil, body_606225)
+    body_613294 = body
+  result = call_613293.call(nil, nil, nil, nil, body_613294)
 
-var createGeoMatchSet* = Call_CreateGeoMatchSet_606211(name: "createGeoMatchSet",
+var createGeoMatchSet* = Call_CreateGeoMatchSet_613280(name: "createGeoMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateGeoMatchSet",
-    validator: validate_CreateGeoMatchSet_606212, base: "/",
-    url: url_CreateGeoMatchSet_606213, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateGeoMatchSet_613281, base: "/",
+    url: url_CreateGeoMatchSet_613282, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateIPSet_606226 = ref object of OpenApiRestCall_605589
-proc url_CreateIPSet_606228(protocol: Scheme; host: string; base: string;
+  Call_CreateIPSet_613295 = ref object of OpenApiRestCall_612658
+proc url_CreateIPSet_613297(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -492,7 +492,7 @@ proc url_CreateIPSet_606228(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateIPSet_606227(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateIPSet_613296(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an <a>IPSet</a>, which you use to specify which web requests that you want to allow or block based on the IP addresses that the requests originate from. For example, if you're receiving a lot of requests from one or more individual IP addresses or one or more ranges of IP addresses and you want to block the requests, you can create an <code>IPSet</code> that contains those IP addresses and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>IPSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateIPSet</code> request.</p> </li> <li> <p>Submit a <code>CreateIPSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateIPSet</code> request to specify the IP addresses that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -512,46 +512,46 @@ proc validate_CreateIPSet_606227(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606229 = header.getOrDefault("X-Amz-Target")
-  valid_606229 = validateParameter(valid_606229, JString, required = true, default = newJString(
+  var valid_613298 = header.getOrDefault("X-Amz-Target")
+  valid_613298 = validateParameter(valid_613298, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateIPSet"))
-  if valid_606229 != nil:
-    section.add "X-Amz-Target", valid_606229
-  var valid_606230 = header.getOrDefault("X-Amz-Signature")
-  valid_606230 = validateParameter(valid_606230, JString, required = false,
+  if valid_613298 != nil:
+    section.add "X-Amz-Target", valid_613298
+  var valid_613299 = header.getOrDefault("X-Amz-Signature")
+  valid_613299 = validateParameter(valid_613299, JString, required = false,
                                  default = nil)
-  if valid_606230 != nil:
-    section.add "X-Amz-Signature", valid_606230
-  var valid_606231 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606231 = validateParameter(valid_606231, JString, required = false,
+  if valid_613299 != nil:
+    section.add "X-Amz-Signature", valid_613299
+  var valid_613300 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613300 = validateParameter(valid_613300, JString, required = false,
                                  default = nil)
-  if valid_606231 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606231
-  var valid_606232 = header.getOrDefault("X-Amz-Date")
-  valid_606232 = validateParameter(valid_606232, JString, required = false,
+  if valid_613300 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613300
+  var valid_613301 = header.getOrDefault("X-Amz-Date")
+  valid_613301 = validateParameter(valid_613301, JString, required = false,
                                  default = nil)
-  if valid_606232 != nil:
-    section.add "X-Amz-Date", valid_606232
-  var valid_606233 = header.getOrDefault("X-Amz-Credential")
-  valid_606233 = validateParameter(valid_606233, JString, required = false,
+  if valid_613301 != nil:
+    section.add "X-Amz-Date", valid_613301
+  var valid_613302 = header.getOrDefault("X-Amz-Credential")
+  valid_613302 = validateParameter(valid_613302, JString, required = false,
                                  default = nil)
-  if valid_606233 != nil:
-    section.add "X-Amz-Credential", valid_606233
-  var valid_606234 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606234 = validateParameter(valid_606234, JString, required = false,
+  if valid_613302 != nil:
+    section.add "X-Amz-Credential", valid_613302
+  var valid_613303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613303 = validateParameter(valid_613303, JString, required = false,
                                  default = nil)
-  if valid_606234 != nil:
-    section.add "X-Amz-Security-Token", valid_606234
-  var valid_606235 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606235 = validateParameter(valid_606235, JString, required = false,
+  if valid_613303 != nil:
+    section.add "X-Amz-Security-Token", valid_613303
+  var valid_613304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613304 = validateParameter(valid_613304, JString, required = false,
                                  default = nil)
-  if valid_606235 != nil:
-    section.add "X-Amz-Algorithm", valid_606235
-  var valid_606236 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606236 = validateParameter(valid_606236, JString, required = false,
+  if valid_613304 != nil:
+    section.add "X-Amz-Algorithm", valid_613304
+  var valid_613305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613305 = validateParameter(valid_613305, JString, required = false,
                                  default = nil)
-  if valid_606236 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606236
+  if valid_613305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613305
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -562,37 +562,37 @@ proc validate_CreateIPSet_606227(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606238: Call_CreateIPSet_606226; path: JsonNode; query: JsonNode;
+proc call*(call_613307: Call_CreateIPSet_613295; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an <a>IPSet</a>, which you use to specify which web requests that you want to allow or block based on the IP addresses that the requests originate from. For example, if you're receiving a lot of requests from one or more individual IP addresses or one or more ranges of IP addresses and you want to block the requests, you can create an <code>IPSet</code> that contains those IP addresses and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>IPSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateIPSet</code> request.</p> </li> <li> <p>Submit a <code>CreateIPSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateIPSet</code> request to specify the IP addresses that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606238.validator(path, query, header, formData, body)
-  let scheme = call_606238.pickScheme
+  let valid = call_613307.validator(path, query, header, formData, body)
+  let scheme = call_613307.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606238.url(scheme.get, call_606238.host, call_606238.base,
-                         call_606238.route, valid.getOrDefault("path"),
+  let url = call_613307.url(scheme.get, call_613307.host, call_613307.base,
+                         call_613307.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606238, url, valid)
+  result = atozHook(call_613307, url, valid)
 
-proc call*(call_606239: Call_CreateIPSet_606226; body: JsonNode): Recallable =
+proc call*(call_613308: Call_CreateIPSet_613295; body: JsonNode): Recallable =
   ## createIPSet
   ## <p>Creates an <a>IPSet</a>, which you use to specify which web requests that you want to allow or block based on the IP addresses that the requests originate from. For example, if you're receiving a lot of requests from one or more individual IP addresses or one or more ranges of IP addresses and you want to block the requests, you can create an <code>IPSet</code> that contains those IP addresses and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>IPSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateIPSet</code> request.</p> </li> <li> <p>Submit a <code>CreateIPSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateIPSet</code> request to specify the IP addresses that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606240 = newJObject()
+  var body_613309 = newJObject()
   if body != nil:
-    body_606240 = body
-  result = call_606239.call(nil, nil, nil, nil, body_606240)
+    body_613309 = body
+  result = call_613308.call(nil, nil, nil, nil, body_613309)
 
-var createIPSet* = Call_CreateIPSet_606226(name: "createIPSet",
+var createIPSet* = Call_CreateIPSet_613295(name: "createIPSet",
                                         meth: HttpMethod.HttpPost,
                                         host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateIPSet",
-                                        validator: validate_CreateIPSet_606227,
-                                        base: "/", url: url_CreateIPSet_606228,
+                                        validator: validate_CreateIPSet_613296,
+                                        base: "/", url: url_CreateIPSet_613297,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRateBasedRule_606241 = ref object of OpenApiRestCall_605589
-proc url_CreateRateBasedRule_606243(protocol: Scheme; host: string; base: string;
+  Call_CreateRateBasedRule_613310 = ref object of OpenApiRestCall_612658
+proc url_CreateRateBasedRule_613312(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -604,7 +604,7 @@ proc url_CreateRateBasedRule_606243(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_CreateRateBasedRule_606242(path: JsonNode; query: JsonNode;
+proc validate_CreateRateBasedRule_613311(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Creates a <a>RateBasedRule</a>. The <code>RateBasedRule</code> contains a <code>RateLimit</code>, which specifies the maximum number of requests that AWS WAF allows from a specified IP address in a five-minute period. The <code>RateBasedRule</code> also contains the <code>IPSet</code> objects, <code>ByteMatchSet</code> objects, and other predicates that identify the requests that you want to count or block if these requests exceed the <code>RateLimit</code>.</p> <p>If you add more than one predicate to a <code>RateBasedRule</code>, a request not only must exceed the <code>RateLimit</code>, but it also must match all the specifications to be counted or blocked. For example, suppose you add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>You then add the <code>RateBasedRule</code> to a <code>WebACL</code> and specify that you want to block requests that meet the conditions in the rule. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>. Further, requests that match these two conditions must be received at a rate of more than 15,000 requests every five minutes. If both conditions are met and the rate is exceeded, AWS WAF blocks the requests. If the rate drops below 15,000 for a five-minute period, AWS WAF no longer blocks the requests.</p> <p>As a second example, suppose you want to limit requests to a particular page on your site. To do this, you could add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>A <code>ByteMatchSet</code> with <code>FieldToMatch</code> of <code>URI</code> </p> </li> <li> <p>A <code>PositionalConstraint</code> of <code>STARTS_WITH</code> </p> </li> <li> <p>A <code>TargetString</code> of <code>login</code> </p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>By adding this <code>RateBasedRule</code> to a <code>WebACL</code>, you could limit requests to your login page without affecting the rest of your site.</p> <p>To create and configure a <code>RateBasedRule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the rule. For more information, see <a>CreateByteMatchSet</a>, <a>CreateIPSet</a>, and <a>CreateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRule</code> request.</p> </li> <li> <p>Submit a <code>CreateRateBasedRule</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRateBasedRule</code> request to specify the predicates that you want to include in the rule.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>RateBasedRule</code>. For more information, see <a>CreateWebACL</a>.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -625,46 +625,46 @@ proc validate_CreateRateBasedRule_606242(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606244 = header.getOrDefault("X-Amz-Target")
-  valid_606244 = validateParameter(valid_606244, JString, required = true, default = newJString(
+  var valid_613313 = header.getOrDefault("X-Amz-Target")
+  valid_613313 = validateParameter(valid_613313, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateRateBasedRule"))
-  if valid_606244 != nil:
-    section.add "X-Amz-Target", valid_606244
-  var valid_606245 = header.getOrDefault("X-Amz-Signature")
-  valid_606245 = validateParameter(valid_606245, JString, required = false,
+  if valid_613313 != nil:
+    section.add "X-Amz-Target", valid_613313
+  var valid_613314 = header.getOrDefault("X-Amz-Signature")
+  valid_613314 = validateParameter(valid_613314, JString, required = false,
                                  default = nil)
-  if valid_606245 != nil:
-    section.add "X-Amz-Signature", valid_606245
-  var valid_606246 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606246 = validateParameter(valid_606246, JString, required = false,
+  if valid_613314 != nil:
+    section.add "X-Amz-Signature", valid_613314
+  var valid_613315 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613315 = validateParameter(valid_613315, JString, required = false,
                                  default = nil)
-  if valid_606246 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606246
-  var valid_606247 = header.getOrDefault("X-Amz-Date")
-  valid_606247 = validateParameter(valid_606247, JString, required = false,
+  if valid_613315 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613315
+  var valid_613316 = header.getOrDefault("X-Amz-Date")
+  valid_613316 = validateParameter(valid_613316, JString, required = false,
                                  default = nil)
-  if valid_606247 != nil:
-    section.add "X-Amz-Date", valid_606247
-  var valid_606248 = header.getOrDefault("X-Amz-Credential")
-  valid_606248 = validateParameter(valid_606248, JString, required = false,
+  if valid_613316 != nil:
+    section.add "X-Amz-Date", valid_613316
+  var valid_613317 = header.getOrDefault("X-Amz-Credential")
+  valid_613317 = validateParameter(valid_613317, JString, required = false,
                                  default = nil)
-  if valid_606248 != nil:
-    section.add "X-Amz-Credential", valid_606248
-  var valid_606249 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606249 = validateParameter(valid_606249, JString, required = false,
+  if valid_613317 != nil:
+    section.add "X-Amz-Credential", valid_613317
+  var valid_613318 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613318 = validateParameter(valid_613318, JString, required = false,
                                  default = nil)
-  if valid_606249 != nil:
-    section.add "X-Amz-Security-Token", valid_606249
-  var valid_606250 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606250 = validateParameter(valid_606250, JString, required = false,
+  if valid_613318 != nil:
+    section.add "X-Amz-Security-Token", valid_613318
+  var valid_613319 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613319 = validateParameter(valid_613319, JString, required = false,
                                  default = nil)
-  if valid_606250 != nil:
-    section.add "X-Amz-Algorithm", valid_606250
-  var valid_606251 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606251 = validateParameter(valid_606251, JString, required = false,
+  if valid_613319 != nil:
+    section.add "X-Amz-Algorithm", valid_613319
+  var valid_613320 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613320 = validateParameter(valid_613320, JString, required = false,
                                  default = nil)
-  if valid_606251 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606251
+  if valid_613320 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613320
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -675,37 +675,37 @@ proc validate_CreateRateBasedRule_606242(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606253: Call_CreateRateBasedRule_606241; path: JsonNode;
+proc call*(call_613322: Call_CreateRateBasedRule_613310; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <a>RateBasedRule</a>. The <code>RateBasedRule</code> contains a <code>RateLimit</code>, which specifies the maximum number of requests that AWS WAF allows from a specified IP address in a five-minute period. The <code>RateBasedRule</code> also contains the <code>IPSet</code> objects, <code>ByteMatchSet</code> objects, and other predicates that identify the requests that you want to count or block if these requests exceed the <code>RateLimit</code>.</p> <p>If you add more than one predicate to a <code>RateBasedRule</code>, a request not only must exceed the <code>RateLimit</code>, but it also must match all the specifications to be counted or blocked. For example, suppose you add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>You then add the <code>RateBasedRule</code> to a <code>WebACL</code> and specify that you want to block requests that meet the conditions in the rule. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>. Further, requests that match these two conditions must be received at a rate of more than 15,000 requests every five minutes. If both conditions are met and the rate is exceeded, AWS WAF blocks the requests. If the rate drops below 15,000 for a five-minute period, AWS WAF no longer blocks the requests.</p> <p>As a second example, suppose you want to limit requests to a particular page on your site. To do this, you could add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>A <code>ByteMatchSet</code> with <code>FieldToMatch</code> of <code>URI</code> </p> </li> <li> <p>A <code>PositionalConstraint</code> of <code>STARTS_WITH</code> </p> </li> <li> <p>A <code>TargetString</code> of <code>login</code> </p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>By adding this <code>RateBasedRule</code> to a <code>WebACL</code>, you could limit requests to your login page without affecting the rest of your site.</p> <p>To create and configure a <code>RateBasedRule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the rule. For more information, see <a>CreateByteMatchSet</a>, <a>CreateIPSet</a>, and <a>CreateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRule</code> request.</p> </li> <li> <p>Submit a <code>CreateRateBasedRule</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRateBasedRule</code> request to specify the predicates that you want to include in the rule.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>RateBasedRule</code>. For more information, see <a>CreateWebACL</a>.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606253.validator(path, query, header, formData, body)
-  let scheme = call_606253.pickScheme
+  let valid = call_613322.validator(path, query, header, formData, body)
+  let scheme = call_613322.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606253.url(scheme.get, call_606253.host, call_606253.base,
-                         call_606253.route, valid.getOrDefault("path"),
+  let url = call_613322.url(scheme.get, call_613322.host, call_613322.base,
+                         call_613322.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606253, url, valid)
+  result = atozHook(call_613322, url, valid)
 
-proc call*(call_606254: Call_CreateRateBasedRule_606241; body: JsonNode): Recallable =
+proc call*(call_613323: Call_CreateRateBasedRule_613310; body: JsonNode): Recallable =
   ## createRateBasedRule
   ## <p>Creates a <a>RateBasedRule</a>. The <code>RateBasedRule</code> contains a <code>RateLimit</code>, which specifies the maximum number of requests that AWS WAF allows from a specified IP address in a five-minute period. The <code>RateBasedRule</code> also contains the <code>IPSet</code> objects, <code>ByteMatchSet</code> objects, and other predicates that identify the requests that you want to count or block if these requests exceed the <code>RateLimit</code>.</p> <p>If you add more than one predicate to a <code>RateBasedRule</code>, a request not only must exceed the <code>RateLimit</code>, but it also must match all the specifications to be counted or blocked. For example, suppose you add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>You then add the <code>RateBasedRule</code> to a <code>WebACL</code> and specify that you want to block requests that meet the conditions in the rule. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>. Further, requests that match these two conditions must be received at a rate of more than 15,000 requests every five minutes. If both conditions are met and the rate is exceeded, AWS WAF blocks the requests. If the rate drops below 15,000 for a five-minute period, AWS WAF no longer blocks the requests.</p> <p>As a second example, suppose you want to limit requests to a particular page on your site. To do this, you could add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>A <code>ByteMatchSet</code> with <code>FieldToMatch</code> of <code>URI</code> </p> </li> <li> <p>A <code>PositionalConstraint</code> of <code>STARTS_WITH</code> </p> </li> <li> <p>A <code>TargetString</code> of <code>login</code> </p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>By adding this <code>RateBasedRule</code> to a <code>WebACL</code>, you could limit requests to your login page without affecting the rest of your site.</p> <p>To create and configure a <code>RateBasedRule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the rule. For more information, see <a>CreateByteMatchSet</a>, <a>CreateIPSet</a>, and <a>CreateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRule</code> request.</p> </li> <li> <p>Submit a <code>CreateRateBasedRule</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRateBasedRule</code> request to specify the predicates that you want to include in the rule.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>RateBasedRule</code>. For more information, see <a>CreateWebACL</a>.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606255 = newJObject()
+  var body_613324 = newJObject()
   if body != nil:
-    body_606255 = body
-  result = call_606254.call(nil, nil, nil, nil, body_606255)
+    body_613324 = body
+  result = call_613323.call(nil, nil, nil, nil, body_613324)
 
-var createRateBasedRule* = Call_CreateRateBasedRule_606241(
+var createRateBasedRule* = Call_CreateRateBasedRule_613310(
     name: "createRateBasedRule", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateRateBasedRule",
-    validator: validate_CreateRateBasedRule_606242, base: "/",
-    url: url_CreateRateBasedRule_606243, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateRateBasedRule_613311, base: "/",
+    url: url_CreateRateBasedRule_613312, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRegexMatchSet_606256 = ref object of OpenApiRestCall_605589
-proc url_CreateRegexMatchSet_606258(protocol: Scheme; host: string; base: string;
+  Call_CreateRegexMatchSet_613325 = ref object of OpenApiRestCall_612658
+proc url_CreateRegexMatchSet_613327(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -717,7 +717,7 @@ proc url_CreateRegexMatchSet_606258(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_CreateRegexMatchSet_606257(path: JsonNode; query: JsonNode;
+proc validate_CreateRegexMatchSet_613326(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Creates a <a>RegexMatchSet</a>. You then use <a>UpdateRegexMatchSet</a> to identify the part of a web request that you want AWS WAF to inspect, such as the values of the <code>User-Agent</code> header or the query string. For example, you can create a <code>RegexMatchSet</code> that contains a <code>RegexMatchTuple</code> that looks for any requests with <code>User-Agent</code> headers that match a <code>RegexPatternSet</code> with pattern <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRegexMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateRegexMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexMatchSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateRegexMatchSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value, using a <code>RegexPatternSet</code>, that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -738,46 +738,46 @@ proc validate_CreateRegexMatchSet_606257(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606259 = header.getOrDefault("X-Amz-Target")
-  valid_606259 = validateParameter(valid_606259, JString, required = true, default = newJString(
+  var valid_613328 = header.getOrDefault("X-Amz-Target")
+  valid_613328 = validateParameter(valid_613328, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateRegexMatchSet"))
-  if valid_606259 != nil:
-    section.add "X-Amz-Target", valid_606259
-  var valid_606260 = header.getOrDefault("X-Amz-Signature")
-  valid_606260 = validateParameter(valid_606260, JString, required = false,
+  if valid_613328 != nil:
+    section.add "X-Amz-Target", valid_613328
+  var valid_613329 = header.getOrDefault("X-Amz-Signature")
+  valid_613329 = validateParameter(valid_613329, JString, required = false,
                                  default = nil)
-  if valid_606260 != nil:
-    section.add "X-Amz-Signature", valid_606260
-  var valid_606261 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606261 = validateParameter(valid_606261, JString, required = false,
+  if valid_613329 != nil:
+    section.add "X-Amz-Signature", valid_613329
+  var valid_613330 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613330 = validateParameter(valid_613330, JString, required = false,
                                  default = nil)
-  if valid_606261 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606261
-  var valid_606262 = header.getOrDefault("X-Amz-Date")
-  valid_606262 = validateParameter(valid_606262, JString, required = false,
+  if valid_613330 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613330
+  var valid_613331 = header.getOrDefault("X-Amz-Date")
+  valid_613331 = validateParameter(valid_613331, JString, required = false,
                                  default = nil)
-  if valid_606262 != nil:
-    section.add "X-Amz-Date", valid_606262
-  var valid_606263 = header.getOrDefault("X-Amz-Credential")
-  valid_606263 = validateParameter(valid_606263, JString, required = false,
+  if valid_613331 != nil:
+    section.add "X-Amz-Date", valid_613331
+  var valid_613332 = header.getOrDefault("X-Amz-Credential")
+  valid_613332 = validateParameter(valid_613332, JString, required = false,
                                  default = nil)
-  if valid_606263 != nil:
-    section.add "X-Amz-Credential", valid_606263
-  var valid_606264 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606264 = validateParameter(valid_606264, JString, required = false,
+  if valid_613332 != nil:
+    section.add "X-Amz-Credential", valid_613332
+  var valid_613333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613333 = validateParameter(valid_613333, JString, required = false,
                                  default = nil)
-  if valid_606264 != nil:
-    section.add "X-Amz-Security-Token", valid_606264
-  var valid_606265 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606265 = validateParameter(valid_606265, JString, required = false,
+  if valid_613333 != nil:
+    section.add "X-Amz-Security-Token", valid_613333
+  var valid_613334 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613334 = validateParameter(valid_613334, JString, required = false,
                                  default = nil)
-  if valid_606265 != nil:
-    section.add "X-Amz-Algorithm", valid_606265
-  var valid_606266 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606266 = validateParameter(valid_606266, JString, required = false,
+  if valid_613334 != nil:
+    section.add "X-Amz-Algorithm", valid_613334
+  var valid_613335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613335 = validateParameter(valid_613335, JString, required = false,
                                  default = nil)
-  if valid_606266 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606266
+  if valid_613335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613335
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -788,37 +788,37 @@ proc validate_CreateRegexMatchSet_606257(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606268: Call_CreateRegexMatchSet_606256; path: JsonNode;
+proc call*(call_613337: Call_CreateRegexMatchSet_613325; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <a>RegexMatchSet</a>. You then use <a>UpdateRegexMatchSet</a> to identify the part of a web request that you want AWS WAF to inspect, such as the values of the <code>User-Agent</code> header or the query string. For example, you can create a <code>RegexMatchSet</code> that contains a <code>RegexMatchTuple</code> that looks for any requests with <code>User-Agent</code> headers that match a <code>RegexPatternSet</code> with pattern <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRegexMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateRegexMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexMatchSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateRegexMatchSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value, using a <code>RegexPatternSet</code>, that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606268.validator(path, query, header, formData, body)
-  let scheme = call_606268.pickScheme
+  let valid = call_613337.validator(path, query, header, formData, body)
+  let scheme = call_613337.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606268.url(scheme.get, call_606268.host, call_606268.base,
-                         call_606268.route, valid.getOrDefault("path"),
+  let url = call_613337.url(scheme.get, call_613337.host, call_613337.base,
+                         call_613337.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606268, url, valid)
+  result = atozHook(call_613337, url, valid)
 
-proc call*(call_606269: Call_CreateRegexMatchSet_606256; body: JsonNode): Recallable =
+proc call*(call_613338: Call_CreateRegexMatchSet_613325; body: JsonNode): Recallable =
   ## createRegexMatchSet
   ## <p>Creates a <a>RegexMatchSet</a>. You then use <a>UpdateRegexMatchSet</a> to identify the part of a web request that you want AWS WAF to inspect, such as the values of the <code>User-Agent</code> header or the query string. For example, you can create a <code>RegexMatchSet</code> that contains a <code>RegexMatchTuple</code> that looks for any requests with <code>User-Agent</code> headers that match a <code>RegexPatternSet</code> with pattern <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRegexMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateRegexMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexMatchSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateRegexMatchSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value, using a <code>RegexPatternSet</code>, that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606270 = newJObject()
+  var body_613339 = newJObject()
   if body != nil:
-    body_606270 = body
-  result = call_606269.call(nil, nil, nil, nil, body_606270)
+    body_613339 = body
+  result = call_613338.call(nil, nil, nil, nil, body_613339)
 
-var createRegexMatchSet* = Call_CreateRegexMatchSet_606256(
+var createRegexMatchSet* = Call_CreateRegexMatchSet_613325(
     name: "createRegexMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateRegexMatchSet",
-    validator: validate_CreateRegexMatchSet_606257, base: "/",
-    url: url_CreateRegexMatchSet_606258, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateRegexMatchSet_613326, base: "/",
+    url: url_CreateRegexMatchSet_613327, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRegexPatternSet_606271 = ref object of OpenApiRestCall_605589
-proc url_CreateRegexPatternSet_606273(protocol: Scheme; host: string; base: string;
+  Call_CreateRegexPatternSet_613340 = ref object of OpenApiRestCall_612658
+proc url_CreateRegexPatternSet_613342(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -830,7 +830,7 @@ proc url_CreateRegexPatternSet_606273(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_CreateRegexPatternSet_606272(path: JsonNode; query: JsonNode;
+proc validate_CreateRegexPatternSet_613341(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a <code>RegexPatternSet</code>. You then use <a>UpdateRegexPatternSet</a> to specify the regular expression (regex) pattern that you want AWS WAF to search for, such as <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexPatternSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRegexPatternSet</code> request.</p> </li> <li> <p>Submit a <code>CreateRegexPatternSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexPatternSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateRegexPatternSet</a> request to specify the string that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -850,46 +850,46 @@ proc validate_CreateRegexPatternSet_606272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606274 = header.getOrDefault("X-Amz-Target")
-  valid_606274 = validateParameter(valid_606274, JString, required = true, default = newJString(
+  var valid_613343 = header.getOrDefault("X-Amz-Target")
+  valid_613343 = validateParameter(valid_613343, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateRegexPatternSet"))
-  if valid_606274 != nil:
-    section.add "X-Amz-Target", valid_606274
-  var valid_606275 = header.getOrDefault("X-Amz-Signature")
-  valid_606275 = validateParameter(valid_606275, JString, required = false,
+  if valid_613343 != nil:
+    section.add "X-Amz-Target", valid_613343
+  var valid_613344 = header.getOrDefault("X-Amz-Signature")
+  valid_613344 = validateParameter(valid_613344, JString, required = false,
                                  default = nil)
-  if valid_606275 != nil:
-    section.add "X-Amz-Signature", valid_606275
-  var valid_606276 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606276 = validateParameter(valid_606276, JString, required = false,
+  if valid_613344 != nil:
+    section.add "X-Amz-Signature", valid_613344
+  var valid_613345 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613345 = validateParameter(valid_613345, JString, required = false,
                                  default = nil)
-  if valid_606276 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606276
-  var valid_606277 = header.getOrDefault("X-Amz-Date")
-  valid_606277 = validateParameter(valid_606277, JString, required = false,
+  if valid_613345 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613345
+  var valid_613346 = header.getOrDefault("X-Amz-Date")
+  valid_613346 = validateParameter(valid_613346, JString, required = false,
                                  default = nil)
-  if valid_606277 != nil:
-    section.add "X-Amz-Date", valid_606277
-  var valid_606278 = header.getOrDefault("X-Amz-Credential")
-  valid_606278 = validateParameter(valid_606278, JString, required = false,
+  if valid_613346 != nil:
+    section.add "X-Amz-Date", valid_613346
+  var valid_613347 = header.getOrDefault("X-Amz-Credential")
+  valid_613347 = validateParameter(valid_613347, JString, required = false,
                                  default = nil)
-  if valid_606278 != nil:
-    section.add "X-Amz-Credential", valid_606278
-  var valid_606279 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606279 = validateParameter(valid_606279, JString, required = false,
+  if valid_613347 != nil:
+    section.add "X-Amz-Credential", valid_613347
+  var valid_613348 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613348 = validateParameter(valid_613348, JString, required = false,
                                  default = nil)
-  if valid_606279 != nil:
-    section.add "X-Amz-Security-Token", valid_606279
-  var valid_606280 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606280 = validateParameter(valid_606280, JString, required = false,
+  if valid_613348 != nil:
+    section.add "X-Amz-Security-Token", valid_613348
+  var valid_613349 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613349 = validateParameter(valid_613349, JString, required = false,
                                  default = nil)
-  if valid_606280 != nil:
-    section.add "X-Amz-Algorithm", valid_606280
-  var valid_606281 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606281 = validateParameter(valid_606281, JString, required = false,
+  if valid_613349 != nil:
+    section.add "X-Amz-Algorithm", valid_613349
+  var valid_613350 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613350 = validateParameter(valid_613350, JString, required = false,
                                  default = nil)
-  if valid_606281 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606281
+  if valid_613350 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613350
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -900,37 +900,37 @@ proc validate_CreateRegexPatternSet_606272(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606283: Call_CreateRegexPatternSet_606271; path: JsonNode;
+proc call*(call_613352: Call_CreateRegexPatternSet_613340; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <code>RegexPatternSet</code>. You then use <a>UpdateRegexPatternSet</a> to specify the regular expression (regex) pattern that you want AWS WAF to search for, such as <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexPatternSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRegexPatternSet</code> request.</p> </li> <li> <p>Submit a <code>CreateRegexPatternSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexPatternSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateRegexPatternSet</a> request to specify the string that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606283.validator(path, query, header, formData, body)
-  let scheme = call_606283.pickScheme
+  let valid = call_613352.validator(path, query, header, formData, body)
+  let scheme = call_613352.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606283.url(scheme.get, call_606283.host, call_606283.base,
-                         call_606283.route, valid.getOrDefault("path"),
+  let url = call_613352.url(scheme.get, call_613352.host, call_613352.base,
+                         call_613352.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606283, url, valid)
+  result = atozHook(call_613352, url, valid)
 
-proc call*(call_606284: Call_CreateRegexPatternSet_606271; body: JsonNode): Recallable =
+proc call*(call_613353: Call_CreateRegexPatternSet_613340; body: JsonNode): Recallable =
   ## createRegexPatternSet
   ## <p>Creates a <code>RegexPatternSet</code>. You then use <a>UpdateRegexPatternSet</a> to specify the regular expression (regex) pattern that you want AWS WAF to search for, such as <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexPatternSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRegexPatternSet</code> request.</p> </li> <li> <p>Submit a <code>CreateRegexPatternSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexPatternSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateRegexPatternSet</a> request to specify the string that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606285 = newJObject()
+  var body_613354 = newJObject()
   if body != nil:
-    body_606285 = body
-  result = call_606284.call(nil, nil, nil, nil, body_606285)
+    body_613354 = body
+  result = call_613353.call(nil, nil, nil, nil, body_613354)
 
-var createRegexPatternSet* = Call_CreateRegexPatternSet_606271(
+var createRegexPatternSet* = Call_CreateRegexPatternSet_613340(
     name: "createRegexPatternSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateRegexPatternSet",
-    validator: validate_CreateRegexPatternSet_606272, base: "/",
-    url: url_CreateRegexPatternSet_606273, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateRegexPatternSet_613341, base: "/",
+    url: url_CreateRegexPatternSet_613342, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRule_606286 = ref object of OpenApiRestCall_605589
-proc url_CreateRule_606288(protocol: Scheme; host: string; base: string; route: string;
+  Call_CreateRule_613355 = ref object of OpenApiRestCall_612658
+proc url_CreateRule_613357(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -942,7 +942,7 @@ proc url_CreateRule_606288(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_CreateRule_606287(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateRule_613356(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a <code>Rule</code>, which contains the <code>IPSet</code> objects, <code>ByteMatchSet</code> objects, and other predicates that identify the requests that you want to block. If you add more than one predicate to a <code>Rule</code>, a request must match all of the specifications to be allowed or blocked. For example, suppose that you add the following to a <code>Rule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>You then add the <code>Rule</code> to a <code>WebACL</code> and specify that you want to blocks requests that satisfy the <code>Rule</code>. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>.</p> <p>To create and configure a <code>Rule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the <code>Rule</code>. For more information, see <a>CreateByteMatchSet</a>, <a>CreateIPSet</a>, and <a>CreateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRule</code> request.</p> </li> <li> <p>Submit a <code>CreateRule</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRule</code> request to specify the predicates that you want to include in the <code>Rule</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>Rule</code>. For more information, see <a>CreateWebACL</a>.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -962,46 +962,46 @@ proc validate_CreateRule_606287(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606289 = header.getOrDefault("X-Amz-Target")
-  valid_606289 = validateParameter(valid_606289, JString, required = true, default = newJString(
+  var valid_613358 = header.getOrDefault("X-Amz-Target")
+  valid_613358 = validateParameter(valid_613358, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateRule"))
-  if valid_606289 != nil:
-    section.add "X-Amz-Target", valid_606289
-  var valid_606290 = header.getOrDefault("X-Amz-Signature")
-  valid_606290 = validateParameter(valid_606290, JString, required = false,
+  if valid_613358 != nil:
+    section.add "X-Amz-Target", valid_613358
+  var valid_613359 = header.getOrDefault("X-Amz-Signature")
+  valid_613359 = validateParameter(valid_613359, JString, required = false,
                                  default = nil)
-  if valid_606290 != nil:
-    section.add "X-Amz-Signature", valid_606290
-  var valid_606291 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606291 = validateParameter(valid_606291, JString, required = false,
+  if valid_613359 != nil:
+    section.add "X-Amz-Signature", valid_613359
+  var valid_613360 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613360 = validateParameter(valid_613360, JString, required = false,
                                  default = nil)
-  if valid_606291 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606291
-  var valid_606292 = header.getOrDefault("X-Amz-Date")
-  valid_606292 = validateParameter(valid_606292, JString, required = false,
+  if valid_613360 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613360
+  var valid_613361 = header.getOrDefault("X-Amz-Date")
+  valid_613361 = validateParameter(valid_613361, JString, required = false,
                                  default = nil)
-  if valid_606292 != nil:
-    section.add "X-Amz-Date", valid_606292
-  var valid_606293 = header.getOrDefault("X-Amz-Credential")
-  valid_606293 = validateParameter(valid_606293, JString, required = false,
+  if valid_613361 != nil:
+    section.add "X-Amz-Date", valid_613361
+  var valid_613362 = header.getOrDefault("X-Amz-Credential")
+  valid_613362 = validateParameter(valid_613362, JString, required = false,
                                  default = nil)
-  if valid_606293 != nil:
-    section.add "X-Amz-Credential", valid_606293
-  var valid_606294 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606294 = validateParameter(valid_606294, JString, required = false,
+  if valid_613362 != nil:
+    section.add "X-Amz-Credential", valid_613362
+  var valid_613363 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613363 = validateParameter(valid_613363, JString, required = false,
                                  default = nil)
-  if valid_606294 != nil:
-    section.add "X-Amz-Security-Token", valid_606294
-  var valid_606295 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606295 = validateParameter(valid_606295, JString, required = false,
+  if valid_613363 != nil:
+    section.add "X-Amz-Security-Token", valid_613363
+  var valid_613364 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613364 = validateParameter(valid_613364, JString, required = false,
                                  default = nil)
-  if valid_606295 != nil:
-    section.add "X-Amz-Algorithm", valid_606295
-  var valid_606296 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606296 = validateParameter(valid_606296, JString, required = false,
+  if valid_613364 != nil:
+    section.add "X-Amz-Algorithm", valid_613364
+  var valid_613365 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613365 = validateParameter(valid_613365, JString, required = false,
                                  default = nil)
-  if valid_606296 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606296
+  if valid_613365 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613365
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1012,37 +1012,37 @@ proc validate_CreateRule_606287(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_606298: Call_CreateRule_606286; path: JsonNode; query: JsonNode;
+proc call*(call_613367: Call_CreateRule_613355; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <code>Rule</code>, which contains the <code>IPSet</code> objects, <code>ByteMatchSet</code> objects, and other predicates that identify the requests that you want to block. If you add more than one predicate to a <code>Rule</code>, a request must match all of the specifications to be allowed or blocked. For example, suppose that you add the following to a <code>Rule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>You then add the <code>Rule</code> to a <code>WebACL</code> and specify that you want to blocks requests that satisfy the <code>Rule</code>. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>.</p> <p>To create and configure a <code>Rule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the <code>Rule</code>. For more information, see <a>CreateByteMatchSet</a>, <a>CreateIPSet</a>, and <a>CreateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRule</code> request.</p> </li> <li> <p>Submit a <code>CreateRule</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRule</code> request to specify the predicates that you want to include in the <code>Rule</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>Rule</code>. For more information, see <a>CreateWebACL</a>.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606298.validator(path, query, header, formData, body)
-  let scheme = call_606298.pickScheme
+  let valid = call_613367.validator(path, query, header, formData, body)
+  let scheme = call_613367.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606298.url(scheme.get, call_606298.host, call_606298.base,
-                         call_606298.route, valid.getOrDefault("path"),
+  let url = call_613367.url(scheme.get, call_613367.host, call_613367.base,
+                         call_613367.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606298, url, valid)
+  result = atozHook(call_613367, url, valid)
 
-proc call*(call_606299: Call_CreateRule_606286; body: JsonNode): Recallable =
+proc call*(call_613368: Call_CreateRule_613355; body: JsonNode): Recallable =
   ## createRule
   ## <p>Creates a <code>Rule</code>, which contains the <code>IPSet</code> objects, <code>ByteMatchSet</code> objects, and other predicates that identify the requests that you want to block. If you add more than one predicate to a <code>Rule</code>, a request must match all of the specifications to be allowed or blocked. For example, suppose that you add the following to a <code>Rule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>You then add the <code>Rule</code> to a <code>WebACL</code> and specify that you want to blocks requests that satisfy the <code>Rule</code>. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>.</p> <p>To create and configure a <code>Rule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the <code>Rule</code>. For more information, see <a>CreateByteMatchSet</a>, <a>CreateIPSet</a>, and <a>CreateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateRule</code> request.</p> </li> <li> <p>Submit a <code>CreateRule</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRule</code> request to specify the predicates that you want to include in the <code>Rule</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>Rule</code>. For more information, see <a>CreateWebACL</a>.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606300 = newJObject()
+  var body_613369 = newJObject()
   if body != nil:
-    body_606300 = body
-  result = call_606299.call(nil, nil, nil, nil, body_606300)
+    body_613369 = body
+  result = call_613368.call(nil, nil, nil, nil, body_613369)
 
-var createRule* = Call_CreateRule_606286(name: "createRule",
+var createRule* = Call_CreateRule_613355(name: "createRule",
                                       meth: HttpMethod.HttpPost,
                                       host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateRule",
-                                      validator: validate_CreateRule_606287,
-                                      base: "/", url: url_CreateRule_606288,
+                                      validator: validate_CreateRule_613356,
+                                      base: "/", url: url_CreateRule_613357,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRuleGroup_606301 = ref object of OpenApiRestCall_605589
-proc url_CreateRuleGroup_606303(protocol: Scheme; host: string; base: string;
+  Call_CreateRuleGroup_613370 = ref object of OpenApiRestCall_612658
+proc url_CreateRuleGroup_613372(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1054,7 +1054,7 @@ proc url_CreateRuleGroup_606303(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateRuleGroup_606302(path: JsonNode; query: JsonNode;
+proc validate_CreateRuleGroup_613371(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Creates a <code>RuleGroup</code>. A rule group is a collection of predefined rules that you add to a web ACL. You use <a>UpdateRuleGroup</a> to add rules to the rule group.</p> <p>Rule groups are subject to the following limits:</p> <ul> <li> <p>Three rule groups per account. You can request an increase to this limit by contacting customer support.</p> </li> <li> <p>One rule group per web ACL.</p> </li> <li> <p>Ten rules per rule group.</p> </li> </ul> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -1075,46 +1075,46 @@ proc validate_CreateRuleGroup_606302(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606304 = header.getOrDefault("X-Amz-Target")
-  valid_606304 = validateParameter(valid_606304, JString, required = true, default = newJString(
+  var valid_613373 = header.getOrDefault("X-Amz-Target")
+  valid_613373 = validateParameter(valid_613373, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateRuleGroup"))
-  if valid_606304 != nil:
-    section.add "X-Amz-Target", valid_606304
-  var valid_606305 = header.getOrDefault("X-Amz-Signature")
-  valid_606305 = validateParameter(valid_606305, JString, required = false,
+  if valid_613373 != nil:
+    section.add "X-Amz-Target", valid_613373
+  var valid_613374 = header.getOrDefault("X-Amz-Signature")
+  valid_613374 = validateParameter(valid_613374, JString, required = false,
                                  default = nil)
-  if valid_606305 != nil:
-    section.add "X-Amz-Signature", valid_606305
-  var valid_606306 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606306 = validateParameter(valid_606306, JString, required = false,
+  if valid_613374 != nil:
+    section.add "X-Amz-Signature", valid_613374
+  var valid_613375 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613375 = validateParameter(valid_613375, JString, required = false,
                                  default = nil)
-  if valid_606306 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606306
-  var valid_606307 = header.getOrDefault("X-Amz-Date")
-  valid_606307 = validateParameter(valid_606307, JString, required = false,
+  if valid_613375 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613375
+  var valid_613376 = header.getOrDefault("X-Amz-Date")
+  valid_613376 = validateParameter(valid_613376, JString, required = false,
                                  default = nil)
-  if valid_606307 != nil:
-    section.add "X-Amz-Date", valid_606307
-  var valid_606308 = header.getOrDefault("X-Amz-Credential")
-  valid_606308 = validateParameter(valid_606308, JString, required = false,
+  if valid_613376 != nil:
+    section.add "X-Amz-Date", valid_613376
+  var valid_613377 = header.getOrDefault("X-Amz-Credential")
+  valid_613377 = validateParameter(valid_613377, JString, required = false,
                                  default = nil)
-  if valid_606308 != nil:
-    section.add "X-Amz-Credential", valid_606308
-  var valid_606309 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606309 = validateParameter(valid_606309, JString, required = false,
+  if valid_613377 != nil:
+    section.add "X-Amz-Credential", valid_613377
+  var valid_613378 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613378 = validateParameter(valid_613378, JString, required = false,
                                  default = nil)
-  if valid_606309 != nil:
-    section.add "X-Amz-Security-Token", valid_606309
-  var valid_606310 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606310 = validateParameter(valid_606310, JString, required = false,
+  if valid_613378 != nil:
+    section.add "X-Amz-Security-Token", valid_613378
+  var valid_613379 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613379 = validateParameter(valid_613379, JString, required = false,
                                  default = nil)
-  if valid_606310 != nil:
-    section.add "X-Amz-Algorithm", valid_606310
-  var valid_606311 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606311 = validateParameter(valid_606311, JString, required = false,
+  if valid_613379 != nil:
+    section.add "X-Amz-Algorithm", valid_613379
+  var valid_613380 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613380 = validateParameter(valid_613380, JString, required = false,
                                  default = nil)
-  if valid_606311 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606311
+  if valid_613380 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613380
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1125,36 +1125,36 @@ proc validate_CreateRuleGroup_606302(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606313: Call_CreateRuleGroup_606301; path: JsonNode; query: JsonNode;
+proc call*(call_613382: Call_CreateRuleGroup_613370; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <code>RuleGroup</code>. A rule group is a collection of predefined rules that you add to a web ACL. You use <a>UpdateRuleGroup</a> to add rules to the rule group.</p> <p>Rule groups are subject to the following limits:</p> <ul> <li> <p>Three rule groups per account. You can request an increase to this limit by contacting customer support.</p> </li> <li> <p>One rule group per web ACL.</p> </li> <li> <p>Ten rules per rule group.</p> </li> </ul> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606313.validator(path, query, header, formData, body)
-  let scheme = call_606313.pickScheme
+  let valid = call_613382.validator(path, query, header, formData, body)
+  let scheme = call_613382.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606313.url(scheme.get, call_606313.host, call_606313.base,
-                         call_606313.route, valid.getOrDefault("path"),
+  let url = call_613382.url(scheme.get, call_613382.host, call_613382.base,
+                         call_613382.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606313, url, valid)
+  result = atozHook(call_613382, url, valid)
 
-proc call*(call_606314: Call_CreateRuleGroup_606301; body: JsonNode): Recallable =
+proc call*(call_613383: Call_CreateRuleGroup_613370; body: JsonNode): Recallable =
   ## createRuleGroup
   ## <p>Creates a <code>RuleGroup</code>. A rule group is a collection of predefined rules that you add to a web ACL. You use <a>UpdateRuleGroup</a> to add rules to the rule group.</p> <p>Rule groups are subject to the following limits:</p> <ul> <li> <p>Three rule groups per account. You can request an increase to this limit by contacting customer support.</p> </li> <li> <p>One rule group per web ACL.</p> </li> <li> <p>Ten rules per rule group.</p> </li> </ul> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606315 = newJObject()
+  var body_613384 = newJObject()
   if body != nil:
-    body_606315 = body
-  result = call_606314.call(nil, nil, nil, nil, body_606315)
+    body_613384 = body
+  result = call_613383.call(nil, nil, nil, nil, body_613384)
 
-var createRuleGroup* = Call_CreateRuleGroup_606301(name: "createRuleGroup",
+var createRuleGroup* = Call_CreateRuleGroup_613370(name: "createRuleGroup",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateRuleGroup",
-    validator: validate_CreateRuleGroup_606302, base: "/", url: url_CreateRuleGroup_606303,
+    validator: validate_CreateRuleGroup_613371, base: "/", url: url_CreateRuleGroup_613372,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSizeConstraintSet_606316 = ref object of OpenApiRestCall_605589
-proc url_CreateSizeConstraintSet_606318(protocol: Scheme; host: string; base: string;
+  Call_CreateSizeConstraintSet_613385 = ref object of OpenApiRestCall_612658
+proc url_CreateSizeConstraintSet_613387(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -1167,7 +1167,7 @@ proc url_CreateSizeConstraintSet_606318(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_CreateSizeConstraintSet_606317(path: JsonNode; query: JsonNode;
+proc validate_CreateSizeConstraintSet_613386(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a <code>SizeConstraintSet</code>. You then use <a>UpdateSizeConstraintSet</a> to identify the part of a web request that you want AWS WAF to check for length, such as the length of the <code>User-Agent</code> header or the length of the query string. For example, you can create a <code>SizeConstraintSet</code> that matches any requests that have a query string that is longer than 100 bytes. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit a <code>CreateSizeConstraintSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateSizeConstraintSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -1187,46 +1187,46 @@ proc validate_CreateSizeConstraintSet_606317(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606319 = header.getOrDefault("X-Amz-Target")
-  valid_606319 = validateParameter(valid_606319, JString, required = true, default = newJString(
+  var valid_613388 = header.getOrDefault("X-Amz-Target")
+  valid_613388 = validateParameter(valid_613388, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateSizeConstraintSet"))
-  if valid_606319 != nil:
-    section.add "X-Amz-Target", valid_606319
-  var valid_606320 = header.getOrDefault("X-Amz-Signature")
-  valid_606320 = validateParameter(valid_606320, JString, required = false,
+  if valid_613388 != nil:
+    section.add "X-Amz-Target", valid_613388
+  var valid_613389 = header.getOrDefault("X-Amz-Signature")
+  valid_613389 = validateParameter(valid_613389, JString, required = false,
                                  default = nil)
-  if valid_606320 != nil:
-    section.add "X-Amz-Signature", valid_606320
-  var valid_606321 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606321 = validateParameter(valid_606321, JString, required = false,
+  if valid_613389 != nil:
+    section.add "X-Amz-Signature", valid_613389
+  var valid_613390 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613390 = validateParameter(valid_613390, JString, required = false,
                                  default = nil)
-  if valid_606321 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606321
-  var valid_606322 = header.getOrDefault("X-Amz-Date")
-  valid_606322 = validateParameter(valid_606322, JString, required = false,
+  if valid_613390 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613390
+  var valid_613391 = header.getOrDefault("X-Amz-Date")
+  valid_613391 = validateParameter(valid_613391, JString, required = false,
                                  default = nil)
-  if valid_606322 != nil:
-    section.add "X-Amz-Date", valid_606322
-  var valid_606323 = header.getOrDefault("X-Amz-Credential")
-  valid_606323 = validateParameter(valid_606323, JString, required = false,
+  if valid_613391 != nil:
+    section.add "X-Amz-Date", valid_613391
+  var valid_613392 = header.getOrDefault("X-Amz-Credential")
+  valid_613392 = validateParameter(valid_613392, JString, required = false,
                                  default = nil)
-  if valid_606323 != nil:
-    section.add "X-Amz-Credential", valid_606323
-  var valid_606324 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606324 = validateParameter(valid_606324, JString, required = false,
+  if valid_613392 != nil:
+    section.add "X-Amz-Credential", valid_613392
+  var valid_613393 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613393 = validateParameter(valid_613393, JString, required = false,
                                  default = nil)
-  if valid_606324 != nil:
-    section.add "X-Amz-Security-Token", valid_606324
-  var valid_606325 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606325 = validateParameter(valid_606325, JString, required = false,
+  if valid_613393 != nil:
+    section.add "X-Amz-Security-Token", valid_613393
+  var valid_613394 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613394 = validateParameter(valid_613394, JString, required = false,
                                  default = nil)
-  if valid_606325 != nil:
-    section.add "X-Amz-Algorithm", valid_606325
-  var valid_606326 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606326 = validateParameter(valid_606326, JString, required = false,
+  if valid_613394 != nil:
+    section.add "X-Amz-Algorithm", valid_613394
+  var valid_613395 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613395 = validateParameter(valid_613395, JString, required = false,
                                  default = nil)
-  if valid_606326 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606326
+  if valid_613395 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613395
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1237,37 +1237,37 @@ proc validate_CreateSizeConstraintSet_606317(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606328: Call_CreateSizeConstraintSet_606316; path: JsonNode;
+proc call*(call_613397: Call_CreateSizeConstraintSet_613385; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <code>SizeConstraintSet</code>. You then use <a>UpdateSizeConstraintSet</a> to identify the part of a web request that you want AWS WAF to check for length, such as the length of the <code>User-Agent</code> header or the length of the query string. For example, you can create a <code>SizeConstraintSet</code> that matches any requests that have a query string that is longer than 100 bytes. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit a <code>CreateSizeConstraintSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateSizeConstraintSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606328.validator(path, query, header, formData, body)
-  let scheme = call_606328.pickScheme
+  let valid = call_613397.validator(path, query, header, formData, body)
+  let scheme = call_613397.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606328.url(scheme.get, call_606328.host, call_606328.base,
-                         call_606328.route, valid.getOrDefault("path"),
+  let url = call_613397.url(scheme.get, call_613397.host, call_613397.base,
+                         call_613397.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606328, url, valid)
+  result = atozHook(call_613397, url, valid)
 
-proc call*(call_606329: Call_CreateSizeConstraintSet_606316; body: JsonNode): Recallable =
+proc call*(call_613398: Call_CreateSizeConstraintSet_613385; body: JsonNode): Recallable =
   ## createSizeConstraintSet
   ## <p>Creates a <code>SizeConstraintSet</code>. You then use <a>UpdateSizeConstraintSet</a> to identify the part of a web request that you want AWS WAF to check for length, such as the length of the <code>User-Agent</code> header or the length of the query string. For example, you can create a <code>SizeConstraintSet</code> that matches any requests that have a query string that is longer than 100 bytes. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit a <code>CreateSizeConstraintSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit an <a>UpdateSizeConstraintSet</a> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606330 = newJObject()
+  var body_613399 = newJObject()
   if body != nil:
-    body_606330 = body
-  result = call_606329.call(nil, nil, nil, nil, body_606330)
+    body_613399 = body
+  result = call_613398.call(nil, nil, nil, nil, body_613399)
 
-var createSizeConstraintSet* = Call_CreateSizeConstraintSet_606316(
+var createSizeConstraintSet* = Call_CreateSizeConstraintSet_613385(
     name: "createSizeConstraintSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateSizeConstraintSet",
-    validator: validate_CreateSizeConstraintSet_606317, base: "/",
-    url: url_CreateSizeConstraintSet_606318, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateSizeConstraintSet_613386, base: "/",
+    url: url_CreateSizeConstraintSet_613387, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSqlInjectionMatchSet_606331 = ref object of OpenApiRestCall_605589
-proc url_CreateSqlInjectionMatchSet_606333(protocol: Scheme; host: string;
+  Call_CreateSqlInjectionMatchSet_613400 = ref object of OpenApiRestCall_612658
+proc url_CreateSqlInjectionMatchSet_613402(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1279,7 +1279,7 @@ proc url_CreateSqlInjectionMatchSet_606333(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CreateSqlInjectionMatchSet_606332(path: JsonNode; query: JsonNode;
+proc validate_CreateSqlInjectionMatchSet_613401(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a <a>SqlInjectionMatchSet</a>, which you use to allow, block, or count requests that contain snippets of SQL code in a specified part of web requests. AWS WAF searches for character sequences that are likely to be malicious strings.</p> <p>To create and configure a <code>SqlInjectionMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateSqlInjectionMatchSet</a> request.</p> </li> <li> <p>Submit an <a>UpdateSqlInjectionMatchSet</a> request to specify the parts of web requests in which you want to allow, block, or count malicious SQL code.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -1299,46 +1299,46 @@ proc validate_CreateSqlInjectionMatchSet_606332(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606334 = header.getOrDefault("X-Amz-Target")
-  valid_606334 = validateParameter(valid_606334, JString, required = true, default = newJString(
+  var valid_613403 = header.getOrDefault("X-Amz-Target")
+  valid_613403 = validateParameter(valid_613403, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateSqlInjectionMatchSet"))
-  if valid_606334 != nil:
-    section.add "X-Amz-Target", valid_606334
-  var valid_606335 = header.getOrDefault("X-Amz-Signature")
-  valid_606335 = validateParameter(valid_606335, JString, required = false,
+  if valid_613403 != nil:
+    section.add "X-Amz-Target", valid_613403
+  var valid_613404 = header.getOrDefault("X-Amz-Signature")
+  valid_613404 = validateParameter(valid_613404, JString, required = false,
                                  default = nil)
-  if valid_606335 != nil:
-    section.add "X-Amz-Signature", valid_606335
-  var valid_606336 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606336 = validateParameter(valid_606336, JString, required = false,
+  if valid_613404 != nil:
+    section.add "X-Amz-Signature", valid_613404
+  var valid_613405 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613405 = validateParameter(valid_613405, JString, required = false,
                                  default = nil)
-  if valid_606336 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606336
-  var valid_606337 = header.getOrDefault("X-Amz-Date")
-  valid_606337 = validateParameter(valid_606337, JString, required = false,
+  if valid_613405 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613405
+  var valid_613406 = header.getOrDefault("X-Amz-Date")
+  valid_613406 = validateParameter(valid_613406, JString, required = false,
                                  default = nil)
-  if valid_606337 != nil:
-    section.add "X-Amz-Date", valid_606337
-  var valid_606338 = header.getOrDefault("X-Amz-Credential")
-  valid_606338 = validateParameter(valid_606338, JString, required = false,
+  if valid_613406 != nil:
+    section.add "X-Amz-Date", valid_613406
+  var valid_613407 = header.getOrDefault("X-Amz-Credential")
+  valid_613407 = validateParameter(valid_613407, JString, required = false,
                                  default = nil)
-  if valid_606338 != nil:
-    section.add "X-Amz-Credential", valid_606338
-  var valid_606339 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606339 = validateParameter(valid_606339, JString, required = false,
+  if valid_613407 != nil:
+    section.add "X-Amz-Credential", valid_613407
+  var valid_613408 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613408 = validateParameter(valid_613408, JString, required = false,
                                  default = nil)
-  if valid_606339 != nil:
-    section.add "X-Amz-Security-Token", valid_606339
-  var valid_606340 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606340 = validateParameter(valid_606340, JString, required = false,
+  if valid_613408 != nil:
+    section.add "X-Amz-Security-Token", valid_613408
+  var valid_613409 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613409 = validateParameter(valid_613409, JString, required = false,
                                  default = nil)
-  if valid_606340 != nil:
-    section.add "X-Amz-Algorithm", valid_606340
-  var valid_606341 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606341 = validateParameter(valid_606341, JString, required = false,
+  if valid_613409 != nil:
+    section.add "X-Amz-Algorithm", valid_613409
+  var valid_613410 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613410 = validateParameter(valid_613410, JString, required = false,
                                  default = nil)
-  if valid_606341 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606341
+  if valid_613410 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613410
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1349,37 +1349,37 @@ proc validate_CreateSqlInjectionMatchSet_606332(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606343: Call_CreateSqlInjectionMatchSet_606331; path: JsonNode;
+proc call*(call_613412: Call_CreateSqlInjectionMatchSet_613400; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <a>SqlInjectionMatchSet</a>, which you use to allow, block, or count requests that contain snippets of SQL code in a specified part of web requests. AWS WAF searches for character sequences that are likely to be malicious strings.</p> <p>To create and configure a <code>SqlInjectionMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateSqlInjectionMatchSet</a> request.</p> </li> <li> <p>Submit an <a>UpdateSqlInjectionMatchSet</a> request to specify the parts of web requests in which you want to allow, block, or count malicious SQL code.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606343.validator(path, query, header, formData, body)
-  let scheme = call_606343.pickScheme
+  let valid = call_613412.validator(path, query, header, formData, body)
+  let scheme = call_613412.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606343.url(scheme.get, call_606343.host, call_606343.base,
-                         call_606343.route, valid.getOrDefault("path"),
+  let url = call_613412.url(scheme.get, call_613412.host, call_613412.base,
+                         call_613412.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606343, url, valid)
+  result = atozHook(call_613412, url, valid)
 
-proc call*(call_606344: Call_CreateSqlInjectionMatchSet_606331; body: JsonNode): Recallable =
+proc call*(call_613413: Call_CreateSqlInjectionMatchSet_613400; body: JsonNode): Recallable =
   ## createSqlInjectionMatchSet
   ## <p>Creates a <a>SqlInjectionMatchSet</a>, which you use to allow, block, or count requests that contain snippets of SQL code in a specified part of web requests. AWS WAF searches for character sequences that are likely to be malicious strings.</p> <p>To create and configure a <code>SqlInjectionMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateSqlInjectionMatchSet</a> request.</p> </li> <li> <p>Submit an <a>UpdateSqlInjectionMatchSet</a> request to specify the parts of web requests in which you want to allow, block, or count malicious SQL code.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606345 = newJObject()
+  var body_613414 = newJObject()
   if body != nil:
-    body_606345 = body
-  result = call_606344.call(nil, nil, nil, nil, body_606345)
+    body_613414 = body
+  result = call_613413.call(nil, nil, nil, nil, body_613414)
 
-var createSqlInjectionMatchSet* = Call_CreateSqlInjectionMatchSet_606331(
+var createSqlInjectionMatchSet* = Call_CreateSqlInjectionMatchSet_613400(
     name: "createSqlInjectionMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateSqlInjectionMatchSet",
-    validator: validate_CreateSqlInjectionMatchSet_606332, base: "/",
-    url: url_CreateSqlInjectionMatchSet_606333,
+    validator: validate_CreateSqlInjectionMatchSet_613401, base: "/",
+    url: url_CreateSqlInjectionMatchSet_613402,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateWebACL_606346 = ref object of OpenApiRestCall_605589
-proc url_CreateWebACL_606348(protocol: Scheme; host: string; base: string;
+  Call_CreateWebACL_613415 = ref object of OpenApiRestCall_612658
+proc url_CreateWebACL_613417(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1391,7 +1391,7 @@ proc url_CreateWebACL_606348(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateWebACL_606347(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateWebACL_613416(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a <code>WebACL</code>, which contains the <code>Rules</code> that identify the CloudFront web requests that you want to allow, block, or count. AWS WAF evaluates <code>Rules</code> in order based on the value of <code>Priority</code> for each <code>Rule</code>.</p> <p>You also specify a default action, either <code>ALLOW</code> or <code>BLOCK</code>. If a web request doesn't match any of the <code>Rules</code> in a <code>WebACL</code>, AWS WAF responds to the request with the default action. </p> <p>To create and configure a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Create and update the <code>ByteMatchSet</code> objects and other predicates that you want to include in <code>Rules</code>. For more information, see <a>CreateByteMatchSet</a>, <a>UpdateByteMatchSet</a>, <a>CreateIPSet</a>, <a>UpdateIPSet</a>, <a>CreateSqlInjectionMatchSet</a>, and <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>WebACL</code>. For more information, see <a>CreateRule</a> and <a>UpdateRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateWebACL</code> request.</p> </li> <li> <p>Submit a <code>CreateWebACL</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateWebACL</a> request.</p> </li> <li> <p>Submit an <a>UpdateWebACL</a> request to specify the <code>Rules</code> that you want to include in the <code>WebACL</code>, to specify the default action, and to associate the <code>WebACL</code> with a CloudFront distribution.</p> </li> </ol> <p>For more information about how to use the AWS WAF API, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -1411,46 +1411,46 @@ proc validate_CreateWebACL_606347(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606349 = header.getOrDefault("X-Amz-Target")
-  valid_606349 = validateParameter(valid_606349, JString, required = true, default = newJString(
+  var valid_613418 = header.getOrDefault("X-Amz-Target")
+  valid_613418 = validateParameter(valid_613418, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateWebACL"))
-  if valid_606349 != nil:
-    section.add "X-Amz-Target", valid_606349
-  var valid_606350 = header.getOrDefault("X-Amz-Signature")
-  valid_606350 = validateParameter(valid_606350, JString, required = false,
+  if valid_613418 != nil:
+    section.add "X-Amz-Target", valid_613418
+  var valid_613419 = header.getOrDefault("X-Amz-Signature")
+  valid_613419 = validateParameter(valid_613419, JString, required = false,
                                  default = nil)
-  if valid_606350 != nil:
-    section.add "X-Amz-Signature", valid_606350
-  var valid_606351 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606351 = validateParameter(valid_606351, JString, required = false,
+  if valid_613419 != nil:
+    section.add "X-Amz-Signature", valid_613419
+  var valid_613420 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613420 = validateParameter(valid_613420, JString, required = false,
                                  default = nil)
-  if valid_606351 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606351
-  var valid_606352 = header.getOrDefault("X-Amz-Date")
-  valid_606352 = validateParameter(valid_606352, JString, required = false,
+  if valid_613420 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613420
+  var valid_613421 = header.getOrDefault("X-Amz-Date")
+  valid_613421 = validateParameter(valid_613421, JString, required = false,
                                  default = nil)
-  if valid_606352 != nil:
-    section.add "X-Amz-Date", valid_606352
-  var valid_606353 = header.getOrDefault("X-Amz-Credential")
-  valid_606353 = validateParameter(valid_606353, JString, required = false,
+  if valid_613421 != nil:
+    section.add "X-Amz-Date", valid_613421
+  var valid_613422 = header.getOrDefault("X-Amz-Credential")
+  valid_613422 = validateParameter(valid_613422, JString, required = false,
                                  default = nil)
-  if valid_606353 != nil:
-    section.add "X-Amz-Credential", valid_606353
-  var valid_606354 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606354 = validateParameter(valid_606354, JString, required = false,
+  if valid_613422 != nil:
+    section.add "X-Amz-Credential", valid_613422
+  var valid_613423 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613423 = validateParameter(valid_613423, JString, required = false,
                                  default = nil)
-  if valid_606354 != nil:
-    section.add "X-Amz-Security-Token", valid_606354
-  var valid_606355 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606355 = validateParameter(valid_606355, JString, required = false,
+  if valid_613423 != nil:
+    section.add "X-Amz-Security-Token", valid_613423
+  var valid_613424 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613424 = validateParameter(valid_613424, JString, required = false,
                                  default = nil)
-  if valid_606355 != nil:
-    section.add "X-Amz-Algorithm", valid_606355
-  var valid_606356 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606356 = validateParameter(valid_606356, JString, required = false,
+  if valid_613424 != nil:
+    section.add "X-Amz-Algorithm", valid_613424
+  var valid_613425 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613425 = validateParameter(valid_613425, JString, required = false,
                                  default = nil)
-  if valid_606356 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606356
+  if valid_613425 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613425
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1461,36 +1461,36 @@ proc validate_CreateWebACL_606347(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_606358: Call_CreateWebACL_606346; path: JsonNode; query: JsonNode;
+proc call*(call_613427: Call_CreateWebACL_613415; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a <code>WebACL</code>, which contains the <code>Rules</code> that identify the CloudFront web requests that you want to allow, block, or count. AWS WAF evaluates <code>Rules</code> in order based on the value of <code>Priority</code> for each <code>Rule</code>.</p> <p>You also specify a default action, either <code>ALLOW</code> or <code>BLOCK</code>. If a web request doesn't match any of the <code>Rules</code> in a <code>WebACL</code>, AWS WAF responds to the request with the default action. </p> <p>To create and configure a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Create and update the <code>ByteMatchSet</code> objects and other predicates that you want to include in <code>Rules</code>. For more information, see <a>CreateByteMatchSet</a>, <a>UpdateByteMatchSet</a>, <a>CreateIPSet</a>, <a>UpdateIPSet</a>, <a>CreateSqlInjectionMatchSet</a>, and <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>WebACL</code>. For more information, see <a>CreateRule</a> and <a>UpdateRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateWebACL</code> request.</p> </li> <li> <p>Submit a <code>CreateWebACL</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateWebACL</a> request.</p> </li> <li> <p>Submit an <a>UpdateWebACL</a> request to specify the <code>Rules</code> that you want to include in the <code>WebACL</code>, to specify the default action, and to associate the <code>WebACL</code> with a CloudFront distribution.</p> </li> </ol> <p>For more information about how to use the AWS WAF API, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606358.validator(path, query, header, formData, body)
-  let scheme = call_606358.pickScheme
+  let valid = call_613427.validator(path, query, header, formData, body)
+  let scheme = call_613427.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606358.url(scheme.get, call_606358.host, call_606358.base,
-                         call_606358.route, valid.getOrDefault("path"),
+  let url = call_613427.url(scheme.get, call_613427.host, call_613427.base,
+                         call_613427.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606358, url, valid)
+  result = atozHook(call_613427, url, valid)
 
-proc call*(call_606359: Call_CreateWebACL_606346; body: JsonNode): Recallable =
+proc call*(call_613428: Call_CreateWebACL_613415; body: JsonNode): Recallable =
   ## createWebACL
   ## <p>Creates a <code>WebACL</code>, which contains the <code>Rules</code> that identify the CloudFront web requests that you want to allow, block, or count. AWS WAF evaluates <code>Rules</code> in order based on the value of <code>Priority</code> for each <code>Rule</code>.</p> <p>You also specify a default action, either <code>ALLOW</code> or <code>BLOCK</code>. If a web request doesn't match any of the <code>Rules</code> in a <code>WebACL</code>, AWS WAF responds to the request with the default action. </p> <p>To create and configure a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Create and update the <code>ByteMatchSet</code> objects and other predicates that you want to include in <code>Rules</code>. For more information, see <a>CreateByteMatchSet</a>, <a>UpdateByteMatchSet</a>, <a>CreateIPSet</a>, <a>UpdateIPSet</a>, <a>CreateSqlInjectionMatchSet</a>, and <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>WebACL</code>. For more information, see <a>CreateRule</a> and <a>UpdateRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateWebACL</code> request.</p> </li> <li> <p>Submit a <code>CreateWebACL</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateWebACL</a> request.</p> </li> <li> <p>Submit an <a>UpdateWebACL</a> request to specify the <code>Rules</code> that you want to include in the <code>WebACL</code>, to specify the default action, and to associate the <code>WebACL</code> with a CloudFront distribution.</p> </li> </ol> <p>For more information about how to use the AWS WAF API, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606360 = newJObject()
+  var body_613429 = newJObject()
   if body != nil:
-    body_606360 = body
-  result = call_606359.call(nil, nil, nil, nil, body_606360)
+    body_613429 = body
+  result = call_613428.call(nil, nil, nil, nil, body_613429)
 
-var createWebACL* = Call_CreateWebACL_606346(name: "createWebACL",
+var createWebACL* = Call_CreateWebACL_613415(name: "createWebACL",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateWebACL",
-    validator: validate_CreateWebACL_606347, base: "/", url: url_CreateWebACL_606348,
+    validator: validate_CreateWebACL_613416, base: "/", url: url_CreateWebACL_613417,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateXssMatchSet_606361 = ref object of OpenApiRestCall_605589
-proc url_CreateXssMatchSet_606363(protocol: Scheme; host: string; base: string;
+  Call_CreateXssMatchSet_613430 = ref object of OpenApiRestCall_612658
+proc url_CreateXssMatchSet_613432(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1502,7 +1502,7 @@ proc url_CreateXssMatchSet_606363(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateXssMatchSet_606362(path: JsonNode; query: JsonNode;
+proc validate_CreateXssMatchSet_613431(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Creates an <a>XssMatchSet</a>, which you use to allow, block, or count requests that contain cross-site scripting attacks in the specified part of web requests. AWS WAF searches for character sequences that are likely to be malicious strings.</p> <p>To create and configure an <code>XssMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateXssMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateXssMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateXssMatchSet</a> request.</p> </li> <li> <p>Submit an <a>UpdateXssMatchSet</a> request to specify the parts of web requests in which you want to allow, block, or count cross-site scripting attacks.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -1523,46 +1523,46 @@ proc validate_CreateXssMatchSet_606362(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606364 = header.getOrDefault("X-Amz-Target")
-  valid_606364 = validateParameter(valid_606364, JString, required = true, default = newJString(
+  var valid_613433 = header.getOrDefault("X-Amz-Target")
+  valid_613433 = validateParameter(valid_613433, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.CreateXssMatchSet"))
-  if valid_606364 != nil:
-    section.add "X-Amz-Target", valid_606364
-  var valid_606365 = header.getOrDefault("X-Amz-Signature")
-  valid_606365 = validateParameter(valid_606365, JString, required = false,
+  if valid_613433 != nil:
+    section.add "X-Amz-Target", valid_613433
+  var valid_613434 = header.getOrDefault("X-Amz-Signature")
+  valid_613434 = validateParameter(valid_613434, JString, required = false,
                                  default = nil)
-  if valid_606365 != nil:
-    section.add "X-Amz-Signature", valid_606365
-  var valid_606366 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606366 = validateParameter(valid_606366, JString, required = false,
+  if valid_613434 != nil:
+    section.add "X-Amz-Signature", valid_613434
+  var valid_613435 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613435 = validateParameter(valid_613435, JString, required = false,
                                  default = nil)
-  if valid_606366 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606366
-  var valid_606367 = header.getOrDefault("X-Amz-Date")
-  valid_606367 = validateParameter(valid_606367, JString, required = false,
+  if valid_613435 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613435
+  var valid_613436 = header.getOrDefault("X-Amz-Date")
+  valid_613436 = validateParameter(valid_613436, JString, required = false,
                                  default = nil)
-  if valid_606367 != nil:
-    section.add "X-Amz-Date", valid_606367
-  var valid_606368 = header.getOrDefault("X-Amz-Credential")
-  valid_606368 = validateParameter(valid_606368, JString, required = false,
+  if valid_613436 != nil:
+    section.add "X-Amz-Date", valid_613436
+  var valid_613437 = header.getOrDefault("X-Amz-Credential")
+  valid_613437 = validateParameter(valid_613437, JString, required = false,
                                  default = nil)
-  if valid_606368 != nil:
-    section.add "X-Amz-Credential", valid_606368
-  var valid_606369 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606369 = validateParameter(valid_606369, JString, required = false,
+  if valid_613437 != nil:
+    section.add "X-Amz-Credential", valid_613437
+  var valid_613438 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613438 = validateParameter(valid_613438, JString, required = false,
                                  default = nil)
-  if valid_606369 != nil:
-    section.add "X-Amz-Security-Token", valid_606369
-  var valid_606370 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606370 = validateParameter(valid_606370, JString, required = false,
+  if valid_613438 != nil:
+    section.add "X-Amz-Security-Token", valid_613438
+  var valid_613439 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613439 = validateParameter(valid_613439, JString, required = false,
                                  default = nil)
-  if valid_606370 != nil:
-    section.add "X-Amz-Algorithm", valid_606370
-  var valid_606371 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606371 = validateParameter(valid_606371, JString, required = false,
+  if valid_613439 != nil:
+    section.add "X-Amz-Algorithm", valid_613439
+  var valid_613440 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613440 = validateParameter(valid_613440, JString, required = false,
                                  default = nil)
-  if valid_606371 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606371
+  if valid_613440 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613440
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1573,36 +1573,36 @@ proc validate_CreateXssMatchSet_606362(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606373: Call_CreateXssMatchSet_606361; path: JsonNode;
+proc call*(call_613442: Call_CreateXssMatchSet_613430; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an <a>XssMatchSet</a>, which you use to allow, block, or count requests that contain cross-site scripting attacks in the specified part of web requests. AWS WAF searches for character sequences that are likely to be malicious strings.</p> <p>To create and configure an <code>XssMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateXssMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateXssMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateXssMatchSet</a> request.</p> </li> <li> <p>Submit an <a>UpdateXssMatchSet</a> request to specify the parts of web requests in which you want to allow, block, or count cross-site scripting attacks.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_606373.validator(path, query, header, formData, body)
-  let scheme = call_606373.pickScheme
+  let valid = call_613442.validator(path, query, header, formData, body)
+  let scheme = call_613442.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606373.url(scheme.get, call_606373.host, call_606373.base,
-                         call_606373.route, valid.getOrDefault("path"),
+  let url = call_613442.url(scheme.get, call_613442.host, call_613442.base,
+                         call_613442.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606373, url, valid)
+  result = atozHook(call_613442, url, valid)
 
-proc call*(call_606374: Call_CreateXssMatchSet_606361; body: JsonNode): Recallable =
+proc call*(call_613443: Call_CreateXssMatchSet_613430; body: JsonNode): Recallable =
   ## createXssMatchSet
   ## <p>Creates an <a>XssMatchSet</a>, which you use to allow, block, or count requests that contain cross-site scripting attacks in the specified part of web requests. AWS WAF searches for character sequences that are likely to be malicious strings.</p> <p>To create and configure an <code>XssMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>CreateXssMatchSet</code> request.</p> </li> <li> <p>Submit a <code>CreateXssMatchSet</code> request.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateXssMatchSet</a> request.</p> </li> <li> <p>Submit an <a>UpdateXssMatchSet</a> request to specify the parts of web requests in which you want to allow, block, or count cross-site scripting attacks.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_606375 = newJObject()
+  var body_613444 = newJObject()
   if body != nil:
-    body_606375 = body
-  result = call_606374.call(nil, nil, nil, nil, body_606375)
+    body_613444 = body
+  result = call_613443.call(nil, nil, nil, nil, body_613444)
 
-var createXssMatchSet* = Call_CreateXssMatchSet_606361(name: "createXssMatchSet",
+var createXssMatchSet* = Call_CreateXssMatchSet_613430(name: "createXssMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.CreateXssMatchSet",
-    validator: validate_CreateXssMatchSet_606362, base: "/",
-    url: url_CreateXssMatchSet_606363, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateXssMatchSet_613431, base: "/",
+    url: url_CreateXssMatchSet_613432, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteByteMatchSet_606376 = ref object of OpenApiRestCall_605589
-proc url_DeleteByteMatchSet_606378(protocol: Scheme; host: string; base: string;
+  Call_DeleteByteMatchSet_613445 = ref object of OpenApiRestCall_612658
+proc url_DeleteByteMatchSet_613447(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1614,7 +1614,7 @@ proc url_DeleteByteMatchSet_606378(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteByteMatchSet_606377(path: JsonNode; query: JsonNode;
+proc validate_DeleteByteMatchSet_613446(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>ByteMatchSet</a>. You can't delete a <code>ByteMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any <a>ByteMatchTuple</a> objects (any filters).</p> <p>If you just want to remove a <code>ByteMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>ByteMatchSet</code> to remove filters, if any. For more information, see <a>UpdateByteMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteByteMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteByteMatchSet</code> request.</p> </li> </ol>
@@ -1635,46 +1635,46 @@ proc validate_DeleteByteMatchSet_606377(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606379 = header.getOrDefault("X-Amz-Target")
-  valid_606379 = validateParameter(valid_606379, JString, required = true, default = newJString(
+  var valid_613448 = header.getOrDefault("X-Amz-Target")
+  valid_613448 = validateParameter(valid_613448, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteByteMatchSet"))
-  if valid_606379 != nil:
-    section.add "X-Amz-Target", valid_606379
-  var valid_606380 = header.getOrDefault("X-Amz-Signature")
-  valid_606380 = validateParameter(valid_606380, JString, required = false,
+  if valid_613448 != nil:
+    section.add "X-Amz-Target", valid_613448
+  var valid_613449 = header.getOrDefault("X-Amz-Signature")
+  valid_613449 = validateParameter(valid_613449, JString, required = false,
                                  default = nil)
-  if valid_606380 != nil:
-    section.add "X-Amz-Signature", valid_606380
-  var valid_606381 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606381 = validateParameter(valid_606381, JString, required = false,
+  if valid_613449 != nil:
+    section.add "X-Amz-Signature", valid_613449
+  var valid_613450 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613450 = validateParameter(valid_613450, JString, required = false,
                                  default = nil)
-  if valid_606381 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606381
-  var valid_606382 = header.getOrDefault("X-Amz-Date")
-  valid_606382 = validateParameter(valid_606382, JString, required = false,
+  if valid_613450 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613450
+  var valid_613451 = header.getOrDefault("X-Amz-Date")
+  valid_613451 = validateParameter(valid_613451, JString, required = false,
                                  default = nil)
-  if valid_606382 != nil:
-    section.add "X-Amz-Date", valid_606382
-  var valid_606383 = header.getOrDefault("X-Amz-Credential")
-  valid_606383 = validateParameter(valid_606383, JString, required = false,
+  if valid_613451 != nil:
+    section.add "X-Amz-Date", valid_613451
+  var valid_613452 = header.getOrDefault("X-Amz-Credential")
+  valid_613452 = validateParameter(valid_613452, JString, required = false,
                                  default = nil)
-  if valid_606383 != nil:
-    section.add "X-Amz-Credential", valid_606383
-  var valid_606384 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606384 = validateParameter(valid_606384, JString, required = false,
+  if valid_613452 != nil:
+    section.add "X-Amz-Credential", valid_613452
+  var valid_613453 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613453 = validateParameter(valid_613453, JString, required = false,
                                  default = nil)
-  if valid_606384 != nil:
-    section.add "X-Amz-Security-Token", valid_606384
-  var valid_606385 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606385 = validateParameter(valid_606385, JString, required = false,
+  if valid_613453 != nil:
+    section.add "X-Amz-Security-Token", valid_613453
+  var valid_613454 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613454 = validateParameter(valid_613454, JString, required = false,
                                  default = nil)
-  if valid_606385 != nil:
-    section.add "X-Amz-Algorithm", valid_606385
-  var valid_606386 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606386 = validateParameter(valid_606386, JString, required = false,
+  if valid_613454 != nil:
+    section.add "X-Amz-Algorithm", valid_613454
+  var valid_613455 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613455 = validateParameter(valid_613455, JString, required = false,
                                  default = nil)
-  if valid_606386 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606386
+  if valid_613455 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613455
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1685,37 +1685,37 @@ proc validate_DeleteByteMatchSet_606377(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606388: Call_DeleteByteMatchSet_606376; path: JsonNode;
+proc call*(call_613457: Call_DeleteByteMatchSet_613445; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>ByteMatchSet</a>. You can't delete a <code>ByteMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any <a>ByteMatchTuple</a> objects (any filters).</p> <p>If you just want to remove a <code>ByteMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>ByteMatchSet</code> to remove filters, if any. For more information, see <a>UpdateByteMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteByteMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteByteMatchSet</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606388.validator(path, query, header, formData, body)
-  let scheme = call_606388.pickScheme
+  let valid = call_613457.validator(path, query, header, formData, body)
+  let scheme = call_613457.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606388.url(scheme.get, call_606388.host, call_606388.base,
-                         call_606388.route, valid.getOrDefault("path"),
+  let url = call_613457.url(scheme.get, call_613457.host, call_613457.base,
+                         call_613457.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606388, url, valid)
+  result = atozHook(call_613457, url, valid)
 
-proc call*(call_606389: Call_DeleteByteMatchSet_606376; body: JsonNode): Recallable =
+proc call*(call_613458: Call_DeleteByteMatchSet_613445; body: JsonNode): Recallable =
   ## deleteByteMatchSet
   ## <p>Permanently deletes a <a>ByteMatchSet</a>. You can't delete a <code>ByteMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any <a>ByteMatchTuple</a> objects (any filters).</p> <p>If you just want to remove a <code>ByteMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>ByteMatchSet</code> to remove filters, if any. For more information, see <a>UpdateByteMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteByteMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteByteMatchSet</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606390 = newJObject()
+  var body_613459 = newJObject()
   if body != nil:
-    body_606390 = body
-  result = call_606389.call(nil, nil, nil, nil, body_606390)
+    body_613459 = body
+  result = call_613458.call(nil, nil, nil, nil, body_613459)
 
-var deleteByteMatchSet* = Call_DeleteByteMatchSet_606376(
+var deleteByteMatchSet* = Call_DeleteByteMatchSet_613445(
     name: "deleteByteMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteByteMatchSet",
-    validator: validate_DeleteByteMatchSet_606377, base: "/",
-    url: url_DeleteByteMatchSet_606378, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteByteMatchSet_613446, base: "/",
+    url: url_DeleteByteMatchSet_613447, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteGeoMatchSet_606391 = ref object of OpenApiRestCall_605589
-proc url_DeleteGeoMatchSet_606393(protocol: Scheme; host: string; base: string;
+  Call_DeleteGeoMatchSet_613460 = ref object of OpenApiRestCall_612658
+proc url_DeleteGeoMatchSet_613462(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1727,7 +1727,7 @@ proc url_DeleteGeoMatchSet_606393(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteGeoMatchSet_606392(path: JsonNode; query: JsonNode;
+proc validate_DeleteGeoMatchSet_613461(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>GeoMatchSet</a>. You can't delete a <code>GeoMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any countries.</p> <p>If you just want to remove a <code>GeoMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>GeoMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>GeoMatchSet</code> to remove any countries. For more information, see <a>UpdateGeoMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteGeoMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteGeoMatchSet</code> request.</p> </li> </ol>
@@ -1748,46 +1748,46 @@ proc validate_DeleteGeoMatchSet_606392(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606394 = header.getOrDefault("X-Amz-Target")
-  valid_606394 = validateParameter(valid_606394, JString, required = true, default = newJString(
+  var valid_613463 = header.getOrDefault("X-Amz-Target")
+  valid_613463 = validateParameter(valid_613463, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteGeoMatchSet"))
-  if valid_606394 != nil:
-    section.add "X-Amz-Target", valid_606394
-  var valid_606395 = header.getOrDefault("X-Amz-Signature")
-  valid_606395 = validateParameter(valid_606395, JString, required = false,
+  if valid_613463 != nil:
+    section.add "X-Amz-Target", valid_613463
+  var valid_613464 = header.getOrDefault("X-Amz-Signature")
+  valid_613464 = validateParameter(valid_613464, JString, required = false,
                                  default = nil)
-  if valid_606395 != nil:
-    section.add "X-Amz-Signature", valid_606395
-  var valid_606396 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606396 = validateParameter(valid_606396, JString, required = false,
+  if valid_613464 != nil:
+    section.add "X-Amz-Signature", valid_613464
+  var valid_613465 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613465 = validateParameter(valid_613465, JString, required = false,
                                  default = nil)
-  if valid_606396 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606396
-  var valid_606397 = header.getOrDefault("X-Amz-Date")
-  valid_606397 = validateParameter(valid_606397, JString, required = false,
+  if valid_613465 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613465
+  var valid_613466 = header.getOrDefault("X-Amz-Date")
+  valid_613466 = validateParameter(valid_613466, JString, required = false,
                                  default = nil)
-  if valid_606397 != nil:
-    section.add "X-Amz-Date", valid_606397
-  var valid_606398 = header.getOrDefault("X-Amz-Credential")
-  valid_606398 = validateParameter(valid_606398, JString, required = false,
+  if valid_613466 != nil:
+    section.add "X-Amz-Date", valid_613466
+  var valid_613467 = header.getOrDefault("X-Amz-Credential")
+  valid_613467 = validateParameter(valid_613467, JString, required = false,
                                  default = nil)
-  if valid_606398 != nil:
-    section.add "X-Amz-Credential", valid_606398
-  var valid_606399 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606399 = validateParameter(valid_606399, JString, required = false,
+  if valid_613467 != nil:
+    section.add "X-Amz-Credential", valid_613467
+  var valid_613468 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613468 = validateParameter(valid_613468, JString, required = false,
                                  default = nil)
-  if valid_606399 != nil:
-    section.add "X-Amz-Security-Token", valid_606399
-  var valid_606400 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606400 = validateParameter(valid_606400, JString, required = false,
+  if valid_613468 != nil:
+    section.add "X-Amz-Security-Token", valid_613468
+  var valid_613469 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613469 = validateParameter(valid_613469, JString, required = false,
                                  default = nil)
-  if valid_606400 != nil:
-    section.add "X-Amz-Algorithm", valid_606400
-  var valid_606401 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606401 = validateParameter(valid_606401, JString, required = false,
+  if valid_613469 != nil:
+    section.add "X-Amz-Algorithm", valid_613469
+  var valid_613470 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613470 = validateParameter(valid_613470, JString, required = false,
                                  default = nil)
-  if valid_606401 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606401
+  if valid_613470 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613470
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1798,36 +1798,36 @@ proc validate_DeleteGeoMatchSet_606392(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606403: Call_DeleteGeoMatchSet_606391; path: JsonNode;
+proc call*(call_613472: Call_DeleteGeoMatchSet_613460; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>GeoMatchSet</a>. You can't delete a <code>GeoMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any countries.</p> <p>If you just want to remove a <code>GeoMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>GeoMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>GeoMatchSet</code> to remove any countries. For more information, see <a>UpdateGeoMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteGeoMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteGeoMatchSet</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606403.validator(path, query, header, formData, body)
-  let scheme = call_606403.pickScheme
+  let valid = call_613472.validator(path, query, header, formData, body)
+  let scheme = call_613472.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606403.url(scheme.get, call_606403.host, call_606403.base,
-                         call_606403.route, valid.getOrDefault("path"),
+  let url = call_613472.url(scheme.get, call_613472.host, call_613472.base,
+                         call_613472.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606403, url, valid)
+  result = atozHook(call_613472, url, valid)
 
-proc call*(call_606404: Call_DeleteGeoMatchSet_606391; body: JsonNode): Recallable =
+proc call*(call_613473: Call_DeleteGeoMatchSet_613460; body: JsonNode): Recallable =
   ## deleteGeoMatchSet
   ## <p>Permanently deletes a <a>GeoMatchSet</a>. You can't delete a <code>GeoMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any countries.</p> <p>If you just want to remove a <code>GeoMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>GeoMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>GeoMatchSet</code> to remove any countries. For more information, see <a>UpdateGeoMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteGeoMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteGeoMatchSet</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606405 = newJObject()
+  var body_613474 = newJObject()
   if body != nil:
-    body_606405 = body
-  result = call_606404.call(nil, nil, nil, nil, body_606405)
+    body_613474 = body
+  result = call_613473.call(nil, nil, nil, nil, body_613474)
 
-var deleteGeoMatchSet* = Call_DeleteGeoMatchSet_606391(name: "deleteGeoMatchSet",
+var deleteGeoMatchSet* = Call_DeleteGeoMatchSet_613460(name: "deleteGeoMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteGeoMatchSet",
-    validator: validate_DeleteGeoMatchSet_606392, base: "/",
-    url: url_DeleteGeoMatchSet_606393, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteGeoMatchSet_613461, base: "/",
+    url: url_DeleteGeoMatchSet_613462, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteIPSet_606406 = ref object of OpenApiRestCall_605589
-proc url_DeleteIPSet_606408(protocol: Scheme; host: string; base: string;
+  Call_DeleteIPSet_613475 = ref object of OpenApiRestCall_612658
+proc url_DeleteIPSet_613477(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1839,7 +1839,7 @@ proc url_DeleteIPSet_606408(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteIPSet_606407(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteIPSet_613476(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Permanently deletes an <a>IPSet</a>. You can't delete an <code>IPSet</code> if it's still used in any <code>Rules</code> or if it still includes any IP addresses.</p> <p>If you just want to remove an <code>IPSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete an <code>IPSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>IPSet</code> to remove IP address ranges, if any. For more information, see <a>UpdateIPSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteIPSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteIPSet</code> request.</p> </li> </ol>
   ## 
@@ -1859,46 +1859,46 @@ proc validate_DeleteIPSet_606407(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606409 = header.getOrDefault("X-Amz-Target")
-  valid_606409 = validateParameter(valid_606409, JString, required = true, default = newJString(
+  var valid_613478 = header.getOrDefault("X-Amz-Target")
+  valid_613478 = validateParameter(valid_613478, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteIPSet"))
-  if valid_606409 != nil:
-    section.add "X-Amz-Target", valid_606409
-  var valid_606410 = header.getOrDefault("X-Amz-Signature")
-  valid_606410 = validateParameter(valid_606410, JString, required = false,
+  if valid_613478 != nil:
+    section.add "X-Amz-Target", valid_613478
+  var valid_613479 = header.getOrDefault("X-Amz-Signature")
+  valid_613479 = validateParameter(valid_613479, JString, required = false,
                                  default = nil)
-  if valid_606410 != nil:
-    section.add "X-Amz-Signature", valid_606410
-  var valid_606411 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606411 = validateParameter(valid_606411, JString, required = false,
+  if valid_613479 != nil:
+    section.add "X-Amz-Signature", valid_613479
+  var valid_613480 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613480 = validateParameter(valid_613480, JString, required = false,
                                  default = nil)
-  if valid_606411 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606411
-  var valid_606412 = header.getOrDefault("X-Amz-Date")
-  valid_606412 = validateParameter(valid_606412, JString, required = false,
+  if valid_613480 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613480
+  var valid_613481 = header.getOrDefault("X-Amz-Date")
+  valid_613481 = validateParameter(valid_613481, JString, required = false,
                                  default = nil)
-  if valid_606412 != nil:
-    section.add "X-Amz-Date", valid_606412
-  var valid_606413 = header.getOrDefault("X-Amz-Credential")
-  valid_606413 = validateParameter(valid_606413, JString, required = false,
+  if valid_613481 != nil:
+    section.add "X-Amz-Date", valid_613481
+  var valid_613482 = header.getOrDefault("X-Amz-Credential")
+  valid_613482 = validateParameter(valid_613482, JString, required = false,
                                  default = nil)
-  if valid_606413 != nil:
-    section.add "X-Amz-Credential", valid_606413
-  var valid_606414 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606414 = validateParameter(valid_606414, JString, required = false,
+  if valid_613482 != nil:
+    section.add "X-Amz-Credential", valid_613482
+  var valid_613483 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613483 = validateParameter(valid_613483, JString, required = false,
                                  default = nil)
-  if valid_606414 != nil:
-    section.add "X-Amz-Security-Token", valid_606414
-  var valid_606415 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606415 = validateParameter(valid_606415, JString, required = false,
+  if valid_613483 != nil:
+    section.add "X-Amz-Security-Token", valid_613483
+  var valid_613484 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613484 = validateParameter(valid_613484, JString, required = false,
                                  default = nil)
-  if valid_606415 != nil:
-    section.add "X-Amz-Algorithm", valid_606415
-  var valid_606416 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606416 = validateParameter(valid_606416, JString, required = false,
+  if valid_613484 != nil:
+    section.add "X-Amz-Algorithm", valid_613484
+  var valid_613485 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613485 = validateParameter(valid_613485, JString, required = false,
                                  default = nil)
-  if valid_606416 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606416
+  if valid_613485 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613485
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1909,37 +1909,37 @@ proc validate_DeleteIPSet_606407(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606418: Call_DeleteIPSet_606406; path: JsonNode; query: JsonNode;
+proc call*(call_613487: Call_DeleteIPSet_613475; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes an <a>IPSet</a>. You can't delete an <code>IPSet</code> if it's still used in any <code>Rules</code> or if it still includes any IP addresses.</p> <p>If you just want to remove an <code>IPSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete an <code>IPSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>IPSet</code> to remove IP address ranges, if any. For more information, see <a>UpdateIPSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteIPSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteIPSet</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606418.validator(path, query, header, formData, body)
-  let scheme = call_606418.pickScheme
+  let valid = call_613487.validator(path, query, header, formData, body)
+  let scheme = call_613487.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606418.url(scheme.get, call_606418.host, call_606418.base,
-                         call_606418.route, valid.getOrDefault("path"),
+  let url = call_613487.url(scheme.get, call_613487.host, call_613487.base,
+                         call_613487.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606418, url, valid)
+  result = atozHook(call_613487, url, valid)
 
-proc call*(call_606419: Call_DeleteIPSet_606406; body: JsonNode): Recallable =
+proc call*(call_613488: Call_DeleteIPSet_613475; body: JsonNode): Recallable =
   ## deleteIPSet
   ## <p>Permanently deletes an <a>IPSet</a>. You can't delete an <code>IPSet</code> if it's still used in any <code>Rules</code> or if it still includes any IP addresses.</p> <p>If you just want to remove an <code>IPSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete an <code>IPSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>IPSet</code> to remove IP address ranges, if any. For more information, see <a>UpdateIPSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteIPSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteIPSet</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606420 = newJObject()
+  var body_613489 = newJObject()
   if body != nil:
-    body_606420 = body
-  result = call_606419.call(nil, nil, nil, nil, body_606420)
+    body_613489 = body
+  result = call_613488.call(nil, nil, nil, nil, body_613489)
 
-var deleteIPSet* = Call_DeleteIPSet_606406(name: "deleteIPSet",
+var deleteIPSet* = Call_DeleteIPSet_613475(name: "deleteIPSet",
                                         meth: HttpMethod.HttpPost,
                                         host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteIPSet",
-                                        validator: validate_DeleteIPSet_606407,
-                                        base: "/", url: url_DeleteIPSet_606408,
+                                        validator: validate_DeleteIPSet_613476,
+                                        base: "/", url: url_DeleteIPSet_613477,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteLoggingConfiguration_606421 = ref object of OpenApiRestCall_605589
-proc url_DeleteLoggingConfiguration_606423(protocol: Scheme; host: string;
+  Call_DeleteLoggingConfiguration_613490 = ref object of OpenApiRestCall_612658
+proc url_DeleteLoggingConfiguration_613492(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1951,7 +1951,7 @@ proc url_DeleteLoggingConfiguration_606423(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DeleteLoggingConfiguration_606422(path: JsonNode; query: JsonNode;
+proc validate_DeleteLoggingConfiguration_613491(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Permanently deletes the <a>LoggingConfiguration</a> from the specified web ACL.
   ## 
@@ -1971,46 +1971,46 @@ proc validate_DeleteLoggingConfiguration_606422(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606424 = header.getOrDefault("X-Amz-Target")
-  valid_606424 = validateParameter(valid_606424, JString, required = true, default = newJString(
+  var valid_613493 = header.getOrDefault("X-Amz-Target")
+  valid_613493 = validateParameter(valid_613493, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteLoggingConfiguration"))
-  if valid_606424 != nil:
-    section.add "X-Amz-Target", valid_606424
-  var valid_606425 = header.getOrDefault("X-Amz-Signature")
-  valid_606425 = validateParameter(valid_606425, JString, required = false,
+  if valid_613493 != nil:
+    section.add "X-Amz-Target", valid_613493
+  var valid_613494 = header.getOrDefault("X-Amz-Signature")
+  valid_613494 = validateParameter(valid_613494, JString, required = false,
                                  default = nil)
-  if valid_606425 != nil:
-    section.add "X-Amz-Signature", valid_606425
-  var valid_606426 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606426 = validateParameter(valid_606426, JString, required = false,
+  if valid_613494 != nil:
+    section.add "X-Amz-Signature", valid_613494
+  var valid_613495 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613495 = validateParameter(valid_613495, JString, required = false,
                                  default = nil)
-  if valid_606426 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606426
-  var valid_606427 = header.getOrDefault("X-Amz-Date")
-  valid_606427 = validateParameter(valid_606427, JString, required = false,
+  if valid_613495 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613495
+  var valid_613496 = header.getOrDefault("X-Amz-Date")
+  valid_613496 = validateParameter(valid_613496, JString, required = false,
                                  default = nil)
-  if valid_606427 != nil:
-    section.add "X-Amz-Date", valid_606427
-  var valid_606428 = header.getOrDefault("X-Amz-Credential")
-  valid_606428 = validateParameter(valid_606428, JString, required = false,
+  if valid_613496 != nil:
+    section.add "X-Amz-Date", valid_613496
+  var valid_613497 = header.getOrDefault("X-Amz-Credential")
+  valid_613497 = validateParameter(valid_613497, JString, required = false,
                                  default = nil)
-  if valid_606428 != nil:
-    section.add "X-Amz-Credential", valid_606428
-  var valid_606429 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606429 = validateParameter(valid_606429, JString, required = false,
+  if valid_613497 != nil:
+    section.add "X-Amz-Credential", valid_613497
+  var valid_613498 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613498 = validateParameter(valid_613498, JString, required = false,
                                  default = nil)
-  if valid_606429 != nil:
-    section.add "X-Amz-Security-Token", valid_606429
-  var valid_606430 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606430 = validateParameter(valid_606430, JString, required = false,
+  if valid_613498 != nil:
+    section.add "X-Amz-Security-Token", valid_613498
+  var valid_613499 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613499 = validateParameter(valid_613499, JString, required = false,
                                  default = nil)
-  if valid_606430 != nil:
-    section.add "X-Amz-Algorithm", valid_606430
-  var valid_606431 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606431 = validateParameter(valid_606431, JString, required = false,
+  if valid_613499 != nil:
+    section.add "X-Amz-Algorithm", valid_613499
+  var valid_613500 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613500 = validateParameter(valid_613500, JString, required = false,
                                  default = nil)
-  if valid_606431 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606431
+  if valid_613500 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613500
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2021,37 +2021,37 @@ proc validate_DeleteLoggingConfiguration_606422(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606433: Call_DeleteLoggingConfiguration_606421; path: JsonNode;
+proc call*(call_613502: Call_DeleteLoggingConfiguration_613490; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Permanently deletes the <a>LoggingConfiguration</a> from the specified web ACL.
   ## 
-  let valid = call_606433.validator(path, query, header, formData, body)
-  let scheme = call_606433.pickScheme
+  let valid = call_613502.validator(path, query, header, formData, body)
+  let scheme = call_613502.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606433.url(scheme.get, call_606433.host, call_606433.base,
-                         call_606433.route, valid.getOrDefault("path"),
+  let url = call_613502.url(scheme.get, call_613502.host, call_613502.base,
+                         call_613502.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606433, url, valid)
+  result = atozHook(call_613502, url, valid)
 
-proc call*(call_606434: Call_DeleteLoggingConfiguration_606421; body: JsonNode): Recallable =
+proc call*(call_613503: Call_DeleteLoggingConfiguration_613490; body: JsonNode): Recallable =
   ## deleteLoggingConfiguration
   ## Permanently deletes the <a>LoggingConfiguration</a> from the specified web ACL.
   ##   body: JObject (required)
-  var body_606435 = newJObject()
+  var body_613504 = newJObject()
   if body != nil:
-    body_606435 = body
-  result = call_606434.call(nil, nil, nil, nil, body_606435)
+    body_613504 = body
+  result = call_613503.call(nil, nil, nil, nil, body_613504)
 
-var deleteLoggingConfiguration* = Call_DeleteLoggingConfiguration_606421(
+var deleteLoggingConfiguration* = Call_DeleteLoggingConfiguration_613490(
     name: "deleteLoggingConfiguration", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteLoggingConfiguration",
-    validator: validate_DeleteLoggingConfiguration_606422, base: "/",
-    url: url_DeleteLoggingConfiguration_606423,
+    validator: validate_DeleteLoggingConfiguration_613491, base: "/",
+    url: url_DeleteLoggingConfiguration_613492,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeletePermissionPolicy_606436 = ref object of OpenApiRestCall_605589
-proc url_DeletePermissionPolicy_606438(protocol: Scheme; host: string; base: string;
+  Call_DeletePermissionPolicy_613505 = ref object of OpenApiRestCall_612658
+proc url_DeletePermissionPolicy_613507(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2063,7 +2063,7 @@ proc url_DeletePermissionPolicy_606438(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_DeletePermissionPolicy_606437(path: JsonNode; query: JsonNode;
+proc validate_DeletePermissionPolicy_613506(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Permanently deletes an IAM policy from the specified RuleGroup.</p> <p>The user making the request must be the owner of the RuleGroup.</p>
   ## 
@@ -2083,46 +2083,46 @@ proc validate_DeletePermissionPolicy_606437(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606439 = header.getOrDefault("X-Amz-Target")
-  valid_606439 = validateParameter(valid_606439, JString, required = true, default = newJString(
+  var valid_613508 = header.getOrDefault("X-Amz-Target")
+  valid_613508 = validateParameter(valid_613508, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeletePermissionPolicy"))
-  if valid_606439 != nil:
-    section.add "X-Amz-Target", valid_606439
-  var valid_606440 = header.getOrDefault("X-Amz-Signature")
-  valid_606440 = validateParameter(valid_606440, JString, required = false,
+  if valid_613508 != nil:
+    section.add "X-Amz-Target", valid_613508
+  var valid_613509 = header.getOrDefault("X-Amz-Signature")
+  valid_613509 = validateParameter(valid_613509, JString, required = false,
                                  default = nil)
-  if valid_606440 != nil:
-    section.add "X-Amz-Signature", valid_606440
-  var valid_606441 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606441 = validateParameter(valid_606441, JString, required = false,
+  if valid_613509 != nil:
+    section.add "X-Amz-Signature", valid_613509
+  var valid_613510 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613510 = validateParameter(valid_613510, JString, required = false,
                                  default = nil)
-  if valid_606441 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606441
-  var valid_606442 = header.getOrDefault("X-Amz-Date")
-  valid_606442 = validateParameter(valid_606442, JString, required = false,
+  if valid_613510 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613510
+  var valid_613511 = header.getOrDefault("X-Amz-Date")
+  valid_613511 = validateParameter(valid_613511, JString, required = false,
                                  default = nil)
-  if valid_606442 != nil:
-    section.add "X-Amz-Date", valid_606442
-  var valid_606443 = header.getOrDefault("X-Amz-Credential")
-  valid_606443 = validateParameter(valid_606443, JString, required = false,
+  if valid_613511 != nil:
+    section.add "X-Amz-Date", valid_613511
+  var valid_613512 = header.getOrDefault("X-Amz-Credential")
+  valid_613512 = validateParameter(valid_613512, JString, required = false,
                                  default = nil)
-  if valid_606443 != nil:
-    section.add "X-Amz-Credential", valid_606443
-  var valid_606444 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606444 = validateParameter(valid_606444, JString, required = false,
+  if valid_613512 != nil:
+    section.add "X-Amz-Credential", valid_613512
+  var valid_613513 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613513 = validateParameter(valid_613513, JString, required = false,
                                  default = nil)
-  if valid_606444 != nil:
-    section.add "X-Amz-Security-Token", valid_606444
-  var valid_606445 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606445 = validateParameter(valid_606445, JString, required = false,
+  if valid_613513 != nil:
+    section.add "X-Amz-Security-Token", valid_613513
+  var valid_613514 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613514 = validateParameter(valid_613514, JString, required = false,
                                  default = nil)
-  if valid_606445 != nil:
-    section.add "X-Amz-Algorithm", valid_606445
-  var valid_606446 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606446 = validateParameter(valid_606446, JString, required = false,
+  if valid_613514 != nil:
+    section.add "X-Amz-Algorithm", valid_613514
+  var valid_613515 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613515 = validateParameter(valid_613515, JString, required = false,
                                  default = nil)
-  if valid_606446 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606446
+  if valid_613515 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613515
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2133,37 +2133,37 @@ proc validate_DeletePermissionPolicy_606437(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606448: Call_DeletePermissionPolicy_606436; path: JsonNode;
+proc call*(call_613517: Call_DeletePermissionPolicy_613505; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes an IAM policy from the specified RuleGroup.</p> <p>The user making the request must be the owner of the RuleGroup.</p>
   ## 
-  let valid = call_606448.validator(path, query, header, formData, body)
-  let scheme = call_606448.pickScheme
+  let valid = call_613517.validator(path, query, header, formData, body)
+  let scheme = call_613517.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606448.url(scheme.get, call_606448.host, call_606448.base,
-                         call_606448.route, valid.getOrDefault("path"),
+  let url = call_613517.url(scheme.get, call_613517.host, call_613517.base,
+                         call_613517.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606448, url, valid)
+  result = atozHook(call_613517, url, valid)
 
-proc call*(call_606449: Call_DeletePermissionPolicy_606436; body: JsonNode): Recallable =
+proc call*(call_613518: Call_DeletePermissionPolicy_613505; body: JsonNode): Recallable =
   ## deletePermissionPolicy
   ## <p>Permanently deletes an IAM policy from the specified RuleGroup.</p> <p>The user making the request must be the owner of the RuleGroup.</p>
   ##   body: JObject (required)
-  var body_606450 = newJObject()
+  var body_613519 = newJObject()
   if body != nil:
-    body_606450 = body
-  result = call_606449.call(nil, nil, nil, nil, body_606450)
+    body_613519 = body
+  result = call_613518.call(nil, nil, nil, nil, body_613519)
 
-var deletePermissionPolicy* = Call_DeletePermissionPolicy_606436(
+var deletePermissionPolicy* = Call_DeletePermissionPolicy_613505(
     name: "deletePermissionPolicy", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeletePermissionPolicy",
-    validator: validate_DeletePermissionPolicy_606437, base: "/",
-    url: url_DeletePermissionPolicy_606438, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeletePermissionPolicy_613506, base: "/",
+    url: url_DeletePermissionPolicy_613507, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRateBasedRule_606451 = ref object of OpenApiRestCall_605589
-proc url_DeleteRateBasedRule_606453(protocol: Scheme; host: string; base: string;
+  Call_DeleteRateBasedRule_613520 = ref object of OpenApiRestCall_612658
+proc url_DeleteRateBasedRule_613522(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2175,7 +2175,7 @@ proc url_DeleteRateBasedRule_606453(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_DeleteRateBasedRule_606452(path: JsonNode; query: JsonNode;
+proc validate_DeleteRateBasedRule_613521(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>RateBasedRule</a>. You can't delete a rule if it's still used in any <code>WebACL</code> objects or if it still includes any predicates, such as <code>ByteMatchSet</code> objects.</p> <p>If you just want to remove a rule from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>RateBasedRule</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>RateBasedRule</code> to remove predicates, if any. For more information, see <a>UpdateRateBasedRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRateBasedRule</code> request.</p> </li> <li> <p>Submit a <code>DeleteRateBasedRule</code> request.</p> </li> </ol>
@@ -2196,46 +2196,46 @@ proc validate_DeleteRateBasedRule_606452(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606454 = header.getOrDefault("X-Amz-Target")
-  valid_606454 = validateParameter(valid_606454, JString, required = true, default = newJString(
+  var valid_613523 = header.getOrDefault("X-Amz-Target")
+  valid_613523 = validateParameter(valid_613523, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteRateBasedRule"))
-  if valid_606454 != nil:
-    section.add "X-Amz-Target", valid_606454
-  var valid_606455 = header.getOrDefault("X-Amz-Signature")
-  valid_606455 = validateParameter(valid_606455, JString, required = false,
+  if valid_613523 != nil:
+    section.add "X-Amz-Target", valid_613523
+  var valid_613524 = header.getOrDefault("X-Amz-Signature")
+  valid_613524 = validateParameter(valid_613524, JString, required = false,
                                  default = nil)
-  if valid_606455 != nil:
-    section.add "X-Amz-Signature", valid_606455
-  var valid_606456 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606456 = validateParameter(valid_606456, JString, required = false,
+  if valid_613524 != nil:
+    section.add "X-Amz-Signature", valid_613524
+  var valid_613525 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613525 = validateParameter(valid_613525, JString, required = false,
                                  default = nil)
-  if valid_606456 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606456
-  var valid_606457 = header.getOrDefault("X-Amz-Date")
-  valid_606457 = validateParameter(valid_606457, JString, required = false,
+  if valid_613525 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613525
+  var valid_613526 = header.getOrDefault("X-Amz-Date")
+  valid_613526 = validateParameter(valid_613526, JString, required = false,
                                  default = nil)
-  if valid_606457 != nil:
-    section.add "X-Amz-Date", valid_606457
-  var valid_606458 = header.getOrDefault("X-Amz-Credential")
-  valid_606458 = validateParameter(valid_606458, JString, required = false,
+  if valid_613526 != nil:
+    section.add "X-Amz-Date", valid_613526
+  var valid_613527 = header.getOrDefault("X-Amz-Credential")
+  valid_613527 = validateParameter(valid_613527, JString, required = false,
                                  default = nil)
-  if valid_606458 != nil:
-    section.add "X-Amz-Credential", valid_606458
-  var valid_606459 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606459 = validateParameter(valid_606459, JString, required = false,
+  if valid_613527 != nil:
+    section.add "X-Amz-Credential", valid_613527
+  var valid_613528 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613528 = validateParameter(valid_613528, JString, required = false,
                                  default = nil)
-  if valid_606459 != nil:
-    section.add "X-Amz-Security-Token", valid_606459
-  var valid_606460 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606460 = validateParameter(valid_606460, JString, required = false,
+  if valid_613528 != nil:
+    section.add "X-Amz-Security-Token", valid_613528
+  var valid_613529 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613529 = validateParameter(valid_613529, JString, required = false,
                                  default = nil)
-  if valid_606460 != nil:
-    section.add "X-Amz-Algorithm", valid_606460
-  var valid_606461 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606461 = validateParameter(valid_606461, JString, required = false,
+  if valid_613529 != nil:
+    section.add "X-Amz-Algorithm", valid_613529
+  var valid_613530 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613530 = validateParameter(valid_613530, JString, required = false,
                                  default = nil)
-  if valid_606461 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606461
+  if valid_613530 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613530
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2246,37 +2246,37 @@ proc validate_DeleteRateBasedRule_606452(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606463: Call_DeleteRateBasedRule_606451; path: JsonNode;
+proc call*(call_613532: Call_DeleteRateBasedRule_613520; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>RateBasedRule</a>. You can't delete a rule if it's still used in any <code>WebACL</code> objects or if it still includes any predicates, such as <code>ByteMatchSet</code> objects.</p> <p>If you just want to remove a rule from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>RateBasedRule</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>RateBasedRule</code> to remove predicates, if any. For more information, see <a>UpdateRateBasedRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRateBasedRule</code> request.</p> </li> <li> <p>Submit a <code>DeleteRateBasedRule</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606463.validator(path, query, header, formData, body)
-  let scheme = call_606463.pickScheme
+  let valid = call_613532.validator(path, query, header, formData, body)
+  let scheme = call_613532.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606463.url(scheme.get, call_606463.host, call_606463.base,
-                         call_606463.route, valid.getOrDefault("path"),
+  let url = call_613532.url(scheme.get, call_613532.host, call_613532.base,
+                         call_613532.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606463, url, valid)
+  result = atozHook(call_613532, url, valid)
 
-proc call*(call_606464: Call_DeleteRateBasedRule_606451; body: JsonNode): Recallable =
+proc call*(call_613533: Call_DeleteRateBasedRule_613520; body: JsonNode): Recallable =
   ## deleteRateBasedRule
   ## <p>Permanently deletes a <a>RateBasedRule</a>. You can't delete a rule if it's still used in any <code>WebACL</code> objects or if it still includes any predicates, such as <code>ByteMatchSet</code> objects.</p> <p>If you just want to remove a rule from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>RateBasedRule</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>RateBasedRule</code> to remove predicates, if any. For more information, see <a>UpdateRateBasedRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRateBasedRule</code> request.</p> </li> <li> <p>Submit a <code>DeleteRateBasedRule</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606465 = newJObject()
+  var body_613534 = newJObject()
   if body != nil:
-    body_606465 = body
-  result = call_606464.call(nil, nil, nil, nil, body_606465)
+    body_613534 = body
+  result = call_613533.call(nil, nil, nil, nil, body_613534)
 
-var deleteRateBasedRule* = Call_DeleteRateBasedRule_606451(
+var deleteRateBasedRule* = Call_DeleteRateBasedRule_613520(
     name: "deleteRateBasedRule", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteRateBasedRule",
-    validator: validate_DeleteRateBasedRule_606452, base: "/",
-    url: url_DeleteRateBasedRule_606453, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteRateBasedRule_613521, base: "/",
+    url: url_DeleteRateBasedRule_613522, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRegexMatchSet_606466 = ref object of OpenApiRestCall_605589
-proc url_DeleteRegexMatchSet_606468(protocol: Scheme; host: string; base: string;
+  Call_DeleteRegexMatchSet_613535 = ref object of OpenApiRestCall_612658
+proc url_DeleteRegexMatchSet_613537(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2288,7 +2288,7 @@ proc url_DeleteRegexMatchSet_606468(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_DeleteRegexMatchSet_606467(path: JsonNode; query: JsonNode;
+proc validate_DeleteRegexMatchSet_613536(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>RegexMatchSet</a>. You can't delete a <code>RegexMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any <code>RegexMatchTuples</code> objects (any filters).</p> <p>If you just want to remove a <code>RegexMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>RegexMatchSet</code> to remove filters, if any. For more information, see <a>UpdateRegexMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRegexMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteRegexMatchSet</code> request.</p> </li> </ol>
@@ -2309,46 +2309,46 @@ proc validate_DeleteRegexMatchSet_606467(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606469 = header.getOrDefault("X-Amz-Target")
-  valid_606469 = validateParameter(valid_606469, JString, required = true, default = newJString(
+  var valid_613538 = header.getOrDefault("X-Amz-Target")
+  valid_613538 = validateParameter(valid_613538, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteRegexMatchSet"))
-  if valid_606469 != nil:
-    section.add "X-Amz-Target", valid_606469
-  var valid_606470 = header.getOrDefault("X-Amz-Signature")
-  valid_606470 = validateParameter(valid_606470, JString, required = false,
+  if valid_613538 != nil:
+    section.add "X-Amz-Target", valid_613538
+  var valid_613539 = header.getOrDefault("X-Amz-Signature")
+  valid_613539 = validateParameter(valid_613539, JString, required = false,
                                  default = nil)
-  if valid_606470 != nil:
-    section.add "X-Amz-Signature", valid_606470
-  var valid_606471 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606471 = validateParameter(valid_606471, JString, required = false,
+  if valid_613539 != nil:
+    section.add "X-Amz-Signature", valid_613539
+  var valid_613540 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613540 = validateParameter(valid_613540, JString, required = false,
                                  default = nil)
-  if valid_606471 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606471
-  var valid_606472 = header.getOrDefault("X-Amz-Date")
-  valid_606472 = validateParameter(valid_606472, JString, required = false,
+  if valid_613540 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613540
+  var valid_613541 = header.getOrDefault("X-Amz-Date")
+  valid_613541 = validateParameter(valid_613541, JString, required = false,
                                  default = nil)
-  if valid_606472 != nil:
-    section.add "X-Amz-Date", valid_606472
-  var valid_606473 = header.getOrDefault("X-Amz-Credential")
-  valid_606473 = validateParameter(valid_606473, JString, required = false,
+  if valid_613541 != nil:
+    section.add "X-Amz-Date", valid_613541
+  var valid_613542 = header.getOrDefault("X-Amz-Credential")
+  valid_613542 = validateParameter(valid_613542, JString, required = false,
                                  default = nil)
-  if valid_606473 != nil:
-    section.add "X-Amz-Credential", valid_606473
-  var valid_606474 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606474 = validateParameter(valid_606474, JString, required = false,
+  if valid_613542 != nil:
+    section.add "X-Amz-Credential", valid_613542
+  var valid_613543 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613543 = validateParameter(valid_613543, JString, required = false,
                                  default = nil)
-  if valid_606474 != nil:
-    section.add "X-Amz-Security-Token", valid_606474
-  var valid_606475 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606475 = validateParameter(valid_606475, JString, required = false,
+  if valid_613543 != nil:
+    section.add "X-Amz-Security-Token", valid_613543
+  var valid_613544 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613544 = validateParameter(valid_613544, JString, required = false,
                                  default = nil)
-  if valid_606475 != nil:
-    section.add "X-Amz-Algorithm", valid_606475
-  var valid_606476 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606476 = validateParameter(valid_606476, JString, required = false,
+  if valid_613544 != nil:
+    section.add "X-Amz-Algorithm", valid_613544
+  var valid_613545 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613545 = validateParameter(valid_613545, JString, required = false,
                                  default = nil)
-  if valid_606476 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606476
+  if valid_613545 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613545
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2359,37 +2359,37 @@ proc validate_DeleteRegexMatchSet_606467(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606478: Call_DeleteRegexMatchSet_606466; path: JsonNode;
+proc call*(call_613547: Call_DeleteRegexMatchSet_613535; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>RegexMatchSet</a>. You can't delete a <code>RegexMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any <code>RegexMatchTuples</code> objects (any filters).</p> <p>If you just want to remove a <code>RegexMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>RegexMatchSet</code> to remove filters, if any. For more information, see <a>UpdateRegexMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRegexMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteRegexMatchSet</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606478.validator(path, query, header, formData, body)
-  let scheme = call_606478.pickScheme
+  let valid = call_613547.validator(path, query, header, formData, body)
+  let scheme = call_613547.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606478.url(scheme.get, call_606478.host, call_606478.base,
-                         call_606478.route, valid.getOrDefault("path"),
+  let url = call_613547.url(scheme.get, call_613547.host, call_613547.base,
+                         call_613547.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606478, url, valid)
+  result = atozHook(call_613547, url, valid)
 
-proc call*(call_606479: Call_DeleteRegexMatchSet_606466; body: JsonNode): Recallable =
+proc call*(call_613548: Call_DeleteRegexMatchSet_613535; body: JsonNode): Recallable =
   ## deleteRegexMatchSet
   ## <p>Permanently deletes a <a>RegexMatchSet</a>. You can't delete a <code>RegexMatchSet</code> if it's still used in any <code>Rules</code> or if it still includes any <code>RegexMatchTuples</code> objects (any filters).</p> <p>If you just want to remove a <code>RegexMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>RegexMatchSet</code> to remove filters, if any. For more information, see <a>UpdateRegexMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRegexMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteRegexMatchSet</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606480 = newJObject()
+  var body_613549 = newJObject()
   if body != nil:
-    body_606480 = body
-  result = call_606479.call(nil, nil, nil, nil, body_606480)
+    body_613549 = body
+  result = call_613548.call(nil, nil, nil, nil, body_613549)
 
-var deleteRegexMatchSet* = Call_DeleteRegexMatchSet_606466(
+var deleteRegexMatchSet* = Call_DeleteRegexMatchSet_613535(
     name: "deleteRegexMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteRegexMatchSet",
-    validator: validate_DeleteRegexMatchSet_606467, base: "/",
-    url: url_DeleteRegexMatchSet_606468, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteRegexMatchSet_613536, base: "/",
+    url: url_DeleteRegexMatchSet_613537, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRegexPatternSet_606481 = ref object of OpenApiRestCall_605589
-proc url_DeleteRegexPatternSet_606483(protocol: Scheme; host: string; base: string;
+  Call_DeleteRegexPatternSet_613550 = ref object of OpenApiRestCall_612658
+proc url_DeleteRegexPatternSet_613552(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2401,7 +2401,7 @@ proc url_DeleteRegexPatternSet_606483(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_DeleteRegexPatternSet_606482(path: JsonNode; query: JsonNode;
+proc validate_DeleteRegexPatternSet_613551(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Permanently deletes a <a>RegexPatternSet</a>. You can't delete a <code>RegexPatternSet</code> if it's still used in any <code>RegexMatchSet</code> or if the <code>RegexPatternSet</code> is not empty. 
   ## 
@@ -2421,46 +2421,46 @@ proc validate_DeleteRegexPatternSet_606482(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606484 = header.getOrDefault("X-Amz-Target")
-  valid_606484 = validateParameter(valid_606484, JString, required = true, default = newJString(
+  var valid_613553 = header.getOrDefault("X-Amz-Target")
+  valid_613553 = validateParameter(valid_613553, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteRegexPatternSet"))
-  if valid_606484 != nil:
-    section.add "X-Amz-Target", valid_606484
-  var valid_606485 = header.getOrDefault("X-Amz-Signature")
-  valid_606485 = validateParameter(valid_606485, JString, required = false,
+  if valid_613553 != nil:
+    section.add "X-Amz-Target", valid_613553
+  var valid_613554 = header.getOrDefault("X-Amz-Signature")
+  valid_613554 = validateParameter(valid_613554, JString, required = false,
                                  default = nil)
-  if valid_606485 != nil:
-    section.add "X-Amz-Signature", valid_606485
-  var valid_606486 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606486 = validateParameter(valid_606486, JString, required = false,
+  if valid_613554 != nil:
+    section.add "X-Amz-Signature", valid_613554
+  var valid_613555 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613555 = validateParameter(valid_613555, JString, required = false,
                                  default = nil)
-  if valid_606486 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606486
-  var valid_606487 = header.getOrDefault("X-Amz-Date")
-  valid_606487 = validateParameter(valid_606487, JString, required = false,
+  if valid_613555 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613555
+  var valid_613556 = header.getOrDefault("X-Amz-Date")
+  valid_613556 = validateParameter(valid_613556, JString, required = false,
                                  default = nil)
-  if valid_606487 != nil:
-    section.add "X-Amz-Date", valid_606487
-  var valid_606488 = header.getOrDefault("X-Amz-Credential")
-  valid_606488 = validateParameter(valid_606488, JString, required = false,
+  if valid_613556 != nil:
+    section.add "X-Amz-Date", valid_613556
+  var valid_613557 = header.getOrDefault("X-Amz-Credential")
+  valid_613557 = validateParameter(valid_613557, JString, required = false,
                                  default = nil)
-  if valid_606488 != nil:
-    section.add "X-Amz-Credential", valid_606488
-  var valid_606489 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606489 = validateParameter(valid_606489, JString, required = false,
+  if valid_613557 != nil:
+    section.add "X-Amz-Credential", valid_613557
+  var valid_613558 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613558 = validateParameter(valid_613558, JString, required = false,
                                  default = nil)
-  if valid_606489 != nil:
-    section.add "X-Amz-Security-Token", valid_606489
-  var valid_606490 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606490 = validateParameter(valid_606490, JString, required = false,
+  if valid_613558 != nil:
+    section.add "X-Amz-Security-Token", valid_613558
+  var valid_613559 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613559 = validateParameter(valid_613559, JString, required = false,
                                  default = nil)
-  if valid_606490 != nil:
-    section.add "X-Amz-Algorithm", valid_606490
-  var valid_606491 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606491 = validateParameter(valid_606491, JString, required = false,
+  if valid_613559 != nil:
+    section.add "X-Amz-Algorithm", valid_613559
+  var valid_613560 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613560 = validateParameter(valid_613560, JString, required = false,
                                  default = nil)
-  if valid_606491 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606491
+  if valid_613560 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613560
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2471,37 +2471,37 @@ proc validate_DeleteRegexPatternSet_606482(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606493: Call_DeleteRegexPatternSet_606481; path: JsonNode;
+proc call*(call_613562: Call_DeleteRegexPatternSet_613550; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Permanently deletes a <a>RegexPatternSet</a>. You can't delete a <code>RegexPatternSet</code> if it's still used in any <code>RegexMatchSet</code> or if the <code>RegexPatternSet</code> is not empty. 
   ## 
-  let valid = call_606493.validator(path, query, header, formData, body)
-  let scheme = call_606493.pickScheme
+  let valid = call_613562.validator(path, query, header, formData, body)
+  let scheme = call_613562.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606493.url(scheme.get, call_606493.host, call_606493.base,
-                         call_606493.route, valid.getOrDefault("path"),
+  let url = call_613562.url(scheme.get, call_613562.host, call_613562.base,
+                         call_613562.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606493, url, valid)
+  result = atozHook(call_613562, url, valid)
 
-proc call*(call_606494: Call_DeleteRegexPatternSet_606481; body: JsonNode): Recallable =
+proc call*(call_613563: Call_DeleteRegexPatternSet_613550; body: JsonNode): Recallable =
   ## deleteRegexPatternSet
   ## Permanently deletes a <a>RegexPatternSet</a>. You can't delete a <code>RegexPatternSet</code> if it's still used in any <code>RegexMatchSet</code> or if the <code>RegexPatternSet</code> is not empty. 
   ##   body: JObject (required)
-  var body_606495 = newJObject()
+  var body_613564 = newJObject()
   if body != nil:
-    body_606495 = body
-  result = call_606494.call(nil, nil, nil, nil, body_606495)
+    body_613564 = body
+  result = call_613563.call(nil, nil, nil, nil, body_613564)
 
-var deleteRegexPatternSet* = Call_DeleteRegexPatternSet_606481(
+var deleteRegexPatternSet* = Call_DeleteRegexPatternSet_613550(
     name: "deleteRegexPatternSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteRegexPatternSet",
-    validator: validate_DeleteRegexPatternSet_606482, base: "/",
-    url: url_DeleteRegexPatternSet_606483, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteRegexPatternSet_613551, base: "/",
+    url: url_DeleteRegexPatternSet_613552, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRule_606496 = ref object of OpenApiRestCall_605589
-proc url_DeleteRule_606498(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteRule_613565 = ref object of OpenApiRestCall_612658
+proc url_DeleteRule_613567(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2513,7 +2513,7 @@ proc url_DeleteRule_606498(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_DeleteRule_606497(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteRule_613566(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>Rule</a>. You can't delete a <code>Rule</code> if it's still used in any <code>WebACL</code> objects or if it still includes any predicates, such as <code>ByteMatchSet</code> objects.</p> <p>If you just want to remove a <code>Rule</code> from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>Rule</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>Rule</code> to remove predicates, if any. For more information, see <a>UpdateRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRule</code> request.</p> </li> <li> <p>Submit a <code>DeleteRule</code> request.</p> </li> </ol>
   ## 
@@ -2533,46 +2533,46 @@ proc validate_DeleteRule_606497(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606499 = header.getOrDefault("X-Amz-Target")
-  valid_606499 = validateParameter(valid_606499, JString, required = true, default = newJString(
+  var valid_613568 = header.getOrDefault("X-Amz-Target")
+  valid_613568 = validateParameter(valid_613568, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteRule"))
-  if valid_606499 != nil:
-    section.add "X-Amz-Target", valid_606499
-  var valid_606500 = header.getOrDefault("X-Amz-Signature")
-  valid_606500 = validateParameter(valid_606500, JString, required = false,
+  if valid_613568 != nil:
+    section.add "X-Amz-Target", valid_613568
+  var valid_613569 = header.getOrDefault("X-Amz-Signature")
+  valid_613569 = validateParameter(valid_613569, JString, required = false,
                                  default = nil)
-  if valid_606500 != nil:
-    section.add "X-Amz-Signature", valid_606500
-  var valid_606501 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606501 = validateParameter(valid_606501, JString, required = false,
+  if valid_613569 != nil:
+    section.add "X-Amz-Signature", valid_613569
+  var valid_613570 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613570 = validateParameter(valid_613570, JString, required = false,
                                  default = nil)
-  if valid_606501 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606501
-  var valid_606502 = header.getOrDefault("X-Amz-Date")
-  valid_606502 = validateParameter(valid_606502, JString, required = false,
+  if valid_613570 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613570
+  var valid_613571 = header.getOrDefault("X-Amz-Date")
+  valid_613571 = validateParameter(valid_613571, JString, required = false,
                                  default = nil)
-  if valid_606502 != nil:
-    section.add "X-Amz-Date", valid_606502
-  var valid_606503 = header.getOrDefault("X-Amz-Credential")
-  valid_606503 = validateParameter(valid_606503, JString, required = false,
+  if valid_613571 != nil:
+    section.add "X-Amz-Date", valid_613571
+  var valid_613572 = header.getOrDefault("X-Amz-Credential")
+  valid_613572 = validateParameter(valid_613572, JString, required = false,
                                  default = nil)
-  if valid_606503 != nil:
-    section.add "X-Amz-Credential", valid_606503
-  var valid_606504 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606504 = validateParameter(valid_606504, JString, required = false,
+  if valid_613572 != nil:
+    section.add "X-Amz-Credential", valid_613572
+  var valid_613573 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613573 = validateParameter(valid_613573, JString, required = false,
                                  default = nil)
-  if valid_606504 != nil:
-    section.add "X-Amz-Security-Token", valid_606504
-  var valid_606505 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606505 = validateParameter(valid_606505, JString, required = false,
+  if valid_613573 != nil:
+    section.add "X-Amz-Security-Token", valid_613573
+  var valid_613574 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613574 = validateParameter(valid_613574, JString, required = false,
                                  default = nil)
-  if valid_606505 != nil:
-    section.add "X-Amz-Algorithm", valid_606505
-  var valid_606506 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606506 = validateParameter(valid_606506, JString, required = false,
+  if valid_613574 != nil:
+    section.add "X-Amz-Algorithm", valid_613574
+  var valid_613575 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613575 = validateParameter(valid_613575, JString, required = false,
                                  default = nil)
-  if valid_606506 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606506
+  if valid_613575 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613575
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2583,37 +2583,37 @@ proc validate_DeleteRule_606497(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_606508: Call_DeleteRule_606496; path: JsonNode; query: JsonNode;
+proc call*(call_613577: Call_DeleteRule_613565; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>Rule</a>. You can't delete a <code>Rule</code> if it's still used in any <code>WebACL</code> objects or if it still includes any predicates, such as <code>ByteMatchSet</code> objects.</p> <p>If you just want to remove a <code>Rule</code> from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>Rule</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>Rule</code> to remove predicates, if any. For more information, see <a>UpdateRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRule</code> request.</p> </li> <li> <p>Submit a <code>DeleteRule</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606508.validator(path, query, header, formData, body)
-  let scheme = call_606508.pickScheme
+  let valid = call_613577.validator(path, query, header, formData, body)
+  let scheme = call_613577.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606508.url(scheme.get, call_606508.host, call_606508.base,
-                         call_606508.route, valid.getOrDefault("path"),
+  let url = call_613577.url(scheme.get, call_613577.host, call_613577.base,
+                         call_613577.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606508, url, valid)
+  result = atozHook(call_613577, url, valid)
 
-proc call*(call_606509: Call_DeleteRule_606496; body: JsonNode): Recallable =
+proc call*(call_613578: Call_DeleteRule_613565; body: JsonNode): Recallable =
   ## deleteRule
   ## <p>Permanently deletes a <a>Rule</a>. You can't delete a <code>Rule</code> if it's still used in any <code>WebACL</code> objects or if it still includes any predicates, such as <code>ByteMatchSet</code> objects.</p> <p>If you just want to remove a <code>Rule</code> from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>Rule</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>Rule</code> to remove predicates, if any. For more information, see <a>UpdateRule</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRule</code> request.</p> </li> <li> <p>Submit a <code>DeleteRule</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606510 = newJObject()
+  var body_613579 = newJObject()
   if body != nil:
-    body_606510 = body
-  result = call_606509.call(nil, nil, nil, nil, body_606510)
+    body_613579 = body
+  result = call_613578.call(nil, nil, nil, nil, body_613579)
 
-var deleteRule* = Call_DeleteRule_606496(name: "deleteRule",
+var deleteRule* = Call_DeleteRule_613565(name: "deleteRule",
                                       meth: HttpMethod.HttpPost,
                                       host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteRule",
-                                      validator: validate_DeleteRule_606497,
-                                      base: "/", url: url_DeleteRule_606498,
+                                      validator: validate_DeleteRule_613566,
+                                      base: "/", url: url_DeleteRule_613567,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRuleGroup_606511 = ref object of OpenApiRestCall_605589
-proc url_DeleteRuleGroup_606513(protocol: Scheme; host: string; base: string;
+  Call_DeleteRuleGroup_613580 = ref object of OpenApiRestCall_612658
+proc url_DeleteRuleGroup_613582(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2625,7 +2625,7 @@ proc url_DeleteRuleGroup_606513(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteRuleGroup_606512(path: JsonNode; query: JsonNode;
+proc validate_DeleteRuleGroup_613581(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>RuleGroup</a>. You can't delete a <code>RuleGroup</code> if it's still used in any <code>WebACL</code> objects or if it still includes any rules.</p> <p>If you just want to remove a <code>RuleGroup</code> from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>RuleGroup</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>RuleGroup</code> to remove rules, if any. For more information, see <a>UpdateRuleGroup</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRuleGroup</code> request.</p> </li> <li> <p>Submit a <code>DeleteRuleGroup</code> request.</p> </li> </ol>
@@ -2646,46 +2646,46 @@ proc validate_DeleteRuleGroup_606512(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606514 = header.getOrDefault("X-Amz-Target")
-  valid_606514 = validateParameter(valid_606514, JString, required = true, default = newJString(
+  var valid_613583 = header.getOrDefault("X-Amz-Target")
+  valid_613583 = validateParameter(valid_613583, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteRuleGroup"))
-  if valid_606514 != nil:
-    section.add "X-Amz-Target", valid_606514
-  var valid_606515 = header.getOrDefault("X-Amz-Signature")
-  valid_606515 = validateParameter(valid_606515, JString, required = false,
+  if valid_613583 != nil:
+    section.add "X-Amz-Target", valid_613583
+  var valid_613584 = header.getOrDefault("X-Amz-Signature")
+  valid_613584 = validateParameter(valid_613584, JString, required = false,
                                  default = nil)
-  if valid_606515 != nil:
-    section.add "X-Amz-Signature", valid_606515
-  var valid_606516 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606516 = validateParameter(valid_606516, JString, required = false,
+  if valid_613584 != nil:
+    section.add "X-Amz-Signature", valid_613584
+  var valid_613585 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613585 = validateParameter(valid_613585, JString, required = false,
                                  default = nil)
-  if valid_606516 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606516
-  var valid_606517 = header.getOrDefault("X-Amz-Date")
-  valid_606517 = validateParameter(valid_606517, JString, required = false,
+  if valid_613585 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613585
+  var valid_613586 = header.getOrDefault("X-Amz-Date")
+  valid_613586 = validateParameter(valid_613586, JString, required = false,
                                  default = nil)
-  if valid_606517 != nil:
-    section.add "X-Amz-Date", valid_606517
-  var valid_606518 = header.getOrDefault("X-Amz-Credential")
-  valid_606518 = validateParameter(valid_606518, JString, required = false,
+  if valid_613586 != nil:
+    section.add "X-Amz-Date", valid_613586
+  var valid_613587 = header.getOrDefault("X-Amz-Credential")
+  valid_613587 = validateParameter(valid_613587, JString, required = false,
                                  default = nil)
-  if valid_606518 != nil:
-    section.add "X-Amz-Credential", valid_606518
-  var valid_606519 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606519 = validateParameter(valid_606519, JString, required = false,
+  if valid_613587 != nil:
+    section.add "X-Amz-Credential", valid_613587
+  var valid_613588 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613588 = validateParameter(valid_613588, JString, required = false,
                                  default = nil)
-  if valid_606519 != nil:
-    section.add "X-Amz-Security-Token", valid_606519
-  var valid_606520 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606520 = validateParameter(valid_606520, JString, required = false,
+  if valid_613588 != nil:
+    section.add "X-Amz-Security-Token", valid_613588
+  var valid_613589 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613589 = validateParameter(valid_613589, JString, required = false,
                                  default = nil)
-  if valid_606520 != nil:
-    section.add "X-Amz-Algorithm", valid_606520
-  var valid_606521 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606521 = validateParameter(valid_606521, JString, required = false,
+  if valid_613589 != nil:
+    section.add "X-Amz-Algorithm", valid_613589
+  var valid_613590 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613590 = validateParameter(valid_613590, JString, required = false,
                                  default = nil)
-  if valid_606521 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606521
+  if valid_613590 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613590
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2696,36 +2696,36 @@ proc validate_DeleteRuleGroup_606512(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606523: Call_DeleteRuleGroup_606511; path: JsonNode; query: JsonNode;
+proc call*(call_613592: Call_DeleteRuleGroup_613580; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>RuleGroup</a>. You can't delete a <code>RuleGroup</code> if it's still used in any <code>WebACL</code> objects or if it still includes any rules.</p> <p>If you just want to remove a <code>RuleGroup</code> from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>RuleGroup</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>RuleGroup</code> to remove rules, if any. For more information, see <a>UpdateRuleGroup</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRuleGroup</code> request.</p> </li> <li> <p>Submit a <code>DeleteRuleGroup</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606523.validator(path, query, header, formData, body)
-  let scheme = call_606523.pickScheme
+  let valid = call_613592.validator(path, query, header, formData, body)
+  let scheme = call_613592.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606523.url(scheme.get, call_606523.host, call_606523.base,
-                         call_606523.route, valid.getOrDefault("path"),
+  let url = call_613592.url(scheme.get, call_613592.host, call_613592.base,
+                         call_613592.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606523, url, valid)
+  result = atozHook(call_613592, url, valid)
 
-proc call*(call_606524: Call_DeleteRuleGroup_606511; body: JsonNode): Recallable =
+proc call*(call_613593: Call_DeleteRuleGroup_613580; body: JsonNode): Recallable =
   ## deleteRuleGroup
   ## <p>Permanently deletes a <a>RuleGroup</a>. You can't delete a <code>RuleGroup</code> if it's still used in any <code>WebACL</code> objects or if it still includes any rules.</p> <p>If you just want to remove a <code>RuleGroup</code> from a <code>WebACL</code>, use <a>UpdateWebACL</a>.</p> <p>To permanently delete a <code>RuleGroup</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>RuleGroup</code> to remove rules, if any. For more information, see <a>UpdateRuleGroup</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteRuleGroup</code> request.</p> </li> <li> <p>Submit a <code>DeleteRuleGroup</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606525 = newJObject()
+  var body_613594 = newJObject()
   if body != nil:
-    body_606525 = body
-  result = call_606524.call(nil, nil, nil, nil, body_606525)
+    body_613594 = body
+  result = call_613593.call(nil, nil, nil, nil, body_613594)
 
-var deleteRuleGroup* = Call_DeleteRuleGroup_606511(name: "deleteRuleGroup",
+var deleteRuleGroup* = Call_DeleteRuleGroup_613580(name: "deleteRuleGroup",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteRuleGroup",
-    validator: validate_DeleteRuleGroup_606512, base: "/", url: url_DeleteRuleGroup_606513,
+    validator: validate_DeleteRuleGroup_613581, base: "/", url: url_DeleteRuleGroup_613582,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSizeConstraintSet_606526 = ref object of OpenApiRestCall_605589
-proc url_DeleteSizeConstraintSet_606528(protocol: Scheme; host: string; base: string;
+  Call_DeleteSizeConstraintSet_613595 = ref object of OpenApiRestCall_612658
+proc url_DeleteSizeConstraintSet_613597(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -2738,7 +2738,7 @@ proc url_DeleteSizeConstraintSet_606528(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_DeleteSizeConstraintSet_606527(path: JsonNode; query: JsonNode;
+proc validate_DeleteSizeConstraintSet_613596(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>SizeConstraintSet</a>. You can't delete a <code>SizeConstraintSet</code> if it's still used in any <code>Rules</code> or if it still includes any <a>SizeConstraint</a> objects (any filters).</p> <p>If you just want to remove a <code>SizeConstraintSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>SizeConstraintSet</code> to remove filters, if any. For more information, see <a>UpdateSizeConstraintSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteSizeConstraintSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteSizeConstraintSet</code> request.</p> </li> </ol>
   ## 
@@ -2758,46 +2758,46 @@ proc validate_DeleteSizeConstraintSet_606527(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606529 = header.getOrDefault("X-Amz-Target")
-  valid_606529 = validateParameter(valid_606529, JString, required = true, default = newJString(
+  var valid_613598 = header.getOrDefault("X-Amz-Target")
+  valid_613598 = validateParameter(valid_613598, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteSizeConstraintSet"))
-  if valid_606529 != nil:
-    section.add "X-Amz-Target", valid_606529
-  var valid_606530 = header.getOrDefault("X-Amz-Signature")
-  valid_606530 = validateParameter(valid_606530, JString, required = false,
+  if valid_613598 != nil:
+    section.add "X-Amz-Target", valid_613598
+  var valid_613599 = header.getOrDefault("X-Amz-Signature")
+  valid_613599 = validateParameter(valid_613599, JString, required = false,
                                  default = nil)
-  if valid_606530 != nil:
-    section.add "X-Amz-Signature", valid_606530
-  var valid_606531 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606531 = validateParameter(valid_606531, JString, required = false,
+  if valid_613599 != nil:
+    section.add "X-Amz-Signature", valid_613599
+  var valid_613600 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613600 = validateParameter(valid_613600, JString, required = false,
                                  default = nil)
-  if valid_606531 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606531
-  var valid_606532 = header.getOrDefault("X-Amz-Date")
-  valid_606532 = validateParameter(valid_606532, JString, required = false,
+  if valid_613600 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613600
+  var valid_613601 = header.getOrDefault("X-Amz-Date")
+  valid_613601 = validateParameter(valid_613601, JString, required = false,
                                  default = nil)
-  if valid_606532 != nil:
-    section.add "X-Amz-Date", valid_606532
-  var valid_606533 = header.getOrDefault("X-Amz-Credential")
-  valid_606533 = validateParameter(valid_606533, JString, required = false,
+  if valid_613601 != nil:
+    section.add "X-Amz-Date", valid_613601
+  var valid_613602 = header.getOrDefault("X-Amz-Credential")
+  valid_613602 = validateParameter(valid_613602, JString, required = false,
                                  default = nil)
-  if valid_606533 != nil:
-    section.add "X-Amz-Credential", valid_606533
-  var valid_606534 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606534 = validateParameter(valid_606534, JString, required = false,
+  if valid_613602 != nil:
+    section.add "X-Amz-Credential", valid_613602
+  var valid_613603 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613603 = validateParameter(valid_613603, JString, required = false,
                                  default = nil)
-  if valid_606534 != nil:
-    section.add "X-Amz-Security-Token", valid_606534
-  var valid_606535 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606535 = validateParameter(valid_606535, JString, required = false,
+  if valid_613603 != nil:
+    section.add "X-Amz-Security-Token", valid_613603
+  var valid_613604 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613604 = validateParameter(valid_613604, JString, required = false,
                                  default = nil)
-  if valid_606535 != nil:
-    section.add "X-Amz-Algorithm", valid_606535
-  var valid_606536 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606536 = validateParameter(valid_606536, JString, required = false,
+  if valid_613604 != nil:
+    section.add "X-Amz-Algorithm", valid_613604
+  var valid_613605 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613605 = validateParameter(valid_613605, JString, required = false,
                                  default = nil)
-  if valid_606536 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606536
+  if valid_613605 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613605
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2808,37 +2808,37 @@ proc validate_DeleteSizeConstraintSet_606527(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606538: Call_DeleteSizeConstraintSet_606526; path: JsonNode;
+proc call*(call_613607: Call_DeleteSizeConstraintSet_613595; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>SizeConstraintSet</a>. You can't delete a <code>SizeConstraintSet</code> if it's still used in any <code>Rules</code> or if it still includes any <a>SizeConstraint</a> objects (any filters).</p> <p>If you just want to remove a <code>SizeConstraintSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>SizeConstraintSet</code> to remove filters, if any. For more information, see <a>UpdateSizeConstraintSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteSizeConstraintSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteSizeConstraintSet</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606538.validator(path, query, header, formData, body)
-  let scheme = call_606538.pickScheme
+  let valid = call_613607.validator(path, query, header, formData, body)
+  let scheme = call_613607.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606538.url(scheme.get, call_606538.host, call_606538.base,
-                         call_606538.route, valid.getOrDefault("path"),
+  let url = call_613607.url(scheme.get, call_613607.host, call_613607.base,
+                         call_613607.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606538, url, valid)
+  result = atozHook(call_613607, url, valid)
 
-proc call*(call_606539: Call_DeleteSizeConstraintSet_606526; body: JsonNode): Recallable =
+proc call*(call_613608: Call_DeleteSizeConstraintSet_613595; body: JsonNode): Recallable =
   ## deleteSizeConstraintSet
   ## <p>Permanently deletes a <a>SizeConstraintSet</a>. You can't delete a <code>SizeConstraintSet</code> if it's still used in any <code>Rules</code> or if it still includes any <a>SizeConstraint</a> objects (any filters).</p> <p>If you just want to remove a <code>SizeConstraintSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>SizeConstraintSet</code> to remove filters, if any. For more information, see <a>UpdateSizeConstraintSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteSizeConstraintSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteSizeConstraintSet</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606540 = newJObject()
+  var body_613609 = newJObject()
   if body != nil:
-    body_606540 = body
-  result = call_606539.call(nil, nil, nil, nil, body_606540)
+    body_613609 = body
+  result = call_613608.call(nil, nil, nil, nil, body_613609)
 
-var deleteSizeConstraintSet* = Call_DeleteSizeConstraintSet_606526(
+var deleteSizeConstraintSet* = Call_DeleteSizeConstraintSet_613595(
     name: "deleteSizeConstraintSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteSizeConstraintSet",
-    validator: validate_DeleteSizeConstraintSet_606527, base: "/",
-    url: url_DeleteSizeConstraintSet_606528, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteSizeConstraintSet_613596, base: "/",
+    url: url_DeleteSizeConstraintSet_613597, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSqlInjectionMatchSet_606541 = ref object of OpenApiRestCall_605589
-proc url_DeleteSqlInjectionMatchSet_606543(protocol: Scheme; host: string;
+  Call_DeleteSqlInjectionMatchSet_613610 = ref object of OpenApiRestCall_612658
+proc url_DeleteSqlInjectionMatchSet_613612(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2850,7 +2850,7 @@ proc url_DeleteSqlInjectionMatchSet_606543(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DeleteSqlInjectionMatchSet_606542(path: JsonNode; query: JsonNode;
+proc validate_DeleteSqlInjectionMatchSet_613611(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>SqlInjectionMatchSet</a>. You can't delete a <code>SqlInjectionMatchSet</code> if it's still used in any <code>Rules</code> or if it still contains any <a>SqlInjectionMatchTuple</a> objects.</p> <p>If you just want to remove a <code>SqlInjectionMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>SqlInjectionMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>SqlInjectionMatchSet</code> to remove filters, if any. For more information, see <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteSqlInjectionMatchSet</code> request.</p> </li> </ol>
   ## 
@@ -2870,46 +2870,46 @@ proc validate_DeleteSqlInjectionMatchSet_606542(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606544 = header.getOrDefault("X-Amz-Target")
-  valid_606544 = validateParameter(valid_606544, JString, required = true, default = newJString(
+  var valid_613613 = header.getOrDefault("X-Amz-Target")
+  valid_613613 = validateParameter(valid_613613, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteSqlInjectionMatchSet"))
-  if valid_606544 != nil:
-    section.add "X-Amz-Target", valid_606544
-  var valid_606545 = header.getOrDefault("X-Amz-Signature")
-  valid_606545 = validateParameter(valid_606545, JString, required = false,
+  if valid_613613 != nil:
+    section.add "X-Amz-Target", valid_613613
+  var valid_613614 = header.getOrDefault("X-Amz-Signature")
+  valid_613614 = validateParameter(valid_613614, JString, required = false,
                                  default = nil)
-  if valid_606545 != nil:
-    section.add "X-Amz-Signature", valid_606545
-  var valid_606546 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606546 = validateParameter(valid_606546, JString, required = false,
+  if valid_613614 != nil:
+    section.add "X-Amz-Signature", valid_613614
+  var valid_613615 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613615 = validateParameter(valid_613615, JString, required = false,
                                  default = nil)
-  if valid_606546 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606546
-  var valid_606547 = header.getOrDefault("X-Amz-Date")
-  valid_606547 = validateParameter(valid_606547, JString, required = false,
+  if valid_613615 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613615
+  var valid_613616 = header.getOrDefault("X-Amz-Date")
+  valid_613616 = validateParameter(valid_613616, JString, required = false,
                                  default = nil)
-  if valid_606547 != nil:
-    section.add "X-Amz-Date", valid_606547
-  var valid_606548 = header.getOrDefault("X-Amz-Credential")
-  valid_606548 = validateParameter(valid_606548, JString, required = false,
+  if valid_613616 != nil:
+    section.add "X-Amz-Date", valid_613616
+  var valid_613617 = header.getOrDefault("X-Amz-Credential")
+  valid_613617 = validateParameter(valid_613617, JString, required = false,
                                  default = nil)
-  if valid_606548 != nil:
-    section.add "X-Amz-Credential", valid_606548
-  var valid_606549 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606549 = validateParameter(valid_606549, JString, required = false,
+  if valid_613617 != nil:
+    section.add "X-Amz-Credential", valid_613617
+  var valid_613618 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613618 = validateParameter(valid_613618, JString, required = false,
                                  default = nil)
-  if valid_606549 != nil:
-    section.add "X-Amz-Security-Token", valid_606549
-  var valid_606550 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606550 = validateParameter(valid_606550, JString, required = false,
+  if valid_613618 != nil:
+    section.add "X-Amz-Security-Token", valid_613618
+  var valid_613619 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613619 = validateParameter(valid_613619, JString, required = false,
                                  default = nil)
-  if valid_606550 != nil:
-    section.add "X-Amz-Algorithm", valid_606550
-  var valid_606551 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606551 = validateParameter(valid_606551, JString, required = false,
+  if valid_613619 != nil:
+    section.add "X-Amz-Algorithm", valid_613619
+  var valid_613620 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613620 = validateParameter(valid_613620, JString, required = false,
                                  default = nil)
-  if valid_606551 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606551
+  if valid_613620 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613620
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2920,37 +2920,37 @@ proc validate_DeleteSqlInjectionMatchSet_606542(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606553: Call_DeleteSqlInjectionMatchSet_606541; path: JsonNode;
+proc call*(call_613622: Call_DeleteSqlInjectionMatchSet_613610; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>SqlInjectionMatchSet</a>. You can't delete a <code>SqlInjectionMatchSet</code> if it's still used in any <code>Rules</code> or if it still contains any <a>SqlInjectionMatchTuple</a> objects.</p> <p>If you just want to remove a <code>SqlInjectionMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>SqlInjectionMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>SqlInjectionMatchSet</code> to remove filters, if any. For more information, see <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteSqlInjectionMatchSet</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606553.validator(path, query, header, formData, body)
-  let scheme = call_606553.pickScheme
+  let valid = call_613622.validator(path, query, header, formData, body)
+  let scheme = call_613622.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606553.url(scheme.get, call_606553.host, call_606553.base,
-                         call_606553.route, valid.getOrDefault("path"),
+  let url = call_613622.url(scheme.get, call_613622.host, call_613622.base,
+                         call_613622.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606553, url, valid)
+  result = atozHook(call_613622, url, valid)
 
-proc call*(call_606554: Call_DeleteSqlInjectionMatchSet_606541; body: JsonNode): Recallable =
+proc call*(call_613623: Call_DeleteSqlInjectionMatchSet_613610; body: JsonNode): Recallable =
   ## deleteSqlInjectionMatchSet
   ## <p>Permanently deletes a <a>SqlInjectionMatchSet</a>. You can't delete a <code>SqlInjectionMatchSet</code> if it's still used in any <code>Rules</code> or if it still contains any <a>SqlInjectionMatchTuple</a> objects.</p> <p>If you just want to remove a <code>SqlInjectionMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete a <code>SqlInjectionMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>SqlInjectionMatchSet</code> to remove filters, if any. For more information, see <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteSqlInjectionMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteSqlInjectionMatchSet</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606555 = newJObject()
+  var body_613624 = newJObject()
   if body != nil:
-    body_606555 = body
-  result = call_606554.call(nil, nil, nil, nil, body_606555)
+    body_613624 = body
+  result = call_613623.call(nil, nil, nil, nil, body_613624)
 
-var deleteSqlInjectionMatchSet* = Call_DeleteSqlInjectionMatchSet_606541(
+var deleteSqlInjectionMatchSet* = Call_DeleteSqlInjectionMatchSet_613610(
     name: "deleteSqlInjectionMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteSqlInjectionMatchSet",
-    validator: validate_DeleteSqlInjectionMatchSet_606542, base: "/",
-    url: url_DeleteSqlInjectionMatchSet_606543,
+    validator: validate_DeleteSqlInjectionMatchSet_613611, base: "/",
+    url: url_DeleteSqlInjectionMatchSet_613612,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteWebACL_606556 = ref object of OpenApiRestCall_605589
-proc url_DeleteWebACL_606558(protocol: Scheme; host: string; base: string;
+  Call_DeleteWebACL_613625 = ref object of OpenApiRestCall_612658
+proc url_DeleteWebACL_613627(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2962,7 +2962,7 @@ proc url_DeleteWebACL_606558(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteWebACL_606557(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteWebACL_613626(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Permanently deletes a <a>WebACL</a>. You can't delete a <code>WebACL</code> if it still contains any <code>Rules</code>.</p> <p>To delete a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>WebACL</code> to remove <code>Rules</code>, if any. For more information, see <a>UpdateWebACL</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteWebACL</code> request.</p> </li> <li> <p>Submit a <code>DeleteWebACL</code> request.</p> </li> </ol>
   ## 
@@ -2982,46 +2982,46 @@ proc validate_DeleteWebACL_606557(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606559 = header.getOrDefault("X-Amz-Target")
-  valid_606559 = validateParameter(valid_606559, JString, required = true, default = newJString(
+  var valid_613628 = header.getOrDefault("X-Amz-Target")
+  valid_613628 = validateParameter(valid_613628, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteWebACL"))
-  if valid_606559 != nil:
-    section.add "X-Amz-Target", valid_606559
-  var valid_606560 = header.getOrDefault("X-Amz-Signature")
-  valid_606560 = validateParameter(valid_606560, JString, required = false,
+  if valid_613628 != nil:
+    section.add "X-Amz-Target", valid_613628
+  var valid_613629 = header.getOrDefault("X-Amz-Signature")
+  valid_613629 = validateParameter(valid_613629, JString, required = false,
                                  default = nil)
-  if valid_606560 != nil:
-    section.add "X-Amz-Signature", valid_606560
-  var valid_606561 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606561 = validateParameter(valid_606561, JString, required = false,
+  if valid_613629 != nil:
+    section.add "X-Amz-Signature", valid_613629
+  var valid_613630 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613630 = validateParameter(valid_613630, JString, required = false,
                                  default = nil)
-  if valid_606561 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606561
-  var valid_606562 = header.getOrDefault("X-Amz-Date")
-  valid_606562 = validateParameter(valid_606562, JString, required = false,
+  if valid_613630 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613630
+  var valid_613631 = header.getOrDefault("X-Amz-Date")
+  valid_613631 = validateParameter(valid_613631, JString, required = false,
                                  default = nil)
-  if valid_606562 != nil:
-    section.add "X-Amz-Date", valid_606562
-  var valid_606563 = header.getOrDefault("X-Amz-Credential")
-  valid_606563 = validateParameter(valid_606563, JString, required = false,
+  if valid_613631 != nil:
+    section.add "X-Amz-Date", valid_613631
+  var valid_613632 = header.getOrDefault("X-Amz-Credential")
+  valid_613632 = validateParameter(valid_613632, JString, required = false,
                                  default = nil)
-  if valid_606563 != nil:
-    section.add "X-Amz-Credential", valid_606563
-  var valid_606564 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606564 = validateParameter(valid_606564, JString, required = false,
+  if valid_613632 != nil:
+    section.add "X-Amz-Credential", valid_613632
+  var valid_613633 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613633 = validateParameter(valid_613633, JString, required = false,
                                  default = nil)
-  if valid_606564 != nil:
-    section.add "X-Amz-Security-Token", valid_606564
-  var valid_606565 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606565 = validateParameter(valid_606565, JString, required = false,
+  if valid_613633 != nil:
+    section.add "X-Amz-Security-Token", valid_613633
+  var valid_613634 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613634 = validateParameter(valid_613634, JString, required = false,
                                  default = nil)
-  if valid_606565 != nil:
-    section.add "X-Amz-Algorithm", valid_606565
-  var valid_606566 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606566 = validateParameter(valid_606566, JString, required = false,
+  if valid_613634 != nil:
+    section.add "X-Amz-Algorithm", valid_613634
+  var valid_613635 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613635 = validateParameter(valid_613635, JString, required = false,
                                  default = nil)
-  if valid_606566 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606566
+  if valid_613635 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613635
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3032,36 +3032,36 @@ proc validate_DeleteWebACL_606557(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_606568: Call_DeleteWebACL_606556; path: JsonNode; query: JsonNode;
+proc call*(call_613637: Call_DeleteWebACL_613625; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes a <a>WebACL</a>. You can't delete a <code>WebACL</code> if it still contains any <code>Rules</code>.</p> <p>To delete a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>WebACL</code> to remove <code>Rules</code>, if any. For more information, see <a>UpdateWebACL</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteWebACL</code> request.</p> </li> <li> <p>Submit a <code>DeleteWebACL</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606568.validator(path, query, header, formData, body)
-  let scheme = call_606568.pickScheme
+  let valid = call_613637.validator(path, query, header, formData, body)
+  let scheme = call_613637.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606568.url(scheme.get, call_606568.host, call_606568.base,
-                         call_606568.route, valid.getOrDefault("path"),
+  let url = call_613637.url(scheme.get, call_613637.host, call_613637.base,
+                         call_613637.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606568, url, valid)
+  result = atozHook(call_613637, url, valid)
 
-proc call*(call_606569: Call_DeleteWebACL_606556; body: JsonNode): Recallable =
+proc call*(call_613638: Call_DeleteWebACL_613625; body: JsonNode): Recallable =
   ## deleteWebACL
   ## <p>Permanently deletes a <a>WebACL</a>. You can't delete a <code>WebACL</code> if it still contains any <code>Rules</code>.</p> <p>To delete a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Update the <code>WebACL</code> to remove <code>Rules</code>, if any. For more information, see <a>UpdateWebACL</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteWebACL</code> request.</p> </li> <li> <p>Submit a <code>DeleteWebACL</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606570 = newJObject()
+  var body_613639 = newJObject()
   if body != nil:
-    body_606570 = body
-  result = call_606569.call(nil, nil, nil, nil, body_606570)
+    body_613639 = body
+  result = call_613638.call(nil, nil, nil, nil, body_613639)
 
-var deleteWebACL* = Call_DeleteWebACL_606556(name: "deleteWebACL",
+var deleteWebACL* = Call_DeleteWebACL_613625(name: "deleteWebACL",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteWebACL",
-    validator: validate_DeleteWebACL_606557, base: "/", url: url_DeleteWebACL_606558,
+    validator: validate_DeleteWebACL_613626, base: "/", url: url_DeleteWebACL_613627,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteXssMatchSet_606571 = ref object of OpenApiRestCall_605589
-proc url_DeleteXssMatchSet_606573(protocol: Scheme; host: string; base: string;
+  Call_DeleteXssMatchSet_613640 = ref object of OpenApiRestCall_612658
+proc url_DeleteXssMatchSet_613642(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3073,7 +3073,7 @@ proc url_DeleteXssMatchSet_606573(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteXssMatchSet_606572(path: JsonNode; query: JsonNode;
+proc validate_DeleteXssMatchSet_613641(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Permanently deletes an <a>XssMatchSet</a>. You can't delete an <code>XssMatchSet</code> if it's still used in any <code>Rules</code> or if it still contains any <a>XssMatchTuple</a> objects.</p> <p>If you just want to remove an <code>XssMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete an <code>XssMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>XssMatchSet</code> to remove filters, if any. For more information, see <a>UpdateXssMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteXssMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteXssMatchSet</code> request.</p> </li> </ol>
@@ -3094,46 +3094,46 @@ proc validate_DeleteXssMatchSet_606572(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606574 = header.getOrDefault("X-Amz-Target")
-  valid_606574 = validateParameter(valid_606574, JString, required = true, default = newJString(
+  var valid_613643 = header.getOrDefault("X-Amz-Target")
+  valid_613643 = validateParameter(valid_613643, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DeleteXssMatchSet"))
-  if valid_606574 != nil:
-    section.add "X-Amz-Target", valid_606574
-  var valid_606575 = header.getOrDefault("X-Amz-Signature")
-  valid_606575 = validateParameter(valid_606575, JString, required = false,
+  if valid_613643 != nil:
+    section.add "X-Amz-Target", valid_613643
+  var valid_613644 = header.getOrDefault("X-Amz-Signature")
+  valid_613644 = validateParameter(valid_613644, JString, required = false,
                                  default = nil)
-  if valid_606575 != nil:
-    section.add "X-Amz-Signature", valid_606575
-  var valid_606576 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606576 = validateParameter(valid_606576, JString, required = false,
+  if valid_613644 != nil:
+    section.add "X-Amz-Signature", valid_613644
+  var valid_613645 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613645 = validateParameter(valid_613645, JString, required = false,
                                  default = nil)
-  if valid_606576 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606576
-  var valid_606577 = header.getOrDefault("X-Amz-Date")
-  valid_606577 = validateParameter(valid_606577, JString, required = false,
+  if valid_613645 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613645
+  var valid_613646 = header.getOrDefault("X-Amz-Date")
+  valid_613646 = validateParameter(valid_613646, JString, required = false,
                                  default = nil)
-  if valid_606577 != nil:
-    section.add "X-Amz-Date", valid_606577
-  var valid_606578 = header.getOrDefault("X-Amz-Credential")
-  valid_606578 = validateParameter(valid_606578, JString, required = false,
+  if valid_613646 != nil:
+    section.add "X-Amz-Date", valid_613646
+  var valid_613647 = header.getOrDefault("X-Amz-Credential")
+  valid_613647 = validateParameter(valid_613647, JString, required = false,
                                  default = nil)
-  if valid_606578 != nil:
-    section.add "X-Amz-Credential", valid_606578
-  var valid_606579 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606579 = validateParameter(valid_606579, JString, required = false,
+  if valid_613647 != nil:
+    section.add "X-Amz-Credential", valid_613647
+  var valid_613648 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613648 = validateParameter(valid_613648, JString, required = false,
                                  default = nil)
-  if valid_606579 != nil:
-    section.add "X-Amz-Security-Token", valid_606579
-  var valid_606580 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606580 = validateParameter(valid_606580, JString, required = false,
+  if valid_613648 != nil:
+    section.add "X-Amz-Security-Token", valid_613648
+  var valid_613649 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613649 = validateParameter(valid_613649, JString, required = false,
                                  default = nil)
-  if valid_606580 != nil:
-    section.add "X-Amz-Algorithm", valid_606580
-  var valid_606581 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606581 = validateParameter(valid_606581, JString, required = false,
+  if valid_613649 != nil:
+    section.add "X-Amz-Algorithm", valid_613649
+  var valid_613650 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613650 = validateParameter(valid_613650, JString, required = false,
                                  default = nil)
-  if valid_606581 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606581
+  if valid_613650 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613650
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3144,36 +3144,36 @@ proc validate_DeleteXssMatchSet_606572(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606583: Call_DeleteXssMatchSet_606571; path: JsonNode;
+proc call*(call_613652: Call_DeleteXssMatchSet_613640; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Permanently deletes an <a>XssMatchSet</a>. You can't delete an <code>XssMatchSet</code> if it's still used in any <code>Rules</code> or if it still contains any <a>XssMatchTuple</a> objects.</p> <p>If you just want to remove an <code>XssMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete an <code>XssMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>XssMatchSet</code> to remove filters, if any. For more information, see <a>UpdateXssMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteXssMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteXssMatchSet</code> request.</p> </li> </ol>
   ## 
-  let valid = call_606583.validator(path, query, header, formData, body)
-  let scheme = call_606583.pickScheme
+  let valid = call_613652.validator(path, query, header, formData, body)
+  let scheme = call_613652.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606583.url(scheme.get, call_606583.host, call_606583.base,
-                         call_606583.route, valid.getOrDefault("path"),
+  let url = call_613652.url(scheme.get, call_613652.host, call_613652.base,
+                         call_613652.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606583, url, valid)
+  result = atozHook(call_613652, url, valid)
 
-proc call*(call_606584: Call_DeleteXssMatchSet_606571; body: JsonNode): Recallable =
+proc call*(call_613653: Call_DeleteXssMatchSet_613640; body: JsonNode): Recallable =
   ## deleteXssMatchSet
   ## <p>Permanently deletes an <a>XssMatchSet</a>. You can't delete an <code>XssMatchSet</code> if it's still used in any <code>Rules</code> or if it still contains any <a>XssMatchTuple</a> objects.</p> <p>If you just want to remove an <code>XssMatchSet</code> from a <code>Rule</code>, use <a>UpdateRule</a>.</p> <p>To permanently delete an <code>XssMatchSet</code> from AWS WAF, perform the following steps:</p> <ol> <li> <p>Update the <code>XssMatchSet</code> to remove filters, if any. For more information, see <a>UpdateXssMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of a <code>DeleteXssMatchSet</code> request.</p> </li> <li> <p>Submit a <code>DeleteXssMatchSet</code> request.</p> </li> </ol>
   ##   body: JObject (required)
-  var body_606585 = newJObject()
+  var body_613654 = newJObject()
   if body != nil:
-    body_606585 = body
-  result = call_606584.call(nil, nil, nil, nil, body_606585)
+    body_613654 = body
+  result = call_613653.call(nil, nil, nil, nil, body_613654)
 
-var deleteXssMatchSet* = Call_DeleteXssMatchSet_606571(name: "deleteXssMatchSet",
+var deleteXssMatchSet* = Call_DeleteXssMatchSet_613640(name: "deleteXssMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DeleteXssMatchSet",
-    validator: validate_DeleteXssMatchSet_606572, base: "/",
-    url: url_DeleteXssMatchSet_606573, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteXssMatchSet_613641, base: "/",
+    url: url_DeleteXssMatchSet_613642, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateWebACL_606586 = ref object of OpenApiRestCall_605589
-proc url_DisassociateWebACL_606588(protocol: Scheme; host: string; base: string;
+  Call_DisassociateWebACL_613655 = ref object of OpenApiRestCall_612658
+proc url_DisassociateWebACL_613657(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3185,7 +3185,7 @@ proc url_DisassociateWebACL_606588(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DisassociateWebACL_606587(path: JsonNode; query: JsonNode;
+proc validate_DisassociateWebACL_613656(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Removes a web ACL from the specified resource, either an application load balancer or Amazon API Gateway stage.
@@ -3206,46 +3206,46 @@ proc validate_DisassociateWebACL_606587(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606589 = header.getOrDefault("X-Amz-Target")
-  valid_606589 = validateParameter(valid_606589, JString, required = true, default = newJString(
+  var valid_613658 = header.getOrDefault("X-Amz-Target")
+  valid_613658 = validateParameter(valid_613658, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.DisassociateWebACL"))
-  if valid_606589 != nil:
-    section.add "X-Amz-Target", valid_606589
-  var valid_606590 = header.getOrDefault("X-Amz-Signature")
-  valid_606590 = validateParameter(valid_606590, JString, required = false,
+  if valid_613658 != nil:
+    section.add "X-Amz-Target", valid_613658
+  var valid_613659 = header.getOrDefault("X-Amz-Signature")
+  valid_613659 = validateParameter(valid_613659, JString, required = false,
                                  default = nil)
-  if valid_606590 != nil:
-    section.add "X-Amz-Signature", valid_606590
-  var valid_606591 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606591 = validateParameter(valid_606591, JString, required = false,
+  if valid_613659 != nil:
+    section.add "X-Amz-Signature", valid_613659
+  var valid_613660 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613660 = validateParameter(valid_613660, JString, required = false,
                                  default = nil)
-  if valid_606591 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606591
-  var valid_606592 = header.getOrDefault("X-Amz-Date")
-  valid_606592 = validateParameter(valid_606592, JString, required = false,
+  if valid_613660 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613660
+  var valid_613661 = header.getOrDefault("X-Amz-Date")
+  valid_613661 = validateParameter(valid_613661, JString, required = false,
                                  default = nil)
-  if valid_606592 != nil:
-    section.add "X-Amz-Date", valid_606592
-  var valid_606593 = header.getOrDefault("X-Amz-Credential")
-  valid_606593 = validateParameter(valid_606593, JString, required = false,
+  if valid_613661 != nil:
+    section.add "X-Amz-Date", valid_613661
+  var valid_613662 = header.getOrDefault("X-Amz-Credential")
+  valid_613662 = validateParameter(valid_613662, JString, required = false,
                                  default = nil)
-  if valid_606593 != nil:
-    section.add "X-Amz-Credential", valid_606593
-  var valid_606594 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606594 = validateParameter(valid_606594, JString, required = false,
+  if valid_613662 != nil:
+    section.add "X-Amz-Credential", valid_613662
+  var valid_613663 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613663 = validateParameter(valid_613663, JString, required = false,
                                  default = nil)
-  if valid_606594 != nil:
-    section.add "X-Amz-Security-Token", valid_606594
-  var valid_606595 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606595 = validateParameter(valid_606595, JString, required = false,
+  if valid_613663 != nil:
+    section.add "X-Amz-Security-Token", valid_613663
+  var valid_613664 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613664 = validateParameter(valid_613664, JString, required = false,
                                  default = nil)
-  if valid_606595 != nil:
-    section.add "X-Amz-Algorithm", valid_606595
-  var valid_606596 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606596 = validateParameter(valid_606596, JString, required = false,
+  if valid_613664 != nil:
+    section.add "X-Amz-Algorithm", valid_613664
+  var valid_613665 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613665 = validateParameter(valid_613665, JString, required = false,
                                  default = nil)
-  if valid_606596 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606596
+  if valid_613665 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613665
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3256,37 +3256,37 @@ proc validate_DisassociateWebACL_606587(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606598: Call_DisassociateWebACL_606586; path: JsonNode;
+proc call*(call_613667: Call_DisassociateWebACL_613655; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes a web ACL from the specified resource, either an application load balancer or Amazon API Gateway stage.
   ## 
-  let valid = call_606598.validator(path, query, header, formData, body)
-  let scheme = call_606598.pickScheme
+  let valid = call_613667.validator(path, query, header, formData, body)
+  let scheme = call_613667.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606598.url(scheme.get, call_606598.host, call_606598.base,
-                         call_606598.route, valid.getOrDefault("path"),
+  let url = call_613667.url(scheme.get, call_613667.host, call_613667.base,
+                         call_613667.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606598, url, valid)
+  result = atozHook(call_613667, url, valid)
 
-proc call*(call_606599: Call_DisassociateWebACL_606586; body: JsonNode): Recallable =
+proc call*(call_613668: Call_DisassociateWebACL_613655; body: JsonNode): Recallable =
   ## disassociateWebACL
   ## Removes a web ACL from the specified resource, either an application load balancer or Amazon API Gateway stage.
   ##   body: JObject (required)
-  var body_606600 = newJObject()
+  var body_613669 = newJObject()
   if body != nil:
-    body_606600 = body
-  result = call_606599.call(nil, nil, nil, nil, body_606600)
+    body_613669 = body
+  result = call_613668.call(nil, nil, nil, nil, body_613669)
 
-var disassociateWebACL* = Call_DisassociateWebACL_606586(
+var disassociateWebACL* = Call_DisassociateWebACL_613655(
     name: "disassociateWebACL", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.DisassociateWebACL",
-    validator: validate_DisassociateWebACL_606587, base: "/",
-    url: url_DisassociateWebACL_606588, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisassociateWebACL_613656, base: "/",
+    url: url_DisassociateWebACL_613657, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetByteMatchSet_606601 = ref object of OpenApiRestCall_605589
-proc url_GetByteMatchSet_606603(protocol: Scheme; host: string; base: string;
+  Call_GetByteMatchSet_613670 = ref object of OpenApiRestCall_612658
+proc url_GetByteMatchSet_613672(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3298,7 +3298,7 @@ proc url_GetByteMatchSet_606603(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetByteMatchSet_606602(path: JsonNode; query: JsonNode;
+proc validate_GetByteMatchSet_613671(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Returns the <a>ByteMatchSet</a> specified by <code>ByteMatchSetId</code>.
@@ -3319,46 +3319,46 @@ proc validate_GetByteMatchSet_606602(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606604 = header.getOrDefault("X-Amz-Target")
-  valid_606604 = validateParameter(valid_606604, JString, required = true, default = newJString(
+  var valid_613673 = header.getOrDefault("X-Amz-Target")
+  valid_613673 = validateParameter(valid_613673, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetByteMatchSet"))
-  if valid_606604 != nil:
-    section.add "X-Amz-Target", valid_606604
-  var valid_606605 = header.getOrDefault("X-Amz-Signature")
-  valid_606605 = validateParameter(valid_606605, JString, required = false,
+  if valid_613673 != nil:
+    section.add "X-Amz-Target", valid_613673
+  var valid_613674 = header.getOrDefault("X-Amz-Signature")
+  valid_613674 = validateParameter(valid_613674, JString, required = false,
                                  default = nil)
-  if valid_606605 != nil:
-    section.add "X-Amz-Signature", valid_606605
-  var valid_606606 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606606 = validateParameter(valid_606606, JString, required = false,
+  if valid_613674 != nil:
+    section.add "X-Amz-Signature", valid_613674
+  var valid_613675 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613675 = validateParameter(valid_613675, JString, required = false,
                                  default = nil)
-  if valid_606606 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606606
-  var valid_606607 = header.getOrDefault("X-Amz-Date")
-  valid_606607 = validateParameter(valid_606607, JString, required = false,
+  if valid_613675 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613675
+  var valid_613676 = header.getOrDefault("X-Amz-Date")
+  valid_613676 = validateParameter(valid_613676, JString, required = false,
                                  default = nil)
-  if valid_606607 != nil:
-    section.add "X-Amz-Date", valid_606607
-  var valid_606608 = header.getOrDefault("X-Amz-Credential")
-  valid_606608 = validateParameter(valid_606608, JString, required = false,
+  if valid_613676 != nil:
+    section.add "X-Amz-Date", valid_613676
+  var valid_613677 = header.getOrDefault("X-Amz-Credential")
+  valid_613677 = validateParameter(valid_613677, JString, required = false,
                                  default = nil)
-  if valid_606608 != nil:
-    section.add "X-Amz-Credential", valid_606608
-  var valid_606609 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606609 = validateParameter(valid_606609, JString, required = false,
+  if valid_613677 != nil:
+    section.add "X-Amz-Credential", valid_613677
+  var valid_613678 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613678 = validateParameter(valid_613678, JString, required = false,
                                  default = nil)
-  if valid_606609 != nil:
-    section.add "X-Amz-Security-Token", valid_606609
-  var valid_606610 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606610 = validateParameter(valid_606610, JString, required = false,
+  if valid_613678 != nil:
+    section.add "X-Amz-Security-Token", valid_613678
+  var valid_613679 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613679 = validateParameter(valid_613679, JString, required = false,
                                  default = nil)
-  if valid_606610 != nil:
-    section.add "X-Amz-Algorithm", valid_606610
-  var valid_606611 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606611 = validateParameter(valid_606611, JString, required = false,
+  if valid_613679 != nil:
+    section.add "X-Amz-Algorithm", valid_613679
+  var valid_613680 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613680 = validateParameter(valid_613680, JString, required = false,
                                  default = nil)
-  if valid_606611 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606611
+  if valid_613680 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613680
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3369,36 +3369,36 @@ proc validate_GetByteMatchSet_606602(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606613: Call_GetByteMatchSet_606601; path: JsonNode; query: JsonNode;
+proc call*(call_613682: Call_GetByteMatchSet_613670; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>ByteMatchSet</a> specified by <code>ByteMatchSetId</code>.
   ## 
-  let valid = call_606613.validator(path, query, header, formData, body)
-  let scheme = call_606613.pickScheme
+  let valid = call_613682.validator(path, query, header, formData, body)
+  let scheme = call_613682.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606613.url(scheme.get, call_606613.host, call_606613.base,
-                         call_606613.route, valid.getOrDefault("path"),
+  let url = call_613682.url(scheme.get, call_613682.host, call_613682.base,
+                         call_613682.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606613, url, valid)
+  result = atozHook(call_613682, url, valid)
 
-proc call*(call_606614: Call_GetByteMatchSet_606601; body: JsonNode): Recallable =
+proc call*(call_613683: Call_GetByteMatchSet_613670; body: JsonNode): Recallable =
   ## getByteMatchSet
   ## Returns the <a>ByteMatchSet</a> specified by <code>ByteMatchSetId</code>.
   ##   body: JObject (required)
-  var body_606615 = newJObject()
+  var body_613684 = newJObject()
   if body != nil:
-    body_606615 = body
-  result = call_606614.call(nil, nil, nil, nil, body_606615)
+    body_613684 = body
+  result = call_613683.call(nil, nil, nil, nil, body_613684)
 
-var getByteMatchSet* = Call_GetByteMatchSet_606601(name: "getByteMatchSet",
+var getByteMatchSet* = Call_GetByteMatchSet_613670(name: "getByteMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetByteMatchSet",
-    validator: validate_GetByteMatchSet_606602, base: "/", url: url_GetByteMatchSet_606603,
+    validator: validate_GetByteMatchSet_613671, base: "/", url: url_GetByteMatchSet_613672,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetChangeToken_606616 = ref object of OpenApiRestCall_605589
-proc url_GetChangeToken_606618(protocol: Scheme; host: string; base: string;
+  Call_GetChangeToken_613685 = ref object of OpenApiRestCall_612658
+proc url_GetChangeToken_613687(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3410,7 +3410,7 @@ proc url_GetChangeToken_606618(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetChangeToken_606617(path: JsonNode; query: JsonNode;
+proc validate_GetChangeToken_613686(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>When you want to create, update, or delete AWS WAF objects, get a change token and include the change token in the create, update, or delete request. Change tokens ensure that your application doesn't submit conflicting requests to AWS WAF.</p> <p>Each create, update, or delete request must use a unique change token. If your application submits a <code>GetChangeToken</code> request and then submits a second <code>GetChangeToken</code> request before submitting a create, update, or delete request, the second <code>GetChangeToken</code> request returns the same value as the first <code>GetChangeToken</code> request.</p> <p>When you use a change token in a create, update, or delete request, the status of the change token changes to <code>PENDING</code>, which indicates that AWS WAF is propagating the change to all AWS WAF servers. Use <code>GetChangeTokenStatus</code> to determine the status of your change token.</p>
@@ -3431,46 +3431,46 @@ proc validate_GetChangeToken_606617(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606619 = header.getOrDefault("X-Amz-Target")
-  valid_606619 = validateParameter(valid_606619, JString, required = true, default = newJString(
+  var valid_613688 = header.getOrDefault("X-Amz-Target")
+  valid_613688 = validateParameter(valid_613688, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetChangeToken"))
-  if valid_606619 != nil:
-    section.add "X-Amz-Target", valid_606619
-  var valid_606620 = header.getOrDefault("X-Amz-Signature")
-  valid_606620 = validateParameter(valid_606620, JString, required = false,
+  if valid_613688 != nil:
+    section.add "X-Amz-Target", valid_613688
+  var valid_613689 = header.getOrDefault("X-Amz-Signature")
+  valid_613689 = validateParameter(valid_613689, JString, required = false,
                                  default = nil)
-  if valid_606620 != nil:
-    section.add "X-Amz-Signature", valid_606620
-  var valid_606621 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606621 = validateParameter(valid_606621, JString, required = false,
+  if valid_613689 != nil:
+    section.add "X-Amz-Signature", valid_613689
+  var valid_613690 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613690 = validateParameter(valid_613690, JString, required = false,
                                  default = nil)
-  if valid_606621 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606621
-  var valid_606622 = header.getOrDefault("X-Amz-Date")
-  valid_606622 = validateParameter(valid_606622, JString, required = false,
+  if valid_613690 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613690
+  var valid_613691 = header.getOrDefault("X-Amz-Date")
+  valid_613691 = validateParameter(valid_613691, JString, required = false,
                                  default = nil)
-  if valid_606622 != nil:
-    section.add "X-Amz-Date", valid_606622
-  var valid_606623 = header.getOrDefault("X-Amz-Credential")
-  valid_606623 = validateParameter(valid_606623, JString, required = false,
+  if valid_613691 != nil:
+    section.add "X-Amz-Date", valid_613691
+  var valid_613692 = header.getOrDefault("X-Amz-Credential")
+  valid_613692 = validateParameter(valid_613692, JString, required = false,
                                  default = nil)
-  if valid_606623 != nil:
-    section.add "X-Amz-Credential", valid_606623
-  var valid_606624 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606624 = validateParameter(valid_606624, JString, required = false,
+  if valid_613692 != nil:
+    section.add "X-Amz-Credential", valid_613692
+  var valid_613693 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613693 = validateParameter(valid_613693, JString, required = false,
                                  default = nil)
-  if valid_606624 != nil:
-    section.add "X-Amz-Security-Token", valid_606624
-  var valid_606625 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606625 = validateParameter(valid_606625, JString, required = false,
+  if valid_613693 != nil:
+    section.add "X-Amz-Security-Token", valid_613693
+  var valid_613694 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613694 = validateParameter(valid_613694, JString, required = false,
                                  default = nil)
-  if valid_606625 != nil:
-    section.add "X-Amz-Algorithm", valid_606625
-  var valid_606626 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606626 = validateParameter(valid_606626, JString, required = false,
+  if valid_613694 != nil:
+    section.add "X-Amz-Algorithm", valid_613694
+  var valid_613695 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613695 = validateParameter(valid_613695, JString, required = false,
                                  default = nil)
-  if valid_606626 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606626
+  if valid_613695 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613695
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3481,36 +3481,36 @@ proc validate_GetChangeToken_606617(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606628: Call_GetChangeToken_606616; path: JsonNode; query: JsonNode;
+proc call*(call_613697: Call_GetChangeToken_613685; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>When you want to create, update, or delete AWS WAF objects, get a change token and include the change token in the create, update, or delete request. Change tokens ensure that your application doesn't submit conflicting requests to AWS WAF.</p> <p>Each create, update, or delete request must use a unique change token. If your application submits a <code>GetChangeToken</code> request and then submits a second <code>GetChangeToken</code> request before submitting a create, update, or delete request, the second <code>GetChangeToken</code> request returns the same value as the first <code>GetChangeToken</code> request.</p> <p>When you use a change token in a create, update, or delete request, the status of the change token changes to <code>PENDING</code>, which indicates that AWS WAF is propagating the change to all AWS WAF servers. Use <code>GetChangeTokenStatus</code> to determine the status of your change token.</p>
   ## 
-  let valid = call_606628.validator(path, query, header, formData, body)
-  let scheme = call_606628.pickScheme
+  let valid = call_613697.validator(path, query, header, formData, body)
+  let scheme = call_613697.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606628.url(scheme.get, call_606628.host, call_606628.base,
-                         call_606628.route, valid.getOrDefault("path"),
+  let url = call_613697.url(scheme.get, call_613697.host, call_613697.base,
+                         call_613697.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606628, url, valid)
+  result = atozHook(call_613697, url, valid)
 
-proc call*(call_606629: Call_GetChangeToken_606616; body: JsonNode): Recallable =
+proc call*(call_613698: Call_GetChangeToken_613685; body: JsonNode): Recallable =
   ## getChangeToken
   ## <p>When you want to create, update, or delete AWS WAF objects, get a change token and include the change token in the create, update, or delete request. Change tokens ensure that your application doesn't submit conflicting requests to AWS WAF.</p> <p>Each create, update, or delete request must use a unique change token. If your application submits a <code>GetChangeToken</code> request and then submits a second <code>GetChangeToken</code> request before submitting a create, update, or delete request, the second <code>GetChangeToken</code> request returns the same value as the first <code>GetChangeToken</code> request.</p> <p>When you use a change token in a create, update, or delete request, the status of the change token changes to <code>PENDING</code>, which indicates that AWS WAF is propagating the change to all AWS WAF servers. Use <code>GetChangeTokenStatus</code> to determine the status of your change token.</p>
   ##   body: JObject (required)
-  var body_606630 = newJObject()
+  var body_613699 = newJObject()
   if body != nil:
-    body_606630 = body
-  result = call_606629.call(nil, nil, nil, nil, body_606630)
+    body_613699 = body
+  result = call_613698.call(nil, nil, nil, nil, body_613699)
 
-var getChangeToken* = Call_GetChangeToken_606616(name: "getChangeToken",
+var getChangeToken* = Call_GetChangeToken_613685(name: "getChangeToken",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetChangeToken",
-    validator: validate_GetChangeToken_606617, base: "/", url: url_GetChangeToken_606618,
+    validator: validate_GetChangeToken_613686, base: "/", url: url_GetChangeToken_613687,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetChangeTokenStatus_606631 = ref object of OpenApiRestCall_605589
-proc url_GetChangeTokenStatus_606633(protocol: Scheme; host: string; base: string;
+  Call_GetChangeTokenStatus_613700 = ref object of OpenApiRestCall_612658
+proc url_GetChangeTokenStatus_613702(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3522,7 +3522,7 @@ proc url_GetChangeTokenStatus_606633(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_GetChangeTokenStatus_606632(path: JsonNode; query: JsonNode;
+proc validate_GetChangeTokenStatus_613701(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the status of a <code>ChangeToken</code> that you got by calling <a>GetChangeToken</a>. <code>ChangeTokenStatus</code> is one of the following values:</p> <ul> <li> <p> <code>PROVISIONED</code>: You requested the change token by calling <code>GetChangeToken</code>, but you haven't used it yet in a call to create, update, or delete an AWS WAF object.</p> </li> <li> <p> <code>PENDING</code>: AWS WAF is propagating the create, update, or delete request to all AWS WAF servers.</p> </li> <li> <p> <code>INSYNC</code>: Propagation is complete.</p> </li> </ul>
   ## 
@@ -3542,46 +3542,46 @@ proc validate_GetChangeTokenStatus_606632(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606634 = header.getOrDefault("X-Amz-Target")
-  valid_606634 = validateParameter(valid_606634, JString, required = true, default = newJString(
+  var valid_613703 = header.getOrDefault("X-Amz-Target")
+  valid_613703 = validateParameter(valid_613703, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetChangeTokenStatus"))
-  if valid_606634 != nil:
-    section.add "X-Amz-Target", valid_606634
-  var valid_606635 = header.getOrDefault("X-Amz-Signature")
-  valid_606635 = validateParameter(valid_606635, JString, required = false,
+  if valid_613703 != nil:
+    section.add "X-Amz-Target", valid_613703
+  var valid_613704 = header.getOrDefault("X-Amz-Signature")
+  valid_613704 = validateParameter(valid_613704, JString, required = false,
                                  default = nil)
-  if valid_606635 != nil:
-    section.add "X-Amz-Signature", valid_606635
-  var valid_606636 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606636 = validateParameter(valid_606636, JString, required = false,
+  if valid_613704 != nil:
+    section.add "X-Amz-Signature", valid_613704
+  var valid_613705 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613705 = validateParameter(valid_613705, JString, required = false,
                                  default = nil)
-  if valid_606636 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606636
-  var valid_606637 = header.getOrDefault("X-Amz-Date")
-  valid_606637 = validateParameter(valid_606637, JString, required = false,
+  if valid_613705 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613705
+  var valid_613706 = header.getOrDefault("X-Amz-Date")
+  valid_613706 = validateParameter(valid_613706, JString, required = false,
                                  default = nil)
-  if valid_606637 != nil:
-    section.add "X-Amz-Date", valid_606637
-  var valid_606638 = header.getOrDefault("X-Amz-Credential")
-  valid_606638 = validateParameter(valid_606638, JString, required = false,
+  if valid_613706 != nil:
+    section.add "X-Amz-Date", valid_613706
+  var valid_613707 = header.getOrDefault("X-Amz-Credential")
+  valid_613707 = validateParameter(valid_613707, JString, required = false,
                                  default = nil)
-  if valid_606638 != nil:
-    section.add "X-Amz-Credential", valid_606638
-  var valid_606639 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606639 = validateParameter(valid_606639, JString, required = false,
+  if valid_613707 != nil:
+    section.add "X-Amz-Credential", valid_613707
+  var valid_613708 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613708 = validateParameter(valid_613708, JString, required = false,
                                  default = nil)
-  if valid_606639 != nil:
-    section.add "X-Amz-Security-Token", valid_606639
-  var valid_606640 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606640 = validateParameter(valid_606640, JString, required = false,
+  if valid_613708 != nil:
+    section.add "X-Amz-Security-Token", valid_613708
+  var valid_613709 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613709 = validateParameter(valid_613709, JString, required = false,
                                  default = nil)
-  if valid_606640 != nil:
-    section.add "X-Amz-Algorithm", valid_606640
-  var valid_606641 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606641 = validateParameter(valid_606641, JString, required = false,
+  if valid_613709 != nil:
+    section.add "X-Amz-Algorithm", valid_613709
+  var valid_613710 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613710 = validateParameter(valid_613710, JString, required = false,
                                  default = nil)
-  if valid_606641 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606641
+  if valid_613710 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613710
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3592,37 +3592,37 @@ proc validate_GetChangeTokenStatus_606632(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606643: Call_GetChangeTokenStatus_606631; path: JsonNode;
+proc call*(call_613712: Call_GetChangeTokenStatus_613700; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the status of a <code>ChangeToken</code> that you got by calling <a>GetChangeToken</a>. <code>ChangeTokenStatus</code> is one of the following values:</p> <ul> <li> <p> <code>PROVISIONED</code>: You requested the change token by calling <code>GetChangeToken</code>, but you haven't used it yet in a call to create, update, or delete an AWS WAF object.</p> </li> <li> <p> <code>PENDING</code>: AWS WAF is propagating the create, update, or delete request to all AWS WAF servers.</p> </li> <li> <p> <code>INSYNC</code>: Propagation is complete.</p> </li> </ul>
   ## 
-  let valid = call_606643.validator(path, query, header, formData, body)
-  let scheme = call_606643.pickScheme
+  let valid = call_613712.validator(path, query, header, formData, body)
+  let scheme = call_613712.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606643.url(scheme.get, call_606643.host, call_606643.base,
-                         call_606643.route, valid.getOrDefault("path"),
+  let url = call_613712.url(scheme.get, call_613712.host, call_613712.base,
+                         call_613712.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606643, url, valid)
+  result = atozHook(call_613712, url, valid)
 
-proc call*(call_606644: Call_GetChangeTokenStatus_606631; body: JsonNode): Recallable =
+proc call*(call_613713: Call_GetChangeTokenStatus_613700; body: JsonNode): Recallable =
   ## getChangeTokenStatus
   ## <p>Returns the status of a <code>ChangeToken</code> that you got by calling <a>GetChangeToken</a>. <code>ChangeTokenStatus</code> is one of the following values:</p> <ul> <li> <p> <code>PROVISIONED</code>: You requested the change token by calling <code>GetChangeToken</code>, but you haven't used it yet in a call to create, update, or delete an AWS WAF object.</p> </li> <li> <p> <code>PENDING</code>: AWS WAF is propagating the create, update, or delete request to all AWS WAF servers.</p> </li> <li> <p> <code>INSYNC</code>: Propagation is complete.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_606645 = newJObject()
+  var body_613714 = newJObject()
   if body != nil:
-    body_606645 = body
-  result = call_606644.call(nil, nil, nil, nil, body_606645)
+    body_613714 = body
+  result = call_613713.call(nil, nil, nil, nil, body_613714)
 
-var getChangeTokenStatus* = Call_GetChangeTokenStatus_606631(
+var getChangeTokenStatus* = Call_GetChangeTokenStatus_613700(
     name: "getChangeTokenStatus", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetChangeTokenStatus",
-    validator: validate_GetChangeTokenStatus_606632, base: "/",
-    url: url_GetChangeTokenStatus_606633, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetChangeTokenStatus_613701, base: "/",
+    url: url_GetChangeTokenStatus_613702, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetGeoMatchSet_606646 = ref object of OpenApiRestCall_605589
-proc url_GetGeoMatchSet_606648(protocol: Scheme; host: string; base: string;
+  Call_GetGeoMatchSet_613715 = ref object of OpenApiRestCall_612658
+proc url_GetGeoMatchSet_613717(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3634,7 +3634,7 @@ proc url_GetGeoMatchSet_606648(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetGeoMatchSet_606647(path: JsonNode; query: JsonNode;
+proc validate_GetGeoMatchSet_613716(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns the <a>GeoMatchSet</a> that is specified by <code>GeoMatchSetId</code>.
@@ -3655,46 +3655,46 @@ proc validate_GetGeoMatchSet_606647(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606649 = header.getOrDefault("X-Amz-Target")
-  valid_606649 = validateParameter(valid_606649, JString, required = true, default = newJString(
+  var valid_613718 = header.getOrDefault("X-Amz-Target")
+  valid_613718 = validateParameter(valid_613718, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetGeoMatchSet"))
-  if valid_606649 != nil:
-    section.add "X-Amz-Target", valid_606649
-  var valid_606650 = header.getOrDefault("X-Amz-Signature")
-  valid_606650 = validateParameter(valid_606650, JString, required = false,
+  if valid_613718 != nil:
+    section.add "X-Amz-Target", valid_613718
+  var valid_613719 = header.getOrDefault("X-Amz-Signature")
+  valid_613719 = validateParameter(valid_613719, JString, required = false,
                                  default = nil)
-  if valid_606650 != nil:
-    section.add "X-Amz-Signature", valid_606650
-  var valid_606651 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606651 = validateParameter(valid_606651, JString, required = false,
+  if valid_613719 != nil:
+    section.add "X-Amz-Signature", valid_613719
+  var valid_613720 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613720 = validateParameter(valid_613720, JString, required = false,
                                  default = nil)
-  if valid_606651 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606651
-  var valid_606652 = header.getOrDefault("X-Amz-Date")
-  valid_606652 = validateParameter(valid_606652, JString, required = false,
+  if valid_613720 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613720
+  var valid_613721 = header.getOrDefault("X-Amz-Date")
+  valid_613721 = validateParameter(valid_613721, JString, required = false,
                                  default = nil)
-  if valid_606652 != nil:
-    section.add "X-Amz-Date", valid_606652
-  var valid_606653 = header.getOrDefault("X-Amz-Credential")
-  valid_606653 = validateParameter(valid_606653, JString, required = false,
+  if valid_613721 != nil:
+    section.add "X-Amz-Date", valid_613721
+  var valid_613722 = header.getOrDefault("X-Amz-Credential")
+  valid_613722 = validateParameter(valid_613722, JString, required = false,
                                  default = nil)
-  if valid_606653 != nil:
-    section.add "X-Amz-Credential", valid_606653
-  var valid_606654 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606654 = validateParameter(valid_606654, JString, required = false,
+  if valid_613722 != nil:
+    section.add "X-Amz-Credential", valid_613722
+  var valid_613723 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613723 = validateParameter(valid_613723, JString, required = false,
                                  default = nil)
-  if valid_606654 != nil:
-    section.add "X-Amz-Security-Token", valid_606654
-  var valid_606655 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606655 = validateParameter(valid_606655, JString, required = false,
+  if valid_613723 != nil:
+    section.add "X-Amz-Security-Token", valid_613723
+  var valid_613724 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613724 = validateParameter(valid_613724, JString, required = false,
                                  default = nil)
-  if valid_606655 != nil:
-    section.add "X-Amz-Algorithm", valid_606655
-  var valid_606656 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606656 = validateParameter(valid_606656, JString, required = false,
+  if valid_613724 != nil:
+    section.add "X-Amz-Algorithm", valid_613724
+  var valid_613725 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613725 = validateParameter(valid_613725, JString, required = false,
                                  default = nil)
-  if valid_606656 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606656
+  if valid_613725 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613725
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3705,36 +3705,36 @@ proc validate_GetGeoMatchSet_606647(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606658: Call_GetGeoMatchSet_606646; path: JsonNode; query: JsonNode;
+proc call*(call_613727: Call_GetGeoMatchSet_613715; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>GeoMatchSet</a> that is specified by <code>GeoMatchSetId</code>.
   ## 
-  let valid = call_606658.validator(path, query, header, formData, body)
-  let scheme = call_606658.pickScheme
+  let valid = call_613727.validator(path, query, header, formData, body)
+  let scheme = call_613727.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606658.url(scheme.get, call_606658.host, call_606658.base,
-                         call_606658.route, valid.getOrDefault("path"),
+  let url = call_613727.url(scheme.get, call_613727.host, call_613727.base,
+                         call_613727.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606658, url, valid)
+  result = atozHook(call_613727, url, valid)
 
-proc call*(call_606659: Call_GetGeoMatchSet_606646; body: JsonNode): Recallable =
+proc call*(call_613728: Call_GetGeoMatchSet_613715; body: JsonNode): Recallable =
   ## getGeoMatchSet
   ## Returns the <a>GeoMatchSet</a> that is specified by <code>GeoMatchSetId</code>.
   ##   body: JObject (required)
-  var body_606660 = newJObject()
+  var body_613729 = newJObject()
   if body != nil:
-    body_606660 = body
-  result = call_606659.call(nil, nil, nil, nil, body_606660)
+    body_613729 = body
+  result = call_613728.call(nil, nil, nil, nil, body_613729)
 
-var getGeoMatchSet* = Call_GetGeoMatchSet_606646(name: "getGeoMatchSet",
+var getGeoMatchSet* = Call_GetGeoMatchSet_613715(name: "getGeoMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetGeoMatchSet",
-    validator: validate_GetGeoMatchSet_606647, base: "/", url: url_GetGeoMatchSet_606648,
+    validator: validate_GetGeoMatchSet_613716, base: "/", url: url_GetGeoMatchSet_613717,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetIPSet_606661 = ref object of OpenApiRestCall_605589
-proc url_GetIPSet_606663(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetIPSet_613730 = ref object of OpenApiRestCall_612658
+proc url_GetIPSet_613732(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3746,7 +3746,7 @@ proc url_GetIPSet_606663(protocol: Scheme; host: string; base: string; route: st
   else:
     result.path = base & route
 
-proc validate_GetIPSet_606662(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetIPSet_613731(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the <a>IPSet</a> that is specified by <code>IPSetId</code>.
   ## 
@@ -3766,46 +3766,46 @@ proc validate_GetIPSet_606662(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606664 = header.getOrDefault("X-Amz-Target")
-  valid_606664 = validateParameter(valid_606664, JString, required = true, default = newJString(
+  var valid_613733 = header.getOrDefault("X-Amz-Target")
+  valid_613733 = validateParameter(valid_613733, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetIPSet"))
-  if valid_606664 != nil:
-    section.add "X-Amz-Target", valid_606664
-  var valid_606665 = header.getOrDefault("X-Amz-Signature")
-  valid_606665 = validateParameter(valid_606665, JString, required = false,
+  if valid_613733 != nil:
+    section.add "X-Amz-Target", valid_613733
+  var valid_613734 = header.getOrDefault("X-Amz-Signature")
+  valid_613734 = validateParameter(valid_613734, JString, required = false,
                                  default = nil)
-  if valid_606665 != nil:
-    section.add "X-Amz-Signature", valid_606665
-  var valid_606666 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606666 = validateParameter(valid_606666, JString, required = false,
+  if valid_613734 != nil:
+    section.add "X-Amz-Signature", valid_613734
+  var valid_613735 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613735 = validateParameter(valid_613735, JString, required = false,
                                  default = nil)
-  if valid_606666 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606666
-  var valid_606667 = header.getOrDefault("X-Amz-Date")
-  valid_606667 = validateParameter(valid_606667, JString, required = false,
+  if valid_613735 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613735
+  var valid_613736 = header.getOrDefault("X-Amz-Date")
+  valid_613736 = validateParameter(valid_613736, JString, required = false,
                                  default = nil)
-  if valid_606667 != nil:
-    section.add "X-Amz-Date", valid_606667
-  var valid_606668 = header.getOrDefault("X-Amz-Credential")
-  valid_606668 = validateParameter(valid_606668, JString, required = false,
+  if valid_613736 != nil:
+    section.add "X-Amz-Date", valid_613736
+  var valid_613737 = header.getOrDefault("X-Amz-Credential")
+  valid_613737 = validateParameter(valid_613737, JString, required = false,
                                  default = nil)
-  if valid_606668 != nil:
-    section.add "X-Amz-Credential", valid_606668
-  var valid_606669 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606669 = validateParameter(valid_606669, JString, required = false,
+  if valid_613737 != nil:
+    section.add "X-Amz-Credential", valid_613737
+  var valid_613738 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613738 = validateParameter(valid_613738, JString, required = false,
                                  default = nil)
-  if valid_606669 != nil:
-    section.add "X-Amz-Security-Token", valid_606669
-  var valid_606670 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606670 = validateParameter(valid_606670, JString, required = false,
+  if valid_613738 != nil:
+    section.add "X-Amz-Security-Token", valid_613738
+  var valid_613739 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613739 = validateParameter(valid_613739, JString, required = false,
                                  default = nil)
-  if valid_606670 != nil:
-    section.add "X-Amz-Algorithm", valid_606670
-  var valid_606671 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606671 = validateParameter(valid_606671, JString, required = false,
+  if valid_613739 != nil:
+    section.add "X-Amz-Algorithm", valid_613739
+  var valid_613740 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613740 = validateParameter(valid_613740, JString, required = false,
                                  default = nil)
-  if valid_606671 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606671
+  if valid_613740 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613740
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3816,36 +3816,36 @@ proc validate_GetIPSet_606662(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606673: Call_GetIPSet_606661; path: JsonNode; query: JsonNode;
+proc call*(call_613742: Call_GetIPSet_613730; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>IPSet</a> that is specified by <code>IPSetId</code>.
   ## 
-  let valid = call_606673.validator(path, query, header, formData, body)
-  let scheme = call_606673.pickScheme
+  let valid = call_613742.validator(path, query, header, formData, body)
+  let scheme = call_613742.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606673.url(scheme.get, call_606673.host, call_606673.base,
-                         call_606673.route, valid.getOrDefault("path"),
+  let url = call_613742.url(scheme.get, call_613742.host, call_613742.base,
+                         call_613742.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606673, url, valid)
+  result = atozHook(call_613742, url, valid)
 
-proc call*(call_606674: Call_GetIPSet_606661; body: JsonNode): Recallable =
+proc call*(call_613743: Call_GetIPSet_613730; body: JsonNode): Recallable =
   ## getIPSet
   ## Returns the <a>IPSet</a> that is specified by <code>IPSetId</code>.
   ##   body: JObject (required)
-  var body_606675 = newJObject()
+  var body_613744 = newJObject()
   if body != nil:
-    body_606675 = body
-  result = call_606674.call(nil, nil, nil, nil, body_606675)
+    body_613744 = body
+  result = call_613743.call(nil, nil, nil, nil, body_613744)
 
-var getIPSet* = Call_GetIPSet_606661(name: "getIPSet", meth: HttpMethod.HttpPost,
+var getIPSet* = Call_GetIPSet_613730(name: "getIPSet", meth: HttpMethod.HttpPost,
                                   host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetIPSet",
-                                  validator: validate_GetIPSet_606662, base: "/",
-                                  url: url_GetIPSet_606663,
+                                  validator: validate_GetIPSet_613731, base: "/",
+                                  url: url_GetIPSet_613732,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetLoggingConfiguration_606676 = ref object of OpenApiRestCall_605589
-proc url_GetLoggingConfiguration_606678(protocol: Scheme; host: string; base: string;
+  Call_GetLoggingConfiguration_613745 = ref object of OpenApiRestCall_612658
+proc url_GetLoggingConfiguration_613747(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -3858,7 +3858,7 @@ proc url_GetLoggingConfiguration_606678(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_GetLoggingConfiguration_606677(path: JsonNode; query: JsonNode;
+proc validate_GetLoggingConfiguration_613746(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the <a>LoggingConfiguration</a> for the specified web ACL.
   ## 
@@ -3878,46 +3878,46 @@ proc validate_GetLoggingConfiguration_606677(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606679 = header.getOrDefault("X-Amz-Target")
-  valid_606679 = validateParameter(valid_606679, JString, required = true, default = newJString(
+  var valid_613748 = header.getOrDefault("X-Amz-Target")
+  valid_613748 = validateParameter(valid_613748, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetLoggingConfiguration"))
-  if valid_606679 != nil:
-    section.add "X-Amz-Target", valid_606679
-  var valid_606680 = header.getOrDefault("X-Amz-Signature")
-  valid_606680 = validateParameter(valid_606680, JString, required = false,
+  if valid_613748 != nil:
+    section.add "X-Amz-Target", valid_613748
+  var valid_613749 = header.getOrDefault("X-Amz-Signature")
+  valid_613749 = validateParameter(valid_613749, JString, required = false,
                                  default = nil)
-  if valid_606680 != nil:
-    section.add "X-Amz-Signature", valid_606680
-  var valid_606681 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606681 = validateParameter(valid_606681, JString, required = false,
+  if valid_613749 != nil:
+    section.add "X-Amz-Signature", valid_613749
+  var valid_613750 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613750 = validateParameter(valid_613750, JString, required = false,
                                  default = nil)
-  if valid_606681 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606681
-  var valid_606682 = header.getOrDefault("X-Amz-Date")
-  valid_606682 = validateParameter(valid_606682, JString, required = false,
+  if valid_613750 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613750
+  var valid_613751 = header.getOrDefault("X-Amz-Date")
+  valid_613751 = validateParameter(valid_613751, JString, required = false,
                                  default = nil)
-  if valid_606682 != nil:
-    section.add "X-Amz-Date", valid_606682
-  var valid_606683 = header.getOrDefault("X-Amz-Credential")
-  valid_606683 = validateParameter(valid_606683, JString, required = false,
+  if valid_613751 != nil:
+    section.add "X-Amz-Date", valid_613751
+  var valid_613752 = header.getOrDefault("X-Amz-Credential")
+  valid_613752 = validateParameter(valid_613752, JString, required = false,
                                  default = nil)
-  if valid_606683 != nil:
-    section.add "X-Amz-Credential", valid_606683
-  var valid_606684 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606684 = validateParameter(valid_606684, JString, required = false,
+  if valid_613752 != nil:
+    section.add "X-Amz-Credential", valid_613752
+  var valid_613753 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613753 = validateParameter(valid_613753, JString, required = false,
                                  default = nil)
-  if valid_606684 != nil:
-    section.add "X-Amz-Security-Token", valid_606684
-  var valid_606685 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606685 = validateParameter(valid_606685, JString, required = false,
+  if valid_613753 != nil:
+    section.add "X-Amz-Security-Token", valid_613753
+  var valid_613754 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613754 = validateParameter(valid_613754, JString, required = false,
                                  default = nil)
-  if valid_606685 != nil:
-    section.add "X-Amz-Algorithm", valid_606685
-  var valid_606686 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606686 = validateParameter(valid_606686, JString, required = false,
+  if valid_613754 != nil:
+    section.add "X-Amz-Algorithm", valid_613754
+  var valid_613755 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613755 = validateParameter(valid_613755, JString, required = false,
                                  default = nil)
-  if valid_606686 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606686
+  if valid_613755 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613755
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3928,37 +3928,37 @@ proc validate_GetLoggingConfiguration_606677(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606688: Call_GetLoggingConfiguration_606676; path: JsonNode;
+proc call*(call_613757: Call_GetLoggingConfiguration_613745; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>LoggingConfiguration</a> for the specified web ACL.
   ## 
-  let valid = call_606688.validator(path, query, header, formData, body)
-  let scheme = call_606688.pickScheme
+  let valid = call_613757.validator(path, query, header, formData, body)
+  let scheme = call_613757.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606688.url(scheme.get, call_606688.host, call_606688.base,
-                         call_606688.route, valid.getOrDefault("path"),
+  let url = call_613757.url(scheme.get, call_613757.host, call_613757.base,
+                         call_613757.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606688, url, valid)
+  result = atozHook(call_613757, url, valid)
 
-proc call*(call_606689: Call_GetLoggingConfiguration_606676; body: JsonNode): Recallable =
+proc call*(call_613758: Call_GetLoggingConfiguration_613745; body: JsonNode): Recallable =
   ## getLoggingConfiguration
   ## Returns the <a>LoggingConfiguration</a> for the specified web ACL.
   ##   body: JObject (required)
-  var body_606690 = newJObject()
+  var body_613759 = newJObject()
   if body != nil:
-    body_606690 = body
-  result = call_606689.call(nil, nil, nil, nil, body_606690)
+    body_613759 = body
+  result = call_613758.call(nil, nil, nil, nil, body_613759)
 
-var getLoggingConfiguration* = Call_GetLoggingConfiguration_606676(
+var getLoggingConfiguration* = Call_GetLoggingConfiguration_613745(
     name: "getLoggingConfiguration", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetLoggingConfiguration",
-    validator: validate_GetLoggingConfiguration_606677, base: "/",
-    url: url_GetLoggingConfiguration_606678, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetLoggingConfiguration_613746, base: "/",
+    url: url_GetLoggingConfiguration_613747, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetPermissionPolicy_606691 = ref object of OpenApiRestCall_605589
-proc url_GetPermissionPolicy_606693(protocol: Scheme; host: string; base: string;
+  Call_GetPermissionPolicy_613760 = ref object of OpenApiRestCall_612658
+proc url_GetPermissionPolicy_613762(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3970,7 +3970,7 @@ proc url_GetPermissionPolicy_606693(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_GetPermissionPolicy_606692(path: JsonNode; query: JsonNode;
+proc validate_GetPermissionPolicy_613761(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns the IAM policy attached to the RuleGroup.
@@ -3991,46 +3991,46 @@ proc validate_GetPermissionPolicy_606692(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606694 = header.getOrDefault("X-Amz-Target")
-  valid_606694 = validateParameter(valid_606694, JString, required = true, default = newJString(
+  var valid_613763 = header.getOrDefault("X-Amz-Target")
+  valid_613763 = validateParameter(valid_613763, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetPermissionPolicy"))
-  if valid_606694 != nil:
-    section.add "X-Amz-Target", valid_606694
-  var valid_606695 = header.getOrDefault("X-Amz-Signature")
-  valid_606695 = validateParameter(valid_606695, JString, required = false,
+  if valid_613763 != nil:
+    section.add "X-Amz-Target", valid_613763
+  var valid_613764 = header.getOrDefault("X-Amz-Signature")
+  valid_613764 = validateParameter(valid_613764, JString, required = false,
                                  default = nil)
-  if valid_606695 != nil:
-    section.add "X-Amz-Signature", valid_606695
-  var valid_606696 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606696 = validateParameter(valid_606696, JString, required = false,
+  if valid_613764 != nil:
+    section.add "X-Amz-Signature", valid_613764
+  var valid_613765 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613765 = validateParameter(valid_613765, JString, required = false,
                                  default = nil)
-  if valid_606696 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606696
-  var valid_606697 = header.getOrDefault("X-Amz-Date")
-  valid_606697 = validateParameter(valid_606697, JString, required = false,
+  if valid_613765 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613765
+  var valid_613766 = header.getOrDefault("X-Amz-Date")
+  valid_613766 = validateParameter(valid_613766, JString, required = false,
                                  default = nil)
-  if valid_606697 != nil:
-    section.add "X-Amz-Date", valid_606697
-  var valid_606698 = header.getOrDefault("X-Amz-Credential")
-  valid_606698 = validateParameter(valid_606698, JString, required = false,
+  if valid_613766 != nil:
+    section.add "X-Amz-Date", valid_613766
+  var valid_613767 = header.getOrDefault("X-Amz-Credential")
+  valid_613767 = validateParameter(valid_613767, JString, required = false,
                                  default = nil)
-  if valid_606698 != nil:
-    section.add "X-Amz-Credential", valid_606698
-  var valid_606699 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606699 = validateParameter(valid_606699, JString, required = false,
+  if valid_613767 != nil:
+    section.add "X-Amz-Credential", valid_613767
+  var valid_613768 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613768 = validateParameter(valid_613768, JString, required = false,
                                  default = nil)
-  if valid_606699 != nil:
-    section.add "X-Amz-Security-Token", valid_606699
-  var valid_606700 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606700 = validateParameter(valid_606700, JString, required = false,
+  if valid_613768 != nil:
+    section.add "X-Amz-Security-Token", valid_613768
+  var valid_613769 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613769 = validateParameter(valid_613769, JString, required = false,
                                  default = nil)
-  if valid_606700 != nil:
-    section.add "X-Amz-Algorithm", valid_606700
-  var valid_606701 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606701 = validateParameter(valid_606701, JString, required = false,
+  if valid_613769 != nil:
+    section.add "X-Amz-Algorithm", valid_613769
+  var valid_613770 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613770 = validateParameter(valid_613770, JString, required = false,
                                  default = nil)
-  if valid_606701 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606701
+  if valid_613770 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613770
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4041,37 +4041,37 @@ proc validate_GetPermissionPolicy_606692(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606703: Call_GetPermissionPolicy_606691; path: JsonNode;
+proc call*(call_613772: Call_GetPermissionPolicy_613760; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the IAM policy attached to the RuleGroup.
   ## 
-  let valid = call_606703.validator(path, query, header, formData, body)
-  let scheme = call_606703.pickScheme
+  let valid = call_613772.validator(path, query, header, formData, body)
+  let scheme = call_613772.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606703.url(scheme.get, call_606703.host, call_606703.base,
-                         call_606703.route, valid.getOrDefault("path"),
+  let url = call_613772.url(scheme.get, call_613772.host, call_613772.base,
+                         call_613772.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606703, url, valid)
+  result = atozHook(call_613772, url, valid)
 
-proc call*(call_606704: Call_GetPermissionPolicy_606691; body: JsonNode): Recallable =
+proc call*(call_613773: Call_GetPermissionPolicy_613760; body: JsonNode): Recallable =
   ## getPermissionPolicy
   ## Returns the IAM policy attached to the RuleGroup.
   ##   body: JObject (required)
-  var body_606705 = newJObject()
+  var body_613774 = newJObject()
   if body != nil:
-    body_606705 = body
-  result = call_606704.call(nil, nil, nil, nil, body_606705)
+    body_613774 = body
+  result = call_613773.call(nil, nil, nil, nil, body_613774)
 
-var getPermissionPolicy* = Call_GetPermissionPolicy_606691(
+var getPermissionPolicy* = Call_GetPermissionPolicy_613760(
     name: "getPermissionPolicy", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetPermissionPolicy",
-    validator: validate_GetPermissionPolicy_606692, base: "/",
-    url: url_GetPermissionPolicy_606693, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetPermissionPolicy_613761, base: "/",
+    url: url_GetPermissionPolicy_613762, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRateBasedRule_606706 = ref object of OpenApiRestCall_605589
-proc url_GetRateBasedRule_606708(protocol: Scheme; host: string; base: string;
+  Call_GetRateBasedRule_613775 = ref object of OpenApiRestCall_612658
+proc url_GetRateBasedRule_613777(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4083,7 +4083,7 @@ proc url_GetRateBasedRule_606708(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetRateBasedRule_606707(path: JsonNode; query: JsonNode;
+proc validate_GetRateBasedRule_613776(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the <a>RateBasedRule</a> that is specified by the <code>RuleId</code> that you included in the <code>GetRateBasedRule</code> request.
@@ -4104,46 +4104,46 @@ proc validate_GetRateBasedRule_606707(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606709 = header.getOrDefault("X-Amz-Target")
-  valid_606709 = validateParameter(valid_606709, JString, required = true, default = newJString(
+  var valid_613778 = header.getOrDefault("X-Amz-Target")
+  valid_613778 = validateParameter(valid_613778, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetRateBasedRule"))
-  if valid_606709 != nil:
-    section.add "X-Amz-Target", valid_606709
-  var valid_606710 = header.getOrDefault("X-Amz-Signature")
-  valid_606710 = validateParameter(valid_606710, JString, required = false,
+  if valid_613778 != nil:
+    section.add "X-Amz-Target", valid_613778
+  var valid_613779 = header.getOrDefault("X-Amz-Signature")
+  valid_613779 = validateParameter(valid_613779, JString, required = false,
                                  default = nil)
-  if valid_606710 != nil:
-    section.add "X-Amz-Signature", valid_606710
-  var valid_606711 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606711 = validateParameter(valid_606711, JString, required = false,
+  if valid_613779 != nil:
+    section.add "X-Amz-Signature", valid_613779
+  var valid_613780 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613780 = validateParameter(valid_613780, JString, required = false,
                                  default = nil)
-  if valid_606711 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606711
-  var valid_606712 = header.getOrDefault("X-Amz-Date")
-  valid_606712 = validateParameter(valid_606712, JString, required = false,
+  if valid_613780 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613780
+  var valid_613781 = header.getOrDefault("X-Amz-Date")
+  valid_613781 = validateParameter(valid_613781, JString, required = false,
                                  default = nil)
-  if valid_606712 != nil:
-    section.add "X-Amz-Date", valid_606712
-  var valid_606713 = header.getOrDefault("X-Amz-Credential")
-  valid_606713 = validateParameter(valid_606713, JString, required = false,
+  if valid_613781 != nil:
+    section.add "X-Amz-Date", valid_613781
+  var valid_613782 = header.getOrDefault("X-Amz-Credential")
+  valid_613782 = validateParameter(valid_613782, JString, required = false,
                                  default = nil)
-  if valid_606713 != nil:
-    section.add "X-Amz-Credential", valid_606713
-  var valid_606714 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606714 = validateParameter(valid_606714, JString, required = false,
+  if valid_613782 != nil:
+    section.add "X-Amz-Credential", valid_613782
+  var valid_613783 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613783 = validateParameter(valid_613783, JString, required = false,
                                  default = nil)
-  if valid_606714 != nil:
-    section.add "X-Amz-Security-Token", valid_606714
-  var valid_606715 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606715 = validateParameter(valid_606715, JString, required = false,
+  if valid_613783 != nil:
+    section.add "X-Amz-Security-Token", valid_613783
+  var valid_613784 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613784 = validateParameter(valid_613784, JString, required = false,
                                  default = nil)
-  if valid_606715 != nil:
-    section.add "X-Amz-Algorithm", valid_606715
-  var valid_606716 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606716 = validateParameter(valid_606716, JString, required = false,
+  if valid_613784 != nil:
+    section.add "X-Amz-Algorithm", valid_613784
+  var valid_613785 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613785 = validateParameter(valid_613785, JString, required = false,
                                  default = nil)
-  if valid_606716 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606716
+  if valid_613785 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613785
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4154,36 +4154,36 @@ proc validate_GetRateBasedRule_606707(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606718: Call_GetRateBasedRule_606706; path: JsonNode;
+proc call*(call_613787: Call_GetRateBasedRule_613775; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>RateBasedRule</a> that is specified by the <code>RuleId</code> that you included in the <code>GetRateBasedRule</code> request.
   ## 
-  let valid = call_606718.validator(path, query, header, formData, body)
-  let scheme = call_606718.pickScheme
+  let valid = call_613787.validator(path, query, header, formData, body)
+  let scheme = call_613787.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606718.url(scheme.get, call_606718.host, call_606718.base,
-                         call_606718.route, valid.getOrDefault("path"),
+  let url = call_613787.url(scheme.get, call_613787.host, call_613787.base,
+                         call_613787.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606718, url, valid)
+  result = atozHook(call_613787, url, valid)
 
-proc call*(call_606719: Call_GetRateBasedRule_606706; body: JsonNode): Recallable =
+proc call*(call_613788: Call_GetRateBasedRule_613775; body: JsonNode): Recallable =
   ## getRateBasedRule
   ## Returns the <a>RateBasedRule</a> that is specified by the <code>RuleId</code> that you included in the <code>GetRateBasedRule</code> request.
   ##   body: JObject (required)
-  var body_606720 = newJObject()
+  var body_613789 = newJObject()
   if body != nil:
-    body_606720 = body
-  result = call_606719.call(nil, nil, nil, nil, body_606720)
+    body_613789 = body
+  result = call_613788.call(nil, nil, nil, nil, body_613789)
 
-var getRateBasedRule* = Call_GetRateBasedRule_606706(name: "getRateBasedRule",
+var getRateBasedRule* = Call_GetRateBasedRule_613775(name: "getRateBasedRule",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetRateBasedRule",
-    validator: validate_GetRateBasedRule_606707, base: "/",
-    url: url_GetRateBasedRule_606708, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRateBasedRule_613776, base: "/",
+    url: url_GetRateBasedRule_613777, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRateBasedRuleManagedKeys_606721 = ref object of OpenApiRestCall_605589
-proc url_GetRateBasedRuleManagedKeys_606723(protocol: Scheme; host: string;
+  Call_GetRateBasedRuleManagedKeys_613790 = ref object of OpenApiRestCall_612658
+proc url_GetRateBasedRuleManagedKeys_613792(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4195,7 +4195,7 @@ proc url_GetRateBasedRuleManagedKeys_606723(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_GetRateBasedRuleManagedKeys_606722(path: JsonNode; query: JsonNode;
+proc validate_GetRateBasedRuleManagedKeys_613791(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of IP addresses currently being blocked by the <a>RateBasedRule</a> that is specified by the <code>RuleId</code>. The maximum number of managed keys that will be blocked is 10,000. If more than 10,000 addresses exceed the rate limit, the 10,000 addresses with the highest rates will be blocked.
   ## 
@@ -4215,46 +4215,46 @@ proc validate_GetRateBasedRuleManagedKeys_606722(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606724 = header.getOrDefault("X-Amz-Target")
-  valid_606724 = validateParameter(valid_606724, JString, required = true, default = newJString(
+  var valid_613793 = header.getOrDefault("X-Amz-Target")
+  valid_613793 = validateParameter(valid_613793, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetRateBasedRuleManagedKeys"))
-  if valid_606724 != nil:
-    section.add "X-Amz-Target", valid_606724
-  var valid_606725 = header.getOrDefault("X-Amz-Signature")
-  valid_606725 = validateParameter(valid_606725, JString, required = false,
+  if valid_613793 != nil:
+    section.add "X-Amz-Target", valid_613793
+  var valid_613794 = header.getOrDefault("X-Amz-Signature")
+  valid_613794 = validateParameter(valid_613794, JString, required = false,
                                  default = nil)
-  if valid_606725 != nil:
-    section.add "X-Amz-Signature", valid_606725
-  var valid_606726 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606726 = validateParameter(valid_606726, JString, required = false,
+  if valid_613794 != nil:
+    section.add "X-Amz-Signature", valid_613794
+  var valid_613795 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613795 = validateParameter(valid_613795, JString, required = false,
                                  default = nil)
-  if valid_606726 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606726
-  var valid_606727 = header.getOrDefault("X-Amz-Date")
-  valid_606727 = validateParameter(valid_606727, JString, required = false,
+  if valid_613795 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613795
+  var valid_613796 = header.getOrDefault("X-Amz-Date")
+  valid_613796 = validateParameter(valid_613796, JString, required = false,
                                  default = nil)
-  if valid_606727 != nil:
-    section.add "X-Amz-Date", valid_606727
-  var valid_606728 = header.getOrDefault("X-Amz-Credential")
-  valid_606728 = validateParameter(valid_606728, JString, required = false,
+  if valid_613796 != nil:
+    section.add "X-Amz-Date", valid_613796
+  var valid_613797 = header.getOrDefault("X-Amz-Credential")
+  valid_613797 = validateParameter(valid_613797, JString, required = false,
                                  default = nil)
-  if valid_606728 != nil:
-    section.add "X-Amz-Credential", valid_606728
-  var valid_606729 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606729 = validateParameter(valid_606729, JString, required = false,
+  if valid_613797 != nil:
+    section.add "X-Amz-Credential", valid_613797
+  var valid_613798 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613798 = validateParameter(valid_613798, JString, required = false,
                                  default = nil)
-  if valid_606729 != nil:
-    section.add "X-Amz-Security-Token", valid_606729
-  var valid_606730 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606730 = validateParameter(valid_606730, JString, required = false,
+  if valid_613798 != nil:
+    section.add "X-Amz-Security-Token", valid_613798
+  var valid_613799 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613799 = validateParameter(valid_613799, JString, required = false,
                                  default = nil)
-  if valid_606730 != nil:
-    section.add "X-Amz-Algorithm", valid_606730
-  var valid_606731 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606731 = validateParameter(valid_606731, JString, required = false,
+  if valid_613799 != nil:
+    section.add "X-Amz-Algorithm", valid_613799
+  var valid_613800 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613800 = validateParameter(valid_613800, JString, required = false,
                                  default = nil)
-  if valid_606731 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606731
+  if valid_613800 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613800
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4265,37 +4265,37 @@ proc validate_GetRateBasedRuleManagedKeys_606722(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_606733: Call_GetRateBasedRuleManagedKeys_606721; path: JsonNode;
+proc call*(call_613802: Call_GetRateBasedRuleManagedKeys_613790; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of IP addresses currently being blocked by the <a>RateBasedRule</a> that is specified by the <code>RuleId</code>. The maximum number of managed keys that will be blocked is 10,000. If more than 10,000 addresses exceed the rate limit, the 10,000 addresses with the highest rates will be blocked.
   ## 
-  let valid = call_606733.validator(path, query, header, formData, body)
-  let scheme = call_606733.pickScheme
+  let valid = call_613802.validator(path, query, header, formData, body)
+  let scheme = call_613802.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606733.url(scheme.get, call_606733.host, call_606733.base,
-                         call_606733.route, valid.getOrDefault("path"),
+  let url = call_613802.url(scheme.get, call_613802.host, call_613802.base,
+                         call_613802.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606733, url, valid)
+  result = atozHook(call_613802, url, valid)
 
-proc call*(call_606734: Call_GetRateBasedRuleManagedKeys_606721; body: JsonNode): Recallable =
+proc call*(call_613803: Call_GetRateBasedRuleManagedKeys_613790; body: JsonNode): Recallable =
   ## getRateBasedRuleManagedKeys
   ## Returns an array of IP addresses currently being blocked by the <a>RateBasedRule</a> that is specified by the <code>RuleId</code>. The maximum number of managed keys that will be blocked is 10,000. If more than 10,000 addresses exceed the rate limit, the 10,000 addresses with the highest rates will be blocked.
   ##   body: JObject (required)
-  var body_606735 = newJObject()
+  var body_613804 = newJObject()
   if body != nil:
-    body_606735 = body
-  result = call_606734.call(nil, nil, nil, nil, body_606735)
+    body_613804 = body
+  result = call_613803.call(nil, nil, nil, nil, body_613804)
 
-var getRateBasedRuleManagedKeys* = Call_GetRateBasedRuleManagedKeys_606721(
+var getRateBasedRuleManagedKeys* = Call_GetRateBasedRuleManagedKeys_613790(
     name: "getRateBasedRuleManagedKeys", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetRateBasedRuleManagedKeys",
-    validator: validate_GetRateBasedRuleManagedKeys_606722, base: "/",
-    url: url_GetRateBasedRuleManagedKeys_606723,
+    validator: validate_GetRateBasedRuleManagedKeys_613791, base: "/",
+    url: url_GetRateBasedRuleManagedKeys_613792,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRegexMatchSet_606736 = ref object of OpenApiRestCall_605589
-proc url_GetRegexMatchSet_606738(protocol: Scheme; host: string; base: string;
+  Call_GetRegexMatchSet_613805 = ref object of OpenApiRestCall_612658
+proc url_GetRegexMatchSet_613807(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4307,7 +4307,7 @@ proc url_GetRegexMatchSet_606738(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetRegexMatchSet_606737(path: JsonNode; query: JsonNode;
+proc validate_GetRegexMatchSet_613806(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the <a>RegexMatchSet</a> specified by <code>RegexMatchSetId</code>.
@@ -4328,46 +4328,46 @@ proc validate_GetRegexMatchSet_606737(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606739 = header.getOrDefault("X-Amz-Target")
-  valid_606739 = validateParameter(valid_606739, JString, required = true, default = newJString(
+  var valid_613808 = header.getOrDefault("X-Amz-Target")
+  valid_613808 = validateParameter(valid_613808, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetRegexMatchSet"))
-  if valid_606739 != nil:
-    section.add "X-Amz-Target", valid_606739
-  var valid_606740 = header.getOrDefault("X-Amz-Signature")
-  valid_606740 = validateParameter(valid_606740, JString, required = false,
+  if valid_613808 != nil:
+    section.add "X-Amz-Target", valid_613808
+  var valid_613809 = header.getOrDefault("X-Amz-Signature")
+  valid_613809 = validateParameter(valid_613809, JString, required = false,
                                  default = nil)
-  if valid_606740 != nil:
-    section.add "X-Amz-Signature", valid_606740
-  var valid_606741 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606741 = validateParameter(valid_606741, JString, required = false,
+  if valid_613809 != nil:
+    section.add "X-Amz-Signature", valid_613809
+  var valid_613810 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613810 = validateParameter(valid_613810, JString, required = false,
                                  default = nil)
-  if valid_606741 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606741
-  var valid_606742 = header.getOrDefault("X-Amz-Date")
-  valid_606742 = validateParameter(valid_606742, JString, required = false,
+  if valid_613810 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613810
+  var valid_613811 = header.getOrDefault("X-Amz-Date")
+  valid_613811 = validateParameter(valid_613811, JString, required = false,
                                  default = nil)
-  if valid_606742 != nil:
-    section.add "X-Amz-Date", valid_606742
-  var valid_606743 = header.getOrDefault("X-Amz-Credential")
-  valid_606743 = validateParameter(valid_606743, JString, required = false,
+  if valid_613811 != nil:
+    section.add "X-Amz-Date", valid_613811
+  var valid_613812 = header.getOrDefault("X-Amz-Credential")
+  valid_613812 = validateParameter(valid_613812, JString, required = false,
                                  default = nil)
-  if valid_606743 != nil:
-    section.add "X-Amz-Credential", valid_606743
-  var valid_606744 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606744 = validateParameter(valid_606744, JString, required = false,
+  if valid_613812 != nil:
+    section.add "X-Amz-Credential", valid_613812
+  var valid_613813 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613813 = validateParameter(valid_613813, JString, required = false,
                                  default = nil)
-  if valid_606744 != nil:
-    section.add "X-Amz-Security-Token", valid_606744
-  var valid_606745 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606745 = validateParameter(valid_606745, JString, required = false,
+  if valid_613813 != nil:
+    section.add "X-Amz-Security-Token", valid_613813
+  var valid_613814 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613814 = validateParameter(valid_613814, JString, required = false,
                                  default = nil)
-  if valid_606745 != nil:
-    section.add "X-Amz-Algorithm", valid_606745
-  var valid_606746 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606746 = validateParameter(valid_606746, JString, required = false,
+  if valid_613814 != nil:
+    section.add "X-Amz-Algorithm", valid_613814
+  var valid_613815 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613815 = validateParameter(valid_613815, JString, required = false,
                                  default = nil)
-  if valid_606746 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606746
+  if valid_613815 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613815
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4378,36 +4378,36 @@ proc validate_GetRegexMatchSet_606737(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606748: Call_GetRegexMatchSet_606736; path: JsonNode;
+proc call*(call_613817: Call_GetRegexMatchSet_613805; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>RegexMatchSet</a> specified by <code>RegexMatchSetId</code>.
   ## 
-  let valid = call_606748.validator(path, query, header, formData, body)
-  let scheme = call_606748.pickScheme
+  let valid = call_613817.validator(path, query, header, formData, body)
+  let scheme = call_613817.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606748.url(scheme.get, call_606748.host, call_606748.base,
-                         call_606748.route, valid.getOrDefault("path"),
+  let url = call_613817.url(scheme.get, call_613817.host, call_613817.base,
+                         call_613817.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606748, url, valid)
+  result = atozHook(call_613817, url, valid)
 
-proc call*(call_606749: Call_GetRegexMatchSet_606736; body: JsonNode): Recallable =
+proc call*(call_613818: Call_GetRegexMatchSet_613805; body: JsonNode): Recallable =
   ## getRegexMatchSet
   ## Returns the <a>RegexMatchSet</a> specified by <code>RegexMatchSetId</code>.
   ##   body: JObject (required)
-  var body_606750 = newJObject()
+  var body_613819 = newJObject()
   if body != nil:
-    body_606750 = body
-  result = call_606749.call(nil, nil, nil, nil, body_606750)
+    body_613819 = body
+  result = call_613818.call(nil, nil, nil, nil, body_613819)
 
-var getRegexMatchSet* = Call_GetRegexMatchSet_606736(name: "getRegexMatchSet",
+var getRegexMatchSet* = Call_GetRegexMatchSet_613805(name: "getRegexMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetRegexMatchSet",
-    validator: validate_GetRegexMatchSet_606737, base: "/",
-    url: url_GetRegexMatchSet_606738, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRegexMatchSet_613806, base: "/",
+    url: url_GetRegexMatchSet_613807, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRegexPatternSet_606751 = ref object of OpenApiRestCall_605589
-proc url_GetRegexPatternSet_606753(protocol: Scheme; host: string; base: string;
+  Call_GetRegexPatternSet_613820 = ref object of OpenApiRestCall_612658
+proc url_GetRegexPatternSet_613822(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4419,7 +4419,7 @@ proc url_GetRegexPatternSet_606753(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetRegexPatternSet_606752(path: JsonNode; query: JsonNode;
+proc validate_GetRegexPatternSet_613821(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns the <a>RegexPatternSet</a> specified by <code>RegexPatternSetId</code>.
@@ -4440,46 +4440,46 @@ proc validate_GetRegexPatternSet_606752(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606754 = header.getOrDefault("X-Amz-Target")
-  valid_606754 = validateParameter(valid_606754, JString, required = true, default = newJString(
+  var valid_613823 = header.getOrDefault("X-Amz-Target")
+  valid_613823 = validateParameter(valid_613823, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetRegexPatternSet"))
-  if valid_606754 != nil:
-    section.add "X-Amz-Target", valid_606754
-  var valid_606755 = header.getOrDefault("X-Amz-Signature")
-  valid_606755 = validateParameter(valid_606755, JString, required = false,
+  if valid_613823 != nil:
+    section.add "X-Amz-Target", valid_613823
+  var valid_613824 = header.getOrDefault("X-Amz-Signature")
+  valid_613824 = validateParameter(valid_613824, JString, required = false,
                                  default = nil)
-  if valid_606755 != nil:
-    section.add "X-Amz-Signature", valid_606755
-  var valid_606756 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606756 = validateParameter(valid_606756, JString, required = false,
+  if valid_613824 != nil:
+    section.add "X-Amz-Signature", valid_613824
+  var valid_613825 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613825 = validateParameter(valid_613825, JString, required = false,
                                  default = nil)
-  if valid_606756 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606756
-  var valid_606757 = header.getOrDefault("X-Amz-Date")
-  valid_606757 = validateParameter(valid_606757, JString, required = false,
+  if valid_613825 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613825
+  var valid_613826 = header.getOrDefault("X-Amz-Date")
+  valid_613826 = validateParameter(valid_613826, JString, required = false,
                                  default = nil)
-  if valid_606757 != nil:
-    section.add "X-Amz-Date", valid_606757
-  var valid_606758 = header.getOrDefault("X-Amz-Credential")
-  valid_606758 = validateParameter(valid_606758, JString, required = false,
+  if valid_613826 != nil:
+    section.add "X-Amz-Date", valid_613826
+  var valid_613827 = header.getOrDefault("X-Amz-Credential")
+  valid_613827 = validateParameter(valid_613827, JString, required = false,
                                  default = nil)
-  if valid_606758 != nil:
-    section.add "X-Amz-Credential", valid_606758
-  var valid_606759 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606759 = validateParameter(valid_606759, JString, required = false,
+  if valid_613827 != nil:
+    section.add "X-Amz-Credential", valid_613827
+  var valid_613828 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613828 = validateParameter(valid_613828, JString, required = false,
                                  default = nil)
-  if valid_606759 != nil:
-    section.add "X-Amz-Security-Token", valid_606759
-  var valid_606760 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606760 = validateParameter(valid_606760, JString, required = false,
+  if valid_613828 != nil:
+    section.add "X-Amz-Security-Token", valid_613828
+  var valid_613829 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613829 = validateParameter(valid_613829, JString, required = false,
                                  default = nil)
-  if valid_606760 != nil:
-    section.add "X-Amz-Algorithm", valid_606760
-  var valid_606761 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606761 = validateParameter(valid_606761, JString, required = false,
+  if valid_613829 != nil:
+    section.add "X-Amz-Algorithm", valid_613829
+  var valid_613830 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613830 = validateParameter(valid_613830, JString, required = false,
                                  default = nil)
-  if valid_606761 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606761
+  if valid_613830 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613830
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4490,37 +4490,37 @@ proc validate_GetRegexPatternSet_606752(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606763: Call_GetRegexPatternSet_606751; path: JsonNode;
+proc call*(call_613832: Call_GetRegexPatternSet_613820; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>RegexPatternSet</a> specified by <code>RegexPatternSetId</code>.
   ## 
-  let valid = call_606763.validator(path, query, header, formData, body)
-  let scheme = call_606763.pickScheme
+  let valid = call_613832.validator(path, query, header, formData, body)
+  let scheme = call_613832.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606763.url(scheme.get, call_606763.host, call_606763.base,
-                         call_606763.route, valid.getOrDefault("path"),
+  let url = call_613832.url(scheme.get, call_613832.host, call_613832.base,
+                         call_613832.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606763, url, valid)
+  result = atozHook(call_613832, url, valid)
 
-proc call*(call_606764: Call_GetRegexPatternSet_606751; body: JsonNode): Recallable =
+proc call*(call_613833: Call_GetRegexPatternSet_613820; body: JsonNode): Recallable =
   ## getRegexPatternSet
   ## Returns the <a>RegexPatternSet</a> specified by <code>RegexPatternSetId</code>.
   ##   body: JObject (required)
-  var body_606765 = newJObject()
+  var body_613834 = newJObject()
   if body != nil:
-    body_606765 = body
-  result = call_606764.call(nil, nil, nil, nil, body_606765)
+    body_613834 = body
+  result = call_613833.call(nil, nil, nil, nil, body_613834)
 
-var getRegexPatternSet* = Call_GetRegexPatternSet_606751(
+var getRegexPatternSet* = Call_GetRegexPatternSet_613820(
     name: "getRegexPatternSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetRegexPatternSet",
-    validator: validate_GetRegexPatternSet_606752, base: "/",
-    url: url_GetRegexPatternSet_606753, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRegexPatternSet_613821, base: "/",
+    url: url_GetRegexPatternSet_613822, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRule_606766 = ref object of OpenApiRestCall_605589
-proc url_GetRule_606768(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetRule_613835 = ref object of OpenApiRestCall_612658
+proc url_GetRule_613837(protocol: Scheme; host: string; base: string; route: string;
                        path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4532,7 +4532,7 @@ proc url_GetRule_606768(protocol: Scheme; host: string; base: string; route: str
   else:
     result.path = base & route
 
-proc validate_GetRule_606767(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetRule_613836(path: JsonNode; query: JsonNode; header: JsonNode;
                             formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the <a>Rule</a> that is specified by the <code>RuleId</code> that you included in the <code>GetRule</code> request.
   ## 
@@ -4552,46 +4552,46 @@ proc validate_GetRule_606767(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606769 = header.getOrDefault("X-Amz-Target")
-  valid_606769 = validateParameter(valid_606769, JString, required = true, default = newJString(
+  var valid_613838 = header.getOrDefault("X-Amz-Target")
+  valid_613838 = validateParameter(valid_613838, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetRule"))
-  if valid_606769 != nil:
-    section.add "X-Amz-Target", valid_606769
-  var valid_606770 = header.getOrDefault("X-Amz-Signature")
-  valid_606770 = validateParameter(valid_606770, JString, required = false,
+  if valid_613838 != nil:
+    section.add "X-Amz-Target", valid_613838
+  var valid_613839 = header.getOrDefault("X-Amz-Signature")
+  valid_613839 = validateParameter(valid_613839, JString, required = false,
                                  default = nil)
-  if valid_606770 != nil:
-    section.add "X-Amz-Signature", valid_606770
-  var valid_606771 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606771 = validateParameter(valid_606771, JString, required = false,
+  if valid_613839 != nil:
+    section.add "X-Amz-Signature", valid_613839
+  var valid_613840 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613840 = validateParameter(valid_613840, JString, required = false,
                                  default = nil)
-  if valid_606771 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606771
-  var valid_606772 = header.getOrDefault("X-Amz-Date")
-  valid_606772 = validateParameter(valid_606772, JString, required = false,
+  if valid_613840 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613840
+  var valid_613841 = header.getOrDefault("X-Amz-Date")
+  valid_613841 = validateParameter(valid_613841, JString, required = false,
                                  default = nil)
-  if valid_606772 != nil:
-    section.add "X-Amz-Date", valid_606772
-  var valid_606773 = header.getOrDefault("X-Amz-Credential")
-  valid_606773 = validateParameter(valid_606773, JString, required = false,
+  if valid_613841 != nil:
+    section.add "X-Amz-Date", valid_613841
+  var valid_613842 = header.getOrDefault("X-Amz-Credential")
+  valid_613842 = validateParameter(valid_613842, JString, required = false,
                                  default = nil)
-  if valid_606773 != nil:
-    section.add "X-Amz-Credential", valid_606773
-  var valid_606774 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606774 = validateParameter(valid_606774, JString, required = false,
+  if valid_613842 != nil:
+    section.add "X-Amz-Credential", valid_613842
+  var valid_613843 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613843 = validateParameter(valid_613843, JString, required = false,
                                  default = nil)
-  if valid_606774 != nil:
-    section.add "X-Amz-Security-Token", valid_606774
-  var valid_606775 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606775 = validateParameter(valid_606775, JString, required = false,
+  if valid_613843 != nil:
+    section.add "X-Amz-Security-Token", valid_613843
+  var valid_613844 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613844 = validateParameter(valid_613844, JString, required = false,
                                  default = nil)
-  if valid_606775 != nil:
-    section.add "X-Amz-Algorithm", valid_606775
-  var valid_606776 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606776 = validateParameter(valid_606776, JString, required = false,
+  if valid_613844 != nil:
+    section.add "X-Amz-Algorithm", valid_613844
+  var valid_613845 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613845 = validateParameter(valid_613845, JString, required = false,
                                  default = nil)
-  if valid_606776 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606776
+  if valid_613845 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613845
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4602,36 +4602,36 @@ proc validate_GetRule_606767(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606778: Call_GetRule_606766; path: JsonNode; query: JsonNode;
+proc call*(call_613847: Call_GetRule_613835; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>Rule</a> that is specified by the <code>RuleId</code> that you included in the <code>GetRule</code> request.
   ## 
-  let valid = call_606778.validator(path, query, header, formData, body)
-  let scheme = call_606778.pickScheme
+  let valid = call_613847.validator(path, query, header, formData, body)
+  let scheme = call_613847.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606778.url(scheme.get, call_606778.host, call_606778.base,
-                         call_606778.route, valid.getOrDefault("path"),
+  let url = call_613847.url(scheme.get, call_613847.host, call_613847.base,
+                         call_613847.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606778, url, valid)
+  result = atozHook(call_613847, url, valid)
 
-proc call*(call_606779: Call_GetRule_606766; body: JsonNode): Recallable =
+proc call*(call_613848: Call_GetRule_613835; body: JsonNode): Recallable =
   ## getRule
   ## Returns the <a>Rule</a> that is specified by the <code>RuleId</code> that you included in the <code>GetRule</code> request.
   ##   body: JObject (required)
-  var body_606780 = newJObject()
+  var body_613849 = newJObject()
   if body != nil:
-    body_606780 = body
-  result = call_606779.call(nil, nil, nil, nil, body_606780)
+    body_613849 = body
+  result = call_613848.call(nil, nil, nil, nil, body_613849)
 
-var getRule* = Call_GetRule_606766(name: "getRule", meth: HttpMethod.HttpPost,
+var getRule* = Call_GetRule_613835(name: "getRule", meth: HttpMethod.HttpPost,
                                 host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetRule",
-                                validator: validate_GetRule_606767, base: "/",
-                                url: url_GetRule_606768,
+                                validator: validate_GetRule_613836, base: "/",
+                                url: url_GetRule_613837,
                                 schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRuleGroup_606781 = ref object of OpenApiRestCall_605589
-proc url_GetRuleGroup_606783(protocol: Scheme; host: string; base: string;
+  Call_GetRuleGroup_613850 = ref object of OpenApiRestCall_612658
+proc url_GetRuleGroup_613852(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4643,7 +4643,7 @@ proc url_GetRuleGroup_606783(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetRuleGroup_606782(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetRuleGroup_613851(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Returns the <a>RuleGroup</a> that is specified by the <code>RuleGroupId</code> that you included in the <code>GetRuleGroup</code> request.</p> <p>To view the rules in a rule group, use <a>ListActivatedRulesInRuleGroup</a>.</p>
   ## 
@@ -4663,46 +4663,46 @@ proc validate_GetRuleGroup_606782(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606784 = header.getOrDefault("X-Amz-Target")
-  valid_606784 = validateParameter(valid_606784, JString, required = true, default = newJString(
+  var valid_613853 = header.getOrDefault("X-Amz-Target")
+  valid_613853 = validateParameter(valid_613853, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetRuleGroup"))
-  if valid_606784 != nil:
-    section.add "X-Amz-Target", valid_606784
-  var valid_606785 = header.getOrDefault("X-Amz-Signature")
-  valid_606785 = validateParameter(valid_606785, JString, required = false,
+  if valid_613853 != nil:
+    section.add "X-Amz-Target", valid_613853
+  var valid_613854 = header.getOrDefault("X-Amz-Signature")
+  valid_613854 = validateParameter(valid_613854, JString, required = false,
                                  default = nil)
-  if valid_606785 != nil:
-    section.add "X-Amz-Signature", valid_606785
-  var valid_606786 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606786 = validateParameter(valid_606786, JString, required = false,
+  if valid_613854 != nil:
+    section.add "X-Amz-Signature", valid_613854
+  var valid_613855 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613855 = validateParameter(valid_613855, JString, required = false,
                                  default = nil)
-  if valid_606786 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606786
-  var valid_606787 = header.getOrDefault("X-Amz-Date")
-  valid_606787 = validateParameter(valid_606787, JString, required = false,
+  if valid_613855 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613855
+  var valid_613856 = header.getOrDefault("X-Amz-Date")
+  valid_613856 = validateParameter(valid_613856, JString, required = false,
                                  default = nil)
-  if valid_606787 != nil:
-    section.add "X-Amz-Date", valid_606787
-  var valid_606788 = header.getOrDefault("X-Amz-Credential")
-  valid_606788 = validateParameter(valid_606788, JString, required = false,
+  if valid_613856 != nil:
+    section.add "X-Amz-Date", valid_613856
+  var valid_613857 = header.getOrDefault("X-Amz-Credential")
+  valid_613857 = validateParameter(valid_613857, JString, required = false,
                                  default = nil)
-  if valid_606788 != nil:
-    section.add "X-Amz-Credential", valid_606788
-  var valid_606789 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606789 = validateParameter(valid_606789, JString, required = false,
+  if valid_613857 != nil:
+    section.add "X-Amz-Credential", valid_613857
+  var valid_613858 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613858 = validateParameter(valid_613858, JString, required = false,
                                  default = nil)
-  if valid_606789 != nil:
-    section.add "X-Amz-Security-Token", valid_606789
-  var valid_606790 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606790 = validateParameter(valid_606790, JString, required = false,
+  if valid_613858 != nil:
+    section.add "X-Amz-Security-Token", valid_613858
+  var valid_613859 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613859 = validateParameter(valid_613859, JString, required = false,
                                  default = nil)
-  if valid_606790 != nil:
-    section.add "X-Amz-Algorithm", valid_606790
-  var valid_606791 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606791 = validateParameter(valid_606791, JString, required = false,
+  if valid_613859 != nil:
+    section.add "X-Amz-Algorithm", valid_613859
+  var valid_613860 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613860 = validateParameter(valid_613860, JString, required = false,
                                  default = nil)
-  if valid_606791 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606791
+  if valid_613860 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613860
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4713,36 +4713,36 @@ proc validate_GetRuleGroup_606782(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_606793: Call_GetRuleGroup_606781; path: JsonNode; query: JsonNode;
+proc call*(call_613862: Call_GetRuleGroup_613850; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns the <a>RuleGroup</a> that is specified by the <code>RuleGroupId</code> that you included in the <code>GetRuleGroup</code> request.</p> <p>To view the rules in a rule group, use <a>ListActivatedRulesInRuleGroup</a>.</p>
   ## 
-  let valid = call_606793.validator(path, query, header, formData, body)
-  let scheme = call_606793.pickScheme
+  let valid = call_613862.validator(path, query, header, formData, body)
+  let scheme = call_613862.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606793.url(scheme.get, call_606793.host, call_606793.base,
-                         call_606793.route, valid.getOrDefault("path"),
+  let url = call_613862.url(scheme.get, call_613862.host, call_613862.base,
+                         call_613862.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606793, url, valid)
+  result = atozHook(call_613862, url, valid)
 
-proc call*(call_606794: Call_GetRuleGroup_606781; body: JsonNode): Recallable =
+proc call*(call_613863: Call_GetRuleGroup_613850; body: JsonNode): Recallable =
   ## getRuleGroup
   ## <p>Returns the <a>RuleGroup</a> that is specified by the <code>RuleGroupId</code> that you included in the <code>GetRuleGroup</code> request.</p> <p>To view the rules in a rule group, use <a>ListActivatedRulesInRuleGroup</a>.</p>
   ##   body: JObject (required)
-  var body_606795 = newJObject()
+  var body_613864 = newJObject()
   if body != nil:
-    body_606795 = body
-  result = call_606794.call(nil, nil, nil, nil, body_606795)
+    body_613864 = body
+  result = call_613863.call(nil, nil, nil, nil, body_613864)
 
-var getRuleGroup* = Call_GetRuleGroup_606781(name: "getRuleGroup",
+var getRuleGroup* = Call_GetRuleGroup_613850(name: "getRuleGroup",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetRuleGroup",
-    validator: validate_GetRuleGroup_606782, base: "/", url: url_GetRuleGroup_606783,
+    validator: validate_GetRuleGroup_613851, base: "/", url: url_GetRuleGroup_613852,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSampledRequests_606796 = ref object of OpenApiRestCall_605589
-proc url_GetSampledRequests_606798(protocol: Scheme; host: string; base: string;
+  Call_GetSampledRequests_613865 = ref object of OpenApiRestCall_612658
+proc url_GetSampledRequests_613867(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4754,7 +4754,7 @@ proc url_GetSampledRequests_606798(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetSampledRequests_606797(path: JsonNode; query: JsonNode;
+proc validate_GetSampledRequests_613866(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Gets detailed information about a specified number of requests--a sample--that AWS WAF randomly selects from among the first 5,000 requests that your AWS resource received during a time range that you choose. You can specify a sample size of up to 500 requests, and you can specify any time range in the previous three hours.</p> <p> <code>GetSampledRequests</code> returns a time range, which is usually the time range that you specified. However, if your resource (such as a CloudFront distribution) received 5,000 requests before the specified time range elapsed, <code>GetSampledRequests</code> returns an updated time range. This new time range indicates the actual period during which AWS WAF selected the requests in the sample.</p>
@@ -4775,46 +4775,46 @@ proc validate_GetSampledRequests_606797(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606799 = header.getOrDefault("X-Amz-Target")
-  valid_606799 = validateParameter(valid_606799, JString, required = true, default = newJString(
+  var valid_613868 = header.getOrDefault("X-Amz-Target")
+  valid_613868 = validateParameter(valid_613868, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetSampledRequests"))
-  if valid_606799 != nil:
-    section.add "X-Amz-Target", valid_606799
-  var valid_606800 = header.getOrDefault("X-Amz-Signature")
-  valid_606800 = validateParameter(valid_606800, JString, required = false,
+  if valid_613868 != nil:
+    section.add "X-Amz-Target", valid_613868
+  var valid_613869 = header.getOrDefault("X-Amz-Signature")
+  valid_613869 = validateParameter(valid_613869, JString, required = false,
                                  default = nil)
-  if valid_606800 != nil:
-    section.add "X-Amz-Signature", valid_606800
-  var valid_606801 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606801 = validateParameter(valid_606801, JString, required = false,
+  if valid_613869 != nil:
+    section.add "X-Amz-Signature", valid_613869
+  var valid_613870 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613870 = validateParameter(valid_613870, JString, required = false,
                                  default = nil)
-  if valid_606801 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606801
-  var valid_606802 = header.getOrDefault("X-Amz-Date")
-  valid_606802 = validateParameter(valid_606802, JString, required = false,
+  if valid_613870 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613870
+  var valid_613871 = header.getOrDefault("X-Amz-Date")
+  valid_613871 = validateParameter(valid_613871, JString, required = false,
                                  default = nil)
-  if valid_606802 != nil:
-    section.add "X-Amz-Date", valid_606802
-  var valid_606803 = header.getOrDefault("X-Amz-Credential")
-  valid_606803 = validateParameter(valid_606803, JString, required = false,
+  if valid_613871 != nil:
+    section.add "X-Amz-Date", valid_613871
+  var valid_613872 = header.getOrDefault("X-Amz-Credential")
+  valid_613872 = validateParameter(valid_613872, JString, required = false,
                                  default = nil)
-  if valid_606803 != nil:
-    section.add "X-Amz-Credential", valid_606803
-  var valid_606804 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606804 = validateParameter(valid_606804, JString, required = false,
+  if valid_613872 != nil:
+    section.add "X-Amz-Credential", valid_613872
+  var valid_613873 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613873 = validateParameter(valid_613873, JString, required = false,
                                  default = nil)
-  if valid_606804 != nil:
-    section.add "X-Amz-Security-Token", valid_606804
-  var valid_606805 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606805 = validateParameter(valid_606805, JString, required = false,
+  if valid_613873 != nil:
+    section.add "X-Amz-Security-Token", valid_613873
+  var valid_613874 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613874 = validateParameter(valid_613874, JString, required = false,
                                  default = nil)
-  if valid_606805 != nil:
-    section.add "X-Amz-Algorithm", valid_606805
-  var valid_606806 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606806 = validateParameter(valid_606806, JString, required = false,
+  if valid_613874 != nil:
+    section.add "X-Amz-Algorithm", valid_613874
+  var valid_613875 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613875 = validateParameter(valid_613875, JString, required = false,
                                  default = nil)
-  if valid_606806 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606806
+  if valid_613875 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613875
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4825,37 +4825,37 @@ proc validate_GetSampledRequests_606797(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606808: Call_GetSampledRequests_606796; path: JsonNode;
+proc call*(call_613877: Call_GetSampledRequests_613865; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets detailed information about a specified number of requests--a sample--that AWS WAF randomly selects from among the first 5,000 requests that your AWS resource received during a time range that you choose. You can specify a sample size of up to 500 requests, and you can specify any time range in the previous three hours.</p> <p> <code>GetSampledRequests</code> returns a time range, which is usually the time range that you specified. However, if your resource (such as a CloudFront distribution) received 5,000 requests before the specified time range elapsed, <code>GetSampledRequests</code> returns an updated time range. This new time range indicates the actual period during which AWS WAF selected the requests in the sample.</p>
   ## 
-  let valid = call_606808.validator(path, query, header, formData, body)
-  let scheme = call_606808.pickScheme
+  let valid = call_613877.validator(path, query, header, formData, body)
+  let scheme = call_613877.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606808.url(scheme.get, call_606808.host, call_606808.base,
-                         call_606808.route, valid.getOrDefault("path"),
+  let url = call_613877.url(scheme.get, call_613877.host, call_613877.base,
+                         call_613877.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606808, url, valid)
+  result = atozHook(call_613877, url, valid)
 
-proc call*(call_606809: Call_GetSampledRequests_606796; body: JsonNode): Recallable =
+proc call*(call_613878: Call_GetSampledRequests_613865; body: JsonNode): Recallable =
   ## getSampledRequests
   ## <p>Gets detailed information about a specified number of requests--a sample--that AWS WAF randomly selects from among the first 5,000 requests that your AWS resource received during a time range that you choose. You can specify a sample size of up to 500 requests, and you can specify any time range in the previous three hours.</p> <p> <code>GetSampledRequests</code> returns a time range, which is usually the time range that you specified. However, if your resource (such as a CloudFront distribution) received 5,000 requests before the specified time range elapsed, <code>GetSampledRequests</code> returns an updated time range. This new time range indicates the actual period during which AWS WAF selected the requests in the sample.</p>
   ##   body: JObject (required)
-  var body_606810 = newJObject()
+  var body_613879 = newJObject()
   if body != nil:
-    body_606810 = body
-  result = call_606809.call(nil, nil, nil, nil, body_606810)
+    body_613879 = body
+  result = call_613878.call(nil, nil, nil, nil, body_613879)
 
-var getSampledRequests* = Call_GetSampledRequests_606796(
+var getSampledRequests* = Call_GetSampledRequests_613865(
     name: "getSampledRequests", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetSampledRequests",
-    validator: validate_GetSampledRequests_606797, base: "/",
-    url: url_GetSampledRequests_606798, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSampledRequests_613866, base: "/",
+    url: url_GetSampledRequests_613867, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSizeConstraintSet_606811 = ref object of OpenApiRestCall_605589
-proc url_GetSizeConstraintSet_606813(protocol: Scheme; host: string; base: string;
+  Call_GetSizeConstraintSet_613880 = ref object of OpenApiRestCall_612658
+proc url_GetSizeConstraintSet_613882(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4867,7 +4867,7 @@ proc url_GetSizeConstraintSet_606813(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_GetSizeConstraintSet_606812(path: JsonNode; query: JsonNode;
+proc validate_GetSizeConstraintSet_613881(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the <a>SizeConstraintSet</a> specified by <code>SizeConstraintSetId</code>.
   ## 
@@ -4887,46 +4887,46 @@ proc validate_GetSizeConstraintSet_606812(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606814 = header.getOrDefault("X-Amz-Target")
-  valid_606814 = validateParameter(valid_606814, JString, required = true, default = newJString(
+  var valid_613883 = header.getOrDefault("X-Amz-Target")
+  valid_613883 = validateParameter(valid_613883, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetSizeConstraintSet"))
-  if valid_606814 != nil:
-    section.add "X-Amz-Target", valid_606814
-  var valid_606815 = header.getOrDefault("X-Amz-Signature")
-  valid_606815 = validateParameter(valid_606815, JString, required = false,
+  if valid_613883 != nil:
+    section.add "X-Amz-Target", valid_613883
+  var valid_613884 = header.getOrDefault("X-Amz-Signature")
+  valid_613884 = validateParameter(valid_613884, JString, required = false,
                                  default = nil)
-  if valid_606815 != nil:
-    section.add "X-Amz-Signature", valid_606815
-  var valid_606816 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606816 = validateParameter(valid_606816, JString, required = false,
+  if valid_613884 != nil:
+    section.add "X-Amz-Signature", valid_613884
+  var valid_613885 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613885 = validateParameter(valid_613885, JString, required = false,
                                  default = nil)
-  if valid_606816 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606816
-  var valid_606817 = header.getOrDefault("X-Amz-Date")
-  valid_606817 = validateParameter(valid_606817, JString, required = false,
+  if valid_613885 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613885
+  var valid_613886 = header.getOrDefault("X-Amz-Date")
+  valid_613886 = validateParameter(valid_613886, JString, required = false,
                                  default = nil)
-  if valid_606817 != nil:
-    section.add "X-Amz-Date", valid_606817
-  var valid_606818 = header.getOrDefault("X-Amz-Credential")
-  valid_606818 = validateParameter(valid_606818, JString, required = false,
+  if valid_613886 != nil:
+    section.add "X-Amz-Date", valid_613886
+  var valid_613887 = header.getOrDefault("X-Amz-Credential")
+  valid_613887 = validateParameter(valid_613887, JString, required = false,
                                  default = nil)
-  if valid_606818 != nil:
-    section.add "X-Amz-Credential", valid_606818
-  var valid_606819 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606819 = validateParameter(valid_606819, JString, required = false,
+  if valid_613887 != nil:
+    section.add "X-Amz-Credential", valid_613887
+  var valid_613888 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613888 = validateParameter(valid_613888, JString, required = false,
                                  default = nil)
-  if valid_606819 != nil:
-    section.add "X-Amz-Security-Token", valid_606819
-  var valid_606820 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606820 = validateParameter(valid_606820, JString, required = false,
+  if valid_613888 != nil:
+    section.add "X-Amz-Security-Token", valid_613888
+  var valid_613889 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613889 = validateParameter(valid_613889, JString, required = false,
                                  default = nil)
-  if valid_606820 != nil:
-    section.add "X-Amz-Algorithm", valid_606820
-  var valid_606821 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606821 = validateParameter(valid_606821, JString, required = false,
+  if valid_613889 != nil:
+    section.add "X-Amz-Algorithm", valid_613889
+  var valid_613890 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613890 = validateParameter(valid_613890, JString, required = false,
                                  default = nil)
-  if valid_606821 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606821
+  if valid_613890 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613890
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4937,37 +4937,37 @@ proc validate_GetSizeConstraintSet_606812(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606823: Call_GetSizeConstraintSet_606811; path: JsonNode;
+proc call*(call_613892: Call_GetSizeConstraintSet_613880; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>SizeConstraintSet</a> specified by <code>SizeConstraintSetId</code>.
   ## 
-  let valid = call_606823.validator(path, query, header, formData, body)
-  let scheme = call_606823.pickScheme
+  let valid = call_613892.validator(path, query, header, formData, body)
+  let scheme = call_613892.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606823.url(scheme.get, call_606823.host, call_606823.base,
-                         call_606823.route, valid.getOrDefault("path"),
+  let url = call_613892.url(scheme.get, call_613892.host, call_613892.base,
+                         call_613892.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606823, url, valid)
+  result = atozHook(call_613892, url, valid)
 
-proc call*(call_606824: Call_GetSizeConstraintSet_606811; body: JsonNode): Recallable =
+proc call*(call_613893: Call_GetSizeConstraintSet_613880; body: JsonNode): Recallable =
   ## getSizeConstraintSet
   ## Returns the <a>SizeConstraintSet</a> specified by <code>SizeConstraintSetId</code>.
   ##   body: JObject (required)
-  var body_606825 = newJObject()
+  var body_613894 = newJObject()
   if body != nil:
-    body_606825 = body
-  result = call_606824.call(nil, nil, nil, nil, body_606825)
+    body_613894 = body
+  result = call_613893.call(nil, nil, nil, nil, body_613894)
 
-var getSizeConstraintSet* = Call_GetSizeConstraintSet_606811(
+var getSizeConstraintSet* = Call_GetSizeConstraintSet_613880(
     name: "getSizeConstraintSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetSizeConstraintSet",
-    validator: validate_GetSizeConstraintSet_606812, base: "/",
-    url: url_GetSizeConstraintSet_606813, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSizeConstraintSet_613881, base: "/",
+    url: url_GetSizeConstraintSet_613882, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSqlInjectionMatchSet_606826 = ref object of OpenApiRestCall_605589
-proc url_GetSqlInjectionMatchSet_606828(protocol: Scheme; host: string; base: string;
+  Call_GetSqlInjectionMatchSet_613895 = ref object of OpenApiRestCall_612658
+proc url_GetSqlInjectionMatchSet_613897(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -4980,7 +4980,7 @@ proc url_GetSqlInjectionMatchSet_606828(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_GetSqlInjectionMatchSet_606827(path: JsonNode; query: JsonNode;
+proc validate_GetSqlInjectionMatchSet_613896(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the <a>SqlInjectionMatchSet</a> that is specified by <code>SqlInjectionMatchSetId</code>.
   ## 
@@ -5000,46 +5000,46 @@ proc validate_GetSqlInjectionMatchSet_606827(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606829 = header.getOrDefault("X-Amz-Target")
-  valid_606829 = validateParameter(valid_606829, JString, required = true, default = newJString(
+  var valid_613898 = header.getOrDefault("X-Amz-Target")
+  valid_613898 = validateParameter(valid_613898, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetSqlInjectionMatchSet"))
-  if valid_606829 != nil:
-    section.add "X-Amz-Target", valid_606829
-  var valid_606830 = header.getOrDefault("X-Amz-Signature")
-  valid_606830 = validateParameter(valid_606830, JString, required = false,
+  if valid_613898 != nil:
+    section.add "X-Amz-Target", valid_613898
+  var valid_613899 = header.getOrDefault("X-Amz-Signature")
+  valid_613899 = validateParameter(valid_613899, JString, required = false,
                                  default = nil)
-  if valid_606830 != nil:
-    section.add "X-Amz-Signature", valid_606830
-  var valid_606831 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606831 = validateParameter(valid_606831, JString, required = false,
+  if valid_613899 != nil:
+    section.add "X-Amz-Signature", valid_613899
+  var valid_613900 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613900 = validateParameter(valid_613900, JString, required = false,
                                  default = nil)
-  if valid_606831 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606831
-  var valid_606832 = header.getOrDefault("X-Amz-Date")
-  valid_606832 = validateParameter(valid_606832, JString, required = false,
+  if valid_613900 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613900
+  var valid_613901 = header.getOrDefault("X-Amz-Date")
+  valid_613901 = validateParameter(valid_613901, JString, required = false,
                                  default = nil)
-  if valid_606832 != nil:
-    section.add "X-Amz-Date", valid_606832
-  var valid_606833 = header.getOrDefault("X-Amz-Credential")
-  valid_606833 = validateParameter(valid_606833, JString, required = false,
+  if valid_613901 != nil:
+    section.add "X-Amz-Date", valid_613901
+  var valid_613902 = header.getOrDefault("X-Amz-Credential")
+  valid_613902 = validateParameter(valid_613902, JString, required = false,
                                  default = nil)
-  if valid_606833 != nil:
-    section.add "X-Amz-Credential", valid_606833
-  var valid_606834 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606834 = validateParameter(valid_606834, JString, required = false,
+  if valid_613902 != nil:
+    section.add "X-Amz-Credential", valid_613902
+  var valid_613903 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613903 = validateParameter(valid_613903, JString, required = false,
                                  default = nil)
-  if valid_606834 != nil:
-    section.add "X-Amz-Security-Token", valid_606834
-  var valid_606835 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606835 = validateParameter(valid_606835, JString, required = false,
+  if valid_613903 != nil:
+    section.add "X-Amz-Security-Token", valid_613903
+  var valid_613904 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613904 = validateParameter(valid_613904, JString, required = false,
                                  default = nil)
-  if valid_606835 != nil:
-    section.add "X-Amz-Algorithm", valid_606835
-  var valid_606836 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606836 = validateParameter(valid_606836, JString, required = false,
+  if valid_613904 != nil:
+    section.add "X-Amz-Algorithm", valid_613904
+  var valid_613905 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613905 = validateParameter(valid_613905, JString, required = false,
                                  default = nil)
-  if valid_606836 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606836
+  if valid_613905 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613905
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5050,37 +5050,37 @@ proc validate_GetSqlInjectionMatchSet_606827(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606838: Call_GetSqlInjectionMatchSet_606826; path: JsonNode;
+proc call*(call_613907: Call_GetSqlInjectionMatchSet_613895; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>SqlInjectionMatchSet</a> that is specified by <code>SqlInjectionMatchSetId</code>.
   ## 
-  let valid = call_606838.validator(path, query, header, formData, body)
-  let scheme = call_606838.pickScheme
+  let valid = call_613907.validator(path, query, header, formData, body)
+  let scheme = call_613907.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606838.url(scheme.get, call_606838.host, call_606838.base,
-                         call_606838.route, valid.getOrDefault("path"),
+  let url = call_613907.url(scheme.get, call_613907.host, call_613907.base,
+                         call_613907.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606838, url, valid)
+  result = atozHook(call_613907, url, valid)
 
-proc call*(call_606839: Call_GetSqlInjectionMatchSet_606826; body: JsonNode): Recallable =
+proc call*(call_613908: Call_GetSqlInjectionMatchSet_613895; body: JsonNode): Recallable =
   ## getSqlInjectionMatchSet
   ## Returns the <a>SqlInjectionMatchSet</a> that is specified by <code>SqlInjectionMatchSetId</code>.
   ##   body: JObject (required)
-  var body_606840 = newJObject()
+  var body_613909 = newJObject()
   if body != nil:
-    body_606840 = body
-  result = call_606839.call(nil, nil, nil, nil, body_606840)
+    body_613909 = body
+  result = call_613908.call(nil, nil, nil, nil, body_613909)
 
-var getSqlInjectionMatchSet* = Call_GetSqlInjectionMatchSet_606826(
+var getSqlInjectionMatchSet* = Call_GetSqlInjectionMatchSet_613895(
     name: "getSqlInjectionMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetSqlInjectionMatchSet",
-    validator: validate_GetSqlInjectionMatchSet_606827, base: "/",
-    url: url_GetSqlInjectionMatchSet_606828, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSqlInjectionMatchSet_613896, base: "/",
+    url: url_GetSqlInjectionMatchSet_613897, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetWebACL_606841 = ref object of OpenApiRestCall_605589
-proc url_GetWebACL_606843(protocol: Scheme; host: string; base: string; route: string;
+  Call_GetWebACL_613910 = ref object of OpenApiRestCall_612658
+proc url_GetWebACL_613912(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5092,7 +5092,7 @@ proc url_GetWebACL_606843(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & route
 
-proc validate_GetWebACL_606842(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetWebACL_613911(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the <a>WebACL</a> that is specified by <code>WebACLId</code>.
   ## 
@@ -5112,46 +5112,46 @@ proc validate_GetWebACL_606842(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606844 = header.getOrDefault("X-Amz-Target")
-  valid_606844 = validateParameter(valid_606844, JString, required = true, default = newJString(
+  var valid_613913 = header.getOrDefault("X-Amz-Target")
+  valid_613913 = validateParameter(valid_613913, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetWebACL"))
-  if valid_606844 != nil:
-    section.add "X-Amz-Target", valid_606844
-  var valid_606845 = header.getOrDefault("X-Amz-Signature")
-  valid_606845 = validateParameter(valid_606845, JString, required = false,
+  if valid_613913 != nil:
+    section.add "X-Amz-Target", valid_613913
+  var valid_613914 = header.getOrDefault("X-Amz-Signature")
+  valid_613914 = validateParameter(valid_613914, JString, required = false,
                                  default = nil)
-  if valid_606845 != nil:
-    section.add "X-Amz-Signature", valid_606845
-  var valid_606846 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606846 = validateParameter(valid_606846, JString, required = false,
+  if valid_613914 != nil:
+    section.add "X-Amz-Signature", valid_613914
+  var valid_613915 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613915 = validateParameter(valid_613915, JString, required = false,
                                  default = nil)
-  if valid_606846 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606846
-  var valid_606847 = header.getOrDefault("X-Amz-Date")
-  valid_606847 = validateParameter(valid_606847, JString, required = false,
+  if valid_613915 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613915
+  var valid_613916 = header.getOrDefault("X-Amz-Date")
+  valid_613916 = validateParameter(valid_613916, JString, required = false,
                                  default = nil)
-  if valid_606847 != nil:
-    section.add "X-Amz-Date", valid_606847
-  var valid_606848 = header.getOrDefault("X-Amz-Credential")
-  valid_606848 = validateParameter(valid_606848, JString, required = false,
+  if valid_613916 != nil:
+    section.add "X-Amz-Date", valid_613916
+  var valid_613917 = header.getOrDefault("X-Amz-Credential")
+  valid_613917 = validateParameter(valid_613917, JString, required = false,
                                  default = nil)
-  if valid_606848 != nil:
-    section.add "X-Amz-Credential", valid_606848
-  var valid_606849 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606849 = validateParameter(valid_606849, JString, required = false,
+  if valid_613917 != nil:
+    section.add "X-Amz-Credential", valid_613917
+  var valid_613918 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613918 = validateParameter(valid_613918, JString, required = false,
                                  default = nil)
-  if valid_606849 != nil:
-    section.add "X-Amz-Security-Token", valid_606849
-  var valid_606850 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606850 = validateParameter(valid_606850, JString, required = false,
+  if valid_613918 != nil:
+    section.add "X-Amz-Security-Token", valid_613918
+  var valid_613919 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613919 = validateParameter(valid_613919, JString, required = false,
                                  default = nil)
-  if valid_606850 != nil:
-    section.add "X-Amz-Algorithm", valid_606850
-  var valid_606851 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606851 = validateParameter(valid_606851, JString, required = false,
+  if valid_613919 != nil:
+    section.add "X-Amz-Algorithm", valid_613919
+  var valid_613920 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613920 = validateParameter(valid_613920, JString, required = false,
                                  default = nil)
-  if valid_606851 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606851
+  if valid_613920 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613920
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5162,36 +5162,36 @@ proc validate_GetWebACL_606842(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_606853: Call_GetWebACL_606841; path: JsonNode; query: JsonNode;
+proc call*(call_613922: Call_GetWebACL_613910; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>WebACL</a> that is specified by <code>WebACLId</code>.
   ## 
-  let valid = call_606853.validator(path, query, header, formData, body)
-  let scheme = call_606853.pickScheme
+  let valid = call_613922.validator(path, query, header, formData, body)
+  let scheme = call_613922.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606853.url(scheme.get, call_606853.host, call_606853.base,
-                         call_606853.route, valid.getOrDefault("path"),
+  let url = call_613922.url(scheme.get, call_613922.host, call_613922.base,
+                         call_613922.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606853, url, valid)
+  result = atozHook(call_613922, url, valid)
 
-proc call*(call_606854: Call_GetWebACL_606841; body: JsonNode): Recallable =
+proc call*(call_613923: Call_GetWebACL_613910; body: JsonNode): Recallable =
   ## getWebACL
   ## Returns the <a>WebACL</a> that is specified by <code>WebACLId</code>.
   ##   body: JObject (required)
-  var body_606855 = newJObject()
+  var body_613924 = newJObject()
   if body != nil:
-    body_606855 = body
-  result = call_606854.call(nil, nil, nil, nil, body_606855)
+    body_613924 = body
+  result = call_613923.call(nil, nil, nil, nil, body_613924)
 
-var getWebACL* = Call_GetWebACL_606841(name: "getWebACL", meth: HttpMethod.HttpPost,
+var getWebACL* = Call_GetWebACL_613910(name: "getWebACL", meth: HttpMethod.HttpPost,
                                     host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetWebACL",
-                                    validator: validate_GetWebACL_606842,
-                                    base: "/", url: url_GetWebACL_606843,
+                                    validator: validate_GetWebACL_613911,
+                                    base: "/", url: url_GetWebACL_613912,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetWebACLForResource_606856 = ref object of OpenApiRestCall_605589
-proc url_GetWebACLForResource_606858(protocol: Scheme; host: string; base: string;
+  Call_GetWebACLForResource_613925 = ref object of OpenApiRestCall_612658
+proc url_GetWebACLForResource_613927(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5203,7 +5203,7 @@ proc url_GetWebACLForResource_606858(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_GetWebACLForResource_606857(path: JsonNode; query: JsonNode;
+proc validate_GetWebACLForResource_613926(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the web ACL for the specified resource, either an application load balancer or Amazon API Gateway stage.
   ## 
@@ -5223,46 +5223,46 @@ proc validate_GetWebACLForResource_606857(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606859 = header.getOrDefault("X-Amz-Target")
-  valid_606859 = validateParameter(valid_606859, JString, required = true, default = newJString(
+  var valid_613928 = header.getOrDefault("X-Amz-Target")
+  valid_613928 = validateParameter(valid_613928, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetWebACLForResource"))
-  if valid_606859 != nil:
-    section.add "X-Amz-Target", valid_606859
-  var valid_606860 = header.getOrDefault("X-Amz-Signature")
-  valid_606860 = validateParameter(valid_606860, JString, required = false,
+  if valid_613928 != nil:
+    section.add "X-Amz-Target", valid_613928
+  var valid_613929 = header.getOrDefault("X-Amz-Signature")
+  valid_613929 = validateParameter(valid_613929, JString, required = false,
                                  default = nil)
-  if valid_606860 != nil:
-    section.add "X-Amz-Signature", valid_606860
-  var valid_606861 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606861 = validateParameter(valid_606861, JString, required = false,
+  if valid_613929 != nil:
+    section.add "X-Amz-Signature", valid_613929
+  var valid_613930 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613930 = validateParameter(valid_613930, JString, required = false,
                                  default = nil)
-  if valid_606861 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606861
-  var valid_606862 = header.getOrDefault("X-Amz-Date")
-  valid_606862 = validateParameter(valid_606862, JString, required = false,
+  if valid_613930 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613930
+  var valid_613931 = header.getOrDefault("X-Amz-Date")
+  valid_613931 = validateParameter(valid_613931, JString, required = false,
                                  default = nil)
-  if valid_606862 != nil:
-    section.add "X-Amz-Date", valid_606862
-  var valid_606863 = header.getOrDefault("X-Amz-Credential")
-  valid_606863 = validateParameter(valid_606863, JString, required = false,
+  if valid_613931 != nil:
+    section.add "X-Amz-Date", valid_613931
+  var valid_613932 = header.getOrDefault("X-Amz-Credential")
+  valid_613932 = validateParameter(valid_613932, JString, required = false,
                                  default = nil)
-  if valid_606863 != nil:
-    section.add "X-Amz-Credential", valid_606863
-  var valid_606864 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606864 = validateParameter(valid_606864, JString, required = false,
+  if valid_613932 != nil:
+    section.add "X-Amz-Credential", valid_613932
+  var valid_613933 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613933 = validateParameter(valid_613933, JString, required = false,
                                  default = nil)
-  if valid_606864 != nil:
-    section.add "X-Amz-Security-Token", valid_606864
-  var valid_606865 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606865 = validateParameter(valid_606865, JString, required = false,
+  if valid_613933 != nil:
+    section.add "X-Amz-Security-Token", valid_613933
+  var valid_613934 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613934 = validateParameter(valid_613934, JString, required = false,
                                  default = nil)
-  if valid_606865 != nil:
-    section.add "X-Amz-Algorithm", valid_606865
-  var valid_606866 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606866 = validateParameter(valid_606866, JString, required = false,
+  if valid_613934 != nil:
+    section.add "X-Amz-Algorithm", valid_613934
+  var valid_613935 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613935 = validateParameter(valid_613935, JString, required = false,
                                  default = nil)
-  if valid_606866 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606866
+  if valid_613935 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613935
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5273,37 +5273,37 @@ proc validate_GetWebACLForResource_606857(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606868: Call_GetWebACLForResource_606856; path: JsonNode;
+proc call*(call_613937: Call_GetWebACLForResource_613925; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the web ACL for the specified resource, either an application load balancer or Amazon API Gateway stage.
   ## 
-  let valid = call_606868.validator(path, query, header, formData, body)
-  let scheme = call_606868.pickScheme
+  let valid = call_613937.validator(path, query, header, formData, body)
+  let scheme = call_613937.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606868.url(scheme.get, call_606868.host, call_606868.base,
-                         call_606868.route, valid.getOrDefault("path"),
+  let url = call_613937.url(scheme.get, call_613937.host, call_613937.base,
+                         call_613937.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606868, url, valid)
+  result = atozHook(call_613937, url, valid)
 
-proc call*(call_606869: Call_GetWebACLForResource_606856; body: JsonNode): Recallable =
+proc call*(call_613938: Call_GetWebACLForResource_613925; body: JsonNode): Recallable =
   ## getWebACLForResource
   ## Returns the web ACL for the specified resource, either an application load balancer or Amazon API Gateway stage.
   ##   body: JObject (required)
-  var body_606870 = newJObject()
+  var body_613939 = newJObject()
   if body != nil:
-    body_606870 = body
-  result = call_606869.call(nil, nil, nil, nil, body_606870)
+    body_613939 = body
+  result = call_613938.call(nil, nil, nil, nil, body_613939)
 
-var getWebACLForResource* = Call_GetWebACLForResource_606856(
+var getWebACLForResource* = Call_GetWebACLForResource_613925(
     name: "getWebACLForResource", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetWebACLForResource",
-    validator: validate_GetWebACLForResource_606857, base: "/",
-    url: url_GetWebACLForResource_606858, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetWebACLForResource_613926, base: "/",
+    url: url_GetWebACLForResource_613927, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetXssMatchSet_606871 = ref object of OpenApiRestCall_605589
-proc url_GetXssMatchSet_606873(protocol: Scheme; host: string; base: string;
+  Call_GetXssMatchSet_613940 = ref object of OpenApiRestCall_612658
+proc url_GetXssMatchSet_613942(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5315,7 +5315,7 @@ proc url_GetXssMatchSet_606873(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetXssMatchSet_606872(path: JsonNode; query: JsonNode;
+proc validate_GetXssMatchSet_613941(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns the <a>XssMatchSet</a> that is specified by <code>XssMatchSetId</code>.
@@ -5336,46 +5336,46 @@ proc validate_GetXssMatchSet_606872(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606874 = header.getOrDefault("X-Amz-Target")
-  valid_606874 = validateParameter(valid_606874, JString, required = true, default = newJString(
+  var valid_613943 = header.getOrDefault("X-Amz-Target")
+  valid_613943 = validateParameter(valid_613943, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.GetXssMatchSet"))
-  if valid_606874 != nil:
-    section.add "X-Amz-Target", valid_606874
-  var valid_606875 = header.getOrDefault("X-Amz-Signature")
-  valid_606875 = validateParameter(valid_606875, JString, required = false,
+  if valid_613943 != nil:
+    section.add "X-Amz-Target", valid_613943
+  var valid_613944 = header.getOrDefault("X-Amz-Signature")
+  valid_613944 = validateParameter(valid_613944, JString, required = false,
                                  default = nil)
-  if valid_606875 != nil:
-    section.add "X-Amz-Signature", valid_606875
-  var valid_606876 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606876 = validateParameter(valid_606876, JString, required = false,
+  if valid_613944 != nil:
+    section.add "X-Amz-Signature", valid_613944
+  var valid_613945 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613945 = validateParameter(valid_613945, JString, required = false,
                                  default = nil)
-  if valid_606876 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606876
-  var valid_606877 = header.getOrDefault("X-Amz-Date")
-  valid_606877 = validateParameter(valid_606877, JString, required = false,
+  if valid_613945 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613945
+  var valid_613946 = header.getOrDefault("X-Amz-Date")
+  valid_613946 = validateParameter(valid_613946, JString, required = false,
                                  default = nil)
-  if valid_606877 != nil:
-    section.add "X-Amz-Date", valid_606877
-  var valid_606878 = header.getOrDefault("X-Amz-Credential")
-  valid_606878 = validateParameter(valid_606878, JString, required = false,
+  if valid_613946 != nil:
+    section.add "X-Amz-Date", valid_613946
+  var valid_613947 = header.getOrDefault("X-Amz-Credential")
+  valid_613947 = validateParameter(valid_613947, JString, required = false,
                                  default = nil)
-  if valid_606878 != nil:
-    section.add "X-Amz-Credential", valid_606878
-  var valid_606879 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606879 = validateParameter(valid_606879, JString, required = false,
+  if valid_613947 != nil:
+    section.add "X-Amz-Credential", valid_613947
+  var valid_613948 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613948 = validateParameter(valid_613948, JString, required = false,
                                  default = nil)
-  if valid_606879 != nil:
-    section.add "X-Amz-Security-Token", valid_606879
-  var valid_606880 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606880 = validateParameter(valid_606880, JString, required = false,
+  if valid_613948 != nil:
+    section.add "X-Amz-Security-Token", valid_613948
+  var valid_613949 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613949 = validateParameter(valid_613949, JString, required = false,
                                  default = nil)
-  if valid_606880 != nil:
-    section.add "X-Amz-Algorithm", valid_606880
-  var valid_606881 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606881 = validateParameter(valid_606881, JString, required = false,
+  if valid_613949 != nil:
+    section.add "X-Amz-Algorithm", valid_613949
+  var valid_613950 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613950 = validateParameter(valid_613950, JString, required = false,
                                  default = nil)
-  if valid_606881 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606881
+  if valid_613950 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613950
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5386,36 +5386,36 @@ proc validate_GetXssMatchSet_606872(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606883: Call_GetXssMatchSet_606871; path: JsonNode; query: JsonNode;
+proc call*(call_613952: Call_GetXssMatchSet_613940; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the <a>XssMatchSet</a> that is specified by <code>XssMatchSetId</code>.
   ## 
-  let valid = call_606883.validator(path, query, header, formData, body)
-  let scheme = call_606883.pickScheme
+  let valid = call_613952.validator(path, query, header, formData, body)
+  let scheme = call_613952.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606883.url(scheme.get, call_606883.host, call_606883.base,
-                         call_606883.route, valid.getOrDefault("path"),
+  let url = call_613952.url(scheme.get, call_613952.host, call_613952.base,
+                         call_613952.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606883, url, valid)
+  result = atozHook(call_613952, url, valid)
 
-proc call*(call_606884: Call_GetXssMatchSet_606871; body: JsonNode): Recallable =
+proc call*(call_613953: Call_GetXssMatchSet_613940; body: JsonNode): Recallable =
   ## getXssMatchSet
   ## Returns the <a>XssMatchSet</a> that is specified by <code>XssMatchSetId</code>.
   ##   body: JObject (required)
-  var body_606885 = newJObject()
+  var body_613954 = newJObject()
   if body != nil:
-    body_606885 = body
-  result = call_606884.call(nil, nil, nil, nil, body_606885)
+    body_613954 = body
+  result = call_613953.call(nil, nil, nil, nil, body_613954)
 
-var getXssMatchSet* = Call_GetXssMatchSet_606871(name: "getXssMatchSet",
+var getXssMatchSet* = Call_GetXssMatchSet_613940(name: "getXssMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.GetXssMatchSet",
-    validator: validate_GetXssMatchSet_606872, base: "/", url: url_GetXssMatchSet_606873,
+    validator: validate_GetXssMatchSet_613941, base: "/", url: url_GetXssMatchSet_613942,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListActivatedRulesInRuleGroup_606886 = ref object of OpenApiRestCall_605589
-proc url_ListActivatedRulesInRuleGroup_606888(protocol: Scheme; host: string;
+  Call_ListActivatedRulesInRuleGroup_613955 = ref object of OpenApiRestCall_612658
+proc url_ListActivatedRulesInRuleGroup_613957(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5427,7 +5427,7 @@ proc url_ListActivatedRulesInRuleGroup_606888(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListActivatedRulesInRuleGroup_606887(path: JsonNode; query: JsonNode;
+proc validate_ListActivatedRulesInRuleGroup_613956(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>ActivatedRule</a> objects.
   ## 
@@ -5447,46 +5447,46 @@ proc validate_ListActivatedRulesInRuleGroup_606887(path: JsonNode; query: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606889 = header.getOrDefault("X-Amz-Target")
-  valid_606889 = validateParameter(valid_606889, JString, required = true, default = newJString(
+  var valid_613958 = header.getOrDefault("X-Amz-Target")
+  valid_613958 = validateParameter(valid_613958, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListActivatedRulesInRuleGroup"))
-  if valid_606889 != nil:
-    section.add "X-Amz-Target", valid_606889
-  var valid_606890 = header.getOrDefault("X-Amz-Signature")
-  valid_606890 = validateParameter(valid_606890, JString, required = false,
+  if valid_613958 != nil:
+    section.add "X-Amz-Target", valid_613958
+  var valid_613959 = header.getOrDefault("X-Amz-Signature")
+  valid_613959 = validateParameter(valid_613959, JString, required = false,
                                  default = nil)
-  if valid_606890 != nil:
-    section.add "X-Amz-Signature", valid_606890
-  var valid_606891 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606891 = validateParameter(valid_606891, JString, required = false,
+  if valid_613959 != nil:
+    section.add "X-Amz-Signature", valid_613959
+  var valid_613960 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613960 = validateParameter(valid_613960, JString, required = false,
                                  default = nil)
-  if valid_606891 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606891
-  var valid_606892 = header.getOrDefault("X-Amz-Date")
-  valid_606892 = validateParameter(valid_606892, JString, required = false,
+  if valid_613960 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613960
+  var valid_613961 = header.getOrDefault("X-Amz-Date")
+  valid_613961 = validateParameter(valid_613961, JString, required = false,
                                  default = nil)
-  if valid_606892 != nil:
-    section.add "X-Amz-Date", valid_606892
-  var valid_606893 = header.getOrDefault("X-Amz-Credential")
-  valid_606893 = validateParameter(valid_606893, JString, required = false,
+  if valid_613961 != nil:
+    section.add "X-Amz-Date", valid_613961
+  var valid_613962 = header.getOrDefault("X-Amz-Credential")
+  valid_613962 = validateParameter(valid_613962, JString, required = false,
                                  default = nil)
-  if valid_606893 != nil:
-    section.add "X-Amz-Credential", valid_606893
-  var valid_606894 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606894 = validateParameter(valid_606894, JString, required = false,
+  if valid_613962 != nil:
+    section.add "X-Amz-Credential", valid_613962
+  var valid_613963 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613963 = validateParameter(valid_613963, JString, required = false,
                                  default = nil)
-  if valid_606894 != nil:
-    section.add "X-Amz-Security-Token", valid_606894
-  var valid_606895 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606895 = validateParameter(valid_606895, JString, required = false,
+  if valid_613963 != nil:
+    section.add "X-Amz-Security-Token", valid_613963
+  var valid_613964 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613964 = validateParameter(valid_613964, JString, required = false,
                                  default = nil)
-  if valid_606895 != nil:
-    section.add "X-Amz-Algorithm", valid_606895
-  var valid_606896 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606896 = validateParameter(valid_606896, JString, required = false,
+  if valid_613964 != nil:
+    section.add "X-Amz-Algorithm", valid_613964
+  var valid_613965 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613965 = validateParameter(valid_613965, JString, required = false,
                                  default = nil)
-  if valid_606896 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606896
+  if valid_613965 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613965
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5497,37 +5497,37 @@ proc validate_ListActivatedRulesInRuleGroup_606887(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606898: Call_ListActivatedRulesInRuleGroup_606886; path: JsonNode;
+proc call*(call_613967: Call_ListActivatedRulesInRuleGroup_613955; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>ActivatedRule</a> objects.
   ## 
-  let valid = call_606898.validator(path, query, header, formData, body)
-  let scheme = call_606898.pickScheme
+  let valid = call_613967.validator(path, query, header, formData, body)
+  let scheme = call_613967.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606898.url(scheme.get, call_606898.host, call_606898.base,
-                         call_606898.route, valid.getOrDefault("path"),
+  let url = call_613967.url(scheme.get, call_613967.host, call_613967.base,
+                         call_613967.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606898, url, valid)
+  result = atozHook(call_613967, url, valid)
 
-proc call*(call_606899: Call_ListActivatedRulesInRuleGroup_606886; body: JsonNode): Recallable =
+proc call*(call_613968: Call_ListActivatedRulesInRuleGroup_613955; body: JsonNode): Recallable =
   ## listActivatedRulesInRuleGroup
   ## Returns an array of <a>ActivatedRule</a> objects.
   ##   body: JObject (required)
-  var body_606900 = newJObject()
+  var body_613969 = newJObject()
   if body != nil:
-    body_606900 = body
-  result = call_606899.call(nil, nil, nil, nil, body_606900)
+    body_613969 = body
+  result = call_613968.call(nil, nil, nil, nil, body_613969)
 
-var listActivatedRulesInRuleGroup* = Call_ListActivatedRulesInRuleGroup_606886(
+var listActivatedRulesInRuleGroup* = Call_ListActivatedRulesInRuleGroup_613955(
     name: "listActivatedRulesInRuleGroup", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListActivatedRulesInRuleGroup",
-    validator: validate_ListActivatedRulesInRuleGroup_606887, base: "/",
-    url: url_ListActivatedRulesInRuleGroup_606888,
+    validator: validate_ListActivatedRulesInRuleGroup_613956, base: "/",
+    url: url_ListActivatedRulesInRuleGroup_613957,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListByteMatchSets_606901 = ref object of OpenApiRestCall_605589
-proc url_ListByteMatchSets_606903(protocol: Scheme; host: string; base: string;
+  Call_ListByteMatchSets_613970 = ref object of OpenApiRestCall_612658
+proc url_ListByteMatchSets_613972(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5539,7 +5539,7 @@ proc url_ListByteMatchSets_606903(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListByteMatchSets_606902(path: JsonNode; query: JsonNode;
+proc validate_ListByteMatchSets_613971(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Returns an array of <a>ByteMatchSetSummary</a> objects.
@@ -5560,46 +5560,46 @@ proc validate_ListByteMatchSets_606902(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606904 = header.getOrDefault("X-Amz-Target")
-  valid_606904 = validateParameter(valid_606904, JString, required = true, default = newJString(
+  var valid_613973 = header.getOrDefault("X-Amz-Target")
+  valid_613973 = validateParameter(valid_613973, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListByteMatchSets"))
-  if valid_606904 != nil:
-    section.add "X-Amz-Target", valid_606904
-  var valid_606905 = header.getOrDefault("X-Amz-Signature")
-  valid_606905 = validateParameter(valid_606905, JString, required = false,
+  if valid_613973 != nil:
+    section.add "X-Amz-Target", valid_613973
+  var valid_613974 = header.getOrDefault("X-Amz-Signature")
+  valid_613974 = validateParameter(valid_613974, JString, required = false,
                                  default = nil)
-  if valid_606905 != nil:
-    section.add "X-Amz-Signature", valid_606905
-  var valid_606906 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606906 = validateParameter(valid_606906, JString, required = false,
+  if valid_613974 != nil:
+    section.add "X-Amz-Signature", valid_613974
+  var valid_613975 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613975 = validateParameter(valid_613975, JString, required = false,
                                  default = nil)
-  if valid_606906 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606906
-  var valid_606907 = header.getOrDefault("X-Amz-Date")
-  valid_606907 = validateParameter(valid_606907, JString, required = false,
+  if valid_613975 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613975
+  var valid_613976 = header.getOrDefault("X-Amz-Date")
+  valid_613976 = validateParameter(valid_613976, JString, required = false,
                                  default = nil)
-  if valid_606907 != nil:
-    section.add "X-Amz-Date", valid_606907
-  var valid_606908 = header.getOrDefault("X-Amz-Credential")
-  valid_606908 = validateParameter(valid_606908, JString, required = false,
+  if valid_613976 != nil:
+    section.add "X-Amz-Date", valid_613976
+  var valid_613977 = header.getOrDefault("X-Amz-Credential")
+  valid_613977 = validateParameter(valid_613977, JString, required = false,
                                  default = nil)
-  if valid_606908 != nil:
-    section.add "X-Amz-Credential", valid_606908
-  var valid_606909 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606909 = validateParameter(valid_606909, JString, required = false,
+  if valid_613977 != nil:
+    section.add "X-Amz-Credential", valid_613977
+  var valid_613978 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613978 = validateParameter(valid_613978, JString, required = false,
                                  default = nil)
-  if valid_606909 != nil:
-    section.add "X-Amz-Security-Token", valid_606909
-  var valid_606910 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606910 = validateParameter(valid_606910, JString, required = false,
+  if valid_613978 != nil:
+    section.add "X-Amz-Security-Token", valid_613978
+  var valid_613979 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613979 = validateParameter(valid_613979, JString, required = false,
                                  default = nil)
-  if valid_606910 != nil:
-    section.add "X-Amz-Algorithm", valid_606910
-  var valid_606911 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606911 = validateParameter(valid_606911, JString, required = false,
+  if valid_613979 != nil:
+    section.add "X-Amz-Algorithm", valid_613979
+  var valid_613980 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613980 = validateParameter(valid_613980, JString, required = false,
                                  default = nil)
-  if valid_606911 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606911
+  if valid_613980 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613980
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5610,36 +5610,36 @@ proc validate_ListByteMatchSets_606902(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606913: Call_ListByteMatchSets_606901; path: JsonNode;
+proc call*(call_613982: Call_ListByteMatchSets_613970; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>ByteMatchSetSummary</a> objects.
   ## 
-  let valid = call_606913.validator(path, query, header, formData, body)
-  let scheme = call_606913.pickScheme
+  let valid = call_613982.validator(path, query, header, formData, body)
+  let scheme = call_613982.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606913.url(scheme.get, call_606913.host, call_606913.base,
-                         call_606913.route, valid.getOrDefault("path"),
+  let url = call_613982.url(scheme.get, call_613982.host, call_613982.base,
+                         call_613982.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606913, url, valid)
+  result = atozHook(call_613982, url, valid)
 
-proc call*(call_606914: Call_ListByteMatchSets_606901; body: JsonNode): Recallable =
+proc call*(call_613983: Call_ListByteMatchSets_613970; body: JsonNode): Recallable =
   ## listByteMatchSets
   ## Returns an array of <a>ByteMatchSetSummary</a> objects.
   ##   body: JObject (required)
-  var body_606915 = newJObject()
+  var body_613984 = newJObject()
   if body != nil:
-    body_606915 = body
-  result = call_606914.call(nil, nil, nil, nil, body_606915)
+    body_613984 = body
+  result = call_613983.call(nil, nil, nil, nil, body_613984)
 
-var listByteMatchSets* = Call_ListByteMatchSets_606901(name: "listByteMatchSets",
+var listByteMatchSets* = Call_ListByteMatchSets_613970(name: "listByteMatchSets",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListByteMatchSets",
-    validator: validate_ListByteMatchSets_606902, base: "/",
-    url: url_ListByteMatchSets_606903, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListByteMatchSets_613971, base: "/",
+    url: url_ListByteMatchSets_613972, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListGeoMatchSets_606916 = ref object of OpenApiRestCall_605589
-proc url_ListGeoMatchSets_606918(protocol: Scheme; host: string; base: string;
+  Call_ListGeoMatchSets_613985 = ref object of OpenApiRestCall_612658
+proc url_ListGeoMatchSets_613987(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5651,7 +5651,7 @@ proc url_ListGeoMatchSets_606918(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListGeoMatchSets_606917(path: JsonNode; query: JsonNode;
+proc validate_ListGeoMatchSets_613986(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns an array of <a>GeoMatchSetSummary</a> objects in the response.
@@ -5672,46 +5672,46 @@ proc validate_ListGeoMatchSets_606917(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606919 = header.getOrDefault("X-Amz-Target")
-  valid_606919 = validateParameter(valid_606919, JString, required = true, default = newJString(
+  var valid_613988 = header.getOrDefault("X-Amz-Target")
+  valid_613988 = validateParameter(valid_613988, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListGeoMatchSets"))
-  if valid_606919 != nil:
-    section.add "X-Amz-Target", valid_606919
-  var valid_606920 = header.getOrDefault("X-Amz-Signature")
-  valid_606920 = validateParameter(valid_606920, JString, required = false,
+  if valid_613988 != nil:
+    section.add "X-Amz-Target", valid_613988
+  var valid_613989 = header.getOrDefault("X-Amz-Signature")
+  valid_613989 = validateParameter(valid_613989, JString, required = false,
                                  default = nil)
-  if valid_606920 != nil:
-    section.add "X-Amz-Signature", valid_606920
-  var valid_606921 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606921 = validateParameter(valid_606921, JString, required = false,
+  if valid_613989 != nil:
+    section.add "X-Amz-Signature", valid_613989
+  var valid_613990 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613990 = validateParameter(valid_613990, JString, required = false,
                                  default = nil)
-  if valid_606921 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606921
-  var valid_606922 = header.getOrDefault("X-Amz-Date")
-  valid_606922 = validateParameter(valid_606922, JString, required = false,
+  if valid_613990 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613990
+  var valid_613991 = header.getOrDefault("X-Amz-Date")
+  valid_613991 = validateParameter(valid_613991, JString, required = false,
                                  default = nil)
-  if valid_606922 != nil:
-    section.add "X-Amz-Date", valid_606922
-  var valid_606923 = header.getOrDefault("X-Amz-Credential")
-  valid_606923 = validateParameter(valid_606923, JString, required = false,
+  if valid_613991 != nil:
+    section.add "X-Amz-Date", valid_613991
+  var valid_613992 = header.getOrDefault("X-Amz-Credential")
+  valid_613992 = validateParameter(valid_613992, JString, required = false,
                                  default = nil)
-  if valid_606923 != nil:
-    section.add "X-Amz-Credential", valid_606923
-  var valid_606924 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606924 = validateParameter(valid_606924, JString, required = false,
+  if valid_613992 != nil:
+    section.add "X-Amz-Credential", valid_613992
+  var valid_613993 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613993 = validateParameter(valid_613993, JString, required = false,
                                  default = nil)
-  if valid_606924 != nil:
-    section.add "X-Amz-Security-Token", valid_606924
-  var valid_606925 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606925 = validateParameter(valid_606925, JString, required = false,
+  if valid_613993 != nil:
+    section.add "X-Amz-Security-Token", valid_613993
+  var valid_613994 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613994 = validateParameter(valid_613994, JString, required = false,
                                  default = nil)
-  if valid_606925 != nil:
-    section.add "X-Amz-Algorithm", valid_606925
-  var valid_606926 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606926 = validateParameter(valid_606926, JString, required = false,
+  if valid_613994 != nil:
+    section.add "X-Amz-Algorithm", valid_613994
+  var valid_613995 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613995 = validateParameter(valid_613995, JString, required = false,
                                  default = nil)
-  if valid_606926 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606926
+  if valid_613995 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613995
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5722,36 +5722,36 @@ proc validate_ListGeoMatchSets_606917(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606928: Call_ListGeoMatchSets_606916; path: JsonNode;
+proc call*(call_613997: Call_ListGeoMatchSets_613985; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>GeoMatchSetSummary</a> objects in the response.
   ## 
-  let valid = call_606928.validator(path, query, header, formData, body)
-  let scheme = call_606928.pickScheme
+  let valid = call_613997.validator(path, query, header, formData, body)
+  let scheme = call_613997.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606928.url(scheme.get, call_606928.host, call_606928.base,
-                         call_606928.route, valid.getOrDefault("path"),
+  let url = call_613997.url(scheme.get, call_613997.host, call_613997.base,
+                         call_613997.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606928, url, valid)
+  result = atozHook(call_613997, url, valid)
 
-proc call*(call_606929: Call_ListGeoMatchSets_606916; body: JsonNode): Recallable =
+proc call*(call_613998: Call_ListGeoMatchSets_613985; body: JsonNode): Recallable =
   ## listGeoMatchSets
   ## Returns an array of <a>GeoMatchSetSummary</a> objects in the response.
   ##   body: JObject (required)
-  var body_606930 = newJObject()
+  var body_613999 = newJObject()
   if body != nil:
-    body_606930 = body
-  result = call_606929.call(nil, nil, nil, nil, body_606930)
+    body_613999 = body
+  result = call_613998.call(nil, nil, nil, nil, body_613999)
 
-var listGeoMatchSets* = Call_ListGeoMatchSets_606916(name: "listGeoMatchSets",
+var listGeoMatchSets* = Call_ListGeoMatchSets_613985(name: "listGeoMatchSets",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListGeoMatchSets",
-    validator: validate_ListGeoMatchSets_606917, base: "/",
-    url: url_ListGeoMatchSets_606918, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListGeoMatchSets_613986, base: "/",
+    url: url_ListGeoMatchSets_613987, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListIPSets_606931 = ref object of OpenApiRestCall_605589
-proc url_ListIPSets_606933(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListIPSets_614000 = ref object of OpenApiRestCall_612658
+proc url_ListIPSets_614002(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5763,7 +5763,7 @@ proc url_ListIPSets_606933(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_ListIPSets_606932(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListIPSets_614001(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>IPSetSummary</a> objects in the response.
   ## 
@@ -5783,46 +5783,46 @@ proc validate_ListIPSets_606932(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606934 = header.getOrDefault("X-Amz-Target")
-  valid_606934 = validateParameter(valid_606934, JString, required = true, default = newJString(
+  var valid_614003 = header.getOrDefault("X-Amz-Target")
+  valid_614003 = validateParameter(valid_614003, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListIPSets"))
-  if valid_606934 != nil:
-    section.add "X-Amz-Target", valid_606934
-  var valid_606935 = header.getOrDefault("X-Amz-Signature")
-  valid_606935 = validateParameter(valid_606935, JString, required = false,
+  if valid_614003 != nil:
+    section.add "X-Amz-Target", valid_614003
+  var valid_614004 = header.getOrDefault("X-Amz-Signature")
+  valid_614004 = validateParameter(valid_614004, JString, required = false,
                                  default = nil)
-  if valid_606935 != nil:
-    section.add "X-Amz-Signature", valid_606935
-  var valid_606936 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606936 = validateParameter(valid_606936, JString, required = false,
+  if valid_614004 != nil:
+    section.add "X-Amz-Signature", valid_614004
+  var valid_614005 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614005 = validateParameter(valid_614005, JString, required = false,
                                  default = nil)
-  if valid_606936 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606936
-  var valid_606937 = header.getOrDefault("X-Amz-Date")
-  valid_606937 = validateParameter(valid_606937, JString, required = false,
+  if valid_614005 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614005
+  var valid_614006 = header.getOrDefault("X-Amz-Date")
+  valid_614006 = validateParameter(valid_614006, JString, required = false,
                                  default = nil)
-  if valid_606937 != nil:
-    section.add "X-Amz-Date", valid_606937
-  var valid_606938 = header.getOrDefault("X-Amz-Credential")
-  valid_606938 = validateParameter(valid_606938, JString, required = false,
+  if valid_614006 != nil:
+    section.add "X-Amz-Date", valid_614006
+  var valid_614007 = header.getOrDefault("X-Amz-Credential")
+  valid_614007 = validateParameter(valid_614007, JString, required = false,
                                  default = nil)
-  if valid_606938 != nil:
-    section.add "X-Amz-Credential", valid_606938
-  var valid_606939 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606939 = validateParameter(valid_606939, JString, required = false,
+  if valid_614007 != nil:
+    section.add "X-Amz-Credential", valid_614007
+  var valid_614008 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614008 = validateParameter(valid_614008, JString, required = false,
                                  default = nil)
-  if valid_606939 != nil:
-    section.add "X-Amz-Security-Token", valid_606939
-  var valid_606940 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606940 = validateParameter(valid_606940, JString, required = false,
+  if valid_614008 != nil:
+    section.add "X-Amz-Security-Token", valid_614008
+  var valid_614009 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614009 = validateParameter(valid_614009, JString, required = false,
                                  default = nil)
-  if valid_606940 != nil:
-    section.add "X-Amz-Algorithm", valid_606940
-  var valid_606941 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606941 = validateParameter(valid_606941, JString, required = false,
+  if valid_614009 != nil:
+    section.add "X-Amz-Algorithm", valid_614009
+  var valid_614010 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614010 = validateParameter(valid_614010, JString, required = false,
                                  default = nil)
-  if valid_606941 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606941
+  if valid_614010 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614010
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5833,37 +5833,37 @@ proc validate_ListIPSets_606932(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_606943: Call_ListIPSets_606931; path: JsonNode; query: JsonNode;
+proc call*(call_614012: Call_ListIPSets_614000; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>IPSetSummary</a> objects in the response.
   ## 
-  let valid = call_606943.validator(path, query, header, formData, body)
-  let scheme = call_606943.pickScheme
+  let valid = call_614012.validator(path, query, header, formData, body)
+  let scheme = call_614012.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606943.url(scheme.get, call_606943.host, call_606943.base,
-                         call_606943.route, valid.getOrDefault("path"),
+  let url = call_614012.url(scheme.get, call_614012.host, call_614012.base,
+                         call_614012.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606943, url, valid)
+  result = atozHook(call_614012, url, valid)
 
-proc call*(call_606944: Call_ListIPSets_606931; body: JsonNode): Recallable =
+proc call*(call_614013: Call_ListIPSets_614000; body: JsonNode): Recallable =
   ## listIPSets
   ## Returns an array of <a>IPSetSummary</a> objects in the response.
   ##   body: JObject (required)
-  var body_606945 = newJObject()
+  var body_614014 = newJObject()
   if body != nil:
-    body_606945 = body
-  result = call_606944.call(nil, nil, nil, nil, body_606945)
+    body_614014 = body
+  result = call_614013.call(nil, nil, nil, nil, body_614014)
 
-var listIPSets* = Call_ListIPSets_606931(name: "listIPSets",
+var listIPSets* = Call_ListIPSets_614000(name: "listIPSets",
                                       meth: HttpMethod.HttpPost,
                                       host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListIPSets",
-                                      validator: validate_ListIPSets_606932,
-                                      base: "/", url: url_ListIPSets_606933,
+                                      validator: validate_ListIPSets_614001,
+                                      base: "/", url: url_ListIPSets_614002,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListLoggingConfigurations_606946 = ref object of OpenApiRestCall_605589
-proc url_ListLoggingConfigurations_606948(protocol: Scheme; host: string;
+  Call_ListLoggingConfigurations_614015 = ref object of OpenApiRestCall_612658
+proc url_ListLoggingConfigurations_614017(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5875,7 +5875,7 @@ proc url_ListLoggingConfigurations_606948(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListLoggingConfigurations_606947(path: JsonNode; query: JsonNode;
+proc validate_ListLoggingConfigurations_614016(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>LoggingConfiguration</a> objects.
   ## 
@@ -5895,46 +5895,46 @@ proc validate_ListLoggingConfigurations_606947(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606949 = header.getOrDefault("X-Amz-Target")
-  valid_606949 = validateParameter(valid_606949, JString, required = true, default = newJString(
+  var valid_614018 = header.getOrDefault("X-Amz-Target")
+  valid_614018 = validateParameter(valid_614018, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListLoggingConfigurations"))
-  if valid_606949 != nil:
-    section.add "X-Amz-Target", valid_606949
-  var valid_606950 = header.getOrDefault("X-Amz-Signature")
-  valid_606950 = validateParameter(valid_606950, JString, required = false,
+  if valid_614018 != nil:
+    section.add "X-Amz-Target", valid_614018
+  var valid_614019 = header.getOrDefault("X-Amz-Signature")
+  valid_614019 = validateParameter(valid_614019, JString, required = false,
                                  default = nil)
-  if valid_606950 != nil:
-    section.add "X-Amz-Signature", valid_606950
-  var valid_606951 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606951 = validateParameter(valid_606951, JString, required = false,
+  if valid_614019 != nil:
+    section.add "X-Amz-Signature", valid_614019
+  var valid_614020 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614020 = validateParameter(valid_614020, JString, required = false,
                                  default = nil)
-  if valid_606951 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606951
-  var valid_606952 = header.getOrDefault("X-Amz-Date")
-  valid_606952 = validateParameter(valid_606952, JString, required = false,
+  if valid_614020 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614020
+  var valid_614021 = header.getOrDefault("X-Amz-Date")
+  valid_614021 = validateParameter(valid_614021, JString, required = false,
                                  default = nil)
-  if valid_606952 != nil:
-    section.add "X-Amz-Date", valid_606952
-  var valid_606953 = header.getOrDefault("X-Amz-Credential")
-  valid_606953 = validateParameter(valid_606953, JString, required = false,
+  if valid_614021 != nil:
+    section.add "X-Amz-Date", valid_614021
+  var valid_614022 = header.getOrDefault("X-Amz-Credential")
+  valid_614022 = validateParameter(valid_614022, JString, required = false,
                                  default = nil)
-  if valid_606953 != nil:
-    section.add "X-Amz-Credential", valid_606953
-  var valid_606954 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606954 = validateParameter(valid_606954, JString, required = false,
+  if valid_614022 != nil:
+    section.add "X-Amz-Credential", valid_614022
+  var valid_614023 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614023 = validateParameter(valid_614023, JString, required = false,
                                  default = nil)
-  if valid_606954 != nil:
-    section.add "X-Amz-Security-Token", valid_606954
-  var valid_606955 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606955 = validateParameter(valid_606955, JString, required = false,
+  if valid_614023 != nil:
+    section.add "X-Amz-Security-Token", valid_614023
+  var valid_614024 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614024 = validateParameter(valid_614024, JString, required = false,
                                  default = nil)
-  if valid_606955 != nil:
-    section.add "X-Amz-Algorithm", valid_606955
-  var valid_606956 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606956 = validateParameter(valid_606956, JString, required = false,
+  if valid_614024 != nil:
+    section.add "X-Amz-Algorithm", valid_614024
+  var valid_614025 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614025 = validateParameter(valid_614025, JString, required = false,
                                  default = nil)
-  if valid_606956 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606956
+  if valid_614025 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614025
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5945,38 +5945,38 @@ proc validate_ListLoggingConfigurations_606947(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606958: Call_ListLoggingConfigurations_606946; path: JsonNode;
+proc call*(call_614027: Call_ListLoggingConfigurations_614015; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>LoggingConfiguration</a> objects.
   ## 
-  let valid = call_606958.validator(path, query, header, formData, body)
-  let scheme = call_606958.pickScheme
+  let valid = call_614027.validator(path, query, header, formData, body)
+  let scheme = call_614027.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606958.url(scheme.get, call_606958.host, call_606958.base,
-                         call_606958.route, valid.getOrDefault("path"),
+  let url = call_614027.url(scheme.get, call_614027.host, call_614027.base,
+                         call_614027.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606958, url, valid)
+  result = atozHook(call_614027, url, valid)
 
-proc call*(call_606959: Call_ListLoggingConfigurations_606946; body: JsonNode): Recallable =
+proc call*(call_614028: Call_ListLoggingConfigurations_614015; body: JsonNode): Recallable =
   ## listLoggingConfigurations
   ## Returns an array of <a>LoggingConfiguration</a> objects.
   ##   body: JObject (required)
-  var body_606960 = newJObject()
+  var body_614029 = newJObject()
   if body != nil:
-    body_606960 = body
-  result = call_606959.call(nil, nil, nil, nil, body_606960)
+    body_614029 = body
+  result = call_614028.call(nil, nil, nil, nil, body_614029)
 
-var listLoggingConfigurations* = Call_ListLoggingConfigurations_606946(
+var listLoggingConfigurations* = Call_ListLoggingConfigurations_614015(
     name: "listLoggingConfigurations", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListLoggingConfigurations",
-    validator: validate_ListLoggingConfigurations_606947, base: "/",
-    url: url_ListLoggingConfigurations_606948,
+    validator: validate_ListLoggingConfigurations_614016, base: "/",
+    url: url_ListLoggingConfigurations_614017,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRateBasedRules_606961 = ref object of OpenApiRestCall_605589
-proc url_ListRateBasedRules_606963(protocol: Scheme; host: string; base: string;
+  Call_ListRateBasedRules_614030 = ref object of OpenApiRestCall_612658
+proc url_ListRateBasedRules_614032(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -5988,7 +5988,7 @@ proc url_ListRateBasedRules_606963(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListRateBasedRules_606962(path: JsonNode; query: JsonNode;
+proc validate_ListRateBasedRules_614031(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns an array of <a>RuleSummary</a> objects.
@@ -6009,46 +6009,46 @@ proc validate_ListRateBasedRules_606962(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606964 = header.getOrDefault("X-Amz-Target")
-  valid_606964 = validateParameter(valid_606964, JString, required = true, default = newJString(
+  var valid_614033 = header.getOrDefault("X-Amz-Target")
+  valid_614033 = validateParameter(valid_614033, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListRateBasedRules"))
-  if valid_606964 != nil:
-    section.add "X-Amz-Target", valid_606964
-  var valid_606965 = header.getOrDefault("X-Amz-Signature")
-  valid_606965 = validateParameter(valid_606965, JString, required = false,
+  if valid_614033 != nil:
+    section.add "X-Amz-Target", valid_614033
+  var valid_614034 = header.getOrDefault("X-Amz-Signature")
+  valid_614034 = validateParameter(valid_614034, JString, required = false,
                                  default = nil)
-  if valid_606965 != nil:
-    section.add "X-Amz-Signature", valid_606965
-  var valid_606966 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606966 = validateParameter(valid_606966, JString, required = false,
+  if valid_614034 != nil:
+    section.add "X-Amz-Signature", valid_614034
+  var valid_614035 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614035 = validateParameter(valid_614035, JString, required = false,
                                  default = nil)
-  if valid_606966 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606966
-  var valid_606967 = header.getOrDefault("X-Amz-Date")
-  valid_606967 = validateParameter(valid_606967, JString, required = false,
+  if valid_614035 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614035
+  var valid_614036 = header.getOrDefault("X-Amz-Date")
+  valid_614036 = validateParameter(valid_614036, JString, required = false,
                                  default = nil)
-  if valid_606967 != nil:
-    section.add "X-Amz-Date", valid_606967
-  var valid_606968 = header.getOrDefault("X-Amz-Credential")
-  valid_606968 = validateParameter(valid_606968, JString, required = false,
+  if valid_614036 != nil:
+    section.add "X-Amz-Date", valid_614036
+  var valid_614037 = header.getOrDefault("X-Amz-Credential")
+  valid_614037 = validateParameter(valid_614037, JString, required = false,
                                  default = nil)
-  if valid_606968 != nil:
-    section.add "X-Amz-Credential", valid_606968
-  var valid_606969 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606969 = validateParameter(valid_606969, JString, required = false,
+  if valid_614037 != nil:
+    section.add "X-Amz-Credential", valid_614037
+  var valid_614038 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614038 = validateParameter(valid_614038, JString, required = false,
                                  default = nil)
-  if valid_606969 != nil:
-    section.add "X-Amz-Security-Token", valid_606969
-  var valid_606970 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606970 = validateParameter(valid_606970, JString, required = false,
+  if valid_614038 != nil:
+    section.add "X-Amz-Security-Token", valid_614038
+  var valid_614039 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614039 = validateParameter(valid_614039, JString, required = false,
                                  default = nil)
-  if valid_606970 != nil:
-    section.add "X-Amz-Algorithm", valid_606970
-  var valid_606971 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606971 = validateParameter(valid_606971, JString, required = false,
+  if valid_614039 != nil:
+    section.add "X-Amz-Algorithm", valid_614039
+  var valid_614040 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614040 = validateParameter(valid_614040, JString, required = false,
                                  default = nil)
-  if valid_606971 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606971
+  if valid_614040 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614040
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6059,37 +6059,37 @@ proc validate_ListRateBasedRules_606962(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606973: Call_ListRateBasedRules_606961; path: JsonNode;
+proc call*(call_614042: Call_ListRateBasedRules_614030; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>RuleSummary</a> objects.
   ## 
-  let valid = call_606973.validator(path, query, header, formData, body)
-  let scheme = call_606973.pickScheme
+  let valid = call_614042.validator(path, query, header, formData, body)
+  let scheme = call_614042.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606973.url(scheme.get, call_606973.host, call_606973.base,
-                         call_606973.route, valid.getOrDefault("path"),
+  let url = call_614042.url(scheme.get, call_614042.host, call_614042.base,
+                         call_614042.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606973, url, valid)
+  result = atozHook(call_614042, url, valid)
 
-proc call*(call_606974: Call_ListRateBasedRules_606961; body: JsonNode): Recallable =
+proc call*(call_614043: Call_ListRateBasedRules_614030; body: JsonNode): Recallable =
   ## listRateBasedRules
   ## Returns an array of <a>RuleSummary</a> objects.
   ##   body: JObject (required)
-  var body_606975 = newJObject()
+  var body_614044 = newJObject()
   if body != nil:
-    body_606975 = body
-  result = call_606974.call(nil, nil, nil, nil, body_606975)
+    body_614044 = body
+  result = call_614043.call(nil, nil, nil, nil, body_614044)
 
-var listRateBasedRules* = Call_ListRateBasedRules_606961(
+var listRateBasedRules* = Call_ListRateBasedRules_614030(
     name: "listRateBasedRules", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListRateBasedRules",
-    validator: validate_ListRateBasedRules_606962, base: "/",
-    url: url_ListRateBasedRules_606963, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListRateBasedRules_614031, base: "/",
+    url: url_ListRateBasedRules_614032, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRegexMatchSets_606976 = ref object of OpenApiRestCall_605589
-proc url_ListRegexMatchSets_606978(protocol: Scheme; host: string; base: string;
+  Call_ListRegexMatchSets_614045 = ref object of OpenApiRestCall_612658
+proc url_ListRegexMatchSets_614047(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6101,7 +6101,7 @@ proc url_ListRegexMatchSets_606978(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListRegexMatchSets_606977(path: JsonNode; query: JsonNode;
+proc validate_ListRegexMatchSets_614046(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns an array of <a>RegexMatchSetSummary</a> objects.
@@ -6122,46 +6122,46 @@ proc validate_ListRegexMatchSets_606977(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606979 = header.getOrDefault("X-Amz-Target")
-  valid_606979 = validateParameter(valid_606979, JString, required = true, default = newJString(
+  var valid_614048 = header.getOrDefault("X-Amz-Target")
+  valid_614048 = validateParameter(valid_614048, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListRegexMatchSets"))
-  if valid_606979 != nil:
-    section.add "X-Amz-Target", valid_606979
-  var valid_606980 = header.getOrDefault("X-Amz-Signature")
-  valid_606980 = validateParameter(valid_606980, JString, required = false,
+  if valid_614048 != nil:
+    section.add "X-Amz-Target", valid_614048
+  var valid_614049 = header.getOrDefault("X-Amz-Signature")
+  valid_614049 = validateParameter(valid_614049, JString, required = false,
                                  default = nil)
-  if valid_606980 != nil:
-    section.add "X-Amz-Signature", valid_606980
-  var valid_606981 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606981 = validateParameter(valid_606981, JString, required = false,
+  if valid_614049 != nil:
+    section.add "X-Amz-Signature", valid_614049
+  var valid_614050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614050 = validateParameter(valid_614050, JString, required = false,
                                  default = nil)
-  if valid_606981 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606981
-  var valid_606982 = header.getOrDefault("X-Amz-Date")
-  valid_606982 = validateParameter(valid_606982, JString, required = false,
+  if valid_614050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614050
+  var valid_614051 = header.getOrDefault("X-Amz-Date")
+  valid_614051 = validateParameter(valid_614051, JString, required = false,
                                  default = nil)
-  if valid_606982 != nil:
-    section.add "X-Amz-Date", valid_606982
-  var valid_606983 = header.getOrDefault("X-Amz-Credential")
-  valid_606983 = validateParameter(valid_606983, JString, required = false,
+  if valid_614051 != nil:
+    section.add "X-Amz-Date", valid_614051
+  var valid_614052 = header.getOrDefault("X-Amz-Credential")
+  valid_614052 = validateParameter(valid_614052, JString, required = false,
                                  default = nil)
-  if valid_606983 != nil:
-    section.add "X-Amz-Credential", valid_606983
-  var valid_606984 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606984 = validateParameter(valid_606984, JString, required = false,
+  if valid_614052 != nil:
+    section.add "X-Amz-Credential", valid_614052
+  var valid_614053 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614053 = validateParameter(valid_614053, JString, required = false,
                                  default = nil)
-  if valid_606984 != nil:
-    section.add "X-Amz-Security-Token", valid_606984
-  var valid_606985 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606985 = validateParameter(valid_606985, JString, required = false,
+  if valid_614053 != nil:
+    section.add "X-Amz-Security-Token", valid_614053
+  var valid_614054 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614054 = validateParameter(valid_614054, JString, required = false,
                                  default = nil)
-  if valid_606985 != nil:
-    section.add "X-Amz-Algorithm", valid_606985
-  var valid_606986 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606986 = validateParameter(valid_606986, JString, required = false,
+  if valid_614054 != nil:
+    section.add "X-Amz-Algorithm", valid_614054
+  var valid_614055 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614055 = validateParameter(valid_614055, JString, required = false,
                                  default = nil)
-  if valid_606986 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606986
+  if valid_614055 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614055
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6172,37 +6172,37 @@ proc validate_ListRegexMatchSets_606977(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606988: Call_ListRegexMatchSets_606976; path: JsonNode;
+proc call*(call_614057: Call_ListRegexMatchSets_614045; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>RegexMatchSetSummary</a> objects.
   ## 
-  let valid = call_606988.validator(path, query, header, formData, body)
-  let scheme = call_606988.pickScheme
+  let valid = call_614057.validator(path, query, header, formData, body)
+  let scheme = call_614057.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606988.url(scheme.get, call_606988.host, call_606988.base,
-                         call_606988.route, valid.getOrDefault("path"),
+  let url = call_614057.url(scheme.get, call_614057.host, call_614057.base,
+                         call_614057.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606988, url, valid)
+  result = atozHook(call_614057, url, valid)
 
-proc call*(call_606989: Call_ListRegexMatchSets_606976; body: JsonNode): Recallable =
+proc call*(call_614058: Call_ListRegexMatchSets_614045; body: JsonNode): Recallable =
   ## listRegexMatchSets
   ## Returns an array of <a>RegexMatchSetSummary</a> objects.
   ##   body: JObject (required)
-  var body_606990 = newJObject()
+  var body_614059 = newJObject()
   if body != nil:
-    body_606990 = body
-  result = call_606989.call(nil, nil, nil, nil, body_606990)
+    body_614059 = body
+  result = call_614058.call(nil, nil, nil, nil, body_614059)
 
-var listRegexMatchSets* = Call_ListRegexMatchSets_606976(
+var listRegexMatchSets* = Call_ListRegexMatchSets_614045(
     name: "listRegexMatchSets", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListRegexMatchSets",
-    validator: validate_ListRegexMatchSets_606977, base: "/",
-    url: url_ListRegexMatchSets_606978, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListRegexMatchSets_614046, base: "/",
+    url: url_ListRegexMatchSets_614047, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRegexPatternSets_606991 = ref object of OpenApiRestCall_605589
-proc url_ListRegexPatternSets_606993(protocol: Scheme; host: string; base: string;
+  Call_ListRegexPatternSets_614060 = ref object of OpenApiRestCall_612658
+proc url_ListRegexPatternSets_614062(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6214,7 +6214,7 @@ proc url_ListRegexPatternSets_606993(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_ListRegexPatternSets_606992(path: JsonNode; query: JsonNode;
+proc validate_ListRegexPatternSets_614061(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>RegexPatternSetSummary</a> objects.
   ## 
@@ -6234,46 +6234,46 @@ proc validate_ListRegexPatternSets_606992(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606994 = header.getOrDefault("X-Amz-Target")
-  valid_606994 = validateParameter(valid_606994, JString, required = true, default = newJString(
+  var valid_614063 = header.getOrDefault("X-Amz-Target")
+  valid_614063 = validateParameter(valid_614063, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListRegexPatternSets"))
-  if valid_606994 != nil:
-    section.add "X-Amz-Target", valid_606994
-  var valid_606995 = header.getOrDefault("X-Amz-Signature")
-  valid_606995 = validateParameter(valid_606995, JString, required = false,
+  if valid_614063 != nil:
+    section.add "X-Amz-Target", valid_614063
+  var valid_614064 = header.getOrDefault("X-Amz-Signature")
+  valid_614064 = validateParameter(valid_614064, JString, required = false,
                                  default = nil)
-  if valid_606995 != nil:
-    section.add "X-Amz-Signature", valid_606995
-  var valid_606996 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606996 = validateParameter(valid_606996, JString, required = false,
+  if valid_614064 != nil:
+    section.add "X-Amz-Signature", valid_614064
+  var valid_614065 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614065 = validateParameter(valid_614065, JString, required = false,
                                  default = nil)
-  if valid_606996 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606996
-  var valid_606997 = header.getOrDefault("X-Amz-Date")
-  valid_606997 = validateParameter(valid_606997, JString, required = false,
+  if valid_614065 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614065
+  var valid_614066 = header.getOrDefault("X-Amz-Date")
+  valid_614066 = validateParameter(valid_614066, JString, required = false,
                                  default = nil)
-  if valid_606997 != nil:
-    section.add "X-Amz-Date", valid_606997
-  var valid_606998 = header.getOrDefault("X-Amz-Credential")
-  valid_606998 = validateParameter(valid_606998, JString, required = false,
+  if valid_614066 != nil:
+    section.add "X-Amz-Date", valid_614066
+  var valid_614067 = header.getOrDefault("X-Amz-Credential")
+  valid_614067 = validateParameter(valid_614067, JString, required = false,
                                  default = nil)
-  if valid_606998 != nil:
-    section.add "X-Amz-Credential", valid_606998
-  var valid_606999 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606999 = validateParameter(valid_606999, JString, required = false,
+  if valid_614067 != nil:
+    section.add "X-Amz-Credential", valid_614067
+  var valid_614068 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614068 = validateParameter(valid_614068, JString, required = false,
                                  default = nil)
-  if valid_606999 != nil:
-    section.add "X-Amz-Security-Token", valid_606999
-  var valid_607000 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607000 = validateParameter(valid_607000, JString, required = false,
+  if valid_614068 != nil:
+    section.add "X-Amz-Security-Token", valid_614068
+  var valid_614069 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614069 = validateParameter(valid_614069, JString, required = false,
                                  default = nil)
-  if valid_607000 != nil:
-    section.add "X-Amz-Algorithm", valid_607000
-  var valid_607001 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607001 = validateParameter(valid_607001, JString, required = false,
+  if valid_614069 != nil:
+    section.add "X-Amz-Algorithm", valid_614069
+  var valid_614070 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614070 = validateParameter(valid_614070, JString, required = false,
                                  default = nil)
-  if valid_607001 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607001
+  if valid_614070 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614070
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6284,37 +6284,37 @@ proc validate_ListRegexPatternSets_606992(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607003: Call_ListRegexPatternSets_606991; path: JsonNode;
+proc call*(call_614072: Call_ListRegexPatternSets_614060; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>RegexPatternSetSummary</a> objects.
   ## 
-  let valid = call_607003.validator(path, query, header, formData, body)
-  let scheme = call_607003.pickScheme
+  let valid = call_614072.validator(path, query, header, formData, body)
+  let scheme = call_614072.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607003.url(scheme.get, call_607003.host, call_607003.base,
-                         call_607003.route, valid.getOrDefault("path"),
+  let url = call_614072.url(scheme.get, call_614072.host, call_614072.base,
+                         call_614072.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607003, url, valid)
+  result = atozHook(call_614072, url, valid)
 
-proc call*(call_607004: Call_ListRegexPatternSets_606991; body: JsonNode): Recallable =
+proc call*(call_614073: Call_ListRegexPatternSets_614060; body: JsonNode): Recallable =
   ## listRegexPatternSets
   ## Returns an array of <a>RegexPatternSetSummary</a> objects.
   ##   body: JObject (required)
-  var body_607005 = newJObject()
+  var body_614074 = newJObject()
   if body != nil:
-    body_607005 = body
-  result = call_607004.call(nil, nil, nil, nil, body_607005)
+    body_614074 = body
+  result = call_614073.call(nil, nil, nil, nil, body_614074)
 
-var listRegexPatternSets* = Call_ListRegexPatternSets_606991(
+var listRegexPatternSets* = Call_ListRegexPatternSets_614060(
     name: "listRegexPatternSets", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListRegexPatternSets",
-    validator: validate_ListRegexPatternSets_606992, base: "/",
-    url: url_ListRegexPatternSets_606993, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListRegexPatternSets_614061, base: "/",
+    url: url_ListRegexPatternSets_614062, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListResourcesForWebACL_607006 = ref object of OpenApiRestCall_605589
-proc url_ListResourcesForWebACL_607008(protocol: Scheme; host: string; base: string;
+  Call_ListResourcesForWebACL_614075 = ref object of OpenApiRestCall_612658
+proc url_ListResourcesForWebACL_614077(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6326,7 +6326,7 @@ proc url_ListResourcesForWebACL_607008(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_ListResourcesForWebACL_607007(path: JsonNode; query: JsonNode;
+proc validate_ListResourcesForWebACL_614076(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of resources associated with the specified web ACL.
   ## 
@@ -6346,46 +6346,46 @@ proc validate_ListResourcesForWebACL_607007(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607009 = header.getOrDefault("X-Amz-Target")
-  valid_607009 = validateParameter(valid_607009, JString, required = true, default = newJString(
+  var valid_614078 = header.getOrDefault("X-Amz-Target")
+  valid_614078 = validateParameter(valid_614078, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListResourcesForWebACL"))
-  if valid_607009 != nil:
-    section.add "X-Amz-Target", valid_607009
-  var valid_607010 = header.getOrDefault("X-Amz-Signature")
-  valid_607010 = validateParameter(valid_607010, JString, required = false,
+  if valid_614078 != nil:
+    section.add "X-Amz-Target", valid_614078
+  var valid_614079 = header.getOrDefault("X-Amz-Signature")
+  valid_614079 = validateParameter(valid_614079, JString, required = false,
                                  default = nil)
-  if valid_607010 != nil:
-    section.add "X-Amz-Signature", valid_607010
-  var valid_607011 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607011 = validateParameter(valid_607011, JString, required = false,
+  if valid_614079 != nil:
+    section.add "X-Amz-Signature", valid_614079
+  var valid_614080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614080 = validateParameter(valid_614080, JString, required = false,
                                  default = nil)
-  if valid_607011 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607011
-  var valid_607012 = header.getOrDefault("X-Amz-Date")
-  valid_607012 = validateParameter(valid_607012, JString, required = false,
+  if valid_614080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614080
+  var valid_614081 = header.getOrDefault("X-Amz-Date")
+  valid_614081 = validateParameter(valid_614081, JString, required = false,
                                  default = nil)
-  if valid_607012 != nil:
-    section.add "X-Amz-Date", valid_607012
-  var valid_607013 = header.getOrDefault("X-Amz-Credential")
-  valid_607013 = validateParameter(valid_607013, JString, required = false,
+  if valid_614081 != nil:
+    section.add "X-Amz-Date", valid_614081
+  var valid_614082 = header.getOrDefault("X-Amz-Credential")
+  valid_614082 = validateParameter(valid_614082, JString, required = false,
                                  default = nil)
-  if valid_607013 != nil:
-    section.add "X-Amz-Credential", valid_607013
-  var valid_607014 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607014 = validateParameter(valid_607014, JString, required = false,
+  if valid_614082 != nil:
+    section.add "X-Amz-Credential", valid_614082
+  var valid_614083 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614083 = validateParameter(valid_614083, JString, required = false,
                                  default = nil)
-  if valid_607014 != nil:
-    section.add "X-Amz-Security-Token", valid_607014
-  var valid_607015 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607015 = validateParameter(valid_607015, JString, required = false,
+  if valid_614083 != nil:
+    section.add "X-Amz-Security-Token", valid_614083
+  var valid_614084 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614084 = validateParameter(valid_614084, JString, required = false,
                                  default = nil)
-  if valid_607015 != nil:
-    section.add "X-Amz-Algorithm", valid_607015
-  var valid_607016 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607016 = validateParameter(valid_607016, JString, required = false,
+  if valid_614084 != nil:
+    section.add "X-Amz-Algorithm", valid_614084
+  var valid_614085 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614085 = validateParameter(valid_614085, JString, required = false,
                                  default = nil)
-  if valid_607016 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607016
+  if valid_614085 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614085
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6396,37 +6396,37 @@ proc validate_ListResourcesForWebACL_607007(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607018: Call_ListResourcesForWebACL_607006; path: JsonNode;
+proc call*(call_614087: Call_ListResourcesForWebACL_614075; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of resources associated with the specified web ACL.
   ## 
-  let valid = call_607018.validator(path, query, header, formData, body)
-  let scheme = call_607018.pickScheme
+  let valid = call_614087.validator(path, query, header, formData, body)
+  let scheme = call_614087.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607018.url(scheme.get, call_607018.host, call_607018.base,
-                         call_607018.route, valid.getOrDefault("path"),
+  let url = call_614087.url(scheme.get, call_614087.host, call_614087.base,
+                         call_614087.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607018, url, valid)
+  result = atozHook(call_614087, url, valid)
 
-proc call*(call_607019: Call_ListResourcesForWebACL_607006; body: JsonNode): Recallable =
+proc call*(call_614088: Call_ListResourcesForWebACL_614075; body: JsonNode): Recallable =
   ## listResourcesForWebACL
   ## Returns an array of resources associated with the specified web ACL.
   ##   body: JObject (required)
-  var body_607020 = newJObject()
+  var body_614089 = newJObject()
   if body != nil:
-    body_607020 = body
-  result = call_607019.call(nil, nil, nil, nil, body_607020)
+    body_614089 = body
+  result = call_614088.call(nil, nil, nil, nil, body_614089)
 
-var listResourcesForWebACL* = Call_ListResourcesForWebACL_607006(
+var listResourcesForWebACL* = Call_ListResourcesForWebACL_614075(
     name: "listResourcesForWebACL", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListResourcesForWebACL",
-    validator: validate_ListResourcesForWebACL_607007, base: "/",
-    url: url_ListResourcesForWebACL_607008, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListResourcesForWebACL_614076, base: "/",
+    url: url_ListResourcesForWebACL_614077, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRuleGroups_607021 = ref object of OpenApiRestCall_605589
-proc url_ListRuleGroups_607023(protocol: Scheme; host: string; base: string;
+  Call_ListRuleGroups_614090 = ref object of OpenApiRestCall_612658
+proc url_ListRuleGroups_614092(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6438,7 +6438,7 @@ proc url_ListRuleGroups_607023(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListRuleGroups_607022(path: JsonNode; query: JsonNode;
+proc validate_ListRuleGroups_614091(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns an array of <a>RuleGroup</a> objects.
@@ -6459,46 +6459,46 @@ proc validate_ListRuleGroups_607022(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607024 = header.getOrDefault("X-Amz-Target")
-  valid_607024 = validateParameter(valid_607024, JString, required = true, default = newJString(
+  var valid_614093 = header.getOrDefault("X-Amz-Target")
+  valid_614093 = validateParameter(valid_614093, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListRuleGroups"))
-  if valid_607024 != nil:
-    section.add "X-Amz-Target", valid_607024
-  var valid_607025 = header.getOrDefault("X-Amz-Signature")
-  valid_607025 = validateParameter(valid_607025, JString, required = false,
+  if valid_614093 != nil:
+    section.add "X-Amz-Target", valid_614093
+  var valid_614094 = header.getOrDefault("X-Amz-Signature")
+  valid_614094 = validateParameter(valid_614094, JString, required = false,
                                  default = nil)
-  if valid_607025 != nil:
-    section.add "X-Amz-Signature", valid_607025
-  var valid_607026 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607026 = validateParameter(valid_607026, JString, required = false,
+  if valid_614094 != nil:
+    section.add "X-Amz-Signature", valid_614094
+  var valid_614095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614095 = validateParameter(valid_614095, JString, required = false,
                                  default = nil)
-  if valid_607026 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607026
-  var valid_607027 = header.getOrDefault("X-Amz-Date")
-  valid_607027 = validateParameter(valid_607027, JString, required = false,
+  if valid_614095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614095
+  var valid_614096 = header.getOrDefault("X-Amz-Date")
+  valid_614096 = validateParameter(valid_614096, JString, required = false,
                                  default = nil)
-  if valid_607027 != nil:
-    section.add "X-Amz-Date", valid_607027
-  var valid_607028 = header.getOrDefault("X-Amz-Credential")
-  valid_607028 = validateParameter(valid_607028, JString, required = false,
+  if valid_614096 != nil:
+    section.add "X-Amz-Date", valid_614096
+  var valid_614097 = header.getOrDefault("X-Amz-Credential")
+  valid_614097 = validateParameter(valid_614097, JString, required = false,
                                  default = nil)
-  if valid_607028 != nil:
-    section.add "X-Amz-Credential", valid_607028
-  var valid_607029 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607029 = validateParameter(valid_607029, JString, required = false,
+  if valid_614097 != nil:
+    section.add "X-Amz-Credential", valid_614097
+  var valid_614098 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614098 = validateParameter(valid_614098, JString, required = false,
                                  default = nil)
-  if valid_607029 != nil:
-    section.add "X-Amz-Security-Token", valid_607029
-  var valid_607030 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607030 = validateParameter(valid_607030, JString, required = false,
+  if valid_614098 != nil:
+    section.add "X-Amz-Security-Token", valid_614098
+  var valid_614099 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614099 = validateParameter(valid_614099, JString, required = false,
                                  default = nil)
-  if valid_607030 != nil:
-    section.add "X-Amz-Algorithm", valid_607030
-  var valid_607031 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607031 = validateParameter(valid_607031, JString, required = false,
+  if valid_614099 != nil:
+    section.add "X-Amz-Algorithm", valid_614099
+  var valid_614100 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614100 = validateParameter(valid_614100, JString, required = false,
                                  default = nil)
-  if valid_607031 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607031
+  if valid_614100 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614100
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6509,36 +6509,36 @@ proc validate_ListRuleGroups_607022(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607033: Call_ListRuleGroups_607021; path: JsonNode; query: JsonNode;
+proc call*(call_614102: Call_ListRuleGroups_614090; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>RuleGroup</a> objects.
   ## 
-  let valid = call_607033.validator(path, query, header, formData, body)
-  let scheme = call_607033.pickScheme
+  let valid = call_614102.validator(path, query, header, formData, body)
+  let scheme = call_614102.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607033.url(scheme.get, call_607033.host, call_607033.base,
-                         call_607033.route, valid.getOrDefault("path"),
+  let url = call_614102.url(scheme.get, call_614102.host, call_614102.base,
+                         call_614102.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607033, url, valid)
+  result = atozHook(call_614102, url, valid)
 
-proc call*(call_607034: Call_ListRuleGroups_607021; body: JsonNode): Recallable =
+proc call*(call_614103: Call_ListRuleGroups_614090; body: JsonNode): Recallable =
   ## listRuleGroups
   ## Returns an array of <a>RuleGroup</a> objects.
   ##   body: JObject (required)
-  var body_607035 = newJObject()
+  var body_614104 = newJObject()
   if body != nil:
-    body_607035 = body
-  result = call_607034.call(nil, nil, nil, nil, body_607035)
+    body_614104 = body
+  result = call_614103.call(nil, nil, nil, nil, body_614104)
 
-var listRuleGroups* = Call_ListRuleGroups_607021(name: "listRuleGroups",
+var listRuleGroups* = Call_ListRuleGroups_614090(name: "listRuleGroups",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListRuleGroups",
-    validator: validate_ListRuleGroups_607022, base: "/", url: url_ListRuleGroups_607023,
+    validator: validate_ListRuleGroups_614091, base: "/", url: url_ListRuleGroups_614092,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRules_607036 = ref object of OpenApiRestCall_605589
-proc url_ListRules_607038(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListRules_614105 = ref object of OpenApiRestCall_612658
+proc url_ListRules_614107(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6550,7 +6550,7 @@ proc url_ListRules_607038(protocol: Scheme; host: string; base: string; route: s
   else:
     result.path = base & route
 
-proc validate_ListRules_607037(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListRules_614106(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>RuleSummary</a> objects.
   ## 
@@ -6570,46 +6570,46 @@ proc validate_ListRules_607037(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607039 = header.getOrDefault("X-Amz-Target")
-  valid_607039 = validateParameter(valid_607039, JString, required = true, default = newJString(
+  var valid_614108 = header.getOrDefault("X-Amz-Target")
+  valid_614108 = validateParameter(valid_614108, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListRules"))
-  if valid_607039 != nil:
-    section.add "X-Amz-Target", valid_607039
-  var valid_607040 = header.getOrDefault("X-Amz-Signature")
-  valid_607040 = validateParameter(valid_607040, JString, required = false,
+  if valid_614108 != nil:
+    section.add "X-Amz-Target", valid_614108
+  var valid_614109 = header.getOrDefault("X-Amz-Signature")
+  valid_614109 = validateParameter(valid_614109, JString, required = false,
                                  default = nil)
-  if valid_607040 != nil:
-    section.add "X-Amz-Signature", valid_607040
-  var valid_607041 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607041 = validateParameter(valid_607041, JString, required = false,
+  if valid_614109 != nil:
+    section.add "X-Amz-Signature", valid_614109
+  var valid_614110 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614110 = validateParameter(valid_614110, JString, required = false,
                                  default = nil)
-  if valid_607041 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607041
-  var valid_607042 = header.getOrDefault("X-Amz-Date")
-  valid_607042 = validateParameter(valid_607042, JString, required = false,
+  if valid_614110 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614110
+  var valid_614111 = header.getOrDefault("X-Amz-Date")
+  valid_614111 = validateParameter(valid_614111, JString, required = false,
                                  default = nil)
-  if valid_607042 != nil:
-    section.add "X-Amz-Date", valid_607042
-  var valid_607043 = header.getOrDefault("X-Amz-Credential")
-  valid_607043 = validateParameter(valid_607043, JString, required = false,
+  if valid_614111 != nil:
+    section.add "X-Amz-Date", valid_614111
+  var valid_614112 = header.getOrDefault("X-Amz-Credential")
+  valid_614112 = validateParameter(valid_614112, JString, required = false,
                                  default = nil)
-  if valid_607043 != nil:
-    section.add "X-Amz-Credential", valid_607043
-  var valid_607044 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607044 = validateParameter(valid_607044, JString, required = false,
+  if valid_614112 != nil:
+    section.add "X-Amz-Credential", valid_614112
+  var valid_614113 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614113 = validateParameter(valid_614113, JString, required = false,
                                  default = nil)
-  if valid_607044 != nil:
-    section.add "X-Amz-Security-Token", valid_607044
-  var valid_607045 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607045 = validateParameter(valid_607045, JString, required = false,
+  if valid_614113 != nil:
+    section.add "X-Amz-Security-Token", valid_614113
+  var valid_614114 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614114 = validateParameter(valid_614114, JString, required = false,
                                  default = nil)
-  if valid_607045 != nil:
-    section.add "X-Amz-Algorithm", valid_607045
-  var valid_607046 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607046 = validateParameter(valid_607046, JString, required = false,
+  if valid_614114 != nil:
+    section.add "X-Amz-Algorithm", valid_614114
+  var valid_614115 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614115 = validateParameter(valid_614115, JString, required = false,
                                  default = nil)
-  if valid_607046 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607046
+  if valid_614115 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614115
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6620,36 +6620,36 @@ proc validate_ListRules_607037(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_607048: Call_ListRules_607036; path: JsonNode; query: JsonNode;
+proc call*(call_614117: Call_ListRules_614105; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>RuleSummary</a> objects.
   ## 
-  let valid = call_607048.validator(path, query, header, formData, body)
-  let scheme = call_607048.pickScheme
+  let valid = call_614117.validator(path, query, header, formData, body)
+  let scheme = call_614117.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607048.url(scheme.get, call_607048.host, call_607048.base,
-                         call_607048.route, valid.getOrDefault("path"),
+  let url = call_614117.url(scheme.get, call_614117.host, call_614117.base,
+                         call_614117.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607048, url, valid)
+  result = atozHook(call_614117, url, valid)
 
-proc call*(call_607049: Call_ListRules_607036; body: JsonNode): Recallable =
+proc call*(call_614118: Call_ListRules_614105; body: JsonNode): Recallable =
   ## listRules
   ## Returns an array of <a>RuleSummary</a> objects.
   ##   body: JObject (required)
-  var body_607050 = newJObject()
+  var body_614119 = newJObject()
   if body != nil:
-    body_607050 = body
-  result = call_607049.call(nil, nil, nil, nil, body_607050)
+    body_614119 = body
+  result = call_614118.call(nil, nil, nil, nil, body_614119)
 
-var listRules* = Call_ListRules_607036(name: "listRules", meth: HttpMethod.HttpPost,
+var listRules* = Call_ListRules_614105(name: "listRules", meth: HttpMethod.HttpPost,
                                     host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListRules",
-                                    validator: validate_ListRules_607037,
-                                    base: "/", url: url_ListRules_607038,
+                                    validator: validate_ListRules_614106,
+                                    base: "/", url: url_ListRules_614107,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSizeConstraintSets_607051 = ref object of OpenApiRestCall_605589
-proc url_ListSizeConstraintSets_607053(protocol: Scheme; host: string; base: string;
+  Call_ListSizeConstraintSets_614120 = ref object of OpenApiRestCall_612658
+proc url_ListSizeConstraintSets_614122(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6661,7 +6661,7 @@ proc url_ListSizeConstraintSets_607053(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_ListSizeConstraintSets_607052(path: JsonNode; query: JsonNode;
+proc validate_ListSizeConstraintSets_614121(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>SizeConstraintSetSummary</a> objects.
   ## 
@@ -6681,46 +6681,46 @@ proc validate_ListSizeConstraintSets_607052(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607054 = header.getOrDefault("X-Amz-Target")
-  valid_607054 = validateParameter(valid_607054, JString, required = true, default = newJString(
+  var valid_614123 = header.getOrDefault("X-Amz-Target")
+  valid_614123 = validateParameter(valid_614123, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListSizeConstraintSets"))
-  if valid_607054 != nil:
-    section.add "X-Amz-Target", valid_607054
-  var valid_607055 = header.getOrDefault("X-Amz-Signature")
-  valid_607055 = validateParameter(valid_607055, JString, required = false,
+  if valid_614123 != nil:
+    section.add "X-Amz-Target", valid_614123
+  var valid_614124 = header.getOrDefault("X-Amz-Signature")
+  valid_614124 = validateParameter(valid_614124, JString, required = false,
                                  default = nil)
-  if valid_607055 != nil:
-    section.add "X-Amz-Signature", valid_607055
-  var valid_607056 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607056 = validateParameter(valid_607056, JString, required = false,
+  if valid_614124 != nil:
+    section.add "X-Amz-Signature", valid_614124
+  var valid_614125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614125 = validateParameter(valid_614125, JString, required = false,
                                  default = nil)
-  if valid_607056 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607056
-  var valid_607057 = header.getOrDefault("X-Amz-Date")
-  valid_607057 = validateParameter(valid_607057, JString, required = false,
+  if valid_614125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614125
+  var valid_614126 = header.getOrDefault("X-Amz-Date")
+  valid_614126 = validateParameter(valid_614126, JString, required = false,
                                  default = nil)
-  if valid_607057 != nil:
-    section.add "X-Amz-Date", valid_607057
-  var valid_607058 = header.getOrDefault("X-Amz-Credential")
-  valid_607058 = validateParameter(valid_607058, JString, required = false,
+  if valid_614126 != nil:
+    section.add "X-Amz-Date", valid_614126
+  var valid_614127 = header.getOrDefault("X-Amz-Credential")
+  valid_614127 = validateParameter(valid_614127, JString, required = false,
                                  default = nil)
-  if valid_607058 != nil:
-    section.add "X-Amz-Credential", valid_607058
-  var valid_607059 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607059 = validateParameter(valid_607059, JString, required = false,
+  if valid_614127 != nil:
+    section.add "X-Amz-Credential", valid_614127
+  var valid_614128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614128 = validateParameter(valid_614128, JString, required = false,
                                  default = nil)
-  if valid_607059 != nil:
-    section.add "X-Amz-Security-Token", valid_607059
-  var valid_607060 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607060 = validateParameter(valid_607060, JString, required = false,
+  if valid_614128 != nil:
+    section.add "X-Amz-Security-Token", valid_614128
+  var valid_614129 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614129 = validateParameter(valid_614129, JString, required = false,
                                  default = nil)
-  if valid_607060 != nil:
-    section.add "X-Amz-Algorithm", valid_607060
-  var valid_607061 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607061 = validateParameter(valid_607061, JString, required = false,
+  if valid_614129 != nil:
+    section.add "X-Amz-Algorithm", valid_614129
+  var valid_614130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614130 = validateParameter(valid_614130, JString, required = false,
                                  default = nil)
-  if valid_607061 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607061
+  if valid_614130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6731,37 +6731,37 @@ proc validate_ListSizeConstraintSets_607052(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607063: Call_ListSizeConstraintSets_607051; path: JsonNode;
+proc call*(call_614132: Call_ListSizeConstraintSets_614120; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>SizeConstraintSetSummary</a> objects.
   ## 
-  let valid = call_607063.validator(path, query, header, formData, body)
-  let scheme = call_607063.pickScheme
+  let valid = call_614132.validator(path, query, header, formData, body)
+  let scheme = call_614132.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607063.url(scheme.get, call_607063.host, call_607063.base,
-                         call_607063.route, valid.getOrDefault("path"),
+  let url = call_614132.url(scheme.get, call_614132.host, call_614132.base,
+                         call_614132.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607063, url, valid)
+  result = atozHook(call_614132, url, valid)
 
-proc call*(call_607064: Call_ListSizeConstraintSets_607051; body: JsonNode): Recallable =
+proc call*(call_614133: Call_ListSizeConstraintSets_614120; body: JsonNode): Recallable =
   ## listSizeConstraintSets
   ## Returns an array of <a>SizeConstraintSetSummary</a> objects.
   ##   body: JObject (required)
-  var body_607065 = newJObject()
+  var body_614134 = newJObject()
   if body != nil:
-    body_607065 = body
-  result = call_607064.call(nil, nil, nil, nil, body_607065)
+    body_614134 = body
+  result = call_614133.call(nil, nil, nil, nil, body_614134)
 
-var listSizeConstraintSets* = Call_ListSizeConstraintSets_607051(
+var listSizeConstraintSets* = Call_ListSizeConstraintSets_614120(
     name: "listSizeConstraintSets", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListSizeConstraintSets",
-    validator: validate_ListSizeConstraintSets_607052, base: "/",
-    url: url_ListSizeConstraintSets_607053, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSizeConstraintSets_614121, base: "/",
+    url: url_ListSizeConstraintSets_614122, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSqlInjectionMatchSets_607066 = ref object of OpenApiRestCall_605589
-proc url_ListSqlInjectionMatchSets_607068(protocol: Scheme; host: string;
+  Call_ListSqlInjectionMatchSets_614135 = ref object of OpenApiRestCall_612658
+proc url_ListSqlInjectionMatchSets_614137(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6773,7 +6773,7 @@ proc url_ListSqlInjectionMatchSets_607068(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListSqlInjectionMatchSets_607067(path: JsonNode; query: JsonNode;
+proc validate_ListSqlInjectionMatchSets_614136(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>SqlInjectionMatchSet</a> objects.
   ## 
@@ -6793,46 +6793,46 @@ proc validate_ListSqlInjectionMatchSets_607067(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607069 = header.getOrDefault("X-Amz-Target")
-  valid_607069 = validateParameter(valid_607069, JString, required = true, default = newJString(
+  var valid_614138 = header.getOrDefault("X-Amz-Target")
+  valid_614138 = validateParameter(valid_614138, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListSqlInjectionMatchSets"))
-  if valid_607069 != nil:
-    section.add "X-Amz-Target", valid_607069
-  var valid_607070 = header.getOrDefault("X-Amz-Signature")
-  valid_607070 = validateParameter(valid_607070, JString, required = false,
+  if valid_614138 != nil:
+    section.add "X-Amz-Target", valid_614138
+  var valid_614139 = header.getOrDefault("X-Amz-Signature")
+  valid_614139 = validateParameter(valid_614139, JString, required = false,
                                  default = nil)
-  if valid_607070 != nil:
-    section.add "X-Amz-Signature", valid_607070
-  var valid_607071 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607071 = validateParameter(valid_607071, JString, required = false,
+  if valid_614139 != nil:
+    section.add "X-Amz-Signature", valid_614139
+  var valid_614140 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614140 = validateParameter(valid_614140, JString, required = false,
                                  default = nil)
-  if valid_607071 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607071
-  var valid_607072 = header.getOrDefault("X-Amz-Date")
-  valid_607072 = validateParameter(valid_607072, JString, required = false,
+  if valid_614140 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614140
+  var valid_614141 = header.getOrDefault("X-Amz-Date")
+  valid_614141 = validateParameter(valid_614141, JString, required = false,
                                  default = nil)
-  if valid_607072 != nil:
-    section.add "X-Amz-Date", valid_607072
-  var valid_607073 = header.getOrDefault("X-Amz-Credential")
-  valid_607073 = validateParameter(valid_607073, JString, required = false,
+  if valid_614141 != nil:
+    section.add "X-Amz-Date", valid_614141
+  var valid_614142 = header.getOrDefault("X-Amz-Credential")
+  valid_614142 = validateParameter(valid_614142, JString, required = false,
                                  default = nil)
-  if valid_607073 != nil:
-    section.add "X-Amz-Credential", valid_607073
-  var valid_607074 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607074 = validateParameter(valid_607074, JString, required = false,
+  if valid_614142 != nil:
+    section.add "X-Amz-Credential", valid_614142
+  var valid_614143 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614143 = validateParameter(valid_614143, JString, required = false,
                                  default = nil)
-  if valid_607074 != nil:
-    section.add "X-Amz-Security-Token", valid_607074
-  var valid_607075 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607075 = validateParameter(valid_607075, JString, required = false,
+  if valid_614143 != nil:
+    section.add "X-Amz-Security-Token", valid_614143
+  var valid_614144 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614144 = validateParameter(valid_614144, JString, required = false,
                                  default = nil)
-  if valid_607075 != nil:
-    section.add "X-Amz-Algorithm", valid_607075
-  var valid_607076 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607076 = validateParameter(valid_607076, JString, required = false,
+  if valid_614144 != nil:
+    section.add "X-Amz-Algorithm", valid_614144
+  var valid_614145 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614145 = validateParameter(valid_614145, JString, required = false,
                                  default = nil)
-  if valid_607076 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607076
+  if valid_614145 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614145
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6843,38 +6843,38 @@ proc validate_ListSqlInjectionMatchSets_607067(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607078: Call_ListSqlInjectionMatchSets_607066; path: JsonNode;
+proc call*(call_614147: Call_ListSqlInjectionMatchSets_614135; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>SqlInjectionMatchSet</a> objects.
   ## 
-  let valid = call_607078.validator(path, query, header, formData, body)
-  let scheme = call_607078.pickScheme
+  let valid = call_614147.validator(path, query, header, formData, body)
+  let scheme = call_614147.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607078.url(scheme.get, call_607078.host, call_607078.base,
-                         call_607078.route, valid.getOrDefault("path"),
+  let url = call_614147.url(scheme.get, call_614147.host, call_614147.base,
+                         call_614147.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607078, url, valid)
+  result = atozHook(call_614147, url, valid)
 
-proc call*(call_607079: Call_ListSqlInjectionMatchSets_607066; body: JsonNode): Recallable =
+proc call*(call_614148: Call_ListSqlInjectionMatchSets_614135; body: JsonNode): Recallable =
   ## listSqlInjectionMatchSets
   ## Returns an array of <a>SqlInjectionMatchSet</a> objects.
   ##   body: JObject (required)
-  var body_607080 = newJObject()
+  var body_614149 = newJObject()
   if body != nil:
-    body_607080 = body
-  result = call_607079.call(nil, nil, nil, nil, body_607080)
+    body_614149 = body
+  result = call_614148.call(nil, nil, nil, nil, body_614149)
 
-var listSqlInjectionMatchSets* = Call_ListSqlInjectionMatchSets_607066(
+var listSqlInjectionMatchSets* = Call_ListSqlInjectionMatchSets_614135(
     name: "listSqlInjectionMatchSets", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListSqlInjectionMatchSets",
-    validator: validate_ListSqlInjectionMatchSets_607067, base: "/",
-    url: url_ListSqlInjectionMatchSets_607068,
+    validator: validate_ListSqlInjectionMatchSets_614136, base: "/",
+    url: url_ListSqlInjectionMatchSets_614137,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSubscribedRuleGroups_607081 = ref object of OpenApiRestCall_605589
-proc url_ListSubscribedRuleGroups_607083(protocol: Scheme; host: string;
+  Call_ListSubscribedRuleGroups_614150 = ref object of OpenApiRestCall_612658
+proc url_ListSubscribedRuleGroups_614152(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -6887,7 +6887,7 @@ proc url_ListSubscribedRuleGroups_607083(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListSubscribedRuleGroups_607082(path: JsonNode; query: JsonNode;
+proc validate_ListSubscribedRuleGroups_614151(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>RuleGroup</a> objects that you are subscribed to.
   ## 
@@ -6907,46 +6907,46 @@ proc validate_ListSubscribedRuleGroups_607082(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607084 = header.getOrDefault("X-Amz-Target")
-  valid_607084 = validateParameter(valid_607084, JString, required = true, default = newJString(
+  var valid_614153 = header.getOrDefault("X-Amz-Target")
+  valid_614153 = validateParameter(valid_614153, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListSubscribedRuleGroups"))
-  if valid_607084 != nil:
-    section.add "X-Amz-Target", valid_607084
-  var valid_607085 = header.getOrDefault("X-Amz-Signature")
-  valid_607085 = validateParameter(valid_607085, JString, required = false,
+  if valid_614153 != nil:
+    section.add "X-Amz-Target", valid_614153
+  var valid_614154 = header.getOrDefault("X-Amz-Signature")
+  valid_614154 = validateParameter(valid_614154, JString, required = false,
                                  default = nil)
-  if valid_607085 != nil:
-    section.add "X-Amz-Signature", valid_607085
-  var valid_607086 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607086 = validateParameter(valid_607086, JString, required = false,
+  if valid_614154 != nil:
+    section.add "X-Amz-Signature", valid_614154
+  var valid_614155 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614155 = validateParameter(valid_614155, JString, required = false,
                                  default = nil)
-  if valid_607086 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607086
-  var valid_607087 = header.getOrDefault("X-Amz-Date")
-  valid_607087 = validateParameter(valid_607087, JString, required = false,
+  if valid_614155 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614155
+  var valid_614156 = header.getOrDefault("X-Amz-Date")
+  valid_614156 = validateParameter(valid_614156, JString, required = false,
                                  default = nil)
-  if valid_607087 != nil:
-    section.add "X-Amz-Date", valid_607087
-  var valid_607088 = header.getOrDefault("X-Amz-Credential")
-  valid_607088 = validateParameter(valid_607088, JString, required = false,
+  if valid_614156 != nil:
+    section.add "X-Amz-Date", valid_614156
+  var valid_614157 = header.getOrDefault("X-Amz-Credential")
+  valid_614157 = validateParameter(valid_614157, JString, required = false,
                                  default = nil)
-  if valid_607088 != nil:
-    section.add "X-Amz-Credential", valid_607088
-  var valid_607089 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607089 = validateParameter(valid_607089, JString, required = false,
+  if valid_614157 != nil:
+    section.add "X-Amz-Credential", valid_614157
+  var valid_614158 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614158 = validateParameter(valid_614158, JString, required = false,
                                  default = nil)
-  if valid_607089 != nil:
-    section.add "X-Amz-Security-Token", valid_607089
-  var valid_607090 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607090 = validateParameter(valid_607090, JString, required = false,
+  if valid_614158 != nil:
+    section.add "X-Amz-Security-Token", valid_614158
+  var valid_614159 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614159 = validateParameter(valid_614159, JString, required = false,
                                  default = nil)
-  if valid_607090 != nil:
-    section.add "X-Amz-Algorithm", valid_607090
-  var valid_607091 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607091 = validateParameter(valid_607091, JString, required = false,
+  if valid_614159 != nil:
+    section.add "X-Amz-Algorithm", valid_614159
+  var valid_614160 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614160 = validateParameter(valid_614160, JString, required = false,
                                  default = nil)
-  if valid_607091 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607091
+  if valid_614160 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614160
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6957,37 +6957,37 @@ proc validate_ListSubscribedRuleGroups_607082(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607093: Call_ListSubscribedRuleGroups_607081; path: JsonNode;
+proc call*(call_614162: Call_ListSubscribedRuleGroups_614150; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>RuleGroup</a> objects that you are subscribed to.
   ## 
-  let valid = call_607093.validator(path, query, header, formData, body)
-  let scheme = call_607093.pickScheme
+  let valid = call_614162.validator(path, query, header, formData, body)
+  let scheme = call_614162.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607093.url(scheme.get, call_607093.host, call_607093.base,
-                         call_607093.route, valid.getOrDefault("path"),
+  let url = call_614162.url(scheme.get, call_614162.host, call_614162.base,
+                         call_614162.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607093, url, valid)
+  result = atozHook(call_614162, url, valid)
 
-proc call*(call_607094: Call_ListSubscribedRuleGroups_607081; body: JsonNode): Recallable =
+proc call*(call_614163: Call_ListSubscribedRuleGroups_614150; body: JsonNode): Recallable =
   ## listSubscribedRuleGroups
   ## Returns an array of <a>RuleGroup</a> objects that you are subscribed to.
   ##   body: JObject (required)
-  var body_607095 = newJObject()
+  var body_614164 = newJObject()
   if body != nil:
-    body_607095 = body
-  result = call_607094.call(nil, nil, nil, nil, body_607095)
+    body_614164 = body
+  result = call_614163.call(nil, nil, nil, nil, body_614164)
 
-var listSubscribedRuleGroups* = Call_ListSubscribedRuleGroups_607081(
+var listSubscribedRuleGroups* = Call_ListSubscribedRuleGroups_614150(
     name: "listSubscribedRuleGroups", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListSubscribedRuleGroups",
-    validator: validate_ListSubscribedRuleGroups_607082, base: "/",
-    url: url_ListSubscribedRuleGroups_607083, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSubscribedRuleGroups_614151, base: "/",
+    url: url_ListSubscribedRuleGroups_614152, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_607096 = ref object of OpenApiRestCall_605589
-proc url_ListTagsForResource_607098(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_614165 = ref object of OpenApiRestCall_612658
+proc url_ListTagsForResource_614167(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -6999,7 +6999,7 @@ proc url_ListTagsForResource_607098(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_ListTagsForResource_607097(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_614166(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   var section: JsonNode
@@ -7018,46 +7018,46 @@ proc validate_ListTagsForResource_607097(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607099 = header.getOrDefault("X-Amz-Target")
-  valid_607099 = validateParameter(valid_607099, JString, required = true, default = newJString(
+  var valid_614168 = header.getOrDefault("X-Amz-Target")
+  valid_614168 = validateParameter(valid_614168, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListTagsForResource"))
-  if valid_607099 != nil:
-    section.add "X-Amz-Target", valid_607099
-  var valid_607100 = header.getOrDefault("X-Amz-Signature")
-  valid_607100 = validateParameter(valid_607100, JString, required = false,
+  if valid_614168 != nil:
+    section.add "X-Amz-Target", valid_614168
+  var valid_614169 = header.getOrDefault("X-Amz-Signature")
+  valid_614169 = validateParameter(valid_614169, JString, required = false,
                                  default = nil)
-  if valid_607100 != nil:
-    section.add "X-Amz-Signature", valid_607100
-  var valid_607101 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607101 = validateParameter(valid_607101, JString, required = false,
+  if valid_614169 != nil:
+    section.add "X-Amz-Signature", valid_614169
+  var valid_614170 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614170 = validateParameter(valid_614170, JString, required = false,
                                  default = nil)
-  if valid_607101 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607101
-  var valid_607102 = header.getOrDefault("X-Amz-Date")
-  valid_607102 = validateParameter(valid_607102, JString, required = false,
+  if valid_614170 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614170
+  var valid_614171 = header.getOrDefault("X-Amz-Date")
+  valid_614171 = validateParameter(valid_614171, JString, required = false,
                                  default = nil)
-  if valid_607102 != nil:
-    section.add "X-Amz-Date", valid_607102
-  var valid_607103 = header.getOrDefault("X-Amz-Credential")
-  valid_607103 = validateParameter(valid_607103, JString, required = false,
+  if valid_614171 != nil:
+    section.add "X-Amz-Date", valid_614171
+  var valid_614172 = header.getOrDefault("X-Amz-Credential")
+  valid_614172 = validateParameter(valid_614172, JString, required = false,
                                  default = nil)
-  if valid_607103 != nil:
-    section.add "X-Amz-Credential", valid_607103
-  var valid_607104 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607104 = validateParameter(valid_607104, JString, required = false,
+  if valid_614172 != nil:
+    section.add "X-Amz-Credential", valid_614172
+  var valid_614173 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614173 = validateParameter(valid_614173, JString, required = false,
                                  default = nil)
-  if valid_607104 != nil:
-    section.add "X-Amz-Security-Token", valid_607104
-  var valid_607105 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607105 = validateParameter(valid_607105, JString, required = false,
+  if valid_614173 != nil:
+    section.add "X-Amz-Security-Token", valid_614173
+  var valid_614174 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614174 = validateParameter(valid_614174, JString, required = false,
                                  default = nil)
-  if valid_607105 != nil:
-    section.add "X-Amz-Algorithm", valid_607105
-  var valid_607106 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607106 = validateParameter(valid_607106, JString, required = false,
+  if valid_614174 != nil:
+    section.add "X-Amz-Algorithm", valid_614174
+  var valid_614175 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614175 = validateParameter(valid_614175, JString, required = false,
                                  default = nil)
-  if valid_607106 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607106
+  if valid_614175 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614175
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7068,34 +7068,34 @@ proc validate_ListTagsForResource_607097(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607108: Call_ListTagsForResource_607096; path: JsonNode;
+proc call*(call_614177: Call_ListTagsForResource_614165; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  let valid = call_607108.validator(path, query, header, formData, body)
-  let scheme = call_607108.pickScheme
+  let valid = call_614177.validator(path, query, header, formData, body)
+  let scheme = call_614177.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607108.url(scheme.get, call_607108.host, call_607108.base,
-                         call_607108.route, valid.getOrDefault("path"),
+  let url = call_614177.url(scheme.get, call_614177.host, call_614177.base,
+                         call_614177.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607108, url, valid)
+  result = atozHook(call_614177, url, valid)
 
-proc call*(call_607109: Call_ListTagsForResource_607096; body: JsonNode): Recallable =
+proc call*(call_614178: Call_ListTagsForResource_614165; body: JsonNode): Recallable =
   ## listTagsForResource
   ##   body: JObject (required)
-  var body_607110 = newJObject()
+  var body_614179 = newJObject()
   if body != nil:
-    body_607110 = body
-  result = call_607109.call(nil, nil, nil, nil, body_607110)
+    body_614179 = body
+  result = call_614178.call(nil, nil, nil, nil, body_614179)
 
-var listTagsForResource* = Call_ListTagsForResource_607096(
+var listTagsForResource* = Call_ListTagsForResource_614165(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListTagsForResource",
-    validator: validate_ListTagsForResource_607097, base: "/",
-    url: url_ListTagsForResource_607098, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_614166, base: "/",
+    url: url_ListTagsForResource_614167, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListWebACLs_607111 = ref object of OpenApiRestCall_605589
-proc url_ListWebACLs_607113(protocol: Scheme; host: string; base: string;
+  Call_ListWebACLs_614180 = ref object of OpenApiRestCall_612658
+proc url_ListWebACLs_614182(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7107,7 +7107,7 @@ proc url_ListWebACLs_607113(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListWebACLs_607112(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListWebACLs_614181(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <a>WebACLSummary</a> objects in the response.
   ## 
@@ -7127,46 +7127,46 @@ proc validate_ListWebACLs_607112(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607114 = header.getOrDefault("X-Amz-Target")
-  valid_607114 = validateParameter(valid_607114, JString, required = true, default = newJString(
+  var valid_614183 = header.getOrDefault("X-Amz-Target")
+  valid_614183 = validateParameter(valid_614183, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListWebACLs"))
-  if valid_607114 != nil:
-    section.add "X-Amz-Target", valid_607114
-  var valid_607115 = header.getOrDefault("X-Amz-Signature")
-  valid_607115 = validateParameter(valid_607115, JString, required = false,
+  if valid_614183 != nil:
+    section.add "X-Amz-Target", valid_614183
+  var valid_614184 = header.getOrDefault("X-Amz-Signature")
+  valid_614184 = validateParameter(valid_614184, JString, required = false,
                                  default = nil)
-  if valid_607115 != nil:
-    section.add "X-Amz-Signature", valid_607115
-  var valid_607116 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607116 = validateParameter(valid_607116, JString, required = false,
+  if valid_614184 != nil:
+    section.add "X-Amz-Signature", valid_614184
+  var valid_614185 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614185 = validateParameter(valid_614185, JString, required = false,
                                  default = nil)
-  if valid_607116 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607116
-  var valid_607117 = header.getOrDefault("X-Amz-Date")
-  valid_607117 = validateParameter(valid_607117, JString, required = false,
+  if valid_614185 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614185
+  var valid_614186 = header.getOrDefault("X-Amz-Date")
+  valid_614186 = validateParameter(valid_614186, JString, required = false,
                                  default = nil)
-  if valid_607117 != nil:
-    section.add "X-Amz-Date", valid_607117
-  var valid_607118 = header.getOrDefault("X-Amz-Credential")
-  valid_607118 = validateParameter(valid_607118, JString, required = false,
+  if valid_614186 != nil:
+    section.add "X-Amz-Date", valid_614186
+  var valid_614187 = header.getOrDefault("X-Amz-Credential")
+  valid_614187 = validateParameter(valid_614187, JString, required = false,
                                  default = nil)
-  if valid_607118 != nil:
-    section.add "X-Amz-Credential", valid_607118
-  var valid_607119 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607119 = validateParameter(valid_607119, JString, required = false,
+  if valid_614187 != nil:
+    section.add "X-Amz-Credential", valid_614187
+  var valid_614188 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614188 = validateParameter(valid_614188, JString, required = false,
                                  default = nil)
-  if valid_607119 != nil:
-    section.add "X-Amz-Security-Token", valid_607119
-  var valid_607120 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607120 = validateParameter(valid_607120, JString, required = false,
+  if valid_614188 != nil:
+    section.add "X-Amz-Security-Token", valid_614188
+  var valid_614189 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614189 = validateParameter(valid_614189, JString, required = false,
                                  default = nil)
-  if valid_607120 != nil:
-    section.add "X-Amz-Algorithm", valid_607120
-  var valid_607121 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607121 = validateParameter(valid_607121, JString, required = false,
+  if valid_614189 != nil:
+    section.add "X-Amz-Algorithm", valid_614189
+  var valid_614190 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614190 = validateParameter(valid_614190, JString, required = false,
                                  default = nil)
-  if valid_607121 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607121
+  if valid_614190 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614190
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7177,37 +7177,37 @@ proc validate_ListWebACLs_607112(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_607123: Call_ListWebACLs_607111; path: JsonNode; query: JsonNode;
+proc call*(call_614192: Call_ListWebACLs_614180; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>WebACLSummary</a> objects in the response.
   ## 
-  let valid = call_607123.validator(path, query, header, formData, body)
-  let scheme = call_607123.pickScheme
+  let valid = call_614192.validator(path, query, header, formData, body)
+  let scheme = call_614192.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607123.url(scheme.get, call_607123.host, call_607123.base,
-                         call_607123.route, valid.getOrDefault("path"),
+  let url = call_614192.url(scheme.get, call_614192.host, call_614192.base,
+                         call_614192.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607123, url, valid)
+  result = atozHook(call_614192, url, valid)
 
-proc call*(call_607124: Call_ListWebACLs_607111; body: JsonNode): Recallable =
+proc call*(call_614193: Call_ListWebACLs_614180; body: JsonNode): Recallable =
   ## listWebACLs
   ## Returns an array of <a>WebACLSummary</a> objects in the response.
   ##   body: JObject (required)
-  var body_607125 = newJObject()
+  var body_614194 = newJObject()
   if body != nil:
-    body_607125 = body
-  result = call_607124.call(nil, nil, nil, nil, body_607125)
+    body_614194 = body
+  result = call_614193.call(nil, nil, nil, nil, body_614194)
 
-var listWebACLs* = Call_ListWebACLs_607111(name: "listWebACLs",
+var listWebACLs* = Call_ListWebACLs_614180(name: "listWebACLs",
                                         meth: HttpMethod.HttpPost,
                                         host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListWebACLs",
-                                        validator: validate_ListWebACLs_607112,
-                                        base: "/", url: url_ListWebACLs_607113,
+                                        validator: validate_ListWebACLs_614181,
+                                        base: "/", url: url_ListWebACLs_614182,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListXssMatchSets_607126 = ref object of OpenApiRestCall_605589
-proc url_ListXssMatchSets_607128(protocol: Scheme; host: string; base: string;
+  Call_ListXssMatchSets_614195 = ref object of OpenApiRestCall_612658
+proc url_ListXssMatchSets_614197(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7219,7 +7219,7 @@ proc url_ListXssMatchSets_607128(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListXssMatchSets_607127(path: JsonNode; query: JsonNode;
+proc validate_ListXssMatchSets_614196(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns an array of <a>XssMatchSet</a> objects.
@@ -7240,46 +7240,46 @@ proc validate_ListXssMatchSets_607127(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607129 = header.getOrDefault("X-Amz-Target")
-  valid_607129 = validateParameter(valid_607129, JString, required = true, default = newJString(
+  var valid_614198 = header.getOrDefault("X-Amz-Target")
+  valid_614198 = validateParameter(valid_614198, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.ListXssMatchSets"))
-  if valid_607129 != nil:
-    section.add "X-Amz-Target", valid_607129
-  var valid_607130 = header.getOrDefault("X-Amz-Signature")
-  valid_607130 = validateParameter(valid_607130, JString, required = false,
+  if valid_614198 != nil:
+    section.add "X-Amz-Target", valid_614198
+  var valid_614199 = header.getOrDefault("X-Amz-Signature")
+  valid_614199 = validateParameter(valid_614199, JString, required = false,
                                  default = nil)
-  if valid_607130 != nil:
-    section.add "X-Amz-Signature", valid_607130
-  var valid_607131 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607131 = validateParameter(valid_607131, JString, required = false,
+  if valid_614199 != nil:
+    section.add "X-Amz-Signature", valid_614199
+  var valid_614200 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614200 = validateParameter(valid_614200, JString, required = false,
                                  default = nil)
-  if valid_607131 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607131
-  var valid_607132 = header.getOrDefault("X-Amz-Date")
-  valid_607132 = validateParameter(valid_607132, JString, required = false,
+  if valid_614200 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614200
+  var valid_614201 = header.getOrDefault("X-Amz-Date")
+  valid_614201 = validateParameter(valid_614201, JString, required = false,
                                  default = nil)
-  if valid_607132 != nil:
-    section.add "X-Amz-Date", valid_607132
-  var valid_607133 = header.getOrDefault("X-Amz-Credential")
-  valid_607133 = validateParameter(valid_607133, JString, required = false,
+  if valid_614201 != nil:
+    section.add "X-Amz-Date", valid_614201
+  var valid_614202 = header.getOrDefault("X-Amz-Credential")
+  valid_614202 = validateParameter(valid_614202, JString, required = false,
                                  default = nil)
-  if valid_607133 != nil:
-    section.add "X-Amz-Credential", valid_607133
-  var valid_607134 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607134 = validateParameter(valid_607134, JString, required = false,
+  if valid_614202 != nil:
+    section.add "X-Amz-Credential", valid_614202
+  var valid_614203 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614203 = validateParameter(valid_614203, JString, required = false,
                                  default = nil)
-  if valid_607134 != nil:
-    section.add "X-Amz-Security-Token", valid_607134
-  var valid_607135 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607135 = validateParameter(valid_607135, JString, required = false,
+  if valid_614203 != nil:
+    section.add "X-Amz-Security-Token", valid_614203
+  var valid_614204 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614204 = validateParameter(valid_614204, JString, required = false,
                                  default = nil)
-  if valid_607135 != nil:
-    section.add "X-Amz-Algorithm", valid_607135
-  var valid_607136 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607136 = validateParameter(valid_607136, JString, required = false,
+  if valid_614204 != nil:
+    section.add "X-Amz-Algorithm", valid_614204
+  var valid_614205 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614205 = validateParameter(valid_614205, JString, required = false,
                                  default = nil)
-  if valid_607136 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607136
+  if valid_614205 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614205
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7290,36 +7290,36 @@ proc validate_ListXssMatchSets_607127(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607138: Call_ListXssMatchSets_607126; path: JsonNode;
+proc call*(call_614207: Call_ListXssMatchSets_614195; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <a>XssMatchSet</a> objects.
   ## 
-  let valid = call_607138.validator(path, query, header, formData, body)
-  let scheme = call_607138.pickScheme
+  let valid = call_614207.validator(path, query, header, formData, body)
+  let scheme = call_614207.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607138.url(scheme.get, call_607138.host, call_607138.base,
-                         call_607138.route, valid.getOrDefault("path"),
+  let url = call_614207.url(scheme.get, call_614207.host, call_614207.base,
+                         call_614207.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607138, url, valid)
+  result = atozHook(call_614207, url, valid)
 
-proc call*(call_607139: Call_ListXssMatchSets_607126; body: JsonNode): Recallable =
+proc call*(call_614208: Call_ListXssMatchSets_614195; body: JsonNode): Recallable =
   ## listXssMatchSets
   ## Returns an array of <a>XssMatchSet</a> objects.
   ##   body: JObject (required)
-  var body_607140 = newJObject()
+  var body_614209 = newJObject()
   if body != nil:
-    body_607140 = body
-  result = call_607139.call(nil, nil, nil, nil, body_607140)
+    body_614209 = body
+  result = call_614208.call(nil, nil, nil, nil, body_614209)
 
-var listXssMatchSets* = Call_ListXssMatchSets_607126(name: "listXssMatchSets",
+var listXssMatchSets* = Call_ListXssMatchSets_614195(name: "listXssMatchSets",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.ListXssMatchSets",
-    validator: validate_ListXssMatchSets_607127, base: "/",
-    url: url_ListXssMatchSets_607128, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListXssMatchSets_614196, base: "/",
+    url: url_ListXssMatchSets_614197, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutLoggingConfiguration_607141 = ref object of OpenApiRestCall_605589
-proc url_PutLoggingConfiguration_607143(protocol: Scheme; host: string; base: string;
+  Call_PutLoggingConfiguration_614210 = ref object of OpenApiRestCall_612658
+proc url_PutLoggingConfiguration_614212(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -7332,7 +7332,7 @@ proc url_PutLoggingConfiguration_607143(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_PutLoggingConfiguration_607142(path: JsonNode; query: JsonNode;
+proc validate_PutLoggingConfiguration_614211(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Associates a <a>LoggingConfiguration</a> with a specified web ACL.</p> <p>You can access information about all traffic that AWS WAF inspects using the following steps:</p> <ol> <li> <p>Create an Amazon Kinesis Data Firehose. </p> <p>Create the data firehose with a PUT source and in the region that you are operating. However, if you are capturing logs for Amazon CloudFront, always create the firehose in US East (N. Virginia). </p> <note> <p>Do not create the data firehose using a <code>Kinesis stream</code> as your source.</p> </note> </li> <li> <p>Associate that firehose to your web ACL using a <code>PutLoggingConfiguration</code> request.</p> </li> </ol> <p>When you successfully enable logging using a <code>PutLoggingConfiguration</code> request, AWS WAF will create a service linked role with the necessary permissions to write logs to the Amazon Kinesis Data Firehose. For more information, see <a href="https://docs.aws.amazon.com/waf/latest/developerguide/logging.html">Logging Web ACL Traffic Information</a> in the <i>AWS WAF Developer Guide</i>.</p>
   ## 
@@ -7352,46 +7352,46 @@ proc validate_PutLoggingConfiguration_607142(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607144 = header.getOrDefault("X-Amz-Target")
-  valid_607144 = validateParameter(valid_607144, JString, required = true, default = newJString(
+  var valid_614213 = header.getOrDefault("X-Amz-Target")
+  valid_614213 = validateParameter(valid_614213, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.PutLoggingConfiguration"))
-  if valid_607144 != nil:
-    section.add "X-Amz-Target", valid_607144
-  var valid_607145 = header.getOrDefault("X-Amz-Signature")
-  valid_607145 = validateParameter(valid_607145, JString, required = false,
+  if valid_614213 != nil:
+    section.add "X-Amz-Target", valid_614213
+  var valid_614214 = header.getOrDefault("X-Amz-Signature")
+  valid_614214 = validateParameter(valid_614214, JString, required = false,
                                  default = nil)
-  if valid_607145 != nil:
-    section.add "X-Amz-Signature", valid_607145
-  var valid_607146 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607146 = validateParameter(valid_607146, JString, required = false,
+  if valid_614214 != nil:
+    section.add "X-Amz-Signature", valid_614214
+  var valid_614215 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614215 = validateParameter(valid_614215, JString, required = false,
                                  default = nil)
-  if valid_607146 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607146
-  var valid_607147 = header.getOrDefault("X-Amz-Date")
-  valid_607147 = validateParameter(valid_607147, JString, required = false,
+  if valid_614215 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614215
+  var valid_614216 = header.getOrDefault("X-Amz-Date")
+  valid_614216 = validateParameter(valid_614216, JString, required = false,
                                  default = nil)
-  if valid_607147 != nil:
-    section.add "X-Amz-Date", valid_607147
-  var valid_607148 = header.getOrDefault("X-Amz-Credential")
-  valid_607148 = validateParameter(valid_607148, JString, required = false,
+  if valid_614216 != nil:
+    section.add "X-Amz-Date", valid_614216
+  var valid_614217 = header.getOrDefault("X-Amz-Credential")
+  valid_614217 = validateParameter(valid_614217, JString, required = false,
                                  default = nil)
-  if valid_607148 != nil:
-    section.add "X-Amz-Credential", valid_607148
-  var valid_607149 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607149 = validateParameter(valid_607149, JString, required = false,
+  if valid_614217 != nil:
+    section.add "X-Amz-Credential", valid_614217
+  var valid_614218 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614218 = validateParameter(valid_614218, JString, required = false,
                                  default = nil)
-  if valid_607149 != nil:
-    section.add "X-Amz-Security-Token", valid_607149
-  var valid_607150 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607150 = validateParameter(valid_607150, JString, required = false,
+  if valid_614218 != nil:
+    section.add "X-Amz-Security-Token", valid_614218
+  var valid_614219 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614219 = validateParameter(valid_614219, JString, required = false,
                                  default = nil)
-  if valid_607150 != nil:
-    section.add "X-Amz-Algorithm", valid_607150
-  var valid_607151 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607151 = validateParameter(valid_607151, JString, required = false,
+  if valid_614219 != nil:
+    section.add "X-Amz-Algorithm", valid_614219
+  var valid_614220 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614220 = validateParameter(valid_614220, JString, required = false,
                                  default = nil)
-  if valid_607151 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607151
+  if valid_614220 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614220
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7402,37 +7402,37 @@ proc validate_PutLoggingConfiguration_607142(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607153: Call_PutLoggingConfiguration_607141; path: JsonNode;
+proc call*(call_614222: Call_PutLoggingConfiguration_614210; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Associates a <a>LoggingConfiguration</a> with a specified web ACL.</p> <p>You can access information about all traffic that AWS WAF inspects using the following steps:</p> <ol> <li> <p>Create an Amazon Kinesis Data Firehose. </p> <p>Create the data firehose with a PUT source and in the region that you are operating. However, if you are capturing logs for Amazon CloudFront, always create the firehose in US East (N. Virginia). </p> <note> <p>Do not create the data firehose using a <code>Kinesis stream</code> as your source.</p> </note> </li> <li> <p>Associate that firehose to your web ACL using a <code>PutLoggingConfiguration</code> request.</p> </li> </ol> <p>When you successfully enable logging using a <code>PutLoggingConfiguration</code> request, AWS WAF will create a service linked role with the necessary permissions to write logs to the Amazon Kinesis Data Firehose. For more information, see <a href="https://docs.aws.amazon.com/waf/latest/developerguide/logging.html">Logging Web ACL Traffic Information</a> in the <i>AWS WAF Developer Guide</i>.</p>
   ## 
-  let valid = call_607153.validator(path, query, header, formData, body)
-  let scheme = call_607153.pickScheme
+  let valid = call_614222.validator(path, query, header, formData, body)
+  let scheme = call_614222.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607153.url(scheme.get, call_607153.host, call_607153.base,
-                         call_607153.route, valid.getOrDefault("path"),
+  let url = call_614222.url(scheme.get, call_614222.host, call_614222.base,
+                         call_614222.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607153, url, valid)
+  result = atozHook(call_614222, url, valid)
 
-proc call*(call_607154: Call_PutLoggingConfiguration_607141; body: JsonNode): Recallable =
+proc call*(call_614223: Call_PutLoggingConfiguration_614210; body: JsonNode): Recallable =
   ## putLoggingConfiguration
   ## <p>Associates a <a>LoggingConfiguration</a> with a specified web ACL.</p> <p>You can access information about all traffic that AWS WAF inspects using the following steps:</p> <ol> <li> <p>Create an Amazon Kinesis Data Firehose. </p> <p>Create the data firehose with a PUT source and in the region that you are operating. However, if you are capturing logs for Amazon CloudFront, always create the firehose in US East (N. Virginia). </p> <note> <p>Do not create the data firehose using a <code>Kinesis stream</code> as your source.</p> </note> </li> <li> <p>Associate that firehose to your web ACL using a <code>PutLoggingConfiguration</code> request.</p> </li> </ol> <p>When you successfully enable logging using a <code>PutLoggingConfiguration</code> request, AWS WAF will create a service linked role with the necessary permissions to write logs to the Amazon Kinesis Data Firehose. For more information, see <a href="https://docs.aws.amazon.com/waf/latest/developerguide/logging.html">Logging Web ACL Traffic Information</a> in the <i>AWS WAF Developer Guide</i>.</p>
   ##   body: JObject (required)
-  var body_607155 = newJObject()
+  var body_614224 = newJObject()
   if body != nil:
-    body_607155 = body
-  result = call_607154.call(nil, nil, nil, nil, body_607155)
+    body_614224 = body
+  result = call_614223.call(nil, nil, nil, nil, body_614224)
 
-var putLoggingConfiguration* = Call_PutLoggingConfiguration_607141(
+var putLoggingConfiguration* = Call_PutLoggingConfiguration_614210(
     name: "putLoggingConfiguration", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.PutLoggingConfiguration",
-    validator: validate_PutLoggingConfiguration_607142, base: "/",
-    url: url_PutLoggingConfiguration_607143, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutLoggingConfiguration_614211, base: "/",
+    url: url_PutLoggingConfiguration_614212, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PutPermissionPolicy_607156 = ref object of OpenApiRestCall_605589
-proc url_PutPermissionPolicy_607158(protocol: Scheme; host: string; base: string;
+  Call_PutPermissionPolicy_614225 = ref object of OpenApiRestCall_612658
+proc url_PutPermissionPolicy_614227(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7444,7 +7444,7 @@ proc url_PutPermissionPolicy_607158(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_PutPermissionPolicy_607157(path: JsonNode; query: JsonNode;
+proc validate_PutPermissionPolicy_614226(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Attaches a IAM policy to the specified resource. The only supported use for this action is to share a RuleGroup across accounts.</p> <p>The <code>PutPermissionPolicy</code> is subject to the following restrictions:</p> <ul> <li> <p>You can attach only one policy with each <code>PutPermissionPolicy</code> request.</p> </li> <li> <p>The policy must include an <code>Effect</code>, <code>Action</code> and <code>Principal</code>. </p> </li> <li> <p> <code>Effect</code> must specify <code>Allow</code>.</p> </li> <li> <p>The <code>Action</code> in the policy must be <code>waf:UpdateWebACL</code>, <code>waf-regional:UpdateWebACL</code>, <code>waf:GetRuleGroup</code> and <code>waf-regional:GetRuleGroup</code> . Any extra or wildcard actions in the policy will be rejected.</p> </li> <li> <p>The policy cannot include a <code>Resource</code> parameter.</p> </li> <li> <p>The ARN in the request must be a valid WAF RuleGroup ARN and the RuleGroup must exist in the same region.</p> </li> <li> <p>The user making the request must be the owner of the RuleGroup.</p> </li> <li> <p>Your policy must be composed using IAM Policy version 2012-10-17.</p> </li> </ul> <p>For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html">IAM Policies</a>. </p> <p>An example of a valid policy parameter is shown in the Examples section below.</p>
@@ -7465,46 +7465,46 @@ proc validate_PutPermissionPolicy_607157(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607159 = header.getOrDefault("X-Amz-Target")
-  valid_607159 = validateParameter(valid_607159, JString, required = true, default = newJString(
+  var valid_614228 = header.getOrDefault("X-Amz-Target")
+  valid_614228 = validateParameter(valid_614228, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.PutPermissionPolicy"))
-  if valid_607159 != nil:
-    section.add "X-Amz-Target", valid_607159
-  var valid_607160 = header.getOrDefault("X-Amz-Signature")
-  valid_607160 = validateParameter(valid_607160, JString, required = false,
+  if valid_614228 != nil:
+    section.add "X-Amz-Target", valid_614228
+  var valid_614229 = header.getOrDefault("X-Amz-Signature")
+  valid_614229 = validateParameter(valid_614229, JString, required = false,
                                  default = nil)
-  if valid_607160 != nil:
-    section.add "X-Amz-Signature", valid_607160
-  var valid_607161 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607161 = validateParameter(valid_607161, JString, required = false,
+  if valid_614229 != nil:
+    section.add "X-Amz-Signature", valid_614229
+  var valid_614230 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614230 = validateParameter(valid_614230, JString, required = false,
                                  default = nil)
-  if valid_607161 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607161
-  var valid_607162 = header.getOrDefault("X-Amz-Date")
-  valid_607162 = validateParameter(valid_607162, JString, required = false,
+  if valid_614230 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614230
+  var valid_614231 = header.getOrDefault("X-Amz-Date")
+  valid_614231 = validateParameter(valid_614231, JString, required = false,
                                  default = nil)
-  if valid_607162 != nil:
-    section.add "X-Amz-Date", valid_607162
-  var valid_607163 = header.getOrDefault("X-Amz-Credential")
-  valid_607163 = validateParameter(valid_607163, JString, required = false,
+  if valid_614231 != nil:
+    section.add "X-Amz-Date", valid_614231
+  var valid_614232 = header.getOrDefault("X-Amz-Credential")
+  valid_614232 = validateParameter(valid_614232, JString, required = false,
                                  default = nil)
-  if valid_607163 != nil:
-    section.add "X-Amz-Credential", valid_607163
-  var valid_607164 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607164 = validateParameter(valid_607164, JString, required = false,
+  if valid_614232 != nil:
+    section.add "X-Amz-Credential", valid_614232
+  var valid_614233 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614233 = validateParameter(valid_614233, JString, required = false,
                                  default = nil)
-  if valid_607164 != nil:
-    section.add "X-Amz-Security-Token", valid_607164
-  var valid_607165 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607165 = validateParameter(valid_607165, JString, required = false,
+  if valid_614233 != nil:
+    section.add "X-Amz-Security-Token", valid_614233
+  var valid_614234 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614234 = validateParameter(valid_614234, JString, required = false,
                                  default = nil)
-  if valid_607165 != nil:
-    section.add "X-Amz-Algorithm", valid_607165
-  var valid_607166 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607166 = validateParameter(valid_607166, JString, required = false,
+  if valid_614234 != nil:
+    section.add "X-Amz-Algorithm", valid_614234
+  var valid_614235 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614235 = validateParameter(valid_614235, JString, required = false,
                                  default = nil)
-  if valid_607166 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607166
+  if valid_614235 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614235
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7515,37 +7515,37 @@ proc validate_PutPermissionPolicy_607157(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607168: Call_PutPermissionPolicy_607156; path: JsonNode;
+proc call*(call_614237: Call_PutPermissionPolicy_614225; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Attaches a IAM policy to the specified resource. The only supported use for this action is to share a RuleGroup across accounts.</p> <p>The <code>PutPermissionPolicy</code> is subject to the following restrictions:</p> <ul> <li> <p>You can attach only one policy with each <code>PutPermissionPolicy</code> request.</p> </li> <li> <p>The policy must include an <code>Effect</code>, <code>Action</code> and <code>Principal</code>. </p> </li> <li> <p> <code>Effect</code> must specify <code>Allow</code>.</p> </li> <li> <p>The <code>Action</code> in the policy must be <code>waf:UpdateWebACL</code>, <code>waf-regional:UpdateWebACL</code>, <code>waf:GetRuleGroup</code> and <code>waf-regional:GetRuleGroup</code> . Any extra or wildcard actions in the policy will be rejected.</p> </li> <li> <p>The policy cannot include a <code>Resource</code> parameter.</p> </li> <li> <p>The ARN in the request must be a valid WAF RuleGroup ARN and the RuleGroup must exist in the same region.</p> </li> <li> <p>The user making the request must be the owner of the RuleGroup.</p> </li> <li> <p>Your policy must be composed using IAM Policy version 2012-10-17.</p> </li> </ul> <p>For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html">IAM Policies</a>. </p> <p>An example of a valid policy parameter is shown in the Examples section below.</p>
   ## 
-  let valid = call_607168.validator(path, query, header, formData, body)
-  let scheme = call_607168.pickScheme
+  let valid = call_614237.validator(path, query, header, formData, body)
+  let scheme = call_614237.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607168.url(scheme.get, call_607168.host, call_607168.base,
-                         call_607168.route, valid.getOrDefault("path"),
+  let url = call_614237.url(scheme.get, call_614237.host, call_614237.base,
+                         call_614237.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607168, url, valid)
+  result = atozHook(call_614237, url, valid)
 
-proc call*(call_607169: Call_PutPermissionPolicy_607156; body: JsonNode): Recallable =
+proc call*(call_614238: Call_PutPermissionPolicy_614225; body: JsonNode): Recallable =
   ## putPermissionPolicy
   ## <p>Attaches a IAM policy to the specified resource. The only supported use for this action is to share a RuleGroup across accounts.</p> <p>The <code>PutPermissionPolicy</code> is subject to the following restrictions:</p> <ul> <li> <p>You can attach only one policy with each <code>PutPermissionPolicy</code> request.</p> </li> <li> <p>The policy must include an <code>Effect</code>, <code>Action</code> and <code>Principal</code>. </p> </li> <li> <p> <code>Effect</code> must specify <code>Allow</code>.</p> </li> <li> <p>The <code>Action</code> in the policy must be <code>waf:UpdateWebACL</code>, <code>waf-regional:UpdateWebACL</code>, <code>waf:GetRuleGroup</code> and <code>waf-regional:GetRuleGroup</code> . Any extra or wildcard actions in the policy will be rejected.</p> </li> <li> <p>The policy cannot include a <code>Resource</code> parameter.</p> </li> <li> <p>The ARN in the request must be a valid WAF RuleGroup ARN and the RuleGroup must exist in the same region.</p> </li> <li> <p>The user making the request must be the owner of the RuleGroup.</p> </li> <li> <p>Your policy must be composed using IAM Policy version 2012-10-17.</p> </li> </ul> <p>For more information, see <a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html">IAM Policies</a>. </p> <p>An example of a valid policy parameter is shown in the Examples section below.</p>
   ##   body: JObject (required)
-  var body_607170 = newJObject()
+  var body_614239 = newJObject()
   if body != nil:
-    body_607170 = body
-  result = call_607169.call(nil, nil, nil, nil, body_607170)
+    body_614239 = body
+  result = call_614238.call(nil, nil, nil, nil, body_614239)
 
-var putPermissionPolicy* = Call_PutPermissionPolicy_607156(
+var putPermissionPolicy* = Call_PutPermissionPolicy_614225(
     name: "putPermissionPolicy", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.PutPermissionPolicy",
-    validator: validate_PutPermissionPolicy_607157, base: "/",
-    url: url_PutPermissionPolicy_607158, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PutPermissionPolicy_614226, base: "/",
+    url: url_PutPermissionPolicy_614227, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_607171 = ref object of OpenApiRestCall_605589
-proc url_TagResource_607173(protocol: Scheme; host: string; base: string;
+  Call_TagResource_614240 = ref object of OpenApiRestCall_612658
+proc url_TagResource_614242(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7557,7 +7557,7 @@ proc url_TagResource_607173(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_TagResource_607172(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_614241(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   var section: JsonNode
   result = newJObject()
@@ -7575,46 +7575,46 @@ proc validate_TagResource_607172(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607174 = header.getOrDefault("X-Amz-Target")
-  valid_607174 = validateParameter(valid_607174, JString, required = true, default = newJString(
+  var valid_614243 = header.getOrDefault("X-Amz-Target")
+  valid_614243 = validateParameter(valid_614243, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.TagResource"))
-  if valid_607174 != nil:
-    section.add "X-Amz-Target", valid_607174
-  var valid_607175 = header.getOrDefault("X-Amz-Signature")
-  valid_607175 = validateParameter(valid_607175, JString, required = false,
+  if valid_614243 != nil:
+    section.add "X-Amz-Target", valid_614243
+  var valid_614244 = header.getOrDefault("X-Amz-Signature")
+  valid_614244 = validateParameter(valid_614244, JString, required = false,
                                  default = nil)
-  if valid_607175 != nil:
-    section.add "X-Amz-Signature", valid_607175
-  var valid_607176 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607176 = validateParameter(valid_607176, JString, required = false,
+  if valid_614244 != nil:
+    section.add "X-Amz-Signature", valid_614244
+  var valid_614245 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614245 = validateParameter(valid_614245, JString, required = false,
                                  default = nil)
-  if valid_607176 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607176
-  var valid_607177 = header.getOrDefault("X-Amz-Date")
-  valid_607177 = validateParameter(valid_607177, JString, required = false,
+  if valid_614245 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614245
+  var valid_614246 = header.getOrDefault("X-Amz-Date")
+  valid_614246 = validateParameter(valid_614246, JString, required = false,
                                  default = nil)
-  if valid_607177 != nil:
-    section.add "X-Amz-Date", valid_607177
-  var valid_607178 = header.getOrDefault("X-Amz-Credential")
-  valid_607178 = validateParameter(valid_607178, JString, required = false,
+  if valid_614246 != nil:
+    section.add "X-Amz-Date", valid_614246
+  var valid_614247 = header.getOrDefault("X-Amz-Credential")
+  valid_614247 = validateParameter(valid_614247, JString, required = false,
                                  default = nil)
-  if valid_607178 != nil:
-    section.add "X-Amz-Credential", valid_607178
-  var valid_607179 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607179 = validateParameter(valid_607179, JString, required = false,
+  if valid_614247 != nil:
+    section.add "X-Amz-Credential", valid_614247
+  var valid_614248 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614248 = validateParameter(valid_614248, JString, required = false,
                                  default = nil)
-  if valid_607179 != nil:
-    section.add "X-Amz-Security-Token", valid_607179
-  var valid_607180 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607180 = validateParameter(valid_607180, JString, required = false,
+  if valid_614248 != nil:
+    section.add "X-Amz-Security-Token", valid_614248
+  var valid_614249 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614249 = validateParameter(valid_614249, JString, required = false,
                                  default = nil)
-  if valid_607180 != nil:
-    section.add "X-Amz-Algorithm", valid_607180
-  var valid_607181 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607181 = validateParameter(valid_607181, JString, required = false,
+  if valid_614249 != nil:
+    section.add "X-Amz-Algorithm", valid_614249
+  var valid_614250 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614250 = validateParameter(valid_614250, JString, required = false,
                                  default = nil)
-  if valid_607181 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607181
+  if valid_614250 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614250
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7625,34 +7625,34 @@ proc validate_TagResource_607172(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_607183: Call_TagResource_607171; path: JsonNode; query: JsonNode;
+proc call*(call_614252: Call_TagResource_614240; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  let valid = call_607183.validator(path, query, header, formData, body)
-  let scheme = call_607183.pickScheme
+  let valid = call_614252.validator(path, query, header, formData, body)
+  let scheme = call_614252.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607183.url(scheme.get, call_607183.host, call_607183.base,
-                         call_607183.route, valid.getOrDefault("path"),
+  let url = call_614252.url(scheme.get, call_614252.host, call_614252.base,
+                         call_614252.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607183, url, valid)
+  result = atozHook(call_614252, url, valid)
 
-proc call*(call_607184: Call_TagResource_607171; body: JsonNode): Recallable =
+proc call*(call_614253: Call_TagResource_614240; body: JsonNode): Recallable =
   ## tagResource
   ##   body: JObject (required)
-  var body_607185 = newJObject()
+  var body_614254 = newJObject()
   if body != nil:
-    body_607185 = body
-  result = call_607184.call(nil, nil, nil, nil, body_607185)
+    body_614254 = body
+  result = call_614253.call(nil, nil, nil, nil, body_614254)
 
-var tagResource* = Call_TagResource_607171(name: "tagResource",
+var tagResource* = Call_TagResource_614240(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.TagResource",
-                                        validator: validate_TagResource_607172,
-                                        base: "/", url: url_TagResource_607173,
+                                        validator: validate_TagResource_614241,
+                                        base: "/", url: url_TagResource_614242,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_607186 = ref object of OpenApiRestCall_605589
-proc url_UntagResource_607188(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_614255 = ref object of OpenApiRestCall_612658
+proc url_UntagResource_614257(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7664,7 +7664,7 @@ proc url_UntagResource_607188(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UntagResource_607187(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_614256(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   var section: JsonNode
   result = newJObject()
@@ -7682,46 +7682,46 @@ proc validate_UntagResource_607187(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607189 = header.getOrDefault("X-Amz-Target")
-  valid_607189 = validateParameter(valid_607189, JString, required = true, default = newJString(
+  var valid_614258 = header.getOrDefault("X-Amz-Target")
+  valid_614258 = validateParameter(valid_614258, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UntagResource"))
-  if valid_607189 != nil:
-    section.add "X-Amz-Target", valid_607189
-  var valid_607190 = header.getOrDefault("X-Amz-Signature")
-  valid_607190 = validateParameter(valid_607190, JString, required = false,
+  if valid_614258 != nil:
+    section.add "X-Amz-Target", valid_614258
+  var valid_614259 = header.getOrDefault("X-Amz-Signature")
+  valid_614259 = validateParameter(valid_614259, JString, required = false,
                                  default = nil)
-  if valid_607190 != nil:
-    section.add "X-Amz-Signature", valid_607190
-  var valid_607191 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607191 = validateParameter(valid_607191, JString, required = false,
+  if valid_614259 != nil:
+    section.add "X-Amz-Signature", valid_614259
+  var valid_614260 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614260 = validateParameter(valid_614260, JString, required = false,
                                  default = nil)
-  if valid_607191 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607191
-  var valid_607192 = header.getOrDefault("X-Amz-Date")
-  valid_607192 = validateParameter(valid_607192, JString, required = false,
+  if valid_614260 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614260
+  var valid_614261 = header.getOrDefault("X-Amz-Date")
+  valid_614261 = validateParameter(valid_614261, JString, required = false,
                                  default = nil)
-  if valid_607192 != nil:
-    section.add "X-Amz-Date", valid_607192
-  var valid_607193 = header.getOrDefault("X-Amz-Credential")
-  valid_607193 = validateParameter(valid_607193, JString, required = false,
+  if valid_614261 != nil:
+    section.add "X-Amz-Date", valid_614261
+  var valid_614262 = header.getOrDefault("X-Amz-Credential")
+  valid_614262 = validateParameter(valid_614262, JString, required = false,
                                  default = nil)
-  if valid_607193 != nil:
-    section.add "X-Amz-Credential", valid_607193
-  var valid_607194 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607194 = validateParameter(valid_607194, JString, required = false,
+  if valid_614262 != nil:
+    section.add "X-Amz-Credential", valid_614262
+  var valid_614263 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614263 = validateParameter(valid_614263, JString, required = false,
                                  default = nil)
-  if valid_607194 != nil:
-    section.add "X-Amz-Security-Token", valid_607194
-  var valid_607195 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607195 = validateParameter(valid_607195, JString, required = false,
+  if valid_614263 != nil:
+    section.add "X-Amz-Security-Token", valid_614263
+  var valid_614264 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614264 = validateParameter(valid_614264, JString, required = false,
                                  default = nil)
-  if valid_607195 != nil:
-    section.add "X-Amz-Algorithm", valid_607195
-  var valid_607196 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607196 = validateParameter(valid_607196, JString, required = false,
+  if valid_614264 != nil:
+    section.add "X-Amz-Algorithm", valid_614264
+  var valid_614265 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614265 = validateParameter(valid_614265, JString, required = false,
                                  default = nil)
-  if valid_607196 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607196
+  if valid_614265 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614265
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7732,33 +7732,33 @@ proc validate_UntagResource_607187(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_607198: Call_UntagResource_607186; path: JsonNode; query: JsonNode;
+proc call*(call_614267: Call_UntagResource_614255; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  let valid = call_607198.validator(path, query, header, formData, body)
-  let scheme = call_607198.pickScheme
+  let valid = call_614267.validator(path, query, header, formData, body)
+  let scheme = call_614267.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607198.url(scheme.get, call_607198.host, call_607198.base,
-                         call_607198.route, valid.getOrDefault("path"),
+  let url = call_614267.url(scheme.get, call_614267.host, call_614267.base,
+                         call_614267.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607198, url, valid)
+  result = atozHook(call_614267, url, valid)
 
-proc call*(call_607199: Call_UntagResource_607186; body: JsonNode): Recallable =
+proc call*(call_614268: Call_UntagResource_614255; body: JsonNode): Recallable =
   ## untagResource
   ##   body: JObject (required)
-  var body_607200 = newJObject()
+  var body_614269 = newJObject()
   if body != nil:
-    body_607200 = body
-  result = call_607199.call(nil, nil, nil, nil, body_607200)
+    body_614269 = body
+  result = call_614268.call(nil, nil, nil, nil, body_614269)
 
-var untagResource* = Call_UntagResource_607186(name: "untagResource",
+var untagResource* = Call_UntagResource_614255(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UntagResource",
-    validator: validate_UntagResource_607187, base: "/", url: url_UntagResource_607188,
+    validator: validate_UntagResource_614256, base: "/", url: url_UntagResource_614257,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateByteMatchSet_607201 = ref object of OpenApiRestCall_605589
-proc url_UpdateByteMatchSet_607203(protocol: Scheme; host: string; base: string;
+  Call_UpdateByteMatchSet_614270 = ref object of OpenApiRestCall_612658
+proc url_UpdateByteMatchSet_614272(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7770,7 +7770,7 @@ proc url_UpdateByteMatchSet_607203(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateByteMatchSet_607202(path: JsonNode; query: JsonNode;
+proc validate_UpdateByteMatchSet_614271(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>ByteMatchTuple</a> objects (filters) in a <a>ByteMatchSet</a>. For each <code>ByteMatchTuple</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>ByteMatchSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to inspect, such as a query string or the value of the <code>User-Agent</code> header. </p> </li> <li> <p>The bytes (typically a string that corresponds with ASCII characters) that you want AWS WAF to look for. For more information, including how you specify the values for the AWS WAF API and the AWS CLI or SDKs, see <code>TargetString</code> in the <a>ByteMatchTuple</a> data type. </p> </li> <li> <p>Where to look, such as at the beginning or the end of a query string.</p> </li> <li> <p>Whether to perform any conversions on the request, such as converting it to lowercase, before inspecting it for the specified string.</p> </li> </ul> <p>For example, you can add a <code>ByteMatchSetUpdate</code> object that matches web requests in which <code>User-Agent</code> headers contain the string <code>BadBot</code>. You can then configure AWS WAF to block those requests.</p> <p>To create and configure a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>ByteMatchSet.</code> For more information, see <a>CreateByteMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateByteMatchSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateByteMatchSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -7791,46 +7791,46 @@ proc validate_UpdateByteMatchSet_607202(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607204 = header.getOrDefault("X-Amz-Target")
-  valid_607204 = validateParameter(valid_607204, JString, required = true, default = newJString(
+  var valid_614273 = header.getOrDefault("X-Amz-Target")
+  valid_614273 = validateParameter(valid_614273, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateByteMatchSet"))
-  if valid_607204 != nil:
-    section.add "X-Amz-Target", valid_607204
-  var valid_607205 = header.getOrDefault("X-Amz-Signature")
-  valid_607205 = validateParameter(valid_607205, JString, required = false,
+  if valid_614273 != nil:
+    section.add "X-Amz-Target", valid_614273
+  var valid_614274 = header.getOrDefault("X-Amz-Signature")
+  valid_614274 = validateParameter(valid_614274, JString, required = false,
                                  default = nil)
-  if valid_607205 != nil:
-    section.add "X-Amz-Signature", valid_607205
-  var valid_607206 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607206 = validateParameter(valid_607206, JString, required = false,
+  if valid_614274 != nil:
+    section.add "X-Amz-Signature", valid_614274
+  var valid_614275 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614275 = validateParameter(valid_614275, JString, required = false,
                                  default = nil)
-  if valid_607206 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607206
-  var valid_607207 = header.getOrDefault("X-Amz-Date")
-  valid_607207 = validateParameter(valid_607207, JString, required = false,
+  if valid_614275 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614275
+  var valid_614276 = header.getOrDefault("X-Amz-Date")
+  valid_614276 = validateParameter(valid_614276, JString, required = false,
                                  default = nil)
-  if valid_607207 != nil:
-    section.add "X-Amz-Date", valid_607207
-  var valid_607208 = header.getOrDefault("X-Amz-Credential")
-  valid_607208 = validateParameter(valid_607208, JString, required = false,
+  if valid_614276 != nil:
+    section.add "X-Amz-Date", valid_614276
+  var valid_614277 = header.getOrDefault("X-Amz-Credential")
+  valid_614277 = validateParameter(valid_614277, JString, required = false,
                                  default = nil)
-  if valid_607208 != nil:
-    section.add "X-Amz-Credential", valid_607208
-  var valid_607209 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607209 = validateParameter(valid_607209, JString, required = false,
+  if valid_614277 != nil:
+    section.add "X-Amz-Credential", valid_614277
+  var valid_614278 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614278 = validateParameter(valid_614278, JString, required = false,
                                  default = nil)
-  if valid_607209 != nil:
-    section.add "X-Amz-Security-Token", valid_607209
-  var valid_607210 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607210 = validateParameter(valid_607210, JString, required = false,
+  if valid_614278 != nil:
+    section.add "X-Amz-Security-Token", valid_614278
+  var valid_614279 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614279 = validateParameter(valid_614279, JString, required = false,
                                  default = nil)
-  if valid_607210 != nil:
-    section.add "X-Amz-Algorithm", valid_607210
-  var valid_607211 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607211 = validateParameter(valid_607211, JString, required = false,
+  if valid_614279 != nil:
+    section.add "X-Amz-Algorithm", valid_614279
+  var valid_614280 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614280 = validateParameter(valid_614280, JString, required = false,
                                  default = nil)
-  if valid_607211 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607211
+  if valid_614280 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614280
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7841,37 +7841,37 @@ proc validate_UpdateByteMatchSet_607202(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607213: Call_UpdateByteMatchSet_607201; path: JsonNode;
+proc call*(call_614282: Call_UpdateByteMatchSet_614270; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>ByteMatchTuple</a> objects (filters) in a <a>ByteMatchSet</a>. For each <code>ByteMatchTuple</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>ByteMatchSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to inspect, such as a query string or the value of the <code>User-Agent</code> header. </p> </li> <li> <p>The bytes (typically a string that corresponds with ASCII characters) that you want AWS WAF to look for. For more information, including how you specify the values for the AWS WAF API and the AWS CLI or SDKs, see <code>TargetString</code> in the <a>ByteMatchTuple</a> data type. </p> </li> <li> <p>Where to look, such as at the beginning or the end of a query string.</p> </li> <li> <p>Whether to perform any conversions on the request, such as converting it to lowercase, before inspecting it for the specified string.</p> </li> </ul> <p>For example, you can add a <code>ByteMatchSetUpdate</code> object that matches web requests in which <code>User-Agent</code> headers contain the string <code>BadBot</code>. You can then configure AWS WAF to block those requests.</p> <p>To create and configure a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>ByteMatchSet.</code> For more information, see <a>CreateByteMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateByteMatchSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateByteMatchSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607213.validator(path, query, header, formData, body)
-  let scheme = call_607213.pickScheme
+  let valid = call_614282.validator(path, query, header, formData, body)
+  let scheme = call_614282.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607213.url(scheme.get, call_607213.host, call_607213.base,
-                         call_607213.route, valid.getOrDefault("path"),
+  let url = call_614282.url(scheme.get, call_614282.host, call_614282.base,
+                         call_614282.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607213, url, valid)
+  result = atozHook(call_614282, url, valid)
 
-proc call*(call_607214: Call_UpdateByteMatchSet_607201; body: JsonNode): Recallable =
+proc call*(call_614283: Call_UpdateByteMatchSet_614270; body: JsonNode): Recallable =
   ## updateByteMatchSet
   ## <p>Inserts or deletes <a>ByteMatchTuple</a> objects (filters) in a <a>ByteMatchSet</a>. For each <code>ByteMatchTuple</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>ByteMatchSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to inspect, such as a query string or the value of the <code>User-Agent</code> header. </p> </li> <li> <p>The bytes (typically a string that corresponds with ASCII characters) that you want AWS WAF to look for. For more information, including how you specify the values for the AWS WAF API and the AWS CLI or SDKs, see <code>TargetString</code> in the <a>ByteMatchTuple</a> data type. </p> </li> <li> <p>Where to look, such as at the beginning or the end of a query string.</p> </li> <li> <p>Whether to perform any conversions on the request, such as converting it to lowercase, before inspecting it for the specified string.</p> </li> </ul> <p>For example, you can add a <code>ByteMatchSetUpdate</code> object that matches web requests in which <code>User-Agent</code> headers contain the string <code>BadBot</code>. You can then configure AWS WAF to block those requests.</p> <p>To create and configure a <code>ByteMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>ByteMatchSet.</code> For more information, see <a>CreateByteMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateByteMatchSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateByteMatchSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607215 = newJObject()
+  var body_614284 = newJObject()
   if body != nil:
-    body_607215 = body
-  result = call_607214.call(nil, nil, nil, nil, body_607215)
+    body_614284 = body
+  result = call_614283.call(nil, nil, nil, nil, body_614284)
 
-var updateByteMatchSet* = Call_UpdateByteMatchSet_607201(
+var updateByteMatchSet* = Call_UpdateByteMatchSet_614270(
     name: "updateByteMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateByteMatchSet",
-    validator: validate_UpdateByteMatchSet_607202, base: "/",
-    url: url_UpdateByteMatchSet_607203, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateByteMatchSet_614271, base: "/",
+    url: url_UpdateByteMatchSet_614272, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateGeoMatchSet_607216 = ref object of OpenApiRestCall_605589
-proc url_UpdateGeoMatchSet_607218(protocol: Scheme; host: string; base: string;
+  Call_UpdateGeoMatchSet_614285 = ref object of OpenApiRestCall_612658
+proc url_UpdateGeoMatchSet_614287(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7883,7 +7883,7 @@ proc url_UpdateGeoMatchSet_607218(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateGeoMatchSet_607217(path: JsonNode; query: JsonNode;
+proc validate_UpdateGeoMatchSet_614286(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>GeoMatchConstraint</a> objects in an <code>GeoMatchSet</code>. For each <code>GeoMatchConstraint</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change an <code>GeoMatchConstraint</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The <code>Type</code>. The only valid value for <code>Type</code> is <code>Country</code>.</p> </li> <li> <p>The <code>Value</code>, which is a two character code for the country to add to the <code>GeoMatchConstraint</code> object. Valid codes are listed in <a>GeoMatchConstraint$Value</a>.</p> </li> </ul> <p>To create and configure an <code>GeoMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateGeoMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateGeoMatchSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateGeoMatchSet</code> request to specify the country that you want AWS WAF to watch for.</p> </li> </ol> <p>When you update an <code>GeoMatchSet</code>, you specify the country that you want to add and/or the country that you want to delete. If you want to change a country, you delete the existing country and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -7904,46 +7904,46 @@ proc validate_UpdateGeoMatchSet_607217(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607219 = header.getOrDefault("X-Amz-Target")
-  valid_607219 = validateParameter(valid_607219, JString, required = true, default = newJString(
+  var valid_614288 = header.getOrDefault("X-Amz-Target")
+  valid_614288 = validateParameter(valid_614288, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateGeoMatchSet"))
-  if valid_607219 != nil:
-    section.add "X-Amz-Target", valid_607219
-  var valid_607220 = header.getOrDefault("X-Amz-Signature")
-  valid_607220 = validateParameter(valid_607220, JString, required = false,
+  if valid_614288 != nil:
+    section.add "X-Amz-Target", valid_614288
+  var valid_614289 = header.getOrDefault("X-Amz-Signature")
+  valid_614289 = validateParameter(valid_614289, JString, required = false,
                                  default = nil)
-  if valid_607220 != nil:
-    section.add "X-Amz-Signature", valid_607220
-  var valid_607221 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607221 = validateParameter(valid_607221, JString, required = false,
+  if valid_614289 != nil:
+    section.add "X-Amz-Signature", valid_614289
+  var valid_614290 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614290 = validateParameter(valid_614290, JString, required = false,
                                  default = nil)
-  if valid_607221 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607221
-  var valid_607222 = header.getOrDefault("X-Amz-Date")
-  valid_607222 = validateParameter(valid_607222, JString, required = false,
+  if valid_614290 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614290
+  var valid_614291 = header.getOrDefault("X-Amz-Date")
+  valid_614291 = validateParameter(valid_614291, JString, required = false,
                                  default = nil)
-  if valid_607222 != nil:
-    section.add "X-Amz-Date", valid_607222
-  var valid_607223 = header.getOrDefault("X-Amz-Credential")
-  valid_607223 = validateParameter(valid_607223, JString, required = false,
+  if valid_614291 != nil:
+    section.add "X-Amz-Date", valid_614291
+  var valid_614292 = header.getOrDefault("X-Amz-Credential")
+  valid_614292 = validateParameter(valid_614292, JString, required = false,
                                  default = nil)
-  if valid_607223 != nil:
-    section.add "X-Amz-Credential", valid_607223
-  var valid_607224 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607224 = validateParameter(valid_607224, JString, required = false,
+  if valid_614292 != nil:
+    section.add "X-Amz-Credential", valid_614292
+  var valid_614293 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614293 = validateParameter(valid_614293, JString, required = false,
                                  default = nil)
-  if valid_607224 != nil:
-    section.add "X-Amz-Security-Token", valid_607224
-  var valid_607225 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607225 = validateParameter(valid_607225, JString, required = false,
+  if valid_614293 != nil:
+    section.add "X-Amz-Security-Token", valid_614293
+  var valid_614294 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614294 = validateParameter(valid_614294, JString, required = false,
                                  default = nil)
-  if valid_607225 != nil:
-    section.add "X-Amz-Algorithm", valid_607225
-  var valid_607226 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607226 = validateParameter(valid_607226, JString, required = false,
+  if valid_614294 != nil:
+    section.add "X-Amz-Algorithm", valid_614294
+  var valid_614295 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614295 = validateParameter(valid_614295, JString, required = false,
                                  default = nil)
-  if valid_607226 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607226
+  if valid_614295 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614295
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7954,36 +7954,36 @@ proc validate_UpdateGeoMatchSet_607217(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607228: Call_UpdateGeoMatchSet_607216; path: JsonNode;
+proc call*(call_614297: Call_UpdateGeoMatchSet_614285; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>GeoMatchConstraint</a> objects in an <code>GeoMatchSet</code>. For each <code>GeoMatchConstraint</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change an <code>GeoMatchConstraint</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The <code>Type</code>. The only valid value for <code>Type</code> is <code>Country</code>.</p> </li> <li> <p>The <code>Value</code>, which is a two character code for the country to add to the <code>GeoMatchConstraint</code> object. Valid codes are listed in <a>GeoMatchConstraint$Value</a>.</p> </li> </ul> <p>To create and configure an <code>GeoMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateGeoMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateGeoMatchSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateGeoMatchSet</code> request to specify the country that you want AWS WAF to watch for.</p> </li> </ol> <p>When you update an <code>GeoMatchSet</code>, you specify the country that you want to add and/or the country that you want to delete. If you want to change a country, you delete the existing country and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607228.validator(path, query, header, formData, body)
-  let scheme = call_607228.pickScheme
+  let valid = call_614297.validator(path, query, header, formData, body)
+  let scheme = call_614297.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607228.url(scheme.get, call_607228.host, call_607228.base,
-                         call_607228.route, valid.getOrDefault("path"),
+  let url = call_614297.url(scheme.get, call_614297.host, call_614297.base,
+                         call_614297.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607228, url, valid)
+  result = atozHook(call_614297, url, valid)
 
-proc call*(call_607229: Call_UpdateGeoMatchSet_607216; body: JsonNode): Recallable =
+proc call*(call_614298: Call_UpdateGeoMatchSet_614285; body: JsonNode): Recallable =
   ## updateGeoMatchSet
   ## <p>Inserts or deletes <a>GeoMatchConstraint</a> objects in an <code>GeoMatchSet</code>. For each <code>GeoMatchConstraint</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change an <code>GeoMatchConstraint</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The <code>Type</code>. The only valid value for <code>Type</code> is <code>Country</code>.</p> </li> <li> <p>The <code>Value</code>, which is a two character code for the country to add to the <code>GeoMatchConstraint</code> object. Valid codes are listed in <a>GeoMatchConstraint$Value</a>.</p> </li> </ul> <p>To create and configure an <code>GeoMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateGeoMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateGeoMatchSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateGeoMatchSet</code> request to specify the country that you want AWS WAF to watch for.</p> </li> </ol> <p>When you update an <code>GeoMatchSet</code>, you specify the country that you want to add and/or the country that you want to delete. If you want to change a country, you delete the existing country and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607230 = newJObject()
+  var body_614299 = newJObject()
   if body != nil:
-    body_607230 = body
-  result = call_607229.call(nil, nil, nil, nil, body_607230)
+    body_614299 = body
+  result = call_614298.call(nil, nil, nil, nil, body_614299)
 
-var updateGeoMatchSet* = Call_UpdateGeoMatchSet_607216(name: "updateGeoMatchSet",
+var updateGeoMatchSet* = Call_UpdateGeoMatchSet_614285(name: "updateGeoMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateGeoMatchSet",
-    validator: validate_UpdateGeoMatchSet_607217, base: "/",
-    url: url_UpdateGeoMatchSet_607218, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateGeoMatchSet_614286, base: "/",
+    url: url_UpdateGeoMatchSet_614287, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateIPSet_607231 = ref object of OpenApiRestCall_605589
-proc url_UpdateIPSet_607233(protocol: Scheme; host: string; base: string;
+  Call_UpdateIPSet_614300 = ref object of OpenApiRestCall_612658
+proc url_UpdateIPSet_614302(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -7995,7 +7995,7 @@ proc url_UpdateIPSet_607233(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateIPSet_607232(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateIPSet_614301(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>IPSetDescriptor</a> objects in an <code>IPSet</code>. For each <code>IPSetDescriptor</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change an <code>IPSetDescriptor</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The IP address version, <code>IPv4</code> or <code>IPv6</code>. </p> </li> <li> <p>The IP address in CIDR notation, for example, <code>192.0.2.0/24</code> (for the range of IP addresses from <code>192.0.2.0</code> to <code>192.0.2.255</code>) or <code>192.0.2.44/32</code> (for the individual IP address <code>192.0.2.44</code>). </p> </li> </ul> <p>AWS WAF supports IPv4 address ranges: /8 and any range between /16 through /32. AWS WAF supports IPv6 address ranges: /24, /32, /48, /56, /64, and /128. For more information about CIDR notation, see the Wikipedia entry <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">Classless Inter-Domain Routing</a>.</p> <p>IPv6 addresses can be represented using any of the following formats:</p> <ul> <li> <p>1111:0000:0000:0000:0000:0000:0000:0111/128</p> </li> <li> <p>1111:0:0:0:0:0:0:0111/128</p> </li> <li> <p>1111::0111/128</p> </li> <li> <p>1111::111/128</p> </li> </ul> <p>You use an <code>IPSet</code> to specify which web requests you want to allow or block based on the IP addresses that the requests originated from. For example, if you're receiving a lot of requests from one or a small number of IP addresses and you want to block the requests, you can create an <code>IPSet</code> that specifies those IP addresses, and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>IPSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateIPSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateIPSet</code> request to specify the IP addresses that you want AWS WAF to watch for.</p> </li> </ol> <p>When you update an <code>IPSet</code>, you specify the IP addresses that you want to add and/or the IP addresses that you want to delete. If you want to change an IP address, you delete the existing IP address and add the new one.</p> <p>You can insert a maximum of 1000 addresses in a single request.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -8015,46 +8015,46 @@ proc validate_UpdateIPSet_607232(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607234 = header.getOrDefault("X-Amz-Target")
-  valid_607234 = validateParameter(valid_607234, JString, required = true, default = newJString(
+  var valid_614303 = header.getOrDefault("X-Amz-Target")
+  valid_614303 = validateParameter(valid_614303, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateIPSet"))
-  if valid_607234 != nil:
-    section.add "X-Amz-Target", valid_607234
-  var valid_607235 = header.getOrDefault("X-Amz-Signature")
-  valid_607235 = validateParameter(valid_607235, JString, required = false,
+  if valid_614303 != nil:
+    section.add "X-Amz-Target", valid_614303
+  var valid_614304 = header.getOrDefault("X-Amz-Signature")
+  valid_614304 = validateParameter(valid_614304, JString, required = false,
                                  default = nil)
-  if valid_607235 != nil:
-    section.add "X-Amz-Signature", valid_607235
-  var valid_607236 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607236 = validateParameter(valid_607236, JString, required = false,
+  if valid_614304 != nil:
+    section.add "X-Amz-Signature", valid_614304
+  var valid_614305 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614305 = validateParameter(valid_614305, JString, required = false,
                                  default = nil)
-  if valid_607236 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607236
-  var valid_607237 = header.getOrDefault("X-Amz-Date")
-  valid_607237 = validateParameter(valid_607237, JString, required = false,
+  if valid_614305 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614305
+  var valid_614306 = header.getOrDefault("X-Amz-Date")
+  valid_614306 = validateParameter(valid_614306, JString, required = false,
                                  default = nil)
-  if valid_607237 != nil:
-    section.add "X-Amz-Date", valid_607237
-  var valid_607238 = header.getOrDefault("X-Amz-Credential")
-  valid_607238 = validateParameter(valid_607238, JString, required = false,
+  if valid_614306 != nil:
+    section.add "X-Amz-Date", valid_614306
+  var valid_614307 = header.getOrDefault("X-Amz-Credential")
+  valid_614307 = validateParameter(valid_614307, JString, required = false,
                                  default = nil)
-  if valid_607238 != nil:
-    section.add "X-Amz-Credential", valid_607238
-  var valid_607239 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607239 = validateParameter(valid_607239, JString, required = false,
+  if valid_614307 != nil:
+    section.add "X-Amz-Credential", valid_614307
+  var valid_614308 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614308 = validateParameter(valid_614308, JString, required = false,
                                  default = nil)
-  if valid_607239 != nil:
-    section.add "X-Amz-Security-Token", valid_607239
-  var valid_607240 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607240 = validateParameter(valid_607240, JString, required = false,
+  if valid_614308 != nil:
+    section.add "X-Amz-Security-Token", valid_614308
+  var valid_614309 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614309 = validateParameter(valid_614309, JString, required = false,
                                  default = nil)
-  if valid_607240 != nil:
-    section.add "X-Amz-Algorithm", valid_607240
-  var valid_607241 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607241 = validateParameter(valid_607241, JString, required = false,
+  if valid_614309 != nil:
+    section.add "X-Amz-Algorithm", valid_614309
+  var valid_614310 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614310 = validateParameter(valid_614310, JString, required = false,
                                  default = nil)
-  if valid_607241 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607241
+  if valid_614310 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614310
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8065,37 +8065,37 @@ proc validate_UpdateIPSet_607232(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_607243: Call_UpdateIPSet_607231; path: JsonNode; query: JsonNode;
+proc call*(call_614312: Call_UpdateIPSet_614300; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>IPSetDescriptor</a> objects in an <code>IPSet</code>. For each <code>IPSetDescriptor</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change an <code>IPSetDescriptor</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The IP address version, <code>IPv4</code> or <code>IPv6</code>. </p> </li> <li> <p>The IP address in CIDR notation, for example, <code>192.0.2.0/24</code> (for the range of IP addresses from <code>192.0.2.0</code> to <code>192.0.2.255</code>) or <code>192.0.2.44/32</code> (for the individual IP address <code>192.0.2.44</code>). </p> </li> </ul> <p>AWS WAF supports IPv4 address ranges: /8 and any range between /16 through /32. AWS WAF supports IPv6 address ranges: /24, /32, /48, /56, /64, and /128. For more information about CIDR notation, see the Wikipedia entry <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">Classless Inter-Domain Routing</a>.</p> <p>IPv6 addresses can be represented using any of the following formats:</p> <ul> <li> <p>1111:0000:0000:0000:0000:0000:0000:0111/128</p> </li> <li> <p>1111:0:0:0:0:0:0:0111/128</p> </li> <li> <p>1111::0111/128</p> </li> <li> <p>1111::111/128</p> </li> </ul> <p>You use an <code>IPSet</code> to specify which web requests you want to allow or block based on the IP addresses that the requests originated from. For example, if you're receiving a lot of requests from one or a small number of IP addresses and you want to block the requests, you can create an <code>IPSet</code> that specifies those IP addresses, and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>IPSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateIPSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateIPSet</code> request to specify the IP addresses that you want AWS WAF to watch for.</p> </li> </ol> <p>When you update an <code>IPSet</code>, you specify the IP addresses that you want to add and/or the IP addresses that you want to delete. If you want to change an IP address, you delete the existing IP address and add the new one.</p> <p>You can insert a maximum of 1000 addresses in a single request.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607243.validator(path, query, header, formData, body)
-  let scheme = call_607243.pickScheme
+  let valid = call_614312.validator(path, query, header, formData, body)
+  let scheme = call_614312.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607243.url(scheme.get, call_607243.host, call_607243.base,
-                         call_607243.route, valid.getOrDefault("path"),
+  let url = call_614312.url(scheme.get, call_614312.host, call_614312.base,
+                         call_614312.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607243, url, valid)
+  result = atozHook(call_614312, url, valid)
 
-proc call*(call_607244: Call_UpdateIPSet_607231; body: JsonNode): Recallable =
+proc call*(call_614313: Call_UpdateIPSet_614300; body: JsonNode): Recallable =
   ## updateIPSet
   ## <p>Inserts or deletes <a>IPSetDescriptor</a> objects in an <code>IPSet</code>. For each <code>IPSetDescriptor</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change an <code>IPSetDescriptor</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The IP address version, <code>IPv4</code> or <code>IPv6</code>. </p> </li> <li> <p>The IP address in CIDR notation, for example, <code>192.0.2.0/24</code> (for the range of IP addresses from <code>192.0.2.0</code> to <code>192.0.2.255</code>) or <code>192.0.2.44/32</code> (for the individual IP address <code>192.0.2.44</code>). </p> </li> </ul> <p>AWS WAF supports IPv4 address ranges: /8 and any range between /16 through /32. AWS WAF supports IPv6 address ranges: /24, /32, /48, /56, /64, and /128. For more information about CIDR notation, see the Wikipedia entry <a href="https://en.wikipedia.org/wiki/Classless_Inter-Domain_Routing">Classless Inter-Domain Routing</a>.</p> <p>IPv6 addresses can be represented using any of the following formats:</p> <ul> <li> <p>1111:0000:0000:0000:0000:0000:0000:0111/128</p> </li> <li> <p>1111:0:0:0:0:0:0:0111/128</p> </li> <li> <p>1111::0111/128</p> </li> <li> <p>1111::111/128</p> </li> </ul> <p>You use an <code>IPSet</code> to specify which web requests you want to allow or block based on the IP addresses that the requests originated from. For example, if you're receiving a lot of requests from one or a small number of IP addresses and you want to block the requests, you can create an <code>IPSet</code> that specifies those IP addresses, and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>IPSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateIPSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateIPSet</code> request to specify the IP addresses that you want AWS WAF to watch for.</p> </li> </ol> <p>When you update an <code>IPSet</code>, you specify the IP addresses that you want to add and/or the IP addresses that you want to delete. If you want to change an IP address, you delete the existing IP address and add the new one.</p> <p>You can insert a maximum of 1000 addresses in a single request.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607245 = newJObject()
+  var body_614314 = newJObject()
   if body != nil:
-    body_607245 = body
-  result = call_607244.call(nil, nil, nil, nil, body_607245)
+    body_614314 = body
+  result = call_614313.call(nil, nil, nil, nil, body_614314)
 
-var updateIPSet* = Call_UpdateIPSet_607231(name: "updateIPSet",
+var updateIPSet* = Call_UpdateIPSet_614300(name: "updateIPSet",
                                         meth: HttpMethod.HttpPost,
                                         host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateIPSet",
-                                        validator: validate_UpdateIPSet_607232,
-                                        base: "/", url: url_UpdateIPSet_607233,
+                                        validator: validate_UpdateIPSet_614301,
+                                        base: "/", url: url_UpdateIPSet_614302,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRateBasedRule_607246 = ref object of OpenApiRestCall_605589
-proc url_UpdateRateBasedRule_607248(protocol: Scheme; host: string; base: string;
+  Call_UpdateRateBasedRule_614315 = ref object of OpenApiRestCall_612658
+proc url_UpdateRateBasedRule_614317(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8107,7 +8107,7 @@ proc url_UpdateRateBasedRule_607248(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_UpdateRateBasedRule_607247(path: JsonNode; query: JsonNode;
+proc validate_UpdateRateBasedRule_614316(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>Predicate</a> objects in a rule and updates the <code>RateLimit</code> in the rule. </p> <p>Each <code>Predicate</code> object identifies a predicate, such as a <a>ByteMatchSet</a> or an <a>IPSet</a>, that specifies the web requests that you want to block or count. The <code>RateLimit</code> specifies the number of requests every five minutes that triggers the rule.</p> <p>If you add more than one predicate to a <code>RateBasedRule</code>, a request must match all the predicates and exceed the <code>RateLimit</code> to be counted or blocked. For example, suppose you add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>You then add the <code>RateBasedRule</code> to a <code>WebACL</code> and specify that you want to block requests that satisfy the rule. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>. Further, requests that match these two conditions much be received at a rate of more than 15,000 every five minutes. If the rate drops below this limit, AWS WAF no longer blocks the requests.</p> <p>As a second example, suppose you want to limit requests to a particular page on your site. To do this, you could add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>A <code>ByteMatchSet</code> with <code>FieldToMatch</code> of <code>URI</code> </p> </li> <li> <p>A <code>PositionalConstraint</code> of <code>STARTS_WITH</code> </p> </li> <li> <p>A <code>TargetString</code> of <code>login</code> </p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>By adding this <code>RateBasedRule</code> to a <code>WebACL</code>, you could limit requests to your login page without affecting the rest of your site.</p>
@@ -8128,46 +8128,46 @@ proc validate_UpdateRateBasedRule_607247(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607249 = header.getOrDefault("X-Amz-Target")
-  valid_607249 = validateParameter(valid_607249, JString, required = true, default = newJString(
+  var valid_614318 = header.getOrDefault("X-Amz-Target")
+  valid_614318 = validateParameter(valid_614318, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateRateBasedRule"))
-  if valid_607249 != nil:
-    section.add "X-Amz-Target", valid_607249
-  var valid_607250 = header.getOrDefault("X-Amz-Signature")
-  valid_607250 = validateParameter(valid_607250, JString, required = false,
+  if valid_614318 != nil:
+    section.add "X-Amz-Target", valid_614318
+  var valid_614319 = header.getOrDefault("X-Amz-Signature")
+  valid_614319 = validateParameter(valid_614319, JString, required = false,
                                  default = nil)
-  if valid_607250 != nil:
-    section.add "X-Amz-Signature", valid_607250
-  var valid_607251 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607251 = validateParameter(valid_607251, JString, required = false,
+  if valid_614319 != nil:
+    section.add "X-Amz-Signature", valid_614319
+  var valid_614320 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614320 = validateParameter(valid_614320, JString, required = false,
                                  default = nil)
-  if valid_607251 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607251
-  var valid_607252 = header.getOrDefault("X-Amz-Date")
-  valid_607252 = validateParameter(valid_607252, JString, required = false,
+  if valid_614320 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614320
+  var valid_614321 = header.getOrDefault("X-Amz-Date")
+  valid_614321 = validateParameter(valid_614321, JString, required = false,
                                  default = nil)
-  if valid_607252 != nil:
-    section.add "X-Amz-Date", valid_607252
-  var valid_607253 = header.getOrDefault("X-Amz-Credential")
-  valid_607253 = validateParameter(valid_607253, JString, required = false,
+  if valid_614321 != nil:
+    section.add "X-Amz-Date", valid_614321
+  var valid_614322 = header.getOrDefault("X-Amz-Credential")
+  valid_614322 = validateParameter(valid_614322, JString, required = false,
                                  default = nil)
-  if valid_607253 != nil:
-    section.add "X-Amz-Credential", valid_607253
-  var valid_607254 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607254 = validateParameter(valid_607254, JString, required = false,
+  if valid_614322 != nil:
+    section.add "X-Amz-Credential", valid_614322
+  var valid_614323 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614323 = validateParameter(valid_614323, JString, required = false,
                                  default = nil)
-  if valid_607254 != nil:
-    section.add "X-Amz-Security-Token", valid_607254
-  var valid_607255 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607255 = validateParameter(valid_607255, JString, required = false,
+  if valid_614323 != nil:
+    section.add "X-Amz-Security-Token", valid_614323
+  var valid_614324 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614324 = validateParameter(valid_614324, JString, required = false,
                                  default = nil)
-  if valid_607255 != nil:
-    section.add "X-Amz-Algorithm", valid_607255
-  var valid_607256 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607256 = validateParameter(valid_607256, JString, required = false,
+  if valid_614324 != nil:
+    section.add "X-Amz-Algorithm", valid_614324
+  var valid_614325 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614325 = validateParameter(valid_614325, JString, required = false,
                                  default = nil)
-  if valid_607256 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607256
+  if valid_614325 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614325
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8178,37 +8178,37 @@ proc validate_UpdateRateBasedRule_607247(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607258: Call_UpdateRateBasedRule_607246; path: JsonNode;
+proc call*(call_614327: Call_UpdateRateBasedRule_614315; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>Predicate</a> objects in a rule and updates the <code>RateLimit</code> in the rule. </p> <p>Each <code>Predicate</code> object identifies a predicate, such as a <a>ByteMatchSet</a> or an <a>IPSet</a>, that specifies the web requests that you want to block or count. The <code>RateLimit</code> specifies the number of requests every five minutes that triggers the rule.</p> <p>If you add more than one predicate to a <code>RateBasedRule</code>, a request must match all the predicates and exceed the <code>RateLimit</code> to be counted or blocked. For example, suppose you add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>You then add the <code>RateBasedRule</code> to a <code>WebACL</code> and specify that you want to block requests that satisfy the rule. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>. Further, requests that match these two conditions much be received at a rate of more than 15,000 every five minutes. If the rate drops below this limit, AWS WAF no longer blocks the requests.</p> <p>As a second example, suppose you want to limit requests to a particular page on your site. To do this, you could add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>A <code>ByteMatchSet</code> with <code>FieldToMatch</code> of <code>URI</code> </p> </li> <li> <p>A <code>PositionalConstraint</code> of <code>STARTS_WITH</code> </p> </li> <li> <p>A <code>TargetString</code> of <code>login</code> </p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>By adding this <code>RateBasedRule</code> to a <code>WebACL</code>, you could limit requests to your login page without affecting the rest of your site.</p>
   ## 
-  let valid = call_607258.validator(path, query, header, formData, body)
-  let scheme = call_607258.pickScheme
+  let valid = call_614327.validator(path, query, header, formData, body)
+  let scheme = call_614327.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607258.url(scheme.get, call_607258.host, call_607258.base,
-                         call_607258.route, valid.getOrDefault("path"),
+  let url = call_614327.url(scheme.get, call_614327.host, call_614327.base,
+                         call_614327.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607258, url, valid)
+  result = atozHook(call_614327, url, valid)
 
-proc call*(call_607259: Call_UpdateRateBasedRule_607246; body: JsonNode): Recallable =
+proc call*(call_614328: Call_UpdateRateBasedRule_614315; body: JsonNode): Recallable =
   ## updateRateBasedRule
   ## <p>Inserts or deletes <a>Predicate</a> objects in a rule and updates the <code>RateLimit</code> in the rule. </p> <p>Each <code>Predicate</code> object identifies a predicate, such as a <a>ByteMatchSet</a> or an <a>IPSet</a>, that specifies the web requests that you want to block or count. The <code>RateLimit</code> specifies the number of requests every five minutes that triggers the rule.</p> <p>If you add more than one predicate to a <code>RateBasedRule</code>, a request must match all the predicates and exceed the <code>RateLimit</code> to be counted or blocked. For example, suppose you add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44/32</code> </p> </li> <li> <p>A <code>ByteMatchSet</code> that matches <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>You then add the <code>RateBasedRule</code> to a <code>WebACL</code> and specify that you want to block requests that satisfy the rule. For a request to be blocked, it must come from the IP address 192.0.2.44 <i>and</i> the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code>. Further, requests that match these two conditions much be received at a rate of more than 15,000 every five minutes. If the rate drops below this limit, AWS WAF no longer blocks the requests.</p> <p>As a second example, suppose you want to limit requests to a particular page on your site. To do this, you could add the following to a <code>RateBasedRule</code>:</p> <ul> <li> <p>A <code>ByteMatchSet</code> with <code>FieldToMatch</code> of <code>URI</code> </p> </li> <li> <p>A <code>PositionalConstraint</code> of <code>STARTS_WITH</code> </p> </li> <li> <p>A <code>TargetString</code> of <code>login</code> </p> </li> </ul> <p>Further, you specify a <code>RateLimit</code> of 15,000.</p> <p>By adding this <code>RateBasedRule</code> to a <code>WebACL</code>, you could limit requests to your login page without affecting the rest of your site.</p>
   ##   body: JObject (required)
-  var body_607260 = newJObject()
+  var body_614329 = newJObject()
   if body != nil:
-    body_607260 = body
-  result = call_607259.call(nil, nil, nil, nil, body_607260)
+    body_614329 = body
+  result = call_614328.call(nil, nil, nil, nil, body_614329)
 
-var updateRateBasedRule* = Call_UpdateRateBasedRule_607246(
+var updateRateBasedRule* = Call_UpdateRateBasedRule_614315(
     name: "updateRateBasedRule", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateRateBasedRule",
-    validator: validate_UpdateRateBasedRule_607247, base: "/",
-    url: url_UpdateRateBasedRule_607248, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateRateBasedRule_614316, base: "/",
+    url: url_UpdateRateBasedRule_614317, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRegexMatchSet_607261 = ref object of OpenApiRestCall_605589
-proc url_UpdateRegexMatchSet_607263(protocol: Scheme; host: string; base: string;
+  Call_UpdateRegexMatchSet_614330 = ref object of OpenApiRestCall_612658
+proc url_UpdateRegexMatchSet_614332(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8220,7 +8220,7 @@ proc url_UpdateRegexMatchSet_607263(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_UpdateRegexMatchSet_607262(path: JsonNode; query: JsonNode;
+proc validate_UpdateRegexMatchSet_614331(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>RegexMatchTuple</a> objects (filters) in a <a>RegexMatchSet</a>. For each <code>RegexMatchSetUpdate</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>RegexMatchSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to inspectupdate, such as a query string or the value of the <code>User-Agent</code> header. </p> </li> <li> <p>The identifier of the pattern (a regular expression) that you want AWS WAF to look for. For more information, see <a>RegexPatternSet</a>. </p> </li> <li> <p>Whether to perform any conversions on the request, such as converting it to lowercase, before inspecting it for the specified string.</p> </li> </ul> <p> For example, you can create a <code>RegexPatternSet</code> that matches any requests with <code>User-Agent</code> headers that contain the string <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>RegexMatchSet.</code> For more information, see <a>CreateRegexMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexMatchSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateRegexMatchSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the identifier of the <code>RegexPatternSet</code> that contain the regular expression patters you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -8241,46 +8241,46 @@ proc validate_UpdateRegexMatchSet_607262(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607264 = header.getOrDefault("X-Amz-Target")
-  valid_607264 = validateParameter(valid_607264, JString, required = true, default = newJString(
+  var valid_614333 = header.getOrDefault("X-Amz-Target")
+  valid_614333 = validateParameter(valid_614333, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateRegexMatchSet"))
-  if valid_607264 != nil:
-    section.add "X-Amz-Target", valid_607264
-  var valid_607265 = header.getOrDefault("X-Amz-Signature")
-  valid_607265 = validateParameter(valid_607265, JString, required = false,
+  if valid_614333 != nil:
+    section.add "X-Amz-Target", valid_614333
+  var valid_614334 = header.getOrDefault("X-Amz-Signature")
+  valid_614334 = validateParameter(valid_614334, JString, required = false,
                                  default = nil)
-  if valid_607265 != nil:
-    section.add "X-Amz-Signature", valid_607265
-  var valid_607266 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607266 = validateParameter(valid_607266, JString, required = false,
+  if valid_614334 != nil:
+    section.add "X-Amz-Signature", valid_614334
+  var valid_614335 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614335 = validateParameter(valid_614335, JString, required = false,
                                  default = nil)
-  if valid_607266 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607266
-  var valid_607267 = header.getOrDefault("X-Amz-Date")
-  valid_607267 = validateParameter(valid_607267, JString, required = false,
+  if valid_614335 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614335
+  var valid_614336 = header.getOrDefault("X-Amz-Date")
+  valid_614336 = validateParameter(valid_614336, JString, required = false,
                                  default = nil)
-  if valid_607267 != nil:
-    section.add "X-Amz-Date", valid_607267
-  var valid_607268 = header.getOrDefault("X-Amz-Credential")
-  valid_607268 = validateParameter(valid_607268, JString, required = false,
+  if valid_614336 != nil:
+    section.add "X-Amz-Date", valid_614336
+  var valid_614337 = header.getOrDefault("X-Amz-Credential")
+  valid_614337 = validateParameter(valid_614337, JString, required = false,
                                  default = nil)
-  if valid_607268 != nil:
-    section.add "X-Amz-Credential", valid_607268
-  var valid_607269 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607269 = validateParameter(valid_607269, JString, required = false,
+  if valid_614337 != nil:
+    section.add "X-Amz-Credential", valid_614337
+  var valid_614338 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614338 = validateParameter(valid_614338, JString, required = false,
                                  default = nil)
-  if valid_607269 != nil:
-    section.add "X-Amz-Security-Token", valid_607269
-  var valid_607270 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607270 = validateParameter(valid_607270, JString, required = false,
+  if valid_614338 != nil:
+    section.add "X-Amz-Security-Token", valid_614338
+  var valid_614339 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614339 = validateParameter(valid_614339, JString, required = false,
                                  default = nil)
-  if valid_607270 != nil:
-    section.add "X-Amz-Algorithm", valid_607270
-  var valid_607271 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607271 = validateParameter(valid_607271, JString, required = false,
+  if valid_614339 != nil:
+    section.add "X-Amz-Algorithm", valid_614339
+  var valid_614340 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614340 = validateParameter(valid_614340, JString, required = false,
                                  default = nil)
-  if valid_607271 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607271
+  if valid_614340 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614340
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8291,37 +8291,37 @@ proc validate_UpdateRegexMatchSet_607262(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607273: Call_UpdateRegexMatchSet_607261; path: JsonNode;
+proc call*(call_614342: Call_UpdateRegexMatchSet_614330; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>RegexMatchTuple</a> objects (filters) in a <a>RegexMatchSet</a>. For each <code>RegexMatchSetUpdate</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>RegexMatchSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to inspectupdate, such as a query string or the value of the <code>User-Agent</code> header. </p> </li> <li> <p>The identifier of the pattern (a regular expression) that you want AWS WAF to look for. For more information, see <a>RegexPatternSet</a>. </p> </li> <li> <p>Whether to perform any conversions on the request, such as converting it to lowercase, before inspecting it for the specified string.</p> </li> </ul> <p> For example, you can create a <code>RegexPatternSet</code> that matches any requests with <code>User-Agent</code> headers that contain the string <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>RegexMatchSet.</code> For more information, see <a>CreateRegexMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexMatchSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateRegexMatchSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the identifier of the <code>RegexPatternSet</code> that contain the regular expression patters you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607273.validator(path, query, header, formData, body)
-  let scheme = call_607273.pickScheme
+  let valid = call_614342.validator(path, query, header, formData, body)
+  let scheme = call_614342.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607273.url(scheme.get, call_607273.host, call_607273.base,
-                         call_607273.route, valid.getOrDefault("path"),
+  let url = call_614342.url(scheme.get, call_614342.host, call_614342.base,
+                         call_614342.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607273, url, valid)
+  result = atozHook(call_614342, url, valid)
 
-proc call*(call_607274: Call_UpdateRegexMatchSet_607261; body: JsonNode): Recallable =
+proc call*(call_614343: Call_UpdateRegexMatchSet_614330; body: JsonNode): Recallable =
   ## updateRegexMatchSet
   ## <p>Inserts or deletes <a>RegexMatchTuple</a> objects (filters) in a <a>RegexMatchSet</a>. For each <code>RegexMatchSetUpdate</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>RegexMatchSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to inspectupdate, such as a query string or the value of the <code>User-Agent</code> header. </p> </li> <li> <p>The identifier of the pattern (a regular expression) that you want AWS WAF to look for. For more information, see <a>RegexPatternSet</a>. </p> </li> <li> <p>Whether to perform any conversions on the request, such as converting it to lowercase, before inspecting it for the specified string.</p> </li> </ul> <p> For example, you can create a <code>RegexPatternSet</code> that matches any requests with <code>User-Agent</code> headers that contain the string <code>B[a@]dB[o0]t</code>. You can then configure AWS WAF to reject those requests.</p> <p>To create and configure a <code>RegexMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>RegexMatchSet.</code> For more information, see <a>CreateRegexMatchSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexMatchSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateRegexMatchSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the identifier of the <code>RegexPatternSet</code> that contain the regular expression patters you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607275 = newJObject()
+  var body_614344 = newJObject()
   if body != nil:
-    body_607275 = body
-  result = call_607274.call(nil, nil, nil, nil, body_607275)
+    body_614344 = body
+  result = call_614343.call(nil, nil, nil, nil, body_614344)
 
-var updateRegexMatchSet* = Call_UpdateRegexMatchSet_607261(
+var updateRegexMatchSet* = Call_UpdateRegexMatchSet_614330(
     name: "updateRegexMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateRegexMatchSet",
-    validator: validate_UpdateRegexMatchSet_607262, base: "/",
-    url: url_UpdateRegexMatchSet_607263, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateRegexMatchSet_614331, base: "/",
+    url: url_UpdateRegexMatchSet_614332, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRegexPatternSet_607276 = ref object of OpenApiRestCall_605589
-proc url_UpdateRegexPatternSet_607278(protocol: Scheme; host: string; base: string;
+  Call_UpdateRegexPatternSet_614345 = ref object of OpenApiRestCall_612658
+proc url_UpdateRegexPatternSet_614347(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8333,7 +8333,7 @@ proc url_UpdateRegexPatternSet_607278(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_UpdateRegexPatternSet_607277(path: JsonNode; query: JsonNode;
+proc validate_UpdateRegexPatternSet_614346(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <code>RegexPatternString</code> objects in a <a>RegexPatternSet</a>. For each <code>RegexPatternString</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the <code>RegexPatternString</code>.</p> </li> <li> <p>The regular expression pattern that you want to insert or delete. For more information, see <a>RegexPatternSet</a>. </p> </li> </ul> <p> For example, you can create a <code>RegexPatternString</code> such as <code>B[a@]dB[o0]t</code>. AWS WAF will match this <code>RegexPatternString</code> to:</p> <ul> <li> <p>BadBot</p> </li> <li> <p>BadB0t</p> </li> <li> <p>B@dBot</p> </li> <li> <p>B@dB0t</p> </li> </ul> <p>To create and configure a <code>RegexPatternSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>RegexPatternSet.</code> For more information, see <a>CreateRegexPatternSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexPatternSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateRegexPatternSet</code> request to specify the regular expression pattern that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -8353,46 +8353,46 @@ proc validate_UpdateRegexPatternSet_607277(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607279 = header.getOrDefault("X-Amz-Target")
-  valid_607279 = validateParameter(valid_607279, JString, required = true, default = newJString(
+  var valid_614348 = header.getOrDefault("X-Amz-Target")
+  valid_614348 = validateParameter(valid_614348, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateRegexPatternSet"))
-  if valid_607279 != nil:
-    section.add "X-Amz-Target", valid_607279
-  var valid_607280 = header.getOrDefault("X-Amz-Signature")
-  valid_607280 = validateParameter(valid_607280, JString, required = false,
+  if valid_614348 != nil:
+    section.add "X-Amz-Target", valid_614348
+  var valid_614349 = header.getOrDefault("X-Amz-Signature")
+  valid_614349 = validateParameter(valid_614349, JString, required = false,
                                  default = nil)
-  if valid_607280 != nil:
-    section.add "X-Amz-Signature", valid_607280
-  var valid_607281 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607281 = validateParameter(valid_607281, JString, required = false,
+  if valid_614349 != nil:
+    section.add "X-Amz-Signature", valid_614349
+  var valid_614350 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614350 = validateParameter(valid_614350, JString, required = false,
                                  default = nil)
-  if valid_607281 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607281
-  var valid_607282 = header.getOrDefault("X-Amz-Date")
-  valid_607282 = validateParameter(valid_607282, JString, required = false,
+  if valid_614350 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614350
+  var valid_614351 = header.getOrDefault("X-Amz-Date")
+  valid_614351 = validateParameter(valid_614351, JString, required = false,
                                  default = nil)
-  if valid_607282 != nil:
-    section.add "X-Amz-Date", valid_607282
-  var valid_607283 = header.getOrDefault("X-Amz-Credential")
-  valid_607283 = validateParameter(valid_607283, JString, required = false,
+  if valid_614351 != nil:
+    section.add "X-Amz-Date", valid_614351
+  var valid_614352 = header.getOrDefault("X-Amz-Credential")
+  valid_614352 = validateParameter(valid_614352, JString, required = false,
                                  default = nil)
-  if valid_607283 != nil:
-    section.add "X-Amz-Credential", valid_607283
-  var valid_607284 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607284 = validateParameter(valid_607284, JString, required = false,
+  if valid_614352 != nil:
+    section.add "X-Amz-Credential", valid_614352
+  var valid_614353 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614353 = validateParameter(valid_614353, JString, required = false,
                                  default = nil)
-  if valid_607284 != nil:
-    section.add "X-Amz-Security-Token", valid_607284
-  var valid_607285 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607285 = validateParameter(valid_607285, JString, required = false,
+  if valid_614353 != nil:
+    section.add "X-Amz-Security-Token", valid_614353
+  var valid_614354 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614354 = validateParameter(valid_614354, JString, required = false,
                                  default = nil)
-  if valid_607285 != nil:
-    section.add "X-Amz-Algorithm", valid_607285
-  var valid_607286 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607286 = validateParameter(valid_607286, JString, required = false,
+  if valid_614354 != nil:
+    section.add "X-Amz-Algorithm", valid_614354
+  var valid_614355 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614355 = validateParameter(valid_614355, JString, required = false,
                                  default = nil)
-  if valid_607286 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607286
+  if valid_614355 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614355
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8403,37 +8403,37 @@ proc validate_UpdateRegexPatternSet_607277(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607288: Call_UpdateRegexPatternSet_607276; path: JsonNode;
+proc call*(call_614357: Call_UpdateRegexPatternSet_614345; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <code>RegexPatternString</code> objects in a <a>RegexPatternSet</a>. For each <code>RegexPatternString</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the <code>RegexPatternString</code>.</p> </li> <li> <p>The regular expression pattern that you want to insert or delete. For more information, see <a>RegexPatternSet</a>. </p> </li> </ul> <p> For example, you can create a <code>RegexPatternString</code> such as <code>B[a@]dB[o0]t</code>. AWS WAF will match this <code>RegexPatternString</code> to:</p> <ul> <li> <p>BadBot</p> </li> <li> <p>BadB0t</p> </li> <li> <p>B@dBot</p> </li> <li> <p>B@dB0t</p> </li> </ul> <p>To create and configure a <code>RegexPatternSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>RegexPatternSet.</code> For more information, see <a>CreateRegexPatternSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexPatternSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateRegexPatternSet</code> request to specify the regular expression pattern that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607288.validator(path, query, header, formData, body)
-  let scheme = call_607288.pickScheme
+  let valid = call_614357.validator(path, query, header, formData, body)
+  let scheme = call_614357.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607288.url(scheme.get, call_607288.host, call_607288.base,
-                         call_607288.route, valid.getOrDefault("path"),
+  let url = call_614357.url(scheme.get, call_614357.host, call_614357.base,
+                         call_614357.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607288, url, valid)
+  result = atozHook(call_614357, url, valid)
 
-proc call*(call_607289: Call_UpdateRegexPatternSet_607276; body: JsonNode): Recallable =
+proc call*(call_614358: Call_UpdateRegexPatternSet_614345; body: JsonNode): Recallable =
   ## updateRegexPatternSet
   ## <p>Inserts or deletes <code>RegexPatternString</code> objects in a <a>RegexPatternSet</a>. For each <code>RegexPatternString</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the <code>RegexPatternString</code>.</p> </li> <li> <p>The regular expression pattern that you want to insert or delete. For more information, see <a>RegexPatternSet</a>. </p> </li> </ul> <p> For example, you can create a <code>RegexPatternString</code> such as <code>B[a@]dB[o0]t</code>. AWS WAF will match this <code>RegexPatternString</code> to:</p> <ul> <li> <p>BadBot</p> </li> <li> <p>BadB0t</p> </li> <li> <p>B@dBot</p> </li> <li> <p>B@dB0t</p> </li> </ul> <p>To create and configure a <code>RegexPatternSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>RegexPatternSet.</code> For more information, see <a>CreateRegexPatternSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateRegexPatternSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateRegexPatternSet</code> request to specify the regular expression pattern that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607290 = newJObject()
+  var body_614359 = newJObject()
   if body != nil:
-    body_607290 = body
-  result = call_607289.call(nil, nil, nil, nil, body_607290)
+    body_614359 = body
+  result = call_614358.call(nil, nil, nil, nil, body_614359)
 
-var updateRegexPatternSet* = Call_UpdateRegexPatternSet_607276(
+var updateRegexPatternSet* = Call_UpdateRegexPatternSet_614345(
     name: "updateRegexPatternSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateRegexPatternSet",
-    validator: validate_UpdateRegexPatternSet_607277, base: "/",
-    url: url_UpdateRegexPatternSet_607278, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateRegexPatternSet_614346, base: "/",
+    url: url_UpdateRegexPatternSet_614347, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRule_607291 = ref object of OpenApiRestCall_605589
-proc url_UpdateRule_607293(protocol: Scheme; host: string; base: string; route: string;
+  Call_UpdateRule_614360 = ref object of OpenApiRestCall_612658
+proc url_UpdateRule_614362(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8445,7 +8445,7 @@ proc url_UpdateRule_607293(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_UpdateRule_607292(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateRule_614361(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>Predicate</a> objects in a <code>Rule</code>. Each <code>Predicate</code> object identifies a predicate, such as a <a>ByteMatchSet</a> or an <a>IPSet</a>, that specifies the web requests that you want to allow, block, or count. If you add more than one predicate to a <code>Rule</code>, a request must match all of the specifications to be allowed, blocked, or counted. For example, suppose that you add the following to a <code>Rule</code>: </p> <ul> <li> <p>A <code>ByteMatchSet</code> that matches the value <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44</code> </p> </li> </ul> <p>You then add the <code>Rule</code> to a <code>WebACL</code> and specify that you want to block requests that satisfy the <code>Rule</code>. For a request to be blocked, the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code> <i>and</i> the request must originate from the IP address 192.0.2.44.</p> <p>To create and configure a <code>Rule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the <code>Rule</code>.</p> </li> <li> <p>Create the <code>Rule</code>. See <a>CreateRule</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRule</code> request to add predicates to the <code>Rule</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>Rule</code>. See <a>CreateWebACL</a>.</p> </li> </ol> <p>If you want to replace one <code>ByteMatchSet</code> or <code>IPSet</code> with another, you delete the existing one and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -8465,46 +8465,46 @@ proc validate_UpdateRule_607292(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607294 = header.getOrDefault("X-Amz-Target")
-  valid_607294 = validateParameter(valid_607294, JString, required = true, default = newJString(
+  var valid_614363 = header.getOrDefault("X-Amz-Target")
+  valid_614363 = validateParameter(valid_614363, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateRule"))
-  if valid_607294 != nil:
-    section.add "X-Amz-Target", valid_607294
-  var valid_607295 = header.getOrDefault("X-Amz-Signature")
-  valid_607295 = validateParameter(valid_607295, JString, required = false,
+  if valid_614363 != nil:
+    section.add "X-Amz-Target", valid_614363
+  var valid_614364 = header.getOrDefault("X-Amz-Signature")
+  valid_614364 = validateParameter(valid_614364, JString, required = false,
                                  default = nil)
-  if valid_607295 != nil:
-    section.add "X-Amz-Signature", valid_607295
-  var valid_607296 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607296 = validateParameter(valid_607296, JString, required = false,
+  if valid_614364 != nil:
+    section.add "X-Amz-Signature", valid_614364
+  var valid_614365 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614365 = validateParameter(valid_614365, JString, required = false,
                                  default = nil)
-  if valid_607296 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607296
-  var valid_607297 = header.getOrDefault("X-Amz-Date")
-  valid_607297 = validateParameter(valid_607297, JString, required = false,
+  if valid_614365 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614365
+  var valid_614366 = header.getOrDefault("X-Amz-Date")
+  valid_614366 = validateParameter(valid_614366, JString, required = false,
                                  default = nil)
-  if valid_607297 != nil:
-    section.add "X-Amz-Date", valid_607297
-  var valid_607298 = header.getOrDefault("X-Amz-Credential")
-  valid_607298 = validateParameter(valid_607298, JString, required = false,
+  if valid_614366 != nil:
+    section.add "X-Amz-Date", valid_614366
+  var valid_614367 = header.getOrDefault("X-Amz-Credential")
+  valid_614367 = validateParameter(valid_614367, JString, required = false,
                                  default = nil)
-  if valid_607298 != nil:
-    section.add "X-Amz-Credential", valid_607298
-  var valid_607299 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607299 = validateParameter(valid_607299, JString, required = false,
+  if valid_614367 != nil:
+    section.add "X-Amz-Credential", valid_614367
+  var valid_614368 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614368 = validateParameter(valid_614368, JString, required = false,
                                  default = nil)
-  if valid_607299 != nil:
-    section.add "X-Amz-Security-Token", valid_607299
-  var valid_607300 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607300 = validateParameter(valid_607300, JString, required = false,
+  if valid_614368 != nil:
+    section.add "X-Amz-Security-Token", valid_614368
+  var valid_614369 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614369 = validateParameter(valid_614369, JString, required = false,
                                  default = nil)
-  if valid_607300 != nil:
-    section.add "X-Amz-Algorithm", valid_607300
-  var valid_607301 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607301 = validateParameter(valid_607301, JString, required = false,
+  if valid_614369 != nil:
+    section.add "X-Amz-Algorithm", valid_614369
+  var valid_614370 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614370 = validateParameter(valid_614370, JString, required = false,
                                  default = nil)
-  if valid_607301 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607301
+  if valid_614370 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614370
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8515,37 +8515,37 @@ proc validate_UpdateRule_607292(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_607303: Call_UpdateRule_607291; path: JsonNode; query: JsonNode;
+proc call*(call_614372: Call_UpdateRule_614360; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>Predicate</a> objects in a <code>Rule</code>. Each <code>Predicate</code> object identifies a predicate, such as a <a>ByteMatchSet</a> or an <a>IPSet</a>, that specifies the web requests that you want to allow, block, or count. If you add more than one predicate to a <code>Rule</code>, a request must match all of the specifications to be allowed, blocked, or counted. For example, suppose that you add the following to a <code>Rule</code>: </p> <ul> <li> <p>A <code>ByteMatchSet</code> that matches the value <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44</code> </p> </li> </ul> <p>You then add the <code>Rule</code> to a <code>WebACL</code> and specify that you want to block requests that satisfy the <code>Rule</code>. For a request to be blocked, the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code> <i>and</i> the request must originate from the IP address 192.0.2.44.</p> <p>To create and configure a <code>Rule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the <code>Rule</code>.</p> </li> <li> <p>Create the <code>Rule</code>. See <a>CreateRule</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRule</code> request to add predicates to the <code>Rule</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>Rule</code>. See <a>CreateWebACL</a>.</p> </li> </ol> <p>If you want to replace one <code>ByteMatchSet</code> or <code>IPSet</code> with another, you delete the existing one and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607303.validator(path, query, header, formData, body)
-  let scheme = call_607303.pickScheme
+  let valid = call_614372.validator(path, query, header, formData, body)
+  let scheme = call_614372.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607303.url(scheme.get, call_607303.host, call_607303.base,
-                         call_607303.route, valid.getOrDefault("path"),
+  let url = call_614372.url(scheme.get, call_614372.host, call_614372.base,
+                         call_614372.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607303, url, valid)
+  result = atozHook(call_614372, url, valid)
 
-proc call*(call_607304: Call_UpdateRule_607291; body: JsonNode): Recallable =
+proc call*(call_614373: Call_UpdateRule_614360; body: JsonNode): Recallable =
   ## updateRule
   ## <p>Inserts or deletes <a>Predicate</a> objects in a <code>Rule</code>. Each <code>Predicate</code> object identifies a predicate, such as a <a>ByteMatchSet</a> or an <a>IPSet</a>, that specifies the web requests that you want to allow, block, or count. If you add more than one predicate to a <code>Rule</code>, a request must match all of the specifications to be allowed, blocked, or counted. For example, suppose that you add the following to a <code>Rule</code>: </p> <ul> <li> <p>A <code>ByteMatchSet</code> that matches the value <code>BadBot</code> in the <code>User-Agent</code> header</p> </li> <li> <p>An <code>IPSet</code> that matches the IP address <code>192.0.2.44</code> </p> </li> </ul> <p>You then add the <code>Rule</code> to a <code>WebACL</code> and specify that you want to block requests that satisfy the <code>Rule</code>. For a request to be blocked, the <code>User-Agent</code> header in the request must contain the value <code>BadBot</code> <i>and</i> the request must originate from the IP address 192.0.2.44.</p> <p>To create and configure a <code>Rule</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in the <code>Rule</code>.</p> </li> <li> <p>Create the <code>Rule</code>. See <a>CreateRule</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRule</a> request.</p> </li> <li> <p>Submit an <code>UpdateRule</code> request to add predicates to the <code>Rule</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>Rule</code>. See <a>CreateWebACL</a>.</p> </li> </ol> <p>If you want to replace one <code>ByteMatchSet</code> or <code>IPSet</code> with another, you delete the existing one and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607305 = newJObject()
+  var body_614374 = newJObject()
   if body != nil:
-    body_607305 = body
-  result = call_607304.call(nil, nil, nil, nil, body_607305)
+    body_614374 = body
+  result = call_614373.call(nil, nil, nil, nil, body_614374)
 
-var updateRule* = Call_UpdateRule_607291(name: "updateRule",
+var updateRule* = Call_UpdateRule_614360(name: "updateRule",
                                       meth: HttpMethod.HttpPost,
                                       host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateRule",
-                                      validator: validate_UpdateRule_607292,
-                                      base: "/", url: url_UpdateRule_607293,
+                                      validator: validate_UpdateRule_614361,
+                                      base: "/", url: url_UpdateRule_614362,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRuleGroup_607306 = ref object of OpenApiRestCall_605589
-proc url_UpdateRuleGroup_607308(protocol: Scheme; host: string; base: string;
+  Call_UpdateRuleGroup_614375 = ref object of OpenApiRestCall_612658
+proc url_UpdateRuleGroup_614377(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8557,7 +8557,7 @@ proc url_UpdateRuleGroup_607308(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateRuleGroup_607307(path: JsonNode; query: JsonNode;
+proc validate_UpdateRuleGroup_614376(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>ActivatedRule</a> objects in a <code>RuleGroup</code>.</p> <p>You can only insert <code>REGULAR</code> rules into a rule group.</p> <p>You can have a maximum of ten rules per rule group.</p> <p>To create and configure a <code>RuleGroup</code>, perform the following steps:</p> <ol> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>RuleGroup</code>. See <a>CreateRule</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRuleGroup</a> request.</p> </li> <li> <p>Submit an <code>UpdateRuleGroup</code> request to add <code>Rules</code> to the <code>RuleGroup</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>RuleGroup</code>. See <a>CreateWebACL</a>.</p> </li> </ol> <p>If you want to replace one <code>Rule</code> with another, you delete the existing one and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -8578,46 +8578,46 @@ proc validate_UpdateRuleGroup_607307(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607309 = header.getOrDefault("X-Amz-Target")
-  valid_607309 = validateParameter(valid_607309, JString, required = true, default = newJString(
+  var valid_614378 = header.getOrDefault("X-Amz-Target")
+  valid_614378 = validateParameter(valid_614378, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateRuleGroup"))
-  if valid_607309 != nil:
-    section.add "X-Amz-Target", valid_607309
-  var valid_607310 = header.getOrDefault("X-Amz-Signature")
-  valid_607310 = validateParameter(valid_607310, JString, required = false,
+  if valid_614378 != nil:
+    section.add "X-Amz-Target", valid_614378
+  var valid_614379 = header.getOrDefault("X-Amz-Signature")
+  valid_614379 = validateParameter(valid_614379, JString, required = false,
                                  default = nil)
-  if valid_607310 != nil:
-    section.add "X-Amz-Signature", valid_607310
-  var valid_607311 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607311 = validateParameter(valid_607311, JString, required = false,
+  if valid_614379 != nil:
+    section.add "X-Amz-Signature", valid_614379
+  var valid_614380 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614380 = validateParameter(valid_614380, JString, required = false,
                                  default = nil)
-  if valid_607311 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607311
-  var valid_607312 = header.getOrDefault("X-Amz-Date")
-  valid_607312 = validateParameter(valid_607312, JString, required = false,
+  if valid_614380 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614380
+  var valid_614381 = header.getOrDefault("X-Amz-Date")
+  valid_614381 = validateParameter(valid_614381, JString, required = false,
                                  default = nil)
-  if valid_607312 != nil:
-    section.add "X-Amz-Date", valid_607312
-  var valid_607313 = header.getOrDefault("X-Amz-Credential")
-  valid_607313 = validateParameter(valid_607313, JString, required = false,
+  if valid_614381 != nil:
+    section.add "X-Amz-Date", valid_614381
+  var valid_614382 = header.getOrDefault("X-Amz-Credential")
+  valid_614382 = validateParameter(valid_614382, JString, required = false,
                                  default = nil)
-  if valid_607313 != nil:
-    section.add "X-Amz-Credential", valid_607313
-  var valid_607314 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607314 = validateParameter(valid_607314, JString, required = false,
+  if valid_614382 != nil:
+    section.add "X-Amz-Credential", valid_614382
+  var valid_614383 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614383 = validateParameter(valid_614383, JString, required = false,
                                  default = nil)
-  if valid_607314 != nil:
-    section.add "X-Amz-Security-Token", valid_607314
-  var valid_607315 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607315 = validateParameter(valid_607315, JString, required = false,
+  if valid_614383 != nil:
+    section.add "X-Amz-Security-Token", valid_614383
+  var valid_614384 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614384 = validateParameter(valid_614384, JString, required = false,
                                  default = nil)
-  if valid_607315 != nil:
-    section.add "X-Amz-Algorithm", valid_607315
-  var valid_607316 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607316 = validateParameter(valid_607316, JString, required = false,
+  if valid_614384 != nil:
+    section.add "X-Amz-Algorithm", valid_614384
+  var valid_614385 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614385 = validateParameter(valid_614385, JString, required = false,
                                  default = nil)
-  if valid_607316 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607316
+  if valid_614385 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614385
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8628,36 +8628,36 @@ proc validate_UpdateRuleGroup_607307(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607318: Call_UpdateRuleGroup_607306; path: JsonNode; query: JsonNode;
+proc call*(call_614387: Call_UpdateRuleGroup_614375; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>ActivatedRule</a> objects in a <code>RuleGroup</code>.</p> <p>You can only insert <code>REGULAR</code> rules into a rule group.</p> <p>You can have a maximum of ten rules per rule group.</p> <p>To create and configure a <code>RuleGroup</code>, perform the following steps:</p> <ol> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>RuleGroup</code>. See <a>CreateRule</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRuleGroup</a> request.</p> </li> <li> <p>Submit an <code>UpdateRuleGroup</code> request to add <code>Rules</code> to the <code>RuleGroup</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>RuleGroup</code>. See <a>CreateWebACL</a>.</p> </li> </ol> <p>If you want to replace one <code>Rule</code> with another, you delete the existing one and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607318.validator(path, query, header, formData, body)
-  let scheme = call_607318.pickScheme
+  let valid = call_614387.validator(path, query, header, formData, body)
+  let scheme = call_614387.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607318.url(scheme.get, call_607318.host, call_607318.base,
-                         call_607318.route, valid.getOrDefault("path"),
+  let url = call_614387.url(scheme.get, call_614387.host, call_614387.base,
+                         call_614387.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607318, url, valid)
+  result = atozHook(call_614387, url, valid)
 
-proc call*(call_607319: Call_UpdateRuleGroup_607306; body: JsonNode): Recallable =
+proc call*(call_614388: Call_UpdateRuleGroup_614375; body: JsonNode): Recallable =
   ## updateRuleGroup
   ## <p>Inserts or deletes <a>ActivatedRule</a> objects in a <code>RuleGroup</code>.</p> <p>You can only insert <code>REGULAR</code> rules into a rule group.</p> <p>You can have a maximum of ten rules per rule group.</p> <p>To create and configure a <code>RuleGroup</code>, perform the following steps:</p> <ol> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>RuleGroup</code>. See <a>CreateRule</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateRuleGroup</a> request.</p> </li> <li> <p>Submit an <code>UpdateRuleGroup</code> request to add <code>Rules</code> to the <code>RuleGroup</code>.</p> </li> <li> <p>Create and update a <code>WebACL</code> that contains the <code>RuleGroup</code>. See <a>CreateWebACL</a>.</p> </li> </ol> <p>If you want to replace one <code>Rule</code> with another, you delete the existing one and add the new one.</p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607320 = newJObject()
+  var body_614389 = newJObject()
   if body != nil:
-    body_607320 = body
-  result = call_607319.call(nil, nil, nil, nil, body_607320)
+    body_614389 = body
+  result = call_614388.call(nil, nil, nil, nil, body_614389)
 
-var updateRuleGroup* = Call_UpdateRuleGroup_607306(name: "updateRuleGroup",
+var updateRuleGroup* = Call_UpdateRuleGroup_614375(name: "updateRuleGroup",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateRuleGroup",
-    validator: validate_UpdateRuleGroup_607307, base: "/", url: url_UpdateRuleGroup_607308,
+    validator: validate_UpdateRuleGroup_614376, base: "/", url: url_UpdateRuleGroup_614377,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSizeConstraintSet_607321 = ref object of OpenApiRestCall_605589
-proc url_UpdateSizeConstraintSet_607323(protocol: Scheme; host: string; base: string;
+  Call_UpdateSizeConstraintSet_614390 = ref object of OpenApiRestCall_612658
+proc url_UpdateSizeConstraintSet_614392(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
@@ -8670,7 +8670,7 @@ proc url_UpdateSizeConstraintSet_607323(protocol: Scheme; host: string; base: st
   else:
     result.path = base & route
 
-proc validate_UpdateSizeConstraintSet_607322(path: JsonNode; query: JsonNode;
+proc validate_UpdateSizeConstraintSet_614391(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>SizeConstraint</a> objects (filters) in a <a>SizeConstraintSet</a>. For each <code>SizeConstraint</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>SizeConstraintSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to evaluate, such as the length of a query string or the length of the <code>User-Agent</code> header.</p> </li> <li> <p>Whether to perform any transformations on the request, such as converting it to lowercase, before checking its length. Note that transformations of the request body are not supported because the AWS resource forwards only the first <code>8192</code> bytes of your request to AWS WAF.</p> <p>You can only specify a single type of TextTransformation.</p> </li> <li> <p>A <code>ComparisonOperator</code> used for evaluating the selected part of the request against the specified <code>Size</code>, such as equals, greater than, less than, and so on.</p> </li> <li> <p>The length, in bytes, that you want AWS WAF to watch for in selected part of the request. The length is computed after applying the transformation.</p> </li> </ul> <p>For example, you can add a <code>SizeConstraintSetUpdate</code> object that matches web requests in which the length of the <code>User-Agent</code> header is greater than 100 bytes. You can then configure AWS WAF to block those requests.</p> <p>To create and configure a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>SizeConstraintSet.</code> For more information, see <a>CreateSizeConstraintSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateSizeConstraintSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -8690,46 +8690,46 @@ proc validate_UpdateSizeConstraintSet_607322(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607324 = header.getOrDefault("X-Amz-Target")
-  valid_607324 = validateParameter(valid_607324, JString, required = true, default = newJString(
+  var valid_614393 = header.getOrDefault("X-Amz-Target")
+  valid_614393 = validateParameter(valid_614393, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateSizeConstraintSet"))
-  if valid_607324 != nil:
-    section.add "X-Amz-Target", valid_607324
-  var valid_607325 = header.getOrDefault("X-Amz-Signature")
-  valid_607325 = validateParameter(valid_607325, JString, required = false,
+  if valid_614393 != nil:
+    section.add "X-Amz-Target", valid_614393
+  var valid_614394 = header.getOrDefault("X-Amz-Signature")
+  valid_614394 = validateParameter(valid_614394, JString, required = false,
                                  default = nil)
-  if valid_607325 != nil:
-    section.add "X-Amz-Signature", valid_607325
-  var valid_607326 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607326 = validateParameter(valid_607326, JString, required = false,
+  if valid_614394 != nil:
+    section.add "X-Amz-Signature", valid_614394
+  var valid_614395 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614395 = validateParameter(valid_614395, JString, required = false,
                                  default = nil)
-  if valid_607326 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607326
-  var valid_607327 = header.getOrDefault("X-Amz-Date")
-  valid_607327 = validateParameter(valid_607327, JString, required = false,
+  if valid_614395 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614395
+  var valid_614396 = header.getOrDefault("X-Amz-Date")
+  valid_614396 = validateParameter(valid_614396, JString, required = false,
                                  default = nil)
-  if valid_607327 != nil:
-    section.add "X-Amz-Date", valid_607327
-  var valid_607328 = header.getOrDefault("X-Amz-Credential")
-  valid_607328 = validateParameter(valid_607328, JString, required = false,
+  if valid_614396 != nil:
+    section.add "X-Amz-Date", valid_614396
+  var valid_614397 = header.getOrDefault("X-Amz-Credential")
+  valid_614397 = validateParameter(valid_614397, JString, required = false,
                                  default = nil)
-  if valid_607328 != nil:
-    section.add "X-Amz-Credential", valid_607328
-  var valid_607329 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607329 = validateParameter(valid_607329, JString, required = false,
+  if valid_614397 != nil:
+    section.add "X-Amz-Credential", valid_614397
+  var valid_614398 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614398 = validateParameter(valid_614398, JString, required = false,
                                  default = nil)
-  if valid_607329 != nil:
-    section.add "X-Amz-Security-Token", valid_607329
-  var valid_607330 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607330 = validateParameter(valid_607330, JString, required = false,
+  if valid_614398 != nil:
+    section.add "X-Amz-Security-Token", valid_614398
+  var valid_614399 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614399 = validateParameter(valid_614399, JString, required = false,
                                  default = nil)
-  if valid_607330 != nil:
-    section.add "X-Amz-Algorithm", valid_607330
-  var valid_607331 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607331 = validateParameter(valid_607331, JString, required = false,
+  if valid_614399 != nil:
+    section.add "X-Amz-Algorithm", valid_614399
+  var valid_614400 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614400 = validateParameter(valid_614400, JString, required = false,
                                  default = nil)
-  if valid_607331 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607331
+  if valid_614400 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614400
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8740,37 +8740,37 @@ proc validate_UpdateSizeConstraintSet_607322(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607333: Call_UpdateSizeConstraintSet_607321; path: JsonNode;
+proc call*(call_614402: Call_UpdateSizeConstraintSet_614390; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>SizeConstraint</a> objects (filters) in a <a>SizeConstraintSet</a>. For each <code>SizeConstraint</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>SizeConstraintSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to evaluate, such as the length of a query string or the length of the <code>User-Agent</code> header.</p> </li> <li> <p>Whether to perform any transformations on the request, such as converting it to lowercase, before checking its length. Note that transformations of the request body are not supported because the AWS resource forwards only the first <code>8192</code> bytes of your request to AWS WAF.</p> <p>You can only specify a single type of TextTransformation.</p> </li> <li> <p>A <code>ComparisonOperator</code> used for evaluating the selected part of the request against the specified <code>Size</code>, such as equals, greater than, less than, and so on.</p> </li> <li> <p>The length, in bytes, that you want AWS WAF to watch for in selected part of the request. The length is computed after applying the transformation.</p> </li> </ul> <p>For example, you can add a <code>SizeConstraintSetUpdate</code> object that matches web requests in which the length of the <code>User-Agent</code> header is greater than 100 bytes. You can then configure AWS WAF to block those requests.</p> <p>To create and configure a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>SizeConstraintSet.</code> For more information, see <a>CreateSizeConstraintSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateSizeConstraintSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607333.validator(path, query, header, formData, body)
-  let scheme = call_607333.pickScheme
+  let valid = call_614402.validator(path, query, header, formData, body)
+  let scheme = call_614402.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607333.url(scheme.get, call_607333.host, call_607333.base,
-                         call_607333.route, valid.getOrDefault("path"),
+  let url = call_614402.url(scheme.get, call_614402.host, call_614402.base,
+                         call_614402.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607333, url, valid)
+  result = atozHook(call_614402, url, valid)
 
-proc call*(call_607334: Call_UpdateSizeConstraintSet_607321; body: JsonNode): Recallable =
+proc call*(call_614403: Call_UpdateSizeConstraintSet_614390; body: JsonNode): Recallable =
   ## updateSizeConstraintSet
   ## <p>Inserts or deletes <a>SizeConstraint</a> objects (filters) in a <a>SizeConstraintSet</a>. For each <code>SizeConstraint</code> object, you specify the following values: </p> <ul> <li> <p>Whether to insert or delete the object from the array. If you want to change a <code>SizeConstraintSetUpdate</code> object, you delete the existing object and add a new one.</p> </li> <li> <p>The part of a web request that you want AWS WAF to evaluate, such as the length of a query string or the length of the <code>User-Agent</code> header.</p> </li> <li> <p>Whether to perform any transformations on the request, such as converting it to lowercase, before checking its length. Note that transformations of the request body are not supported because the AWS resource forwards only the first <code>8192</code> bytes of your request to AWS WAF.</p> <p>You can only specify a single type of TextTransformation.</p> </li> <li> <p>A <code>ComparisonOperator</code> used for evaluating the selected part of the request against the specified <code>Size</code>, such as equals, greater than, less than, and so on.</p> </li> <li> <p>The length, in bytes, that you want AWS WAF to watch for in selected part of the request. The length is computed after applying the transformation.</p> </li> </ul> <p>For example, you can add a <code>SizeConstraintSetUpdate</code> object that matches web requests in which the length of the <code>User-Agent</code> header is greater than 100 bytes. You can then configure AWS WAF to block those requests.</p> <p>To create and configure a <code>SizeConstraintSet</code>, perform the following steps:</p> <ol> <li> <p>Create a <code>SizeConstraintSet.</code> For more information, see <a>CreateSizeConstraintSet</a>.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <code>UpdateSizeConstraintSet</code> request.</p> </li> <li> <p>Submit an <code>UpdateSizeConstraintSet</code> request to specify the part of the request that you want AWS WAF to inspect (for example, the header or the URI) and the value that you want AWS WAF to watch for.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607335 = newJObject()
+  var body_614404 = newJObject()
   if body != nil:
-    body_607335 = body
-  result = call_607334.call(nil, nil, nil, nil, body_607335)
+    body_614404 = body
+  result = call_614403.call(nil, nil, nil, nil, body_614404)
 
-var updateSizeConstraintSet* = Call_UpdateSizeConstraintSet_607321(
+var updateSizeConstraintSet* = Call_UpdateSizeConstraintSet_614390(
     name: "updateSizeConstraintSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateSizeConstraintSet",
-    validator: validate_UpdateSizeConstraintSet_607322, base: "/",
-    url: url_UpdateSizeConstraintSet_607323, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateSizeConstraintSet_614391, base: "/",
+    url: url_UpdateSizeConstraintSet_614392, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSqlInjectionMatchSet_607336 = ref object of OpenApiRestCall_605589
-proc url_UpdateSqlInjectionMatchSet_607338(protocol: Scheme; host: string;
+  Call_UpdateSqlInjectionMatchSet_614405 = ref object of OpenApiRestCall_612658
+proc url_UpdateSqlInjectionMatchSet_614407(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8782,7 +8782,7 @@ proc url_UpdateSqlInjectionMatchSet_607338(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateSqlInjectionMatchSet_607337(path: JsonNode; query: JsonNode;
+proc validate_UpdateSqlInjectionMatchSet_614406(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>SqlInjectionMatchTuple</a> objects (filters) in a <a>SqlInjectionMatchSet</a>. For each <code>SqlInjectionMatchTuple</code> object, you specify the following values:</p> <ul> <li> <p> <code>Action</code>: Whether to insert the object into or delete the object from the array. To change a <code>SqlInjectionMatchTuple</code>, you delete the existing object and add a new one.</p> </li> <li> <p> <code>FieldToMatch</code>: The part of web requests that you want AWS WAF to inspect and, if you want AWS WAF to inspect a header or custom query parameter, the name of the header or parameter.</p> </li> <li> <p> <code>TextTransformation</code>: Which text transformation, if any, to perform on the web request before inspecting the request for snippets of malicious SQL code.</p> <p>You can only specify a single type of TextTransformation.</p> </li> </ul> <p>You use <code>SqlInjectionMatchSet</code> objects to specify which CloudFront requests that you want to allow, block, or count. For example, if you're receiving requests that contain snippets of SQL code in the query string and you want to block the requests, you can create a <code>SqlInjectionMatchSet</code> with the applicable settings, and then configure AWS WAF to block the requests. </p> <p>To create and configure a <code>SqlInjectionMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateSqlInjectionMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateSqlInjectionMatchSet</code> request to specify the parts of web requests that you want AWS WAF to inspect for snippets of SQL code.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -8802,46 +8802,46 @@ proc validate_UpdateSqlInjectionMatchSet_607337(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607339 = header.getOrDefault("X-Amz-Target")
-  valid_607339 = validateParameter(valid_607339, JString, required = true, default = newJString(
+  var valid_614408 = header.getOrDefault("X-Amz-Target")
+  valid_614408 = validateParameter(valid_614408, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateSqlInjectionMatchSet"))
-  if valid_607339 != nil:
-    section.add "X-Amz-Target", valid_607339
-  var valid_607340 = header.getOrDefault("X-Amz-Signature")
-  valid_607340 = validateParameter(valid_607340, JString, required = false,
+  if valid_614408 != nil:
+    section.add "X-Amz-Target", valid_614408
+  var valid_614409 = header.getOrDefault("X-Amz-Signature")
+  valid_614409 = validateParameter(valid_614409, JString, required = false,
                                  default = nil)
-  if valid_607340 != nil:
-    section.add "X-Amz-Signature", valid_607340
-  var valid_607341 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607341 = validateParameter(valid_607341, JString, required = false,
+  if valid_614409 != nil:
+    section.add "X-Amz-Signature", valid_614409
+  var valid_614410 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614410 = validateParameter(valid_614410, JString, required = false,
                                  default = nil)
-  if valid_607341 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607341
-  var valid_607342 = header.getOrDefault("X-Amz-Date")
-  valid_607342 = validateParameter(valid_607342, JString, required = false,
+  if valid_614410 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614410
+  var valid_614411 = header.getOrDefault("X-Amz-Date")
+  valid_614411 = validateParameter(valid_614411, JString, required = false,
                                  default = nil)
-  if valid_607342 != nil:
-    section.add "X-Amz-Date", valid_607342
-  var valid_607343 = header.getOrDefault("X-Amz-Credential")
-  valid_607343 = validateParameter(valid_607343, JString, required = false,
+  if valid_614411 != nil:
+    section.add "X-Amz-Date", valid_614411
+  var valid_614412 = header.getOrDefault("X-Amz-Credential")
+  valid_614412 = validateParameter(valid_614412, JString, required = false,
                                  default = nil)
-  if valid_607343 != nil:
-    section.add "X-Amz-Credential", valid_607343
-  var valid_607344 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607344 = validateParameter(valid_607344, JString, required = false,
+  if valid_614412 != nil:
+    section.add "X-Amz-Credential", valid_614412
+  var valid_614413 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614413 = validateParameter(valid_614413, JString, required = false,
                                  default = nil)
-  if valid_607344 != nil:
-    section.add "X-Amz-Security-Token", valid_607344
-  var valid_607345 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607345 = validateParameter(valid_607345, JString, required = false,
+  if valid_614413 != nil:
+    section.add "X-Amz-Security-Token", valid_614413
+  var valid_614414 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614414 = validateParameter(valid_614414, JString, required = false,
                                  default = nil)
-  if valid_607345 != nil:
-    section.add "X-Amz-Algorithm", valid_607345
-  var valid_607346 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607346 = validateParameter(valid_607346, JString, required = false,
+  if valid_614414 != nil:
+    section.add "X-Amz-Algorithm", valid_614414
+  var valid_614415 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614415 = validateParameter(valid_614415, JString, required = false,
                                  default = nil)
-  if valid_607346 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607346
+  if valid_614415 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614415
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8852,37 +8852,37 @@ proc validate_UpdateSqlInjectionMatchSet_607337(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607348: Call_UpdateSqlInjectionMatchSet_607336; path: JsonNode;
+proc call*(call_614417: Call_UpdateSqlInjectionMatchSet_614405; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>SqlInjectionMatchTuple</a> objects (filters) in a <a>SqlInjectionMatchSet</a>. For each <code>SqlInjectionMatchTuple</code> object, you specify the following values:</p> <ul> <li> <p> <code>Action</code>: Whether to insert the object into or delete the object from the array. To change a <code>SqlInjectionMatchTuple</code>, you delete the existing object and add a new one.</p> </li> <li> <p> <code>FieldToMatch</code>: The part of web requests that you want AWS WAF to inspect and, if you want AWS WAF to inspect a header or custom query parameter, the name of the header or parameter.</p> </li> <li> <p> <code>TextTransformation</code>: Which text transformation, if any, to perform on the web request before inspecting the request for snippets of malicious SQL code.</p> <p>You can only specify a single type of TextTransformation.</p> </li> </ul> <p>You use <code>SqlInjectionMatchSet</code> objects to specify which CloudFront requests that you want to allow, block, or count. For example, if you're receiving requests that contain snippets of SQL code in the query string and you want to block the requests, you can create a <code>SqlInjectionMatchSet</code> with the applicable settings, and then configure AWS WAF to block the requests. </p> <p>To create and configure a <code>SqlInjectionMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateSqlInjectionMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateSqlInjectionMatchSet</code> request to specify the parts of web requests that you want AWS WAF to inspect for snippets of SQL code.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607348.validator(path, query, header, formData, body)
-  let scheme = call_607348.pickScheme
+  let valid = call_614417.validator(path, query, header, formData, body)
+  let scheme = call_614417.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607348.url(scheme.get, call_607348.host, call_607348.base,
-                         call_607348.route, valid.getOrDefault("path"),
+  let url = call_614417.url(scheme.get, call_614417.host, call_614417.base,
+                         call_614417.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607348, url, valid)
+  result = atozHook(call_614417, url, valid)
 
-proc call*(call_607349: Call_UpdateSqlInjectionMatchSet_607336; body: JsonNode): Recallable =
+proc call*(call_614418: Call_UpdateSqlInjectionMatchSet_614405; body: JsonNode): Recallable =
   ## updateSqlInjectionMatchSet
   ## <p>Inserts or deletes <a>SqlInjectionMatchTuple</a> objects (filters) in a <a>SqlInjectionMatchSet</a>. For each <code>SqlInjectionMatchTuple</code> object, you specify the following values:</p> <ul> <li> <p> <code>Action</code>: Whether to insert the object into or delete the object from the array. To change a <code>SqlInjectionMatchTuple</code>, you delete the existing object and add a new one.</p> </li> <li> <p> <code>FieldToMatch</code>: The part of web requests that you want AWS WAF to inspect and, if you want AWS WAF to inspect a header or custom query parameter, the name of the header or parameter.</p> </li> <li> <p> <code>TextTransformation</code>: Which text transformation, if any, to perform on the web request before inspecting the request for snippets of malicious SQL code.</p> <p>You can only specify a single type of TextTransformation.</p> </li> </ul> <p>You use <code>SqlInjectionMatchSet</code> objects to specify which CloudFront requests that you want to allow, block, or count. For example, if you're receiving requests that contain snippets of SQL code in the query string and you want to block the requests, you can create a <code>SqlInjectionMatchSet</code> with the applicable settings, and then configure AWS WAF to block the requests. </p> <p>To create and configure a <code>SqlInjectionMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateSqlInjectionMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateSqlInjectionMatchSet</code> request to specify the parts of web requests that you want AWS WAF to inspect for snippets of SQL code.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607350 = newJObject()
+  var body_614419 = newJObject()
   if body != nil:
-    body_607350 = body
-  result = call_607349.call(nil, nil, nil, nil, body_607350)
+    body_614419 = body
+  result = call_614418.call(nil, nil, nil, nil, body_614419)
 
-var updateSqlInjectionMatchSet* = Call_UpdateSqlInjectionMatchSet_607336(
+var updateSqlInjectionMatchSet* = Call_UpdateSqlInjectionMatchSet_614405(
     name: "updateSqlInjectionMatchSet", meth: HttpMethod.HttpPost,
     host: "waf-regional.amazonaws.com", route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateSqlInjectionMatchSet",
-    validator: validate_UpdateSqlInjectionMatchSet_607337, base: "/",
-    url: url_UpdateSqlInjectionMatchSet_607338,
+    validator: validate_UpdateSqlInjectionMatchSet_614406, base: "/",
+    url: url_UpdateSqlInjectionMatchSet_614407,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateWebACL_607351 = ref object of OpenApiRestCall_605589
-proc url_UpdateWebACL_607353(protocol: Scheme; host: string; base: string;
+  Call_UpdateWebACL_614420 = ref object of OpenApiRestCall_612658
+proc url_UpdateWebACL_614422(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -8894,7 +8894,7 @@ proc url_UpdateWebACL_607353(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateWebACL_607352(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateWebACL_614421(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>ActivatedRule</a> objects in a <code>WebACL</code>. Each <code>Rule</code> identifies web requests that you want to allow, block, or count. When you update a <code>WebACL</code>, you specify the following values:</p> <ul> <li> <p>A default action for the <code>WebACL</code>, either <code>ALLOW</code> or <code>BLOCK</code>. AWS WAF performs the default action if a request doesn't match the criteria in any of the <code>Rules</code> in a <code>WebACL</code>.</p> </li> <li> <p>The <code>Rules</code> that you want to add or delete. If you want to replace one <code>Rule</code> with another, you delete the existing <code>Rule</code> and add the new one.</p> </li> <li> <p>For each <code>Rule</code>, whether you want AWS WAF to allow requests, block requests, or count requests that match the conditions in the <code>Rule</code>.</p> </li> <li> <p>The order in which you want AWS WAF to evaluate the <code>Rules</code> in a <code>WebACL</code>. If you add more than one <code>Rule</code> to a <code>WebACL</code>, AWS WAF evaluates each request against the <code>Rules</code> in order based on the value of <code>Priority</code>. (The <code>Rule</code> that has the lowest value for <code>Priority</code> is evaluated first.) When a web request matches all the predicates (such as <code>ByteMatchSets</code> and <code>IPSets</code>) in a <code>Rule</code>, AWS WAF immediately takes the corresponding action, allow or block, and doesn't evaluate the request against the remaining <code>Rules</code> in the <code>WebACL</code>, if any. </p> </li> </ul> <p>To create and configure a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in <code>Rules</code>. For more information, see <a>CreateByteMatchSet</a>, <a>UpdateByteMatchSet</a>, <a>CreateIPSet</a>, <a>UpdateIPSet</a>, <a>CreateSqlInjectionMatchSet</a>, and <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>WebACL</code>. For more information, see <a>CreateRule</a> and <a>UpdateRule</a>.</p> </li> <li> <p>Create a <code>WebACL</code>. See <a>CreateWebACL</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateWebACL</a> request.</p> </li> <li> <p>Submit an <code>UpdateWebACL</code> request to specify the <code>Rules</code> that you want to include in the <code>WebACL</code>, to specify the default action, and to associate the <code>WebACL</code> with a CloudFront distribution. </p> <p>The <code>ActivatedRule</code> can be a rule group. If you specify a rule group as your <code>ActivatedRule</code>, you can exclude specific rules from that rule group.</p> <p>If you already have a rule group associated with a web ACL and want to submit an <code>UpdateWebACL</code> request to exclude certain rules from that rule group, you must first remove the rule group from the web ACL, the re-insert it again, specifying the excluded rules. For details, see <a>ActivatedRule$ExcludedRules</a>. </p> </li> </ol> <p>Be aware that if you try to add a RATE_BASED rule to a web ACL without setting the rule type when first creating the rule, the <a>UpdateWebACL</a> request will fail because the request tries to add a REGULAR rule (the default rule type) with the specified ID, which does not exist. </p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
@@ -8914,46 +8914,46 @@ proc validate_UpdateWebACL_607352(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607354 = header.getOrDefault("X-Amz-Target")
-  valid_607354 = validateParameter(valid_607354, JString, required = true, default = newJString(
+  var valid_614423 = header.getOrDefault("X-Amz-Target")
+  valid_614423 = validateParameter(valid_614423, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateWebACL"))
-  if valid_607354 != nil:
-    section.add "X-Amz-Target", valid_607354
-  var valid_607355 = header.getOrDefault("X-Amz-Signature")
-  valid_607355 = validateParameter(valid_607355, JString, required = false,
+  if valid_614423 != nil:
+    section.add "X-Amz-Target", valid_614423
+  var valid_614424 = header.getOrDefault("X-Amz-Signature")
+  valid_614424 = validateParameter(valid_614424, JString, required = false,
                                  default = nil)
-  if valid_607355 != nil:
-    section.add "X-Amz-Signature", valid_607355
-  var valid_607356 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607356 = validateParameter(valid_607356, JString, required = false,
+  if valid_614424 != nil:
+    section.add "X-Amz-Signature", valid_614424
+  var valid_614425 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614425 = validateParameter(valid_614425, JString, required = false,
                                  default = nil)
-  if valid_607356 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607356
-  var valid_607357 = header.getOrDefault("X-Amz-Date")
-  valid_607357 = validateParameter(valid_607357, JString, required = false,
+  if valid_614425 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614425
+  var valid_614426 = header.getOrDefault("X-Amz-Date")
+  valid_614426 = validateParameter(valid_614426, JString, required = false,
                                  default = nil)
-  if valid_607357 != nil:
-    section.add "X-Amz-Date", valid_607357
-  var valid_607358 = header.getOrDefault("X-Amz-Credential")
-  valid_607358 = validateParameter(valid_607358, JString, required = false,
+  if valid_614426 != nil:
+    section.add "X-Amz-Date", valid_614426
+  var valid_614427 = header.getOrDefault("X-Amz-Credential")
+  valid_614427 = validateParameter(valid_614427, JString, required = false,
                                  default = nil)
-  if valid_607358 != nil:
-    section.add "X-Amz-Credential", valid_607358
-  var valid_607359 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607359 = validateParameter(valid_607359, JString, required = false,
+  if valid_614427 != nil:
+    section.add "X-Amz-Credential", valid_614427
+  var valid_614428 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614428 = validateParameter(valid_614428, JString, required = false,
                                  default = nil)
-  if valid_607359 != nil:
-    section.add "X-Amz-Security-Token", valid_607359
-  var valid_607360 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607360 = validateParameter(valid_607360, JString, required = false,
+  if valid_614428 != nil:
+    section.add "X-Amz-Security-Token", valid_614428
+  var valid_614429 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614429 = validateParameter(valid_614429, JString, required = false,
                                  default = nil)
-  if valid_607360 != nil:
-    section.add "X-Amz-Algorithm", valid_607360
-  var valid_607361 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607361 = validateParameter(valid_607361, JString, required = false,
+  if valid_614429 != nil:
+    section.add "X-Amz-Algorithm", valid_614429
+  var valid_614430 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614430 = validateParameter(valid_614430, JString, required = false,
                                  default = nil)
-  if valid_607361 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607361
+  if valid_614430 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614430
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8964,36 +8964,36 @@ proc validate_UpdateWebACL_607352(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_607363: Call_UpdateWebACL_607351; path: JsonNode; query: JsonNode;
+proc call*(call_614432: Call_UpdateWebACL_614420; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>ActivatedRule</a> objects in a <code>WebACL</code>. Each <code>Rule</code> identifies web requests that you want to allow, block, or count. When you update a <code>WebACL</code>, you specify the following values:</p> <ul> <li> <p>A default action for the <code>WebACL</code>, either <code>ALLOW</code> or <code>BLOCK</code>. AWS WAF performs the default action if a request doesn't match the criteria in any of the <code>Rules</code> in a <code>WebACL</code>.</p> </li> <li> <p>The <code>Rules</code> that you want to add or delete. If you want to replace one <code>Rule</code> with another, you delete the existing <code>Rule</code> and add the new one.</p> </li> <li> <p>For each <code>Rule</code>, whether you want AWS WAF to allow requests, block requests, or count requests that match the conditions in the <code>Rule</code>.</p> </li> <li> <p>The order in which you want AWS WAF to evaluate the <code>Rules</code> in a <code>WebACL</code>. If you add more than one <code>Rule</code> to a <code>WebACL</code>, AWS WAF evaluates each request against the <code>Rules</code> in order based on the value of <code>Priority</code>. (The <code>Rule</code> that has the lowest value for <code>Priority</code> is evaluated first.) When a web request matches all the predicates (such as <code>ByteMatchSets</code> and <code>IPSets</code>) in a <code>Rule</code>, AWS WAF immediately takes the corresponding action, allow or block, and doesn't evaluate the request against the remaining <code>Rules</code> in the <code>WebACL</code>, if any. </p> </li> </ul> <p>To create and configure a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in <code>Rules</code>. For more information, see <a>CreateByteMatchSet</a>, <a>UpdateByteMatchSet</a>, <a>CreateIPSet</a>, <a>UpdateIPSet</a>, <a>CreateSqlInjectionMatchSet</a>, and <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>WebACL</code>. For more information, see <a>CreateRule</a> and <a>UpdateRule</a>.</p> </li> <li> <p>Create a <code>WebACL</code>. See <a>CreateWebACL</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateWebACL</a> request.</p> </li> <li> <p>Submit an <code>UpdateWebACL</code> request to specify the <code>Rules</code> that you want to include in the <code>WebACL</code>, to specify the default action, and to associate the <code>WebACL</code> with a CloudFront distribution. </p> <p>The <code>ActivatedRule</code> can be a rule group. If you specify a rule group as your <code>ActivatedRule</code>, you can exclude specific rules from that rule group.</p> <p>If you already have a rule group associated with a web ACL and want to submit an <code>UpdateWebACL</code> request to exclude certain rules from that rule group, you must first remove the rule group from the web ACL, the re-insert it again, specifying the excluded rules. For details, see <a>ActivatedRule$ExcludedRules</a>. </p> </li> </ol> <p>Be aware that if you try to add a RATE_BASED rule to a web ACL without setting the rule type when first creating the rule, the <a>UpdateWebACL</a> request will fail because the request tries to add a REGULAR rule (the default rule type) with the specified ID, which does not exist. </p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607363.validator(path, query, header, formData, body)
-  let scheme = call_607363.pickScheme
+  let valid = call_614432.validator(path, query, header, formData, body)
+  let scheme = call_614432.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607363.url(scheme.get, call_607363.host, call_607363.base,
-                         call_607363.route, valid.getOrDefault("path"),
+  let url = call_614432.url(scheme.get, call_614432.host, call_614432.base,
+                         call_614432.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607363, url, valid)
+  result = atozHook(call_614432, url, valid)
 
-proc call*(call_607364: Call_UpdateWebACL_607351; body: JsonNode): Recallable =
+proc call*(call_614433: Call_UpdateWebACL_614420; body: JsonNode): Recallable =
   ## updateWebACL
   ## <p>Inserts or deletes <a>ActivatedRule</a> objects in a <code>WebACL</code>. Each <code>Rule</code> identifies web requests that you want to allow, block, or count. When you update a <code>WebACL</code>, you specify the following values:</p> <ul> <li> <p>A default action for the <code>WebACL</code>, either <code>ALLOW</code> or <code>BLOCK</code>. AWS WAF performs the default action if a request doesn't match the criteria in any of the <code>Rules</code> in a <code>WebACL</code>.</p> </li> <li> <p>The <code>Rules</code> that you want to add or delete. If you want to replace one <code>Rule</code> with another, you delete the existing <code>Rule</code> and add the new one.</p> </li> <li> <p>For each <code>Rule</code>, whether you want AWS WAF to allow requests, block requests, or count requests that match the conditions in the <code>Rule</code>.</p> </li> <li> <p>The order in which you want AWS WAF to evaluate the <code>Rules</code> in a <code>WebACL</code>. If you add more than one <code>Rule</code> to a <code>WebACL</code>, AWS WAF evaluates each request against the <code>Rules</code> in order based on the value of <code>Priority</code>. (The <code>Rule</code> that has the lowest value for <code>Priority</code> is evaluated first.) When a web request matches all the predicates (such as <code>ByteMatchSets</code> and <code>IPSets</code>) in a <code>Rule</code>, AWS WAF immediately takes the corresponding action, allow or block, and doesn't evaluate the request against the remaining <code>Rules</code> in the <code>WebACL</code>, if any. </p> </li> </ul> <p>To create and configure a <code>WebACL</code>, perform the following steps:</p> <ol> <li> <p>Create and update the predicates that you want to include in <code>Rules</code>. For more information, see <a>CreateByteMatchSet</a>, <a>UpdateByteMatchSet</a>, <a>CreateIPSet</a>, <a>UpdateIPSet</a>, <a>CreateSqlInjectionMatchSet</a>, and <a>UpdateSqlInjectionMatchSet</a>.</p> </li> <li> <p>Create and update the <code>Rules</code> that you want to include in the <code>WebACL</code>. For more information, see <a>CreateRule</a> and <a>UpdateRule</a>.</p> </li> <li> <p>Create a <code>WebACL</code>. See <a>CreateWebACL</a>.</p> </li> <li> <p>Use <code>GetChangeToken</code> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateWebACL</a> request.</p> </li> <li> <p>Submit an <code>UpdateWebACL</code> request to specify the <code>Rules</code> that you want to include in the <code>WebACL</code>, to specify the default action, and to associate the <code>WebACL</code> with a CloudFront distribution. </p> <p>The <code>ActivatedRule</code> can be a rule group. If you specify a rule group as your <code>ActivatedRule</code>, you can exclude specific rules from that rule group.</p> <p>If you already have a rule group associated with a web ACL and want to submit an <code>UpdateWebACL</code> request to exclude certain rules from that rule group, you must first remove the rule group from the web ACL, the re-insert it again, specifying the excluded rules. For details, see <a>ActivatedRule$ExcludedRules</a>. </p> </li> </ol> <p>Be aware that if you try to add a RATE_BASED rule to a web ACL without setting the rule type when first creating the rule, the <a>UpdateWebACL</a> request will fail because the request tries to add a REGULAR rule (the default rule type) with the specified ID, which does not exist. </p> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607365 = newJObject()
+  var body_614434 = newJObject()
   if body != nil:
-    body_607365 = body
-  result = call_607364.call(nil, nil, nil, nil, body_607365)
+    body_614434 = body
+  result = call_614433.call(nil, nil, nil, nil, body_614434)
 
-var updateWebACL* = Call_UpdateWebACL_607351(name: "updateWebACL",
+var updateWebACL* = Call_UpdateWebACL_614420(name: "updateWebACL",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateWebACL",
-    validator: validate_UpdateWebACL_607352, base: "/", url: url_UpdateWebACL_607353,
+    validator: validate_UpdateWebACL_614421, base: "/", url: url_UpdateWebACL_614422,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateXssMatchSet_607366 = ref object of OpenApiRestCall_605589
-proc url_UpdateXssMatchSet_607368(protocol: Scheme; host: string; base: string;
+  Call_UpdateXssMatchSet_614435 = ref object of OpenApiRestCall_612658
+proc url_UpdateXssMatchSet_614437(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -9005,7 +9005,7 @@ proc url_UpdateXssMatchSet_607368(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateXssMatchSet_607367(path: JsonNode; query: JsonNode;
+proc validate_UpdateXssMatchSet_614436(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Inserts or deletes <a>XssMatchTuple</a> objects (filters) in an <a>XssMatchSet</a>. For each <code>XssMatchTuple</code> object, you specify the following values:</p> <ul> <li> <p> <code>Action</code>: Whether to insert the object into or delete the object from the array. To change an <code>XssMatchTuple</code>, you delete the existing object and add a new one.</p> </li> <li> <p> <code>FieldToMatch</code>: The part of web requests that you want AWS WAF to inspect and, if you want AWS WAF to inspect a header or custom query parameter, the name of the header or parameter.</p> </li> <li> <p> <code>TextTransformation</code>: Which text transformation, if any, to perform on the web request before inspecting the request for cross-site scripting attacks.</p> <p>You can only specify a single type of TextTransformation.</p> </li> </ul> <p>You use <code>XssMatchSet</code> objects to specify which CloudFront requests that you want to allow, block, or count. For example, if you're receiving requests that contain cross-site scripting attacks in the request body and you want to block the requests, you can create an <code>XssMatchSet</code> with the applicable settings, and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>XssMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateXssMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateXssMatchSet</code> request to specify the parts of web requests that you want AWS WAF to inspect for cross-site scripting attacks.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
@@ -9026,46 +9026,46 @@ proc validate_UpdateXssMatchSet_607367(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_607369 = header.getOrDefault("X-Amz-Target")
-  valid_607369 = validateParameter(valid_607369, JString, required = true, default = newJString(
+  var valid_614438 = header.getOrDefault("X-Amz-Target")
+  valid_614438 = validateParameter(valid_614438, JString, required = true, default = newJString(
       "AWSWAF_Regional_20161128.UpdateXssMatchSet"))
-  if valid_607369 != nil:
-    section.add "X-Amz-Target", valid_607369
-  var valid_607370 = header.getOrDefault("X-Amz-Signature")
-  valid_607370 = validateParameter(valid_607370, JString, required = false,
+  if valid_614438 != nil:
+    section.add "X-Amz-Target", valid_614438
+  var valid_614439 = header.getOrDefault("X-Amz-Signature")
+  valid_614439 = validateParameter(valid_614439, JString, required = false,
                                  default = nil)
-  if valid_607370 != nil:
-    section.add "X-Amz-Signature", valid_607370
-  var valid_607371 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_607371 = validateParameter(valid_607371, JString, required = false,
+  if valid_614439 != nil:
+    section.add "X-Amz-Signature", valid_614439
+  var valid_614440 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_614440 = validateParameter(valid_614440, JString, required = false,
                                  default = nil)
-  if valid_607371 != nil:
-    section.add "X-Amz-Content-Sha256", valid_607371
-  var valid_607372 = header.getOrDefault("X-Amz-Date")
-  valid_607372 = validateParameter(valid_607372, JString, required = false,
+  if valid_614440 != nil:
+    section.add "X-Amz-Content-Sha256", valid_614440
+  var valid_614441 = header.getOrDefault("X-Amz-Date")
+  valid_614441 = validateParameter(valid_614441, JString, required = false,
                                  default = nil)
-  if valid_607372 != nil:
-    section.add "X-Amz-Date", valid_607372
-  var valid_607373 = header.getOrDefault("X-Amz-Credential")
-  valid_607373 = validateParameter(valid_607373, JString, required = false,
+  if valid_614441 != nil:
+    section.add "X-Amz-Date", valid_614441
+  var valid_614442 = header.getOrDefault("X-Amz-Credential")
+  valid_614442 = validateParameter(valid_614442, JString, required = false,
                                  default = nil)
-  if valid_607373 != nil:
-    section.add "X-Amz-Credential", valid_607373
-  var valid_607374 = header.getOrDefault("X-Amz-Security-Token")
-  valid_607374 = validateParameter(valid_607374, JString, required = false,
+  if valid_614442 != nil:
+    section.add "X-Amz-Credential", valid_614442
+  var valid_614443 = header.getOrDefault("X-Amz-Security-Token")
+  valid_614443 = validateParameter(valid_614443, JString, required = false,
                                  default = nil)
-  if valid_607374 != nil:
-    section.add "X-Amz-Security-Token", valid_607374
-  var valid_607375 = header.getOrDefault("X-Amz-Algorithm")
-  valid_607375 = validateParameter(valid_607375, JString, required = false,
+  if valid_614443 != nil:
+    section.add "X-Amz-Security-Token", valid_614443
+  var valid_614444 = header.getOrDefault("X-Amz-Algorithm")
+  valid_614444 = validateParameter(valid_614444, JString, required = false,
                                  default = nil)
-  if valid_607375 != nil:
-    section.add "X-Amz-Algorithm", valid_607375
-  var valid_607376 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_607376 = validateParameter(valid_607376, JString, required = false,
+  if valid_614444 != nil:
+    section.add "X-Amz-Algorithm", valid_614444
+  var valid_614445 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_614445 = validateParameter(valid_614445, JString, required = false,
                                  default = nil)
-  if valid_607376 != nil:
-    section.add "X-Amz-SignedHeaders", valid_607376
+  if valid_614445 != nil:
+    section.add "X-Amz-SignedHeaders", valid_614445
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -9076,33 +9076,33 @@ proc validate_UpdateXssMatchSet_607367(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_607378: Call_UpdateXssMatchSet_607366; path: JsonNode;
+proc call*(call_614447: Call_UpdateXssMatchSet_614435; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Inserts or deletes <a>XssMatchTuple</a> objects (filters) in an <a>XssMatchSet</a>. For each <code>XssMatchTuple</code> object, you specify the following values:</p> <ul> <li> <p> <code>Action</code>: Whether to insert the object into or delete the object from the array. To change an <code>XssMatchTuple</code>, you delete the existing object and add a new one.</p> </li> <li> <p> <code>FieldToMatch</code>: The part of web requests that you want AWS WAF to inspect and, if you want AWS WAF to inspect a header or custom query parameter, the name of the header or parameter.</p> </li> <li> <p> <code>TextTransformation</code>: Which text transformation, if any, to perform on the web request before inspecting the request for cross-site scripting attacks.</p> <p>You can only specify a single type of TextTransformation.</p> </li> </ul> <p>You use <code>XssMatchSet</code> objects to specify which CloudFront requests that you want to allow, block, or count. For example, if you're receiving requests that contain cross-site scripting attacks in the request body and you want to block the requests, you can create an <code>XssMatchSet</code> with the applicable settings, and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>XssMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateXssMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateXssMatchSet</code> request to specify the parts of web requests that you want AWS WAF to inspect for cross-site scripting attacks.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ## 
-  let valid = call_607378.validator(path, query, header, formData, body)
-  let scheme = call_607378.pickScheme
+  let valid = call_614447.validator(path, query, header, formData, body)
+  let scheme = call_614447.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_607378.url(scheme.get, call_607378.host, call_607378.base,
-                         call_607378.route, valid.getOrDefault("path"),
+  let url = call_614447.url(scheme.get, call_614447.host, call_614447.base,
+                         call_614447.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_607378, url, valid)
+  result = atozHook(call_614447, url, valid)
 
-proc call*(call_607379: Call_UpdateXssMatchSet_607366; body: JsonNode): Recallable =
+proc call*(call_614448: Call_UpdateXssMatchSet_614435; body: JsonNode): Recallable =
   ## updateXssMatchSet
   ## <p>Inserts or deletes <a>XssMatchTuple</a> objects (filters) in an <a>XssMatchSet</a>. For each <code>XssMatchTuple</code> object, you specify the following values:</p> <ul> <li> <p> <code>Action</code>: Whether to insert the object into or delete the object from the array. To change an <code>XssMatchTuple</code>, you delete the existing object and add a new one.</p> </li> <li> <p> <code>FieldToMatch</code>: The part of web requests that you want AWS WAF to inspect and, if you want AWS WAF to inspect a header or custom query parameter, the name of the header or parameter.</p> </li> <li> <p> <code>TextTransformation</code>: Which text transformation, if any, to perform on the web request before inspecting the request for cross-site scripting attacks.</p> <p>You can only specify a single type of TextTransformation.</p> </li> </ul> <p>You use <code>XssMatchSet</code> objects to specify which CloudFront requests that you want to allow, block, or count. For example, if you're receiving requests that contain cross-site scripting attacks in the request body and you want to block the requests, you can create an <code>XssMatchSet</code> with the applicable settings, and then configure AWS WAF to block the requests. </p> <p>To create and configure an <code>XssMatchSet</code>, perform the following steps:</p> <ol> <li> <p>Submit a <a>CreateXssMatchSet</a> request.</p> </li> <li> <p>Use <a>GetChangeToken</a> to get the change token that you provide in the <code>ChangeToken</code> parameter of an <a>UpdateIPSet</a> request.</p> </li> <li> <p>Submit an <code>UpdateXssMatchSet</code> request to specify the parts of web requests that you want AWS WAF to inspect for cross-site scripting attacks.</p> </li> </ol> <p>For more information about how to use the AWS WAF API to allow or block HTTP requests, see the <a href="https://docs.aws.amazon.com/waf/latest/developerguide/">AWS WAF Developer Guide</a>.</p>
   ##   body: JObject (required)
-  var body_607380 = newJObject()
+  var body_614449 = newJObject()
   if body != nil:
-    body_607380 = body
-  result = call_607379.call(nil, nil, nil, nil, body_607380)
+    body_614449 = body
+  result = call_614448.call(nil, nil, nil, nil, body_614449)
 
-var updateXssMatchSet* = Call_UpdateXssMatchSet_607366(name: "updateXssMatchSet",
+var updateXssMatchSet* = Call_UpdateXssMatchSet_614435(name: "updateXssMatchSet",
     meth: HttpMethod.HttpPost, host: "waf-regional.amazonaws.com",
     route: "/#X-Amz-Target=AWSWAF_Regional_20161128.UpdateXssMatchSet",
-    validator: validate_UpdateXssMatchSet_607367, base: "/",
-    url: url_UpdateXssMatchSet_607368, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateXssMatchSet_614436, base: "/",
+    url: url_UpdateXssMatchSet_614437, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 

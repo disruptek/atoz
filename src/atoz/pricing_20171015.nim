@@ -29,15 +29,15 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_605580 = ref object of OpenApiRestCall
+  OpenApiRestCall_612649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_605580](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_605580): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
   for scheme in Scheme.low ..
       Scheme.high:
@@ -142,8 +142,8 @@ const
   awsServiceName = "pricing"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_DescribeServices_605918 = ref object of OpenApiRestCall_605580
-proc url_DescribeServices_605920(protocol: Scheme; host: string; base: string;
+  Call_DescribeServices_612987 = ref object of OpenApiRestCall_612649
+proc url_DescribeServices_612989(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -155,7 +155,7 @@ proc url_DescribeServices_605920(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeServices_605919(path: JsonNode; query: JsonNode;
+proc validate_DescribeServices_612988(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## Returns the metadata for one service or a list of the metadata for all services. Use this without a service code to get the service codes for all services. Use it with a service code, such as <code>AmazonEC2</code>, to get information specific to that service, such as the attribute names available for that service. For example, some of the attribute names available for EC2 are <code>volumeType</code>, <code>maxIopsVolume</code>, <code>operation</code>, <code>locationType</code>, and <code>instanceCapacity10xlarge</code>.
@@ -170,16 +170,16 @@ proc validate_DescribeServices_605919(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606032 = query.getOrDefault("MaxResults")
-  valid_606032 = validateParameter(valid_606032, JString, required = false,
+  var valid_613101 = query.getOrDefault("MaxResults")
+  valid_613101 = validateParameter(valid_613101, JString, required = false,
                                  default = nil)
-  if valid_606032 != nil:
-    section.add "MaxResults", valid_606032
-  var valid_606033 = query.getOrDefault("NextToken")
-  valid_606033 = validateParameter(valid_606033, JString, required = false,
+  if valid_613101 != nil:
+    section.add "MaxResults", valid_613101
+  var valid_613102 = query.getOrDefault("NextToken")
+  valid_613102 = validateParameter(valid_613102, JString, required = false,
                                  default = nil)
-  if valid_606033 != nil:
-    section.add "NextToken", valid_606033
+  if valid_613102 != nil:
+    section.add "NextToken", valid_613102
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -191,46 +191,46 @@ proc validate_DescribeServices_605919(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606047 = header.getOrDefault("X-Amz-Target")
-  valid_606047 = validateParameter(valid_606047, JString, required = true, default = newJString(
+  var valid_613116 = header.getOrDefault("X-Amz-Target")
+  valid_613116 = validateParameter(valid_613116, JString, required = true, default = newJString(
       "AWSPriceListService.DescribeServices"))
-  if valid_606047 != nil:
-    section.add "X-Amz-Target", valid_606047
-  var valid_606048 = header.getOrDefault("X-Amz-Signature")
-  valid_606048 = validateParameter(valid_606048, JString, required = false,
+  if valid_613116 != nil:
+    section.add "X-Amz-Target", valid_613116
+  var valid_613117 = header.getOrDefault("X-Amz-Signature")
+  valid_613117 = validateParameter(valid_613117, JString, required = false,
                                  default = nil)
-  if valid_606048 != nil:
-    section.add "X-Amz-Signature", valid_606048
-  var valid_606049 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606049 = validateParameter(valid_606049, JString, required = false,
+  if valid_613117 != nil:
+    section.add "X-Amz-Signature", valid_613117
+  var valid_613118 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613118 = validateParameter(valid_613118, JString, required = false,
                                  default = nil)
-  if valid_606049 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606049
-  var valid_606050 = header.getOrDefault("X-Amz-Date")
-  valid_606050 = validateParameter(valid_606050, JString, required = false,
+  if valid_613118 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613118
+  var valid_613119 = header.getOrDefault("X-Amz-Date")
+  valid_613119 = validateParameter(valid_613119, JString, required = false,
                                  default = nil)
-  if valid_606050 != nil:
-    section.add "X-Amz-Date", valid_606050
-  var valid_606051 = header.getOrDefault("X-Amz-Credential")
-  valid_606051 = validateParameter(valid_606051, JString, required = false,
+  if valid_613119 != nil:
+    section.add "X-Amz-Date", valid_613119
+  var valid_613120 = header.getOrDefault("X-Amz-Credential")
+  valid_613120 = validateParameter(valid_613120, JString, required = false,
                                  default = nil)
-  if valid_606051 != nil:
-    section.add "X-Amz-Credential", valid_606051
-  var valid_606052 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606052 = validateParameter(valid_606052, JString, required = false,
+  if valid_613120 != nil:
+    section.add "X-Amz-Credential", valid_613120
+  var valid_613121 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613121 = validateParameter(valid_613121, JString, required = false,
                                  default = nil)
-  if valid_606052 != nil:
-    section.add "X-Amz-Security-Token", valid_606052
-  var valid_606053 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606053 = validateParameter(valid_606053, JString, required = false,
+  if valid_613121 != nil:
+    section.add "X-Amz-Security-Token", valid_613121
+  var valid_613122 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613122 = validateParameter(valid_613122, JString, required = false,
                                  default = nil)
-  if valid_606053 != nil:
-    section.add "X-Amz-Algorithm", valid_606053
-  var valid_606054 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606054 = validateParameter(valid_606054, JString, required = false,
+  if valid_613122 != nil:
+    section.add "X-Amz-Algorithm", valid_613122
+  var valid_613123 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613123 = validateParameter(valid_613123, JString, required = false,
                                  default = nil)
-  if valid_606054 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606054
+  if valid_613123 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613123
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -241,20 +241,20 @@ proc validate_DescribeServices_605919(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606078: Call_DescribeServices_605918; path: JsonNode;
+proc call*(call_613147: Call_DescribeServices_612987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the metadata for one service or a list of the metadata for all services. Use this without a service code to get the service codes for all services. Use it with a service code, such as <code>AmazonEC2</code>, to get information specific to that service, such as the attribute names available for that service. For example, some of the attribute names available for EC2 are <code>volumeType</code>, <code>maxIopsVolume</code>, <code>operation</code>, <code>locationType</code>, and <code>instanceCapacity10xlarge</code>.
   ## 
-  let valid = call_606078.validator(path, query, header, formData, body)
-  let scheme = call_606078.pickScheme
+  let valid = call_613147.validator(path, query, header, formData, body)
+  let scheme = call_613147.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606078.url(scheme.get, call_606078.host, call_606078.base,
-                         call_606078.route, valid.getOrDefault("path"),
+  let url = call_613147.url(scheme.get, call_613147.host, call_613147.base,
+                         call_613147.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606078, url, valid)
+  result = atozHook(call_613147, url, valid)
 
-proc call*(call_606149: Call_DescribeServices_605918; body: JsonNode;
+proc call*(call_613218: Call_DescribeServices_612987; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## describeServices
   ## Returns the metadata for one service or a list of the metadata for all services. Use this without a service code to get the service codes for all services. Use it with a service code, such as <code>AmazonEC2</code>, to get information specific to that service, such as the attribute names available for that service. For example, some of the attribute names available for EC2 are <code>volumeType</code>, <code>maxIopsVolume</code>, <code>operation</code>, <code>locationType</code>, and <code>instanceCapacity10xlarge</code>.
@@ -263,22 +263,22 @@ proc call*(call_606149: Call_DescribeServices_605918; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606150 = newJObject()
-  var body_606152 = newJObject()
-  add(query_606150, "MaxResults", newJString(MaxResults))
-  add(query_606150, "NextToken", newJString(NextToken))
+  var query_613219 = newJObject()
+  var body_613221 = newJObject()
+  add(query_613219, "MaxResults", newJString(MaxResults))
+  add(query_613219, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606152 = body
-  result = call_606149.call(nil, query_606150, nil, nil, body_606152)
+    body_613221 = body
+  result = call_613218.call(nil, query_613219, nil, nil, body_613221)
 
-var describeServices* = Call_DescribeServices_605918(name: "describeServices",
+var describeServices* = Call_DescribeServices_612987(name: "describeServices",
     meth: HttpMethod.HttpPost, host: "api.pricing.amazonaws.com",
     route: "/#X-Amz-Target=AWSPriceListService.DescribeServices",
-    validator: validate_DescribeServices_605919, base: "/",
-    url: url_DescribeServices_605920, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeServices_612988, base: "/",
+    url: url_DescribeServices_612989, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetAttributeValues_606191 = ref object of OpenApiRestCall_605580
-proc url_GetAttributeValues_606193(protocol: Scheme; host: string; base: string;
+  Call_GetAttributeValues_613260 = ref object of OpenApiRestCall_612649
+proc url_GetAttributeValues_613262(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -290,7 +290,7 @@ proc url_GetAttributeValues_606193(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetAttributeValues_606192(path: JsonNode; query: JsonNode;
+proc validate_GetAttributeValues_613261(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns a list of attribute values. Attibutes are similar to the details in a Price List API offer file. For a list of available attributes, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/reading-an-offer.html#pps-defs">Offer File Definitions</a> in the <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html">AWS Billing and Cost Management User Guide</a>.
@@ -305,16 +305,16 @@ proc validate_GetAttributeValues_606192(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606194 = query.getOrDefault("MaxResults")
-  valid_606194 = validateParameter(valid_606194, JString, required = false,
+  var valid_613263 = query.getOrDefault("MaxResults")
+  valid_613263 = validateParameter(valid_613263, JString, required = false,
                                  default = nil)
-  if valid_606194 != nil:
-    section.add "MaxResults", valid_606194
-  var valid_606195 = query.getOrDefault("NextToken")
-  valid_606195 = validateParameter(valid_606195, JString, required = false,
+  if valid_613263 != nil:
+    section.add "MaxResults", valid_613263
+  var valid_613264 = query.getOrDefault("NextToken")
+  valid_613264 = validateParameter(valid_613264, JString, required = false,
                                  default = nil)
-  if valid_606195 != nil:
-    section.add "NextToken", valid_606195
+  if valid_613264 != nil:
+    section.add "NextToken", valid_613264
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -326,46 +326,46 @@ proc validate_GetAttributeValues_606192(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606196 = header.getOrDefault("X-Amz-Target")
-  valid_606196 = validateParameter(valid_606196, JString, required = true, default = newJString(
+  var valid_613265 = header.getOrDefault("X-Amz-Target")
+  valid_613265 = validateParameter(valid_613265, JString, required = true, default = newJString(
       "AWSPriceListService.GetAttributeValues"))
-  if valid_606196 != nil:
-    section.add "X-Amz-Target", valid_606196
-  var valid_606197 = header.getOrDefault("X-Amz-Signature")
-  valid_606197 = validateParameter(valid_606197, JString, required = false,
+  if valid_613265 != nil:
+    section.add "X-Amz-Target", valid_613265
+  var valid_613266 = header.getOrDefault("X-Amz-Signature")
+  valid_613266 = validateParameter(valid_613266, JString, required = false,
                                  default = nil)
-  if valid_606197 != nil:
-    section.add "X-Amz-Signature", valid_606197
-  var valid_606198 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606198 = validateParameter(valid_606198, JString, required = false,
+  if valid_613266 != nil:
+    section.add "X-Amz-Signature", valid_613266
+  var valid_613267 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613267 = validateParameter(valid_613267, JString, required = false,
                                  default = nil)
-  if valid_606198 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606198
-  var valid_606199 = header.getOrDefault("X-Amz-Date")
-  valid_606199 = validateParameter(valid_606199, JString, required = false,
+  if valid_613267 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613267
+  var valid_613268 = header.getOrDefault("X-Amz-Date")
+  valid_613268 = validateParameter(valid_613268, JString, required = false,
                                  default = nil)
-  if valid_606199 != nil:
-    section.add "X-Amz-Date", valid_606199
-  var valid_606200 = header.getOrDefault("X-Amz-Credential")
-  valid_606200 = validateParameter(valid_606200, JString, required = false,
+  if valid_613268 != nil:
+    section.add "X-Amz-Date", valid_613268
+  var valid_613269 = header.getOrDefault("X-Amz-Credential")
+  valid_613269 = validateParameter(valid_613269, JString, required = false,
                                  default = nil)
-  if valid_606200 != nil:
-    section.add "X-Amz-Credential", valid_606200
-  var valid_606201 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606201 = validateParameter(valid_606201, JString, required = false,
+  if valid_613269 != nil:
+    section.add "X-Amz-Credential", valid_613269
+  var valid_613270 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613270 = validateParameter(valid_613270, JString, required = false,
                                  default = nil)
-  if valid_606201 != nil:
-    section.add "X-Amz-Security-Token", valid_606201
-  var valid_606202 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606202 = validateParameter(valid_606202, JString, required = false,
+  if valid_613270 != nil:
+    section.add "X-Amz-Security-Token", valid_613270
+  var valid_613271 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613271 = validateParameter(valid_613271, JString, required = false,
                                  default = nil)
-  if valid_606202 != nil:
-    section.add "X-Amz-Algorithm", valid_606202
-  var valid_606203 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606203 = validateParameter(valid_606203, JString, required = false,
+  if valid_613271 != nil:
+    section.add "X-Amz-Algorithm", valid_613271
+  var valid_613272 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613272 = validateParameter(valid_613272, JString, required = false,
                                  default = nil)
-  if valid_606203 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606203
+  if valid_613272 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613272
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -376,20 +376,20 @@ proc validate_GetAttributeValues_606192(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_606205: Call_GetAttributeValues_606191; path: JsonNode;
+proc call*(call_613274: Call_GetAttributeValues_613260; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of attribute values. Attibutes are similar to the details in a Price List API offer file. For a list of available attributes, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/reading-an-offer.html#pps-defs">Offer File Definitions</a> in the <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html">AWS Billing and Cost Management User Guide</a>.
   ## 
-  let valid = call_606205.validator(path, query, header, formData, body)
-  let scheme = call_606205.pickScheme
+  let valid = call_613274.validator(path, query, header, formData, body)
+  let scheme = call_613274.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606205.url(scheme.get, call_606205.host, call_606205.base,
-                         call_606205.route, valid.getOrDefault("path"),
+  let url = call_613274.url(scheme.get, call_613274.host, call_613274.base,
+                         call_613274.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606205, url, valid)
+  result = atozHook(call_613274, url, valid)
 
-proc call*(call_606206: Call_GetAttributeValues_606191; body: JsonNode;
+proc call*(call_613275: Call_GetAttributeValues_613260; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## getAttributeValues
   ## Returns a list of attribute values. Attibutes are similar to the details in a Price List API offer file. For a list of available attributes, see <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/reading-an-offer.html#pps-defs">Offer File Definitions</a> in the <a href="http://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/billing-what-is.html">AWS Billing and Cost Management User Guide</a>.
@@ -398,23 +398,23 @@ proc call*(call_606206: Call_GetAttributeValues_606191; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606207 = newJObject()
-  var body_606208 = newJObject()
-  add(query_606207, "MaxResults", newJString(MaxResults))
-  add(query_606207, "NextToken", newJString(NextToken))
+  var query_613276 = newJObject()
+  var body_613277 = newJObject()
+  add(query_613276, "MaxResults", newJString(MaxResults))
+  add(query_613276, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606208 = body
-  result = call_606206.call(nil, query_606207, nil, nil, body_606208)
+    body_613277 = body
+  result = call_613275.call(nil, query_613276, nil, nil, body_613277)
 
-var getAttributeValues* = Call_GetAttributeValues_606191(
+var getAttributeValues* = Call_GetAttributeValues_613260(
     name: "getAttributeValues", meth: HttpMethod.HttpPost,
     host: "api.pricing.amazonaws.com",
     route: "/#X-Amz-Target=AWSPriceListService.GetAttributeValues",
-    validator: validate_GetAttributeValues_606192, base: "/",
-    url: url_GetAttributeValues_606193, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetAttributeValues_613261, base: "/",
+    url: url_GetAttributeValues_613262, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetProducts_606209 = ref object of OpenApiRestCall_605580
-proc url_GetProducts_606211(protocol: Scheme; host: string; base: string;
+  Call_GetProducts_613278 = ref object of OpenApiRestCall_612649
+proc url_GetProducts_613280(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -426,7 +426,7 @@ proc url_GetProducts_606211(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetProducts_606210(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetProducts_613279(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of all products that match the filter criteria.
   ## 
@@ -440,16 +440,16 @@ proc validate_GetProducts_606210(path: JsonNode; query: JsonNode; header: JsonNo
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_606212 = query.getOrDefault("MaxResults")
-  valid_606212 = validateParameter(valid_606212, JString, required = false,
+  var valid_613281 = query.getOrDefault("MaxResults")
+  valid_613281 = validateParameter(valid_613281, JString, required = false,
                                  default = nil)
-  if valid_606212 != nil:
-    section.add "MaxResults", valid_606212
-  var valid_606213 = query.getOrDefault("NextToken")
-  valid_606213 = validateParameter(valid_606213, JString, required = false,
+  if valid_613281 != nil:
+    section.add "MaxResults", valid_613281
+  var valid_613282 = query.getOrDefault("NextToken")
+  valid_613282 = validateParameter(valid_613282, JString, required = false,
                                  default = nil)
-  if valid_606213 != nil:
-    section.add "NextToken", valid_606213
+  if valid_613282 != nil:
+    section.add "NextToken", valid_613282
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -461,46 +461,46 @@ proc validate_GetProducts_606210(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_606214 = header.getOrDefault("X-Amz-Target")
-  valid_606214 = validateParameter(valid_606214, JString, required = true, default = newJString(
+  var valid_613283 = header.getOrDefault("X-Amz-Target")
+  valid_613283 = validateParameter(valid_613283, JString, required = true, default = newJString(
       "AWSPriceListService.GetProducts"))
-  if valid_606214 != nil:
-    section.add "X-Amz-Target", valid_606214
-  var valid_606215 = header.getOrDefault("X-Amz-Signature")
-  valid_606215 = validateParameter(valid_606215, JString, required = false,
+  if valid_613283 != nil:
+    section.add "X-Amz-Target", valid_613283
+  var valid_613284 = header.getOrDefault("X-Amz-Signature")
+  valid_613284 = validateParameter(valid_613284, JString, required = false,
                                  default = nil)
-  if valid_606215 != nil:
-    section.add "X-Amz-Signature", valid_606215
-  var valid_606216 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_606216 = validateParameter(valid_606216, JString, required = false,
+  if valid_613284 != nil:
+    section.add "X-Amz-Signature", valid_613284
+  var valid_613285 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613285 = validateParameter(valid_613285, JString, required = false,
                                  default = nil)
-  if valid_606216 != nil:
-    section.add "X-Amz-Content-Sha256", valid_606216
-  var valid_606217 = header.getOrDefault("X-Amz-Date")
-  valid_606217 = validateParameter(valid_606217, JString, required = false,
+  if valid_613285 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613285
+  var valid_613286 = header.getOrDefault("X-Amz-Date")
+  valid_613286 = validateParameter(valid_613286, JString, required = false,
                                  default = nil)
-  if valid_606217 != nil:
-    section.add "X-Amz-Date", valid_606217
-  var valid_606218 = header.getOrDefault("X-Amz-Credential")
-  valid_606218 = validateParameter(valid_606218, JString, required = false,
+  if valid_613286 != nil:
+    section.add "X-Amz-Date", valid_613286
+  var valid_613287 = header.getOrDefault("X-Amz-Credential")
+  valid_613287 = validateParameter(valid_613287, JString, required = false,
                                  default = nil)
-  if valid_606218 != nil:
-    section.add "X-Amz-Credential", valid_606218
-  var valid_606219 = header.getOrDefault("X-Amz-Security-Token")
-  valid_606219 = validateParameter(valid_606219, JString, required = false,
+  if valid_613287 != nil:
+    section.add "X-Amz-Credential", valid_613287
+  var valid_613288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613288 = validateParameter(valid_613288, JString, required = false,
                                  default = nil)
-  if valid_606219 != nil:
-    section.add "X-Amz-Security-Token", valid_606219
-  var valid_606220 = header.getOrDefault("X-Amz-Algorithm")
-  valid_606220 = validateParameter(valid_606220, JString, required = false,
+  if valid_613288 != nil:
+    section.add "X-Amz-Security-Token", valid_613288
+  var valid_613289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613289 = validateParameter(valid_613289, JString, required = false,
                                  default = nil)
-  if valid_606220 != nil:
-    section.add "X-Amz-Algorithm", valid_606220
-  var valid_606221 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_606221 = validateParameter(valid_606221, JString, required = false,
+  if valid_613289 != nil:
+    section.add "X-Amz-Algorithm", valid_613289
+  var valid_613290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613290 = validateParameter(valid_613290, JString, required = false,
                                  default = nil)
-  if valid_606221 != nil:
-    section.add "X-Amz-SignedHeaders", valid_606221
+  if valid_613290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613290
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -511,20 +511,20 @@ proc validate_GetProducts_606210(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_606223: Call_GetProducts_606209; path: JsonNode; query: JsonNode;
+proc call*(call_613292: Call_GetProducts_613278; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of all products that match the filter criteria.
   ## 
-  let valid = call_606223.validator(path, query, header, formData, body)
-  let scheme = call_606223.pickScheme
+  let valid = call_613292.validator(path, query, header, formData, body)
+  let scheme = call_613292.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_606223.url(scheme.get, call_606223.host, call_606223.base,
-                         call_606223.route, valid.getOrDefault("path"),
+  let url = call_613292.url(scheme.get, call_613292.host, call_613292.base,
+                         call_613292.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_606223, url, valid)
+  result = atozHook(call_613292, url, valid)
 
-proc call*(call_606224: Call_GetProducts_606209; body: JsonNode;
+proc call*(call_613293: Call_GetProducts_613278; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## getProducts
   ## Returns a list of all products that match the filter criteria.
@@ -533,19 +533,19 @@ proc call*(call_606224: Call_GetProducts_606209; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_606225 = newJObject()
-  var body_606226 = newJObject()
-  add(query_606225, "MaxResults", newJString(MaxResults))
-  add(query_606225, "NextToken", newJString(NextToken))
+  var query_613294 = newJObject()
+  var body_613295 = newJObject()
+  add(query_613294, "MaxResults", newJString(MaxResults))
+  add(query_613294, "NextToken", newJString(NextToken))
   if body != nil:
-    body_606226 = body
-  result = call_606224.call(nil, query_606225, nil, nil, body_606226)
+    body_613295 = body
+  result = call_613293.call(nil, query_613294, nil, nil, body_613295)
 
-var getProducts* = Call_GetProducts_606209(name: "getProducts",
+var getProducts* = Call_GetProducts_613278(name: "getProducts",
                                         meth: HttpMethod.HttpPost,
                                         host: "api.pricing.amazonaws.com", route: "/#X-Amz-Target=AWSPriceListService.GetProducts",
-                                        validator: validate_GetProducts_606210,
-                                        base: "/", url: url_GetProducts_606211,
+                                        validator: validate_GetProducts_613279,
+                                        base: "/", url: url_GetProducts_613280,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest
