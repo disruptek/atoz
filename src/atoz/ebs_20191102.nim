@@ -10,7 +10,7 @@ import
 ##     name: Apache 2.0 License
 ##     url: http://www.apache.org/licenses/
 ## 
-## <p>You can use the Amazon Elastic Block Store (EBS) direct APIs to directly read the data on your EBS snapshots, and identify the difference between two snapshots. You can view the details of blocks in an EBS snapshot, compare the block difference between two snapshots, and directly access the data in a snapshot. If you’re an independent software vendor (ISV) who offers backup services for EBS, the EBS direct APIs makes it easier and more cost-effective to track incremental changes on your EBS volumes via EBS snapshots. This can be done without having to create new volumes from EBS snapshots, and then use EC2 instances to compare the differences.</p> <p>This API reference provides detailed information about the actions, data types, parameters, and errors of the EBS direct APIs. For more information about the elements that make up the EBS direct APIs, and examples of how to use them effectively, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-accessing-snapshot.html">Accessing the Contents of an EBS Snapshot</a>. For more information about how to use the EBS direct APIs, see the <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-accessing-snapshots.html">EBS direct APIs User Guide</a>. To view the currently supported AWS Regions and endpoints for the EBS direct APIs, see <a href="https://docs.aws.amazon.com/general/latest/gr/rande.html#ebs_region">AWS Service Endpoints</a> in the <i>AWS General Reference</i>.</p>
+## <p>You can use the Amazon Elastic Block Store (EBS) direct APIs to directly read the data on your EBS snapshots, and identify the difference between two snapshots. You can view the details of blocks in an EBS snapshot, compare the block difference between two snapshots, and directly access the data in a snapshot. If you’re an independent software vendor (ISV) who offers backup services for EBS, the EBS direct APIs make it easier and more cost-effective to track incremental changes on your EBS volumes via EBS snapshots. This can be done without having to create new volumes from EBS snapshots.</p> <p>This API reference provides detailed information about the actions, data types, parameters, and errors of the EBS direct APIs. For more information about the elements that make up the EBS direct APIs, and examples of how to use them effectively, see <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ebs-accessing-snapshot.html">Accessing the Contents of an EBS Snapshot</a> in the <i>Amazon Elastic Compute Cloud User Guide</i>. For more information about the supported AWS Regions, endpoints, and service quotas for the EBS direct APIs, see <a href="https://docs.aws.amazon.com/general/latest/gr/ebs-service.html">Amazon Elastic Block Store Endpoints and Quotas</a> in the <i>AWS General Reference</i>.</p>
 ## 
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/ebs/
@@ -185,7 +185,7 @@ proc validate_GetSnapshotBlock_612988(path: JsonNode; query: JsonNode;
   ##   snapshotId: JString (required)
   ##             : The ID of the snapshot containing the block from which to get data.
   ##   blockIndex: JInt (required)
-  ##             : <p>The block index of the block from which to get data.</p> <p>Obtain the <code>block index</code> by running the <code>list changed blocks</code> or <code>list snapshot blocks</code> operations.</p>
+  ##             : <p>The block index of the block from which to get data.</p> <p>Obtain the <code>BlockIndex</code> by running the <code>ListChangedBlocks</code> or <code>ListSnapshotBlocks</code> operations.</p>
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `snapshotId` field"
@@ -201,7 +201,7 @@ proc validate_GetSnapshotBlock_612988(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   blockToken: JString (required)
-  ##             : <p>The block token of the block from which to get data.</p> <p>Obtain the <code>block token</code> by running the <code>list changed blocks</code> or <code>list snapshot blocks</code> operations.</p>
+  ##             : <p>The block token of the block from which to get data.</p> <p>Obtain the <code>BlockToken</code> by running the <code>ListChangedBlocks</code> or <code>ListSnapshotBlocks</code> operations.</p>
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `blockToken` field"
@@ -281,9 +281,9 @@ proc call*(call_613218: Call_GetSnapshotBlock_612987; snapshotId: string;
   ##   snapshotId: string (required)
   ##             : The ID of the snapshot containing the block from which to get data.
   ##   blockIndex: int (required)
-  ##             : <p>The block index of the block from which to get data.</p> <p>Obtain the <code>block index</code> by running the <code>list changed blocks</code> or <code>list snapshot blocks</code> operations.</p>
+  ##             : <p>The block index of the block from which to get data.</p> <p>Obtain the <code>BlockIndex</code> by running the <code>ListChangedBlocks</code> or <code>ListSnapshotBlocks</code> operations.</p>
   ##   blockToken: string (required)
-  ##             : <p>The block token of the block from which to get data.</p> <p>Obtain the <code>block token</code> by running the <code>list changed blocks</code> or <code>list snapshot blocks</code> operations.</p>
+  ##             : <p>The block token of the block from which to get data.</p> <p>Obtain the <code>BlockToken</code> by running the <code>ListChangedBlocks</code> or <code>ListSnapshotBlocks</code> operations.</p>
   var path_613219 = newJObject()
   var query_613221 = newJObject()
   add(path_613219, "snapshotId", newJString(snapshotId))
@@ -329,7 +329,7 @@ proc validate_ListChangedBlocks_613261(path: JsonNode; query: JsonNode;
   result = newJObject()
   ## parameters in `path` object:
   ##   secondSnapshotId: JString (required)
-  ##                   : The ID of the second snapshot to use for the comparison.
+  ##                   : <p>The ID of the second snapshot to use for the comparison.</p> <important> <p>The <code>SecondSnapshotId</code> parameter must be specified with a <code>FirstSnapshotID</code> parameter; otherwise, an error occurs.</p> </important>
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `secondSnapshotId` field"
@@ -349,7 +349,7 @@ proc validate_ListChangedBlocks_613261(path: JsonNode; query: JsonNode;
   ##   startingBlockIndex: JInt
   ##                     : <p>The block index from which the comparison should start.</p> <p>The list in the response will start from this block index or the next valid block index in the snapshots.</p>
   ##   firstSnapshotId: JString
-  ##                  : The ID of the first snapshot to use for the comparison.
+  ##                  : <p>The ID of the first snapshot to use for the comparison.</p> <important> <p>The <code>FirstSnapshotID</code> parameter must be specified with a <code>SecondSnapshotId</code> parameter; otherwise, an error occurs.</p> </important>
   ##   maxResults: JInt
   ##             : The number of results to return.
   section = newJObject()
@@ -455,13 +455,13 @@ proc call*(call_613278: Call_ListChangedBlocks_613260; secondSnapshotId: string;
   ##   NextToken: string
   ##            : Pagination token
   ##   secondSnapshotId: string (required)
-  ##                   : The ID of the second snapshot to use for the comparison.
+  ##                   : <p>The ID of the second snapshot to use for the comparison.</p> <important> <p>The <code>SecondSnapshotId</code> parameter must be specified with a <code>FirstSnapshotID</code> parameter; otherwise, an error occurs.</p> </important>
   ##   pageToken: string
   ##            : The token to request the next page of results.
   ##   startingBlockIndex: int
   ##                     : <p>The block index from which the comparison should start.</p> <p>The list in the response will start from this block index or the next valid block index in the snapshots.</p>
   ##   firstSnapshotId: string
-  ##                  : The ID of the first snapshot to use for the comparison.
+  ##                  : <p>The ID of the first snapshot to use for the comparison.</p> <important> <p>The <code>FirstSnapshotID</code> parameter must be specified with a <code>SecondSnapshotId</code> parameter; otherwise, an error occurs.</p> </important>
   ##   maxResults: int
   ##             : The number of results to return.
   var path_613279 = newJObject()

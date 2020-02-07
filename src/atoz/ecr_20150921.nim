@@ -161,7 +161,7 @@ proc url_BatchCheckLayerAvailability_612998(protocol: Scheme; host: string;
 
 proc validate_BatchCheckLayerAvailability_612997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Check the availability of multiple image layers in a specified registry and repository.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Checks the availability of one or more image layers in a repository.</p> <p>When an image is pushed to a repository, each image layer is checked to verify if it has been uploaded before. If it is, then the image layer is skipped.</p> <p>When an image is pulled from a repository, each image layer is checked once to verify it is available to be pulled.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -231,7 +231,7 @@ proc validate_BatchCheckLayerAvailability_612997(path: JsonNode; query: JsonNode
 
 proc call*(call_613154: Call_BatchCheckLayerAvailability_612996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Check the availability of multiple image layers in a specified registry and repository.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Checks the availability of one or more image layers in a repository.</p> <p>When an image is pushed to a repository, each image layer is checked to verify if it has been uploaded before. If it is, then the image layer is skipped.</p> <p>When an image is pulled from a repository, each image layer is checked once to verify it is available to be pulled.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   let valid = call_613154.validator(path, query, header, formData, body)
   let scheme = call_613154.pickScheme
@@ -244,7 +244,7 @@ proc call*(call_613154: Call_BatchCheckLayerAvailability_612996; path: JsonNode;
 
 proc call*(call_613225: Call_BatchCheckLayerAvailability_612996; body: JsonNode): Recallable =
   ## batchCheckLayerAvailability
-  ## <p>Check the availability of multiple image layers in a specified registry and repository.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Checks the availability of one or more image layers in a repository.</p> <p>When an image is pushed to a repository, each image layer is checked to verify if it has been uploaded before. If it is, then the image layer is skipped.</p> <p>When an image is pulled from a repository, each image layer is checked once to verify it is available to be pulled.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ##   body: JObject (required)
   var body_613226 = newJObject()
   if body != nil:
@@ -274,7 +274,7 @@ proc url_BatchDeleteImage_613267(protocol: Scheme; host: string; base: string;
 proc validate_BatchDeleteImage_613266(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## <p>Deletes a list of specified images within a specified repository. Images are specified with either <code>imageTag</code> or <code>imageDigest</code>.</p> <p>You can remove a tag from an image by specifying the image's tag in your request. When you remove the last tag from an image, the image is deleted from your repository.</p> <p>You can completely delete an image (and all of its tags) by specifying the image's digest in your request.</p>
+  ## <p>Deletes a list of specified images within a repository. Images are specified with either an <code>imageTag</code> or <code>imageDigest</code>.</p> <p>You can remove a tag from an image by specifying the image's tag in your request. When you remove the last tag from an image, the image is deleted from your repository.</p> <p>You can completely delete an image (and all of its tags) by specifying the image's digest in your request.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -344,7 +344,7 @@ proc validate_BatchDeleteImage_613266(path: JsonNode; query: JsonNode;
 
 proc call*(call_613277: Call_BatchDeleteImage_613265; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deletes a list of specified images within a specified repository. Images are specified with either <code>imageTag</code> or <code>imageDigest</code>.</p> <p>You can remove a tag from an image by specifying the image's tag in your request. When you remove the last tag from an image, the image is deleted from your repository.</p> <p>You can completely delete an image (and all of its tags) by specifying the image's digest in your request.</p>
+  ## <p>Deletes a list of specified images within a repository. Images are specified with either an <code>imageTag</code> or <code>imageDigest</code>.</p> <p>You can remove a tag from an image by specifying the image's tag in your request. When you remove the last tag from an image, the image is deleted from your repository.</p> <p>You can completely delete an image (and all of its tags) by specifying the image's digest in your request.</p>
   ## 
   let valid = call_613277.validator(path, query, header, formData, body)
   let scheme = call_613277.pickScheme
@@ -357,7 +357,7 @@ proc call*(call_613277: Call_BatchDeleteImage_613265; path: JsonNode;
 
 proc call*(call_613278: Call_BatchDeleteImage_613265; body: JsonNode): Recallable =
   ## batchDeleteImage
-  ## <p>Deletes a list of specified images within a specified repository. Images are specified with either <code>imageTag</code> or <code>imageDigest</code>.</p> <p>You can remove a tag from an image by specifying the image's tag in your request. When you remove the last tag from an image, the image is deleted from your repository.</p> <p>You can completely delete an image (and all of its tags) by specifying the image's digest in your request.</p>
+  ## <p>Deletes a list of specified images within a repository. Images are specified with either an <code>imageTag</code> or <code>imageDigest</code>.</p> <p>You can remove a tag from an image by specifying the image's tag in your request. When you remove the last tag from an image, the image is deleted from your repository.</p> <p>You can completely delete an image (and all of its tags) by specifying the image's digest in your request.</p>
   ##   body: JObject (required)
   var body_613279 = newJObject()
   if body != nil:
@@ -384,7 +384,7 @@ proc url_BatchGetImage_613282(protocol: Scheme; host: string; base: string;
 
 proc validate_BatchGetImage_613281(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## Gets detailed information for specified images within a specified repository. Images are specified with either <code>imageTag</code> or <code>imageDigest</code>.
+  ## <p>Gets detailed information for an image. Images are specified with either an <code>imageTag</code> or <code>imageDigest</code>.</p> <p>When an image is pulled, the BatchGetImage API is called once to retrieve the image manifest.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -454,7 +454,7 @@ proc validate_BatchGetImage_613281(path: JsonNode; query: JsonNode; header: Json
 
 proc call*(call_613292: Call_BatchGetImage_613280; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Gets detailed information for specified images within a specified repository. Images are specified with either <code>imageTag</code> or <code>imageDigest</code>.
+  ## <p>Gets detailed information for an image. Images are specified with either an <code>imageTag</code> or <code>imageDigest</code>.</p> <p>When an image is pulled, the BatchGetImage API is called once to retrieve the image manifest.</p>
   ## 
   let valid = call_613292.validator(path, query, header, formData, body)
   let scheme = call_613292.pickScheme
@@ -467,7 +467,7 @@ proc call*(call_613292: Call_BatchGetImage_613280; path: JsonNode; query: JsonNo
 
 proc call*(call_613293: Call_BatchGetImage_613280; body: JsonNode): Recallable =
   ## batchGetImage
-  ## Gets detailed information for specified images within a specified repository. Images are specified with either <code>imageTag</code> or <code>imageDigest</code>.
+  ## <p>Gets detailed information for an image. Images are specified with either an <code>imageTag</code> or <code>imageDigest</code>.</p> <p>When an image is pulled, the BatchGetImage API is called once to retrieve the image manifest.</p>
   ##   body: JObject (required)
   var body_613294 = newJObject()
   if body != nil:
@@ -496,7 +496,7 @@ proc url_CompleteLayerUpload_613297(protocol: Scheme; host: string; base: string
 proc validate_CompleteLayerUpload_613296(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Informs Amazon ECR that the image layer upload has completed for a specified registry, repository name, and upload ID. You can optionally provide a <code>sha256</code> digest of the image layer for data validation purposes.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Informs Amazon ECR that the image layer upload has completed for a specified registry, repository name, and upload ID. You can optionally provide a <code>sha256</code> digest of the image layer for data validation purposes.</p> <p>When an image is pushed, the CompleteLayerUpload API is called once per each new image layer to verify that the upload has completed.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -566,7 +566,7 @@ proc validate_CompleteLayerUpload_613296(path: JsonNode; query: JsonNode;
 
 proc call*(call_613307: Call_CompleteLayerUpload_613295; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Informs Amazon ECR that the image layer upload has completed for a specified registry, repository name, and upload ID. You can optionally provide a <code>sha256</code> digest of the image layer for data validation purposes.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Informs Amazon ECR that the image layer upload has completed for a specified registry, repository name, and upload ID. You can optionally provide a <code>sha256</code> digest of the image layer for data validation purposes.</p> <p>When an image is pushed, the CompleteLayerUpload API is called once per each new image layer to verify that the upload has completed.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   let valid = call_613307.validator(path, query, header, formData, body)
   let scheme = call_613307.pickScheme
@@ -579,7 +579,7 @@ proc call*(call_613307: Call_CompleteLayerUpload_613295; path: JsonNode;
 
 proc call*(call_613308: Call_CompleteLayerUpload_613295; body: JsonNode): Recallable =
   ## completeLayerUpload
-  ## <p>Informs Amazon ECR that the image layer upload has completed for a specified registry, repository name, and upload ID. You can optionally provide a <code>sha256</code> digest of the image layer for data validation purposes.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Informs Amazon ECR that the image layer upload has completed for a specified registry, repository name, and upload ID. You can optionally provide a <code>sha256</code> digest of the image layer for data validation purposes.</p> <p>When an image is pushed, the CompleteLayerUpload API is called once per each new image layer to verify that the upload has completed.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ##   body: JObject (required)
   var body_613309 = newJObject()
   if body != nil:
@@ -608,7 +608,7 @@ proc url_CreateRepository_613312(protocol: Scheme; host: string; base: string;
 proc validate_CreateRepository_613311(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## Creates an Amazon Elastic Container Registry (Amazon ECR) repository, where users can push and pull Docker images. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html">Amazon ECR Repositories</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Creates a repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html">Amazon ECR Repositories</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -678,7 +678,7 @@ proc validate_CreateRepository_613311(path: JsonNode; query: JsonNode;
 
 proc call*(call_613322: Call_CreateRepository_613310; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates an Amazon Elastic Container Registry (Amazon ECR) repository, where users can push and pull Docker images. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html">Amazon ECR Repositories</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Creates a repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html">Amazon ECR Repositories</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ## 
   let valid = call_613322.validator(path, query, header, formData, body)
   let scheme = call_613322.pickScheme
@@ -691,7 +691,7 @@ proc call*(call_613322: Call_CreateRepository_613310; path: JsonNode;
 
 proc call*(call_613323: Call_CreateRepository_613310; body: JsonNode): Recallable =
   ## createRepository
-  ## Creates an Amazon Elastic Container Registry (Amazon ECR) repository, where users can push and pull Docker images. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html">Amazon ECR Repositories</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Creates a repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Repositories.html">Amazon ECR Repositories</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ##   body: JObject (required)
   var body_613324 = newJObject()
   if body != nil:
@@ -718,7 +718,7 @@ proc url_DeleteLifecyclePolicy_613327(protocol: Scheme; host: string; base: stri
 
 proc validate_DeleteLifecyclePolicy_613326(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes the specified lifecycle policy.
+  ## Deletes the lifecycle policy associated with the specified repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -788,7 +788,7 @@ proc validate_DeleteLifecyclePolicy_613326(path: JsonNode; query: JsonNode;
 
 proc call*(call_613337: Call_DeleteLifecyclePolicy_613325; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes the specified lifecycle policy.
+  ## Deletes the lifecycle policy associated with the specified repository.
   ## 
   let valid = call_613337.validator(path, query, header, formData, body)
   let scheme = call_613337.pickScheme
@@ -801,7 +801,7 @@ proc call*(call_613337: Call_DeleteLifecyclePolicy_613325; path: JsonNode;
 
 proc call*(call_613338: Call_DeleteLifecyclePolicy_613325; body: JsonNode): Recallable =
   ## deleteLifecyclePolicy
-  ## Deletes the specified lifecycle policy.
+  ## Deletes the lifecycle policy associated with the specified repository.
   ##   body: JObject (required)
   var body_613339 = newJObject()
   if body != nil:
@@ -830,7 +830,7 @@ proc url_DeleteRepository_613342(protocol: Scheme; host: string; base: string;
 proc validate_DeleteRepository_613341(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
-  ## Deletes an existing image repository. If a repository contains images, you must use the <code>force</code> option to delete it.
+  ## Deletes a repository. If the repository contains images, you must either delete all images in the repository or use the <code>force</code> option to delete the repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -900,7 +900,7 @@ proc validate_DeleteRepository_613341(path: JsonNode; query: JsonNode;
 
 proc call*(call_613352: Call_DeleteRepository_613340; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes an existing image repository. If a repository contains images, you must use the <code>force</code> option to delete it.
+  ## Deletes a repository. If the repository contains images, you must either delete all images in the repository or use the <code>force</code> option to delete the repository.
   ## 
   let valid = call_613352.validator(path, query, header, formData, body)
   let scheme = call_613352.pickScheme
@@ -913,7 +913,7 @@ proc call*(call_613352: Call_DeleteRepository_613340; path: JsonNode;
 
 proc call*(call_613353: Call_DeleteRepository_613340; body: JsonNode): Recallable =
   ## deleteRepository
-  ## Deletes an existing image repository. If a repository contains images, you must use the <code>force</code> option to delete it.
+  ## Deletes a repository. If the repository contains images, you must either delete all images in the repository or use the <code>force</code> option to delete the repository.
   ##   body: JObject (required)
   var body_613354 = newJObject()
   if body != nil:
@@ -940,7 +940,7 @@ proc url_DeleteRepositoryPolicy_613357(protocol: Scheme; host: string; base: str
 
 proc validate_DeleteRepositoryPolicy_613356(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes the repository policy from a specified repository.
+  ## Deletes the repository policy associated with the specified repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1010,7 +1010,7 @@ proc validate_DeleteRepositoryPolicy_613356(path: JsonNode; query: JsonNode;
 
 proc call*(call_613367: Call_DeleteRepositoryPolicy_613355; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes the repository policy from a specified repository.
+  ## Deletes the repository policy associated with the specified repository.
   ## 
   let valid = call_613367.validator(path, query, header, formData, body)
   let scheme = call_613367.pickScheme
@@ -1023,7 +1023,7 @@ proc call*(call_613367: Call_DeleteRepositoryPolicy_613355; path: JsonNode;
 
 proc call*(call_613368: Call_DeleteRepositoryPolicy_613355; body: JsonNode): Recallable =
   ## deleteRepositoryPolicy
-  ## Deletes the repository policy from a specified repository.
+  ## Deletes the repository policy associated with the specified repository.
   ##   body: JObject (required)
   var body_613369 = newJObject()
   if body != nil:
@@ -1051,7 +1051,7 @@ proc url_DescribeImageScanFindings_613372(protocol: Scheme; host: string;
 
 proc validate_DescribeImageScanFindings_613371(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes the image scan findings for the specified image.
+  ## Returns the scan findings for the specified image.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1136,7 +1136,7 @@ proc validate_DescribeImageScanFindings_613371(path: JsonNode; query: JsonNode;
 
 proc call*(call_613384: Call_DescribeImageScanFindings_613370; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes the image scan findings for the specified image.
+  ## Returns the scan findings for the specified image.
   ## 
   let valid = call_613384.validator(path, query, header, formData, body)
   let scheme = call_613384.pickScheme
@@ -1150,7 +1150,7 @@ proc call*(call_613384: Call_DescribeImageScanFindings_613370; path: JsonNode;
 proc call*(call_613385: Call_DescribeImageScanFindings_613370; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## describeImageScanFindings
-  ## Describes the image scan findings for the specified image.
+  ## Returns the scan findings for the specified image.
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
@@ -1187,7 +1187,7 @@ proc url_DescribeImages_613391(protocol: Scheme; host: string; base: string;
 proc validate_DescribeImages_613390(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ## <p>Returns metadata about the images in a repository, including image size, image tags, and creation date.</p> <note> <p>Beginning with Docker version 1.9, the Docker client compresses image layers before pushing them to a V2 Docker registry. The output of the <code>docker images</code> command shows the uncompressed image size, so it may return a larger image size than the image sizes returned by <a>DescribeImages</a>.</p> </note>
+  ## <p>Returns metadata about the images in a repository.</p> <note> <p>Beginning with Docker version 1.9, the Docker client compresses image layers before pushing them to a V2 Docker registry. The output of the <code>docker images</code> command shows the uncompressed image size, so it may return a larger image size than the image sizes returned by <a>DescribeImages</a>.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1272,7 +1272,7 @@ proc validate_DescribeImages_613390(path: JsonNode; query: JsonNode;
 
 proc call*(call_613403: Call_DescribeImages_613389; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns metadata about the images in a repository, including image size, image tags, and creation date.</p> <note> <p>Beginning with Docker version 1.9, the Docker client compresses image layers before pushing them to a V2 Docker registry. The output of the <code>docker images</code> command shows the uncompressed image size, so it may return a larger image size than the image sizes returned by <a>DescribeImages</a>.</p> </note>
+  ## <p>Returns metadata about the images in a repository.</p> <note> <p>Beginning with Docker version 1.9, the Docker client compresses image layers before pushing them to a V2 Docker registry. The output of the <code>docker images</code> command shows the uncompressed image size, so it may return a larger image size than the image sizes returned by <a>DescribeImages</a>.</p> </note>
   ## 
   let valid = call_613403.validator(path, query, header, formData, body)
   let scheme = call_613403.pickScheme
@@ -1286,7 +1286,7 @@ proc call*(call_613403: Call_DescribeImages_613389; path: JsonNode; query: JsonN
 proc call*(call_613404: Call_DescribeImages_613389; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## describeImages
-  ## <p>Returns metadata about the images in a repository, including image size, image tags, and creation date.</p> <note> <p>Beginning with Docker version 1.9, the Docker client compresses image layers before pushing them to a V2 Docker registry. The output of the <code>docker images</code> command shows the uncompressed image size, so it may return a larger image size than the image sizes returned by <a>DescribeImages</a>.</p> </note>
+  ## <p>Returns metadata about the images in a repository.</p> <note> <p>Beginning with Docker version 1.9, the Docker client compresses image layers before pushing them to a V2 Docker registry. The output of the <code>docker images</code> command shows the uncompressed image size, so it may return a larger image size than the image sizes returned by <a>DescribeImages</a>.</p> </note>
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
@@ -1454,7 +1454,7 @@ proc url_GetAuthorizationToken_613427(protocol: Scheme; host: string; base: stri
 
 proc validate_GetAuthorizationToken_613426(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Retrieves a token that is valid for a specified registry for 12 hours. This command allows you to use the <code>docker</code> CLI to push and pull images with Amazon ECR. If you do not specify a registry, the default registry is assumed.</p> <p>The <code>authorizationToken</code> returned for each registry specified is a base64 encoded string that can be decoded and used in a <code>docker login</code> command to authenticate to a registry. The AWS CLI offers an <code>aws ecr get-login</code> command that simplifies the login process.</p>
+  ## <p>Retrieves an authorization token. An authorization token represents your IAM authentication credentials and can be used to access any Amazon ECR registry that your IAM principal has access to. The authorization token is valid for 12 hours.</p> <p>The <code>authorizationToken</code> returned is a base64 encoded string that can be decoded and used in a <code>docker login</code> command to authenticate to a registry. The AWS CLI offers an <code>get-login-password</code> command that simplifies the login process. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth">Registry Authentication</a> in the <i>Amazon Elastic Container Registry User Guide</i>.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1524,7 +1524,7 @@ proc validate_GetAuthorizationToken_613426(path: JsonNode; query: JsonNode;
 
 proc call*(call_613437: Call_GetAuthorizationToken_613425; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Retrieves a token that is valid for a specified registry for 12 hours. This command allows you to use the <code>docker</code> CLI to push and pull images with Amazon ECR. If you do not specify a registry, the default registry is assumed.</p> <p>The <code>authorizationToken</code> returned for each registry specified is a base64 encoded string that can be decoded and used in a <code>docker login</code> command to authenticate to a registry. The AWS CLI offers an <code>aws ecr get-login</code> command that simplifies the login process.</p>
+  ## <p>Retrieves an authorization token. An authorization token represents your IAM authentication credentials and can be used to access any Amazon ECR registry that your IAM principal has access to. The authorization token is valid for 12 hours.</p> <p>The <code>authorizationToken</code> returned is a base64 encoded string that can be decoded and used in a <code>docker login</code> command to authenticate to a registry. The AWS CLI offers an <code>get-login-password</code> command that simplifies the login process. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth">Registry Authentication</a> in the <i>Amazon Elastic Container Registry User Guide</i>.</p>
   ## 
   let valid = call_613437.validator(path, query, header, formData, body)
   let scheme = call_613437.pickScheme
@@ -1537,7 +1537,7 @@ proc call*(call_613437: Call_GetAuthorizationToken_613425; path: JsonNode;
 
 proc call*(call_613438: Call_GetAuthorizationToken_613425; body: JsonNode): Recallable =
   ## getAuthorizationToken
-  ## <p>Retrieves a token that is valid for a specified registry for 12 hours. This command allows you to use the <code>docker</code> CLI to push and pull images with Amazon ECR. If you do not specify a registry, the default registry is assumed.</p> <p>The <code>authorizationToken</code> returned for each registry specified is a base64 encoded string that can be decoded and used in a <code>docker login</code> command to authenticate to a registry. The AWS CLI offers an <code>aws ecr get-login</code> command that simplifies the login process.</p>
+  ## <p>Retrieves an authorization token. An authorization token represents your IAM authentication credentials and can be used to access any Amazon ECR registry that your IAM principal has access to. The authorization token is valid for 12 hours.</p> <p>The <code>authorizationToken</code> returned is a base64 encoded string that can be decoded and used in a <code>docker login</code> command to authenticate to a registry. The AWS CLI offers an <code>get-login-password</code> command that simplifies the login process. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/Registries.html#registry_auth">Registry Authentication</a> in the <i>Amazon Elastic Container Registry User Guide</i>.</p>
   ##   body: JObject (required)
   var body_613439 = newJObject()
   if body != nil:
@@ -1565,7 +1565,7 @@ proc url_GetDownloadUrlForLayer_613442(protocol: Scheme; host: string; base: str
 
 proc validate_GetDownloadUrlForLayer_613441(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Retrieves the pre-signed Amazon S3 download URL corresponding to an image layer. You can only get URLs for image layers that are referenced in an image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Retrieves the pre-signed Amazon S3 download URL corresponding to an image layer. You can only get URLs for image layers that are referenced in an image.</p> <p>When an image is pulled, the GetDownloadUrlForLayer API is called once per image layer.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1635,7 +1635,7 @@ proc validate_GetDownloadUrlForLayer_613441(path: JsonNode; query: JsonNode;
 
 proc call*(call_613452: Call_GetDownloadUrlForLayer_613440; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Retrieves the pre-signed Amazon S3 download URL corresponding to an image layer. You can only get URLs for image layers that are referenced in an image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Retrieves the pre-signed Amazon S3 download URL corresponding to an image layer. You can only get URLs for image layers that are referenced in an image.</p> <p>When an image is pulled, the GetDownloadUrlForLayer API is called once per image layer.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   let valid = call_613452.validator(path, query, header, formData, body)
   let scheme = call_613452.pickScheme
@@ -1648,7 +1648,7 @@ proc call*(call_613452: Call_GetDownloadUrlForLayer_613440; path: JsonNode;
 
 proc call*(call_613453: Call_GetDownloadUrlForLayer_613440; body: JsonNode): Recallable =
   ## getDownloadUrlForLayer
-  ## <p>Retrieves the pre-signed Amazon S3 download URL corresponding to an image layer. You can only get URLs for image layers that are referenced in an image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Retrieves the pre-signed Amazon S3 download URL corresponding to an image layer. You can only get URLs for image layers that are referenced in an image.</p> <p>When an image is pulled, the GetDownloadUrlForLayer API is called once per image layer.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ##   body: JObject (required)
   var body_613454 = newJObject()
   if body != nil:
@@ -1677,7 +1677,7 @@ proc url_GetLifecyclePolicy_613457(protocol: Scheme; host: string; base: string;
 proc validate_GetLifecyclePolicy_613456(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
-  ## Retrieves the specified lifecycle policy.
+  ## Retrieves the lifecycle policy for the specified repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1747,7 +1747,7 @@ proc validate_GetLifecyclePolicy_613456(path: JsonNode; query: JsonNode;
 
 proc call*(call_613467: Call_GetLifecyclePolicy_613455; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Retrieves the specified lifecycle policy.
+  ## Retrieves the lifecycle policy for the specified repository.
   ## 
   let valid = call_613467.validator(path, query, header, formData, body)
   let scheme = call_613467.pickScheme
@@ -1760,7 +1760,7 @@ proc call*(call_613467: Call_GetLifecyclePolicy_613455; path: JsonNode;
 
 proc call*(call_613468: Call_GetLifecyclePolicy_613455; body: JsonNode): Recallable =
   ## getLifecyclePolicy
-  ## Retrieves the specified lifecycle policy.
+  ## Retrieves the lifecycle policy for the specified repository.
   ##   body: JObject (required)
   var body_613469 = newJObject()
   if body != nil:
@@ -1788,7 +1788,7 @@ proc url_GetLifecyclePolicyPreview_613472(protocol: Scheme; host: string;
 
 proc validate_GetLifecyclePolicyPreview_613471(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Retrieves the results of the specified lifecycle policy preview request.
+  ## Retrieves the results of the lifecycle policy preview request for the specified repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1873,7 +1873,7 @@ proc validate_GetLifecyclePolicyPreview_613471(path: JsonNode; query: JsonNode;
 
 proc call*(call_613484: Call_GetLifecyclePolicyPreview_613470; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Retrieves the results of the specified lifecycle policy preview request.
+  ## Retrieves the results of the lifecycle policy preview request for the specified repository.
   ## 
   let valid = call_613484.validator(path, query, header, formData, body)
   let scheme = call_613484.pickScheme
@@ -1887,7 +1887,7 @@ proc call*(call_613484: Call_GetLifecyclePolicyPreview_613470; path: JsonNode;
 proc call*(call_613485: Call_GetLifecyclePolicyPreview_613470; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## getLifecyclePolicyPreview
-  ## Retrieves the results of the specified lifecycle policy preview request.
+  ## Retrieves the results of the lifecycle policy preview request for the specified repository.
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
@@ -1924,7 +1924,7 @@ proc url_GetRepositoryPolicy_613490(protocol: Scheme; host: string; base: string
 proc validate_GetRepositoryPolicy_613489(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## Retrieves the repository policy for a specified repository.
+  ## Retrieves the repository policy for the specified repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1994,7 +1994,7 @@ proc validate_GetRepositoryPolicy_613489(path: JsonNode; query: JsonNode;
 
 proc call*(call_613500: Call_GetRepositoryPolicy_613488; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Retrieves the repository policy for a specified repository.
+  ## Retrieves the repository policy for the specified repository.
   ## 
   let valid = call_613500.validator(path, query, header, formData, body)
   let scheme = call_613500.pickScheme
@@ -2007,7 +2007,7 @@ proc call*(call_613500: Call_GetRepositoryPolicy_613488; path: JsonNode;
 
 proc call*(call_613501: Call_GetRepositoryPolicy_613488; body: JsonNode): Recallable =
   ## getRepositoryPolicy
-  ## Retrieves the repository policy for a specified repository.
+  ## Retrieves the repository policy for the specified repository.
   ##   body: JObject (required)
   var body_613502 = newJObject()
   if body != nil:
@@ -2036,7 +2036,7 @@ proc url_InitiateLayerUpload_613505(protocol: Scheme; host: string; base: string
 proc validate_InitiateLayerUpload_613504(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## <p>Notify Amazon ECR that you intend to upload an image layer.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Notifies Amazon ECR that you intend to upload an image layer.</p> <p>When an image is pushed, the InitiateLayerUpload API is called once per image layer that has not already been uploaded. Whether an image layer has been uploaded before is determined by the <a>BatchCheckLayerAvailability</a> API action.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2106,7 +2106,7 @@ proc validate_InitiateLayerUpload_613504(path: JsonNode; query: JsonNode;
 
 proc call*(call_613515: Call_InitiateLayerUpload_613503; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Notify Amazon ECR that you intend to upload an image layer.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Notifies Amazon ECR that you intend to upload an image layer.</p> <p>When an image is pushed, the InitiateLayerUpload API is called once per image layer that has not already been uploaded. Whether an image layer has been uploaded before is determined by the <a>BatchCheckLayerAvailability</a> API action.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   let valid = call_613515.validator(path, query, header, formData, body)
   let scheme = call_613515.pickScheme
@@ -2119,7 +2119,7 @@ proc call*(call_613515: Call_InitiateLayerUpload_613503; path: JsonNode;
 
 proc call*(call_613516: Call_InitiateLayerUpload_613503; body: JsonNode): Recallable =
   ## initiateLayerUpload
-  ## <p>Notify Amazon ECR that you intend to upload an image layer.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Notifies Amazon ECR that you intend to upload an image layer.</p> <p>When an image is pushed, the InitiateLayerUpload API is called once per image layer that has not already been uploaded. Whether an image layer has been uploaded before is determined by the <a>BatchCheckLayerAvailability</a> API action.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ##   body: JObject (required)
   var body_613517 = newJObject()
   if body != nil:
@@ -2147,7 +2147,7 @@ proc url_ListImages_613520(protocol: Scheme; host: string; base: string; route: 
 
 proc validate_ListImages_613519(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Lists all the image IDs for a given repository.</p> <p>You can filter images based on whether or not they are tagged by setting the <code>tagStatus</code> parameter to <code>TAGGED</code> or <code>UNTAGGED</code>. For example, you can filter your results to return only <code>UNTAGGED</code> images and then pipe that result to a <a>BatchDeleteImage</a> operation to delete them. Or, you can filter your results to return only <code>TAGGED</code> images to list all of the tags in your repository.</p>
+  ## <p>Lists all the image IDs for the specified repository.</p> <p>You can filter images based on whether or not they are tagged by using the <code>tagStatus</code> filter and specifying either <code>TAGGED</code>, <code>UNTAGGED</code> or <code>ANY</code>. For example, you can filter your results to return only <code>UNTAGGED</code> images and then pipe that result to a <a>BatchDeleteImage</a> operation to delete them. Or, you can filter your results to return only <code>TAGGED</code> images to list all of the tags in your repository.</p>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2232,7 +2232,7 @@ proc validate_ListImages_613519(path: JsonNode; query: JsonNode; header: JsonNod
 
 proc call*(call_613532: Call_ListImages_613518; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Lists all the image IDs for a given repository.</p> <p>You can filter images based on whether or not they are tagged by setting the <code>tagStatus</code> parameter to <code>TAGGED</code> or <code>UNTAGGED</code>. For example, you can filter your results to return only <code>UNTAGGED</code> images and then pipe that result to a <a>BatchDeleteImage</a> operation to delete them. Or, you can filter your results to return only <code>TAGGED</code> images to list all of the tags in your repository.</p>
+  ## <p>Lists all the image IDs for the specified repository.</p> <p>You can filter images based on whether or not they are tagged by using the <code>tagStatus</code> filter and specifying either <code>TAGGED</code>, <code>UNTAGGED</code> or <code>ANY</code>. For example, you can filter your results to return only <code>UNTAGGED</code> images and then pipe that result to a <a>BatchDeleteImage</a> operation to delete them. Or, you can filter your results to return only <code>TAGGED</code> images to list all of the tags in your repository.</p>
   ## 
   let valid = call_613532.validator(path, query, header, formData, body)
   let scheme = call_613532.pickScheme
@@ -2246,7 +2246,7 @@ proc call*(call_613532: Call_ListImages_613518; path: JsonNode; query: JsonNode;
 proc call*(call_613533: Call_ListImages_613518; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listImages
-  ## <p>Lists all the image IDs for a given repository.</p> <p>You can filter images based on whether or not they are tagged by setting the <code>tagStatus</code> parameter to <code>TAGGED</code> or <code>UNTAGGED</code>. For example, you can filter your results to return only <code>UNTAGGED</code> images and then pipe that result to a <a>BatchDeleteImage</a> operation to delete them. Or, you can filter your results to return only <code>TAGGED</code> images to list all of the tags in your repository.</p>
+  ## <p>Lists all the image IDs for the specified repository.</p> <p>You can filter images based on whether or not they are tagged by using the <code>tagStatus</code> filter and specifying either <code>TAGGED</code>, <code>UNTAGGED</code> or <code>ANY</code>. For example, you can filter your results to return only <code>UNTAGGED</code> images and then pipe that result to a <a>BatchDeleteImage</a> operation to delete them. Or, you can filter your results to return only <code>TAGGED</code> images to list all of the tags in your repository.</p>
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
@@ -2394,7 +2394,7 @@ proc url_PutImage_613553(protocol: Scheme; host: string; base: string; route: st
 
 proc validate_PutImage_613552(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
-  ## <p>Creates or updates the image manifest and tags associated with an image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Creates or updates the image manifest and tags associated with an image.</p> <p>When an image is pushed and all new image layers have been uploaded, the PutImage API is called once to create or update the image manifest and tags associated with the image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2464,7 +2464,7 @@ proc validate_PutImage_613552(path: JsonNode; query: JsonNode; header: JsonNode;
 
 proc call*(call_613563: Call_PutImage_613551; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates or updates the image manifest and tags associated with an image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Creates or updates the image manifest and tags associated with an image.</p> <p>When an image is pushed and all new image layers have been uploaded, the PutImage API is called once to create or update the image manifest and tags associated with the image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   let valid = call_613563.validator(path, query, header, formData, body)
   let scheme = call_613563.pickScheme
@@ -2477,7 +2477,7 @@ proc call*(call_613563: Call_PutImage_613551; path: JsonNode; query: JsonNode;
 
 proc call*(call_613564: Call_PutImage_613551; body: JsonNode): Recallable =
   ## putImage
-  ## <p>Creates or updates the image manifest and tags associated with an image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Creates or updates the image manifest and tags associated with an image.</p> <p>When an image is pushed and all new image layers have been uploaded, the PutImage API is called once to create or update the image manifest and tags associated with the image.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ##   body: JObject (required)
   var body_613565 = newJObject()
   if body != nil:
@@ -2505,7 +2505,7 @@ proc url_PutImageScanningConfiguration_613568(protocol: Scheme; host: string;
 
 proc validate_PutImageScanningConfiguration_613567(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates the image scanning configuration for a repository.
+  ## Updates the image scanning configuration for the specified repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2575,7 +2575,7 @@ proc validate_PutImageScanningConfiguration_613567(path: JsonNode; query: JsonNo
 
 proc call*(call_613578: Call_PutImageScanningConfiguration_613566; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates the image scanning configuration for a repository.
+  ## Updates the image scanning configuration for the specified repository.
   ## 
   let valid = call_613578.validator(path, query, header, formData, body)
   let scheme = call_613578.pickScheme
@@ -2588,7 +2588,7 @@ proc call*(call_613578: Call_PutImageScanningConfiguration_613566; path: JsonNod
 
 proc call*(call_613579: Call_PutImageScanningConfiguration_613566; body: JsonNode): Recallable =
   ## putImageScanningConfiguration
-  ## Updates the image scanning configuration for a repository.
+  ## Updates the image scanning configuration for the specified repository.
   ##   body: JObject (required)
   var body_613580 = newJObject()
   if body != nil:
@@ -2617,7 +2617,7 @@ proc url_PutImageTagMutability_613583(protocol: Scheme; host: string; base: stri
 
 proc validate_PutImageTagMutability_613582(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Updates the image tag mutability settings for a repository. When a repository is configured with tag immutability, all image tags within the repository will be prevented them from being overwritten. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-tag-mutability.html">Image Tag Mutability</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Updates the image tag mutability settings for the specified repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-tag-mutability.html">Image Tag Mutability</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2687,7 +2687,7 @@ proc validate_PutImageTagMutability_613582(path: JsonNode; query: JsonNode;
 
 proc call*(call_613593: Call_PutImageTagMutability_613581; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Updates the image tag mutability settings for a repository. When a repository is configured with tag immutability, all image tags within the repository will be prevented them from being overwritten. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-tag-mutability.html">Image Tag Mutability</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Updates the image tag mutability settings for the specified repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-tag-mutability.html">Image Tag Mutability</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ## 
   let valid = call_613593.validator(path, query, header, formData, body)
   let scheme = call_613593.pickScheme
@@ -2700,7 +2700,7 @@ proc call*(call_613593: Call_PutImageTagMutability_613581; path: JsonNode;
 
 proc call*(call_613594: Call_PutImageTagMutability_613581; body: JsonNode): Recallable =
   ## putImageTagMutability
-  ## Updates the image tag mutability settings for a repository. When a repository is configured with tag immutability, all image tags within the repository will be prevented them from being overwritten. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-tag-mutability.html">Image Tag Mutability</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Updates the image tag mutability settings for the specified repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/image-tag-mutability.html">Image Tag Mutability</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ##   body: JObject (required)
   var body_613595 = newJObject()
   if body != nil:
@@ -2729,7 +2729,7 @@ proc url_PutLifecyclePolicy_613598(protocol: Scheme; host: string; base: string;
 proc validate_PutLifecyclePolicy_613597(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
-  ## Creates or updates a lifecycle policy. For information about lifecycle policy syntax, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html">Lifecycle Policy Template</a>.
+  ## Creates or updates the lifecycle policy for the specified repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html">Lifecycle Policy Template</a>.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2799,7 +2799,7 @@ proc validate_PutLifecyclePolicy_613597(path: JsonNode; query: JsonNode;
 
 proc call*(call_613608: Call_PutLifecyclePolicy_613596; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates or updates a lifecycle policy. For information about lifecycle policy syntax, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html">Lifecycle Policy Template</a>.
+  ## Creates or updates the lifecycle policy for the specified repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html">Lifecycle Policy Template</a>.
   ## 
   let valid = call_613608.validator(path, query, header, formData, body)
   let scheme = call_613608.pickScheme
@@ -2812,7 +2812,7 @@ proc call*(call_613608: Call_PutLifecyclePolicy_613596; path: JsonNode;
 
 proc call*(call_613609: Call_PutLifecyclePolicy_613596; body: JsonNode): Recallable =
   ## putLifecyclePolicy
-  ## Creates or updates a lifecycle policy. For information about lifecycle policy syntax, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html">Lifecycle Policy Template</a>.
+  ## Creates or updates the lifecycle policy for the specified repository. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/LifecyclePolicies.html">Lifecycle Policy Template</a>.
   ##   body: JObject (required)
   var body_613610 = newJObject()
   if body != nil:
@@ -2841,7 +2841,7 @@ proc url_SetRepositoryPolicy_613613(protocol: Scheme; host: string; base: string
 proc validate_SetRepositoryPolicy_613612(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## Applies a repository policy on a specified repository to control access permissions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/RepositoryPolicies.html">Amazon ECR Repository Policies</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Applies a repository policy to the specified repository to control access permissions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/RepositoryPolicies.html">Amazon ECR Repository Policies</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2911,7 +2911,7 @@ proc validate_SetRepositoryPolicy_613612(path: JsonNode; query: JsonNode;
 
 proc call*(call_613623: Call_SetRepositoryPolicy_613611; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Applies a repository policy on a specified repository to control access permissions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/RepositoryPolicies.html">Amazon ECR Repository Policies</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Applies a repository policy to the specified repository to control access permissions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/RepositoryPolicies.html">Amazon ECR Repository Policies</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ## 
   let valid = call_613623.validator(path, query, header, formData, body)
   let scheme = call_613623.pickScheme
@@ -2924,7 +2924,7 @@ proc call*(call_613623: Call_SetRepositoryPolicy_613611; path: JsonNode;
 
 proc call*(call_613624: Call_SetRepositoryPolicy_613611; body: JsonNode): Recallable =
   ## setRepositoryPolicy
-  ## Applies a repository policy on a specified repository to control access permissions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/RepositoryPolicies.html">Amazon ECR Repository Policies</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
+  ## Applies a repository policy to the specified repository to control access permissions. For more information, see <a href="https://docs.aws.amazon.com/AmazonECR/latest/userguide/RepositoryPolicies.html">Amazon ECR Repository Policies</a> in the <i>Amazon Elastic Container Registry User Guide</i>.
   ##   body: JObject (required)
   var body_613625 = newJObject()
   if body != nil:
@@ -3063,7 +3063,7 @@ proc url_StartLifecyclePolicyPreview_613643(protocol: Scheme; host: string;
 
 proc validate_StartLifecyclePolicyPreview_613642(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Starts a preview of the specified lifecycle policy. This allows you to see the results before creating the lifecycle policy.
+  ## Starts a preview of a lifecycle policy for the specified repository. This allows you to see the results before associating the lifecycle policy with the repository.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3133,7 +3133,7 @@ proc validate_StartLifecyclePolicyPreview_613642(path: JsonNode; query: JsonNode
 
 proc call*(call_613653: Call_StartLifecyclePolicyPreview_613641; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Starts a preview of the specified lifecycle policy. This allows you to see the results before creating the lifecycle policy.
+  ## Starts a preview of a lifecycle policy for the specified repository. This allows you to see the results before associating the lifecycle policy with the repository.
   ## 
   let valid = call_613653.validator(path, query, header, formData, body)
   let scheme = call_613653.pickScheme
@@ -3146,7 +3146,7 @@ proc call*(call_613653: Call_StartLifecyclePolicyPreview_613641; path: JsonNode;
 
 proc call*(call_613654: Call_StartLifecyclePolicyPreview_613641; body: JsonNode): Recallable =
   ## startLifecyclePolicyPreview
-  ## Starts a preview of the specified lifecycle policy. This allows you to see the results before creating the lifecycle policy.
+  ## Starts a preview of a lifecycle policy for the specified repository. This allows you to see the results before associating the lifecycle policy with the repository.
   ##   body: JObject (required)
   var body_613655 = newJObject()
   if body != nil:
@@ -3399,7 +3399,7 @@ proc url_UploadLayerPart_613688(protocol: Scheme; host: string; base: string;
 proc validate_UploadLayerPart_613687(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## <p>Uploads an image layer part to Amazon ECR.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Uploads an image layer part to Amazon ECR.</p> <p>When an image is pushed, each new image layer is uploaded in parts. The maximum size of each image layer part can be 20971520 bytes (or about 20MB). The UploadLayerPart API is called once per each new image layer part.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -3469,7 +3469,7 @@ proc validate_UploadLayerPart_613687(path: JsonNode; query: JsonNode;
 
 proc call*(call_613698: Call_UploadLayerPart_613686; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Uploads an image layer part to Amazon ECR.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Uploads an image layer part to Amazon ECR.</p> <p>When an image is pushed, each new image layer is uploaded in parts. The maximum size of each image layer part can be 20971520 bytes (or about 20MB). The UploadLayerPart API is called once per each new image layer part.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ## 
   let valid = call_613698.validator(path, query, header, formData, body)
   let scheme = call_613698.pickScheme
@@ -3482,7 +3482,7 @@ proc call*(call_613698: Call_UploadLayerPart_613686; path: JsonNode; query: Json
 
 proc call*(call_613699: Call_UploadLayerPart_613686; body: JsonNode): Recallable =
   ## uploadLayerPart
-  ## <p>Uploads an image layer part to Amazon ECR.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
+  ## <p>Uploads an image layer part to Amazon ECR.</p> <p>When an image is pushed, each new image layer is uploaded in parts. The maximum size of each image layer part can be 20971520 bytes (or about 20MB). The UploadLayerPart API is called once per each new image layer part.</p> <note> <p>This operation is used by the Amazon ECR proxy, and it is not intended for general use by customers for pulling and pushing images. In most cases, you should use the <code>docker</code> CLI to pull, tag, and push images.</p> </note>
   ##   body: JObject (required)
   var body_613700 = newJObject()
   if body != nil:
