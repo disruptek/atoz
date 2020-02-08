@@ -462,9 +462,10 @@ var cancelSimulationJob* = Call_CancelSimulationJob_613265(
     validator: validate_CancelSimulationJob_613266, base: "/",
     url: url_CancelSimulationJob_613267, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDeploymentJob_613279 = ref object of OpenApiRestCall_612658
-proc url_CreateDeploymentJob_613281(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CancelSimulationJobBatch_613279 = ref object of OpenApiRestCall_612658
+proc url_CancelSimulationJobBatch_613281(protocol: Scheme; host: string;
+                                        base: string; route: string; path: JsonNode;
+                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -475,10 +476,9 @@ proc url_CreateDeploymentJob_613281(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_CreateDeploymentJob_613280(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode): JsonNode =
-  ## <p>Deploys a specific version of a robot application to robots in a fleet.</p> <p>The robot application must have a numbered <code>applicationVersion</code> for consistency reasons. To create a new version, use <code>CreateRobotApplicationVersion</code> or see <a href="https://docs.aws.amazon.com/robomaker/latest/dg/create-robot-application-version.html">Creating a Robot Application Version</a>. </p> <note> <p>After 90 days, deployment jobs expire and will be deleted. They will no longer be accessible. </p> </note>
+proc validate_CancelSimulationJobBatch_613280(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Cancels a simulation job batch. When you cancel a simulation job batch, you are also cancelling all of the active simulation jobs created as part of the batch. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -540,9 +540,9 @@ proc validate_CreateDeploymentJob_613280(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613290: Call_CreateDeploymentJob_613279; path: JsonNode;
+proc call*(call_613290: Call_CancelSimulationJobBatch_613279; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Deploys a specific version of a robot application to robots in a fleet.</p> <p>The robot application must have a numbered <code>applicationVersion</code> for consistency reasons. To create a new version, use <code>CreateRobotApplicationVersion</code> or see <a href="https://docs.aws.amazon.com/robomaker/latest/dg/create-robot-application-version.html">Creating a Robot Application Version</a>. </p> <note> <p>After 90 days, deployment jobs expire and will be deleted. They will no longer be accessible. </p> </note>
+  ## Cancels a simulation job batch. When you cancel a simulation job batch, you are also cancelling all of the active simulation jobs created as part of the batch. 
   ## 
   let valid = call_613290.validator(path, query, header, formData, body)
   let scheme = call_613290.pickScheme
@@ -553,24 +553,24 @@ proc call*(call_613290: Call_CreateDeploymentJob_613279; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613290, url, valid)
 
-proc call*(call_613291: Call_CreateDeploymentJob_613279; body: JsonNode): Recallable =
-  ## createDeploymentJob
-  ## <p>Deploys a specific version of a robot application to robots in a fleet.</p> <p>The robot application must have a numbered <code>applicationVersion</code> for consistency reasons. To create a new version, use <code>CreateRobotApplicationVersion</code> or see <a href="https://docs.aws.amazon.com/robomaker/latest/dg/create-robot-application-version.html">Creating a Robot Application Version</a>. </p> <note> <p>After 90 days, deployment jobs expire and will be deleted. They will no longer be accessible. </p> </note>
+proc call*(call_613291: Call_CancelSimulationJobBatch_613279; body: JsonNode): Recallable =
+  ## cancelSimulationJobBatch
+  ## Cancels a simulation job batch. When you cancel a simulation job batch, you are also cancelling all of the active simulation jobs created as part of the batch. 
   ##   body: JObject (required)
   var body_613292 = newJObject()
   if body != nil:
     body_613292 = body
   result = call_613291.call(nil, nil, nil, nil, body_613292)
 
-var createDeploymentJob* = Call_CreateDeploymentJob_613279(
-    name: "createDeploymentJob", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/createDeploymentJob",
-    validator: validate_CreateDeploymentJob_613280, base: "/",
-    url: url_CreateDeploymentJob_613281, schemes: {Scheme.Https, Scheme.Http})
+var cancelSimulationJobBatch* = Call_CancelSimulationJobBatch_613279(
+    name: "cancelSimulationJobBatch", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/cancelSimulationJobBatch",
+    validator: validate_CancelSimulationJobBatch_613280, base: "/",
+    url: url_CancelSimulationJobBatch_613281, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateFleet_613293 = ref object of OpenApiRestCall_612658
-proc url_CreateFleet_613295(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateDeploymentJob_613293 = ref object of OpenApiRestCall_612658
+proc url_CreateDeploymentJob_613295(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -581,9 +581,10 @@ proc url_CreateFleet_613295(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateFleet_613294(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a fleet, a logical group of robots running the same robot application.
+proc validate_CreateDeploymentJob_613294(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## <p>Deploys a specific version of a robot application to robots in a fleet.</p> <p>The robot application must have a numbered <code>applicationVersion</code> for consistency reasons. To create a new version, use <code>CreateRobotApplicationVersion</code> or see <a href="https://docs.aws.amazon.com/robomaker/latest/dg/create-robot-application-version.html">Creating a Robot Application Version</a>. </p> <note> <p>After 90 days, deployment jobs expire and will be deleted. They will no longer be accessible. </p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -645,9 +646,9 @@ proc validate_CreateFleet_613294(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613304: Call_CreateFleet_613293; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a fleet, a logical group of robots running the same robot application.
+proc call*(call_613304: Call_CreateDeploymentJob_613293; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Deploys a specific version of a robot application to robots in a fleet.</p> <p>The robot application must have a numbered <code>applicationVersion</code> for consistency reasons. To create a new version, use <code>CreateRobotApplicationVersion</code> or see <a href="https://docs.aws.amazon.com/robomaker/latest/dg/create-robot-application-version.html">Creating a Robot Application Version</a>. </p> <note> <p>After 90 days, deployment jobs expire and will be deleted. They will no longer be accessible. </p> </note>
   ## 
   let valid = call_613304.validator(path, query, header, formData, body)
   let scheme = call_613304.pickScheme
@@ -658,25 +659,23 @@ proc call*(call_613304: Call_CreateFleet_613293; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_613304, url, valid)
 
-proc call*(call_613305: Call_CreateFleet_613293; body: JsonNode): Recallable =
-  ## createFleet
-  ## Creates a fleet, a logical group of robots running the same robot application.
+proc call*(call_613305: Call_CreateDeploymentJob_613293; body: JsonNode): Recallable =
+  ## createDeploymentJob
+  ## <p>Deploys a specific version of a robot application to robots in a fleet.</p> <p>The robot application must have a numbered <code>applicationVersion</code> for consistency reasons. To create a new version, use <code>CreateRobotApplicationVersion</code> or see <a href="https://docs.aws.amazon.com/robomaker/latest/dg/create-robot-application-version.html">Creating a Robot Application Version</a>. </p> <note> <p>After 90 days, deployment jobs expire and will be deleted. They will no longer be accessible. </p> </note>
   ##   body: JObject (required)
   var body_613306 = newJObject()
   if body != nil:
     body_613306 = body
   result = call_613305.call(nil, nil, nil, nil, body_613306)
 
-var createFleet* = Call_CreateFleet_613293(name: "createFleet",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "robomaker.amazonaws.com",
-                                        route: "/createFleet",
-                                        validator: validate_CreateFleet_613294,
-                                        base: "/", url: url_CreateFleet_613295,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var createDeploymentJob* = Call_CreateDeploymentJob_613293(
+    name: "createDeploymentJob", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/createDeploymentJob",
+    validator: validate_CreateDeploymentJob_613294, base: "/",
+    url: url_CreateDeploymentJob_613295, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRobot_613307 = ref object of OpenApiRestCall_612658
-proc url_CreateRobot_613309(protocol: Scheme; host: string; base: string;
+  Call_CreateFleet_613307 = ref object of OpenApiRestCall_612658
+proc url_CreateFleet_613309(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -688,9 +687,9 @@ proc url_CreateRobot_613309(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_CreateRobot_613308(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateFleet_613308(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a robot.
+  ## Creates a fleet, a logical group of robots running the same robot application.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -752,9 +751,9 @@ proc validate_CreateRobot_613308(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613318: Call_CreateRobot_613307; path: JsonNode; query: JsonNode;
+proc call*(call_613318: Call_CreateFleet_613307; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a robot.
+  ## Creates a fleet, a logical group of robots running the same robot application.
   ## 
   let valid = call_613318.validator(path, query, header, formData, body)
   let scheme = call_613318.pickScheme
@@ -765,26 +764,26 @@ proc call*(call_613318: Call_CreateRobot_613307; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_613318, url, valid)
 
-proc call*(call_613319: Call_CreateRobot_613307; body: JsonNode): Recallable =
-  ## createRobot
-  ## Creates a robot.
+proc call*(call_613319: Call_CreateFleet_613307; body: JsonNode): Recallable =
+  ## createFleet
+  ## Creates a fleet, a logical group of robots running the same robot application.
   ##   body: JObject (required)
   var body_613320 = newJObject()
   if body != nil:
     body_613320 = body
   result = call_613319.call(nil, nil, nil, nil, body_613320)
 
-var createRobot* = Call_CreateRobot_613307(name: "createRobot",
+var createFleet* = Call_CreateFleet_613307(name: "createFleet",
                                         meth: HttpMethod.HttpPost,
                                         host: "robomaker.amazonaws.com",
-                                        route: "/createRobot",
-                                        validator: validate_CreateRobot_613308,
-                                        base: "/", url: url_CreateRobot_613309,
+                                        route: "/createFleet",
+                                        validator: validate_CreateFleet_613308,
+                                        base: "/", url: url_CreateFleet_613309,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRobotApplication_613321 = ref object of OpenApiRestCall_612658
-proc url_CreateRobotApplication_613323(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateRobot_613321 = ref object of OpenApiRestCall_612658
+proc url_CreateRobot_613323(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -795,9 +794,9 @@ proc url_CreateRobotApplication_613323(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_CreateRobotApplication_613322(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a robot application. 
+proc validate_CreateRobot_613322(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## Creates a robot.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -859,9 +858,9 @@ proc validate_CreateRobotApplication_613322(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613332: Call_CreateRobotApplication_613321; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a robot application. 
+proc call*(call_613332: Call_CreateRobot_613321; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Creates a robot.
   ## 
   let valid = call_613332.validator(path, query, header, formData, body)
   let scheme = call_613332.pickScheme
@@ -872,24 +871,26 @@ proc call*(call_613332: Call_CreateRobotApplication_613321; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613332, url, valid)
 
-proc call*(call_613333: Call_CreateRobotApplication_613321; body: JsonNode): Recallable =
-  ## createRobotApplication
-  ## Creates a robot application. 
+proc call*(call_613333: Call_CreateRobot_613321; body: JsonNode): Recallable =
+  ## createRobot
+  ## Creates a robot.
   ##   body: JObject (required)
   var body_613334 = newJObject()
   if body != nil:
     body_613334 = body
   result = call_613333.call(nil, nil, nil, nil, body_613334)
 
-var createRobotApplication* = Call_CreateRobotApplication_613321(
-    name: "createRobotApplication", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/createRobotApplication",
-    validator: validate_CreateRobotApplication_613322, base: "/",
-    url: url_CreateRobotApplication_613323, schemes: {Scheme.Https, Scheme.Http})
+var createRobot* = Call_CreateRobot_613321(name: "createRobot",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "robomaker.amazonaws.com",
+                                        route: "/createRobot",
+                                        validator: validate_CreateRobot_613322,
+                                        base: "/", url: url_CreateRobot_613323,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateRobotApplicationVersion_613335 = ref object of OpenApiRestCall_612658
-proc url_CreateRobotApplicationVersion_613337(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateRobotApplication_613335 = ref object of OpenApiRestCall_612658
+proc url_CreateRobotApplication_613337(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -900,9 +901,9 @@ proc url_CreateRobotApplicationVersion_613337(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CreateRobotApplicationVersion_613336(path: JsonNode; query: JsonNode;
+proc validate_CreateRobotApplication_613336(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a version of a robot application.
+  ## Creates a robot application. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -964,9 +965,9 @@ proc validate_CreateRobotApplicationVersion_613336(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613346: Call_CreateRobotApplicationVersion_613335; path: JsonNode;
+proc call*(call_613346: Call_CreateRobotApplication_613335; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a version of a robot application.
+  ## Creates a robot application. 
   ## 
   let valid = call_613346.validator(path, query, header, formData, body)
   let scheme = call_613346.pickScheme
@@ -977,24 +978,23 @@ proc call*(call_613346: Call_CreateRobotApplicationVersion_613335; path: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_613346, url, valid)
 
-proc call*(call_613347: Call_CreateRobotApplicationVersion_613335; body: JsonNode): Recallable =
-  ## createRobotApplicationVersion
-  ## Creates a version of a robot application.
+proc call*(call_613347: Call_CreateRobotApplication_613335; body: JsonNode): Recallable =
+  ## createRobotApplication
+  ## Creates a robot application. 
   ##   body: JObject (required)
   var body_613348 = newJObject()
   if body != nil:
     body_613348 = body
   result = call_613347.call(nil, nil, nil, nil, body_613348)
 
-var createRobotApplicationVersion* = Call_CreateRobotApplicationVersion_613335(
-    name: "createRobotApplicationVersion", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/createRobotApplicationVersion",
-    validator: validate_CreateRobotApplicationVersion_613336, base: "/",
-    url: url_CreateRobotApplicationVersion_613337,
-    schemes: {Scheme.Https, Scheme.Http})
+var createRobotApplication* = Call_CreateRobotApplication_613335(
+    name: "createRobotApplication", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/createRobotApplication",
+    validator: validate_CreateRobotApplication_613336, base: "/",
+    url: url_CreateRobotApplication_613337, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSimulationApplication_613349 = ref object of OpenApiRestCall_612658
-proc url_CreateSimulationApplication_613351(protocol: Scheme; host: string;
+  Call_CreateRobotApplicationVersion_613349 = ref object of OpenApiRestCall_612658
+proc url_CreateRobotApplicationVersion_613351(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1006,9 +1006,9 @@ proc url_CreateSimulationApplication_613351(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_CreateSimulationApplication_613350(path: JsonNode; query: JsonNode;
+proc validate_CreateRobotApplicationVersion_613350(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a simulation application.
+  ## Creates a version of a robot application.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1070,9 +1070,9 @@ proc validate_CreateSimulationApplication_613350(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613360: Call_CreateSimulationApplication_613349; path: JsonNode;
+proc call*(call_613360: Call_CreateRobotApplicationVersion_613349; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a simulation application.
+  ## Creates a version of a robot application.
   ## 
   let valid = call_613360.validator(path, query, header, formData, body)
   let scheme = call_613360.pickScheme
@@ -1083,24 +1083,24 @@ proc call*(call_613360: Call_CreateSimulationApplication_613349; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613360, url, valid)
 
-proc call*(call_613361: Call_CreateSimulationApplication_613349; body: JsonNode): Recallable =
-  ## createSimulationApplication
-  ## Creates a simulation application.
+proc call*(call_613361: Call_CreateRobotApplicationVersion_613349; body: JsonNode): Recallable =
+  ## createRobotApplicationVersion
+  ## Creates a version of a robot application.
   ##   body: JObject (required)
   var body_613362 = newJObject()
   if body != nil:
     body_613362 = body
   result = call_613361.call(nil, nil, nil, nil, body_613362)
 
-var createSimulationApplication* = Call_CreateSimulationApplication_613349(
-    name: "createSimulationApplication", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/createSimulationApplication",
-    validator: validate_CreateSimulationApplication_613350, base: "/",
-    url: url_CreateSimulationApplication_613351,
+var createRobotApplicationVersion* = Call_CreateRobotApplicationVersion_613349(
+    name: "createRobotApplicationVersion", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/createRobotApplicationVersion",
+    validator: validate_CreateRobotApplicationVersion_613350, base: "/",
+    url: url_CreateRobotApplicationVersion_613351,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSimulationApplicationVersion_613363 = ref object of OpenApiRestCall_612658
-proc url_CreateSimulationApplicationVersion_613365(protocol: Scheme; host: string;
+  Call_CreateSimulationApplication_613363 = ref object of OpenApiRestCall_612658
+proc url_CreateSimulationApplication_613365(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1112,9 +1112,9 @@ proc url_CreateSimulationApplicationVersion_613365(protocol: Scheme; host: strin
   else:
     result.path = base & route
 
-proc validate_CreateSimulationApplicationVersion_613364(path: JsonNode;
-    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Creates a simulation application with a specific revision id.
+proc validate_CreateSimulationApplication_613364(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Creates a simulation application.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1176,10 +1176,9 @@ proc validate_CreateSimulationApplicationVersion_613364(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613374: Call_CreateSimulationApplicationVersion_613363;
-          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
-          body: JsonNode): Recallable =
-  ## Creates a simulation application with a specific revision id.
+proc call*(call_613374: Call_CreateSimulationApplication_613363; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Creates a simulation application.
   ## 
   let valid = call_613374.validator(path, query, header, formData, body)
   let scheme = call_613374.pickScheme
@@ -1190,26 +1189,25 @@ proc call*(call_613374: Call_CreateSimulationApplicationVersion_613363;
                          valid.getOrDefault("query"))
   result = atozHook(call_613374, url, valid)
 
-proc call*(call_613375: Call_CreateSimulationApplicationVersion_613363;
-          body: JsonNode): Recallable =
-  ## createSimulationApplicationVersion
-  ## Creates a simulation application with a specific revision id.
+proc call*(call_613375: Call_CreateSimulationApplication_613363; body: JsonNode): Recallable =
+  ## createSimulationApplication
+  ## Creates a simulation application.
   ##   body: JObject (required)
   var body_613376 = newJObject()
   if body != nil:
     body_613376 = body
   result = call_613375.call(nil, nil, nil, nil, body_613376)
 
-var createSimulationApplicationVersion* = Call_CreateSimulationApplicationVersion_613363(
-    name: "createSimulationApplicationVersion", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/createSimulationApplicationVersion",
-    validator: validate_CreateSimulationApplicationVersion_613364, base: "/",
-    url: url_CreateSimulationApplicationVersion_613365,
+var createSimulationApplication* = Call_CreateSimulationApplication_613363(
+    name: "createSimulationApplication", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/createSimulationApplication",
+    validator: validate_CreateSimulationApplication_613364, base: "/",
+    url: url_CreateSimulationApplication_613365,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateSimulationJob_613377 = ref object of OpenApiRestCall_612658
-proc url_CreateSimulationJob_613379(protocol: Scheme; host: string; base: string;
-                                   route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateSimulationApplicationVersion_613377 = ref object of OpenApiRestCall_612658
+proc url_CreateSimulationApplicationVersion_613379(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1220,10 +1218,9 @@ proc url_CreateSimulationJob_613379(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_CreateSimulationJob_613378(path: JsonNode; query: JsonNode;
-                                        header: JsonNode; formData: JsonNode;
-                                        body: JsonNode): JsonNode =
-  ## <p>Creates a simulation job.</p> <note> <p>After 90 days, simulation jobs expire and will be deleted. They will no longer be accessible. </p> </note>
+proc validate_CreateSimulationApplicationVersion_613378(path: JsonNode;
+    query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Creates a simulation application with a specific revision id.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1285,9 +1282,10 @@ proc validate_CreateSimulationJob_613378(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613388: Call_CreateSimulationJob_613377; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Creates a simulation job.</p> <note> <p>After 90 days, simulation jobs expire and will be deleted. They will no longer be accessible. </p> </note>
+proc call*(call_613388: Call_CreateSimulationApplicationVersion_613377;
+          path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
+          body: JsonNode): Recallable =
+  ## Creates a simulation application with a specific revision id.
   ## 
   let valid = call_613388.validator(path, query, header, formData, body)
   let scheme = call_613388.pickScheme
@@ -1298,24 +1296,26 @@ proc call*(call_613388: Call_CreateSimulationJob_613377; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613388, url, valid)
 
-proc call*(call_613389: Call_CreateSimulationJob_613377; body: JsonNode): Recallable =
-  ## createSimulationJob
-  ## <p>Creates a simulation job.</p> <note> <p>After 90 days, simulation jobs expire and will be deleted. They will no longer be accessible. </p> </note>
+proc call*(call_613389: Call_CreateSimulationApplicationVersion_613377;
+          body: JsonNode): Recallable =
+  ## createSimulationApplicationVersion
+  ## Creates a simulation application with a specific revision id.
   ##   body: JObject (required)
   var body_613390 = newJObject()
   if body != nil:
     body_613390 = body
   result = call_613389.call(nil, nil, nil, nil, body_613390)
 
-var createSimulationJob* = Call_CreateSimulationJob_613377(
-    name: "createSimulationJob", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/createSimulationJob",
-    validator: validate_CreateSimulationJob_613378, base: "/",
-    url: url_CreateSimulationJob_613379, schemes: {Scheme.Https, Scheme.Http})
+var createSimulationApplicationVersion* = Call_CreateSimulationApplicationVersion_613377(
+    name: "createSimulationApplicationVersion", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/createSimulationApplicationVersion",
+    validator: validate_CreateSimulationApplicationVersion_613378, base: "/",
+    url: url_CreateSimulationApplicationVersion_613379,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteFleet_613391 = ref object of OpenApiRestCall_612658
-proc url_DeleteFleet_613393(protocol: Scheme; host: string; base: string;
-                           route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_CreateSimulationJob_613391 = ref object of OpenApiRestCall_612658
+proc url_CreateSimulationJob_613393(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1326,9 +1326,10 @@ proc url_DeleteFleet_613393(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteFleet_613392(path: JsonNode; query: JsonNode; header: JsonNode;
-                                formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes a fleet.
+proc validate_CreateSimulationJob_613392(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## <p>Creates a simulation job.</p> <note> <p>After 90 days, simulation jobs expire and will be deleted. They will no longer be accessible. </p> </note>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1390,9 +1391,9 @@ proc validate_DeleteFleet_613392(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613402: Call_DeleteFleet_613391; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a fleet.
+proc call*(call_613402: Call_CreateSimulationJob_613391; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Creates a simulation job.</p> <note> <p>After 90 days, simulation jobs expire and will be deleted. They will no longer be accessible. </p> </note>
   ## 
   let valid = call_613402.validator(path, query, header, formData, body)
   let scheme = call_613402.pickScheme
@@ -1403,25 +1404,23 @@ proc call*(call_613402: Call_DeleteFleet_613391; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_613402, url, valid)
 
-proc call*(call_613403: Call_DeleteFleet_613391; body: JsonNode): Recallable =
-  ## deleteFleet
-  ## Deletes a fleet.
+proc call*(call_613403: Call_CreateSimulationJob_613391; body: JsonNode): Recallable =
+  ## createSimulationJob
+  ## <p>Creates a simulation job.</p> <note> <p>After 90 days, simulation jobs expire and will be deleted. They will no longer be accessible. </p> </note>
   ##   body: JObject (required)
   var body_613404 = newJObject()
   if body != nil:
     body_613404 = body
   result = call_613403.call(nil, nil, nil, nil, body_613404)
 
-var deleteFleet* = Call_DeleteFleet_613391(name: "deleteFleet",
-                                        meth: HttpMethod.HttpPost,
-                                        host: "robomaker.amazonaws.com",
-                                        route: "/deleteFleet",
-                                        validator: validate_DeleteFleet_613392,
-                                        base: "/", url: url_DeleteFleet_613393,
-                                        schemes: {Scheme.Https, Scheme.Http})
+var createSimulationJob* = Call_CreateSimulationJob_613391(
+    name: "createSimulationJob", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/createSimulationJob",
+    validator: validate_CreateSimulationJob_613392, base: "/",
+    url: url_CreateSimulationJob_613393, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRobot_613405 = ref object of OpenApiRestCall_612658
-proc url_DeleteRobot_613407(protocol: Scheme; host: string; base: string;
+  Call_DeleteFleet_613405 = ref object of OpenApiRestCall_612658
+proc url_DeleteFleet_613407(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -1433,9 +1432,9 @@ proc url_DeleteRobot_613407(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeleteRobot_613406(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteFleet_613406(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes a robot.
+  ## Deletes a fleet.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1497,9 +1496,9 @@ proc validate_DeleteRobot_613406(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613416: Call_DeleteRobot_613405; path: JsonNode; query: JsonNode;
+proc call*(call_613416: Call_DeleteFleet_613405; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a robot.
+  ## Deletes a fleet.
   ## 
   let valid = call_613416.validator(path, query, header, formData, body)
   let scheme = call_613416.pickScheme
@@ -1510,26 +1509,26 @@ proc call*(call_613416: Call_DeleteRobot_613405; path: JsonNode; query: JsonNode
                          valid.getOrDefault("query"))
   result = atozHook(call_613416, url, valid)
 
-proc call*(call_613417: Call_DeleteRobot_613405; body: JsonNode): Recallable =
-  ## deleteRobot
-  ## Deletes a robot.
+proc call*(call_613417: Call_DeleteFleet_613405; body: JsonNode): Recallable =
+  ## deleteFleet
+  ## Deletes a fleet.
   ##   body: JObject (required)
   var body_613418 = newJObject()
   if body != nil:
     body_613418 = body
   result = call_613417.call(nil, nil, nil, nil, body_613418)
 
-var deleteRobot* = Call_DeleteRobot_613405(name: "deleteRobot",
+var deleteFleet* = Call_DeleteFleet_613405(name: "deleteFleet",
                                         meth: HttpMethod.HttpPost,
                                         host: "robomaker.amazonaws.com",
-                                        route: "/deleteRobot",
-                                        validator: validate_DeleteRobot_613406,
-                                        base: "/", url: url_DeleteRobot_613407,
+                                        route: "/deleteFleet",
+                                        validator: validate_DeleteFleet_613406,
+                                        base: "/", url: url_DeleteFleet_613407,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteRobotApplication_613419 = ref object of OpenApiRestCall_612658
-proc url_DeleteRobotApplication_613421(protocol: Scheme; host: string; base: string;
-                                      route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteRobot_613419 = ref object of OpenApiRestCall_612658
+proc url_DeleteRobot_613421(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1540,9 +1539,9 @@ proc url_DeleteRobotApplication_613421(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_DeleteRobotApplication_613420(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes a robot application.
+proc validate_DeleteRobot_613420(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## Deletes a robot.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1604,9 +1603,9 @@ proc validate_DeleteRobotApplication_613420(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613430: Call_DeleteRobotApplication_613419; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a robot application.
+proc call*(call_613430: Call_DeleteRobot_613419; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Deletes a robot.
   ## 
   let valid = call_613430.validator(path, query, header, formData, body)
   let scheme = call_613430.pickScheme
@@ -1617,24 +1616,26 @@ proc call*(call_613430: Call_DeleteRobotApplication_613419; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613430, url, valid)
 
-proc call*(call_613431: Call_DeleteRobotApplication_613419; body: JsonNode): Recallable =
-  ## deleteRobotApplication
-  ## Deletes a robot application.
+proc call*(call_613431: Call_DeleteRobot_613419; body: JsonNode): Recallable =
+  ## deleteRobot
+  ## Deletes a robot.
   ##   body: JObject (required)
   var body_613432 = newJObject()
   if body != nil:
     body_613432 = body
   result = call_613431.call(nil, nil, nil, nil, body_613432)
 
-var deleteRobotApplication* = Call_DeleteRobotApplication_613419(
-    name: "deleteRobotApplication", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/deleteRobotApplication",
-    validator: validate_DeleteRobotApplication_613420, base: "/",
-    url: url_DeleteRobotApplication_613421, schemes: {Scheme.Https, Scheme.Http})
+var deleteRobot* = Call_DeleteRobot_613419(name: "deleteRobot",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "robomaker.amazonaws.com",
+                                        route: "/deleteRobot",
+                                        validator: validate_DeleteRobot_613420,
+                                        base: "/", url: url_DeleteRobot_613421,
+                                        schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSimulationApplication_613433 = ref object of OpenApiRestCall_612658
-proc url_DeleteSimulationApplication_613435(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteRobotApplication_613433 = ref object of OpenApiRestCall_612658
+proc url_DeleteRobotApplication_613435(protocol: Scheme; host: string; base: string;
+                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1645,9 +1646,9 @@ proc url_DeleteSimulationApplication_613435(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DeleteSimulationApplication_613434(path: JsonNode; query: JsonNode;
+proc validate_DeleteRobotApplication_613434(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Deletes a simulation application.
+  ## Deletes a robot application.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1709,9 +1710,9 @@ proc validate_DeleteSimulationApplication_613434(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613444: Call_DeleteSimulationApplication_613433; path: JsonNode;
+proc call*(call_613444: Call_DeleteRobotApplication_613433; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deletes a simulation application.
+  ## Deletes a robot application.
   ## 
   let valid = call_613444.validator(path, query, header, formData, body)
   let scheme = call_613444.pickScheme
@@ -1722,25 +1723,24 @@ proc call*(call_613444: Call_DeleteSimulationApplication_613433; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613444, url, valid)
 
-proc call*(call_613445: Call_DeleteSimulationApplication_613433; body: JsonNode): Recallable =
-  ## deleteSimulationApplication
-  ## Deletes a simulation application.
+proc call*(call_613445: Call_DeleteRobotApplication_613433; body: JsonNode): Recallable =
+  ## deleteRobotApplication
+  ## Deletes a robot application.
   ##   body: JObject (required)
   var body_613446 = newJObject()
   if body != nil:
     body_613446 = body
   result = call_613445.call(nil, nil, nil, nil, body_613446)
 
-var deleteSimulationApplication* = Call_DeleteSimulationApplication_613433(
-    name: "deleteSimulationApplication", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/deleteSimulationApplication",
-    validator: validate_DeleteSimulationApplication_613434, base: "/",
-    url: url_DeleteSimulationApplication_613435,
-    schemes: {Scheme.Https, Scheme.Http})
+var deleteRobotApplication* = Call_DeleteRobotApplication_613433(
+    name: "deleteRobotApplication", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/deleteRobotApplication",
+    validator: validate_DeleteRobotApplication_613434, base: "/",
+    url: url_DeleteRobotApplication_613435, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterRobot_613447 = ref object of OpenApiRestCall_612658
-proc url_DeregisterRobot_613449(protocol: Scheme; host: string; base: string;
-                               route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeleteSimulationApplication_613447 = ref object of OpenApiRestCall_612658
+proc url_DeleteSimulationApplication_613449(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1751,10 +1751,9 @@ proc url_DeregisterRobot_613449(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DeregisterRobot_613448(path: JsonNode; query: JsonNode;
-                                    header: JsonNode; formData: JsonNode;
-                                    body: JsonNode): JsonNode =
-  ## Deregisters a robot.
+proc validate_DeleteSimulationApplication_613448(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Deletes a simulation application.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1816,9 +1815,9 @@ proc validate_DeregisterRobot_613448(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613458: Call_DeregisterRobot_613447; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Deregisters a robot.
+proc call*(call_613458: Call_DeleteSimulationApplication_613447; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Deletes a simulation application.
   ## 
   let valid = call_613458.validator(path, query, header, formData, body)
   let scheme = call_613458.pickScheme
@@ -1829,23 +1828,25 @@ proc call*(call_613458: Call_DeregisterRobot_613447; path: JsonNode; query: Json
                          valid.getOrDefault("query"))
   result = atozHook(call_613458, url, valid)
 
-proc call*(call_613459: Call_DeregisterRobot_613447; body: JsonNode): Recallable =
-  ## deregisterRobot
-  ## Deregisters a robot.
+proc call*(call_613459: Call_DeleteSimulationApplication_613447; body: JsonNode): Recallable =
+  ## deleteSimulationApplication
+  ## Deletes a simulation application.
   ##   body: JObject (required)
   var body_613460 = newJObject()
   if body != nil:
     body_613460 = body
   result = call_613459.call(nil, nil, nil, nil, body_613460)
 
-var deregisterRobot* = Call_DeregisterRobot_613447(name: "deregisterRobot",
-    meth: HttpMethod.HttpPost, host: "robomaker.amazonaws.com",
-    route: "/deregisterRobot", validator: validate_DeregisterRobot_613448,
-    base: "/", url: url_DeregisterRobot_613449, schemes: {Scheme.Https, Scheme.Http})
+var deleteSimulationApplication* = Call_DeleteSimulationApplication_613447(
+    name: "deleteSimulationApplication", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/deleteSimulationApplication",
+    validator: validate_DeleteSimulationApplication_613448, base: "/",
+    url: url_DeleteSimulationApplication_613449,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDeploymentJob_613461 = ref object of OpenApiRestCall_612658
-proc url_DescribeDeploymentJob_613463(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DeregisterRobot_613461 = ref object of OpenApiRestCall_612658
+proc url_DeregisterRobot_613463(protocol: Scheme; host: string; base: string;
+                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1856,9 +1857,10 @@ proc url_DescribeDeploymentJob_613463(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_DescribeDeploymentJob_613462(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes a deployment job.
+proc validate_DeregisterRobot_613462(path: JsonNode; query: JsonNode;
+                                    header: JsonNode; formData: JsonNode;
+                                    body: JsonNode): JsonNode =
+  ## Deregisters a robot.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1920,9 +1922,9 @@ proc validate_DescribeDeploymentJob_613462(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613472: Call_DescribeDeploymentJob_613461; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes a deployment job.
+proc call*(call_613472: Call_DeregisterRobot_613461; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Deregisters a robot.
   ## 
   let valid = call_613472.validator(path, query, header, formData, body)
   let scheme = call_613472.pickScheme
@@ -1933,24 +1935,23 @@ proc call*(call_613472: Call_DescribeDeploymentJob_613461; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613472, url, valid)
 
-proc call*(call_613473: Call_DescribeDeploymentJob_613461; body: JsonNode): Recallable =
-  ## describeDeploymentJob
-  ## Describes a deployment job.
+proc call*(call_613473: Call_DeregisterRobot_613461; body: JsonNode): Recallable =
+  ## deregisterRobot
+  ## Deregisters a robot.
   ##   body: JObject (required)
   var body_613474 = newJObject()
   if body != nil:
     body_613474 = body
   result = call_613473.call(nil, nil, nil, nil, body_613474)
 
-var describeDeploymentJob* = Call_DescribeDeploymentJob_613461(
-    name: "describeDeploymentJob", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/describeDeploymentJob",
-    validator: validate_DescribeDeploymentJob_613462, base: "/",
-    url: url_DescribeDeploymentJob_613463, schemes: {Scheme.Https, Scheme.Http})
+var deregisterRobot* = Call_DeregisterRobot_613461(name: "deregisterRobot",
+    meth: HttpMethod.HttpPost, host: "robomaker.amazonaws.com",
+    route: "/deregisterRobot", validator: validate_DeregisterRobot_613462,
+    base: "/", url: url_DeregisterRobot_613463, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeFleet_613475 = ref object of OpenApiRestCall_612658
-proc url_DescribeFleet_613477(protocol: Scheme; host: string; base: string;
-                             route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeDeploymentJob_613475 = ref object of OpenApiRestCall_612658
+proc url_DescribeDeploymentJob_613477(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1961,9 +1962,9 @@ proc url_DescribeFleet_613477(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeFleet_613476(path: JsonNode; query: JsonNode; header: JsonNode;
-                                  formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes a fleet.
+proc validate_DescribeDeploymentJob_613476(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Describes a deployment job.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2025,9 +2026,9 @@ proc validate_DescribeFleet_613476(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_613486: Call_DescribeFleet_613475; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes a fleet.
+proc call*(call_613486: Call_DescribeDeploymentJob_613475; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Describes a deployment job.
   ## 
   let valid = call_613486.validator(path, query, header, formData, body)
   let scheme = call_613486.pickScheme
@@ -2038,22 +2039,23 @@ proc call*(call_613486: Call_DescribeFleet_613475; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_613486, url, valid)
 
-proc call*(call_613487: Call_DescribeFleet_613475; body: JsonNode): Recallable =
-  ## describeFleet
-  ## Describes a fleet.
+proc call*(call_613487: Call_DescribeDeploymentJob_613475; body: JsonNode): Recallable =
+  ## describeDeploymentJob
+  ## Describes a deployment job.
   ##   body: JObject (required)
   var body_613488 = newJObject()
   if body != nil:
     body_613488 = body
   result = call_613487.call(nil, nil, nil, nil, body_613488)
 
-var describeFleet* = Call_DescribeFleet_613475(name: "describeFleet",
-    meth: HttpMethod.HttpPost, host: "robomaker.amazonaws.com",
-    route: "/describeFleet", validator: validate_DescribeFleet_613476, base: "/",
-    url: url_DescribeFleet_613477, schemes: {Scheme.Https, Scheme.Http})
+var describeDeploymentJob* = Call_DescribeDeploymentJob_613475(
+    name: "describeDeploymentJob", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/describeDeploymentJob",
+    validator: validate_DescribeDeploymentJob_613476, base: "/",
+    url: url_DescribeDeploymentJob_613477, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeRobot_613489 = ref object of OpenApiRestCall_612658
-proc url_DescribeRobot_613491(protocol: Scheme; host: string; base: string;
+  Call_DescribeFleet_613489 = ref object of OpenApiRestCall_612658
+proc url_DescribeFleet_613491(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2065,9 +2067,9 @@ proc url_DescribeRobot_613491(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_DescribeRobot_613490(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeFleet_613490(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes a robot.
+  ## Describes a fleet.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2129,9 +2131,9 @@ proc validate_DescribeRobot_613490(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_613500: Call_DescribeRobot_613489; path: JsonNode; query: JsonNode;
+proc call*(call_613500: Call_DescribeFleet_613489; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes a robot.
+  ## Describes a fleet.
   ## 
   let valid = call_613500.validator(path, query, header, formData, body)
   let scheme = call_613500.pickScheme
@@ -2142,24 +2144,23 @@ proc call*(call_613500: Call_DescribeRobot_613489; path: JsonNode; query: JsonNo
                          valid.getOrDefault("query"))
   result = atozHook(call_613500, url, valid)
 
-proc call*(call_613501: Call_DescribeRobot_613489; body: JsonNode): Recallable =
-  ## describeRobot
-  ## Describes a robot.
+proc call*(call_613501: Call_DescribeFleet_613489; body: JsonNode): Recallable =
+  ## describeFleet
+  ## Describes a fleet.
   ##   body: JObject (required)
   var body_613502 = newJObject()
   if body != nil:
     body_613502 = body
   result = call_613501.call(nil, nil, nil, nil, body_613502)
 
-var describeRobot* = Call_DescribeRobot_613489(name: "describeRobot",
+var describeFleet* = Call_DescribeFleet_613489(name: "describeFleet",
     meth: HttpMethod.HttpPost, host: "robomaker.amazonaws.com",
-    route: "/describeRobot", validator: validate_DescribeRobot_613490, base: "/",
-    url: url_DescribeRobot_613491, schemes: {Scheme.Https, Scheme.Http})
+    route: "/describeFleet", validator: validate_DescribeFleet_613490, base: "/",
+    url: url_DescribeFleet_613491, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeRobotApplication_613503 = ref object of OpenApiRestCall_612658
-proc url_DescribeRobotApplication_613505(protocol: Scheme; host: string;
-                                        base: string; route: string; path: JsonNode;
-                                        query: JsonNode): Uri =
+  Call_DescribeRobot_613503 = ref object of OpenApiRestCall_612658
+proc url_DescribeRobot_613505(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2170,9 +2171,9 @@ proc url_DescribeRobotApplication_613505(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeRobotApplication_613504(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes a robot application.
+proc validate_DescribeRobot_613504(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Describes a robot.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2234,9 +2235,9 @@ proc validate_DescribeRobotApplication_613504(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613514: Call_DescribeRobotApplication_613503; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes a robot application.
+proc call*(call_613514: Call_DescribeRobot_613503; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Describes a robot.
   ## 
   let valid = call_613514.validator(path, query, header, formData, body)
   let scheme = call_613514.pickScheme
@@ -2247,24 +2248,24 @@ proc call*(call_613514: Call_DescribeRobotApplication_613503; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613514, url, valid)
 
-proc call*(call_613515: Call_DescribeRobotApplication_613503; body: JsonNode): Recallable =
-  ## describeRobotApplication
-  ## Describes a robot application.
+proc call*(call_613515: Call_DescribeRobot_613503; body: JsonNode): Recallable =
+  ## describeRobot
+  ## Describes a robot.
   ##   body: JObject (required)
   var body_613516 = newJObject()
   if body != nil:
     body_613516 = body
   result = call_613515.call(nil, nil, nil, nil, body_613516)
 
-var describeRobotApplication* = Call_DescribeRobotApplication_613503(
-    name: "describeRobotApplication", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/describeRobotApplication",
-    validator: validate_DescribeRobotApplication_613504, base: "/",
-    url: url_DescribeRobotApplication_613505, schemes: {Scheme.Https, Scheme.Http})
+var describeRobot* = Call_DescribeRobot_613503(name: "describeRobot",
+    meth: HttpMethod.HttpPost, host: "robomaker.amazonaws.com",
+    route: "/describeRobot", validator: validate_DescribeRobot_613504, base: "/",
+    url: url_DescribeRobot_613505, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSimulationApplication_613517 = ref object of OpenApiRestCall_612658
-proc url_DescribeSimulationApplication_613519(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeRobotApplication_613517 = ref object of OpenApiRestCall_612658
+proc url_DescribeRobotApplication_613519(protocol: Scheme; host: string;
+                                        base: string; route: string; path: JsonNode;
+                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2275,9 +2276,9 @@ proc url_DescribeSimulationApplication_613519(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_DescribeSimulationApplication_613518(path: JsonNode; query: JsonNode;
+proc validate_DescribeRobotApplication_613518(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes a simulation application.
+  ## Describes a robot application.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2339,9 +2340,9 @@ proc validate_DescribeSimulationApplication_613518(path: JsonNode; query: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613528: Call_DescribeSimulationApplication_613517; path: JsonNode;
+proc call*(call_613528: Call_DescribeRobotApplication_613517; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes a simulation application.
+  ## Describes a robot application.
   ## 
   let valid = call_613528.validator(path, query, header, formData, body)
   let scheme = call_613528.pickScheme
@@ -2352,25 +2353,24 @@ proc call*(call_613528: Call_DescribeSimulationApplication_613517; path: JsonNod
                          valid.getOrDefault("query"))
   result = atozHook(call_613528, url, valid)
 
-proc call*(call_613529: Call_DescribeSimulationApplication_613517; body: JsonNode): Recallable =
-  ## describeSimulationApplication
-  ## Describes a simulation application.
+proc call*(call_613529: Call_DescribeRobotApplication_613517; body: JsonNode): Recallable =
+  ## describeRobotApplication
+  ## Describes a robot application.
   ##   body: JObject (required)
   var body_613530 = newJObject()
   if body != nil:
     body_613530 = body
   result = call_613529.call(nil, nil, nil, nil, body_613530)
 
-var describeSimulationApplication* = Call_DescribeSimulationApplication_613517(
-    name: "describeSimulationApplication", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/describeSimulationApplication",
-    validator: validate_DescribeSimulationApplication_613518, base: "/",
-    url: url_DescribeSimulationApplication_613519,
-    schemes: {Scheme.Https, Scheme.Http})
+var describeRobotApplication* = Call_DescribeRobotApplication_613517(
+    name: "describeRobotApplication", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/describeRobotApplication",
+    validator: validate_DescribeRobotApplication_613518, base: "/",
+    url: url_DescribeRobotApplication_613519, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSimulationJob_613531 = ref object of OpenApiRestCall_612658
-proc url_DescribeSimulationJob_613533(protocol: Scheme; host: string; base: string;
-                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_DescribeSimulationApplication_613531 = ref object of OpenApiRestCall_612658
+proc url_DescribeSimulationApplication_613533(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -2381,9 +2381,9 @@ proc url_DescribeSimulationJob_613533(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_DescribeSimulationJob_613532(path: JsonNode; query: JsonNode;
+proc validate_DescribeSimulationApplication_613532(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Describes a simulation job.
+  ## Describes a simulation application.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2445,9 +2445,9 @@ proc validate_DescribeSimulationJob_613532(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613542: Call_DescribeSimulationJob_613531; path: JsonNode;
+proc call*(call_613542: Call_DescribeSimulationApplication_613531; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Describes a simulation job.
+  ## Describes a simulation application.
   ## 
   let valid = call_613542.validator(path, query, header, formData, body)
   let scheme = call_613542.pickScheme
@@ -2458,282 +2458,24 @@ proc call*(call_613542: Call_DescribeSimulationJob_613531; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_613542, url, valid)
 
-proc call*(call_613543: Call_DescribeSimulationJob_613531; body: JsonNode): Recallable =
-  ## describeSimulationJob
-  ## Describes a simulation job.
+proc call*(call_613543: Call_DescribeSimulationApplication_613531; body: JsonNode): Recallable =
+  ## describeSimulationApplication
+  ## Describes a simulation application.
   ##   body: JObject (required)
   var body_613544 = newJObject()
   if body != nil:
     body_613544 = body
   result = call_613543.call(nil, nil, nil, nil, body_613544)
 
-var describeSimulationJob* = Call_DescribeSimulationJob_613531(
-    name: "describeSimulationJob", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/describeSimulationJob",
-    validator: validate_DescribeSimulationJob_613532, base: "/",
-    url: url_DescribeSimulationJob_613533, schemes: {Scheme.Https, Scheme.Http})
+var describeSimulationApplication* = Call_DescribeSimulationApplication_613531(
+    name: "describeSimulationApplication", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/describeSimulationApplication",
+    validator: validate_DescribeSimulationApplication_613532, base: "/",
+    url: url_DescribeSimulationApplication_613533,
+    schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListDeploymentJobs_613545 = ref object of OpenApiRestCall_612658
-proc url_ListDeploymentJobs_613547(protocol: Scheme; host: string; base: string;
-                                  route: string; path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListDeploymentJobs_613546(path: JsonNode; query: JsonNode;
-                                       header: JsonNode; formData: JsonNode;
-                                       body: JsonNode): JsonNode =
-  ## <p>Returns a list of deployment jobs for a fleet. You can optionally provide filters to retrieve specific deployment jobs. </p> <note> <p> </p> </note>
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : Pagination token
-  ##   maxResults: JString
-  ##             : Pagination limit
-  section = newJObject()
-  var valid_613548 = query.getOrDefault("nextToken")
-  valid_613548 = validateParameter(valid_613548, JString, required = false,
-                                 default = nil)
-  if valid_613548 != nil:
-    section.add "nextToken", valid_613548
-  var valid_613549 = query.getOrDefault("maxResults")
-  valid_613549 = validateParameter(valid_613549, JString, required = false,
-                                 default = nil)
-  if valid_613549 != nil:
-    section.add "maxResults", valid_613549
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_613550 = header.getOrDefault("X-Amz-Signature")
-  valid_613550 = validateParameter(valid_613550, JString, required = false,
-                                 default = nil)
-  if valid_613550 != nil:
-    section.add "X-Amz-Signature", valid_613550
-  var valid_613551 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613551 = validateParameter(valid_613551, JString, required = false,
-                                 default = nil)
-  if valid_613551 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613551
-  var valid_613552 = header.getOrDefault("X-Amz-Date")
-  valid_613552 = validateParameter(valid_613552, JString, required = false,
-                                 default = nil)
-  if valid_613552 != nil:
-    section.add "X-Amz-Date", valid_613552
-  var valid_613553 = header.getOrDefault("X-Amz-Credential")
-  valid_613553 = validateParameter(valid_613553, JString, required = false,
-                                 default = nil)
-  if valid_613553 != nil:
-    section.add "X-Amz-Credential", valid_613553
-  var valid_613554 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613554 = validateParameter(valid_613554, JString, required = false,
-                                 default = nil)
-  if valid_613554 != nil:
-    section.add "X-Amz-Security-Token", valid_613554
-  var valid_613555 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613555 = validateParameter(valid_613555, JString, required = false,
-                                 default = nil)
-  if valid_613555 != nil:
-    section.add "X-Amz-Algorithm", valid_613555
-  var valid_613556 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613556 = validateParameter(valid_613556, JString, required = false,
-                                 default = nil)
-  if valid_613556 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613556
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_613558: Call_ListDeploymentJobs_613545; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## <p>Returns a list of deployment jobs for a fleet. You can optionally provide filters to retrieve specific deployment jobs. </p> <note> <p> </p> </note>
-  ## 
-  let valid = call_613558.validator(path, query, header, formData, body)
-  let scheme = call_613558.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613558.url(scheme.get, call_613558.host, call_613558.base,
-                         call_613558.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_613558, url, valid)
-
-proc call*(call_613559: Call_ListDeploymentJobs_613545; body: JsonNode;
-          nextToken: string = ""; maxResults: string = ""): Recallable =
-  ## listDeploymentJobs
-  ## <p>Returns a list of deployment jobs for a fleet. You can optionally provide filters to retrieve specific deployment jobs. </p> <note> <p> </p> </note>
-  ##   nextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   maxResults: string
-  ##             : Pagination limit
-  var query_613560 = newJObject()
-  var body_613561 = newJObject()
-  add(query_613560, "nextToken", newJString(nextToken))
-  if body != nil:
-    body_613561 = body
-  add(query_613560, "maxResults", newJString(maxResults))
-  result = call_613559.call(nil, query_613560, nil, nil, body_613561)
-
-var listDeploymentJobs* = Call_ListDeploymentJobs_613545(
-    name: "listDeploymentJobs", meth: HttpMethod.HttpPost,
-    host: "robomaker.amazonaws.com", route: "/listDeploymentJobs",
-    validator: validate_ListDeploymentJobs_613546, base: "/",
-    url: url_ListDeploymentJobs_613547, schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListFleets_613563 = ref object of OpenApiRestCall_612658
-proc url_ListFleets_613565(protocol: Scheme; host: string; base: string; route: string;
-                          path: JsonNode; query: JsonNode): Uri =
-  result.scheme = $protocol
-  result.hostname = host
-  result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
-    result.path = route
-  else:
-    result.path = base & route
-
-proc validate_ListFleets_613564(path: JsonNode; query: JsonNode; header: JsonNode;
-                               formData: JsonNode; body: JsonNode): JsonNode =
-  ## Returns a list of fleets. You can optionally provide filters to retrieve specific fleets. 
-  ## 
-  var section: JsonNode
-  result = newJObject()
-  section = newJObject()
-  result.add "path", section
-  ## parameters in `query` object:
-  ##   nextToken: JString
-  ##            : Pagination token
-  ##   maxResults: JString
-  ##             : Pagination limit
-  section = newJObject()
-  var valid_613566 = query.getOrDefault("nextToken")
-  valid_613566 = validateParameter(valid_613566, JString, required = false,
-                                 default = nil)
-  if valid_613566 != nil:
-    section.add "nextToken", valid_613566
-  var valid_613567 = query.getOrDefault("maxResults")
-  valid_613567 = validateParameter(valid_613567, JString, required = false,
-                                 default = nil)
-  if valid_613567 != nil:
-    section.add "maxResults", valid_613567
-  result.add "query", section
-  ## parameters in `header` object:
-  ##   X-Amz-Signature: JString
-  ##   X-Amz-Content-Sha256: JString
-  ##   X-Amz-Date: JString
-  ##   X-Amz-Credential: JString
-  ##   X-Amz-Security-Token: JString
-  ##   X-Amz-Algorithm: JString
-  ##   X-Amz-SignedHeaders: JString
-  section = newJObject()
-  var valid_613568 = header.getOrDefault("X-Amz-Signature")
-  valid_613568 = validateParameter(valid_613568, JString, required = false,
-                                 default = nil)
-  if valid_613568 != nil:
-    section.add "X-Amz-Signature", valid_613568
-  var valid_613569 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613569 = validateParameter(valid_613569, JString, required = false,
-                                 default = nil)
-  if valid_613569 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613569
-  var valid_613570 = header.getOrDefault("X-Amz-Date")
-  valid_613570 = validateParameter(valid_613570, JString, required = false,
-                                 default = nil)
-  if valid_613570 != nil:
-    section.add "X-Amz-Date", valid_613570
-  var valid_613571 = header.getOrDefault("X-Amz-Credential")
-  valid_613571 = validateParameter(valid_613571, JString, required = false,
-                                 default = nil)
-  if valid_613571 != nil:
-    section.add "X-Amz-Credential", valid_613571
-  var valid_613572 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613572 = validateParameter(valid_613572, JString, required = false,
-                                 default = nil)
-  if valid_613572 != nil:
-    section.add "X-Amz-Security-Token", valid_613572
-  var valid_613573 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613573 = validateParameter(valid_613573, JString, required = false,
-                                 default = nil)
-  if valid_613573 != nil:
-    section.add "X-Amz-Algorithm", valid_613573
-  var valid_613574 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613574 = validateParameter(valid_613574, JString, required = false,
-                                 default = nil)
-  if valid_613574 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613574
-  result.add "header", section
-  section = newJObject()
-  result.add "formData", section
-  ## parameters in `body` object:
-  ##   body: JObject (required)
-  assert body != nil, "body argument is necessary"
-  section = validateParameter(body, JObject, required = true, default = nil)
-  if body != nil:
-    result.add "body", body
-
-proc call*(call_613576: Call_ListFleets_613563; path: JsonNode; query: JsonNode;
-          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Returns a list of fleets. You can optionally provide filters to retrieve specific fleets. 
-  ## 
-  let valid = call_613576.validator(path, query, header, formData, body)
-  let scheme = call_613576.pickScheme
-  if scheme.isNone:
-    raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613576.url(scheme.get, call_613576.host, call_613576.base,
-                         call_613576.route, valid.getOrDefault("path"),
-                         valid.getOrDefault("query"))
-  result = atozHook(call_613576, url, valid)
-
-proc call*(call_613577: Call_ListFleets_613563; body: JsonNode;
-          nextToken: string = ""; maxResults: string = ""): Recallable =
-  ## listFleets
-  ## Returns a list of fleets. You can optionally provide filters to retrieve specific fleets. 
-  ##   nextToken: string
-  ##            : Pagination token
-  ##   body: JObject (required)
-  ##   maxResults: string
-  ##             : Pagination limit
-  var query_613578 = newJObject()
-  var body_613579 = newJObject()
-  add(query_613578, "nextToken", newJString(nextToken))
-  if body != nil:
-    body_613579 = body
-  add(query_613578, "maxResults", newJString(maxResults))
-  result = call_613577.call(nil, query_613578, nil, nil, body_613579)
-
-var listFleets* = Call_ListFleets_613563(name: "listFleets",
-                                      meth: HttpMethod.HttpPost,
-                                      host: "robomaker.amazonaws.com",
-                                      route: "/listFleets",
-                                      validator: validate_ListFleets_613564,
-                                      base: "/", url: url_ListFleets_613565,
-                                      schemes: {Scheme.Https, Scheme.Http})
-type
-  Call_ListRobotApplications_613580 = ref object of OpenApiRestCall_612658
-proc url_ListRobotApplications_613582(protocol: Scheme; host: string; base: string;
+  Call_DescribeSimulationJob_613545 = ref object of OpenApiRestCall_612658
+proc url_DescribeSimulationJob_613547(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2745,7 +2487,477 @@ proc url_ListRobotApplications_613582(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_ListRobotApplications_613581(path: JsonNode; query: JsonNode;
+proc validate_DescribeSimulationJob_613546(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Describes a simulation job.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_613548 = header.getOrDefault("X-Amz-Signature")
+  valid_613548 = validateParameter(valid_613548, JString, required = false,
+                                 default = nil)
+  if valid_613548 != nil:
+    section.add "X-Amz-Signature", valid_613548
+  var valid_613549 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613549 = validateParameter(valid_613549, JString, required = false,
+                                 default = nil)
+  if valid_613549 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613549
+  var valid_613550 = header.getOrDefault("X-Amz-Date")
+  valid_613550 = validateParameter(valid_613550, JString, required = false,
+                                 default = nil)
+  if valid_613550 != nil:
+    section.add "X-Amz-Date", valid_613550
+  var valid_613551 = header.getOrDefault("X-Amz-Credential")
+  valid_613551 = validateParameter(valid_613551, JString, required = false,
+                                 default = nil)
+  if valid_613551 != nil:
+    section.add "X-Amz-Credential", valid_613551
+  var valid_613552 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613552 = validateParameter(valid_613552, JString, required = false,
+                                 default = nil)
+  if valid_613552 != nil:
+    section.add "X-Amz-Security-Token", valid_613552
+  var valid_613553 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613553 = validateParameter(valid_613553, JString, required = false,
+                                 default = nil)
+  if valid_613553 != nil:
+    section.add "X-Amz-Algorithm", valid_613553
+  var valid_613554 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613554 = validateParameter(valid_613554, JString, required = false,
+                                 default = nil)
+  if valid_613554 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613554
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_613556: Call_DescribeSimulationJob_613545; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Describes a simulation job.
+  ## 
+  let valid = call_613556.validator(path, query, header, formData, body)
+  let scheme = call_613556.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_613556.url(scheme.get, call_613556.host, call_613556.base,
+                         call_613556.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_613556, url, valid)
+
+proc call*(call_613557: Call_DescribeSimulationJob_613545; body: JsonNode): Recallable =
+  ## describeSimulationJob
+  ## Describes a simulation job.
+  ##   body: JObject (required)
+  var body_613558 = newJObject()
+  if body != nil:
+    body_613558 = body
+  result = call_613557.call(nil, nil, nil, nil, body_613558)
+
+var describeSimulationJob* = Call_DescribeSimulationJob_613545(
+    name: "describeSimulationJob", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/describeSimulationJob",
+    validator: validate_DescribeSimulationJob_613546, base: "/",
+    url: url_DescribeSimulationJob_613547, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_DescribeSimulationJobBatch_613559 = ref object of OpenApiRestCall_612658
+proc url_DescribeSimulationJobBatch_613561(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_DescribeSimulationJobBatch_613560(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Describes a simulation job batch.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_613562 = header.getOrDefault("X-Amz-Signature")
+  valid_613562 = validateParameter(valid_613562, JString, required = false,
+                                 default = nil)
+  if valid_613562 != nil:
+    section.add "X-Amz-Signature", valid_613562
+  var valid_613563 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613563 = validateParameter(valid_613563, JString, required = false,
+                                 default = nil)
+  if valid_613563 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613563
+  var valid_613564 = header.getOrDefault("X-Amz-Date")
+  valid_613564 = validateParameter(valid_613564, JString, required = false,
+                                 default = nil)
+  if valid_613564 != nil:
+    section.add "X-Amz-Date", valid_613564
+  var valid_613565 = header.getOrDefault("X-Amz-Credential")
+  valid_613565 = validateParameter(valid_613565, JString, required = false,
+                                 default = nil)
+  if valid_613565 != nil:
+    section.add "X-Amz-Credential", valid_613565
+  var valid_613566 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613566 = validateParameter(valid_613566, JString, required = false,
+                                 default = nil)
+  if valid_613566 != nil:
+    section.add "X-Amz-Security-Token", valid_613566
+  var valid_613567 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613567 = validateParameter(valid_613567, JString, required = false,
+                                 default = nil)
+  if valid_613567 != nil:
+    section.add "X-Amz-Algorithm", valid_613567
+  var valid_613568 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613568 = validateParameter(valid_613568, JString, required = false,
+                                 default = nil)
+  if valid_613568 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613568
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_613570: Call_DescribeSimulationJobBatch_613559; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Describes a simulation job batch.
+  ## 
+  let valid = call_613570.validator(path, query, header, formData, body)
+  let scheme = call_613570.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_613570.url(scheme.get, call_613570.host, call_613570.base,
+                         call_613570.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_613570, url, valid)
+
+proc call*(call_613571: Call_DescribeSimulationJobBatch_613559; body: JsonNode): Recallable =
+  ## describeSimulationJobBatch
+  ## Describes a simulation job batch.
+  ##   body: JObject (required)
+  var body_613572 = newJObject()
+  if body != nil:
+    body_613572 = body
+  result = call_613571.call(nil, nil, nil, nil, body_613572)
+
+var describeSimulationJobBatch* = Call_DescribeSimulationJobBatch_613559(
+    name: "describeSimulationJobBatch", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/describeSimulationJobBatch",
+    validator: validate_DescribeSimulationJobBatch_613560, base: "/",
+    url: url_DescribeSimulationJobBatch_613561,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListDeploymentJobs_613573 = ref object of OpenApiRestCall_612658
+proc url_ListDeploymentJobs_613575(protocol: Scheme; host: string; base: string;
+                                  route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListDeploymentJobs_613574(path: JsonNode; query: JsonNode;
+                                       header: JsonNode; formData: JsonNode;
+                                       body: JsonNode): JsonNode =
+  ## Returns a list of deployment jobs for a fleet. You can optionally provide filters to retrieve specific deployment jobs. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   nextToken: JString
+  ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
+  section = newJObject()
+  var valid_613576 = query.getOrDefault("nextToken")
+  valid_613576 = validateParameter(valid_613576, JString, required = false,
+                                 default = nil)
+  if valid_613576 != nil:
+    section.add "nextToken", valid_613576
+  var valid_613577 = query.getOrDefault("maxResults")
+  valid_613577 = validateParameter(valid_613577, JString, required = false,
+                                 default = nil)
+  if valid_613577 != nil:
+    section.add "maxResults", valid_613577
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_613578 = header.getOrDefault("X-Amz-Signature")
+  valid_613578 = validateParameter(valid_613578, JString, required = false,
+                                 default = nil)
+  if valid_613578 != nil:
+    section.add "X-Amz-Signature", valid_613578
+  var valid_613579 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613579 = validateParameter(valid_613579, JString, required = false,
+                                 default = nil)
+  if valid_613579 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613579
+  var valid_613580 = header.getOrDefault("X-Amz-Date")
+  valid_613580 = validateParameter(valid_613580, JString, required = false,
+                                 default = nil)
+  if valid_613580 != nil:
+    section.add "X-Amz-Date", valid_613580
+  var valid_613581 = header.getOrDefault("X-Amz-Credential")
+  valid_613581 = validateParameter(valid_613581, JString, required = false,
+                                 default = nil)
+  if valid_613581 != nil:
+    section.add "X-Amz-Credential", valid_613581
+  var valid_613582 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613582 = validateParameter(valid_613582, JString, required = false,
+                                 default = nil)
+  if valid_613582 != nil:
+    section.add "X-Amz-Security-Token", valid_613582
+  var valid_613583 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613583 = validateParameter(valid_613583, JString, required = false,
+                                 default = nil)
+  if valid_613583 != nil:
+    section.add "X-Amz-Algorithm", valid_613583
+  var valid_613584 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613584 = validateParameter(valid_613584, JString, required = false,
+                                 default = nil)
+  if valid_613584 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613584
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_613586: Call_ListDeploymentJobs_613573; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns a list of deployment jobs for a fleet. You can optionally provide filters to retrieve specific deployment jobs. 
+  ## 
+  let valid = call_613586.validator(path, query, header, formData, body)
+  let scheme = call_613586.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_613586.url(scheme.get, call_613586.host, call_613586.base,
+                         call_613586.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_613586, url, valid)
+
+proc call*(call_613587: Call_ListDeploymentJobs_613573; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
+  ## listDeploymentJobs
+  ## Returns a list of deployment jobs for a fleet. You can optionally provide filters to retrieve specific deployment jobs. 
+  ##   nextToken: string
+  ##            : Pagination token
+  ##   body: JObject (required)
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_613588 = newJObject()
+  var body_613589 = newJObject()
+  add(query_613588, "nextToken", newJString(nextToken))
+  if body != nil:
+    body_613589 = body
+  add(query_613588, "maxResults", newJString(maxResults))
+  result = call_613587.call(nil, query_613588, nil, nil, body_613589)
+
+var listDeploymentJobs* = Call_ListDeploymentJobs_613573(
+    name: "listDeploymentJobs", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/listDeploymentJobs",
+    validator: validate_ListDeploymentJobs_613574, base: "/",
+    url: url_ListDeploymentJobs_613575, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListFleets_613591 = ref object of OpenApiRestCall_612658
+proc url_ListFleets_613593(protocol: Scheme; host: string; base: string; route: string;
+                          path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListFleets_613592(path: JsonNode; query: JsonNode; header: JsonNode;
+                               formData: JsonNode; body: JsonNode): JsonNode =
+  ## Returns a list of fleets. You can optionally provide filters to retrieve specific fleets. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   nextToken: JString
+  ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
+  section = newJObject()
+  var valid_613594 = query.getOrDefault("nextToken")
+  valid_613594 = validateParameter(valid_613594, JString, required = false,
+                                 default = nil)
+  if valid_613594 != nil:
+    section.add "nextToken", valid_613594
+  var valid_613595 = query.getOrDefault("maxResults")
+  valid_613595 = validateParameter(valid_613595, JString, required = false,
+                                 default = nil)
+  if valid_613595 != nil:
+    section.add "maxResults", valid_613595
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_613596 = header.getOrDefault("X-Amz-Signature")
+  valid_613596 = validateParameter(valid_613596, JString, required = false,
+                                 default = nil)
+  if valid_613596 != nil:
+    section.add "X-Amz-Signature", valid_613596
+  var valid_613597 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613597 = validateParameter(valid_613597, JString, required = false,
+                                 default = nil)
+  if valid_613597 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613597
+  var valid_613598 = header.getOrDefault("X-Amz-Date")
+  valid_613598 = validateParameter(valid_613598, JString, required = false,
+                                 default = nil)
+  if valid_613598 != nil:
+    section.add "X-Amz-Date", valid_613598
+  var valid_613599 = header.getOrDefault("X-Amz-Credential")
+  valid_613599 = validateParameter(valid_613599, JString, required = false,
+                                 default = nil)
+  if valid_613599 != nil:
+    section.add "X-Amz-Credential", valid_613599
+  var valid_613600 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613600 = validateParameter(valid_613600, JString, required = false,
+                                 default = nil)
+  if valid_613600 != nil:
+    section.add "X-Amz-Security-Token", valid_613600
+  var valid_613601 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613601 = validateParameter(valid_613601, JString, required = false,
+                                 default = nil)
+  if valid_613601 != nil:
+    section.add "X-Amz-Algorithm", valid_613601
+  var valid_613602 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613602 = validateParameter(valid_613602, JString, required = false,
+                                 default = nil)
+  if valid_613602 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613602
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_613604: Call_ListFleets_613591; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns a list of fleets. You can optionally provide filters to retrieve specific fleets. 
+  ## 
+  let valid = call_613604.validator(path, query, header, formData, body)
+  let scheme = call_613604.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_613604.url(scheme.get, call_613604.host, call_613604.base,
+                         call_613604.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_613604, url, valid)
+
+proc call*(call_613605: Call_ListFleets_613591; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
+  ## listFleets
+  ## Returns a list of fleets. You can optionally provide filters to retrieve specific fleets. 
+  ##   nextToken: string
+  ##            : Pagination token
+  ##   body: JObject (required)
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_613606 = newJObject()
+  var body_613607 = newJObject()
+  add(query_613606, "nextToken", newJString(nextToken))
+  if body != nil:
+    body_613607 = body
+  add(query_613606, "maxResults", newJString(maxResults))
+  result = call_613605.call(nil, query_613606, nil, nil, body_613607)
+
+var listFleets* = Call_ListFleets_613591(name: "listFleets",
+                                      meth: HttpMethod.HttpPost,
+                                      host: "robomaker.amazonaws.com",
+                                      route: "/listFleets",
+                                      validator: validate_ListFleets_613592,
+                                      base: "/", url: url_ListFleets_613593,
+                                      schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListRobotApplications_613608 = ref object of OpenApiRestCall_612658
+proc url_ListRobotApplications_613610(protocol: Scheme; host: string; base: string;
+                                     route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListRobotApplications_613609(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of robot application. You can optionally provide filters to retrieve specific robot applications.
   ## 
@@ -2759,16 +2971,16 @@ proc validate_ListRobotApplications_613581(path: JsonNode; query: JsonNode;
   ##   maxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_613583 = query.getOrDefault("nextToken")
-  valid_613583 = validateParameter(valid_613583, JString, required = false,
+  var valid_613611 = query.getOrDefault("nextToken")
+  valid_613611 = validateParameter(valid_613611, JString, required = false,
                                  default = nil)
-  if valid_613583 != nil:
-    section.add "nextToken", valid_613583
-  var valid_613584 = query.getOrDefault("maxResults")
-  valid_613584 = validateParameter(valid_613584, JString, required = false,
+  if valid_613611 != nil:
+    section.add "nextToken", valid_613611
+  var valid_613612 = query.getOrDefault("maxResults")
+  valid_613612 = validateParameter(valid_613612, JString, required = false,
                                  default = nil)
-  if valid_613584 != nil:
-    section.add "maxResults", valid_613584
+  if valid_613612 != nil:
+    section.add "maxResults", valid_613612
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2779,41 +2991,41 @@ proc validate_ListRobotApplications_613581(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613585 = header.getOrDefault("X-Amz-Signature")
-  valid_613585 = validateParameter(valid_613585, JString, required = false,
+  var valid_613613 = header.getOrDefault("X-Amz-Signature")
+  valid_613613 = validateParameter(valid_613613, JString, required = false,
                                  default = nil)
-  if valid_613585 != nil:
-    section.add "X-Amz-Signature", valid_613585
-  var valid_613586 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613586 = validateParameter(valid_613586, JString, required = false,
+  if valid_613613 != nil:
+    section.add "X-Amz-Signature", valid_613613
+  var valid_613614 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613614 = validateParameter(valid_613614, JString, required = false,
                                  default = nil)
-  if valid_613586 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613586
-  var valid_613587 = header.getOrDefault("X-Amz-Date")
-  valid_613587 = validateParameter(valid_613587, JString, required = false,
+  if valid_613614 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613614
+  var valid_613615 = header.getOrDefault("X-Amz-Date")
+  valid_613615 = validateParameter(valid_613615, JString, required = false,
                                  default = nil)
-  if valid_613587 != nil:
-    section.add "X-Amz-Date", valid_613587
-  var valid_613588 = header.getOrDefault("X-Amz-Credential")
-  valid_613588 = validateParameter(valid_613588, JString, required = false,
+  if valid_613615 != nil:
+    section.add "X-Amz-Date", valid_613615
+  var valid_613616 = header.getOrDefault("X-Amz-Credential")
+  valid_613616 = validateParameter(valid_613616, JString, required = false,
                                  default = nil)
-  if valid_613588 != nil:
-    section.add "X-Amz-Credential", valid_613588
-  var valid_613589 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613589 = validateParameter(valid_613589, JString, required = false,
+  if valid_613616 != nil:
+    section.add "X-Amz-Credential", valid_613616
+  var valid_613617 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613617 = validateParameter(valid_613617, JString, required = false,
                                  default = nil)
-  if valid_613589 != nil:
-    section.add "X-Amz-Security-Token", valid_613589
-  var valid_613590 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613590 = validateParameter(valid_613590, JString, required = false,
+  if valid_613617 != nil:
+    section.add "X-Amz-Security-Token", valid_613617
+  var valid_613618 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613618 = validateParameter(valid_613618, JString, required = false,
                                  default = nil)
-  if valid_613590 != nil:
-    section.add "X-Amz-Algorithm", valid_613590
-  var valid_613591 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613591 = validateParameter(valid_613591, JString, required = false,
+  if valid_613618 != nil:
+    section.add "X-Amz-Algorithm", valid_613618
+  var valid_613619 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613619 = validateParameter(valid_613619, JString, required = false,
                                  default = nil)
-  if valid_613591 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613591
+  if valid_613619 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613619
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2824,20 +3036,20 @@ proc validate_ListRobotApplications_613581(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613593: Call_ListRobotApplications_613580; path: JsonNode;
+proc call*(call_613621: Call_ListRobotApplications_613608; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of robot application. You can optionally provide filters to retrieve specific robot applications.
   ## 
-  let valid = call_613593.validator(path, query, header, formData, body)
-  let scheme = call_613593.pickScheme
+  let valid = call_613621.validator(path, query, header, formData, body)
+  let scheme = call_613621.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613593.url(scheme.get, call_613593.host, call_613593.base,
-                         call_613593.route, valid.getOrDefault("path"),
+  let url = call_613621.url(scheme.get, call_613621.host, call_613621.base,
+                         call_613621.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613593, url, valid)
+  result = atozHook(call_613621, url, valid)
 
-proc call*(call_613594: Call_ListRobotApplications_613580; body: JsonNode;
+proc call*(call_613622: Call_ListRobotApplications_613608; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listRobotApplications
   ## Returns a list of robot application. You can optionally provide filters to retrieve specific robot applications.
@@ -2846,22 +3058,22 @@ proc call*(call_613594: Call_ListRobotApplications_613580; body: JsonNode;
   ##   body: JObject (required)
   ##   maxResults: string
   ##             : Pagination limit
-  var query_613595 = newJObject()
-  var body_613596 = newJObject()
-  add(query_613595, "nextToken", newJString(nextToken))
+  var query_613623 = newJObject()
+  var body_613624 = newJObject()
+  add(query_613623, "nextToken", newJString(nextToken))
   if body != nil:
-    body_613596 = body
-  add(query_613595, "maxResults", newJString(maxResults))
-  result = call_613594.call(nil, query_613595, nil, nil, body_613596)
+    body_613624 = body
+  add(query_613623, "maxResults", newJString(maxResults))
+  result = call_613622.call(nil, query_613623, nil, nil, body_613624)
 
-var listRobotApplications* = Call_ListRobotApplications_613580(
+var listRobotApplications* = Call_ListRobotApplications_613608(
     name: "listRobotApplications", meth: HttpMethod.HttpPost,
     host: "robomaker.amazonaws.com", route: "/listRobotApplications",
-    validator: validate_ListRobotApplications_613581, base: "/",
-    url: url_ListRobotApplications_613582, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListRobotApplications_613609, base: "/",
+    url: url_ListRobotApplications_613610, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListRobots_613597 = ref object of OpenApiRestCall_612658
-proc url_ListRobots_613599(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListRobots_613625 = ref object of OpenApiRestCall_612658
+proc url_ListRobots_613627(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -2873,7 +3085,7 @@ proc url_ListRobots_613599(protocol: Scheme; host: string; base: string; route: 
   else:
     result.path = base & route
 
-proc validate_ListRobots_613598(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListRobots_613626(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of robots. You can optionally provide filters to retrieve specific robots.
   ## 
@@ -2887,16 +3099,16 @@ proc validate_ListRobots_613598(path: JsonNode; query: JsonNode; header: JsonNod
   ##   maxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_613600 = query.getOrDefault("nextToken")
-  valid_613600 = validateParameter(valid_613600, JString, required = false,
+  var valid_613628 = query.getOrDefault("nextToken")
+  valid_613628 = validateParameter(valid_613628, JString, required = false,
                                  default = nil)
-  if valid_613600 != nil:
-    section.add "nextToken", valid_613600
-  var valid_613601 = query.getOrDefault("maxResults")
-  valid_613601 = validateParameter(valid_613601, JString, required = false,
+  if valid_613628 != nil:
+    section.add "nextToken", valid_613628
+  var valid_613629 = query.getOrDefault("maxResults")
+  valid_613629 = validateParameter(valid_613629, JString, required = false,
                                  default = nil)
-  if valid_613601 != nil:
-    section.add "maxResults", valid_613601
+  if valid_613629 != nil:
+    section.add "maxResults", valid_613629
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -2907,41 +3119,41 @@ proc validate_ListRobots_613598(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613602 = header.getOrDefault("X-Amz-Signature")
-  valid_613602 = validateParameter(valid_613602, JString, required = false,
+  var valid_613630 = header.getOrDefault("X-Amz-Signature")
+  valid_613630 = validateParameter(valid_613630, JString, required = false,
                                  default = nil)
-  if valid_613602 != nil:
-    section.add "X-Amz-Signature", valid_613602
-  var valid_613603 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613603 = validateParameter(valid_613603, JString, required = false,
+  if valid_613630 != nil:
+    section.add "X-Amz-Signature", valid_613630
+  var valid_613631 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613631 = validateParameter(valid_613631, JString, required = false,
                                  default = nil)
-  if valid_613603 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613603
-  var valid_613604 = header.getOrDefault("X-Amz-Date")
-  valid_613604 = validateParameter(valid_613604, JString, required = false,
+  if valid_613631 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613631
+  var valid_613632 = header.getOrDefault("X-Amz-Date")
+  valid_613632 = validateParameter(valid_613632, JString, required = false,
                                  default = nil)
-  if valid_613604 != nil:
-    section.add "X-Amz-Date", valid_613604
-  var valid_613605 = header.getOrDefault("X-Amz-Credential")
-  valid_613605 = validateParameter(valid_613605, JString, required = false,
+  if valid_613632 != nil:
+    section.add "X-Amz-Date", valid_613632
+  var valid_613633 = header.getOrDefault("X-Amz-Credential")
+  valid_613633 = validateParameter(valid_613633, JString, required = false,
                                  default = nil)
-  if valid_613605 != nil:
-    section.add "X-Amz-Credential", valid_613605
-  var valid_613606 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613606 = validateParameter(valid_613606, JString, required = false,
+  if valid_613633 != nil:
+    section.add "X-Amz-Credential", valid_613633
+  var valid_613634 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613634 = validateParameter(valid_613634, JString, required = false,
                                  default = nil)
-  if valid_613606 != nil:
-    section.add "X-Amz-Security-Token", valid_613606
-  var valid_613607 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613607 = validateParameter(valid_613607, JString, required = false,
+  if valid_613634 != nil:
+    section.add "X-Amz-Security-Token", valid_613634
+  var valid_613635 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613635 = validateParameter(valid_613635, JString, required = false,
                                  default = nil)
-  if valid_613607 != nil:
-    section.add "X-Amz-Algorithm", valid_613607
-  var valid_613608 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613608 = validateParameter(valid_613608, JString, required = false,
+  if valid_613635 != nil:
+    section.add "X-Amz-Algorithm", valid_613635
+  var valid_613636 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613636 = validateParameter(valid_613636, JString, required = false,
                                  default = nil)
-  if valid_613608 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613608
+  if valid_613636 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613636
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2952,20 +3164,20 @@ proc validate_ListRobots_613598(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_613610: Call_ListRobots_613597; path: JsonNode; query: JsonNode;
+proc call*(call_613638: Call_ListRobots_613625; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of robots. You can optionally provide filters to retrieve specific robots.
   ## 
-  let valid = call_613610.validator(path, query, header, formData, body)
-  let scheme = call_613610.pickScheme
+  let valid = call_613638.validator(path, query, header, formData, body)
+  let scheme = call_613638.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613610.url(scheme.get, call_613610.host, call_613610.base,
-                         call_613610.route, valid.getOrDefault("path"),
+  let url = call_613638.url(scheme.get, call_613638.host, call_613638.base,
+                         call_613638.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613610, url, valid)
+  result = atozHook(call_613638, url, valid)
 
-proc call*(call_613611: Call_ListRobots_613597; body: JsonNode;
+proc call*(call_613639: Call_ListRobots_613625; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listRobots
   ## Returns a list of robots. You can optionally provide filters to retrieve specific robots.
@@ -2974,24 +3186,24 @@ proc call*(call_613611: Call_ListRobots_613597; body: JsonNode;
   ##   body: JObject (required)
   ##   maxResults: string
   ##             : Pagination limit
-  var query_613612 = newJObject()
-  var body_613613 = newJObject()
-  add(query_613612, "nextToken", newJString(nextToken))
+  var query_613640 = newJObject()
+  var body_613641 = newJObject()
+  add(query_613640, "nextToken", newJString(nextToken))
   if body != nil:
-    body_613613 = body
-  add(query_613612, "maxResults", newJString(maxResults))
-  result = call_613611.call(nil, query_613612, nil, nil, body_613613)
+    body_613641 = body
+  add(query_613640, "maxResults", newJString(maxResults))
+  result = call_613639.call(nil, query_613640, nil, nil, body_613641)
 
-var listRobots* = Call_ListRobots_613597(name: "listRobots",
+var listRobots* = Call_ListRobots_613625(name: "listRobots",
                                       meth: HttpMethod.HttpPost,
                                       host: "robomaker.amazonaws.com",
                                       route: "/listRobots",
-                                      validator: validate_ListRobots_613598,
-                                      base: "/", url: url_ListRobots_613599,
+                                      validator: validate_ListRobots_613626,
+                                      base: "/", url: url_ListRobots_613627,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSimulationApplications_613614 = ref object of OpenApiRestCall_612658
-proc url_ListSimulationApplications_613616(protocol: Scheme; host: string;
+  Call_ListSimulationApplications_613642 = ref object of OpenApiRestCall_612658
+proc url_ListSimulationApplications_613644(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3003,7 +3215,7 @@ proc url_ListSimulationApplications_613616(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_ListSimulationApplications_613615(path: JsonNode; query: JsonNode;
+proc validate_ListSimulationApplications_613643(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of simulation applications. You can optionally provide filters to retrieve specific simulation applications. 
   ## 
@@ -3017,16 +3229,16 @@ proc validate_ListSimulationApplications_613615(path: JsonNode; query: JsonNode;
   ##   maxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_613617 = query.getOrDefault("nextToken")
-  valid_613617 = validateParameter(valid_613617, JString, required = false,
+  var valid_613645 = query.getOrDefault("nextToken")
+  valid_613645 = validateParameter(valid_613645, JString, required = false,
                                  default = nil)
-  if valid_613617 != nil:
-    section.add "nextToken", valid_613617
-  var valid_613618 = query.getOrDefault("maxResults")
-  valid_613618 = validateParameter(valid_613618, JString, required = false,
+  if valid_613645 != nil:
+    section.add "nextToken", valid_613645
+  var valid_613646 = query.getOrDefault("maxResults")
+  valid_613646 = validateParameter(valid_613646, JString, required = false,
                                  default = nil)
-  if valid_613618 != nil:
-    section.add "maxResults", valid_613618
+  if valid_613646 != nil:
+    section.add "maxResults", valid_613646
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -3037,41 +3249,41 @@ proc validate_ListSimulationApplications_613615(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613619 = header.getOrDefault("X-Amz-Signature")
-  valid_613619 = validateParameter(valid_613619, JString, required = false,
+  var valid_613647 = header.getOrDefault("X-Amz-Signature")
+  valid_613647 = validateParameter(valid_613647, JString, required = false,
                                  default = nil)
-  if valid_613619 != nil:
-    section.add "X-Amz-Signature", valid_613619
-  var valid_613620 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613620 = validateParameter(valid_613620, JString, required = false,
+  if valid_613647 != nil:
+    section.add "X-Amz-Signature", valid_613647
+  var valid_613648 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613648 = validateParameter(valid_613648, JString, required = false,
                                  default = nil)
-  if valid_613620 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613620
-  var valid_613621 = header.getOrDefault("X-Amz-Date")
-  valid_613621 = validateParameter(valid_613621, JString, required = false,
+  if valid_613648 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613648
+  var valid_613649 = header.getOrDefault("X-Amz-Date")
+  valid_613649 = validateParameter(valid_613649, JString, required = false,
                                  default = nil)
-  if valid_613621 != nil:
-    section.add "X-Amz-Date", valid_613621
-  var valid_613622 = header.getOrDefault("X-Amz-Credential")
-  valid_613622 = validateParameter(valid_613622, JString, required = false,
+  if valid_613649 != nil:
+    section.add "X-Amz-Date", valid_613649
+  var valid_613650 = header.getOrDefault("X-Amz-Credential")
+  valid_613650 = validateParameter(valid_613650, JString, required = false,
                                  default = nil)
-  if valid_613622 != nil:
-    section.add "X-Amz-Credential", valid_613622
-  var valid_613623 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613623 = validateParameter(valid_613623, JString, required = false,
+  if valid_613650 != nil:
+    section.add "X-Amz-Credential", valid_613650
+  var valid_613651 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613651 = validateParameter(valid_613651, JString, required = false,
                                  default = nil)
-  if valid_613623 != nil:
-    section.add "X-Amz-Security-Token", valid_613623
-  var valid_613624 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613624 = validateParameter(valid_613624, JString, required = false,
+  if valid_613651 != nil:
+    section.add "X-Amz-Security-Token", valid_613651
+  var valid_613652 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613652 = validateParameter(valid_613652, JString, required = false,
                                  default = nil)
-  if valid_613624 != nil:
-    section.add "X-Amz-Algorithm", valid_613624
-  var valid_613625 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613625 = validateParameter(valid_613625, JString, required = false,
+  if valid_613652 != nil:
+    section.add "X-Amz-Algorithm", valid_613652
+  var valid_613653 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613653 = validateParameter(valid_613653, JString, required = false,
                                  default = nil)
-  if valid_613625 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613625
+  if valid_613653 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613653
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3082,20 +3294,20 @@ proc validate_ListSimulationApplications_613615(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613627: Call_ListSimulationApplications_613614; path: JsonNode;
+proc call*(call_613655: Call_ListSimulationApplications_613642; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of simulation applications. You can optionally provide filters to retrieve specific simulation applications. 
   ## 
-  let valid = call_613627.validator(path, query, header, formData, body)
-  let scheme = call_613627.pickScheme
+  let valid = call_613655.validator(path, query, header, formData, body)
+  let scheme = call_613655.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613627.url(scheme.get, call_613627.host, call_613627.base,
-                         call_613627.route, valid.getOrDefault("path"),
+  let url = call_613655.url(scheme.get, call_613655.host, call_613655.base,
+                         call_613655.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613627, url, valid)
+  result = atozHook(call_613655, url, valid)
 
-proc call*(call_613628: Call_ListSimulationApplications_613614; body: JsonNode;
+proc call*(call_613656: Call_ListSimulationApplications_613642; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listSimulationApplications
   ## Returns a list of simulation applications. You can optionally provide filters to retrieve specific simulation applications. 
@@ -3104,23 +3316,152 @@ proc call*(call_613628: Call_ListSimulationApplications_613614; body: JsonNode;
   ##   body: JObject (required)
   ##   maxResults: string
   ##             : Pagination limit
-  var query_613629 = newJObject()
-  var body_613630 = newJObject()
-  add(query_613629, "nextToken", newJString(nextToken))
+  var query_613657 = newJObject()
+  var body_613658 = newJObject()
+  add(query_613657, "nextToken", newJString(nextToken))
   if body != nil:
-    body_613630 = body
-  add(query_613629, "maxResults", newJString(maxResults))
-  result = call_613628.call(nil, query_613629, nil, nil, body_613630)
+    body_613658 = body
+  add(query_613657, "maxResults", newJString(maxResults))
+  result = call_613656.call(nil, query_613657, nil, nil, body_613658)
 
-var listSimulationApplications* = Call_ListSimulationApplications_613614(
+var listSimulationApplications* = Call_ListSimulationApplications_613642(
     name: "listSimulationApplications", meth: HttpMethod.HttpPost,
     host: "robomaker.amazonaws.com", route: "/listSimulationApplications",
-    validator: validate_ListSimulationApplications_613615, base: "/",
-    url: url_ListSimulationApplications_613616,
+    validator: validate_ListSimulationApplications_613643, base: "/",
+    url: url_ListSimulationApplications_613644,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSimulationJobs_613631 = ref object of OpenApiRestCall_612658
-proc url_ListSimulationJobs_613633(protocol: Scheme; host: string; base: string;
+  Call_ListSimulationJobBatches_613659 = ref object of OpenApiRestCall_612658
+proc url_ListSimulationJobBatches_613661(protocol: Scheme; host: string;
+                                        base: string; route: string; path: JsonNode;
+                                        query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_ListSimulationJobBatches_613660(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Returns a list simulation job batches. You can optionally provide filters to retrieve specific simulation batch jobs. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  ## parameters in `query` object:
+  ##   nextToken: JString
+  ##            : Pagination token
+  ##   maxResults: JString
+  ##             : Pagination limit
+  section = newJObject()
+  var valid_613662 = query.getOrDefault("nextToken")
+  valid_613662 = validateParameter(valid_613662, JString, required = false,
+                                 default = nil)
+  if valid_613662 != nil:
+    section.add "nextToken", valid_613662
+  var valid_613663 = query.getOrDefault("maxResults")
+  valid_613663 = validateParameter(valid_613663, JString, required = false,
+                                 default = nil)
+  if valid_613663 != nil:
+    section.add "maxResults", valid_613663
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_613664 = header.getOrDefault("X-Amz-Signature")
+  valid_613664 = validateParameter(valid_613664, JString, required = false,
+                                 default = nil)
+  if valid_613664 != nil:
+    section.add "X-Amz-Signature", valid_613664
+  var valid_613665 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613665 = validateParameter(valid_613665, JString, required = false,
+                                 default = nil)
+  if valid_613665 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613665
+  var valid_613666 = header.getOrDefault("X-Amz-Date")
+  valid_613666 = validateParameter(valid_613666, JString, required = false,
+                                 default = nil)
+  if valid_613666 != nil:
+    section.add "X-Amz-Date", valid_613666
+  var valid_613667 = header.getOrDefault("X-Amz-Credential")
+  valid_613667 = validateParameter(valid_613667, JString, required = false,
+                                 default = nil)
+  if valid_613667 != nil:
+    section.add "X-Amz-Credential", valid_613667
+  var valid_613668 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613668 = validateParameter(valid_613668, JString, required = false,
+                                 default = nil)
+  if valid_613668 != nil:
+    section.add "X-Amz-Security-Token", valid_613668
+  var valid_613669 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613669 = validateParameter(valid_613669, JString, required = false,
+                                 default = nil)
+  if valid_613669 != nil:
+    section.add "X-Amz-Algorithm", valid_613669
+  var valid_613670 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613670 = validateParameter(valid_613670, JString, required = false,
+                                 default = nil)
+  if valid_613670 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613670
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_613672: Call_ListSimulationJobBatches_613659; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Returns a list simulation job batches. You can optionally provide filters to retrieve specific simulation batch jobs. 
+  ## 
+  let valid = call_613672.validator(path, query, header, formData, body)
+  let scheme = call_613672.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_613672.url(scheme.get, call_613672.host, call_613672.base,
+                         call_613672.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_613672, url, valid)
+
+proc call*(call_613673: Call_ListSimulationJobBatches_613659; body: JsonNode;
+          nextToken: string = ""; maxResults: string = ""): Recallable =
+  ## listSimulationJobBatches
+  ## Returns a list simulation job batches. You can optionally provide filters to retrieve specific simulation batch jobs. 
+  ##   nextToken: string
+  ##            : Pagination token
+  ##   body: JObject (required)
+  ##   maxResults: string
+  ##             : Pagination limit
+  var query_613674 = newJObject()
+  var body_613675 = newJObject()
+  add(query_613674, "nextToken", newJString(nextToken))
+  if body != nil:
+    body_613675 = body
+  add(query_613674, "maxResults", newJString(maxResults))
+  result = call_613673.call(nil, query_613674, nil, nil, body_613675)
+
+var listSimulationJobBatches* = Call_ListSimulationJobBatches_613659(
+    name: "listSimulationJobBatches", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/listSimulationJobBatches",
+    validator: validate_ListSimulationJobBatches_613660, base: "/",
+    url: url_ListSimulationJobBatches_613661, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_ListSimulationJobs_613676 = ref object of OpenApiRestCall_612658
+proc url_ListSimulationJobs_613678(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3132,7 +3473,7 @@ proc url_ListSimulationJobs_613633(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_ListSimulationJobs_613632(path: JsonNode; query: JsonNode;
+proc validate_ListSimulationJobs_613677(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## Returns a list of simulation jobs. You can optionally provide filters to retrieve specific simulation jobs. 
@@ -3147,16 +3488,16 @@ proc validate_ListSimulationJobs_613632(path: JsonNode; query: JsonNode;
   ##   maxResults: JString
   ##             : Pagination limit
   section = newJObject()
-  var valid_613634 = query.getOrDefault("nextToken")
-  valid_613634 = validateParameter(valid_613634, JString, required = false,
+  var valid_613679 = query.getOrDefault("nextToken")
+  valid_613679 = validateParameter(valid_613679, JString, required = false,
                                  default = nil)
-  if valid_613634 != nil:
-    section.add "nextToken", valid_613634
-  var valid_613635 = query.getOrDefault("maxResults")
-  valid_613635 = validateParameter(valid_613635, JString, required = false,
+  if valid_613679 != nil:
+    section.add "nextToken", valid_613679
+  var valid_613680 = query.getOrDefault("maxResults")
+  valid_613680 = validateParameter(valid_613680, JString, required = false,
                                  default = nil)
-  if valid_613635 != nil:
-    section.add "maxResults", valid_613635
+  if valid_613680 != nil:
+    section.add "maxResults", valid_613680
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -3167,41 +3508,41 @@ proc validate_ListSimulationJobs_613632(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613636 = header.getOrDefault("X-Amz-Signature")
-  valid_613636 = validateParameter(valid_613636, JString, required = false,
+  var valid_613681 = header.getOrDefault("X-Amz-Signature")
+  valid_613681 = validateParameter(valid_613681, JString, required = false,
                                  default = nil)
-  if valid_613636 != nil:
-    section.add "X-Amz-Signature", valid_613636
-  var valid_613637 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613637 = validateParameter(valid_613637, JString, required = false,
+  if valid_613681 != nil:
+    section.add "X-Amz-Signature", valid_613681
+  var valid_613682 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613682 = validateParameter(valid_613682, JString, required = false,
                                  default = nil)
-  if valid_613637 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613637
-  var valid_613638 = header.getOrDefault("X-Amz-Date")
-  valid_613638 = validateParameter(valid_613638, JString, required = false,
+  if valid_613682 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613682
+  var valid_613683 = header.getOrDefault("X-Amz-Date")
+  valid_613683 = validateParameter(valid_613683, JString, required = false,
                                  default = nil)
-  if valid_613638 != nil:
-    section.add "X-Amz-Date", valid_613638
-  var valid_613639 = header.getOrDefault("X-Amz-Credential")
-  valid_613639 = validateParameter(valid_613639, JString, required = false,
+  if valid_613683 != nil:
+    section.add "X-Amz-Date", valid_613683
+  var valid_613684 = header.getOrDefault("X-Amz-Credential")
+  valid_613684 = validateParameter(valid_613684, JString, required = false,
                                  default = nil)
-  if valid_613639 != nil:
-    section.add "X-Amz-Credential", valid_613639
-  var valid_613640 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613640 = validateParameter(valid_613640, JString, required = false,
+  if valid_613684 != nil:
+    section.add "X-Amz-Credential", valid_613684
+  var valid_613685 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613685 = validateParameter(valid_613685, JString, required = false,
                                  default = nil)
-  if valid_613640 != nil:
-    section.add "X-Amz-Security-Token", valid_613640
-  var valid_613641 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613641 = validateParameter(valid_613641, JString, required = false,
+  if valid_613685 != nil:
+    section.add "X-Amz-Security-Token", valid_613685
+  var valid_613686 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613686 = validateParameter(valid_613686, JString, required = false,
                                  default = nil)
-  if valid_613641 != nil:
-    section.add "X-Amz-Algorithm", valid_613641
-  var valid_613642 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613642 = validateParameter(valid_613642, JString, required = false,
+  if valid_613686 != nil:
+    section.add "X-Amz-Algorithm", valid_613686
+  var valid_613687 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613687 = validateParameter(valid_613687, JString, required = false,
                                  default = nil)
-  if valid_613642 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613642
+  if valid_613687 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613687
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3212,20 +3553,20 @@ proc validate_ListSimulationJobs_613632(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613644: Call_ListSimulationJobs_613631; path: JsonNode;
+proc call*(call_613689: Call_ListSimulationJobs_613676; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of simulation jobs. You can optionally provide filters to retrieve specific simulation jobs. 
   ## 
-  let valid = call_613644.validator(path, query, header, formData, body)
-  let scheme = call_613644.pickScheme
+  let valid = call_613689.validator(path, query, header, formData, body)
+  let scheme = call_613689.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613644.url(scheme.get, call_613644.host, call_613644.base,
-                         call_613644.route, valid.getOrDefault("path"),
+  let url = call_613689.url(scheme.get, call_613689.host, call_613689.base,
+                         call_613689.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613644, url, valid)
+  result = atozHook(call_613689, url, valid)
 
-proc call*(call_613645: Call_ListSimulationJobs_613631; body: JsonNode;
+proc call*(call_613690: Call_ListSimulationJobs_613676; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listSimulationJobs
   ## Returns a list of simulation jobs. You can optionally provide filters to retrieve specific simulation jobs. 
@@ -3234,22 +3575,22 @@ proc call*(call_613645: Call_ListSimulationJobs_613631; body: JsonNode;
   ##   body: JObject (required)
   ##   maxResults: string
   ##             : Pagination limit
-  var query_613646 = newJObject()
-  var body_613647 = newJObject()
-  add(query_613646, "nextToken", newJString(nextToken))
+  var query_613691 = newJObject()
+  var body_613692 = newJObject()
+  add(query_613691, "nextToken", newJString(nextToken))
   if body != nil:
-    body_613647 = body
-  add(query_613646, "maxResults", newJString(maxResults))
-  result = call_613645.call(nil, query_613646, nil, nil, body_613647)
+    body_613692 = body
+  add(query_613691, "maxResults", newJString(maxResults))
+  result = call_613690.call(nil, query_613691, nil, nil, body_613692)
 
-var listSimulationJobs* = Call_ListSimulationJobs_613631(
+var listSimulationJobs* = Call_ListSimulationJobs_613676(
     name: "listSimulationJobs", meth: HttpMethod.HttpPost,
     host: "robomaker.amazonaws.com", route: "/listSimulationJobs",
-    validator: validate_ListSimulationJobs_613632, base: "/",
-    url: url_ListSimulationJobs_613633, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSimulationJobs_613677, base: "/",
+    url: url_ListSimulationJobs_613678, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_613676 = ref object of OpenApiRestCall_612658
-proc url_TagResource_613678(protocol: Scheme; host: string; base: string;
+  Call_TagResource_613721 = ref object of OpenApiRestCall_612658
+proc url_TagResource_613723(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3269,7 +3610,7 @@ proc url_TagResource_613678(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_TagResource_613677(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_613722(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds or edits tags for a AWS RoboMaker resource.</p> <p>Each tag consists of a tag key and a tag value. Tag keys and tag values are both required, but tag values can be empty strings. </p> <p>For information about the rules that apply to tag keys and tag values, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/allocation-tag-restrictions.html">User-Defined Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>. </p>
   ## 
@@ -3281,11 +3622,11 @@ proc validate_TagResource_613677(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_613679 = path.getOrDefault("resourceArn")
-  valid_613679 = validateParameter(valid_613679, JString, required = true,
+  var valid_613724 = path.getOrDefault("resourceArn")
+  valid_613724 = validateParameter(valid_613724, JString, required = true,
                                  default = nil)
-  if valid_613679 != nil:
-    section.add "resourceArn", valid_613679
+  if valid_613724 != nil:
+    section.add "resourceArn", valid_613724
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3298,41 +3639,41 @@ proc validate_TagResource_613677(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613680 = header.getOrDefault("X-Amz-Signature")
-  valid_613680 = validateParameter(valid_613680, JString, required = false,
+  var valid_613725 = header.getOrDefault("X-Amz-Signature")
+  valid_613725 = validateParameter(valid_613725, JString, required = false,
                                  default = nil)
-  if valid_613680 != nil:
-    section.add "X-Amz-Signature", valid_613680
-  var valid_613681 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613681 = validateParameter(valid_613681, JString, required = false,
+  if valid_613725 != nil:
+    section.add "X-Amz-Signature", valid_613725
+  var valid_613726 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613726 = validateParameter(valid_613726, JString, required = false,
                                  default = nil)
-  if valid_613681 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613681
-  var valid_613682 = header.getOrDefault("X-Amz-Date")
-  valid_613682 = validateParameter(valid_613682, JString, required = false,
+  if valid_613726 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613726
+  var valid_613727 = header.getOrDefault("X-Amz-Date")
+  valid_613727 = validateParameter(valid_613727, JString, required = false,
                                  default = nil)
-  if valid_613682 != nil:
-    section.add "X-Amz-Date", valid_613682
-  var valid_613683 = header.getOrDefault("X-Amz-Credential")
-  valid_613683 = validateParameter(valid_613683, JString, required = false,
+  if valid_613727 != nil:
+    section.add "X-Amz-Date", valid_613727
+  var valid_613728 = header.getOrDefault("X-Amz-Credential")
+  valid_613728 = validateParameter(valid_613728, JString, required = false,
                                  default = nil)
-  if valid_613683 != nil:
-    section.add "X-Amz-Credential", valid_613683
-  var valid_613684 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613684 = validateParameter(valid_613684, JString, required = false,
+  if valid_613728 != nil:
+    section.add "X-Amz-Credential", valid_613728
+  var valid_613729 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613729 = validateParameter(valid_613729, JString, required = false,
                                  default = nil)
-  if valid_613684 != nil:
-    section.add "X-Amz-Security-Token", valid_613684
-  var valid_613685 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613685 = validateParameter(valid_613685, JString, required = false,
+  if valid_613729 != nil:
+    section.add "X-Amz-Security-Token", valid_613729
+  var valid_613730 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613730 = validateParameter(valid_613730, JString, required = false,
                                  default = nil)
-  if valid_613685 != nil:
-    section.add "X-Amz-Algorithm", valid_613685
-  var valid_613686 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613686 = validateParameter(valid_613686, JString, required = false,
+  if valid_613730 != nil:
+    section.add "X-Amz-Algorithm", valid_613730
+  var valid_613731 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613731 = validateParameter(valid_613731, JString, required = false,
                                  default = nil)
-  if valid_613686 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613686
+  if valid_613731 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613731
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3343,42 +3684,42 @@ proc validate_TagResource_613677(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613688: Call_TagResource_613676; path: JsonNode; query: JsonNode;
+proc call*(call_613733: Call_TagResource_613721; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds or edits tags for a AWS RoboMaker resource.</p> <p>Each tag consists of a tag key and a tag value. Tag keys and tag values are both required, but tag values can be empty strings. </p> <p>For information about the rules that apply to tag keys and tag values, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/allocation-tag-restrictions.html">User-Defined Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>. </p>
   ## 
-  let valid = call_613688.validator(path, query, header, formData, body)
-  let scheme = call_613688.pickScheme
+  let valid = call_613733.validator(path, query, header, formData, body)
+  let scheme = call_613733.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613688.url(scheme.get, call_613688.host, call_613688.base,
-                         call_613688.route, valid.getOrDefault("path"),
+  let url = call_613733.url(scheme.get, call_613733.host, call_613733.base,
+                         call_613733.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613688, url, valid)
+  result = atozHook(call_613733, url, valid)
 
-proc call*(call_613689: Call_TagResource_613676; resourceArn: string; body: JsonNode): Recallable =
+proc call*(call_613734: Call_TagResource_613721; resourceArn: string; body: JsonNode): Recallable =
   ## tagResource
   ## <p>Adds or edits tags for a AWS RoboMaker resource.</p> <p>Each tag consists of a tag key and a tag value. Tag keys and tag values are both required, but tag values can be empty strings. </p> <p>For information about the rules that apply to tag keys and tag values, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/allocation-tag-restrictions.html">User-Defined Tag Restrictions</a> in the <i>AWS Billing and Cost Management User Guide</i>. </p>
   ##   resourceArn: string (required)
   ##              : The Amazon Resource Name (ARN) of the AWS RoboMaker resource you are tagging.
   ##   body: JObject (required)
-  var path_613690 = newJObject()
-  var body_613691 = newJObject()
-  add(path_613690, "resourceArn", newJString(resourceArn))
+  var path_613735 = newJObject()
+  var body_613736 = newJObject()
+  add(path_613735, "resourceArn", newJString(resourceArn))
   if body != nil:
-    body_613691 = body
-  result = call_613689.call(path_613690, nil, nil, nil, body_613691)
+    body_613736 = body
+  result = call_613734.call(path_613735, nil, nil, nil, body_613736)
 
-var tagResource* = Call_TagResource_613676(name: "tagResource",
+var tagResource* = Call_TagResource_613721(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "robomaker.amazonaws.com",
                                         route: "/tags/{resourceArn}",
-                                        validator: validate_TagResource_613677,
-                                        base: "/", url: url_TagResource_613678,
+                                        validator: validate_TagResource_613722,
+                                        base: "/", url: url_TagResource_613723,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_613648 = ref object of OpenApiRestCall_612658
-proc url_ListTagsForResource_613650(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_613693 = ref object of OpenApiRestCall_612658
+proc url_ListTagsForResource_613695(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3398,7 +3739,7 @@ proc url_ListTagsForResource_613650(protocol: Scheme; host: string; base: string
   else:
     result.path = base & hydrated.get
 
-proc validate_ListTagsForResource_613649(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_613694(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Lists all tags on a AWS RoboMaker resource.
@@ -3411,11 +3752,11 @@ proc validate_ListTagsForResource_613649(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_613665 = path.getOrDefault("resourceArn")
-  valid_613665 = validateParameter(valid_613665, JString, required = true,
+  var valid_613710 = path.getOrDefault("resourceArn")
+  valid_613710 = validateParameter(valid_613710, JString, required = true,
                                  default = nil)
-  if valid_613665 != nil:
-    section.add "resourceArn", valid_613665
+  if valid_613710 != nil:
+    section.add "resourceArn", valid_613710
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -3428,77 +3769,77 @@ proc validate_ListTagsForResource_613649(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613666 = header.getOrDefault("X-Amz-Signature")
-  valid_613666 = validateParameter(valid_613666, JString, required = false,
+  var valid_613711 = header.getOrDefault("X-Amz-Signature")
+  valid_613711 = validateParameter(valid_613711, JString, required = false,
                                  default = nil)
-  if valid_613666 != nil:
-    section.add "X-Amz-Signature", valid_613666
-  var valid_613667 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613667 = validateParameter(valid_613667, JString, required = false,
+  if valid_613711 != nil:
+    section.add "X-Amz-Signature", valid_613711
+  var valid_613712 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613712 = validateParameter(valid_613712, JString, required = false,
                                  default = nil)
-  if valid_613667 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613667
-  var valid_613668 = header.getOrDefault("X-Amz-Date")
-  valid_613668 = validateParameter(valid_613668, JString, required = false,
+  if valid_613712 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613712
+  var valid_613713 = header.getOrDefault("X-Amz-Date")
+  valid_613713 = validateParameter(valid_613713, JString, required = false,
                                  default = nil)
-  if valid_613668 != nil:
-    section.add "X-Amz-Date", valid_613668
-  var valid_613669 = header.getOrDefault("X-Amz-Credential")
-  valid_613669 = validateParameter(valid_613669, JString, required = false,
+  if valid_613713 != nil:
+    section.add "X-Amz-Date", valid_613713
+  var valid_613714 = header.getOrDefault("X-Amz-Credential")
+  valid_613714 = validateParameter(valid_613714, JString, required = false,
                                  default = nil)
-  if valid_613669 != nil:
-    section.add "X-Amz-Credential", valid_613669
-  var valid_613670 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613670 = validateParameter(valid_613670, JString, required = false,
+  if valid_613714 != nil:
+    section.add "X-Amz-Credential", valid_613714
+  var valid_613715 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613715 = validateParameter(valid_613715, JString, required = false,
                                  default = nil)
-  if valid_613670 != nil:
-    section.add "X-Amz-Security-Token", valid_613670
-  var valid_613671 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613671 = validateParameter(valid_613671, JString, required = false,
+  if valid_613715 != nil:
+    section.add "X-Amz-Security-Token", valid_613715
+  var valid_613716 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613716 = validateParameter(valid_613716, JString, required = false,
                                  default = nil)
-  if valid_613671 != nil:
-    section.add "X-Amz-Algorithm", valid_613671
-  var valid_613672 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613672 = validateParameter(valid_613672, JString, required = false,
+  if valid_613716 != nil:
+    section.add "X-Amz-Algorithm", valid_613716
+  var valid_613717 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613717 = validateParameter(valid_613717, JString, required = false,
                                  default = nil)
-  if valid_613672 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613672
+  if valid_613717 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613717
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613673: Call_ListTagsForResource_613648; path: JsonNode;
+proc call*(call_613718: Call_ListTagsForResource_613693; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Lists all tags on a AWS RoboMaker resource.
   ## 
-  let valid = call_613673.validator(path, query, header, formData, body)
-  let scheme = call_613673.pickScheme
+  let valid = call_613718.validator(path, query, header, formData, body)
+  let scheme = call_613718.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613673.url(scheme.get, call_613673.host, call_613673.base,
-                         call_613673.route, valid.getOrDefault("path"),
+  let url = call_613718.url(scheme.get, call_613718.host, call_613718.base,
+                         call_613718.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613673, url, valid)
+  result = atozHook(call_613718, url, valid)
 
-proc call*(call_613674: Call_ListTagsForResource_613648; resourceArn: string): Recallable =
+proc call*(call_613719: Call_ListTagsForResource_613693; resourceArn: string): Recallable =
   ## listTagsForResource
   ## Lists all tags on a AWS RoboMaker resource.
   ##   resourceArn: string (required)
   ##              : The AWS RoboMaker Amazon Resource Name (ARN) with tags to be listed.
-  var path_613675 = newJObject()
-  add(path_613675, "resourceArn", newJString(resourceArn))
-  result = call_613674.call(path_613675, nil, nil, nil, nil)
+  var path_613720 = newJObject()
+  add(path_613720, "resourceArn", newJString(resourceArn))
+  result = call_613719.call(path_613720, nil, nil, nil, nil)
 
-var listTagsForResource* = Call_ListTagsForResource_613648(
+var listTagsForResource* = Call_ListTagsForResource_613693(
     name: "listTagsForResource", meth: HttpMethod.HttpGet,
     host: "robomaker.amazonaws.com", route: "/tags/{resourceArn}",
-    validator: validate_ListTagsForResource_613649, base: "/",
-    url: url_ListTagsForResource_613650, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_613694, base: "/",
+    url: url_ListTagsForResource_613695, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterRobot_613692 = ref object of OpenApiRestCall_612658
-proc url_RegisterRobot_613694(protocol: Scheme; host: string; base: string;
+  Call_RegisterRobot_613737 = ref object of OpenApiRestCall_612658
+proc url_RegisterRobot_613739(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3510,7 +3851,7 @@ proc url_RegisterRobot_613694(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_RegisterRobot_613693(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_RegisterRobot_613738(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Registers a robot with a fleet.
   ## 
@@ -3529,41 +3870,41 @@ proc validate_RegisterRobot_613693(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613695 = header.getOrDefault("X-Amz-Signature")
-  valid_613695 = validateParameter(valid_613695, JString, required = false,
+  var valid_613740 = header.getOrDefault("X-Amz-Signature")
+  valid_613740 = validateParameter(valid_613740, JString, required = false,
                                  default = nil)
-  if valid_613695 != nil:
-    section.add "X-Amz-Signature", valid_613695
-  var valid_613696 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613696 = validateParameter(valid_613696, JString, required = false,
+  if valid_613740 != nil:
+    section.add "X-Amz-Signature", valid_613740
+  var valid_613741 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613741 = validateParameter(valid_613741, JString, required = false,
                                  default = nil)
-  if valid_613696 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613696
-  var valid_613697 = header.getOrDefault("X-Amz-Date")
-  valid_613697 = validateParameter(valid_613697, JString, required = false,
+  if valid_613741 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613741
+  var valid_613742 = header.getOrDefault("X-Amz-Date")
+  valid_613742 = validateParameter(valid_613742, JString, required = false,
                                  default = nil)
-  if valid_613697 != nil:
-    section.add "X-Amz-Date", valid_613697
-  var valid_613698 = header.getOrDefault("X-Amz-Credential")
-  valid_613698 = validateParameter(valid_613698, JString, required = false,
+  if valid_613742 != nil:
+    section.add "X-Amz-Date", valid_613742
+  var valid_613743 = header.getOrDefault("X-Amz-Credential")
+  valid_613743 = validateParameter(valid_613743, JString, required = false,
                                  default = nil)
-  if valid_613698 != nil:
-    section.add "X-Amz-Credential", valid_613698
-  var valid_613699 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613699 = validateParameter(valid_613699, JString, required = false,
+  if valid_613743 != nil:
+    section.add "X-Amz-Credential", valid_613743
+  var valid_613744 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613744 = validateParameter(valid_613744, JString, required = false,
                                  default = nil)
-  if valid_613699 != nil:
-    section.add "X-Amz-Security-Token", valid_613699
-  var valid_613700 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613700 = validateParameter(valid_613700, JString, required = false,
+  if valid_613744 != nil:
+    section.add "X-Amz-Security-Token", valid_613744
+  var valid_613745 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613745 = validateParameter(valid_613745, JString, required = false,
                                  default = nil)
-  if valid_613700 != nil:
-    section.add "X-Amz-Algorithm", valid_613700
-  var valid_613701 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613701 = validateParameter(valid_613701, JString, required = false,
+  if valid_613745 != nil:
+    section.add "X-Amz-Algorithm", valid_613745
+  var valid_613746 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613746 = validateParameter(valid_613746, JString, required = false,
                                  default = nil)
-  if valid_613701 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613701
+  if valid_613746 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613746
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3574,35 +3915,35 @@ proc validate_RegisterRobot_613693(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_613703: Call_RegisterRobot_613692; path: JsonNode; query: JsonNode;
+proc call*(call_613748: Call_RegisterRobot_613737; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Registers a robot with a fleet.
   ## 
-  let valid = call_613703.validator(path, query, header, formData, body)
-  let scheme = call_613703.pickScheme
+  let valid = call_613748.validator(path, query, header, formData, body)
+  let scheme = call_613748.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613703.url(scheme.get, call_613703.host, call_613703.base,
-                         call_613703.route, valid.getOrDefault("path"),
+  let url = call_613748.url(scheme.get, call_613748.host, call_613748.base,
+                         call_613748.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613703, url, valid)
+  result = atozHook(call_613748, url, valid)
 
-proc call*(call_613704: Call_RegisterRobot_613692; body: JsonNode): Recallable =
+proc call*(call_613749: Call_RegisterRobot_613737; body: JsonNode): Recallable =
   ## registerRobot
   ## Registers a robot with a fleet.
   ##   body: JObject (required)
-  var body_613705 = newJObject()
+  var body_613750 = newJObject()
   if body != nil:
-    body_613705 = body
-  result = call_613704.call(nil, nil, nil, nil, body_613705)
+    body_613750 = body
+  result = call_613749.call(nil, nil, nil, nil, body_613750)
 
-var registerRobot* = Call_RegisterRobot_613692(name: "registerRobot",
+var registerRobot* = Call_RegisterRobot_613737(name: "registerRobot",
     meth: HttpMethod.HttpPost, host: "robomaker.amazonaws.com",
-    route: "/registerRobot", validator: validate_RegisterRobot_613693, base: "/",
-    url: url_RegisterRobot_613694, schemes: {Scheme.Https, Scheme.Http})
+    route: "/registerRobot", validator: validate_RegisterRobot_613738, base: "/",
+    url: url_RegisterRobot_613739, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RestartSimulationJob_613706 = ref object of OpenApiRestCall_612658
-proc url_RestartSimulationJob_613708(protocol: Scheme; host: string; base: string;
+  Call_RestartSimulationJob_613751 = ref object of OpenApiRestCall_612658
+proc url_RestartSimulationJob_613753(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3614,7 +3955,7 @@ proc url_RestartSimulationJob_613708(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_RestartSimulationJob_613707(path: JsonNode; query: JsonNode;
+proc validate_RestartSimulationJob_613752(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Restarts a running simulation job.
   ## 
@@ -3633,41 +3974,41 @@ proc validate_RestartSimulationJob_613707(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613709 = header.getOrDefault("X-Amz-Signature")
-  valid_613709 = validateParameter(valid_613709, JString, required = false,
+  var valid_613754 = header.getOrDefault("X-Amz-Signature")
+  valid_613754 = validateParameter(valid_613754, JString, required = false,
                                  default = nil)
-  if valid_613709 != nil:
-    section.add "X-Amz-Signature", valid_613709
-  var valid_613710 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613710 = validateParameter(valid_613710, JString, required = false,
+  if valid_613754 != nil:
+    section.add "X-Amz-Signature", valid_613754
+  var valid_613755 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613755 = validateParameter(valid_613755, JString, required = false,
                                  default = nil)
-  if valid_613710 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613710
-  var valid_613711 = header.getOrDefault("X-Amz-Date")
-  valid_613711 = validateParameter(valid_613711, JString, required = false,
+  if valid_613755 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613755
+  var valid_613756 = header.getOrDefault("X-Amz-Date")
+  valid_613756 = validateParameter(valid_613756, JString, required = false,
                                  default = nil)
-  if valid_613711 != nil:
-    section.add "X-Amz-Date", valid_613711
-  var valid_613712 = header.getOrDefault("X-Amz-Credential")
-  valid_613712 = validateParameter(valid_613712, JString, required = false,
+  if valid_613756 != nil:
+    section.add "X-Amz-Date", valid_613756
+  var valid_613757 = header.getOrDefault("X-Amz-Credential")
+  valid_613757 = validateParameter(valid_613757, JString, required = false,
                                  default = nil)
-  if valid_613712 != nil:
-    section.add "X-Amz-Credential", valid_613712
-  var valid_613713 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613713 = validateParameter(valid_613713, JString, required = false,
+  if valid_613757 != nil:
+    section.add "X-Amz-Credential", valid_613757
+  var valid_613758 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613758 = validateParameter(valid_613758, JString, required = false,
                                  default = nil)
-  if valid_613713 != nil:
-    section.add "X-Amz-Security-Token", valid_613713
-  var valid_613714 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613714 = validateParameter(valid_613714, JString, required = false,
+  if valid_613758 != nil:
+    section.add "X-Amz-Security-Token", valid_613758
+  var valid_613759 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613759 = validateParameter(valid_613759, JString, required = false,
                                  default = nil)
-  if valid_613714 != nil:
-    section.add "X-Amz-Algorithm", valid_613714
-  var valid_613715 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613715 = validateParameter(valid_613715, JString, required = false,
+  if valid_613759 != nil:
+    section.add "X-Amz-Algorithm", valid_613759
+  var valid_613760 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613760 = validateParameter(valid_613760, JString, required = false,
                                  default = nil)
-  if valid_613715 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613715
+  if valid_613760 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613760
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3678,36 +4019,142 @@ proc validate_RestartSimulationJob_613707(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613717: Call_RestartSimulationJob_613706; path: JsonNode;
+proc call*(call_613762: Call_RestartSimulationJob_613751; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Restarts a running simulation job.
   ## 
-  let valid = call_613717.validator(path, query, header, formData, body)
-  let scheme = call_613717.pickScheme
+  let valid = call_613762.validator(path, query, header, formData, body)
+  let scheme = call_613762.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613717.url(scheme.get, call_613717.host, call_613717.base,
-                         call_613717.route, valid.getOrDefault("path"),
+  let url = call_613762.url(scheme.get, call_613762.host, call_613762.base,
+                         call_613762.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613717, url, valid)
+  result = atozHook(call_613762, url, valid)
 
-proc call*(call_613718: Call_RestartSimulationJob_613706; body: JsonNode): Recallable =
+proc call*(call_613763: Call_RestartSimulationJob_613751; body: JsonNode): Recallable =
   ## restartSimulationJob
   ## Restarts a running simulation job.
   ##   body: JObject (required)
-  var body_613719 = newJObject()
+  var body_613764 = newJObject()
   if body != nil:
-    body_613719 = body
-  result = call_613718.call(nil, nil, nil, nil, body_613719)
+    body_613764 = body
+  result = call_613763.call(nil, nil, nil, nil, body_613764)
 
-var restartSimulationJob* = Call_RestartSimulationJob_613706(
+var restartSimulationJob* = Call_RestartSimulationJob_613751(
     name: "restartSimulationJob", meth: HttpMethod.HttpPost,
     host: "robomaker.amazonaws.com", route: "/restartSimulationJob",
-    validator: validate_RestartSimulationJob_613707, base: "/",
-    url: url_RestartSimulationJob_613708, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RestartSimulationJob_613752, base: "/",
+    url: url_RestartSimulationJob_613753, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SyncDeploymentJob_613720 = ref object of OpenApiRestCall_612658
-proc url_SyncDeploymentJob_613722(protocol: Scheme; host: string; base: string;
+  Call_StartSimulationJobBatch_613765 = ref object of OpenApiRestCall_612658
+proc url_StartSimulationJobBatch_613767(protocol: Scheme; host: string; base: string;
+                                       route: string; path: JsonNode;
+                                       query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base ==
+      "/" and
+      route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_StartSimulationJobBatch_613766(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Starts a new simulation job batch. The batch is defined using one or more <code>SimulationJobRequest</code> objects. 
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_613768 = header.getOrDefault("X-Amz-Signature")
+  valid_613768 = validateParameter(valid_613768, JString, required = false,
+                                 default = nil)
+  if valid_613768 != nil:
+    section.add "X-Amz-Signature", valid_613768
+  var valid_613769 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613769 = validateParameter(valid_613769, JString, required = false,
+                                 default = nil)
+  if valid_613769 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613769
+  var valid_613770 = header.getOrDefault("X-Amz-Date")
+  valid_613770 = validateParameter(valid_613770, JString, required = false,
+                                 default = nil)
+  if valid_613770 != nil:
+    section.add "X-Amz-Date", valid_613770
+  var valid_613771 = header.getOrDefault("X-Amz-Credential")
+  valid_613771 = validateParameter(valid_613771, JString, required = false,
+                                 default = nil)
+  if valid_613771 != nil:
+    section.add "X-Amz-Credential", valid_613771
+  var valid_613772 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613772 = validateParameter(valid_613772, JString, required = false,
+                                 default = nil)
+  if valid_613772 != nil:
+    section.add "X-Amz-Security-Token", valid_613772
+  var valid_613773 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613773 = validateParameter(valid_613773, JString, required = false,
+                                 default = nil)
+  if valid_613773 != nil:
+    section.add "X-Amz-Algorithm", valid_613773
+  var valid_613774 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613774 = validateParameter(valid_613774, JString, required = false,
+                                 default = nil)
+  if valid_613774 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613774
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_613776: Call_StartSimulationJobBatch_613765; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Starts a new simulation job batch. The batch is defined using one or more <code>SimulationJobRequest</code> objects. 
+  ## 
+  let valid = call_613776.validator(path, query, header, formData, body)
+  let scheme = call_613776.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_613776.url(scheme.get, call_613776.host, call_613776.base,
+                         call_613776.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_613776, url, valid)
+
+proc call*(call_613777: Call_StartSimulationJobBatch_613765; body: JsonNode): Recallable =
+  ## startSimulationJobBatch
+  ## Starts a new simulation job batch. The batch is defined using one or more <code>SimulationJobRequest</code> objects. 
+  ##   body: JObject (required)
+  var body_613778 = newJObject()
+  if body != nil:
+    body_613778 = body
+  result = call_613777.call(nil, nil, nil, nil, body_613778)
+
+var startSimulationJobBatch* = Call_StartSimulationJobBatch_613765(
+    name: "startSimulationJobBatch", meth: HttpMethod.HttpPost,
+    host: "robomaker.amazonaws.com", route: "/startSimulationJobBatch",
+    validator: validate_StartSimulationJobBatch_613766, base: "/",
+    url: url_StartSimulationJobBatch_613767, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_SyncDeploymentJob_613779 = ref object of OpenApiRestCall_612658
+proc url_SyncDeploymentJob_613781(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3719,7 +4166,7 @@ proc url_SyncDeploymentJob_613722(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_SyncDeploymentJob_613721(path: JsonNode; query: JsonNode;
+proc validate_SyncDeploymentJob_613780(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Syncrhonizes robots in a fleet to the latest deployment. This is helpful if robots were added after a deployment.
@@ -3739,41 +4186,41 @@ proc validate_SyncDeploymentJob_613721(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613723 = header.getOrDefault("X-Amz-Signature")
-  valid_613723 = validateParameter(valid_613723, JString, required = false,
+  var valid_613782 = header.getOrDefault("X-Amz-Signature")
+  valid_613782 = validateParameter(valid_613782, JString, required = false,
                                  default = nil)
-  if valid_613723 != nil:
-    section.add "X-Amz-Signature", valid_613723
-  var valid_613724 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613724 = validateParameter(valid_613724, JString, required = false,
+  if valid_613782 != nil:
+    section.add "X-Amz-Signature", valid_613782
+  var valid_613783 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613783 = validateParameter(valid_613783, JString, required = false,
                                  default = nil)
-  if valid_613724 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613724
-  var valid_613725 = header.getOrDefault("X-Amz-Date")
-  valid_613725 = validateParameter(valid_613725, JString, required = false,
+  if valid_613783 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613783
+  var valid_613784 = header.getOrDefault("X-Amz-Date")
+  valid_613784 = validateParameter(valid_613784, JString, required = false,
                                  default = nil)
-  if valid_613725 != nil:
-    section.add "X-Amz-Date", valid_613725
-  var valid_613726 = header.getOrDefault("X-Amz-Credential")
-  valid_613726 = validateParameter(valid_613726, JString, required = false,
+  if valid_613784 != nil:
+    section.add "X-Amz-Date", valid_613784
+  var valid_613785 = header.getOrDefault("X-Amz-Credential")
+  valid_613785 = validateParameter(valid_613785, JString, required = false,
                                  default = nil)
-  if valid_613726 != nil:
-    section.add "X-Amz-Credential", valid_613726
-  var valid_613727 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613727 = validateParameter(valid_613727, JString, required = false,
+  if valid_613785 != nil:
+    section.add "X-Amz-Credential", valid_613785
+  var valid_613786 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613786 = validateParameter(valid_613786, JString, required = false,
                                  default = nil)
-  if valid_613727 != nil:
-    section.add "X-Amz-Security-Token", valid_613727
-  var valid_613728 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613728 = validateParameter(valid_613728, JString, required = false,
+  if valid_613786 != nil:
+    section.add "X-Amz-Security-Token", valid_613786
+  var valid_613787 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613787 = validateParameter(valid_613787, JString, required = false,
                                  default = nil)
-  if valid_613728 != nil:
-    section.add "X-Amz-Algorithm", valid_613728
-  var valid_613729 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613729 = validateParameter(valid_613729, JString, required = false,
+  if valid_613787 != nil:
+    section.add "X-Amz-Algorithm", valid_613787
+  var valid_613788 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613788 = validateParameter(valid_613788, JString, required = false,
                                  default = nil)
-  if valid_613729 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613729
+  if valid_613788 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613788
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3784,36 +4231,36 @@ proc validate_SyncDeploymentJob_613721(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613731: Call_SyncDeploymentJob_613720; path: JsonNode;
+proc call*(call_613790: Call_SyncDeploymentJob_613779; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Syncrhonizes robots in a fleet to the latest deployment. This is helpful if robots were added after a deployment.
   ## 
-  let valid = call_613731.validator(path, query, header, formData, body)
-  let scheme = call_613731.pickScheme
+  let valid = call_613790.validator(path, query, header, formData, body)
+  let scheme = call_613790.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613731.url(scheme.get, call_613731.host, call_613731.base,
-                         call_613731.route, valid.getOrDefault("path"),
+  let url = call_613790.url(scheme.get, call_613790.host, call_613790.base,
+                         call_613790.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613731, url, valid)
+  result = atozHook(call_613790, url, valid)
 
-proc call*(call_613732: Call_SyncDeploymentJob_613720; body: JsonNode): Recallable =
+proc call*(call_613791: Call_SyncDeploymentJob_613779; body: JsonNode): Recallable =
   ## syncDeploymentJob
   ## Syncrhonizes robots in a fleet to the latest deployment. This is helpful if robots were added after a deployment.
   ##   body: JObject (required)
-  var body_613733 = newJObject()
+  var body_613792 = newJObject()
   if body != nil:
-    body_613733 = body
-  result = call_613732.call(nil, nil, nil, nil, body_613733)
+    body_613792 = body
+  result = call_613791.call(nil, nil, nil, nil, body_613792)
 
-var syncDeploymentJob* = Call_SyncDeploymentJob_613720(name: "syncDeploymentJob",
+var syncDeploymentJob* = Call_SyncDeploymentJob_613779(name: "syncDeploymentJob",
     meth: HttpMethod.HttpPost, host: "robomaker.amazonaws.com",
-    route: "/syncDeploymentJob", validator: validate_SyncDeploymentJob_613721,
-    base: "/", url: url_SyncDeploymentJob_613722,
+    route: "/syncDeploymentJob", validator: validate_SyncDeploymentJob_613780,
+    base: "/", url: url_SyncDeploymentJob_613781,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_613734 = ref object of OpenApiRestCall_612658
-proc url_UntagResource_613736(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_613793 = ref object of OpenApiRestCall_612658
+proc url_UntagResource_613795(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3834,7 +4281,7 @@ proc url_UntagResource_613736(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & hydrated.get
 
-proc validate_UntagResource_613735(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_613794(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes the specified tags from the specified AWS RoboMaker resource.</p> <p>To remove a tag, specify the tag key. To change the tag value of an existing tag key, use <a href="https://docs.aws.amazon.com/robomaker/latest/dg/API_TagResource.html"> <code>TagResource</code> </a>. </p>
   ## 
@@ -3846,21 +4293,21 @@ proc validate_UntagResource_613735(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
-  var valid_613737 = path.getOrDefault("resourceArn")
-  valid_613737 = validateParameter(valid_613737, JString, required = true,
+  var valid_613796 = path.getOrDefault("resourceArn")
+  valid_613796 = validateParameter(valid_613796, JString, required = true,
                                  default = nil)
-  if valid_613737 != nil:
-    section.add "resourceArn", valid_613737
+  if valid_613796 != nil:
+    section.add "resourceArn", valid_613796
   result.add "path", section
   ## parameters in `query` object:
   ##   tagKeys: JArray (required)
   ##          : A map that contains tag keys and tag values that will be unattached from the resource.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `tagKeys` field"
-  var valid_613738 = query.getOrDefault("tagKeys")
-  valid_613738 = validateParameter(valid_613738, JArray, required = true, default = nil)
-  if valid_613738 != nil:
-    section.add "tagKeys", valid_613738
+  var valid_613797 = query.getOrDefault("tagKeys")
+  valid_613797 = validateParameter(valid_613797, JArray, required = true, default = nil)
+  if valid_613797 != nil:
+    section.add "tagKeys", valid_613797
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -3871,61 +4318,61 @@ proc validate_UntagResource_613735(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613739 = header.getOrDefault("X-Amz-Signature")
-  valid_613739 = validateParameter(valid_613739, JString, required = false,
+  var valid_613798 = header.getOrDefault("X-Amz-Signature")
+  valid_613798 = validateParameter(valid_613798, JString, required = false,
                                  default = nil)
-  if valid_613739 != nil:
-    section.add "X-Amz-Signature", valid_613739
-  var valid_613740 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613740 = validateParameter(valid_613740, JString, required = false,
+  if valid_613798 != nil:
+    section.add "X-Amz-Signature", valid_613798
+  var valid_613799 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613799 = validateParameter(valid_613799, JString, required = false,
                                  default = nil)
-  if valid_613740 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613740
-  var valid_613741 = header.getOrDefault("X-Amz-Date")
-  valid_613741 = validateParameter(valid_613741, JString, required = false,
+  if valid_613799 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613799
+  var valid_613800 = header.getOrDefault("X-Amz-Date")
+  valid_613800 = validateParameter(valid_613800, JString, required = false,
                                  default = nil)
-  if valid_613741 != nil:
-    section.add "X-Amz-Date", valid_613741
-  var valid_613742 = header.getOrDefault("X-Amz-Credential")
-  valid_613742 = validateParameter(valid_613742, JString, required = false,
+  if valid_613800 != nil:
+    section.add "X-Amz-Date", valid_613800
+  var valid_613801 = header.getOrDefault("X-Amz-Credential")
+  valid_613801 = validateParameter(valid_613801, JString, required = false,
                                  default = nil)
-  if valid_613742 != nil:
-    section.add "X-Amz-Credential", valid_613742
-  var valid_613743 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613743 = validateParameter(valid_613743, JString, required = false,
+  if valid_613801 != nil:
+    section.add "X-Amz-Credential", valid_613801
+  var valid_613802 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613802 = validateParameter(valid_613802, JString, required = false,
                                  default = nil)
-  if valid_613743 != nil:
-    section.add "X-Amz-Security-Token", valid_613743
-  var valid_613744 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613744 = validateParameter(valid_613744, JString, required = false,
+  if valid_613802 != nil:
+    section.add "X-Amz-Security-Token", valid_613802
+  var valid_613803 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613803 = validateParameter(valid_613803, JString, required = false,
                                  default = nil)
-  if valid_613744 != nil:
-    section.add "X-Amz-Algorithm", valid_613744
-  var valid_613745 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613745 = validateParameter(valid_613745, JString, required = false,
+  if valid_613803 != nil:
+    section.add "X-Amz-Algorithm", valid_613803
+  var valid_613804 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613804 = validateParameter(valid_613804, JString, required = false,
                                  default = nil)
-  if valid_613745 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613745
+  if valid_613804 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613804
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613746: Call_UntagResource_613734; path: JsonNode; query: JsonNode;
+proc call*(call_613805: Call_UntagResource_613793; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes the specified tags from the specified AWS RoboMaker resource.</p> <p>To remove a tag, specify the tag key. To change the tag value of an existing tag key, use <a href="https://docs.aws.amazon.com/robomaker/latest/dg/API_TagResource.html"> <code>TagResource</code> </a>. </p>
   ## 
-  let valid = call_613746.validator(path, query, header, formData, body)
-  let scheme = call_613746.pickScheme
+  let valid = call_613805.validator(path, query, header, formData, body)
+  let scheme = call_613805.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613746.url(scheme.get, call_613746.host, call_613746.base,
-                         call_613746.route, valid.getOrDefault("path"),
+  let url = call_613805.url(scheme.get, call_613805.host, call_613805.base,
+                         call_613805.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613746, url, valid)
+  result = atozHook(call_613805, url, valid)
 
-proc call*(call_613747: Call_UntagResource_613734; resourceArn: string;
+proc call*(call_613806: Call_UntagResource_613793; resourceArn: string;
           tagKeys: JsonNode): Recallable =
   ## untagResource
   ## <p>Removes the specified tags from the specified AWS RoboMaker resource.</p> <p>To remove a tag, specify the tag key. To change the tag value of an existing tag key, use <a href="https://docs.aws.amazon.com/robomaker/latest/dg/API_TagResource.html"> <code>TagResource</code> </a>. </p>
@@ -3933,20 +4380,20 @@ proc call*(call_613747: Call_UntagResource_613734; resourceArn: string;
   ##              : The Amazon Resource Name (ARN) of the AWS RoboMaker resource you are removing tags.
   ##   tagKeys: JArray (required)
   ##          : A map that contains tag keys and tag values that will be unattached from the resource.
-  var path_613748 = newJObject()
-  var query_613749 = newJObject()
-  add(path_613748, "resourceArn", newJString(resourceArn))
+  var path_613807 = newJObject()
+  var query_613808 = newJObject()
+  add(path_613807, "resourceArn", newJString(resourceArn))
   if tagKeys != nil:
-    query_613749.add "tagKeys", tagKeys
-  result = call_613747.call(path_613748, query_613749, nil, nil, nil)
+    query_613808.add "tagKeys", tagKeys
+  result = call_613806.call(path_613807, query_613808, nil, nil, nil)
 
-var untagResource* = Call_UntagResource_613734(name: "untagResource",
+var untagResource* = Call_UntagResource_613793(name: "untagResource",
     meth: HttpMethod.HttpDelete, host: "robomaker.amazonaws.com",
-    route: "/tags/{resourceArn}#tagKeys", validator: validate_UntagResource_613735,
-    base: "/", url: url_UntagResource_613736, schemes: {Scheme.Https, Scheme.Http})
+    route: "/tags/{resourceArn}#tagKeys", validator: validate_UntagResource_613794,
+    base: "/", url: url_UntagResource_613795, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRobotApplication_613750 = ref object of OpenApiRestCall_612658
-proc url_UpdateRobotApplication_613752(protocol: Scheme; host: string; base: string;
+  Call_UpdateRobotApplication_613809 = ref object of OpenApiRestCall_612658
+proc url_UpdateRobotApplication_613811(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -3958,7 +4405,7 @@ proc url_UpdateRobotApplication_613752(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_UpdateRobotApplication_613751(path: JsonNode; query: JsonNode;
+proc validate_UpdateRobotApplication_613810(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates a robot application.
   ## 
@@ -3977,41 +4424,41 @@ proc validate_UpdateRobotApplication_613751(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613753 = header.getOrDefault("X-Amz-Signature")
-  valid_613753 = validateParameter(valid_613753, JString, required = false,
+  var valid_613812 = header.getOrDefault("X-Amz-Signature")
+  valid_613812 = validateParameter(valid_613812, JString, required = false,
                                  default = nil)
-  if valid_613753 != nil:
-    section.add "X-Amz-Signature", valid_613753
-  var valid_613754 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613754 = validateParameter(valid_613754, JString, required = false,
+  if valid_613812 != nil:
+    section.add "X-Amz-Signature", valid_613812
+  var valid_613813 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613813 = validateParameter(valid_613813, JString, required = false,
                                  default = nil)
-  if valid_613754 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613754
-  var valid_613755 = header.getOrDefault("X-Amz-Date")
-  valid_613755 = validateParameter(valid_613755, JString, required = false,
+  if valid_613813 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613813
+  var valid_613814 = header.getOrDefault("X-Amz-Date")
+  valid_613814 = validateParameter(valid_613814, JString, required = false,
                                  default = nil)
-  if valid_613755 != nil:
-    section.add "X-Amz-Date", valid_613755
-  var valid_613756 = header.getOrDefault("X-Amz-Credential")
-  valid_613756 = validateParameter(valid_613756, JString, required = false,
+  if valid_613814 != nil:
+    section.add "X-Amz-Date", valid_613814
+  var valid_613815 = header.getOrDefault("X-Amz-Credential")
+  valid_613815 = validateParameter(valid_613815, JString, required = false,
                                  default = nil)
-  if valid_613756 != nil:
-    section.add "X-Amz-Credential", valid_613756
-  var valid_613757 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613757 = validateParameter(valid_613757, JString, required = false,
+  if valid_613815 != nil:
+    section.add "X-Amz-Credential", valid_613815
+  var valid_613816 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613816 = validateParameter(valid_613816, JString, required = false,
                                  default = nil)
-  if valid_613757 != nil:
-    section.add "X-Amz-Security-Token", valid_613757
-  var valid_613758 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613758 = validateParameter(valid_613758, JString, required = false,
+  if valid_613816 != nil:
+    section.add "X-Amz-Security-Token", valid_613816
+  var valid_613817 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613817 = validateParameter(valid_613817, JString, required = false,
                                  default = nil)
-  if valid_613758 != nil:
-    section.add "X-Amz-Algorithm", valid_613758
-  var valid_613759 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613759 = validateParameter(valid_613759, JString, required = false,
+  if valid_613817 != nil:
+    section.add "X-Amz-Algorithm", valid_613817
+  var valid_613818 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613818 = validateParameter(valid_613818, JString, required = false,
                                  default = nil)
-  if valid_613759 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613759
+  if valid_613818 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613818
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4022,36 +4469,36 @@ proc validate_UpdateRobotApplication_613751(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613761: Call_UpdateRobotApplication_613750; path: JsonNode;
+proc call*(call_613820: Call_UpdateRobotApplication_613809; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates a robot application.
   ## 
-  let valid = call_613761.validator(path, query, header, formData, body)
-  let scheme = call_613761.pickScheme
+  let valid = call_613820.validator(path, query, header, formData, body)
+  let scheme = call_613820.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613761.url(scheme.get, call_613761.host, call_613761.base,
-                         call_613761.route, valid.getOrDefault("path"),
+  let url = call_613820.url(scheme.get, call_613820.host, call_613820.base,
+                         call_613820.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613761, url, valid)
+  result = atozHook(call_613820, url, valid)
 
-proc call*(call_613762: Call_UpdateRobotApplication_613750; body: JsonNode): Recallable =
+proc call*(call_613821: Call_UpdateRobotApplication_613809; body: JsonNode): Recallable =
   ## updateRobotApplication
   ## Updates a robot application.
   ##   body: JObject (required)
-  var body_613763 = newJObject()
+  var body_613822 = newJObject()
   if body != nil:
-    body_613763 = body
-  result = call_613762.call(nil, nil, nil, nil, body_613763)
+    body_613822 = body
+  result = call_613821.call(nil, nil, nil, nil, body_613822)
 
-var updateRobotApplication* = Call_UpdateRobotApplication_613750(
+var updateRobotApplication* = Call_UpdateRobotApplication_613809(
     name: "updateRobotApplication", meth: HttpMethod.HttpPost,
     host: "robomaker.amazonaws.com", route: "/updateRobotApplication",
-    validator: validate_UpdateRobotApplication_613751, base: "/",
-    url: url_UpdateRobotApplication_613752, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateRobotApplication_613810, base: "/",
+    url: url_UpdateRobotApplication_613811, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSimulationApplication_613764 = ref object of OpenApiRestCall_612658
-proc url_UpdateSimulationApplication_613766(protocol: Scheme; host: string;
+  Call_UpdateSimulationApplication_613823 = ref object of OpenApiRestCall_612658
+proc url_UpdateSimulationApplication_613825(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -4063,7 +4510,7 @@ proc url_UpdateSimulationApplication_613766(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateSimulationApplication_613765(path: JsonNode; query: JsonNode;
+proc validate_UpdateSimulationApplication_613824(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Updates a simulation application.
   ## 
@@ -4082,41 +4529,41 @@ proc validate_UpdateSimulationApplication_613765(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613767 = header.getOrDefault("X-Amz-Signature")
-  valid_613767 = validateParameter(valid_613767, JString, required = false,
+  var valid_613826 = header.getOrDefault("X-Amz-Signature")
+  valid_613826 = validateParameter(valid_613826, JString, required = false,
                                  default = nil)
-  if valid_613767 != nil:
-    section.add "X-Amz-Signature", valid_613767
-  var valid_613768 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613768 = validateParameter(valid_613768, JString, required = false,
+  if valid_613826 != nil:
+    section.add "X-Amz-Signature", valid_613826
+  var valid_613827 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_613827 = validateParameter(valid_613827, JString, required = false,
                                  default = nil)
-  if valid_613768 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613768
-  var valid_613769 = header.getOrDefault("X-Amz-Date")
-  valid_613769 = validateParameter(valid_613769, JString, required = false,
+  if valid_613827 != nil:
+    section.add "X-Amz-Content-Sha256", valid_613827
+  var valid_613828 = header.getOrDefault("X-Amz-Date")
+  valid_613828 = validateParameter(valid_613828, JString, required = false,
                                  default = nil)
-  if valid_613769 != nil:
-    section.add "X-Amz-Date", valid_613769
-  var valid_613770 = header.getOrDefault("X-Amz-Credential")
-  valid_613770 = validateParameter(valid_613770, JString, required = false,
+  if valid_613828 != nil:
+    section.add "X-Amz-Date", valid_613828
+  var valid_613829 = header.getOrDefault("X-Amz-Credential")
+  valid_613829 = validateParameter(valid_613829, JString, required = false,
                                  default = nil)
-  if valid_613770 != nil:
-    section.add "X-Amz-Credential", valid_613770
-  var valid_613771 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613771 = validateParameter(valid_613771, JString, required = false,
+  if valid_613829 != nil:
+    section.add "X-Amz-Credential", valid_613829
+  var valid_613830 = header.getOrDefault("X-Amz-Security-Token")
+  valid_613830 = validateParameter(valid_613830, JString, required = false,
                                  default = nil)
-  if valid_613771 != nil:
-    section.add "X-Amz-Security-Token", valid_613771
-  var valid_613772 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613772 = validateParameter(valid_613772, JString, required = false,
+  if valid_613830 != nil:
+    section.add "X-Amz-Security-Token", valid_613830
+  var valid_613831 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613831 = validateParameter(valid_613831, JString, required = false,
                                  default = nil)
-  if valid_613772 != nil:
-    section.add "X-Amz-Algorithm", valid_613772
-  var valid_613773 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613773 = validateParameter(valid_613773, JString, required = false,
+  if valid_613831 != nil:
+    section.add "X-Amz-Algorithm", valid_613831
+  var valid_613832 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613832 = validateParameter(valid_613832, JString, required = false,
                                  default = nil)
-  if valid_613773 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613773
+  if valid_613832 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613832
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4127,33 +4574,33 @@ proc validate_UpdateSimulationApplication_613765(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613775: Call_UpdateSimulationApplication_613764; path: JsonNode;
+proc call*(call_613834: Call_UpdateSimulationApplication_613823; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Updates a simulation application.
   ## 
-  let valid = call_613775.validator(path, query, header, formData, body)
-  let scheme = call_613775.pickScheme
+  let valid = call_613834.validator(path, query, header, formData, body)
+  let scheme = call_613834.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613775.url(scheme.get, call_613775.host, call_613775.base,
-                         call_613775.route, valid.getOrDefault("path"),
+  let url = call_613834.url(scheme.get, call_613834.host, call_613834.base,
+                         call_613834.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613775, url, valid)
+  result = atozHook(call_613834, url, valid)
 
-proc call*(call_613776: Call_UpdateSimulationApplication_613764; body: JsonNode): Recallable =
+proc call*(call_613835: Call_UpdateSimulationApplication_613823; body: JsonNode): Recallable =
   ## updateSimulationApplication
   ## Updates a simulation application.
   ##   body: JObject (required)
-  var body_613777 = newJObject()
+  var body_613836 = newJObject()
   if body != nil:
-    body_613777 = body
-  result = call_613776.call(nil, nil, nil, nil, body_613777)
+    body_613836 = body
+  result = call_613835.call(nil, nil, nil, nil, body_613836)
 
-var updateSimulationApplication* = Call_UpdateSimulationApplication_613764(
+var updateSimulationApplication* = Call_UpdateSimulationApplication_613823(
     name: "updateSimulationApplication", meth: HttpMethod.HttpPost,
     host: "robomaker.amazonaws.com", route: "/updateSimulationApplication",
-    validator: validate_UpdateSimulationApplication_613765, base: "/",
-    url: url_UpdateSimulationApplication_613766,
+    validator: validate_UpdateSimulationApplication_613824, base: "/",
+    url: url_UpdateSimulationApplication_613825,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest

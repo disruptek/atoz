@@ -10,7 +10,7 @@ import
 ##     name: Apache 2.0 License
 ##     url: http://www.apache.org/licenses/
 ## 
-##  Amazon Elastic Compute Cloud Image Builder provides a one-stop-shop to automate the image management processes. You configure an automated pipeline that creates images for use on AWS. As software updates become available, Image Builder automatically produces a new image based on a customizable schedule and distributes it to stipulated AWS Regions after running tests on it. With the Image Builder, organizations can capture their internal or industry-specific compliance policies as a vetted template that can be consistently applied to every new image. Built-in integration with AWS Organizations provides customers with a centralized way to enforce image distribution and access policies across their AWS accounts and Regions. Image Builder supports multiple image format AMIs on AWS.
+## EC2 Image Builder is a fully managed AWS service that makes it easier to automate the creation, management, and deployment of customized, secure, and up-to-date “golden” server images that are pre-installed and pre-configured with software and settings to meet specific IT standards.
 ## 
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/imagebuilder/
@@ -158,7 +158,7 @@ proc url_CancelImageCreation_612998(protocol: Scheme; host: string; base: string
 proc validate_CancelImageCreation_612997(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
-  ## CancelImageCreation cancels the creation of Image. This operation may only be used on images in a non-terminal state.
+  ## CancelImageCreation cancels the creation of Image. This operation can only be used on images in a non-terminal state.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -222,7 +222,7 @@ proc validate_CancelImageCreation_612997(path: JsonNode; query: JsonNode;
 
 proc call*(call_613140: Call_CancelImageCreation_612996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## CancelImageCreation cancels the creation of Image. This operation may only be used on images in a non-terminal state.
+  ## CancelImageCreation cancels the creation of Image. This operation can only be used on images in a non-terminal state.
   ## 
   let valid = call_613140.validator(path, query, header, formData, body)
   let scheme = call_613140.pickScheme
@@ -235,7 +235,7 @@ proc call*(call_613140: Call_CancelImageCreation_612996; path: JsonNode;
 
 proc call*(call_613211: Call_CancelImageCreation_612996; body: JsonNode): Recallable =
   ## cancelImageCreation
-  ## CancelImageCreation cancels the creation of Image. This operation may only be used on images in a non-terminal state.
+  ## CancelImageCreation cancels the creation of Image. This operation can only be used on images in a non-terminal state.
   ##   body: JObject (required)
   var body_613212 = newJObject()
   if body != nil:
@@ -264,7 +264,7 @@ proc url_CreateComponent_613253(protocol: Scheme; host: string; base: string;
 proc validate_CreateComponent_613252(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ## Creates a new component that can be used to build, validate, test and assess your image.
+  ## Creates a new component that can be used to build, validate, test, and assess your image.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -328,7 +328,7 @@ proc validate_CreateComponent_613252(path: JsonNode; query: JsonNode;
 
 proc call*(call_613262: Call_CreateComponent_613251; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Creates a new component that can be used to build, validate, test and assess your image.
+  ## Creates a new component that can be used to build, validate, test, and assess your image.
   ## 
   let valid = call_613262.validator(path, query, header, formData, body)
   let scheme = call_613262.pickScheme
@@ -341,7 +341,7 @@ proc call*(call_613262: Call_CreateComponent_613251; path: JsonNode; query: Json
 
 proc call*(call_613263: Call_CreateComponent_613251; body: JsonNode): Recallable =
   ## createComponent
-  ## Creates a new component that can be used to build, validate, test and assess your image.
+  ## Creates a new component that can be used to build, validate, test, and assess your image.
   ##   body: JObject (required)
   var body_613264 = newJObject()
   if body != nil:
@@ -368,7 +368,7 @@ proc url_CreateDistributionConfiguration_613267(protocol: Scheme; host: string;
 
 proc validate_CreateDistributionConfiguration_613266(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ##  Creates a new distribution configuration. Distribution configurations define and configure the outputs of your pipeline. 
+  ## Creates a new distribution configuration. Distribution configurations define and configure the outputs of your pipeline. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -433,7 +433,7 @@ proc validate_CreateDistributionConfiguration_613266(path: JsonNode;
 proc call*(call_613276: Call_CreateDistributionConfiguration_613265;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
-  ##  Creates a new distribution configuration. Distribution configurations define and configure the outputs of your pipeline. 
+  ## Creates a new distribution configuration. Distribution configurations define and configure the outputs of your pipeline. 
   ## 
   let valid = call_613276.validator(path, query, header, formData, body)
   let scheme = call_613276.pickScheme
@@ -446,7 +446,7 @@ proc call*(call_613276: Call_CreateDistributionConfiguration_613265;
 
 proc call*(call_613277: Call_CreateDistributionConfiguration_613265; body: JsonNode): Recallable =
   ## createDistributionConfiguration
-  ##  Creates a new distribution configuration. Distribution configurations define and configure the outputs of your pipeline. 
+  ## Creates a new distribution configuration. Distribution configurations define and configure the outputs of your pipeline. 
   ##   body: JObject (required)
   var body_613278 = newJObject()
   if body != nil:
@@ -689,7 +689,7 @@ proc url_CreateImageRecipe_613309(protocol: Scheme; host: string; base: string;
 proc validate_CreateImageRecipe_613308(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
-  ##  Creates a new image recipe. Image Recipes defines how images are configured, tested and assessed. 
+  ##  Creates a new image recipe. Image recipes define how images are configured, tested, and assessed. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -753,7 +753,7 @@ proc validate_CreateImageRecipe_613308(path: JsonNode; query: JsonNode;
 
 proc call*(call_613318: Call_CreateImageRecipe_613307; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Creates a new image recipe. Image Recipes defines how images are configured, tested and assessed. 
+  ##  Creates a new image recipe. Image recipes define how images are configured, tested, and assessed. 
   ## 
   let valid = call_613318.validator(path, query, header, formData, body)
   let scheme = call_613318.pickScheme
@@ -766,7 +766,7 @@ proc call*(call_613318: Call_CreateImageRecipe_613307; path: JsonNode;
 
 proc call*(call_613319: Call_CreateImageRecipe_613307; body: JsonNode): Recallable =
   ## createImageRecipe
-  ##  Creates a new image recipe. Image Recipes defines how images are configured, tested and assessed. 
+  ##  Creates a new image recipe. Image recipes define how images are configured, tested, and assessed. 
   ##   body: JObject (required)
   var body_613320 = newJObject()
   if body != nil:
@@ -1590,7 +1590,7 @@ proc validate_GetComponent_613421(path: JsonNode; query: JsonNode; header: JsonN
   result.add "path", section
   ## parameters in `query` object:
   ##   componentBuildVersionArn: JString (required)
-  ##                           :  The Amazon Resource Name (ARN) of the component that you wish to retrieve. 
+  ##                           :  The Amazon Resource Name (ARN) of the component that you want to retrieve. Regex requires "/\d+$" suffix.
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `componentBuildVersionArn` field"
   var valid_613423 = query.getOrDefault("componentBuildVersionArn")
@@ -1666,7 +1666,7 @@ proc call*(call_613432: Call_GetComponent_613420; componentBuildVersionArn: stri
   ## getComponent
   ##  Gets a component object. 
   ##   componentBuildVersionArn: string (required)
-  ##                           :  The Amazon Resource Name (ARN) of the component that you wish to retrieve. 
+  ##                           :  The Amazon Resource Name (ARN) of the component that you want to retrieve. Regex requires "/\d+$" suffix.
   var query_613433 = newJObject()
   add(query_613433, "componentBuildVersionArn",
       newJString(componentBuildVersionArn))
@@ -1702,7 +1702,7 @@ proc validate_GetComponentPolicy_613435(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   componentArn: JString (required)
-  ##               :  The Amazon Resource Name (ARN) of the component whose policy you wish to retrieve. 
+  ##               :  The Amazon Resource Name (ARN) of the component whose policy you want to retrieve. 
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `componentArn` field"
@@ -1779,7 +1779,7 @@ proc call*(call_613446: Call_GetComponentPolicy_613434; componentArn: string): R
   ## getComponentPolicy
   ##  Gets a component policy. 
   ##   componentArn: string (required)
-  ##               :  The Amazon Resource Name (ARN) of the component whose policy you wish to retrieve. 
+  ##               :  The Amazon Resource Name (ARN) of the component whose policy you want to retrieve. 
   var query_613447 = newJObject()
   add(query_613447, "componentArn", newJString(componentArn))
   result = call_613446.call(nil, query_613447, nil, nil, nil)
@@ -1813,7 +1813,7 @@ proc validate_GetDistributionConfiguration_613449(path: JsonNode; query: JsonNod
   result.add "path", section
   ## parameters in `query` object:
   ##   distributionConfigurationArn: JString (required)
-  ##                               :  The Amazon Resource Name (ARN) of the distribution configuration that you wish to retrieve. 
+  ##                               :  The Amazon Resource Name (ARN) of the distribution configuration that you want to retrieve. 
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `distributionConfigurationArn` field"
   var valid_613451 = query.getOrDefault("distributionConfigurationArn")
@@ -1890,7 +1890,7 @@ proc call*(call_613460: Call_GetDistributionConfiguration_613448;
   ## getDistributionConfiguration
   ##  Gets a distribution configuration. 
   ##   distributionConfigurationArn: string (required)
-  ##                               :  The Amazon Resource Name (ARN) of the distribution configuration that you wish to retrieve. 
+  ##                               :  The Amazon Resource Name (ARN) of the distribution configuration that you want to retrieve. 
   var query_613461 = newJObject()
   add(query_613461, "distributionConfigurationArn",
       newJString(distributionConfigurationArn))
@@ -1927,7 +1927,7 @@ proc validate_GetImage_613463(path: JsonNode; query: JsonNode; header: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   imageBuildVersionArn: JString (required)
-  ##                       :  The Amazon Resource Name (ARN) of the image that you wish to retrieve. 
+  ##                       :  The Amazon Resource Name (ARN) of the image that you want to retrieve. 
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `imageBuildVersionArn` field"
   var valid_613465 = query.getOrDefault("imageBuildVersionArn")
@@ -2003,7 +2003,7 @@ proc call*(call_613474: Call_GetImage_613462; imageBuildVersionArn: string): Rec
   ## getImage
   ##  Gets an image. 
   ##   imageBuildVersionArn: string (required)
-  ##                       :  The Amazon Resource Name (ARN) of the image that you wish to retrieve. 
+  ##                       :  The Amazon Resource Name (ARN) of the image that you want to retrieve. 
   var query_613475 = newJObject()
   add(query_613475, "imageBuildVersionArn", newJString(imageBuildVersionArn))
   result = call_613474.call(nil, query_613475, nil, nil, nil)
@@ -2039,7 +2039,7 @@ proc validate_GetImagePipeline_613477(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   imagePipelineArn: JString (required)
-  ##                   :  The Amazon Resource Name (ARN) of the image pipeline that you wish to retrieve. 
+  ##                   :  The Amazon Resource Name (ARN) of the image pipeline that you want to retrieve. 
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `imagePipelineArn` field"
@@ -2116,7 +2116,7 @@ proc call*(call_613488: Call_GetImagePipeline_613476; imagePipelineArn: string):
   ## getImagePipeline
   ##  Gets an image pipeline. 
   ##   imagePipelineArn: string (required)
-  ##                   :  The Amazon Resource Name (ARN) of the image pipeline that you wish to retrieve. 
+  ##                   :  The Amazon Resource Name (ARN) of the image pipeline that you want to retrieve. 
   var query_613489 = newJObject()
   add(query_613489, "imagePipelineArn", newJString(imagePipelineArn))
   result = call_613488.call(nil, query_613489, nil, nil, nil)
@@ -2151,7 +2151,7 @@ proc validate_GetImagePolicy_613491(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   imageArn: JString (required)
-  ##           :  The Amazon Resource Name (ARN) of the image whose policy you wish to retrieve. 
+  ##           :  The Amazon Resource Name (ARN) of the image whose policy you want to retrieve. 
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `imageArn` field"
@@ -2228,7 +2228,7 @@ proc call*(call_613502: Call_GetImagePolicy_613490; imageArn: string): Recallabl
   ## getImagePolicy
   ##  Gets an image policy. 
   ##   imageArn: string (required)
-  ##           :  The Amazon Resource Name (ARN) of the image whose policy you wish to retrieve. 
+  ##           :  The Amazon Resource Name (ARN) of the image whose policy you want to retrieve. 
   var query_613503 = newJObject()
   add(query_613503, "imageArn", newJString(imageArn))
   result = call_613502.call(nil, query_613503, nil, nil, nil)
@@ -2262,7 +2262,7 @@ proc validate_GetImageRecipe_613505(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   imageRecipeArn: JString (required)
-  ##                 :  The Amazon Resource Name (ARN) of the image recipe that you wish to retrieve. 
+  ##                 :  The Amazon Resource Name (ARN) of the image recipe that you want to retrieve. 
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `imageRecipeArn` field"
@@ -2339,7 +2339,7 @@ proc call*(call_613516: Call_GetImageRecipe_613504; imageRecipeArn: string): Rec
   ## getImageRecipe
   ##  Gets an image recipe. 
   ##   imageRecipeArn: string (required)
-  ##                 :  The Amazon Resource Name (ARN) of the image recipe that you wish to retrieve. 
+  ##                 :  The Amazon Resource Name (ARN) of the image recipe that you want to retrieve. 
   var query_613517 = newJObject()
   add(query_613517, "imageRecipeArn", newJString(imageRecipeArn))
   result = call_613516.call(nil, query_613517, nil, nil, nil)
@@ -2372,7 +2372,7 @@ proc validate_GetImageRecipePolicy_613519(path: JsonNode; query: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   imageRecipeArn: JString (required)
-  ##                 :  The Amazon Resource Name (ARN) of the image recipe whose policy you wish to retrieve. 
+  ##                 :  The Amazon Resource Name (ARN) of the image recipe whose policy you want to retrieve. 
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `imageRecipeArn` field"
@@ -2449,7 +2449,7 @@ proc call*(call_613530: Call_GetImageRecipePolicy_613518; imageRecipeArn: string
   ## getImageRecipePolicy
   ##  Gets an image recipe policy. 
   ##   imageRecipeArn: string (required)
-  ##                 :  The Amazon Resource Name (ARN) of the image recipe whose policy you wish to retrieve. 
+  ##                 :  The Amazon Resource Name (ARN) of the image recipe whose policy you want to retrieve. 
   var query_613531 = newJObject()
   add(query_613531, "imageRecipeArn", newJString(imageRecipeArn))
   result = call_613530.call(nil, query_613531, nil, nil, nil)
@@ -2476,7 +2476,7 @@ proc url_GetInfrastructureConfiguration_613534(protocol: Scheme; host: string;
 
 proc validate_GetInfrastructureConfiguration_613533(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ##  Gets a infrastructure configuration. 
+  ##  Gets an infrastructure configuration. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2484,7 +2484,7 @@ proc validate_GetInfrastructureConfiguration_613533(path: JsonNode;
   result.add "path", section
   ## parameters in `query` object:
   ##   infrastructureConfigurationArn: JString (required)
-  ##                                 :  The Amazon Resource Name (ARN) of the infrastructure configuration that you wish to retrieve. 
+  ##                                 : The Amazon Resource Name (ARN) of the infrastructure configuration that you want to retrieve. 
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `infrastructureConfigurationArn` field"
   var valid_613535 = query.getOrDefault("infrastructureConfigurationArn")
@@ -2545,7 +2545,7 @@ proc validate_GetInfrastructureConfiguration_613533(path: JsonNode;
 
 proc call*(call_613543: Call_GetInfrastructureConfiguration_613532; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Gets a infrastructure configuration. 
+  ##  Gets an infrastructure configuration. 
   ## 
   let valid = call_613543.validator(path, query, header, formData, body)
   let scheme = call_613543.pickScheme
@@ -2559,9 +2559,9 @@ proc call*(call_613543: Call_GetInfrastructureConfiguration_613532; path: JsonNo
 proc call*(call_613544: Call_GetInfrastructureConfiguration_613532;
           infrastructureConfigurationArn: string): Recallable =
   ## getInfrastructureConfiguration
-  ##  Gets a infrastructure configuration. 
+  ##  Gets an infrastructure configuration. 
   ##   infrastructureConfigurationArn: string (required)
-  ##                                 :  The Amazon Resource Name (ARN) of the infrastructure configuration that you wish to retrieve. 
+  ##                                 : The Amazon Resource Name (ARN) of the infrastructure configuration that you want to retrieve. 
   var query_613545 = newJObject()
   add(query_613545, "infrastructureConfigurationArn",
       newJString(infrastructureConfigurationArn))
@@ -2591,7 +2591,7 @@ proc url_ImportComponent_613548(protocol: Scheme; host: string; base: string;
 proc validate_ImportComponent_613547(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
-  ##  Imports a component and transforms its data into a component document. 
+  ## Imports a component and transforms its data into a component document. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2655,7 +2655,7 @@ proc validate_ImportComponent_613547(path: JsonNode; query: JsonNode;
 
 proc call*(call_613557: Call_ImportComponent_613546; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Imports a component and transforms its data into a component document. 
+  ## Imports a component and transforms its data into a component document. 
   ## 
   let valid = call_613557.validator(path, query, header, formData, body)
   let scheme = call_613557.pickScheme
@@ -2668,7 +2668,7 @@ proc call*(call_613557: Call_ImportComponent_613546; path: JsonNode; query: Json
 
 proc call*(call_613558: Call_ImportComponent_613546; body: JsonNode): Recallable =
   ## importComponent
-  ##  Imports a component and transforms its data into a component document. 
+  ## Imports a component and transforms its data into a component document. 
   ##   body: JObject (required)
   var body_613559 = newJObject()
   if body != nil:
@@ -2825,7 +2825,7 @@ proc url_ListComponents_613579(protocol: Scheme; host: string; base: string;
 proc validate_ListComponents_613578(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
-  ##  Returns the list of component build versions for the specified semantic version. 
+  ## Returns the list of component build versions for the specified semantic version. 
   ## 
   var section: JsonNode
   result = newJObject()
@@ -2904,7 +2904,7 @@ proc validate_ListComponents_613578(path: JsonNode; query: JsonNode;
 
 proc call*(call_613590: Call_ListComponents_613577; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ##  Returns the list of component build versions for the specified semantic version. 
+  ## Returns the list of component build versions for the specified semantic version. 
   ## 
   let valid = call_613590.validator(path, query, header, formData, body)
   let scheme = call_613590.pickScheme
@@ -2918,7 +2918,7 @@ proc call*(call_613590: Call_ListComponents_613577; path: JsonNode; query: JsonN
 proc call*(call_613591: Call_ListComponents_613577; body: JsonNode;
           nextToken: string = ""; maxResults: string = ""): Recallable =
   ## listComponents
-  ##  Returns the list of component build versions for the specified semantic version. 
+  ## Returns the list of component build versions for the specified semantic version. 
   ##   nextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
@@ -3871,7 +3871,7 @@ proc validate_TagResource_613742(path: JsonNode; query: JsonNode; header: JsonNo
   result = newJObject()
   ## parameters in `path` object:
   ##   resourceArn: JString (required)
-  ##              :  The Amazon Resource Name (ARN) of the resource that you wish to tag. 
+  ##              :  The Amazon Resource Name (ARN) of the resource that you want to tag. 
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
@@ -3954,7 +3954,7 @@ proc call*(call_613754: Call_TagResource_613741; resourceArn: string; body: Json
   ## tagResource
   ##  Adds a tag to a resource. 
   ##   resourceArn: string (required)
-  ##              :  The Amazon Resource Name (ARN) of the resource that you wish to tag. 
+  ##              :  The Amazon Resource Name (ARN) of the resource that you want to tag. 
   ##   body: JObject (required)
   var path_613755 = newJObject()
   var body_613756 = newJObject()
@@ -4001,7 +4001,7 @@ proc validate_ListTagsForResource_613714(path: JsonNode; query: JsonNode;
   result = newJObject()
   ## parameters in `path` object:
   ##   resourceArn: JString (required)
-  ##              :  The Amazon Resource Name (ARN) of the resource whose tags you wish to retrieve. 
+  ##              :  The Amazon Resource Name (ARN) of the resource whose tags you want to retrieve. 
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
@@ -4080,7 +4080,7 @@ proc call*(call_613739: Call_ListTagsForResource_613713; resourceArn: string): R
   ## listTagsForResource
   ##  Returns the list of tags for the specified resource. 
   ##   resourceArn: string (required)
-  ##              :  The Amazon Resource Name (ARN) of the resource whose tags you wish to retrieve. 
+  ##              :  The Amazon Resource Name (ARN) of the resource whose tags you want to retrieve. 
   var path_613740 = newJObject()
   add(path_613740, "resourceArn", newJString(resourceArn))
   result = call_613739.call(path_613740, nil, nil, nil, nil)
@@ -4543,7 +4543,7 @@ proc validate_UntagResource_613814(path: JsonNode; query: JsonNode; header: Json
   result = newJObject()
   ## parameters in `path` object:
   ##   resourceArn: JString (required)
-  ##              :  The Amazon Resource Name (ARN) of the resource that you wish to untag. 
+  ##              :  The Amazon Resource Name (ARN) of the resource that you want to untag. 
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `resourceArn` field"
@@ -4631,7 +4631,7 @@ proc call*(call_613826: Call_UntagResource_613813; resourceArn: string;
   ## untagResource
   ##  Removes a tag from a resource. 
   ##   resourceArn: string (required)
-  ##              :  The Amazon Resource Name (ARN) of the resource that you wish to untag. 
+  ##              :  The Amazon Resource Name (ARN) of the resource that you want to untag. 
   ##   tagKeys: JArray (required)
   ##          :  The tag keys to remove from the resource. 
   var path_613827 = newJObject()
