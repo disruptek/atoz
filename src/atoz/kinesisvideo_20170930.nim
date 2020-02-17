@@ -29,18 +29,17 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_612658 = ref object of OpenApiRestCall
+  OpenApiRestCall_610658 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_612658](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_610658](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_612658): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_610658): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
-  for scheme in Scheme.low ..
-      Scheme.high:
+  for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
       continue
     if scheme in [Scheme.Https, Scheme.Wss]:
@@ -54,20 +53,16 @@ proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
   ## a suitable default value when appropriate
-  if js ==
-      nil:
+  if js == nil:
     if default != nil:
       return validateParameter(default, kind, required = required)
   result = js
-  if result ==
-      nil:
+  if result == nil:
     assert not required, $kind & " expected; received nil"
     if required:
       result = newJNull()
   else:
-    assert js.kind ==
-        kind, $kind & " expected; received " &
-        $js.kind
+    assert js.kind == kind, $kind & " expected; received " & $js.kind
 
 type
   KeyVal {.used.} = tuple[key: string, val: string]
@@ -142,20 +137,18 @@ const
   awsServiceName = "kinesisvideo"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateSignalingChannel_612996 = ref object of OpenApiRestCall_612658
-proc url_CreateSignalingChannel_612998(protocol: Scheme; host: string; base: string;
+  Call_CreateSignalingChannel_610996 = ref object of OpenApiRestCall_610658
+proc url_CreateSignalingChannel_610998(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateSignalingChannel_612997(path: JsonNode; query: JsonNode;
+proc validate_CreateSignalingChannel_610997(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a signaling channel. </p> <p> <code>CreateSignalingChannel</code> is an asynchronous operation.</p>
   ## 
@@ -174,41 +167,41 @@ proc validate_CreateSignalingChannel_612997(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613110 = header.getOrDefault("X-Amz-Signature")
-  valid_613110 = validateParameter(valid_613110, JString, required = false,
+  var valid_611110 = header.getOrDefault("X-Amz-Signature")
+  valid_611110 = validateParameter(valid_611110, JString, required = false,
                                  default = nil)
-  if valid_613110 != nil:
-    section.add "X-Amz-Signature", valid_613110
-  var valid_613111 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613111 = validateParameter(valid_613111, JString, required = false,
+  if valid_611110 != nil:
+    section.add "X-Amz-Signature", valid_611110
+  var valid_611111 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611111 = validateParameter(valid_611111, JString, required = false,
                                  default = nil)
-  if valid_613111 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613111
-  var valid_613112 = header.getOrDefault("X-Amz-Date")
-  valid_613112 = validateParameter(valid_613112, JString, required = false,
+  if valid_611111 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611111
+  var valid_611112 = header.getOrDefault("X-Amz-Date")
+  valid_611112 = validateParameter(valid_611112, JString, required = false,
                                  default = nil)
-  if valid_613112 != nil:
-    section.add "X-Amz-Date", valid_613112
-  var valid_613113 = header.getOrDefault("X-Amz-Credential")
-  valid_613113 = validateParameter(valid_613113, JString, required = false,
+  if valid_611112 != nil:
+    section.add "X-Amz-Date", valid_611112
+  var valid_611113 = header.getOrDefault("X-Amz-Credential")
+  valid_611113 = validateParameter(valid_611113, JString, required = false,
                                  default = nil)
-  if valid_613113 != nil:
-    section.add "X-Amz-Credential", valid_613113
-  var valid_613114 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613114 = validateParameter(valid_613114, JString, required = false,
+  if valid_611113 != nil:
+    section.add "X-Amz-Credential", valid_611113
+  var valid_611114 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611114 = validateParameter(valid_611114, JString, required = false,
                                  default = nil)
-  if valid_613114 != nil:
-    section.add "X-Amz-Security-Token", valid_613114
-  var valid_613115 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613115 = validateParameter(valid_613115, JString, required = false,
+  if valid_611114 != nil:
+    section.add "X-Amz-Security-Token", valid_611114
+  var valid_611115 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611115 = validateParameter(valid_611115, JString, required = false,
                                  default = nil)
-  if valid_613115 != nil:
-    section.add "X-Amz-Algorithm", valid_613115
-  var valid_613116 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613116 = validateParameter(valid_613116, JString, required = false,
+  if valid_611115 != nil:
+    section.add "X-Amz-Algorithm", valid_611115
+  var valid_611116 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611116 = validateParameter(valid_611116, JString, required = false,
                                  default = nil)
-  if valid_613116 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613116
+  if valid_611116 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611116
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -219,48 +212,46 @@ proc validate_CreateSignalingChannel_612997(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613140: Call_CreateSignalingChannel_612996; path: JsonNode;
+proc call*(call_611140: Call_CreateSignalingChannel_610996; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a signaling channel. </p> <p> <code>CreateSignalingChannel</code> is an asynchronous operation.</p>
   ## 
-  let valid = call_613140.validator(path, query, header, formData, body)
-  let scheme = call_613140.pickScheme
+  let valid = call_611140.validator(path, query, header, formData, body)
+  let scheme = call_611140.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613140.url(scheme.get, call_613140.host, call_613140.base,
-                         call_613140.route, valid.getOrDefault("path"),
+  let url = call_611140.url(scheme.get, call_611140.host, call_611140.base,
+                         call_611140.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613140, url, valid)
+  result = atozHook(call_611140, url, valid)
 
-proc call*(call_613211: Call_CreateSignalingChannel_612996; body: JsonNode): Recallable =
+proc call*(call_611211: Call_CreateSignalingChannel_610996; body: JsonNode): Recallable =
   ## createSignalingChannel
   ## <p>Creates a signaling channel. </p> <p> <code>CreateSignalingChannel</code> is an asynchronous operation.</p>
   ##   body: JObject (required)
-  var body_613212 = newJObject()
+  var body_611212 = newJObject()
   if body != nil:
-    body_613212 = body
-  result = call_613211.call(nil, nil, nil, nil, body_613212)
+    body_611212 = body
+  result = call_611211.call(nil, nil, nil, nil, body_611212)
 
-var createSignalingChannel* = Call_CreateSignalingChannel_612996(
+var createSignalingChannel* = Call_CreateSignalingChannel_610996(
     name: "createSignalingChannel", meth: HttpMethod.HttpPost,
     host: "kinesisvideo.amazonaws.com", route: "/createSignalingChannel",
-    validator: validate_CreateSignalingChannel_612997, base: "/",
-    url: url_CreateSignalingChannel_612998, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateSignalingChannel_610997, base: "/",
+    url: url_CreateSignalingChannel_610998, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateStream_613251 = ref object of OpenApiRestCall_612658
-proc url_CreateStream_613253(protocol: Scheme; host: string; base: string;
+  Call_CreateStream_611251 = ref object of OpenApiRestCall_610658
+proc url_CreateStream_611253(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateStream_613252(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateStream_611252(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new Kinesis video stream. </p> <p>When you create a new stream, Kinesis Video Streams assigns it a version number. When you change the stream's metadata, Kinesis Video Streams updates the version. </p> <p> <code>CreateStream</code> is an asynchronous operation.</p> <p>For information about how the service works, see <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/how-it-works.html">How it Works</a>. </p> <p>You must have permissions for the <code>KinesisVideo:CreateStream</code> action.</p>
   ## 
@@ -279,41 +270,41 @@ proc validate_CreateStream_613252(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613254 = header.getOrDefault("X-Amz-Signature")
-  valid_613254 = validateParameter(valid_613254, JString, required = false,
+  var valid_611254 = header.getOrDefault("X-Amz-Signature")
+  valid_611254 = validateParameter(valid_611254, JString, required = false,
                                  default = nil)
-  if valid_613254 != nil:
-    section.add "X-Amz-Signature", valid_613254
-  var valid_613255 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613255 = validateParameter(valid_613255, JString, required = false,
+  if valid_611254 != nil:
+    section.add "X-Amz-Signature", valid_611254
+  var valid_611255 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611255 = validateParameter(valid_611255, JString, required = false,
                                  default = nil)
-  if valid_613255 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613255
-  var valid_613256 = header.getOrDefault("X-Amz-Date")
-  valid_613256 = validateParameter(valid_613256, JString, required = false,
+  if valid_611255 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611255
+  var valid_611256 = header.getOrDefault("X-Amz-Date")
+  valid_611256 = validateParameter(valid_611256, JString, required = false,
                                  default = nil)
-  if valid_613256 != nil:
-    section.add "X-Amz-Date", valid_613256
-  var valid_613257 = header.getOrDefault("X-Amz-Credential")
-  valid_613257 = validateParameter(valid_613257, JString, required = false,
+  if valid_611256 != nil:
+    section.add "X-Amz-Date", valid_611256
+  var valid_611257 = header.getOrDefault("X-Amz-Credential")
+  valid_611257 = validateParameter(valid_611257, JString, required = false,
                                  default = nil)
-  if valid_613257 != nil:
-    section.add "X-Amz-Credential", valid_613257
-  var valid_613258 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613258 = validateParameter(valid_613258, JString, required = false,
+  if valid_611257 != nil:
+    section.add "X-Amz-Credential", valid_611257
+  var valid_611258 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611258 = validateParameter(valid_611258, JString, required = false,
                                  default = nil)
-  if valid_613258 != nil:
-    section.add "X-Amz-Security-Token", valid_613258
-  var valid_613259 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613259 = validateParameter(valid_613259, JString, required = false,
+  if valid_611258 != nil:
+    section.add "X-Amz-Security-Token", valid_611258
+  var valid_611259 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611259 = validateParameter(valid_611259, JString, required = false,
                                  default = nil)
-  if valid_613259 != nil:
-    section.add "X-Amz-Algorithm", valid_613259
-  var valid_613260 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613260 = validateParameter(valid_613260, JString, required = false,
+  if valid_611259 != nil:
+    section.add "X-Amz-Algorithm", valid_611259
+  var valid_611260 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611260 = validateParameter(valid_611260, JString, required = false,
                                  default = nil)
-  if valid_613260 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613260
+  if valid_611260 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611260
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -324,47 +315,45 @@ proc validate_CreateStream_613252(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_613262: Call_CreateStream_613251; path: JsonNode; query: JsonNode;
+proc call*(call_611262: Call_CreateStream_611251; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new Kinesis video stream. </p> <p>When you create a new stream, Kinesis Video Streams assigns it a version number. When you change the stream's metadata, Kinesis Video Streams updates the version. </p> <p> <code>CreateStream</code> is an asynchronous operation.</p> <p>For information about how the service works, see <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/how-it-works.html">How it Works</a>. </p> <p>You must have permissions for the <code>KinesisVideo:CreateStream</code> action.</p>
   ## 
-  let valid = call_613262.validator(path, query, header, formData, body)
-  let scheme = call_613262.pickScheme
+  let valid = call_611262.validator(path, query, header, formData, body)
+  let scheme = call_611262.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613262.url(scheme.get, call_613262.host, call_613262.base,
-                         call_613262.route, valid.getOrDefault("path"),
+  let url = call_611262.url(scheme.get, call_611262.host, call_611262.base,
+                         call_611262.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613262, url, valid)
+  result = atozHook(call_611262, url, valid)
 
-proc call*(call_613263: Call_CreateStream_613251; body: JsonNode): Recallable =
+proc call*(call_611263: Call_CreateStream_611251; body: JsonNode): Recallable =
   ## createStream
   ## <p>Creates a new Kinesis video stream. </p> <p>When you create a new stream, Kinesis Video Streams assigns it a version number. When you change the stream's metadata, Kinesis Video Streams updates the version. </p> <p> <code>CreateStream</code> is an asynchronous operation.</p> <p>For information about how the service works, see <a href="https://docs.aws.amazon.com/kinesisvideostreams/latest/dg/how-it-works.html">How it Works</a>. </p> <p>You must have permissions for the <code>KinesisVideo:CreateStream</code> action.</p>
   ##   body: JObject (required)
-  var body_613264 = newJObject()
+  var body_611264 = newJObject()
   if body != nil:
-    body_613264 = body
-  result = call_613263.call(nil, nil, nil, nil, body_613264)
+    body_611264 = body
+  result = call_611263.call(nil, nil, nil, nil, body_611264)
 
-var createStream* = Call_CreateStream_613251(name: "createStream",
+var createStream* = Call_CreateStream_611251(name: "createStream",
     meth: HttpMethod.HttpPost, host: "kinesisvideo.amazonaws.com",
-    route: "/createStream", validator: validate_CreateStream_613252, base: "/",
-    url: url_CreateStream_613253, schemes: {Scheme.Https, Scheme.Http})
+    route: "/createStream", validator: validate_CreateStream_611252, base: "/",
+    url: url_CreateStream_611253, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteSignalingChannel_613265 = ref object of OpenApiRestCall_612658
-proc url_DeleteSignalingChannel_613267(protocol: Scheme; host: string; base: string;
+  Call_DeleteSignalingChannel_611265 = ref object of OpenApiRestCall_610658
+proc url_DeleteSignalingChannel_611267(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteSignalingChannel_613266(path: JsonNode; query: JsonNode;
+proc validate_DeleteSignalingChannel_611266(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Deletes a specified signaling channel. <code>DeleteSignalingChannel</code> is an asynchronous operation. If you don't specify the channel's current version, the most recent version is deleted.
   ## 
@@ -383,41 +372,41 @@ proc validate_DeleteSignalingChannel_613266(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613268 = header.getOrDefault("X-Amz-Signature")
-  valid_613268 = validateParameter(valid_613268, JString, required = false,
+  var valid_611268 = header.getOrDefault("X-Amz-Signature")
+  valid_611268 = validateParameter(valid_611268, JString, required = false,
                                  default = nil)
-  if valid_613268 != nil:
-    section.add "X-Amz-Signature", valid_613268
-  var valid_613269 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613269 = validateParameter(valid_613269, JString, required = false,
+  if valid_611268 != nil:
+    section.add "X-Amz-Signature", valid_611268
+  var valid_611269 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611269 = validateParameter(valid_611269, JString, required = false,
                                  default = nil)
-  if valid_613269 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613269
-  var valid_613270 = header.getOrDefault("X-Amz-Date")
-  valid_613270 = validateParameter(valid_613270, JString, required = false,
+  if valid_611269 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611269
+  var valid_611270 = header.getOrDefault("X-Amz-Date")
+  valid_611270 = validateParameter(valid_611270, JString, required = false,
                                  default = nil)
-  if valid_613270 != nil:
-    section.add "X-Amz-Date", valid_613270
-  var valid_613271 = header.getOrDefault("X-Amz-Credential")
-  valid_613271 = validateParameter(valid_613271, JString, required = false,
+  if valid_611270 != nil:
+    section.add "X-Amz-Date", valid_611270
+  var valid_611271 = header.getOrDefault("X-Amz-Credential")
+  valid_611271 = validateParameter(valid_611271, JString, required = false,
                                  default = nil)
-  if valid_613271 != nil:
-    section.add "X-Amz-Credential", valid_613271
-  var valid_613272 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613272 = validateParameter(valid_613272, JString, required = false,
+  if valid_611271 != nil:
+    section.add "X-Amz-Credential", valid_611271
+  var valid_611272 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611272 = validateParameter(valid_611272, JString, required = false,
                                  default = nil)
-  if valid_613272 != nil:
-    section.add "X-Amz-Security-Token", valid_613272
-  var valid_613273 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613273 = validateParameter(valid_613273, JString, required = false,
+  if valid_611272 != nil:
+    section.add "X-Amz-Security-Token", valid_611272
+  var valid_611273 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611273 = validateParameter(valid_611273, JString, required = false,
                                  default = nil)
-  if valid_613273 != nil:
-    section.add "X-Amz-Algorithm", valid_613273
-  var valid_613274 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613274 = validateParameter(valid_613274, JString, required = false,
+  if valid_611273 != nil:
+    section.add "X-Amz-Algorithm", valid_611273
+  var valid_611274 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611274 = validateParameter(valid_611274, JString, required = false,
                                  default = nil)
-  if valid_613274 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613274
+  if valid_611274 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611274
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -428,48 +417,46 @@ proc validate_DeleteSignalingChannel_613266(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613276: Call_DeleteSignalingChannel_613265; path: JsonNode;
+proc call*(call_611276: Call_DeleteSignalingChannel_611265; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes a specified signaling channel. <code>DeleteSignalingChannel</code> is an asynchronous operation. If you don't specify the channel's current version, the most recent version is deleted.
   ## 
-  let valid = call_613276.validator(path, query, header, formData, body)
-  let scheme = call_613276.pickScheme
+  let valid = call_611276.validator(path, query, header, formData, body)
+  let scheme = call_611276.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613276.url(scheme.get, call_613276.host, call_613276.base,
-                         call_613276.route, valid.getOrDefault("path"),
+  let url = call_611276.url(scheme.get, call_611276.host, call_611276.base,
+                         call_611276.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613276, url, valid)
+  result = atozHook(call_611276, url, valid)
 
-proc call*(call_613277: Call_DeleteSignalingChannel_613265; body: JsonNode): Recallable =
+proc call*(call_611277: Call_DeleteSignalingChannel_611265; body: JsonNode): Recallable =
   ## deleteSignalingChannel
   ## Deletes a specified signaling channel. <code>DeleteSignalingChannel</code> is an asynchronous operation. If you don't specify the channel's current version, the most recent version is deleted.
   ##   body: JObject (required)
-  var body_613278 = newJObject()
+  var body_611278 = newJObject()
   if body != nil:
-    body_613278 = body
-  result = call_613277.call(nil, nil, nil, nil, body_613278)
+    body_611278 = body
+  result = call_611277.call(nil, nil, nil, nil, body_611278)
 
-var deleteSignalingChannel* = Call_DeleteSignalingChannel_613265(
+var deleteSignalingChannel* = Call_DeleteSignalingChannel_611265(
     name: "deleteSignalingChannel", meth: HttpMethod.HttpPost,
     host: "kinesisvideo.amazonaws.com", route: "/deleteSignalingChannel",
-    validator: validate_DeleteSignalingChannel_613266, base: "/",
-    url: url_DeleteSignalingChannel_613267, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteSignalingChannel_611266, base: "/",
+    url: url_DeleteSignalingChannel_611267, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteStream_613279 = ref object of OpenApiRestCall_612658
-proc url_DeleteStream_613281(protocol: Scheme; host: string; base: string;
+  Call_DeleteStream_611279 = ref object of OpenApiRestCall_610658
+proc url_DeleteStream_611281(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteStream_613280(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteStream_611280(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a Kinesis video stream and the data contained in the stream. </p> <p>This method marks the stream for deletion, and makes the data in the stream inaccessible immediately.</p> <p> </p> <p> To ensure that you have the latest version of the stream before deleting it, you can specify the stream version. Kinesis Video Streams assigns a version to each stream. When you update a stream, Kinesis Video Streams assigns a new version number. To get the latest stream version, use the <code>DescribeStream</code> API. </p> <p>This operation requires permission for the <code>KinesisVideo:DeleteStream</code> action.</p>
   ## 
@@ -488,41 +475,41 @@ proc validate_DeleteStream_613280(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613282 = header.getOrDefault("X-Amz-Signature")
-  valid_613282 = validateParameter(valid_613282, JString, required = false,
+  var valid_611282 = header.getOrDefault("X-Amz-Signature")
+  valid_611282 = validateParameter(valid_611282, JString, required = false,
                                  default = nil)
-  if valid_613282 != nil:
-    section.add "X-Amz-Signature", valid_613282
-  var valid_613283 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613283 = validateParameter(valid_613283, JString, required = false,
+  if valid_611282 != nil:
+    section.add "X-Amz-Signature", valid_611282
+  var valid_611283 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611283 = validateParameter(valid_611283, JString, required = false,
                                  default = nil)
-  if valid_613283 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613283
-  var valid_613284 = header.getOrDefault("X-Amz-Date")
-  valid_613284 = validateParameter(valid_613284, JString, required = false,
+  if valid_611283 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611283
+  var valid_611284 = header.getOrDefault("X-Amz-Date")
+  valid_611284 = validateParameter(valid_611284, JString, required = false,
                                  default = nil)
-  if valid_613284 != nil:
-    section.add "X-Amz-Date", valid_613284
-  var valid_613285 = header.getOrDefault("X-Amz-Credential")
-  valid_613285 = validateParameter(valid_613285, JString, required = false,
+  if valid_611284 != nil:
+    section.add "X-Amz-Date", valid_611284
+  var valid_611285 = header.getOrDefault("X-Amz-Credential")
+  valid_611285 = validateParameter(valid_611285, JString, required = false,
                                  default = nil)
-  if valid_613285 != nil:
-    section.add "X-Amz-Credential", valid_613285
-  var valid_613286 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613286 = validateParameter(valid_613286, JString, required = false,
+  if valid_611285 != nil:
+    section.add "X-Amz-Credential", valid_611285
+  var valid_611286 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611286 = validateParameter(valid_611286, JString, required = false,
                                  default = nil)
-  if valid_613286 != nil:
-    section.add "X-Amz-Security-Token", valid_613286
-  var valid_613287 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613287 = validateParameter(valid_613287, JString, required = false,
+  if valid_611286 != nil:
+    section.add "X-Amz-Security-Token", valid_611286
+  var valid_611287 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611287 = validateParameter(valid_611287, JString, required = false,
                                  default = nil)
-  if valid_613287 != nil:
-    section.add "X-Amz-Algorithm", valid_613287
-  var valid_613288 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613288 = validateParameter(valid_613288, JString, required = false,
+  if valid_611287 != nil:
+    section.add "X-Amz-Algorithm", valid_611287
+  var valid_611288 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611288 = validateParameter(valid_611288, JString, required = false,
                                  default = nil)
-  if valid_613288 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613288
+  if valid_611288 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611288
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -533,48 +520,46 @@ proc validate_DeleteStream_613280(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_613290: Call_DeleteStream_613279; path: JsonNode; query: JsonNode;
+proc call*(call_611290: Call_DeleteStream_611279; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a Kinesis video stream and the data contained in the stream. </p> <p>This method marks the stream for deletion, and makes the data in the stream inaccessible immediately.</p> <p> </p> <p> To ensure that you have the latest version of the stream before deleting it, you can specify the stream version. Kinesis Video Streams assigns a version to each stream. When you update a stream, Kinesis Video Streams assigns a new version number. To get the latest stream version, use the <code>DescribeStream</code> API. </p> <p>This operation requires permission for the <code>KinesisVideo:DeleteStream</code> action.</p>
   ## 
-  let valid = call_613290.validator(path, query, header, formData, body)
-  let scheme = call_613290.pickScheme
+  let valid = call_611290.validator(path, query, header, formData, body)
+  let scheme = call_611290.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613290.url(scheme.get, call_613290.host, call_613290.base,
-                         call_613290.route, valid.getOrDefault("path"),
+  let url = call_611290.url(scheme.get, call_611290.host, call_611290.base,
+                         call_611290.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613290, url, valid)
+  result = atozHook(call_611290, url, valid)
 
-proc call*(call_613291: Call_DeleteStream_613279; body: JsonNode): Recallable =
+proc call*(call_611291: Call_DeleteStream_611279; body: JsonNode): Recallable =
   ## deleteStream
   ## <p>Deletes a Kinesis video stream and the data contained in the stream. </p> <p>This method marks the stream for deletion, and makes the data in the stream inaccessible immediately.</p> <p> </p> <p> To ensure that you have the latest version of the stream before deleting it, you can specify the stream version. Kinesis Video Streams assigns a version to each stream. When you update a stream, Kinesis Video Streams assigns a new version number. To get the latest stream version, use the <code>DescribeStream</code> API. </p> <p>This operation requires permission for the <code>KinesisVideo:DeleteStream</code> action.</p>
   ##   body: JObject (required)
-  var body_613292 = newJObject()
+  var body_611292 = newJObject()
   if body != nil:
-    body_613292 = body
-  result = call_613291.call(nil, nil, nil, nil, body_613292)
+    body_611292 = body
+  result = call_611291.call(nil, nil, nil, nil, body_611292)
 
-var deleteStream* = Call_DeleteStream_613279(name: "deleteStream",
+var deleteStream* = Call_DeleteStream_611279(name: "deleteStream",
     meth: HttpMethod.HttpPost, host: "kinesisvideo.amazonaws.com",
-    route: "/deleteStream", validator: validate_DeleteStream_613280, base: "/",
-    url: url_DeleteStream_613281, schemes: {Scheme.Https, Scheme.Http})
+    route: "/deleteStream", validator: validate_DeleteStream_611280, base: "/",
+    url: url_DeleteStream_611281, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeSignalingChannel_613293 = ref object of OpenApiRestCall_612658
-proc url_DescribeSignalingChannel_613295(protocol: Scheme; host: string;
+  Call_DescribeSignalingChannel_611293 = ref object of OpenApiRestCall_610658
+proc url_DescribeSignalingChannel_611295(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeSignalingChannel_613294(path: JsonNode; query: JsonNode;
+proc validate_DescribeSignalingChannel_611294(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns the most current information about the signaling channel. You must specify either the name or the ARN of the channel that you want to describe.
   ## 
@@ -593,41 +578,41 @@ proc validate_DescribeSignalingChannel_613294(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613296 = header.getOrDefault("X-Amz-Signature")
-  valid_613296 = validateParameter(valid_613296, JString, required = false,
+  var valid_611296 = header.getOrDefault("X-Amz-Signature")
+  valid_611296 = validateParameter(valid_611296, JString, required = false,
                                  default = nil)
-  if valid_613296 != nil:
-    section.add "X-Amz-Signature", valid_613296
-  var valid_613297 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613297 = validateParameter(valid_613297, JString, required = false,
+  if valid_611296 != nil:
+    section.add "X-Amz-Signature", valid_611296
+  var valid_611297 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611297 = validateParameter(valid_611297, JString, required = false,
                                  default = nil)
-  if valid_613297 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613297
-  var valid_613298 = header.getOrDefault("X-Amz-Date")
-  valid_613298 = validateParameter(valid_613298, JString, required = false,
+  if valid_611297 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611297
+  var valid_611298 = header.getOrDefault("X-Amz-Date")
+  valid_611298 = validateParameter(valid_611298, JString, required = false,
                                  default = nil)
-  if valid_613298 != nil:
-    section.add "X-Amz-Date", valid_613298
-  var valid_613299 = header.getOrDefault("X-Amz-Credential")
-  valid_613299 = validateParameter(valid_613299, JString, required = false,
+  if valid_611298 != nil:
+    section.add "X-Amz-Date", valid_611298
+  var valid_611299 = header.getOrDefault("X-Amz-Credential")
+  valid_611299 = validateParameter(valid_611299, JString, required = false,
                                  default = nil)
-  if valid_613299 != nil:
-    section.add "X-Amz-Credential", valid_613299
-  var valid_613300 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613300 = validateParameter(valid_613300, JString, required = false,
+  if valid_611299 != nil:
+    section.add "X-Amz-Credential", valid_611299
+  var valid_611300 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611300 = validateParameter(valid_611300, JString, required = false,
                                  default = nil)
-  if valid_613300 != nil:
-    section.add "X-Amz-Security-Token", valid_613300
-  var valid_613301 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613301 = validateParameter(valid_613301, JString, required = false,
+  if valid_611300 != nil:
+    section.add "X-Amz-Security-Token", valid_611300
+  var valid_611301 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611301 = validateParameter(valid_611301, JString, required = false,
                                  default = nil)
-  if valid_613301 != nil:
-    section.add "X-Amz-Algorithm", valid_613301
-  var valid_613302 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613302 = validateParameter(valid_613302, JString, required = false,
+  if valid_611301 != nil:
+    section.add "X-Amz-Algorithm", valid_611301
+  var valid_611302 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611302 = validateParameter(valid_611302, JString, required = false,
                                  default = nil)
-  if valid_613302 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613302
+  if valid_611302 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611302
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -638,48 +623,46 @@ proc validate_DescribeSignalingChannel_613294(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613304: Call_DescribeSignalingChannel_613293; path: JsonNode;
+proc call*(call_611304: Call_DescribeSignalingChannel_611293; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the most current information about the signaling channel. You must specify either the name or the ARN of the channel that you want to describe.
   ## 
-  let valid = call_613304.validator(path, query, header, formData, body)
-  let scheme = call_613304.pickScheme
+  let valid = call_611304.validator(path, query, header, formData, body)
+  let scheme = call_611304.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613304.url(scheme.get, call_613304.host, call_613304.base,
-                         call_613304.route, valid.getOrDefault("path"),
+  let url = call_611304.url(scheme.get, call_611304.host, call_611304.base,
+                         call_611304.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613304, url, valid)
+  result = atozHook(call_611304, url, valid)
 
-proc call*(call_613305: Call_DescribeSignalingChannel_613293; body: JsonNode): Recallable =
+proc call*(call_611305: Call_DescribeSignalingChannel_611293; body: JsonNode): Recallable =
   ## describeSignalingChannel
   ## Returns the most current information about the signaling channel. You must specify either the name or the ARN of the channel that you want to describe.
   ##   body: JObject (required)
-  var body_613306 = newJObject()
+  var body_611306 = newJObject()
   if body != nil:
-    body_613306 = body
-  result = call_613305.call(nil, nil, nil, nil, body_613306)
+    body_611306 = body
+  result = call_611305.call(nil, nil, nil, nil, body_611306)
 
-var describeSignalingChannel* = Call_DescribeSignalingChannel_613293(
+var describeSignalingChannel* = Call_DescribeSignalingChannel_611293(
     name: "describeSignalingChannel", meth: HttpMethod.HttpPost,
     host: "kinesisvideo.amazonaws.com", route: "/describeSignalingChannel",
-    validator: validate_DescribeSignalingChannel_613294, base: "/",
-    url: url_DescribeSignalingChannel_613295, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeSignalingChannel_611294, base: "/",
+    url: url_DescribeSignalingChannel_611295, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStream_613307 = ref object of OpenApiRestCall_612658
-proc url_DescribeStream_613309(protocol: Scheme; host: string; base: string;
+  Call_DescribeStream_611307 = ref object of OpenApiRestCall_610658
+proc url_DescribeStream_611309(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeStream_613308(path: JsonNode; query: JsonNode;
+proc validate_DescribeStream_611308(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns the most current information about the specified stream. You must specify either the <code>StreamName</code> or the <code>StreamARN</code>. 
@@ -699,41 +682,41 @@ proc validate_DescribeStream_613308(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613310 = header.getOrDefault("X-Amz-Signature")
-  valid_613310 = validateParameter(valid_613310, JString, required = false,
+  var valid_611310 = header.getOrDefault("X-Amz-Signature")
+  valid_611310 = validateParameter(valid_611310, JString, required = false,
                                  default = nil)
-  if valid_613310 != nil:
-    section.add "X-Amz-Signature", valid_613310
-  var valid_613311 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613311 = validateParameter(valid_613311, JString, required = false,
+  if valid_611310 != nil:
+    section.add "X-Amz-Signature", valid_611310
+  var valid_611311 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611311 = validateParameter(valid_611311, JString, required = false,
                                  default = nil)
-  if valid_613311 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613311
-  var valid_613312 = header.getOrDefault("X-Amz-Date")
-  valid_613312 = validateParameter(valid_613312, JString, required = false,
+  if valid_611311 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611311
+  var valid_611312 = header.getOrDefault("X-Amz-Date")
+  valid_611312 = validateParameter(valid_611312, JString, required = false,
                                  default = nil)
-  if valid_613312 != nil:
-    section.add "X-Amz-Date", valid_613312
-  var valid_613313 = header.getOrDefault("X-Amz-Credential")
-  valid_613313 = validateParameter(valid_613313, JString, required = false,
+  if valid_611312 != nil:
+    section.add "X-Amz-Date", valid_611312
+  var valid_611313 = header.getOrDefault("X-Amz-Credential")
+  valid_611313 = validateParameter(valid_611313, JString, required = false,
                                  default = nil)
-  if valid_613313 != nil:
-    section.add "X-Amz-Credential", valid_613313
-  var valid_613314 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613314 = validateParameter(valid_613314, JString, required = false,
+  if valid_611313 != nil:
+    section.add "X-Amz-Credential", valid_611313
+  var valid_611314 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611314 = validateParameter(valid_611314, JString, required = false,
                                  default = nil)
-  if valid_613314 != nil:
-    section.add "X-Amz-Security-Token", valid_613314
-  var valid_613315 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613315 = validateParameter(valid_613315, JString, required = false,
+  if valid_611314 != nil:
+    section.add "X-Amz-Security-Token", valid_611314
+  var valid_611315 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611315 = validateParameter(valid_611315, JString, required = false,
                                  default = nil)
-  if valid_613315 != nil:
-    section.add "X-Amz-Algorithm", valid_613315
-  var valid_613316 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613316 = validateParameter(valid_613316, JString, required = false,
+  if valid_611315 != nil:
+    section.add "X-Amz-Algorithm", valid_611315
+  var valid_611316 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611316 = validateParameter(valid_611316, JString, required = false,
                                  default = nil)
-  if valid_613316 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613316
+  if valid_611316 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611316
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -744,47 +727,45 @@ proc validate_DescribeStream_613308(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613318: Call_DescribeStream_613307; path: JsonNode; query: JsonNode;
+proc call*(call_611318: Call_DescribeStream_611307; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns the most current information about the specified stream. You must specify either the <code>StreamName</code> or the <code>StreamARN</code>. 
   ## 
-  let valid = call_613318.validator(path, query, header, formData, body)
-  let scheme = call_613318.pickScheme
+  let valid = call_611318.validator(path, query, header, formData, body)
+  let scheme = call_611318.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613318.url(scheme.get, call_613318.host, call_613318.base,
-                         call_613318.route, valid.getOrDefault("path"),
+  let url = call_611318.url(scheme.get, call_611318.host, call_611318.base,
+                         call_611318.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613318, url, valid)
+  result = atozHook(call_611318, url, valid)
 
-proc call*(call_613319: Call_DescribeStream_613307; body: JsonNode): Recallable =
+proc call*(call_611319: Call_DescribeStream_611307; body: JsonNode): Recallable =
   ## describeStream
   ## Returns the most current information about the specified stream. You must specify either the <code>StreamName</code> or the <code>StreamARN</code>. 
   ##   body: JObject (required)
-  var body_613320 = newJObject()
+  var body_611320 = newJObject()
   if body != nil:
-    body_613320 = body
-  result = call_613319.call(nil, nil, nil, nil, body_613320)
+    body_611320 = body
+  result = call_611319.call(nil, nil, nil, nil, body_611320)
 
-var describeStream* = Call_DescribeStream_613307(name: "describeStream",
+var describeStream* = Call_DescribeStream_611307(name: "describeStream",
     meth: HttpMethod.HttpPost, host: "kinesisvideo.amazonaws.com",
-    route: "/describeStream", validator: validate_DescribeStream_613308, base: "/",
-    url: url_DescribeStream_613309, schemes: {Scheme.Https, Scheme.Http})
+    route: "/describeStream", validator: validate_DescribeStream_611308, base: "/",
+    url: url_DescribeStream_611309, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetDataEndpoint_613321 = ref object of OpenApiRestCall_612658
-proc url_GetDataEndpoint_613323(protocol: Scheme; host: string; base: string;
+  Call_GetDataEndpoint_611321 = ref object of OpenApiRestCall_610658
+proc url_GetDataEndpoint_611323(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetDataEndpoint_613322(path: JsonNode; query: JsonNode;
+proc validate_GetDataEndpoint_611322(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Gets an endpoint for a specified stream for either reading or writing. Use this endpoint in your application to read from the specified stream (using the <code>GetMedia</code> or <code>GetMediaForFragmentList</code> operations) or write to it (using the <code>PutMedia</code> operation). </p> <note> <p>The returned endpoint does not have the API name appended. The client needs to add the API name to the returned endpoint.</p> </note> <p>In the request, specify the stream either by <code>StreamName</code> or <code>StreamARN</code>.</p>
@@ -804,41 +785,41 @@ proc validate_GetDataEndpoint_613322(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613324 = header.getOrDefault("X-Amz-Signature")
-  valid_613324 = validateParameter(valid_613324, JString, required = false,
+  var valid_611324 = header.getOrDefault("X-Amz-Signature")
+  valid_611324 = validateParameter(valid_611324, JString, required = false,
                                  default = nil)
-  if valid_613324 != nil:
-    section.add "X-Amz-Signature", valid_613324
-  var valid_613325 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613325 = validateParameter(valid_613325, JString, required = false,
+  if valid_611324 != nil:
+    section.add "X-Amz-Signature", valid_611324
+  var valid_611325 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611325 = validateParameter(valid_611325, JString, required = false,
                                  default = nil)
-  if valid_613325 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613325
-  var valid_613326 = header.getOrDefault("X-Amz-Date")
-  valid_613326 = validateParameter(valid_613326, JString, required = false,
+  if valid_611325 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611325
+  var valid_611326 = header.getOrDefault("X-Amz-Date")
+  valid_611326 = validateParameter(valid_611326, JString, required = false,
                                  default = nil)
-  if valid_613326 != nil:
-    section.add "X-Amz-Date", valid_613326
-  var valid_613327 = header.getOrDefault("X-Amz-Credential")
-  valid_613327 = validateParameter(valid_613327, JString, required = false,
+  if valid_611326 != nil:
+    section.add "X-Amz-Date", valid_611326
+  var valid_611327 = header.getOrDefault("X-Amz-Credential")
+  valid_611327 = validateParameter(valid_611327, JString, required = false,
                                  default = nil)
-  if valid_613327 != nil:
-    section.add "X-Amz-Credential", valid_613327
-  var valid_613328 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613328 = validateParameter(valid_613328, JString, required = false,
+  if valid_611327 != nil:
+    section.add "X-Amz-Credential", valid_611327
+  var valid_611328 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611328 = validateParameter(valid_611328, JString, required = false,
                                  default = nil)
-  if valid_613328 != nil:
-    section.add "X-Amz-Security-Token", valid_613328
-  var valid_613329 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613329 = validateParameter(valid_613329, JString, required = false,
+  if valid_611328 != nil:
+    section.add "X-Amz-Security-Token", valid_611328
+  var valid_611329 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611329 = validateParameter(valid_611329, JString, required = false,
                                  default = nil)
-  if valid_613329 != nil:
-    section.add "X-Amz-Algorithm", valid_613329
-  var valid_613330 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613330 = validateParameter(valid_613330, JString, required = false,
+  if valid_611329 != nil:
+    section.add "X-Amz-Algorithm", valid_611329
+  var valid_611330 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611330 = validateParameter(valid_611330, JString, required = false,
                                  default = nil)
-  if valid_613330 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613330
+  if valid_611330 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611330
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -849,47 +830,45 @@ proc validate_GetDataEndpoint_613322(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613332: Call_GetDataEndpoint_613321; path: JsonNode; query: JsonNode;
+proc call*(call_611332: Call_GetDataEndpoint_611321; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets an endpoint for a specified stream for either reading or writing. Use this endpoint in your application to read from the specified stream (using the <code>GetMedia</code> or <code>GetMediaForFragmentList</code> operations) or write to it (using the <code>PutMedia</code> operation). </p> <note> <p>The returned endpoint does not have the API name appended. The client needs to add the API name to the returned endpoint.</p> </note> <p>In the request, specify the stream either by <code>StreamName</code> or <code>StreamARN</code>.</p>
   ## 
-  let valid = call_613332.validator(path, query, header, formData, body)
-  let scheme = call_613332.pickScheme
+  let valid = call_611332.validator(path, query, header, formData, body)
+  let scheme = call_611332.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613332.url(scheme.get, call_613332.host, call_613332.base,
-                         call_613332.route, valid.getOrDefault("path"),
+  let url = call_611332.url(scheme.get, call_611332.host, call_611332.base,
+                         call_611332.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613332, url, valid)
+  result = atozHook(call_611332, url, valid)
 
-proc call*(call_613333: Call_GetDataEndpoint_613321; body: JsonNode): Recallable =
+proc call*(call_611333: Call_GetDataEndpoint_611321; body: JsonNode): Recallable =
   ## getDataEndpoint
   ## <p>Gets an endpoint for a specified stream for either reading or writing. Use this endpoint in your application to read from the specified stream (using the <code>GetMedia</code> or <code>GetMediaForFragmentList</code> operations) or write to it (using the <code>PutMedia</code> operation). </p> <note> <p>The returned endpoint does not have the API name appended. The client needs to add the API name to the returned endpoint.</p> </note> <p>In the request, specify the stream either by <code>StreamName</code> or <code>StreamARN</code>.</p>
   ##   body: JObject (required)
-  var body_613334 = newJObject()
+  var body_611334 = newJObject()
   if body != nil:
-    body_613334 = body
-  result = call_613333.call(nil, nil, nil, nil, body_613334)
+    body_611334 = body
+  result = call_611333.call(nil, nil, nil, nil, body_611334)
 
-var getDataEndpoint* = Call_GetDataEndpoint_613321(name: "getDataEndpoint",
+var getDataEndpoint* = Call_GetDataEndpoint_611321(name: "getDataEndpoint",
     meth: HttpMethod.HttpPost, host: "kinesisvideo.amazonaws.com",
-    route: "/getDataEndpoint", validator: validate_GetDataEndpoint_613322,
-    base: "/", url: url_GetDataEndpoint_613323, schemes: {Scheme.Https, Scheme.Http})
+    route: "/getDataEndpoint", validator: validate_GetDataEndpoint_611322,
+    base: "/", url: url_GetDataEndpoint_611323, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSignalingChannelEndpoint_613335 = ref object of OpenApiRestCall_612658
-proc url_GetSignalingChannelEndpoint_613337(protocol: Scheme; host: string;
+  Call_GetSignalingChannelEndpoint_611335 = ref object of OpenApiRestCall_610658
+proc url_GetSignalingChannelEndpoint_611337(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetSignalingChannelEndpoint_613336(path: JsonNode; query: JsonNode;
+proc validate_GetSignalingChannelEndpoint_611336(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Provides an endpoint for the specified signaling channel to send and receive messages. This API uses the <code>SingleMasterChannelEndpointConfiguration</code> input parameter, which consists of the <code>Protocols</code> and <code>Role</code> properties.</p> <p> <code>Protocols</code> is used to determine the communication mechanism. For example, specifying <code>WSS</code> as the protocol, results in this API producing a secure websocket endpoint, and specifying <code>HTTPS</code> as the protocol, results in this API generating an HTTPS endpoint. </p> <p> <code>Role</code> determines the messaging permissions. A <code>MASTER</code> role results in this API generating an endpoint that a client can use to communicate with any of the viewers on the channel. A <code>VIEWER</code> role results in this API generating an endpoint that a client can use to communicate only with a <code>MASTER</code>. </p>
   ## 
@@ -908,41 +887,41 @@ proc validate_GetSignalingChannelEndpoint_613336(path: JsonNode; query: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613338 = header.getOrDefault("X-Amz-Signature")
-  valid_613338 = validateParameter(valid_613338, JString, required = false,
+  var valid_611338 = header.getOrDefault("X-Amz-Signature")
+  valid_611338 = validateParameter(valid_611338, JString, required = false,
                                  default = nil)
-  if valid_613338 != nil:
-    section.add "X-Amz-Signature", valid_613338
-  var valid_613339 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613339 = validateParameter(valid_613339, JString, required = false,
+  if valid_611338 != nil:
+    section.add "X-Amz-Signature", valid_611338
+  var valid_611339 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611339 = validateParameter(valid_611339, JString, required = false,
                                  default = nil)
-  if valid_613339 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613339
-  var valid_613340 = header.getOrDefault("X-Amz-Date")
-  valid_613340 = validateParameter(valid_613340, JString, required = false,
+  if valid_611339 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611339
+  var valid_611340 = header.getOrDefault("X-Amz-Date")
+  valid_611340 = validateParameter(valid_611340, JString, required = false,
                                  default = nil)
-  if valid_613340 != nil:
-    section.add "X-Amz-Date", valid_613340
-  var valid_613341 = header.getOrDefault("X-Amz-Credential")
-  valid_613341 = validateParameter(valid_613341, JString, required = false,
+  if valid_611340 != nil:
+    section.add "X-Amz-Date", valid_611340
+  var valid_611341 = header.getOrDefault("X-Amz-Credential")
+  valid_611341 = validateParameter(valid_611341, JString, required = false,
                                  default = nil)
-  if valid_613341 != nil:
-    section.add "X-Amz-Credential", valid_613341
-  var valid_613342 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613342 = validateParameter(valid_613342, JString, required = false,
+  if valid_611341 != nil:
+    section.add "X-Amz-Credential", valid_611341
+  var valid_611342 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611342 = validateParameter(valid_611342, JString, required = false,
                                  default = nil)
-  if valid_613342 != nil:
-    section.add "X-Amz-Security-Token", valid_613342
-  var valid_613343 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613343 = validateParameter(valid_613343, JString, required = false,
+  if valid_611342 != nil:
+    section.add "X-Amz-Security-Token", valid_611342
+  var valid_611343 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611343 = validateParameter(valid_611343, JString, required = false,
                                  default = nil)
-  if valid_613343 != nil:
-    section.add "X-Amz-Algorithm", valid_613343
-  var valid_613344 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613344 = validateParameter(valid_613344, JString, required = false,
+  if valid_611343 != nil:
+    section.add "X-Amz-Algorithm", valid_611343
+  var valid_611344 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611344 = validateParameter(valid_611344, JString, required = false,
                                  default = nil)
-  if valid_613344 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613344
+  if valid_611344 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611344
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -953,49 +932,47 @@ proc validate_GetSignalingChannelEndpoint_613336(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613346: Call_GetSignalingChannelEndpoint_613335; path: JsonNode;
+proc call*(call_611346: Call_GetSignalingChannelEndpoint_611335; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Provides an endpoint for the specified signaling channel to send and receive messages. This API uses the <code>SingleMasterChannelEndpointConfiguration</code> input parameter, which consists of the <code>Protocols</code> and <code>Role</code> properties.</p> <p> <code>Protocols</code> is used to determine the communication mechanism. For example, specifying <code>WSS</code> as the protocol, results in this API producing a secure websocket endpoint, and specifying <code>HTTPS</code> as the protocol, results in this API generating an HTTPS endpoint. </p> <p> <code>Role</code> determines the messaging permissions. A <code>MASTER</code> role results in this API generating an endpoint that a client can use to communicate with any of the viewers on the channel. A <code>VIEWER</code> role results in this API generating an endpoint that a client can use to communicate only with a <code>MASTER</code>. </p>
   ## 
-  let valid = call_613346.validator(path, query, header, formData, body)
-  let scheme = call_613346.pickScheme
+  let valid = call_611346.validator(path, query, header, formData, body)
+  let scheme = call_611346.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613346.url(scheme.get, call_613346.host, call_613346.base,
-                         call_613346.route, valid.getOrDefault("path"),
+  let url = call_611346.url(scheme.get, call_611346.host, call_611346.base,
+                         call_611346.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613346, url, valid)
+  result = atozHook(call_611346, url, valid)
 
-proc call*(call_613347: Call_GetSignalingChannelEndpoint_613335; body: JsonNode): Recallable =
+proc call*(call_611347: Call_GetSignalingChannelEndpoint_611335; body: JsonNode): Recallable =
   ## getSignalingChannelEndpoint
   ## <p>Provides an endpoint for the specified signaling channel to send and receive messages. This API uses the <code>SingleMasterChannelEndpointConfiguration</code> input parameter, which consists of the <code>Protocols</code> and <code>Role</code> properties.</p> <p> <code>Protocols</code> is used to determine the communication mechanism. For example, specifying <code>WSS</code> as the protocol, results in this API producing a secure websocket endpoint, and specifying <code>HTTPS</code> as the protocol, results in this API generating an HTTPS endpoint. </p> <p> <code>Role</code> determines the messaging permissions. A <code>MASTER</code> role results in this API generating an endpoint that a client can use to communicate with any of the viewers on the channel. A <code>VIEWER</code> role results in this API generating an endpoint that a client can use to communicate only with a <code>MASTER</code>. </p>
   ##   body: JObject (required)
-  var body_613348 = newJObject()
+  var body_611348 = newJObject()
   if body != nil:
-    body_613348 = body
-  result = call_613347.call(nil, nil, nil, nil, body_613348)
+    body_611348 = body
+  result = call_611347.call(nil, nil, nil, nil, body_611348)
 
-var getSignalingChannelEndpoint* = Call_GetSignalingChannelEndpoint_613335(
+var getSignalingChannelEndpoint* = Call_GetSignalingChannelEndpoint_611335(
     name: "getSignalingChannelEndpoint", meth: HttpMethod.HttpPost,
     host: "kinesisvideo.amazonaws.com", route: "/getSignalingChannelEndpoint",
-    validator: validate_GetSignalingChannelEndpoint_613336, base: "/",
-    url: url_GetSignalingChannelEndpoint_613337,
+    validator: validate_GetSignalingChannelEndpoint_611336, base: "/",
+    url: url_GetSignalingChannelEndpoint_611337,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListSignalingChannels_613349 = ref object of OpenApiRestCall_612658
-proc url_ListSignalingChannels_613351(protocol: Scheme; host: string; base: string;
+  Call_ListSignalingChannels_611349 = ref object of OpenApiRestCall_610658
+proc url_ListSignalingChannels_611351(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListSignalingChannels_613350(path: JsonNode; query: JsonNode;
+proc validate_ListSignalingChannels_611350(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <code>ChannelInfo</code> objects. Each object describes a signaling channel. To retrieve only those channels that satisfy a specific condition, you can specify a <code>ChannelNameCondition</code>.
   ## 
@@ -1009,16 +986,16 @@ proc validate_ListSignalingChannels_613350(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_613352 = query.getOrDefault("MaxResults")
-  valid_613352 = validateParameter(valid_613352, JString, required = false,
+  var valid_611352 = query.getOrDefault("MaxResults")
+  valid_611352 = validateParameter(valid_611352, JString, required = false,
                                  default = nil)
-  if valid_613352 != nil:
-    section.add "MaxResults", valid_613352
-  var valid_613353 = query.getOrDefault("NextToken")
-  valid_613353 = validateParameter(valid_613353, JString, required = false,
+  if valid_611352 != nil:
+    section.add "MaxResults", valid_611352
+  var valid_611353 = query.getOrDefault("NextToken")
+  valid_611353 = validateParameter(valid_611353, JString, required = false,
                                  default = nil)
-  if valid_613353 != nil:
-    section.add "NextToken", valid_613353
+  if valid_611353 != nil:
+    section.add "NextToken", valid_611353
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1029,41 +1006,41 @@ proc validate_ListSignalingChannels_613350(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613354 = header.getOrDefault("X-Amz-Signature")
-  valid_613354 = validateParameter(valid_613354, JString, required = false,
+  var valid_611354 = header.getOrDefault("X-Amz-Signature")
+  valid_611354 = validateParameter(valid_611354, JString, required = false,
                                  default = nil)
-  if valid_613354 != nil:
-    section.add "X-Amz-Signature", valid_613354
-  var valid_613355 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613355 = validateParameter(valid_613355, JString, required = false,
+  if valid_611354 != nil:
+    section.add "X-Amz-Signature", valid_611354
+  var valid_611355 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611355 = validateParameter(valid_611355, JString, required = false,
                                  default = nil)
-  if valid_613355 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613355
-  var valid_613356 = header.getOrDefault("X-Amz-Date")
-  valid_613356 = validateParameter(valid_613356, JString, required = false,
+  if valid_611355 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611355
+  var valid_611356 = header.getOrDefault("X-Amz-Date")
+  valid_611356 = validateParameter(valid_611356, JString, required = false,
                                  default = nil)
-  if valid_613356 != nil:
-    section.add "X-Amz-Date", valid_613356
-  var valid_613357 = header.getOrDefault("X-Amz-Credential")
-  valid_613357 = validateParameter(valid_613357, JString, required = false,
+  if valid_611356 != nil:
+    section.add "X-Amz-Date", valid_611356
+  var valid_611357 = header.getOrDefault("X-Amz-Credential")
+  valid_611357 = validateParameter(valid_611357, JString, required = false,
                                  default = nil)
-  if valid_613357 != nil:
-    section.add "X-Amz-Credential", valid_613357
-  var valid_613358 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613358 = validateParameter(valid_613358, JString, required = false,
+  if valid_611357 != nil:
+    section.add "X-Amz-Credential", valid_611357
+  var valid_611358 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611358 = validateParameter(valid_611358, JString, required = false,
                                  default = nil)
-  if valid_613358 != nil:
-    section.add "X-Amz-Security-Token", valid_613358
-  var valid_613359 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613359 = validateParameter(valid_613359, JString, required = false,
+  if valid_611358 != nil:
+    section.add "X-Amz-Security-Token", valid_611358
+  var valid_611359 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611359 = validateParameter(valid_611359, JString, required = false,
                                  default = nil)
-  if valid_613359 != nil:
-    section.add "X-Amz-Algorithm", valid_613359
-  var valid_613360 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613360 = validateParameter(valid_613360, JString, required = false,
+  if valid_611359 != nil:
+    section.add "X-Amz-Algorithm", valid_611359
+  var valid_611360 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611360 = validateParameter(valid_611360, JString, required = false,
                                  default = nil)
-  if valid_613360 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613360
+  if valid_611360 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611360
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1074,20 +1051,20 @@ proc validate_ListSignalingChannels_613350(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613362: Call_ListSignalingChannels_613349; path: JsonNode;
+proc call*(call_611362: Call_ListSignalingChannels_611349; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <code>ChannelInfo</code> objects. Each object describes a signaling channel. To retrieve only those channels that satisfy a specific condition, you can specify a <code>ChannelNameCondition</code>.
   ## 
-  let valid = call_613362.validator(path, query, header, formData, body)
-  let scheme = call_613362.pickScheme
+  let valid = call_611362.validator(path, query, header, formData, body)
+  let scheme = call_611362.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613362.url(scheme.get, call_613362.host, call_613362.base,
-                         call_613362.route, valid.getOrDefault("path"),
+  let url = call_611362.url(scheme.get, call_611362.host, call_611362.base,
+                         call_611362.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613362, url, valid)
+  result = atozHook(call_611362, url, valid)
 
-proc call*(call_613363: Call_ListSignalingChannels_613349; body: JsonNode;
+proc call*(call_611363: Call_ListSignalingChannels_611349; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listSignalingChannels
   ## Returns an array of <code>ChannelInfo</code> objects. Each object describes a signaling channel. To retrieve only those channels that satisfy a specific condition, you can specify a <code>ChannelNameCondition</code>.
@@ -1096,34 +1073,32 @@ proc call*(call_613363: Call_ListSignalingChannels_613349; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_613364 = newJObject()
-  var body_613365 = newJObject()
-  add(query_613364, "MaxResults", newJString(MaxResults))
-  add(query_613364, "NextToken", newJString(NextToken))
+  var query_611364 = newJObject()
+  var body_611365 = newJObject()
+  add(query_611364, "MaxResults", newJString(MaxResults))
+  add(query_611364, "NextToken", newJString(NextToken))
   if body != nil:
-    body_613365 = body
-  result = call_613363.call(nil, query_613364, nil, nil, body_613365)
+    body_611365 = body
+  result = call_611363.call(nil, query_611364, nil, nil, body_611365)
 
-var listSignalingChannels* = Call_ListSignalingChannels_613349(
+var listSignalingChannels* = Call_ListSignalingChannels_611349(
     name: "listSignalingChannels", meth: HttpMethod.HttpPost,
     host: "kinesisvideo.amazonaws.com", route: "/listSignalingChannels",
-    validator: validate_ListSignalingChannels_613350, base: "/",
-    url: url_ListSignalingChannels_613351, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListSignalingChannels_611350, base: "/",
+    url: url_ListSignalingChannels_611351, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListStreams_613367 = ref object of OpenApiRestCall_612658
-proc url_ListStreams_613369(protocol: Scheme; host: string; base: string;
+  Call_ListStreams_611367 = ref object of OpenApiRestCall_610658
+proc url_ListStreams_611369(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListStreams_613368(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListStreams_611368(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns an array of <code>StreamInfo</code> objects. Each object describes a stream. To retrieve only streams that satisfy a specific condition, you can specify a <code>StreamNameCondition</code>. 
   ## 
@@ -1137,16 +1112,16 @@ proc validate_ListStreams_613368(path: JsonNode; query: JsonNode; header: JsonNo
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_613370 = query.getOrDefault("MaxResults")
-  valid_613370 = validateParameter(valid_613370, JString, required = false,
+  var valid_611370 = query.getOrDefault("MaxResults")
+  valid_611370 = validateParameter(valid_611370, JString, required = false,
                                  default = nil)
-  if valid_613370 != nil:
-    section.add "MaxResults", valid_613370
-  var valid_613371 = query.getOrDefault("NextToken")
-  valid_613371 = validateParameter(valid_613371, JString, required = false,
+  if valid_611370 != nil:
+    section.add "MaxResults", valid_611370
+  var valid_611371 = query.getOrDefault("NextToken")
+  valid_611371 = validateParameter(valid_611371, JString, required = false,
                                  default = nil)
-  if valid_613371 != nil:
-    section.add "NextToken", valid_613371
+  if valid_611371 != nil:
+    section.add "NextToken", valid_611371
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -1157,41 +1132,41 @@ proc validate_ListStreams_613368(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613372 = header.getOrDefault("X-Amz-Signature")
-  valid_613372 = validateParameter(valid_613372, JString, required = false,
+  var valid_611372 = header.getOrDefault("X-Amz-Signature")
+  valid_611372 = validateParameter(valid_611372, JString, required = false,
                                  default = nil)
-  if valid_613372 != nil:
-    section.add "X-Amz-Signature", valid_613372
-  var valid_613373 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613373 = validateParameter(valid_613373, JString, required = false,
+  if valid_611372 != nil:
+    section.add "X-Amz-Signature", valid_611372
+  var valid_611373 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611373 = validateParameter(valid_611373, JString, required = false,
                                  default = nil)
-  if valid_613373 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613373
-  var valid_613374 = header.getOrDefault("X-Amz-Date")
-  valid_613374 = validateParameter(valid_613374, JString, required = false,
+  if valid_611373 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611373
+  var valid_611374 = header.getOrDefault("X-Amz-Date")
+  valid_611374 = validateParameter(valid_611374, JString, required = false,
                                  default = nil)
-  if valid_613374 != nil:
-    section.add "X-Amz-Date", valid_613374
-  var valid_613375 = header.getOrDefault("X-Amz-Credential")
-  valid_613375 = validateParameter(valid_613375, JString, required = false,
+  if valid_611374 != nil:
+    section.add "X-Amz-Date", valid_611374
+  var valid_611375 = header.getOrDefault("X-Amz-Credential")
+  valid_611375 = validateParameter(valid_611375, JString, required = false,
                                  default = nil)
-  if valid_613375 != nil:
-    section.add "X-Amz-Credential", valid_613375
-  var valid_613376 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613376 = validateParameter(valid_613376, JString, required = false,
+  if valid_611375 != nil:
+    section.add "X-Amz-Credential", valid_611375
+  var valid_611376 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611376 = validateParameter(valid_611376, JString, required = false,
                                  default = nil)
-  if valid_613376 != nil:
-    section.add "X-Amz-Security-Token", valid_613376
-  var valid_613377 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613377 = validateParameter(valid_613377, JString, required = false,
+  if valid_611376 != nil:
+    section.add "X-Amz-Security-Token", valid_611376
+  var valid_611377 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611377 = validateParameter(valid_611377, JString, required = false,
                                  default = nil)
-  if valid_613377 != nil:
-    section.add "X-Amz-Algorithm", valid_613377
-  var valid_613378 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613378 = validateParameter(valid_613378, JString, required = false,
+  if valid_611377 != nil:
+    section.add "X-Amz-Algorithm", valid_611377
+  var valid_611378 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611378 = validateParameter(valid_611378, JString, required = false,
                                  default = nil)
-  if valid_613378 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613378
+  if valid_611378 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611378
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1202,20 +1177,20 @@ proc validate_ListStreams_613368(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613380: Call_ListStreams_613367; path: JsonNode; query: JsonNode;
+proc call*(call_611380: Call_ListStreams_611367; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns an array of <code>StreamInfo</code> objects. Each object describes a stream. To retrieve only streams that satisfy a specific condition, you can specify a <code>StreamNameCondition</code>. 
   ## 
-  let valid = call_613380.validator(path, query, header, formData, body)
-  let scheme = call_613380.pickScheme
+  let valid = call_611380.validator(path, query, header, formData, body)
+  let scheme = call_611380.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613380.url(scheme.get, call_613380.host, call_613380.base,
-                         call_613380.route, valid.getOrDefault("path"),
+  let url = call_611380.url(scheme.get, call_611380.host, call_611380.base,
+                         call_611380.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613380, url, valid)
+  result = atozHook(call_611380, url, valid)
 
-proc call*(call_613381: Call_ListStreams_613367; body: JsonNode;
+proc call*(call_611381: Call_ListStreams_611367; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## listStreams
   ## Returns an array of <code>StreamInfo</code> objects. Each object describes a stream. To retrieve only streams that satisfy a specific condition, you can specify a <code>StreamNameCondition</code>. 
@@ -1224,36 +1199,34 @@ proc call*(call_613381: Call_ListStreams_613367; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_613382 = newJObject()
-  var body_613383 = newJObject()
-  add(query_613382, "MaxResults", newJString(MaxResults))
-  add(query_613382, "NextToken", newJString(NextToken))
+  var query_611382 = newJObject()
+  var body_611383 = newJObject()
+  add(query_611382, "MaxResults", newJString(MaxResults))
+  add(query_611382, "NextToken", newJString(NextToken))
   if body != nil:
-    body_613383 = body
-  result = call_613381.call(nil, query_613382, nil, nil, body_613383)
+    body_611383 = body
+  result = call_611381.call(nil, query_611382, nil, nil, body_611383)
 
-var listStreams* = Call_ListStreams_613367(name: "listStreams",
+var listStreams* = Call_ListStreams_611367(name: "listStreams",
                                         meth: HttpMethod.HttpPost,
                                         host: "kinesisvideo.amazonaws.com",
                                         route: "/listStreams",
-                                        validator: validate_ListStreams_613368,
-                                        base: "/", url: url_ListStreams_613369,
+                                        validator: validate_ListStreams_611368,
+                                        base: "/", url: url_ListStreams_611369,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForResource_613384 = ref object of OpenApiRestCall_612658
-proc url_ListTagsForResource_613386(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForResource_611384 = ref object of OpenApiRestCall_610658
+proc url_ListTagsForResource_611386(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTagsForResource_613385(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForResource_611385(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## Returns a list of tags associated with the specified signaling channel.
@@ -1273,41 +1246,41 @@ proc validate_ListTagsForResource_613385(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613387 = header.getOrDefault("X-Amz-Signature")
-  valid_613387 = validateParameter(valid_613387, JString, required = false,
+  var valid_611387 = header.getOrDefault("X-Amz-Signature")
+  valid_611387 = validateParameter(valid_611387, JString, required = false,
                                  default = nil)
-  if valid_613387 != nil:
-    section.add "X-Amz-Signature", valid_613387
-  var valid_613388 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613388 = validateParameter(valid_613388, JString, required = false,
+  if valid_611387 != nil:
+    section.add "X-Amz-Signature", valid_611387
+  var valid_611388 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611388 = validateParameter(valid_611388, JString, required = false,
                                  default = nil)
-  if valid_613388 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613388
-  var valid_613389 = header.getOrDefault("X-Amz-Date")
-  valid_613389 = validateParameter(valid_613389, JString, required = false,
+  if valid_611388 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611388
+  var valid_611389 = header.getOrDefault("X-Amz-Date")
+  valid_611389 = validateParameter(valid_611389, JString, required = false,
                                  default = nil)
-  if valid_613389 != nil:
-    section.add "X-Amz-Date", valid_613389
-  var valid_613390 = header.getOrDefault("X-Amz-Credential")
-  valid_613390 = validateParameter(valid_613390, JString, required = false,
+  if valid_611389 != nil:
+    section.add "X-Amz-Date", valid_611389
+  var valid_611390 = header.getOrDefault("X-Amz-Credential")
+  valid_611390 = validateParameter(valid_611390, JString, required = false,
                                  default = nil)
-  if valid_613390 != nil:
-    section.add "X-Amz-Credential", valid_613390
-  var valid_613391 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613391 = validateParameter(valid_613391, JString, required = false,
+  if valid_611390 != nil:
+    section.add "X-Amz-Credential", valid_611390
+  var valid_611391 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611391 = validateParameter(valid_611391, JString, required = false,
                                  default = nil)
-  if valid_613391 != nil:
-    section.add "X-Amz-Security-Token", valid_613391
-  var valid_613392 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613392 = validateParameter(valid_613392, JString, required = false,
+  if valid_611391 != nil:
+    section.add "X-Amz-Security-Token", valid_611391
+  var valid_611392 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611392 = validateParameter(valid_611392, JString, required = false,
                                  default = nil)
-  if valid_613392 != nil:
-    section.add "X-Amz-Algorithm", valid_613392
-  var valid_613393 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613393 = validateParameter(valid_613393, JString, required = false,
+  if valid_611392 != nil:
+    section.add "X-Amz-Algorithm", valid_611392
+  var valid_611393 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611393 = validateParameter(valid_611393, JString, required = false,
                                  default = nil)
-  if valid_613393 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613393
+  if valid_611393 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611393
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1318,48 +1291,46 @@ proc validate_ListTagsForResource_613385(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613395: Call_ListTagsForResource_613384; path: JsonNode;
+proc call*(call_611395: Call_ListTagsForResource_611384; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of tags associated with the specified signaling channel.
   ## 
-  let valid = call_613395.validator(path, query, header, formData, body)
-  let scheme = call_613395.pickScheme
+  let valid = call_611395.validator(path, query, header, formData, body)
+  let scheme = call_611395.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613395.url(scheme.get, call_613395.host, call_613395.base,
-                         call_613395.route, valid.getOrDefault("path"),
+  let url = call_611395.url(scheme.get, call_611395.host, call_611395.base,
+                         call_611395.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613395, url, valid)
+  result = atozHook(call_611395, url, valid)
 
-proc call*(call_613396: Call_ListTagsForResource_613384; body: JsonNode): Recallable =
+proc call*(call_611396: Call_ListTagsForResource_611384; body: JsonNode): Recallable =
   ## listTagsForResource
   ## Returns a list of tags associated with the specified signaling channel.
   ##   body: JObject (required)
-  var body_613397 = newJObject()
+  var body_611397 = newJObject()
   if body != nil:
-    body_613397 = body
-  result = call_613396.call(nil, nil, nil, nil, body_613397)
+    body_611397 = body
+  result = call_611396.call(nil, nil, nil, nil, body_611397)
 
-var listTagsForResource* = Call_ListTagsForResource_613384(
+var listTagsForResource* = Call_ListTagsForResource_611384(
     name: "listTagsForResource", meth: HttpMethod.HttpPost,
     host: "kinesisvideo.amazonaws.com", route: "/ListTagsForResource",
-    validator: validate_ListTagsForResource_613385, base: "/",
-    url: url_ListTagsForResource_613386, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_ListTagsForResource_611385, base: "/",
+    url: url_ListTagsForResource_611386, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTagsForStream_613398 = ref object of OpenApiRestCall_612658
-proc url_ListTagsForStream_613400(protocol: Scheme; host: string; base: string;
+  Call_ListTagsForStream_611398 = ref object of OpenApiRestCall_610658
+proc url_ListTagsForStream_611400(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTagsForStream_613399(path: JsonNode; query: JsonNode;
+proc validate_ListTagsForStream_611399(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Returns a list of tags associated with the specified stream.</p> <p>In the request, you must specify either the <code>StreamName</code> or the <code>StreamARN</code>. </p>
@@ -1379,41 +1350,41 @@ proc validate_ListTagsForStream_613399(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613401 = header.getOrDefault("X-Amz-Signature")
-  valid_613401 = validateParameter(valid_613401, JString, required = false,
+  var valid_611401 = header.getOrDefault("X-Amz-Signature")
+  valid_611401 = validateParameter(valid_611401, JString, required = false,
                                  default = nil)
-  if valid_613401 != nil:
-    section.add "X-Amz-Signature", valid_613401
-  var valid_613402 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613402 = validateParameter(valid_613402, JString, required = false,
+  if valid_611401 != nil:
+    section.add "X-Amz-Signature", valid_611401
+  var valid_611402 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611402 = validateParameter(valid_611402, JString, required = false,
                                  default = nil)
-  if valid_613402 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613402
-  var valid_613403 = header.getOrDefault("X-Amz-Date")
-  valid_613403 = validateParameter(valid_613403, JString, required = false,
+  if valid_611402 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611402
+  var valid_611403 = header.getOrDefault("X-Amz-Date")
+  valid_611403 = validateParameter(valid_611403, JString, required = false,
                                  default = nil)
-  if valid_613403 != nil:
-    section.add "X-Amz-Date", valid_613403
-  var valid_613404 = header.getOrDefault("X-Amz-Credential")
-  valid_613404 = validateParameter(valid_613404, JString, required = false,
+  if valid_611403 != nil:
+    section.add "X-Amz-Date", valid_611403
+  var valid_611404 = header.getOrDefault("X-Amz-Credential")
+  valid_611404 = validateParameter(valid_611404, JString, required = false,
                                  default = nil)
-  if valid_613404 != nil:
-    section.add "X-Amz-Credential", valid_613404
-  var valid_613405 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613405 = validateParameter(valid_613405, JString, required = false,
+  if valid_611404 != nil:
+    section.add "X-Amz-Credential", valid_611404
+  var valid_611405 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611405 = validateParameter(valid_611405, JString, required = false,
                                  default = nil)
-  if valid_613405 != nil:
-    section.add "X-Amz-Security-Token", valid_613405
-  var valid_613406 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613406 = validateParameter(valid_613406, JString, required = false,
+  if valid_611405 != nil:
+    section.add "X-Amz-Security-Token", valid_611405
+  var valid_611406 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611406 = validateParameter(valid_611406, JString, required = false,
                                  default = nil)
-  if valid_613406 != nil:
-    section.add "X-Amz-Algorithm", valid_613406
-  var valid_613407 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613407 = validateParameter(valid_613407, JString, required = false,
+  if valid_611406 != nil:
+    section.add "X-Amz-Algorithm", valid_611406
+  var valid_611407 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611407 = validateParameter(valid_611407, JString, required = false,
                                  default = nil)
-  if valid_613407 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613407
+  if valid_611407 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611407
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1424,48 +1395,46 @@ proc validate_ListTagsForStream_613399(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613409: Call_ListTagsForStream_613398; path: JsonNode;
+proc call*(call_611409: Call_ListTagsForStream_611398; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Returns a list of tags associated with the specified stream.</p> <p>In the request, you must specify either the <code>StreamName</code> or the <code>StreamARN</code>. </p>
   ## 
-  let valid = call_613409.validator(path, query, header, formData, body)
-  let scheme = call_613409.pickScheme
+  let valid = call_611409.validator(path, query, header, formData, body)
+  let scheme = call_611409.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613409.url(scheme.get, call_613409.host, call_613409.base,
-                         call_613409.route, valid.getOrDefault("path"),
+  let url = call_611409.url(scheme.get, call_611409.host, call_611409.base,
+                         call_611409.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613409, url, valid)
+  result = atozHook(call_611409, url, valid)
 
-proc call*(call_613410: Call_ListTagsForStream_613398; body: JsonNode): Recallable =
+proc call*(call_611410: Call_ListTagsForStream_611398; body: JsonNode): Recallable =
   ## listTagsForStream
   ## <p>Returns a list of tags associated with the specified stream.</p> <p>In the request, you must specify either the <code>StreamName</code> or the <code>StreamARN</code>. </p>
   ##   body: JObject (required)
-  var body_613411 = newJObject()
+  var body_611411 = newJObject()
   if body != nil:
-    body_613411 = body
-  result = call_613410.call(nil, nil, nil, nil, body_613411)
+    body_611411 = body
+  result = call_611410.call(nil, nil, nil, nil, body_611411)
 
-var listTagsForStream* = Call_ListTagsForStream_613398(name: "listTagsForStream",
+var listTagsForStream* = Call_ListTagsForStream_611398(name: "listTagsForStream",
     meth: HttpMethod.HttpPost, host: "kinesisvideo.amazonaws.com",
-    route: "/listTagsForStream", validator: validate_ListTagsForStream_613399,
-    base: "/", url: url_ListTagsForStream_613400,
+    route: "/listTagsForStream", validator: validate_ListTagsForStream_611399,
+    base: "/", url: url_ListTagsForStream_611400,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_613412 = ref object of OpenApiRestCall_612658
-proc url_TagResource_613414(protocol: Scheme; host: string; base: string;
+  Call_TagResource_611412 = ref object of OpenApiRestCall_610658
+proc url_TagResource_611414(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_TagResource_613413(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_611413(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Adds one or more tags to a signaling channel. A <i>tag</i> is a key-value pair (the value is optional) that you can define and assign to AWS resources. If you specify a tag that already exists, the tag value is replaced with the value that you specify in the request. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.
   ## 
@@ -1484,41 +1453,41 @@ proc validate_TagResource_613413(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613415 = header.getOrDefault("X-Amz-Signature")
-  valid_613415 = validateParameter(valid_613415, JString, required = false,
+  var valid_611415 = header.getOrDefault("X-Amz-Signature")
+  valid_611415 = validateParameter(valid_611415, JString, required = false,
                                  default = nil)
-  if valid_613415 != nil:
-    section.add "X-Amz-Signature", valid_613415
-  var valid_613416 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613416 = validateParameter(valid_613416, JString, required = false,
+  if valid_611415 != nil:
+    section.add "X-Amz-Signature", valid_611415
+  var valid_611416 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611416 = validateParameter(valid_611416, JString, required = false,
                                  default = nil)
-  if valid_613416 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613416
-  var valid_613417 = header.getOrDefault("X-Amz-Date")
-  valid_613417 = validateParameter(valid_613417, JString, required = false,
+  if valid_611416 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611416
+  var valid_611417 = header.getOrDefault("X-Amz-Date")
+  valid_611417 = validateParameter(valid_611417, JString, required = false,
                                  default = nil)
-  if valid_613417 != nil:
-    section.add "X-Amz-Date", valid_613417
-  var valid_613418 = header.getOrDefault("X-Amz-Credential")
-  valid_613418 = validateParameter(valid_613418, JString, required = false,
+  if valid_611417 != nil:
+    section.add "X-Amz-Date", valid_611417
+  var valid_611418 = header.getOrDefault("X-Amz-Credential")
+  valid_611418 = validateParameter(valid_611418, JString, required = false,
                                  default = nil)
-  if valid_613418 != nil:
-    section.add "X-Amz-Credential", valid_613418
-  var valid_613419 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613419 = validateParameter(valid_613419, JString, required = false,
+  if valid_611418 != nil:
+    section.add "X-Amz-Credential", valid_611418
+  var valid_611419 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611419 = validateParameter(valid_611419, JString, required = false,
                                  default = nil)
-  if valid_613419 != nil:
-    section.add "X-Amz-Security-Token", valid_613419
-  var valid_613420 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613420 = validateParameter(valid_613420, JString, required = false,
+  if valid_611419 != nil:
+    section.add "X-Amz-Security-Token", valid_611419
+  var valid_611420 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611420 = validateParameter(valid_611420, JString, required = false,
                                  default = nil)
-  if valid_613420 != nil:
-    section.add "X-Amz-Algorithm", valid_613420
-  var valid_613421 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613421 = validateParameter(valid_613421, JString, required = false,
+  if valid_611420 != nil:
+    section.add "X-Amz-Algorithm", valid_611420
+  var valid_611421 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611421 = validateParameter(valid_611421, JString, required = false,
                                  default = nil)
-  if valid_613421 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613421
+  if valid_611421 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611421
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1529,50 +1498,48 @@ proc validate_TagResource_613413(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613423: Call_TagResource_613412; path: JsonNode; query: JsonNode;
+proc call*(call_611423: Call_TagResource_611412; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Adds one or more tags to a signaling channel. A <i>tag</i> is a key-value pair (the value is optional) that you can define and assign to AWS resources. If you specify a tag that already exists, the tag value is replaced with the value that you specify in the request. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.
   ## 
-  let valid = call_613423.validator(path, query, header, formData, body)
-  let scheme = call_613423.pickScheme
+  let valid = call_611423.validator(path, query, header, formData, body)
+  let scheme = call_611423.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613423.url(scheme.get, call_613423.host, call_613423.base,
-                         call_613423.route, valid.getOrDefault("path"),
+  let url = call_611423.url(scheme.get, call_611423.host, call_611423.base,
+                         call_611423.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613423, url, valid)
+  result = atozHook(call_611423, url, valid)
 
-proc call*(call_613424: Call_TagResource_613412; body: JsonNode): Recallable =
+proc call*(call_611424: Call_TagResource_611412; body: JsonNode): Recallable =
   ## tagResource
   ## Adds one or more tags to a signaling channel. A <i>tag</i> is a key-value pair (the value is optional) that you can define and assign to AWS resources. If you specify a tag that already exists, the tag value is replaced with the value that you specify in the request. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>.
   ##   body: JObject (required)
-  var body_613425 = newJObject()
+  var body_611425 = newJObject()
   if body != nil:
-    body_613425 = body
-  result = call_613424.call(nil, nil, nil, nil, body_613425)
+    body_611425 = body
+  result = call_611424.call(nil, nil, nil, nil, body_611425)
 
-var tagResource* = Call_TagResource_613412(name: "tagResource",
+var tagResource* = Call_TagResource_611412(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "kinesisvideo.amazonaws.com",
                                         route: "/TagResource",
-                                        validator: validate_TagResource_613413,
-                                        base: "/", url: url_TagResource_613414,
+                                        validator: validate_TagResource_611413,
+                                        base: "/", url: url_TagResource_611414,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagStream_613426 = ref object of OpenApiRestCall_612658
-proc url_TagStream_613428(protocol: Scheme; host: string; base: string; route: string;
+  Call_TagStream_611426 = ref object of OpenApiRestCall_610658
+proc url_TagStream_611428(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_TagStream_613427(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagStream_611427(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Adds one or more tags to a stream. A <i>tag</i> is a key-value pair (the value is optional) that you can define and assign to AWS resources. If you specify a tag that already exists, the tag value is replaced with the value that you specify in the request. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>. </p> <p>You must provide either the <code>StreamName</code> or the <code>StreamARN</code>.</p> <p>This operation requires permission for the <code>KinesisVideo:TagStream</code> action.</p> <p>Kinesis video streams support up to 50 tags.</p>
   ## 
@@ -1591,41 +1558,41 @@ proc validate_TagStream_613427(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613429 = header.getOrDefault("X-Amz-Signature")
-  valid_613429 = validateParameter(valid_613429, JString, required = false,
+  var valid_611429 = header.getOrDefault("X-Amz-Signature")
+  valid_611429 = validateParameter(valid_611429, JString, required = false,
                                  default = nil)
-  if valid_613429 != nil:
-    section.add "X-Amz-Signature", valid_613429
-  var valid_613430 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613430 = validateParameter(valid_613430, JString, required = false,
+  if valid_611429 != nil:
+    section.add "X-Amz-Signature", valid_611429
+  var valid_611430 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611430 = validateParameter(valid_611430, JString, required = false,
                                  default = nil)
-  if valid_613430 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613430
-  var valid_613431 = header.getOrDefault("X-Amz-Date")
-  valid_613431 = validateParameter(valid_613431, JString, required = false,
+  if valid_611430 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611430
+  var valid_611431 = header.getOrDefault("X-Amz-Date")
+  valid_611431 = validateParameter(valid_611431, JString, required = false,
                                  default = nil)
-  if valid_613431 != nil:
-    section.add "X-Amz-Date", valid_613431
-  var valid_613432 = header.getOrDefault("X-Amz-Credential")
-  valid_613432 = validateParameter(valid_613432, JString, required = false,
+  if valid_611431 != nil:
+    section.add "X-Amz-Date", valid_611431
+  var valid_611432 = header.getOrDefault("X-Amz-Credential")
+  valid_611432 = validateParameter(valid_611432, JString, required = false,
                                  default = nil)
-  if valid_613432 != nil:
-    section.add "X-Amz-Credential", valid_613432
-  var valid_613433 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613433 = validateParameter(valid_613433, JString, required = false,
+  if valid_611432 != nil:
+    section.add "X-Amz-Credential", valid_611432
+  var valid_611433 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611433 = validateParameter(valid_611433, JString, required = false,
                                  default = nil)
-  if valid_613433 != nil:
-    section.add "X-Amz-Security-Token", valid_613433
-  var valid_613434 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613434 = validateParameter(valid_613434, JString, required = false,
+  if valid_611433 != nil:
+    section.add "X-Amz-Security-Token", valid_611433
+  var valid_611434 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611434 = validateParameter(valid_611434, JString, required = false,
                                  default = nil)
-  if valid_613434 != nil:
-    section.add "X-Amz-Algorithm", valid_613434
-  var valid_613435 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613435 = validateParameter(valid_613435, JString, required = false,
+  if valid_611434 != nil:
+    section.add "X-Amz-Algorithm", valid_611434
+  var valid_611435 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611435 = validateParameter(valid_611435, JString, required = false,
                                  default = nil)
-  if valid_613435 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613435
+  if valid_611435 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611435
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1636,49 +1603,47 @@ proc validate_TagStream_613427(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613437: Call_TagStream_613426; path: JsonNode; query: JsonNode;
+proc call*(call_611437: Call_TagStream_611426; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Adds one or more tags to a stream. A <i>tag</i> is a key-value pair (the value is optional) that you can define and assign to AWS resources. If you specify a tag that already exists, the tag value is replaced with the value that you specify in the request. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>. </p> <p>You must provide either the <code>StreamName</code> or the <code>StreamARN</code>.</p> <p>This operation requires permission for the <code>KinesisVideo:TagStream</code> action.</p> <p>Kinesis video streams support up to 50 tags.</p>
   ## 
-  let valid = call_613437.validator(path, query, header, formData, body)
-  let scheme = call_613437.pickScheme
+  let valid = call_611437.validator(path, query, header, formData, body)
+  let scheme = call_611437.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613437.url(scheme.get, call_613437.host, call_613437.base,
-                         call_613437.route, valid.getOrDefault("path"),
+  let url = call_611437.url(scheme.get, call_611437.host, call_611437.base,
+                         call_611437.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613437, url, valid)
+  result = atozHook(call_611437, url, valid)
 
-proc call*(call_613438: Call_TagStream_613426; body: JsonNode): Recallable =
+proc call*(call_611438: Call_TagStream_611426; body: JsonNode): Recallable =
   ## tagStream
   ## <p>Adds one or more tags to a stream. A <i>tag</i> is a key-value pair (the value is optional) that you can define and assign to AWS resources. If you specify a tag that already exists, the tag value is replaced with the value that you specify in the request. For more information, see <a href="https://docs.aws.amazon.com/awsaccountbilling/latest/aboutv2/cost-alloc-tags.html">Using Cost Allocation Tags</a> in the <i>AWS Billing and Cost Management User Guide</i>. </p> <p>You must provide either the <code>StreamName</code> or the <code>StreamARN</code>.</p> <p>This operation requires permission for the <code>KinesisVideo:TagStream</code> action.</p> <p>Kinesis video streams support up to 50 tags.</p>
   ##   body: JObject (required)
-  var body_613439 = newJObject()
+  var body_611439 = newJObject()
   if body != nil:
-    body_613439 = body
-  result = call_613438.call(nil, nil, nil, nil, body_613439)
+    body_611439 = body
+  result = call_611438.call(nil, nil, nil, nil, body_611439)
 
-var tagStream* = Call_TagStream_613426(name: "tagStream", meth: HttpMethod.HttpPost,
+var tagStream* = Call_TagStream_611426(name: "tagStream", meth: HttpMethod.HttpPost,
                                     host: "kinesisvideo.amazonaws.com",
                                     route: "/tagStream",
-                                    validator: validate_TagStream_613427,
-                                    base: "/", url: url_TagStream_613428,
+                                    validator: validate_TagStream_611427,
+                                    base: "/", url: url_TagStream_611428,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_613440 = ref object of OpenApiRestCall_612658
-proc url_UntagResource_613442(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_611440 = ref object of OpenApiRestCall_610658
+proc url_UntagResource_611442(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UntagResource_613441(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_611441(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes one or more tags from a signaling channel. In the request, specify only a tag key or keys; don't specify the value. If you specify a tag key that does not exist, it's ignored.
   ## 
@@ -1697,41 +1662,41 @@ proc validate_UntagResource_613441(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613443 = header.getOrDefault("X-Amz-Signature")
-  valid_613443 = validateParameter(valid_613443, JString, required = false,
+  var valid_611443 = header.getOrDefault("X-Amz-Signature")
+  valid_611443 = validateParameter(valid_611443, JString, required = false,
                                  default = nil)
-  if valid_613443 != nil:
-    section.add "X-Amz-Signature", valid_613443
-  var valid_613444 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613444 = validateParameter(valid_613444, JString, required = false,
+  if valid_611443 != nil:
+    section.add "X-Amz-Signature", valid_611443
+  var valid_611444 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611444 = validateParameter(valid_611444, JString, required = false,
                                  default = nil)
-  if valid_613444 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613444
-  var valid_613445 = header.getOrDefault("X-Amz-Date")
-  valid_613445 = validateParameter(valid_613445, JString, required = false,
+  if valid_611444 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611444
+  var valid_611445 = header.getOrDefault("X-Amz-Date")
+  valid_611445 = validateParameter(valid_611445, JString, required = false,
                                  default = nil)
-  if valid_613445 != nil:
-    section.add "X-Amz-Date", valid_613445
-  var valid_613446 = header.getOrDefault("X-Amz-Credential")
-  valid_613446 = validateParameter(valid_613446, JString, required = false,
+  if valid_611445 != nil:
+    section.add "X-Amz-Date", valid_611445
+  var valid_611446 = header.getOrDefault("X-Amz-Credential")
+  valid_611446 = validateParameter(valid_611446, JString, required = false,
                                  default = nil)
-  if valid_613446 != nil:
-    section.add "X-Amz-Credential", valid_613446
-  var valid_613447 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613447 = validateParameter(valid_613447, JString, required = false,
+  if valid_611446 != nil:
+    section.add "X-Amz-Credential", valid_611446
+  var valid_611447 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611447 = validateParameter(valid_611447, JString, required = false,
                                  default = nil)
-  if valid_613447 != nil:
-    section.add "X-Amz-Security-Token", valid_613447
-  var valid_613448 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613448 = validateParameter(valid_613448, JString, required = false,
+  if valid_611447 != nil:
+    section.add "X-Amz-Security-Token", valid_611447
+  var valid_611448 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611448 = validateParameter(valid_611448, JString, required = false,
                                  default = nil)
-  if valid_613448 != nil:
-    section.add "X-Amz-Algorithm", valid_613448
-  var valid_613449 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613449 = validateParameter(valid_613449, JString, required = false,
+  if valid_611448 != nil:
+    section.add "X-Amz-Algorithm", valid_611448
+  var valid_611449 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611449 = validateParameter(valid_611449, JString, required = false,
                                  default = nil)
-  if valid_613449 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613449
+  if valid_611449 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611449
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1742,47 +1707,45 @@ proc validate_UntagResource_613441(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_613451: Call_UntagResource_613440; path: JsonNode; query: JsonNode;
+proc call*(call_611451: Call_UntagResource_611440; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes one or more tags from a signaling channel. In the request, specify only a tag key or keys; don't specify the value. If you specify a tag key that does not exist, it's ignored.
   ## 
-  let valid = call_613451.validator(path, query, header, formData, body)
-  let scheme = call_613451.pickScheme
+  let valid = call_611451.validator(path, query, header, formData, body)
+  let scheme = call_611451.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613451.url(scheme.get, call_613451.host, call_613451.base,
-                         call_613451.route, valid.getOrDefault("path"),
+  let url = call_611451.url(scheme.get, call_611451.host, call_611451.base,
+                         call_611451.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613451, url, valid)
+  result = atozHook(call_611451, url, valid)
 
-proc call*(call_613452: Call_UntagResource_613440; body: JsonNode): Recallable =
+proc call*(call_611452: Call_UntagResource_611440; body: JsonNode): Recallable =
   ## untagResource
   ## Removes one or more tags from a signaling channel. In the request, specify only a tag key or keys; don't specify the value. If you specify a tag key that does not exist, it's ignored.
   ##   body: JObject (required)
-  var body_613453 = newJObject()
+  var body_611453 = newJObject()
   if body != nil:
-    body_613453 = body
-  result = call_613452.call(nil, nil, nil, nil, body_613453)
+    body_611453 = body
+  result = call_611452.call(nil, nil, nil, nil, body_611453)
 
-var untagResource* = Call_UntagResource_613440(name: "untagResource",
+var untagResource* = Call_UntagResource_611440(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "kinesisvideo.amazonaws.com",
-    route: "/UntagResource", validator: validate_UntagResource_613441, base: "/",
-    url: url_UntagResource_613442, schemes: {Scheme.Https, Scheme.Http})
+    route: "/UntagResource", validator: validate_UntagResource_611441, base: "/",
+    url: url_UntagResource_611442, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagStream_613454 = ref object of OpenApiRestCall_612658
-proc url_UntagStream_613456(protocol: Scheme; host: string; base: string;
+  Call_UntagStream_611454 = ref object of OpenApiRestCall_610658
+proc url_UntagStream_611456(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UntagStream_613455(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagStream_611455(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Removes one or more tags from a stream. In the request, specify only a tag key or keys; don't specify the value. If you specify a tag key that does not exist, it's ignored.</p> <p>In the request, you must provide the <code>StreamName</code> or <code>StreamARN</code>.</p>
   ## 
@@ -1801,41 +1764,41 @@ proc validate_UntagStream_613455(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613457 = header.getOrDefault("X-Amz-Signature")
-  valid_613457 = validateParameter(valid_613457, JString, required = false,
+  var valid_611457 = header.getOrDefault("X-Amz-Signature")
+  valid_611457 = validateParameter(valid_611457, JString, required = false,
                                  default = nil)
-  if valid_613457 != nil:
-    section.add "X-Amz-Signature", valid_613457
-  var valid_613458 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613458 = validateParameter(valid_613458, JString, required = false,
+  if valid_611457 != nil:
+    section.add "X-Amz-Signature", valid_611457
+  var valid_611458 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611458 = validateParameter(valid_611458, JString, required = false,
                                  default = nil)
-  if valid_613458 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613458
-  var valid_613459 = header.getOrDefault("X-Amz-Date")
-  valid_613459 = validateParameter(valid_613459, JString, required = false,
+  if valid_611458 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611458
+  var valid_611459 = header.getOrDefault("X-Amz-Date")
+  valid_611459 = validateParameter(valid_611459, JString, required = false,
                                  default = nil)
-  if valid_613459 != nil:
-    section.add "X-Amz-Date", valid_613459
-  var valid_613460 = header.getOrDefault("X-Amz-Credential")
-  valid_613460 = validateParameter(valid_613460, JString, required = false,
+  if valid_611459 != nil:
+    section.add "X-Amz-Date", valid_611459
+  var valid_611460 = header.getOrDefault("X-Amz-Credential")
+  valid_611460 = validateParameter(valid_611460, JString, required = false,
                                  default = nil)
-  if valid_613460 != nil:
-    section.add "X-Amz-Credential", valid_613460
-  var valid_613461 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613461 = validateParameter(valid_613461, JString, required = false,
+  if valid_611460 != nil:
+    section.add "X-Amz-Credential", valid_611460
+  var valid_611461 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611461 = validateParameter(valid_611461, JString, required = false,
                                  default = nil)
-  if valid_613461 != nil:
-    section.add "X-Amz-Security-Token", valid_613461
-  var valid_613462 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613462 = validateParameter(valid_613462, JString, required = false,
+  if valid_611461 != nil:
+    section.add "X-Amz-Security-Token", valid_611461
+  var valid_611462 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611462 = validateParameter(valid_611462, JString, required = false,
                                  default = nil)
-  if valid_613462 != nil:
-    section.add "X-Amz-Algorithm", valid_613462
-  var valid_613463 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613463 = validateParameter(valid_613463, JString, required = false,
+  if valid_611462 != nil:
+    section.add "X-Amz-Algorithm", valid_611462
+  var valid_611463 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611463 = validateParameter(valid_611463, JString, required = false,
                                  default = nil)
-  if valid_613463 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613463
+  if valid_611463 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611463
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1846,50 +1809,48 @@ proc validate_UntagStream_613455(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613465: Call_UntagStream_613454; path: JsonNode; query: JsonNode;
+proc call*(call_611465: Call_UntagStream_611454; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Removes one or more tags from a stream. In the request, specify only a tag key or keys; don't specify the value. If you specify a tag key that does not exist, it's ignored.</p> <p>In the request, you must provide the <code>StreamName</code> or <code>StreamARN</code>.</p>
   ## 
-  let valid = call_613465.validator(path, query, header, formData, body)
-  let scheme = call_613465.pickScheme
+  let valid = call_611465.validator(path, query, header, formData, body)
+  let scheme = call_611465.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613465.url(scheme.get, call_613465.host, call_613465.base,
-                         call_613465.route, valid.getOrDefault("path"),
+  let url = call_611465.url(scheme.get, call_611465.host, call_611465.base,
+                         call_611465.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613465, url, valid)
+  result = atozHook(call_611465, url, valid)
 
-proc call*(call_613466: Call_UntagStream_613454; body: JsonNode): Recallable =
+proc call*(call_611466: Call_UntagStream_611454; body: JsonNode): Recallable =
   ## untagStream
   ## <p>Removes one or more tags from a stream. In the request, specify only a tag key or keys; don't specify the value. If you specify a tag key that does not exist, it's ignored.</p> <p>In the request, you must provide the <code>StreamName</code> or <code>StreamARN</code>.</p>
   ##   body: JObject (required)
-  var body_613467 = newJObject()
+  var body_611467 = newJObject()
   if body != nil:
-    body_613467 = body
-  result = call_613466.call(nil, nil, nil, nil, body_613467)
+    body_611467 = body
+  result = call_611466.call(nil, nil, nil, nil, body_611467)
 
-var untagStream* = Call_UntagStream_613454(name: "untagStream",
+var untagStream* = Call_UntagStream_611454(name: "untagStream",
                                         meth: HttpMethod.HttpPost,
                                         host: "kinesisvideo.amazonaws.com",
                                         route: "/untagStream",
-                                        validator: validate_UntagStream_613455,
-                                        base: "/", url: url_UntagStream_613456,
+                                        validator: validate_UntagStream_611455,
+                                        base: "/", url: url_UntagStream_611456,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateDataRetention_613468 = ref object of OpenApiRestCall_612658
-proc url_UpdateDataRetention_613470(protocol: Scheme; host: string; base: string;
+  Call_UpdateDataRetention_611468 = ref object of OpenApiRestCall_610658
+proc url_UpdateDataRetention_611470(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateDataRetention_613469(path: JsonNode; query: JsonNode;
+proc validate_UpdateDataRetention_611469(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p> Increases or decreases the stream's data retention period by the value that you specify. To indicate whether you want to increase or decrease the data retention period, specify the <code>Operation</code> parameter in the request body. In the request, you must specify either the <code>StreamName</code> or the <code>StreamARN</code>. </p> <note> <p>The retention period that you specify replaces the current value.</p> </note> <p>This operation requires permission for the <code>KinesisVideo:UpdateDataRetention</code> action.</p> <p>Changing the data retention period affects the data in the stream as follows:</p> <ul> <li> <p>If the data retention period is increased, existing data is retained for the new retention period. For example, if the data retention period is increased from one hour to seven hours, all existing data is retained for seven hours.</p> </li> <li> <p>If the data retention period is decreased, existing data is retained for the new retention period. For example, if the data retention period is decreased from seven hours to one hour, all existing data is retained for one hour, and any data older than one hour is deleted immediately.</p> </li> </ul>
@@ -1909,41 +1870,41 @@ proc validate_UpdateDataRetention_613469(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613471 = header.getOrDefault("X-Amz-Signature")
-  valid_613471 = validateParameter(valid_613471, JString, required = false,
+  var valid_611471 = header.getOrDefault("X-Amz-Signature")
+  valid_611471 = validateParameter(valid_611471, JString, required = false,
                                  default = nil)
-  if valid_613471 != nil:
-    section.add "X-Amz-Signature", valid_613471
-  var valid_613472 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613472 = validateParameter(valid_613472, JString, required = false,
+  if valid_611471 != nil:
+    section.add "X-Amz-Signature", valid_611471
+  var valid_611472 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611472 = validateParameter(valid_611472, JString, required = false,
                                  default = nil)
-  if valid_613472 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613472
-  var valid_613473 = header.getOrDefault("X-Amz-Date")
-  valid_613473 = validateParameter(valid_613473, JString, required = false,
+  if valid_611472 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611472
+  var valid_611473 = header.getOrDefault("X-Amz-Date")
+  valid_611473 = validateParameter(valid_611473, JString, required = false,
                                  default = nil)
-  if valid_613473 != nil:
-    section.add "X-Amz-Date", valid_613473
-  var valid_613474 = header.getOrDefault("X-Amz-Credential")
-  valid_613474 = validateParameter(valid_613474, JString, required = false,
+  if valid_611473 != nil:
+    section.add "X-Amz-Date", valid_611473
+  var valid_611474 = header.getOrDefault("X-Amz-Credential")
+  valid_611474 = validateParameter(valid_611474, JString, required = false,
                                  default = nil)
-  if valid_613474 != nil:
-    section.add "X-Amz-Credential", valid_613474
-  var valid_613475 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613475 = validateParameter(valid_613475, JString, required = false,
+  if valid_611474 != nil:
+    section.add "X-Amz-Credential", valid_611474
+  var valid_611475 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611475 = validateParameter(valid_611475, JString, required = false,
                                  default = nil)
-  if valid_613475 != nil:
-    section.add "X-Amz-Security-Token", valid_613475
-  var valid_613476 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613476 = validateParameter(valid_613476, JString, required = false,
+  if valid_611475 != nil:
+    section.add "X-Amz-Security-Token", valid_611475
+  var valid_611476 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611476 = validateParameter(valid_611476, JString, required = false,
                                  default = nil)
-  if valid_613476 != nil:
-    section.add "X-Amz-Algorithm", valid_613476
-  var valid_613477 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613477 = validateParameter(valid_613477, JString, required = false,
+  if valid_611476 != nil:
+    section.add "X-Amz-Algorithm", valid_611476
+  var valid_611477 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611477 = validateParameter(valid_611477, JString, required = false,
                                  default = nil)
-  if valid_613477 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613477
+  if valid_611477 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611477
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1954,48 +1915,46 @@ proc validate_UpdateDataRetention_613469(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613479: Call_UpdateDataRetention_613468; path: JsonNode;
+proc call*(call_611479: Call_UpdateDataRetention_611468; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p> Increases or decreases the stream's data retention period by the value that you specify. To indicate whether you want to increase or decrease the data retention period, specify the <code>Operation</code> parameter in the request body. In the request, you must specify either the <code>StreamName</code> or the <code>StreamARN</code>. </p> <note> <p>The retention period that you specify replaces the current value.</p> </note> <p>This operation requires permission for the <code>KinesisVideo:UpdateDataRetention</code> action.</p> <p>Changing the data retention period affects the data in the stream as follows:</p> <ul> <li> <p>If the data retention period is increased, existing data is retained for the new retention period. For example, if the data retention period is increased from one hour to seven hours, all existing data is retained for seven hours.</p> </li> <li> <p>If the data retention period is decreased, existing data is retained for the new retention period. For example, if the data retention period is decreased from seven hours to one hour, all existing data is retained for one hour, and any data older than one hour is deleted immediately.</p> </li> </ul>
   ## 
-  let valid = call_613479.validator(path, query, header, formData, body)
-  let scheme = call_613479.pickScheme
+  let valid = call_611479.validator(path, query, header, formData, body)
+  let scheme = call_611479.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613479.url(scheme.get, call_613479.host, call_613479.base,
-                         call_613479.route, valid.getOrDefault("path"),
+  let url = call_611479.url(scheme.get, call_611479.host, call_611479.base,
+                         call_611479.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613479, url, valid)
+  result = atozHook(call_611479, url, valid)
 
-proc call*(call_613480: Call_UpdateDataRetention_613468; body: JsonNode): Recallable =
+proc call*(call_611480: Call_UpdateDataRetention_611468; body: JsonNode): Recallable =
   ## updateDataRetention
   ## <p> Increases or decreases the stream's data retention period by the value that you specify. To indicate whether you want to increase or decrease the data retention period, specify the <code>Operation</code> parameter in the request body. In the request, you must specify either the <code>StreamName</code> or the <code>StreamARN</code>. </p> <note> <p>The retention period that you specify replaces the current value.</p> </note> <p>This operation requires permission for the <code>KinesisVideo:UpdateDataRetention</code> action.</p> <p>Changing the data retention period affects the data in the stream as follows:</p> <ul> <li> <p>If the data retention period is increased, existing data is retained for the new retention period. For example, if the data retention period is increased from one hour to seven hours, all existing data is retained for seven hours.</p> </li> <li> <p>If the data retention period is decreased, existing data is retained for the new retention period. For example, if the data retention period is decreased from seven hours to one hour, all existing data is retained for one hour, and any data older than one hour is deleted immediately.</p> </li> </ul>
   ##   body: JObject (required)
-  var body_613481 = newJObject()
+  var body_611481 = newJObject()
   if body != nil:
-    body_613481 = body
-  result = call_613480.call(nil, nil, nil, nil, body_613481)
+    body_611481 = body
+  result = call_611480.call(nil, nil, nil, nil, body_611481)
 
-var updateDataRetention* = Call_UpdateDataRetention_613468(
+var updateDataRetention* = Call_UpdateDataRetention_611468(
     name: "updateDataRetention", meth: HttpMethod.HttpPost,
     host: "kinesisvideo.amazonaws.com", route: "/updateDataRetention",
-    validator: validate_UpdateDataRetention_613469, base: "/",
-    url: url_UpdateDataRetention_613470, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateDataRetention_611469, base: "/",
+    url: url_UpdateDataRetention_611470, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateSignalingChannel_613482 = ref object of OpenApiRestCall_612658
-proc url_UpdateSignalingChannel_613484(protocol: Scheme; host: string; base: string;
+  Call_UpdateSignalingChannel_611482 = ref object of OpenApiRestCall_610658
+proc url_UpdateSignalingChannel_611484(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateSignalingChannel_613483(path: JsonNode; query: JsonNode;
+proc validate_UpdateSignalingChannel_611483(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the existing signaling channel. This is an asynchronous operation and takes time to complete. </p> <p>If the <code>MessageTtlSeconds</code> value is updated (either increased or reduced), then it only applies to new messages sent via this channel after it's been updated. Existing messages are still expire as per the previous <code>MessageTtlSeconds</code> value.</p>
   ## 
@@ -2014,41 +1973,41 @@ proc validate_UpdateSignalingChannel_613483(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613485 = header.getOrDefault("X-Amz-Signature")
-  valid_613485 = validateParameter(valid_613485, JString, required = false,
+  var valid_611485 = header.getOrDefault("X-Amz-Signature")
+  valid_611485 = validateParameter(valid_611485, JString, required = false,
                                  default = nil)
-  if valid_613485 != nil:
-    section.add "X-Amz-Signature", valid_613485
-  var valid_613486 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613486 = validateParameter(valid_613486, JString, required = false,
+  if valid_611485 != nil:
+    section.add "X-Amz-Signature", valid_611485
+  var valid_611486 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611486 = validateParameter(valid_611486, JString, required = false,
                                  default = nil)
-  if valid_613486 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613486
-  var valid_613487 = header.getOrDefault("X-Amz-Date")
-  valid_613487 = validateParameter(valid_613487, JString, required = false,
+  if valid_611486 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611486
+  var valid_611487 = header.getOrDefault("X-Amz-Date")
+  valid_611487 = validateParameter(valid_611487, JString, required = false,
                                  default = nil)
-  if valid_613487 != nil:
-    section.add "X-Amz-Date", valid_613487
-  var valid_613488 = header.getOrDefault("X-Amz-Credential")
-  valid_613488 = validateParameter(valid_613488, JString, required = false,
+  if valid_611487 != nil:
+    section.add "X-Amz-Date", valid_611487
+  var valid_611488 = header.getOrDefault("X-Amz-Credential")
+  valid_611488 = validateParameter(valid_611488, JString, required = false,
                                  default = nil)
-  if valid_613488 != nil:
-    section.add "X-Amz-Credential", valid_613488
-  var valid_613489 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613489 = validateParameter(valid_613489, JString, required = false,
+  if valid_611488 != nil:
+    section.add "X-Amz-Credential", valid_611488
+  var valid_611489 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611489 = validateParameter(valid_611489, JString, required = false,
                                  default = nil)
-  if valid_613489 != nil:
-    section.add "X-Amz-Security-Token", valid_613489
-  var valid_613490 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613490 = validateParameter(valid_613490, JString, required = false,
+  if valid_611489 != nil:
+    section.add "X-Amz-Security-Token", valid_611489
+  var valid_611490 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611490 = validateParameter(valid_611490, JString, required = false,
                                  default = nil)
-  if valid_613490 != nil:
-    section.add "X-Amz-Algorithm", valid_613490
-  var valid_613491 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613491 = validateParameter(valid_613491, JString, required = false,
+  if valid_611490 != nil:
+    section.add "X-Amz-Algorithm", valid_611490
+  var valid_611491 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611491 = validateParameter(valid_611491, JString, required = false,
                                  default = nil)
-  if valid_613491 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613491
+  if valid_611491 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611491
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2059,48 +2018,46 @@ proc validate_UpdateSignalingChannel_613483(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613493: Call_UpdateSignalingChannel_613482; path: JsonNode;
+proc call*(call_611493: Call_UpdateSignalingChannel_611482; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the existing signaling channel. This is an asynchronous operation and takes time to complete. </p> <p>If the <code>MessageTtlSeconds</code> value is updated (either increased or reduced), then it only applies to new messages sent via this channel after it's been updated. Existing messages are still expire as per the previous <code>MessageTtlSeconds</code> value.</p>
   ## 
-  let valid = call_613493.validator(path, query, header, formData, body)
-  let scheme = call_613493.pickScheme
+  let valid = call_611493.validator(path, query, header, formData, body)
+  let scheme = call_611493.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613493.url(scheme.get, call_613493.host, call_613493.base,
-                         call_613493.route, valid.getOrDefault("path"),
+  let url = call_611493.url(scheme.get, call_611493.host, call_611493.base,
+                         call_611493.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613493, url, valid)
+  result = atozHook(call_611493, url, valid)
 
-proc call*(call_613494: Call_UpdateSignalingChannel_613482; body: JsonNode): Recallable =
+proc call*(call_611494: Call_UpdateSignalingChannel_611482; body: JsonNode): Recallable =
   ## updateSignalingChannel
   ## <p>Updates the existing signaling channel. This is an asynchronous operation and takes time to complete. </p> <p>If the <code>MessageTtlSeconds</code> value is updated (either increased or reduced), then it only applies to new messages sent via this channel after it's been updated. Existing messages are still expire as per the previous <code>MessageTtlSeconds</code> value.</p>
   ##   body: JObject (required)
-  var body_613495 = newJObject()
+  var body_611495 = newJObject()
   if body != nil:
-    body_613495 = body
-  result = call_613494.call(nil, nil, nil, nil, body_613495)
+    body_611495 = body
+  result = call_611494.call(nil, nil, nil, nil, body_611495)
 
-var updateSignalingChannel* = Call_UpdateSignalingChannel_613482(
+var updateSignalingChannel* = Call_UpdateSignalingChannel_611482(
     name: "updateSignalingChannel", meth: HttpMethod.HttpPost,
     host: "kinesisvideo.amazonaws.com", route: "/updateSignalingChannel",
-    validator: validate_UpdateSignalingChannel_613483, base: "/",
-    url: url_UpdateSignalingChannel_613484, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateSignalingChannel_611483, base: "/",
+    url: url_UpdateSignalingChannel_611484, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateStream_613496 = ref object of OpenApiRestCall_612658
-proc url_UpdateStream_613498(protocol: Scheme; host: string; base: string;
+  Call_UpdateStream_611496 = ref object of OpenApiRestCall_610658
+proc url_UpdateStream_611498(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateStream_613497(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateStream_611497(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates stream metadata, such as the device name and media type.</p> <p>You must provide the stream name or the Amazon Resource Name (ARN) of the stream.</p> <p>To make sure that you have the latest version of the stream before updating it, you can specify the stream version. Kinesis Video Streams assigns a version to each stream. When you update a stream, Kinesis Video Streams assigns a new version number. To get the latest stream version, use the <code>DescribeStream</code> API. </p> <p> <code>UpdateStream</code> is an asynchronous operation, and takes time to complete.</p>
   ## 
@@ -2119,41 +2076,41 @@ proc validate_UpdateStream_613497(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613499 = header.getOrDefault("X-Amz-Signature")
-  valid_613499 = validateParameter(valid_613499, JString, required = false,
+  var valid_611499 = header.getOrDefault("X-Amz-Signature")
+  valid_611499 = validateParameter(valid_611499, JString, required = false,
                                  default = nil)
-  if valid_613499 != nil:
-    section.add "X-Amz-Signature", valid_613499
-  var valid_613500 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613500 = validateParameter(valid_613500, JString, required = false,
+  if valid_611499 != nil:
+    section.add "X-Amz-Signature", valid_611499
+  var valid_611500 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611500 = validateParameter(valid_611500, JString, required = false,
                                  default = nil)
-  if valid_613500 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613500
-  var valid_613501 = header.getOrDefault("X-Amz-Date")
-  valid_613501 = validateParameter(valid_613501, JString, required = false,
+  if valid_611500 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611500
+  var valid_611501 = header.getOrDefault("X-Amz-Date")
+  valid_611501 = validateParameter(valid_611501, JString, required = false,
                                  default = nil)
-  if valid_613501 != nil:
-    section.add "X-Amz-Date", valid_613501
-  var valid_613502 = header.getOrDefault("X-Amz-Credential")
-  valid_613502 = validateParameter(valid_613502, JString, required = false,
+  if valid_611501 != nil:
+    section.add "X-Amz-Date", valid_611501
+  var valid_611502 = header.getOrDefault("X-Amz-Credential")
+  valid_611502 = validateParameter(valid_611502, JString, required = false,
                                  default = nil)
-  if valid_613502 != nil:
-    section.add "X-Amz-Credential", valid_613502
-  var valid_613503 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613503 = validateParameter(valid_613503, JString, required = false,
+  if valid_611502 != nil:
+    section.add "X-Amz-Credential", valid_611502
+  var valid_611503 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611503 = validateParameter(valid_611503, JString, required = false,
                                  default = nil)
-  if valid_613503 != nil:
-    section.add "X-Amz-Security-Token", valid_613503
-  var valid_613504 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613504 = validateParameter(valid_613504, JString, required = false,
+  if valid_611503 != nil:
+    section.add "X-Amz-Security-Token", valid_611503
+  var valid_611504 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611504 = validateParameter(valid_611504, JString, required = false,
                                  default = nil)
-  if valid_613504 != nil:
-    section.add "X-Amz-Algorithm", valid_613504
-  var valid_613505 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613505 = validateParameter(valid_613505, JString, required = false,
+  if valid_611504 != nil:
+    section.add "X-Amz-Algorithm", valid_611504
+  var valid_611505 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611505 = validateParameter(valid_611505, JString, required = false,
                                  default = nil)
-  if valid_613505 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613505
+  if valid_611505 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611505
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2164,32 +2121,32 @@ proc validate_UpdateStream_613497(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_613507: Call_UpdateStream_613496; path: JsonNode; query: JsonNode;
+proc call*(call_611507: Call_UpdateStream_611496; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates stream metadata, such as the device name and media type.</p> <p>You must provide the stream name or the Amazon Resource Name (ARN) of the stream.</p> <p>To make sure that you have the latest version of the stream before updating it, you can specify the stream version. Kinesis Video Streams assigns a version to each stream. When you update a stream, Kinesis Video Streams assigns a new version number. To get the latest stream version, use the <code>DescribeStream</code> API. </p> <p> <code>UpdateStream</code> is an asynchronous operation, and takes time to complete.</p>
   ## 
-  let valid = call_613507.validator(path, query, header, formData, body)
-  let scheme = call_613507.pickScheme
+  let valid = call_611507.validator(path, query, header, formData, body)
+  let scheme = call_611507.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613507.url(scheme.get, call_613507.host, call_613507.base,
-                         call_613507.route, valid.getOrDefault("path"),
+  let url = call_611507.url(scheme.get, call_611507.host, call_611507.base,
+                         call_611507.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613507, url, valid)
+  result = atozHook(call_611507, url, valid)
 
-proc call*(call_613508: Call_UpdateStream_613496; body: JsonNode): Recallable =
+proc call*(call_611508: Call_UpdateStream_611496; body: JsonNode): Recallable =
   ## updateStream
   ## <p>Updates stream metadata, such as the device name and media type.</p> <p>You must provide the stream name or the Amazon Resource Name (ARN) of the stream.</p> <p>To make sure that you have the latest version of the stream before updating it, you can specify the stream version. Kinesis Video Streams assigns a version to each stream. When you update a stream, Kinesis Video Streams assigns a new version number. To get the latest stream version, use the <code>DescribeStream</code> API. </p> <p> <code>UpdateStream</code> is an asynchronous operation, and takes time to complete.</p>
   ##   body: JObject (required)
-  var body_613509 = newJObject()
+  var body_611509 = newJObject()
   if body != nil:
-    body_613509 = body
-  result = call_613508.call(nil, nil, nil, nil, body_613509)
+    body_611509 = body
+  result = call_611508.call(nil, nil, nil, nil, body_611509)
 
-var updateStream* = Call_UpdateStream_613496(name: "updateStream",
+var updateStream* = Call_UpdateStream_611496(name: "updateStream",
     meth: HttpMethod.HttpPost, host: "kinesisvideo.amazonaws.com",
-    route: "/updateStream", validator: validate_UpdateStream_613497, base: "/",
-    url: url_UpdateStream_613498, schemes: {Scheme.Https, Scheme.Http})
+    route: "/updateStream", validator: validate_UpdateStream_611497, base: "/",
+    url: url_UpdateStream_611498, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -2258,6 +2215,9 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers.del "Host"
   recall.url = $url
 
+type
+  XAmz = enum
+    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   ## the hook is a terrible earworm
   var headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
@@ -2270,11 +2230,10 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
-  const
-    XAmzSecurityToken = "X-Amz-Security-Token"
-  if not headers.hasKey(XAmzSecurityToken):
+  if not headers.hasKey($SecurityToken):
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
-      headers[XAmzSecurityToken] = session
+      headers[$SecurityToken] = session
+  headers[$ContentSha256] = hash(text, SHA256)
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

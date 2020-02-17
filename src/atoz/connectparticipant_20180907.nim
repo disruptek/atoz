@@ -29,18 +29,17 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_612649 = ref object of OpenApiRestCall
+  OpenApiRestCall_610649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_610649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_610649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
-  for scheme in Scheme.low ..
-      Scheme.high:
+  for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
       continue
     if scheme in [Scheme.Https, Scheme.Wss]:
@@ -54,20 +53,16 @@ proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
   ## a suitable default value when appropriate
-  if js ==
-      nil:
+  if js == nil:
     if default != nil:
       return validateParameter(default, kind, required = required)
   result = js
-  if result ==
-      nil:
+  if result == nil:
     assert not required, $kind & " expected; received nil"
     if required:
       result = newJNull()
   else:
-    assert js.kind ==
-        kind, $kind & " expected; received " &
-        $js.kind
+    assert js.kind == kind, $kind & " expected; received " & $js.kind
 
 type
   KeyVal {.used.} = tuple[key: string, val: string]
@@ -134,20 +129,18 @@ const
   awsServiceName = "connectparticipant"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_CreateParticipantConnection_612987 = ref object of OpenApiRestCall_612649
-proc url_CreateParticipantConnection_612989(protocol: Scheme; host: string;
+  Call_CreateParticipantConnection_610987 = ref object of OpenApiRestCall_610649
+proc url_CreateParticipantConnection_610989(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateParticipantConnection_612988(path: JsonNode; query: JsonNode;
+proc validate_CreateParticipantConnection_610988(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates the participant's connection. Note that ParticipantToken is used for invoking this API instead of ConnectionToken.</p> <p>The participant token is valid for the lifetime of the participant – until the they are part of a contact.</p> <p>The response URL for <code>WEBSOCKET</code> Type has a connect expiry timeout of 100s. Clients must manually connect to the returned websocket URL and subscribe to the desired topic. </p> <p>For chat, you need to publish the following on the established websocket connection:</p> <p> <code>{"topic":"aws/subscribe","content":{"topics":["aws/chat"]}}</code> </p> <p>Upon websocket URL expiry, as specified in the response ConnectionExpiry parameter, clients need to call this API again to obtain a new websocket URL and perform the same steps as before.</p>
   ## 
@@ -171,46 +164,46 @@ proc validate_CreateParticipantConnection_612988(path: JsonNode; query: JsonNode
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Bearer` field"
-  var valid_613101 = header.getOrDefault("X-Amz-Bearer")
-  valid_613101 = validateParameter(valid_613101, JString, required = true,
+  var valid_611101 = header.getOrDefault("X-Amz-Bearer")
+  valid_611101 = validateParameter(valid_611101, JString, required = true,
                                  default = nil)
-  if valid_613101 != nil:
-    section.add "X-Amz-Bearer", valid_613101
-  var valid_613102 = header.getOrDefault("X-Amz-Signature")
-  valid_613102 = validateParameter(valid_613102, JString, required = false,
+  if valid_611101 != nil:
+    section.add "X-Amz-Bearer", valid_611101
+  var valid_611102 = header.getOrDefault("X-Amz-Signature")
+  valid_611102 = validateParameter(valid_611102, JString, required = false,
                                  default = nil)
-  if valid_613102 != nil:
-    section.add "X-Amz-Signature", valid_613102
-  var valid_613103 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613103 = validateParameter(valid_613103, JString, required = false,
+  if valid_611102 != nil:
+    section.add "X-Amz-Signature", valid_611102
+  var valid_611103 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611103 = validateParameter(valid_611103, JString, required = false,
                                  default = nil)
-  if valid_613103 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613103
-  var valid_613104 = header.getOrDefault("X-Amz-Date")
-  valid_613104 = validateParameter(valid_613104, JString, required = false,
+  if valid_611103 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611103
+  var valid_611104 = header.getOrDefault("X-Amz-Date")
+  valid_611104 = validateParameter(valid_611104, JString, required = false,
                                  default = nil)
-  if valid_613104 != nil:
-    section.add "X-Amz-Date", valid_613104
-  var valid_613105 = header.getOrDefault("X-Amz-Credential")
-  valid_613105 = validateParameter(valid_613105, JString, required = false,
+  if valid_611104 != nil:
+    section.add "X-Amz-Date", valid_611104
+  var valid_611105 = header.getOrDefault("X-Amz-Credential")
+  valid_611105 = validateParameter(valid_611105, JString, required = false,
                                  default = nil)
-  if valid_613105 != nil:
-    section.add "X-Amz-Credential", valid_613105
-  var valid_613106 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613106 = validateParameter(valid_613106, JString, required = false,
+  if valid_611105 != nil:
+    section.add "X-Amz-Credential", valid_611105
+  var valid_611106 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611106 = validateParameter(valid_611106, JString, required = false,
                                  default = nil)
-  if valid_613106 != nil:
-    section.add "X-Amz-Security-Token", valid_613106
-  var valid_613107 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613107 = validateParameter(valid_613107, JString, required = false,
+  if valid_611106 != nil:
+    section.add "X-Amz-Security-Token", valid_611106
+  var valid_611107 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611107 = validateParameter(valid_611107, JString, required = false,
                                  default = nil)
-  if valid_613107 != nil:
-    section.add "X-Amz-Algorithm", valid_613107
-  var valid_613108 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613108 = validateParameter(valid_613108, JString, required = false,
+  if valid_611107 != nil:
+    section.add "X-Amz-Algorithm", valid_611107
+  var valid_611108 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611108 = validateParameter(valid_611108, JString, required = false,
                                  default = nil)
-  if valid_613108 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613108
+  if valid_611108 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611108
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -221,50 +214,48 @@ proc validate_CreateParticipantConnection_612988(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613132: Call_CreateParticipantConnection_612987; path: JsonNode;
+proc call*(call_611132: Call_CreateParticipantConnection_610987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates the participant's connection. Note that ParticipantToken is used for invoking this API instead of ConnectionToken.</p> <p>The participant token is valid for the lifetime of the participant – until the they are part of a contact.</p> <p>The response URL for <code>WEBSOCKET</code> Type has a connect expiry timeout of 100s. Clients must manually connect to the returned websocket URL and subscribe to the desired topic. </p> <p>For chat, you need to publish the following on the established websocket connection:</p> <p> <code>{"topic":"aws/subscribe","content":{"topics":["aws/chat"]}}</code> </p> <p>Upon websocket URL expiry, as specified in the response ConnectionExpiry parameter, clients need to call this API again to obtain a new websocket URL and perform the same steps as before.</p>
   ## 
-  let valid = call_613132.validator(path, query, header, formData, body)
-  let scheme = call_613132.pickScheme
+  let valid = call_611132.validator(path, query, header, formData, body)
+  let scheme = call_611132.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613132.url(scheme.get, call_613132.host, call_613132.base,
-                         call_613132.route, valid.getOrDefault("path"),
+  let url = call_611132.url(scheme.get, call_611132.host, call_611132.base,
+                         call_611132.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613132, url, valid)
+  result = atozHook(call_611132, url, valid)
 
-proc call*(call_613203: Call_CreateParticipantConnection_612987; body: JsonNode): Recallable =
+proc call*(call_611203: Call_CreateParticipantConnection_610987; body: JsonNode): Recallable =
   ## createParticipantConnection
   ## <p>Creates the participant's connection. Note that ParticipantToken is used for invoking this API instead of ConnectionToken.</p> <p>The participant token is valid for the lifetime of the participant – until the they are part of a contact.</p> <p>The response URL for <code>WEBSOCKET</code> Type has a connect expiry timeout of 100s. Clients must manually connect to the returned websocket URL and subscribe to the desired topic. </p> <p>For chat, you need to publish the following on the established websocket connection:</p> <p> <code>{"topic":"aws/subscribe","content":{"topics":["aws/chat"]}}</code> </p> <p>Upon websocket URL expiry, as specified in the response ConnectionExpiry parameter, clients need to call this API again to obtain a new websocket URL and perform the same steps as before.</p>
   ##   body: JObject (required)
-  var body_613204 = newJObject()
+  var body_611204 = newJObject()
   if body != nil:
-    body_613204 = body
-  result = call_613203.call(nil, nil, nil, nil, body_613204)
+    body_611204 = body
+  result = call_611203.call(nil, nil, nil, nil, body_611204)
 
-var createParticipantConnection* = Call_CreateParticipantConnection_612987(
+var createParticipantConnection* = Call_CreateParticipantConnection_610987(
     name: "createParticipantConnection", meth: HttpMethod.HttpPost,
     host: "participant.connect.amazonaws.com",
     route: "/participant/connection#X-Amz-Bearer",
-    validator: validate_CreateParticipantConnection_612988, base: "/",
-    url: url_CreateParticipantConnection_612989,
+    validator: validate_CreateParticipantConnection_610988, base: "/",
+    url: url_CreateParticipantConnection_610989,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisconnectParticipant_613243 = ref object of OpenApiRestCall_612649
-proc url_DisconnectParticipant_613245(protocol: Scheme; host: string; base: string;
+  Call_DisconnectParticipant_611243 = ref object of OpenApiRestCall_610649
+proc url_DisconnectParticipant_611245(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DisconnectParticipant_613244(path: JsonNode; query: JsonNode;
+proc validate_DisconnectParticipant_611244(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Disconnects a participant. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ## 
@@ -287,46 +278,46 @@ proc validate_DisconnectParticipant_613244(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Bearer` field"
-  var valid_613246 = header.getOrDefault("X-Amz-Bearer")
-  valid_613246 = validateParameter(valid_613246, JString, required = true,
+  var valid_611246 = header.getOrDefault("X-Amz-Bearer")
+  valid_611246 = validateParameter(valid_611246, JString, required = true,
                                  default = nil)
-  if valid_613246 != nil:
-    section.add "X-Amz-Bearer", valid_613246
-  var valid_613247 = header.getOrDefault("X-Amz-Signature")
-  valid_613247 = validateParameter(valid_613247, JString, required = false,
+  if valid_611246 != nil:
+    section.add "X-Amz-Bearer", valid_611246
+  var valid_611247 = header.getOrDefault("X-Amz-Signature")
+  valid_611247 = validateParameter(valid_611247, JString, required = false,
                                  default = nil)
-  if valid_613247 != nil:
-    section.add "X-Amz-Signature", valid_613247
-  var valid_613248 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613248 = validateParameter(valid_613248, JString, required = false,
+  if valid_611247 != nil:
+    section.add "X-Amz-Signature", valid_611247
+  var valid_611248 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611248 = validateParameter(valid_611248, JString, required = false,
                                  default = nil)
-  if valid_613248 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613248
-  var valid_613249 = header.getOrDefault("X-Amz-Date")
-  valid_613249 = validateParameter(valid_613249, JString, required = false,
+  if valid_611248 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611248
+  var valid_611249 = header.getOrDefault("X-Amz-Date")
+  valid_611249 = validateParameter(valid_611249, JString, required = false,
                                  default = nil)
-  if valid_613249 != nil:
-    section.add "X-Amz-Date", valid_613249
-  var valid_613250 = header.getOrDefault("X-Amz-Credential")
-  valid_613250 = validateParameter(valid_613250, JString, required = false,
+  if valid_611249 != nil:
+    section.add "X-Amz-Date", valid_611249
+  var valid_611250 = header.getOrDefault("X-Amz-Credential")
+  valid_611250 = validateParameter(valid_611250, JString, required = false,
                                  default = nil)
-  if valid_613250 != nil:
-    section.add "X-Amz-Credential", valid_613250
-  var valid_613251 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613251 = validateParameter(valid_613251, JString, required = false,
+  if valid_611250 != nil:
+    section.add "X-Amz-Credential", valid_611250
+  var valid_611251 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611251 = validateParameter(valid_611251, JString, required = false,
                                  default = nil)
-  if valid_613251 != nil:
-    section.add "X-Amz-Security-Token", valid_613251
-  var valid_613252 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613252 = validateParameter(valid_613252, JString, required = false,
+  if valid_611251 != nil:
+    section.add "X-Amz-Security-Token", valid_611251
+  var valid_611252 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611252 = validateParameter(valid_611252, JString, required = false,
                                  default = nil)
-  if valid_613252 != nil:
-    section.add "X-Amz-Algorithm", valid_613252
-  var valid_613253 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613253 = validateParameter(valid_613253, JString, required = false,
+  if valid_611252 != nil:
+    section.add "X-Amz-Algorithm", valid_611252
+  var valid_611253 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611253 = validateParameter(valid_611253, JString, required = false,
                                  default = nil)
-  if valid_613253 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613253
+  if valid_611253 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611253
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -337,49 +328,47 @@ proc validate_DisconnectParticipant_613244(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613255: Call_DisconnectParticipant_613243; path: JsonNode;
+proc call*(call_611255: Call_DisconnectParticipant_611243; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Disconnects a participant. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ## 
-  let valid = call_613255.validator(path, query, header, formData, body)
-  let scheme = call_613255.pickScheme
+  let valid = call_611255.validator(path, query, header, formData, body)
+  let scheme = call_611255.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613255.url(scheme.get, call_613255.host, call_613255.base,
-                         call_613255.route, valid.getOrDefault("path"),
+  let url = call_611255.url(scheme.get, call_611255.host, call_611255.base,
+                         call_611255.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613255, url, valid)
+  result = atozHook(call_611255, url, valid)
 
-proc call*(call_613256: Call_DisconnectParticipant_613243; body: JsonNode): Recallable =
+proc call*(call_611256: Call_DisconnectParticipant_611243; body: JsonNode): Recallable =
   ## disconnectParticipant
   ## Disconnects a participant. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ##   body: JObject (required)
-  var body_613257 = newJObject()
+  var body_611257 = newJObject()
   if body != nil:
-    body_613257 = body
-  result = call_613256.call(nil, nil, nil, nil, body_613257)
+    body_611257 = body
+  result = call_611256.call(nil, nil, nil, nil, body_611257)
 
-var disconnectParticipant* = Call_DisconnectParticipant_613243(
+var disconnectParticipant* = Call_DisconnectParticipant_611243(
     name: "disconnectParticipant", meth: HttpMethod.HttpPost,
     host: "participant.connect.amazonaws.com",
     route: "/participant/disconnect#X-Amz-Bearer",
-    validator: validate_DisconnectParticipant_613244, base: "/",
-    url: url_DisconnectParticipant_613245, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisconnectParticipant_611244, base: "/",
+    url: url_DisconnectParticipant_611245, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTranscript_613258 = ref object of OpenApiRestCall_612649
-proc url_GetTranscript_613260(protocol: Scheme; host: string; base: string;
+  Call_GetTranscript_611258 = ref object of OpenApiRestCall_610649
+proc url_GetTranscript_611260(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetTranscript_613259(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GetTranscript_611259(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves a transcript of the session. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ## 
@@ -393,16 +382,16 @@ proc validate_GetTranscript_613259(path: JsonNode; query: JsonNode; header: Json
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_613261 = query.getOrDefault("MaxResults")
-  valid_613261 = validateParameter(valid_613261, JString, required = false,
+  var valid_611261 = query.getOrDefault("MaxResults")
+  valid_611261 = validateParameter(valid_611261, JString, required = false,
                                  default = nil)
-  if valid_613261 != nil:
-    section.add "MaxResults", valid_613261
-  var valid_613262 = query.getOrDefault("NextToken")
-  valid_613262 = validateParameter(valid_613262, JString, required = false,
+  if valid_611261 != nil:
+    section.add "MaxResults", valid_611261
+  var valid_611262 = query.getOrDefault("NextToken")
+  valid_611262 = validateParameter(valid_611262, JString, required = false,
                                  default = nil)
-  if valid_613262 != nil:
-    section.add "NextToken", valid_613262
+  if valid_611262 != nil:
+    section.add "NextToken", valid_611262
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Bearer: JString (required)
@@ -417,46 +406,46 @@ proc validate_GetTranscript_613259(path: JsonNode; query: JsonNode; header: Json
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Bearer` field"
-  var valid_613263 = header.getOrDefault("X-Amz-Bearer")
-  valid_613263 = validateParameter(valid_613263, JString, required = true,
+  var valid_611263 = header.getOrDefault("X-Amz-Bearer")
+  valid_611263 = validateParameter(valid_611263, JString, required = true,
                                  default = nil)
-  if valid_613263 != nil:
-    section.add "X-Amz-Bearer", valid_613263
-  var valid_613264 = header.getOrDefault("X-Amz-Signature")
-  valid_613264 = validateParameter(valid_613264, JString, required = false,
+  if valid_611263 != nil:
+    section.add "X-Amz-Bearer", valid_611263
+  var valid_611264 = header.getOrDefault("X-Amz-Signature")
+  valid_611264 = validateParameter(valid_611264, JString, required = false,
                                  default = nil)
-  if valid_613264 != nil:
-    section.add "X-Amz-Signature", valid_613264
-  var valid_613265 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613265 = validateParameter(valid_613265, JString, required = false,
+  if valid_611264 != nil:
+    section.add "X-Amz-Signature", valid_611264
+  var valid_611265 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611265 = validateParameter(valid_611265, JString, required = false,
                                  default = nil)
-  if valid_613265 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613265
-  var valid_613266 = header.getOrDefault("X-Amz-Date")
-  valid_613266 = validateParameter(valid_613266, JString, required = false,
+  if valid_611265 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611265
+  var valid_611266 = header.getOrDefault("X-Amz-Date")
+  valid_611266 = validateParameter(valid_611266, JString, required = false,
                                  default = nil)
-  if valid_613266 != nil:
-    section.add "X-Amz-Date", valid_613266
-  var valid_613267 = header.getOrDefault("X-Amz-Credential")
-  valid_613267 = validateParameter(valid_613267, JString, required = false,
+  if valid_611266 != nil:
+    section.add "X-Amz-Date", valid_611266
+  var valid_611267 = header.getOrDefault("X-Amz-Credential")
+  valid_611267 = validateParameter(valid_611267, JString, required = false,
                                  default = nil)
-  if valid_613267 != nil:
-    section.add "X-Amz-Credential", valid_613267
-  var valid_613268 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613268 = validateParameter(valid_613268, JString, required = false,
+  if valid_611267 != nil:
+    section.add "X-Amz-Credential", valid_611267
+  var valid_611268 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611268 = validateParameter(valid_611268, JString, required = false,
                                  default = nil)
-  if valid_613268 != nil:
-    section.add "X-Amz-Security-Token", valid_613268
-  var valid_613269 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613269 = validateParameter(valid_613269, JString, required = false,
+  if valid_611268 != nil:
+    section.add "X-Amz-Security-Token", valid_611268
+  var valid_611269 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611269 = validateParameter(valid_611269, JString, required = false,
                                  default = nil)
-  if valid_613269 != nil:
-    section.add "X-Amz-Algorithm", valid_613269
-  var valid_613270 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613270 = validateParameter(valid_613270, JString, required = false,
+  if valid_611269 != nil:
+    section.add "X-Amz-Algorithm", valid_611269
+  var valid_611270 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611270 = validateParameter(valid_611270, JString, required = false,
                                  default = nil)
-  if valid_613270 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613270
+  if valid_611270 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611270
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -467,20 +456,20 @@ proc validate_GetTranscript_613259(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_613272: Call_GetTranscript_613258; path: JsonNode; query: JsonNode;
+proc call*(call_611272: Call_GetTranscript_611258; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves a transcript of the session. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ## 
-  let valid = call_613272.validator(path, query, header, formData, body)
-  let scheme = call_613272.pickScheme
+  let valid = call_611272.validator(path, query, header, formData, body)
+  let scheme = call_611272.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613272.url(scheme.get, call_613272.host, call_613272.base,
-                         call_613272.route, valid.getOrDefault("path"),
+  let url = call_611272.url(scheme.get, call_611272.host, call_611272.base,
+                         call_611272.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613272, url, valid)
+  result = atozHook(call_611272, url, valid)
 
-proc call*(call_613273: Call_GetTranscript_613258; body: JsonNode;
+proc call*(call_611273: Call_GetTranscript_611258; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## getTranscript
   ## Retrieves a transcript of the session. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
@@ -489,34 +478,32 @@ proc call*(call_613273: Call_GetTranscript_613258; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_613274 = newJObject()
-  var body_613275 = newJObject()
-  add(query_613274, "MaxResults", newJString(MaxResults))
-  add(query_613274, "NextToken", newJString(NextToken))
+  var query_611274 = newJObject()
+  var body_611275 = newJObject()
+  add(query_611274, "MaxResults", newJString(MaxResults))
+  add(query_611274, "NextToken", newJString(NextToken))
   if body != nil:
-    body_613275 = body
-  result = call_613273.call(nil, query_613274, nil, nil, body_613275)
+    body_611275 = body
+  result = call_611273.call(nil, query_611274, nil, nil, body_611275)
 
-var getTranscript* = Call_GetTranscript_613258(name: "getTranscript",
+var getTranscript* = Call_GetTranscript_611258(name: "getTranscript",
     meth: HttpMethod.HttpPost, host: "participant.connect.amazonaws.com",
     route: "/participant/transcript#X-Amz-Bearer",
-    validator: validate_GetTranscript_613259, base: "/", url: url_GetTranscript_613260,
+    validator: validate_GetTranscript_611259, base: "/", url: url_GetTranscript_611260,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SendEvent_613277 = ref object of OpenApiRestCall_612649
-proc url_SendEvent_613279(protocol: Scheme; host: string; base: string; route: string;
+  Call_SendEvent_611277 = ref object of OpenApiRestCall_610649
+proc url_SendEvent_611279(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SendEvent_613278(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_SendEvent_611278(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## Sends an event. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ## 
@@ -539,46 +526,46 @@ proc validate_SendEvent_613278(path: JsonNode; query: JsonNode; header: JsonNode
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Bearer` field"
-  var valid_613280 = header.getOrDefault("X-Amz-Bearer")
-  valid_613280 = validateParameter(valid_613280, JString, required = true,
+  var valid_611280 = header.getOrDefault("X-Amz-Bearer")
+  valid_611280 = validateParameter(valid_611280, JString, required = true,
                                  default = nil)
-  if valid_613280 != nil:
-    section.add "X-Amz-Bearer", valid_613280
-  var valid_613281 = header.getOrDefault("X-Amz-Signature")
-  valid_613281 = validateParameter(valid_613281, JString, required = false,
+  if valid_611280 != nil:
+    section.add "X-Amz-Bearer", valid_611280
+  var valid_611281 = header.getOrDefault("X-Amz-Signature")
+  valid_611281 = validateParameter(valid_611281, JString, required = false,
                                  default = nil)
-  if valid_613281 != nil:
-    section.add "X-Amz-Signature", valid_613281
-  var valid_613282 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613282 = validateParameter(valid_613282, JString, required = false,
+  if valid_611281 != nil:
+    section.add "X-Amz-Signature", valid_611281
+  var valid_611282 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611282 = validateParameter(valid_611282, JString, required = false,
                                  default = nil)
-  if valid_613282 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613282
-  var valid_613283 = header.getOrDefault("X-Amz-Date")
-  valid_613283 = validateParameter(valid_613283, JString, required = false,
+  if valid_611282 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611282
+  var valid_611283 = header.getOrDefault("X-Amz-Date")
+  valid_611283 = validateParameter(valid_611283, JString, required = false,
                                  default = nil)
-  if valid_613283 != nil:
-    section.add "X-Amz-Date", valid_613283
-  var valid_613284 = header.getOrDefault("X-Amz-Credential")
-  valid_613284 = validateParameter(valid_613284, JString, required = false,
+  if valid_611283 != nil:
+    section.add "X-Amz-Date", valid_611283
+  var valid_611284 = header.getOrDefault("X-Amz-Credential")
+  valid_611284 = validateParameter(valid_611284, JString, required = false,
                                  default = nil)
-  if valid_613284 != nil:
-    section.add "X-Amz-Credential", valid_613284
-  var valid_613285 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613285 = validateParameter(valid_613285, JString, required = false,
+  if valid_611284 != nil:
+    section.add "X-Amz-Credential", valid_611284
+  var valid_611285 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611285 = validateParameter(valid_611285, JString, required = false,
                                  default = nil)
-  if valid_613285 != nil:
-    section.add "X-Amz-Security-Token", valid_613285
-  var valid_613286 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613286 = validateParameter(valid_613286, JString, required = false,
+  if valid_611285 != nil:
+    section.add "X-Amz-Security-Token", valid_611285
+  var valid_611286 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611286 = validateParameter(valid_611286, JString, required = false,
                                  default = nil)
-  if valid_613286 != nil:
-    section.add "X-Amz-Algorithm", valid_613286
-  var valid_613287 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613287 = validateParameter(valid_613287, JString, required = false,
+  if valid_611286 != nil:
+    section.add "X-Amz-Algorithm", valid_611286
+  var valid_611287 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611287 = validateParameter(valid_611287, JString, required = false,
                                  default = nil)
-  if valid_613287 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613287
+  if valid_611287 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611287
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -589,49 +576,47 @@ proc validate_SendEvent_613278(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613289: Call_SendEvent_613277; path: JsonNode; query: JsonNode;
+proc call*(call_611289: Call_SendEvent_611277; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sends an event. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ## 
-  let valid = call_613289.validator(path, query, header, formData, body)
-  let scheme = call_613289.pickScheme
+  let valid = call_611289.validator(path, query, header, formData, body)
+  let scheme = call_611289.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613289.url(scheme.get, call_613289.host, call_613289.base,
-                         call_613289.route, valid.getOrDefault("path"),
+  let url = call_611289.url(scheme.get, call_611289.host, call_611289.base,
+                         call_611289.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613289, url, valid)
+  result = atozHook(call_611289, url, valid)
 
-proc call*(call_613290: Call_SendEvent_613277; body: JsonNode): Recallable =
+proc call*(call_611290: Call_SendEvent_611277; body: JsonNode): Recallable =
   ## sendEvent
   ## Sends an event. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ##   body: JObject (required)
-  var body_613291 = newJObject()
+  var body_611291 = newJObject()
   if body != nil:
-    body_613291 = body
-  result = call_613290.call(nil, nil, nil, nil, body_613291)
+    body_611291 = body
+  result = call_611290.call(nil, nil, nil, nil, body_611291)
 
-var sendEvent* = Call_SendEvent_613277(name: "sendEvent", meth: HttpMethod.HttpPost,
+var sendEvent* = Call_SendEvent_611277(name: "sendEvent", meth: HttpMethod.HttpPost,
                                     host: "participant.connect.amazonaws.com",
                                     route: "/participant/event#X-Amz-Bearer",
-                                    validator: validate_SendEvent_613278,
-                                    base: "/", url: url_SendEvent_613279,
+                                    validator: validate_SendEvent_611278,
+                                    base: "/", url: url_SendEvent_611279,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SendMessage_613292 = ref object of OpenApiRestCall_612649
-proc url_SendMessage_613294(protocol: Scheme; host: string; base: string;
+  Call_SendMessage_611292 = ref object of OpenApiRestCall_610649
+proc url_SendMessage_611294(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SendMessage_613293(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_SendMessage_611293(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Sends a message. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ## 
@@ -654,46 +639,46 @@ proc validate_SendMessage_613293(path: JsonNode; query: JsonNode; header: JsonNo
   section = newJObject()
   assert header != nil,
         "header argument is necessary due to required `X-Amz-Bearer` field"
-  var valid_613295 = header.getOrDefault("X-Amz-Bearer")
-  valid_613295 = validateParameter(valid_613295, JString, required = true,
+  var valid_611295 = header.getOrDefault("X-Amz-Bearer")
+  valid_611295 = validateParameter(valid_611295, JString, required = true,
                                  default = nil)
-  if valid_613295 != nil:
-    section.add "X-Amz-Bearer", valid_613295
-  var valid_613296 = header.getOrDefault("X-Amz-Signature")
-  valid_613296 = validateParameter(valid_613296, JString, required = false,
+  if valid_611295 != nil:
+    section.add "X-Amz-Bearer", valid_611295
+  var valid_611296 = header.getOrDefault("X-Amz-Signature")
+  valid_611296 = validateParameter(valid_611296, JString, required = false,
                                  default = nil)
-  if valid_613296 != nil:
-    section.add "X-Amz-Signature", valid_613296
-  var valid_613297 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613297 = validateParameter(valid_613297, JString, required = false,
+  if valid_611296 != nil:
+    section.add "X-Amz-Signature", valid_611296
+  var valid_611297 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611297 = validateParameter(valid_611297, JString, required = false,
                                  default = nil)
-  if valid_613297 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613297
-  var valid_613298 = header.getOrDefault("X-Amz-Date")
-  valid_613298 = validateParameter(valid_613298, JString, required = false,
+  if valid_611297 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611297
+  var valid_611298 = header.getOrDefault("X-Amz-Date")
+  valid_611298 = validateParameter(valid_611298, JString, required = false,
                                  default = nil)
-  if valid_613298 != nil:
-    section.add "X-Amz-Date", valid_613298
-  var valid_613299 = header.getOrDefault("X-Amz-Credential")
-  valid_613299 = validateParameter(valid_613299, JString, required = false,
+  if valid_611298 != nil:
+    section.add "X-Amz-Date", valid_611298
+  var valid_611299 = header.getOrDefault("X-Amz-Credential")
+  valid_611299 = validateParameter(valid_611299, JString, required = false,
                                  default = nil)
-  if valid_613299 != nil:
-    section.add "X-Amz-Credential", valid_613299
-  var valid_613300 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613300 = validateParameter(valid_613300, JString, required = false,
+  if valid_611299 != nil:
+    section.add "X-Amz-Credential", valid_611299
+  var valid_611300 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611300 = validateParameter(valid_611300, JString, required = false,
                                  default = nil)
-  if valid_613300 != nil:
-    section.add "X-Amz-Security-Token", valid_613300
-  var valid_613301 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613301 = validateParameter(valid_613301, JString, required = false,
+  if valid_611300 != nil:
+    section.add "X-Amz-Security-Token", valid_611300
+  var valid_611301 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611301 = validateParameter(valid_611301, JString, required = false,
                                  default = nil)
-  if valid_613301 != nil:
-    section.add "X-Amz-Algorithm", valid_613301
-  var valid_613302 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613302 = validateParameter(valid_613302, JString, required = false,
+  if valid_611301 != nil:
+    section.add "X-Amz-Algorithm", valid_611301
+  var valid_611302 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611302 = validateParameter(valid_611302, JString, required = false,
                                  default = nil)
-  if valid_613302 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613302
+  if valid_611302 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611302
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -704,32 +689,32 @@ proc validate_SendMessage_613293(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613304: Call_SendMessage_613292; path: JsonNode; query: JsonNode;
+proc call*(call_611304: Call_SendMessage_611292; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Sends a message. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ## 
-  let valid = call_613304.validator(path, query, header, formData, body)
-  let scheme = call_613304.pickScheme
+  let valid = call_611304.validator(path, query, header, formData, body)
+  let scheme = call_611304.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613304.url(scheme.get, call_613304.host, call_613304.base,
-                         call_613304.route, valid.getOrDefault("path"),
+  let url = call_611304.url(scheme.get, call_611304.host, call_611304.base,
+                         call_611304.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613304, url, valid)
+  result = atozHook(call_611304, url, valid)
 
-proc call*(call_613305: Call_SendMessage_613292; body: JsonNode): Recallable =
+proc call*(call_611305: Call_SendMessage_611292; body: JsonNode): Recallable =
   ## sendMessage
   ## Sends a message. Note that ConnectionToken is used for invoking this API instead of ParticipantToken.
   ##   body: JObject (required)
-  var body_613306 = newJObject()
+  var body_611306 = newJObject()
   if body != nil:
-    body_613306 = body
-  result = call_613305.call(nil, nil, nil, nil, body_613306)
+    body_611306 = body
+  result = call_611305.call(nil, nil, nil, nil, body_611306)
 
-var sendMessage* = Call_SendMessage_613292(name: "sendMessage",
+var sendMessage* = Call_SendMessage_611292(name: "sendMessage",
                                         meth: HttpMethod.HttpPost, host: "participant.connect.amazonaws.com", route: "/participant/message#X-Amz-Bearer",
-                                        validator: validate_SendMessage_613293,
-                                        base: "/", url: url_SendMessage_613294,
+                                        validator: validate_SendMessage_611293,
+                                        base: "/", url: url_SendMessage_611294,
                                         schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -799,6 +784,9 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers.del "Host"
   recall.url = $url
 
+type
+  XAmz = enum
+    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   ## the hook is a terrible earworm
   var headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
@@ -811,11 +799,10 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
-  const
-    XAmzSecurityToken = "X-Amz-Security-Token"
-  if not headers.hasKey(XAmzSecurityToken):
+  if not headers.hasKey($SecurityToken):
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
-      headers[XAmzSecurityToken] = session
+      headers[$SecurityToken] = session
+  headers[$ContentSha256] = hash(text, SHA256)
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

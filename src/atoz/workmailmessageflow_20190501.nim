@@ -29,18 +29,17 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_612649 = ref object of OpenApiRestCall
+  OpenApiRestCall_610649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_610649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_610649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
-  for scheme in Scheme.low ..
-      Scheme.high:
+  for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
       continue
     if scheme in [Scheme.Https, Scheme.Wss]:
@@ -54,20 +53,16 @@ proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
   ## a suitable default value when appropriate
-  if js ==
-      nil:
+  if js == nil:
     if default != nil:
       return validateParameter(default, kind, required = required)
   result = js
-  if result ==
-      nil:
+  if result == nil:
     assert not required, $kind & " expected; received nil"
     if required:
       result = newJNull()
   else:
-    assert js.kind ==
-        kind, $kind & " expected; received " &
-        $js.kind
+    assert js.kind == kind, $kind & " expected; received " & $js.kind
 
 type
   KeyVal {.used.} = tuple[key: string, val: string]
@@ -134,8 +129,8 @@ const
   awsServiceName = "workmailmessageflow"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_GetRawMessageContent_612987 = ref object of OpenApiRestCall_612649
-proc url_GetRawMessageContent_612989(protocol: Scheme; host: string; base: string;
+  Call_GetRawMessageContent_610987 = ref object of OpenApiRestCall_610649
+proc url_GetRawMessageContent_610989(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -148,14 +143,12 @@ proc url_GetRawMessageContent_612989(protocol: Scheme; host: string; base: strin
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  if base ==
-      "/" and
-      hydrated.get.startsWith "/":
+  if base == "/" and hydrated.get.startsWith "/":
     result.path = hydrated.get
   else:
     result.path = base & hydrated.get
 
-proc validate_GetRawMessageContent_612988(path: JsonNode; query: JsonNode;
+proc validate_GetRawMessageContent_610988(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Retrieves the raw content of an in-transit email message, in MIME format. 
   ## 
@@ -166,11 +159,11 @@ proc validate_GetRawMessageContent_612988(path: JsonNode; query: JsonNode;
   ##            : The identifier of the email message to retrieve.
   section = newJObject()
   assert path != nil, "path argument is necessary due to required `messageId` field"
-  var valid_613115 = path.getOrDefault("messageId")
-  valid_613115 = validateParameter(valid_613115, JString, required = true,
+  var valid_611115 = path.getOrDefault("messageId")
+  valid_611115 = validateParameter(valid_611115, JString, required = true,
                                  default = nil)
-  if valid_613115 != nil:
-    section.add "messageId", valid_613115
+  if valid_611115 != nil:
+    section.add "messageId", valid_611115
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -183,74 +176,74 @@ proc validate_GetRawMessageContent_612988(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613116 = header.getOrDefault("X-Amz-Signature")
-  valid_613116 = validateParameter(valid_613116, JString, required = false,
+  var valid_611116 = header.getOrDefault("X-Amz-Signature")
+  valid_611116 = validateParameter(valid_611116, JString, required = false,
                                  default = nil)
-  if valid_613116 != nil:
-    section.add "X-Amz-Signature", valid_613116
-  var valid_613117 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613117 = validateParameter(valid_613117, JString, required = false,
+  if valid_611116 != nil:
+    section.add "X-Amz-Signature", valid_611116
+  var valid_611117 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611117 = validateParameter(valid_611117, JString, required = false,
                                  default = nil)
-  if valid_613117 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613117
-  var valid_613118 = header.getOrDefault("X-Amz-Date")
-  valid_613118 = validateParameter(valid_613118, JString, required = false,
+  if valid_611117 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611117
+  var valid_611118 = header.getOrDefault("X-Amz-Date")
+  valid_611118 = validateParameter(valid_611118, JString, required = false,
                                  default = nil)
-  if valid_613118 != nil:
-    section.add "X-Amz-Date", valid_613118
-  var valid_613119 = header.getOrDefault("X-Amz-Credential")
-  valid_613119 = validateParameter(valid_613119, JString, required = false,
+  if valid_611118 != nil:
+    section.add "X-Amz-Date", valid_611118
+  var valid_611119 = header.getOrDefault("X-Amz-Credential")
+  valid_611119 = validateParameter(valid_611119, JString, required = false,
                                  default = nil)
-  if valid_613119 != nil:
-    section.add "X-Amz-Credential", valid_613119
-  var valid_613120 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613120 = validateParameter(valid_613120, JString, required = false,
+  if valid_611119 != nil:
+    section.add "X-Amz-Credential", valid_611119
+  var valid_611120 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611120 = validateParameter(valid_611120, JString, required = false,
                                  default = nil)
-  if valid_613120 != nil:
-    section.add "X-Amz-Security-Token", valid_613120
-  var valid_613121 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613121 = validateParameter(valid_613121, JString, required = false,
+  if valid_611120 != nil:
+    section.add "X-Amz-Security-Token", valid_611120
+  var valid_611121 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611121 = validateParameter(valid_611121, JString, required = false,
                                  default = nil)
-  if valid_613121 != nil:
-    section.add "X-Amz-Algorithm", valid_613121
-  var valid_613122 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613122 = validateParameter(valid_613122, JString, required = false,
+  if valid_611121 != nil:
+    section.add "X-Amz-Algorithm", valid_611121
+  var valid_611122 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611122 = validateParameter(valid_611122, JString, required = false,
                                  default = nil)
-  if valid_613122 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613122
+  if valid_611122 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611122
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613145: Call_GetRawMessageContent_612987; path: JsonNode;
+proc call*(call_611145: Call_GetRawMessageContent_610987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Retrieves the raw content of an in-transit email message, in MIME format. 
   ## 
-  let valid = call_613145.validator(path, query, header, formData, body)
-  let scheme = call_613145.pickScheme
+  let valid = call_611145.validator(path, query, header, formData, body)
+  let scheme = call_611145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613145.url(scheme.get, call_613145.host, call_613145.base,
-                         call_613145.route, valid.getOrDefault("path"),
+  let url = call_611145.url(scheme.get, call_611145.host, call_611145.base,
+                         call_611145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613145, url, valid)
+  result = atozHook(call_611145, url, valid)
 
-proc call*(call_613216: Call_GetRawMessageContent_612987; messageId: string): Recallable =
+proc call*(call_611216: Call_GetRawMessageContent_610987; messageId: string): Recallable =
   ## getRawMessageContent
   ## Retrieves the raw content of an in-transit email message, in MIME format. 
   ##   messageId: string (required)
   ##            : The identifier of the email message to retrieve.
-  var path_613217 = newJObject()
-  add(path_613217, "messageId", newJString(messageId))
-  result = call_613216.call(path_613217, nil, nil, nil, nil)
+  var path_611217 = newJObject()
+  add(path_611217, "messageId", newJString(messageId))
+  result = call_611216.call(path_611217, nil, nil, nil, nil)
 
-var getRawMessageContent* = Call_GetRawMessageContent_612987(
+var getRawMessageContent* = Call_GetRawMessageContent_610987(
     name: "getRawMessageContent", meth: HttpMethod.HttpGet,
     host: "workmailmessageflow.amazonaws.com", route: "/messages/{messageId}",
-    validator: validate_GetRawMessageContent_612988, base: "/",
-    url: url_GetRawMessageContent_612989, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetRawMessageContent_610988, base: "/",
+    url: url_GetRawMessageContent_610989, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -319,6 +312,9 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers.del "Host"
   recall.url = $url
 
+type
+  XAmz = enum
+    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   ## the hook is a terrible earworm
   var headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
@@ -331,11 +327,10 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
-  const
-    XAmzSecurityToken = "X-Amz-Security-Token"
-  if not headers.hasKey(XAmzSecurityToken):
+  if not headers.hasKey($SecurityToken):
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
-      headers[XAmzSecurityToken] = session
+      headers[$SecurityToken] = session
+  headers[$ContentSha256] = hash(text, SHA256)
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

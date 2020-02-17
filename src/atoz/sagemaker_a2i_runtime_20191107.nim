@@ -29,18 +29,17 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_612649 = ref object of OpenApiRestCall
+  OpenApiRestCall_610649 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_612649](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_610649](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_612649): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_610649): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
-  for scheme in Scheme.low ..
-      Scheme.high:
+  for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
       continue
     if scheme in [Scheme.Https, Scheme.Wss]:
@@ -54,20 +53,16 @@ proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
   ## a suitable default value when appropriate
-  if js ==
-      nil:
+  if js == nil:
     if default != nil:
       return validateParameter(default, kind, required = required)
   result = js
-  if result ==
-      nil:
+  if result == nil:
     assert not required, $kind & " expected; received nil"
     if required:
       result = newJNull()
   else:
-    assert js.kind ==
-        kind, $kind & " expected; received " &
-        $js.kind
+    assert js.kind == kind, $kind & " expected; received " & $js.kind
 
 type
   KeyVal {.used.} = tuple[key: string, val: string]
@@ -133,8 +128,8 @@ const
   awsServiceName = "sagemaker-a2i-runtime"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_DescribeHumanLoop_612987 = ref object of OpenApiRestCall_612649
-proc url_DescribeHumanLoop_612989(protocol: Scheme; host: string; base: string;
+  Call_DescribeHumanLoop_610987 = ref object of OpenApiRestCall_610649
+proc url_DescribeHumanLoop_610989(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -147,14 +142,12 @@ proc url_DescribeHumanLoop_612989(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  if base ==
-      "/" and
-      hydrated.get.startsWith "/":
+  if base == "/" and hydrated.get.startsWith "/":
     result.path = hydrated.get
   else:
     result.path = base & hydrated.get
 
-proc validate_DescribeHumanLoop_612988(path: JsonNode; query: JsonNode;
+proc validate_DescribeHumanLoop_610988(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## Returns information about the specified human loop.
@@ -167,11 +160,11 @@ proc validate_DescribeHumanLoop_612988(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `HumanLoopName` field"
-  var valid_613115 = path.getOrDefault("HumanLoopName")
-  valid_613115 = validateParameter(valid_613115, JString, required = true,
+  var valid_611115 = path.getOrDefault("HumanLoopName")
+  valid_611115 = validateParameter(valid_611115, JString, required = true,
                                  default = nil)
-  if valid_613115 != nil:
-    section.add "HumanLoopName", valid_613115
+  if valid_611115 != nil:
+    section.add "HumanLoopName", valid_611115
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -184,77 +177,77 @@ proc validate_DescribeHumanLoop_612988(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613116 = header.getOrDefault("X-Amz-Signature")
-  valid_613116 = validateParameter(valid_613116, JString, required = false,
+  var valid_611116 = header.getOrDefault("X-Amz-Signature")
+  valid_611116 = validateParameter(valid_611116, JString, required = false,
                                  default = nil)
-  if valid_613116 != nil:
-    section.add "X-Amz-Signature", valid_613116
-  var valid_613117 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613117 = validateParameter(valid_613117, JString, required = false,
+  if valid_611116 != nil:
+    section.add "X-Amz-Signature", valid_611116
+  var valid_611117 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611117 = validateParameter(valid_611117, JString, required = false,
                                  default = nil)
-  if valid_613117 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613117
-  var valid_613118 = header.getOrDefault("X-Amz-Date")
-  valid_613118 = validateParameter(valid_613118, JString, required = false,
+  if valid_611117 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611117
+  var valid_611118 = header.getOrDefault("X-Amz-Date")
+  valid_611118 = validateParameter(valid_611118, JString, required = false,
                                  default = nil)
-  if valid_613118 != nil:
-    section.add "X-Amz-Date", valid_613118
-  var valid_613119 = header.getOrDefault("X-Amz-Credential")
-  valid_613119 = validateParameter(valid_613119, JString, required = false,
+  if valid_611118 != nil:
+    section.add "X-Amz-Date", valid_611118
+  var valid_611119 = header.getOrDefault("X-Amz-Credential")
+  valid_611119 = validateParameter(valid_611119, JString, required = false,
                                  default = nil)
-  if valid_613119 != nil:
-    section.add "X-Amz-Credential", valid_613119
-  var valid_613120 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613120 = validateParameter(valid_613120, JString, required = false,
+  if valid_611119 != nil:
+    section.add "X-Amz-Credential", valid_611119
+  var valid_611120 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611120 = validateParameter(valid_611120, JString, required = false,
                                  default = nil)
-  if valid_613120 != nil:
-    section.add "X-Amz-Security-Token", valid_613120
-  var valid_613121 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613121 = validateParameter(valid_613121, JString, required = false,
+  if valid_611120 != nil:
+    section.add "X-Amz-Security-Token", valid_611120
+  var valid_611121 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611121 = validateParameter(valid_611121, JString, required = false,
                                  default = nil)
-  if valid_613121 != nil:
-    section.add "X-Amz-Algorithm", valid_613121
-  var valid_613122 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613122 = validateParameter(valid_613122, JString, required = false,
+  if valid_611121 != nil:
+    section.add "X-Amz-Algorithm", valid_611121
+  var valid_611122 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611122 = validateParameter(valid_611122, JString, required = false,
                                  default = nil)
-  if valid_613122 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613122
+  if valid_611122 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611122
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613145: Call_DescribeHumanLoop_612987; path: JsonNode;
+proc call*(call_611145: Call_DescribeHumanLoop_610987; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about the specified human loop.
   ## 
-  let valid = call_613145.validator(path, query, header, formData, body)
-  let scheme = call_613145.pickScheme
+  let valid = call_611145.validator(path, query, header, formData, body)
+  let scheme = call_611145.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613145.url(scheme.get, call_613145.host, call_613145.base,
-                         call_613145.route, valid.getOrDefault("path"),
+  let url = call_611145.url(scheme.get, call_611145.host, call_611145.base,
+                         call_611145.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613145, url, valid)
+  result = atozHook(call_611145, url, valid)
 
-proc call*(call_613216: Call_DescribeHumanLoop_612987; HumanLoopName: string): Recallable =
+proc call*(call_611216: Call_DescribeHumanLoop_610987; HumanLoopName: string): Recallable =
   ## describeHumanLoop
   ## Returns information about the specified human loop.
   ##   HumanLoopName: string (required)
   ##                : The name of the human loop.
-  var path_613217 = newJObject()
-  add(path_613217, "HumanLoopName", newJString(HumanLoopName))
-  result = call_613216.call(path_613217, nil, nil, nil, nil)
+  var path_611217 = newJObject()
+  add(path_611217, "HumanLoopName", newJString(HumanLoopName))
+  result = call_611216.call(path_611217, nil, nil, nil, nil)
 
-var describeHumanLoop* = Call_DescribeHumanLoop_612987(name: "describeHumanLoop",
+var describeHumanLoop* = Call_DescribeHumanLoop_610987(name: "describeHumanLoop",
     meth: HttpMethod.HttpGet, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops/{HumanLoopName}", validator: validate_DescribeHumanLoop_612988,
-    base: "/", url: url_DescribeHumanLoop_612989,
+    route: "/human-loops/{HumanLoopName}", validator: validate_DescribeHumanLoop_610988,
+    base: "/", url: url_DescribeHumanLoop_610989,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteHumanLoop_613257 = ref object of OpenApiRestCall_612649
-proc url_DeleteHumanLoop_613259(protocol: Scheme; host: string; base: string;
+  Call_DeleteHumanLoop_611257 = ref object of OpenApiRestCall_610649
+proc url_DeleteHumanLoop_611259(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -267,14 +260,12 @@ proc url_DeleteHumanLoop_613259(protocol: Scheme; host: string; base: string;
   var hydrated = hydratePath(path, segments)
   if hydrated.isNone:
     raise newException(ValueError, "unable to fully hydrate path")
-  if base ==
-      "/" and
-      hydrated.get.startsWith "/":
+  if base == "/" and hydrated.get.startsWith "/":
     result.path = hydrated.get
   else:
     result.path = base & hydrated.get
 
-proc validate_DeleteHumanLoop_613258(path: JsonNode; query: JsonNode;
+proc validate_DeleteHumanLoop_611258(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## Deletes the specified human loop for a flow definition.
@@ -287,11 +278,11 @@ proc validate_DeleteHumanLoop_613258(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert path != nil,
         "path argument is necessary due to required `HumanLoopName` field"
-  var valid_613260 = path.getOrDefault("HumanLoopName")
-  valid_613260 = validateParameter(valid_613260, JString, required = true,
+  var valid_611260 = path.getOrDefault("HumanLoopName")
+  valid_611260 = validateParameter(valid_611260, JString, required = true,
                                  default = nil)
-  if valid_613260 != nil:
-    section.add "HumanLoopName", valid_613260
+  if valid_611260 != nil:
+    section.add "HumanLoopName", valid_611260
   result.add "path", section
   section = newJObject()
   result.add "query", section
@@ -304,88 +295,86 @@ proc validate_DeleteHumanLoop_613258(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613261 = header.getOrDefault("X-Amz-Signature")
-  valid_613261 = validateParameter(valid_613261, JString, required = false,
+  var valid_611261 = header.getOrDefault("X-Amz-Signature")
+  valid_611261 = validateParameter(valid_611261, JString, required = false,
                                  default = nil)
-  if valid_613261 != nil:
-    section.add "X-Amz-Signature", valid_613261
-  var valid_613262 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613262 = validateParameter(valid_613262, JString, required = false,
+  if valid_611261 != nil:
+    section.add "X-Amz-Signature", valid_611261
+  var valid_611262 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611262 = validateParameter(valid_611262, JString, required = false,
                                  default = nil)
-  if valid_613262 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613262
-  var valid_613263 = header.getOrDefault("X-Amz-Date")
-  valid_613263 = validateParameter(valid_613263, JString, required = false,
+  if valid_611262 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611262
+  var valid_611263 = header.getOrDefault("X-Amz-Date")
+  valid_611263 = validateParameter(valid_611263, JString, required = false,
                                  default = nil)
-  if valid_613263 != nil:
-    section.add "X-Amz-Date", valid_613263
-  var valid_613264 = header.getOrDefault("X-Amz-Credential")
-  valid_613264 = validateParameter(valid_613264, JString, required = false,
+  if valid_611263 != nil:
+    section.add "X-Amz-Date", valid_611263
+  var valid_611264 = header.getOrDefault("X-Amz-Credential")
+  valid_611264 = validateParameter(valid_611264, JString, required = false,
                                  default = nil)
-  if valid_613264 != nil:
-    section.add "X-Amz-Credential", valid_613264
-  var valid_613265 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613265 = validateParameter(valid_613265, JString, required = false,
+  if valid_611264 != nil:
+    section.add "X-Amz-Credential", valid_611264
+  var valid_611265 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611265 = validateParameter(valid_611265, JString, required = false,
                                  default = nil)
-  if valid_613265 != nil:
-    section.add "X-Amz-Security-Token", valid_613265
-  var valid_613266 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613266 = validateParameter(valid_613266, JString, required = false,
+  if valid_611265 != nil:
+    section.add "X-Amz-Security-Token", valid_611265
+  var valid_611266 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611266 = validateParameter(valid_611266, JString, required = false,
                                  default = nil)
-  if valid_613266 != nil:
-    section.add "X-Amz-Algorithm", valid_613266
-  var valid_613267 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613267 = validateParameter(valid_613267, JString, required = false,
+  if valid_611266 != nil:
+    section.add "X-Amz-Algorithm", valid_611266
+  var valid_611267 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611267 = validateParameter(valid_611267, JString, required = false,
                                  default = nil)
-  if valid_613267 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613267
+  if valid_611267 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611267
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613268: Call_DeleteHumanLoop_613257; path: JsonNode; query: JsonNode;
+proc call*(call_611268: Call_DeleteHumanLoop_611257; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Deletes the specified human loop for a flow definition.
   ## 
-  let valid = call_613268.validator(path, query, header, formData, body)
-  let scheme = call_613268.pickScheme
+  let valid = call_611268.validator(path, query, header, formData, body)
+  let scheme = call_611268.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613268.url(scheme.get, call_613268.host, call_613268.base,
-                         call_613268.route, valid.getOrDefault("path"),
+  let url = call_611268.url(scheme.get, call_611268.host, call_611268.base,
+                         call_611268.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613268, url, valid)
+  result = atozHook(call_611268, url, valid)
 
-proc call*(call_613269: Call_DeleteHumanLoop_613257; HumanLoopName: string): Recallable =
+proc call*(call_611269: Call_DeleteHumanLoop_611257; HumanLoopName: string): Recallable =
   ## deleteHumanLoop
   ## Deletes the specified human loop for a flow definition.
   ##   HumanLoopName: string (required)
   ##                : The name of the human loop you want to delete.
-  var path_613270 = newJObject()
-  add(path_613270, "HumanLoopName", newJString(HumanLoopName))
-  result = call_613269.call(path_613270, nil, nil, nil, nil)
+  var path_611270 = newJObject()
+  add(path_611270, "HumanLoopName", newJString(HumanLoopName))
+  result = call_611269.call(path_611270, nil, nil, nil, nil)
 
-var deleteHumanLoop* = Call_DeleteHumanLoop_613257(name: "deleteHumanLoop",
+var deleteHumanLoop* = Call_DeleteHumanLoop_611257(name: "deleteHumanLoop",
     meth: HttpMethod.HttpDelete, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops/{HumanLoopName}", validator: validate_DeleteHumanLoop_613258,
-    base: "/", url: url_DeleteHumanLoop_613259, schemes: {Scheme.Https, Scheme.Http})
+    route: "/human-loops/{HumanLoopName}", validator: validate_DeleteHumanLoop_611258,
+    base: "/", url: url_DeleteHumanLoop_611259, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartHumanLoop_613302 = ref object of OpenApiRestCall_612649
-proc url_StartHumanLoop_613304(protocol: Scheme; host: string; base: string;
+  Call_StartHumanLoop_611302 = ref object of OpenApiRestCall_610649
+proc url_StartHumanLoop_611304(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StartHumanLoop_613303(path: JsonNode; query: JsonNode;
+proc validate_StartHumanLoop_611303(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Starts a human loop, provided that at least one activation condition is met.
@@ -405,41 +394,41 @@ proc validate_StartHumanLoop_613303(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613305 = header.getOrDefault("X-Amz-Signature")
-  valid_613305 = validateParameter(valid_613305, JString, required = false,
+  var valid_611305 = header.getOrDefault("X-Amz-Signature")
+  valid_611305 = validateParameter(valid_611305, JString, required = false,
                                  default = nil)
-  if valid_613305 != nil:
-    section.add "X-Amz-Signature", valid_613305
-  var valid_613306 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613306 = validateParameter(valid_613306, JString, required = false,
+  if valid_611305 != nil:
+    section.add "X-Amz-Signature", valid_611305
+  var valid_611306 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611306 = validateParameter(valid_611306, JString, required = false,
                                  default = nil)
-  if valid_613306 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613306
-  var valid_613307 = header.getOrDefault("X-Amz-Date")
-  valid_613307 = validateParameter(valid_613307, JString, required = false,
+  if valid_611306 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611306
+  var valid_611307 = header.getOrDefault("X-Amz-Date")
+  valid_611307 = validateParameter(valid_611307, JString, required = false,
                                  default = nil)
-  if valid_613307 != nil:
-    section.add "X-Amz-Date", valid_613307
-  var valid_613308 = header.getOrDefault("X-Amz-Credential")
-  valid_613308 = validateParameter(valid_613308, JString, required = false,
+  if valid_611307 != nil:
+    section.add "X-Amz-Date", valid_611307
+  var valid_611308 = header.getOrDefault("X-Amz-Credential")
+  valid_611308 = validateParameter(valid_611308, JString, required = false,
                                  default = nil)
-  if valid_613308 != nil:
-    section.add "X-Amz-Credential", valid_613308
-  var valid_613309 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613309 = validateParameter(valid_613309, JString, required = false,
+  if valid_611308 != nil:
+    section.add "X-Amz-Credential", valid_611308
+  var valid_611309 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611309 = validateParameter(valid_611309, JString, required = false,
                                  default = nil)
-  if valid_613309 != nil:
-    section.add "X-Amz-Security-Token", valid_613309
-  var valid_613310 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613310 = validateParameter(valid_613310, JString, required = false,
+  if valid_611309 != nil:
+    section.add "X-Amz-Security-Token", valid_611309
+  var valid_611310 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611310 = validateParameter(valid_611310, JString, required = false,
                                  default = nil)
-  if valid_613310 != nil:
-    section.add "X-Amz-Algorithm", valid_613310
-  var valid_613311 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613311 = validateParameter(valid_613311, JString, required = false,
+  if valid_611310 != nil:
+    section.add "X-Amz-Algorithm", valid_611310
+  var valid_611311 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611311 = validateParameter(valid_611311, JString, required = false,
                                  default = nil)
-  if valid_613311 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613311
+  if valid_611311 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611311
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -450,47 +439,45 @@ proc validate_StartHumanLoop_613303(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613313: Call_StartHumanLoop_613302; path: JsonNode; query: JsonNode;
+proc call*(call_611313: Call_StartHumanLoop_611302; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Starts a human loop, provided that at least one activation condition is met.
   ## 
-  let valid = call_613313.validator(path, query, header, formData, body)
-  let scheme = call_613313.pickScheme
+  let valid = call_611313.validator(path, query, header, formData, body)
+  let scheme = call_611313.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613313.url(scheme.get, call_613313.host, call_613313.base,
-                         call_613313.route, valid.getOrDefault("path"),
+  let url = call_611313.url(scheme.get, call_611313.host, call_611313.base,
+                         call_611313.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613313, url, valid)
+  result = atozHook(call_611313, url, valid)
 
-proc call*(call_613314: Call_StartHumanLoop_613302; body: JsonNode): Recallable =
+proc call*(call_611314: Call_StartHumanLoop_611302; body: JsonNode): Recallable =
   ## startHumanLoop
   ## Starts a human loop, provided that at least one activation condition is met.
   ##   body: JObject (required)
-  var body_613315 = newJObject()
+  var body_611315 = newJObject()
   if body != nil:
-    body_613315 = body
-  result = call_613314.call(nil, nil, nil, nil, body_613315)
+    body_611315 = body
+  result = call_611314.call(nil, nil, nil, nil, body_611315)
 
-var startHumanLoop* = Call_StartHumanLoop_613302(name: "startHumanLoop",
+var startHumanLoop* = Call_StartHumanLoop_611302(name: "startHumanLoop",
     meth: HttpMethod.HttpPost, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops", validator: validate_StartHumanLoop_613303, base: "/",
-    url: url_StartHumanLoop_613304, schemes: {Scheme.Https, Scheme.Http})
+    route: "/human-loops", validator: validate_StartHumanLoop_611303, base: "/",
+    url: url_StartHumanLoop_611304, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListHumanLoops_613271 = ref object of OpenApiRestCall_612649
-proc url_ListHumanLoops_613273(protocol: Scheme; host: string; base: string;
+  Call_ListHumanLoops_611271 = ref object of OpenApiRestCall_610649
+proc url_ListHumanLoops_611273(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListHumanLoops_613272(path: JsonNode; query: JsonNode;
+proc validate_ListHumanLoops_611272(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## Returns information about human loops, given the specified parameters.
@@ -511,30 +498,30 @@ proc validate_ListHumanLoops_613272(path: JsonNode; query: JsonNode;
   ##   SortOrder: JString
   ##            : An optional value that specifies whether you want the results sorted in <code>Ascending</code> or <code>Descending</code> order.
   section = newJObject()
-  var valid_613274 = query.getOrDefault("CreationTimeAfter")
-  valid_613274 = validateParameter(valid_613274, JString, required = false,
+  var valid_611274 = query.getOrDefault("CreationTimeAfter")
+  valid_611274 = validateParameter(valid_611274, JString, required = false,
                                  default = nil)
-  if valid_613274 != nil:
-    section.add "CreationTimeAfter", valid_613274
-  var valid_613275 = query.getOrDefault("MaxResults")
-  valid_613275 = validateParameter(valid_613275, JInt, required = false, default = nil)
-  if valid_613275 != nil:
-    section.add "MaxResults", valid_613275
-  var valid_613276 = query.getOrDefault("NextToken")
-  valid_613276 = validateParameter(valid_613276, JString, required = false,
+  if valid_611274 != nil:
+    section.add "CreationTimeAfter", valid_611274
+  var valid_611275 = query.getOrDefault("MaxResults")
+  valid_611275 = validateParameter(valid_611275, JInt, required = false, default = nil)
+  if valid_611275 != nil:
+    section.add "MaxResults", valid_611275
+  var valid_611276 = query.getOrDefault("NextToken")
+  valid_611276 = validateParameter(valid_611276, JString, required = false,
                                  default = nil)
-  if valid_613276 != nil:
-    section.add "NextToken", valid_613276
-  var valid_613277 = query.getOrDefault("CreationTimeBefore")
-  valid_613277 = validateParameter(valid_613277, JString, required = false,
+  if valid_611276 != nil:
+    section.add "NextToken", valid_611276
+  var valid_611277 = query.getOrDefault("CreationTimeBefore")
+  valid_611277 = validateParameter(valid_611277, JString, required = false,
                                  default = nil)
-  if valid_613277 != nil:
-    section.add "CreationTimeBefore", valid_613277
-  var valid_613291 = query.getOrDefault("SortOrder")
-  valid_613291 = validateParameter(valid_613291, JString, required = false,
+  if valid_611277 != nil:
+    section.add "CreationTimeBefore", valid_611277
+  var valid_611291 = query.getOrDefault("SortOrder")
+  valid_611291 = validateParameter(valid_611291, JString, required = false,
                                  default = newJString("Ascending"))
-  if valid_613291 != nil:
-    section.add "SortOrder", valid_613291
+  if valid_611291 != nil:
+    section.add "SortOrder", valid_611291
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -545,61 +532,61 @@ proc validate_ListHumanLoops_613272(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613292 = header.getOrDefault("X-Amz-Signature")
-  valid_613292 = validateParameter(valid_613292, JString, required = false,
+  var valid_611292 = header.getOrDefault("X-Amz-Signature")
+  valid_611292 = validateParameter(valid_611292, JString, required = false,
                                  default = nil)
-  if valid_613292 != nil:
-    section.add "X-Amz-Signature", valid_613292
-  var valid_613293 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613293 = validateParameter(valid_613293, JString, required = false,
+  if valid_611292 != nil:
+    section.add "X-Amz-Signature", valid_611292
+  var valid_611293 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611293 = validateParameter(valid_611293, JString, required = false,
                                  default = nil)
-  if valid_613293 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613293
-  var valid_613294 = header.getOrDefault("X-Amz-Date")
-  valid_613294 = validateParameter(valid_613294, JString, required = false,
+  if valid_611293 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611293
+  var valid_611294 = header.getOrDefault("X-Amz-Date")
+  valid_611294 = validateParameter(valid_611294, JString, required = false,
                                  default = nil)
-  if valid_613294 != nil:
-    section.add "X-Amz-Date", valid_613294
-  var valid_613295 = header.getOrDefault("X-Amz-Credential")
-  valid_613295 = validateParameter(valid_613295, JString, required = false,
+  if valid_611294 != nil:
+    section.add "X-Amz-Date", valid_611294
+  var valid_611295 = header.getOrDefault("X-Amz-Credential")
+  valid_611295 = validateParameter(valid_611295, JString, required = false,
                                  default = nil)
-  if valid_613295 != nil:
-    section.add "X-Amz-Credential", valid_613295
-  var valid_613296 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613296 = validateParameter(valid_613296, JString, required = false,
+  if valid_611295 != nil:
+    section.add "X-Amz-Credential", valid_611295
+  var valid_611296 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611296 = validateParameter(valid_611296, JString, required = false,
                                  default = nil)
-  if valid_613296 != nil:
-    section.add "X-Amz-Security-Token", valid_613296
-  var valid_613297 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613297 = validateParameter(valid_613297, JString, required = false,
+  if valid_611296 != nil:
+    section.add "X-Amz-Security-Token", valid_611296
+  var valid_611297 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611297 = validateParameter(valid_611297, JString, required = false,
                                  default = nil)
-  if valid_613297 != nil:
-    section.add "X-Amz-Algorithm", valid_613297
-  var valid_613298 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613298 = validateParameter(valid_613298, JString, required = false,
+  if valid_611297 != nil:
+    section.add "X-Amz-Algorithm", valid_611297
+  var valid_611298 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611298 = validateParameter(valid_611298, JString, required = false,
                                  default = nil)
-  if valid_613298 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613298
+  if valid_611298 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611298
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613299: Call_ListHumanLoops_613271; path: JsonNode; query: JsonNode;
+proc call*(call_611299: Call_ListHumanLoops_611271; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns information about human loops, given the specified parameters.
   ## 
-  let valid = call_613299.validator(path, query, header, formData, body)
-  let scheme = call_613299.pickScheme
+  let valid = call_611299.validator(path, query, header, formData, body)
+  let scheme = call_611299.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613299.url(scheme.get, call_613299.host, call_613299.base,
-                         call_613299.route, valid.getOrDefault("path"),
+  let url = call_611299.url(scheme.get, call_611299.host, call_611299.base,
+                         call_611299.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613299, url, valid)
+  result = atozHook(call_611299, url, valid)
 
-proc call*(call_613300: Call_ListHumanLoops_613271; CreationTimeAfter: string = "";
+proc call*(call_611300: Call_ListHumanLoops_611271; CreationTimeAfter: string = "";
           MaxResults: int = 0; NextToken: string = ""; CreationTimeBefore: string = "";
           SortOrder: string = "Ascending"): Recallable =
   ## listHumanLoops
@@ -614,33 +601,31 @@ proc call*(call_613300: Call_ListHumanLoops_613271; CreationTimeAfter: string = 
   ##                     : (Optional) The timestamp of the date before which you want the human loops to begin. For example, <code>1550000000</code>.
   ##   SortOrder: string
   ##            : An optional value that specifies whether you want the results sorted in <code>Ascending</code> or <code>Descending</code> order.
-  var query_613301 = newJObject()
-  add(query_613301, "CreationTimeAfter", newJString(CreationTimeAfter))
-  add(query_613301, "MaxResults", newJInt(MaxResults))
-  add(query_613301, "NextToken", newJString(NextToken))
-  add(query_613301, "CreationTimeBefore", newJString(CreationTimeBefore))
-  add(query_613301, "SortOrder", newJString(SortOrder))
-  result = call_613300.call(nil, query_613301, nil, nil, nil)
+  var query_611301 = newJObject()
+  add(query_611301, "CreationTimeAfter", newJString(CreationTimeAfter))
+  add(query_611301, "MaxResults", newJInt(MaxResults))
+  add(query_611301, "NextToken", newJString(NextToken))
+  add(query_611301, "CreationTimeBefore", newJString(CreationTimeBefore))
+  add(query_611301, "SortOrder", newJString(SortOrder))
+  result = call_611300.call(nil, query_611301, nil, nil, nil)
 
-var listHumanLoops* = Call_ListHumanLoops_613271(name: "listHumanLoops",
+var listHumanLoops* = Call_ListHumanLoops_611271(name: "listHumanLoops",
     meth: HttpMethod.HttpGet, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops", validator: validate_ListHumanLoops_613272, base: "/",
-    url: url_ListHumanLoops_613273, schemes: {Scheme.Https, Scheme.Http})
+    route: "/human-loops", validator: validate_ListHumanLoops_611272, base: "/",
+    url: url_ListHumanLoops_611273, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopHumanLoop_613316 = ref object of OpenApiRestCall_612649
-proc url_StopHumanLoop_613318(protocol: Scheme; host: string; base: string;
+  Call_StopHumanLoop_611316 = ref object of OpenApiRestCall_610649
+proc url_StopHumanLoop_611318(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StopHumanLoop_613317(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StopHumanLoop_611317(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Stops the specified human loop.
   ## 
@@ -659,41 +644,41 @@ proc validate_StopHumanLoop_613317(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613319 = header.getOrDefault("X-Amz-Signature")
-  valid_613319 = validateParameter(valid_613319, JString, required = false,
+  var valid_611319 = header.getOrDefault("X-Amz-Signature")
+  valid_611319 = validateParameter(valid_611319, JString, required = false,
                                  default = nil)
-  if valid_613319 != nil:
-    section.add "X-Amz-Signature", valid_613319
-  var valid_613320 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613320 = validateParameter(valid_613320, JString, required = false,
+  if valid_611319 != nil:
+    section.add "X-Amz-Signature", valid_611319
+  var valid_611320 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611320 = validateParameter(valid_611320, JString, required = false,
                                  default = nil)
-  if valid_613320 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613320
-  var valid_613321 = header.getOrDefault("X-Amz-Date")
-  valid_613321 = validateParameter(valid_613321, JString, required = false,
+  if valid_611320 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611320
+  var valid_611321 = header.getOrDefault("X-Amz-Date")
+  valid_611321 = validateParameter(valid_611321, JString, required = false,
                                  default = nil)
-  if valid_613321 != nil:
-    section.add "X-Amz-Date", valid_613321
-  var valid_613322 = header.getOrDefault("X-Amz-Credential")
-  valid_613322 = validateParameter(valid_613322, JString, required = false,
+  if valid_611321 != nil:
+    section.add "X-Amz-Date", valid_611321
+  var valid_611322 = header.getOrDefault("X-Amz-Credential")
+  valid_611322 = validateParameter(valid_611322, JString, required = false,
                                  default = nil)
-  if valid_613322 != nil:
-    section.add "X-Amz-Credential", valid_613322
-  var valid_613323 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613323 = validateParameter(valid_613323, JString, required = false,
+  if valid_611322 != nil:
+    section.add "X-Amz-Credential", valid_611322
+  var valid_611323 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611323 = validateParameter(valid_611323, JString, required = false,
                                  default = nil)
-  if valid_613323 != nil:
-    section.add "X-Amz-Security-Token", valid_613323
-  var valid_613324 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613324 = validateParameter(valid_613324, JString, required = false,
+  if valid_611323 != nil:
+    section.add "X-Amz-Security-Token", valid_611323
+  var valid_611324 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611324 = validateParameter(valid_611324, JString, required = false,
                                  default = nil)
-  if valid_613324 != nil:
-    section.add "X-Amz-Algorithm", valid_613324
-  var valid_613325 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613325 = validateParameter(valid_613325, JString, required = false,
+  if valid_611324 != nil:
+    section.add "X-Amz-Algorithm", valid_611324
+  var valid_611325 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611325 = validateParameter(valid_611325, JString, required = false,
                                  default = nil)
-  if valid_613325 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613325
+  if valid_611325 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611325
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -704,32 +689,32 @@ proc validate_StopHumanLoop_613317(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_613327: Call_StopHumanLoop_613316; path: JsonNode; query: JsonNode;
+proc call*(call_611327: Call_StopHumanLoop_611316; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Stops the specified human loop.
   ## 
-  let valid = call_613327.validator(path, query, header, formData, body)
-  let scheme = call_613327.pickScheme
+  let valid = call_611327.validator(path, query, header, formData, body)
+  let scheme = call_611327.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613327.url(scheme.get, call_613327.host, call_613327.base,
-                         call_613327.route, valid.getOrDefault("path"),
+  let url = call_611327.url(scheme.get, call_611327.host, call_611327.base,
+                         call_611327.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613327, url, valid)
+  result = atozHook(call_611327, url, valid)
 
-proc call*(call_613328: Call_StopHumanLoop_613316; body: JsonNode): Recallable =
+proc call*(call_611328: Call_StopHumanLoop_611316; body: JsonNode): Recallable =
   ## stopHumanLoop
   ## Stops the specified human loop.
   ##   body: JObject (required)
-  var body_613329 = newJObject()
+  var body_611329 = newJObject()
   if body != nil:
-    body_613329 = body
-  result = call_613328.call(nil, nil, nil, nil, body_613329)
+    body_611329 = body
+  result = call_611328.call(nil, nil, nil, nil, body_611329)
 
-var stopHumanLoop* = Call_StopHumanLoop_613316(name: "stopHumanLoop",
+var stopHumanLoop* = Call_StopHumanLoop_611316(name: "stopHumanLoop",
     meth: HttpMethod.HttpPost, host: "a2i-runtime.sagemaker.amazonaws.com",
-    route: "/human-loops/stop", validator: validate_StopHumanLoop_613317, base: "/",
-    url: url_StopHumanLoop_613318, schemes: {Scheme.Https, Scheme.Http})
+    route: "/human-loops/stop", validator: validate_StopHumanLoop_611317, base: "/",
+    url: url_StopHumanLoop_611318, schemes: {Scheme.Https, Scheme.Http})
 export
   rest
 
@@ -798,6 +783,9 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers.del "Host"
   recall.url = $url
 
+type
+  XAmz = enum
+    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   ## the hook is a terrible earworm
   var headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
@@ -810,11 +798,10 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
-  const
-    XAmzSecurityToken = "X-Amz-Security-Token"
-  if not headers.hasKey(XAmzSecurityToken):
+  if not headers.hasKey($SecurityToken):
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
-      headers[XAmzSecurityToken] = session
+      headers[$SecurityToken] = session
+  headers[$ContentSha256] = hash(text, SHA256)
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

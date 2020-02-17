@@ -29,18 +29,17 @@ type
     url*: proc (protocol: Scheme; host: string; base: string; route: string;
               path: JsonNode; query: JsonNode): Uri
 
-  OpenApiRestCall_612658 = ref object of OpenApiRestCall
+  OpenApiRestCall_610658 = ref object of OpenApiRestCall
 proc hash(scheme: Scheme): Hash {.used.} =
   result = hash(ord(scheme))
 
-proc clone[T: OpenApiRestCall_612658](t: T): T {.used.} =
+proc clone[T: OpenApiRestCall_610658](t: T): T {.used.} =
   result = T(name: t.name, meth: t.meth, host: t.host, base: t.base, route: t.route,
            schemes: t.schemes, validator: t.validator, url: t.url)
 
-proc pickScheme(t: OpenApiRestCall_612658): Option[Scheme] {.used.} =
+proc pickScheme(t: OpenApiRestCall_610658): Option[Scheme] {.used.} =
   ## select a supported scheme from a set of candidates
-  for scheme in Scheme.low ..
-      Scheme.high:
+  for scheme in Scheme.low .. Scheme.high:
     if scheme notin t.schemes:
       continue
     if scheme in [Scheme.Https, Scheme.Wss]:
@@ -54,20 +53,16 @@ proc validateParameter(js: JsonNode; kind: JsonNodeKind; required: bool;
                       default: JsonNode = nil): JsonNode =
   ## ensure an input is of the correct json type and yield
   ## a suitable default value when appropriate
-  if js ==
-      nil:
+  if js == nil:
     if default != nil:
       return validateParameter(default, kind, required = required)
   result = js
-  if result ==
-      nil:
+  if result == nil:
     assert not required, $kind & " expected; received nil"
     if required:
       result = newJNull()
   else:
-    assert js.kind ==
-        kind, $kind & " expected; received " &
-        $js.kind
+    assert js.kind == kind, $kind & " expected; received " & $js.kind
 
 type
   KeyVal {.used.} = tuple[key: string, val: string]
@@ -144,20 +139,18 @@ const
   awsServiceName = "opsworks"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.}
 type
-  Call_AssignInstance_612996 = ref object of OpenApiRestCall_612658
-proc url_AssignInstance_612998(protocol: Scheme; host: string; base: string;
+  Call_AssignInstance_610996 = ref object of OpenApiRestCall_610658
+proc url_AssignInstance_610998(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AssignInstance_612997(path: JsonNode; query: JsonNode;
+proc validate_AssignInstance_610997(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Assign a registered instance to a layer.</p> <ul> <li> <p>You can assign registered on-premises instances to any layer type.</p> </li> <li> <p>You can assign registered Amazon EC2 instances only to custom layers.</p> </li> <li> <p>You cannot use this action with instances that were created with AWS OpsWorks Stacks.</p> </li> </ul> <p> <b>Required Permissions</b>: To use this action, an AWS Identity and Access Management (IAM) user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -178,46 +171,46 @@ proc validate_AssignInstance_612997(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613123 = header.getOrDefault("X-Amz-Target")
-  valid_613123 = validateParameter(valid_613123, JString, required = true, default = newJString(
+  var valid_611123 = header.getOrDefault("X-Amz-Target")
+  valid_611123 = validateParameter(valid_611123, JString, required = true, default = newJString(
       "OpsWorks_20130218.AssignInstance"))
-  if valid_613123 != nil:
-    section.add "X-Amz-Target", valid_613123
-  var valid_613124 = header.getOrDefault("X-Amz-Signature")
-  valid_613124 = validateParameter(valid_613124, JString, required = false,
+  if valid_611123 != nil:
+    section.add "X-Amz-Target", valid_611123
+  var valid_611124 = header.getOrDefault("X-Amz-Signature")
+  valid_611124 = validateParameter(valid_611124, JString, required = false,
                                  default = nil)
-  if valid_613124 != nil:
-    section.add "X-Amz-Signature", valid_613124
-  var valid_613125 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613125 = validateParameter(valid_613125, JString, required = false,
+  if valid_611124 != nil:
+    section.add "X-Amz-Signature", valid_611124
+  var valid_611125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611125 = validateParameter(valid_611125, JString, required = false,
                                  default = nil)
-  if valid_613125 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613125
-  var valid_613126 = header.getOrDefault("X-Amz-Date")
-  valid_613126 = validateParameter(valid_613126, JString, required = false,
+  if valid_611125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611125
+  var valid_611126 = header.getOrDefault("X-Amz-Date")
+  valid_611126 = validateParameter(valid_611126, JString, required = false,
                                  default = nil)
-  if valid_613126 != nil:
-    section.add "X-Amz-Date", valid_613126
-  var valid_613127 = header.getOrDefault("X-Amz-Credential")
-  valid_613127 = validateParameter(valid_613127, JString, required = false,
+  if valid_611126 != nil:
+    section.add "X-Amz-Date", valid_611126
+  var valid_611127 = header.getOrDefault("X-Amz-Credential")
+  valid_611127 = validateParameter(valid_611127, JString, required = false,
                                  default = nil)
-  if valid_613127 != nil:
-    section.add "X-Amz-Credential", valid_613127
-  var valid_613128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613128 = validateParameter(valid_613128, JString, required = false,
+  if valid_611127 != nil:
+    section.add "X-Amz-Credential", valid_611127
+  var valid_611128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611128 = validateParameter(valid_611128, JString, required = false,
                                  default = nil)
-  if valid_613128 != nil:
-    section.add "X-Amz-Security-Token", valid_613128
-  var valid_613129 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613129 = validateParameter(valid_613129, JString, required = false,
+  if valid_611128 != nil:
+    section.add "X-Amz-Security-Token", valid_611128
+  var valid_611129 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611129 = validateParameter(valid_611129, JString, required = false,
                                  default = nil)
-  if valid_613129 != nil:
-    section.add "X-Amz-Algorithm", valid_613129
-  var valid_613130 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613130 = validateParameter(valid_613130, JString, required = false,
+  if valid_611129 != nil:
+    section.add "X-Amz-Algorithm", valid_611129
+  var valid_611130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611130 = validateParameter(valid_611130, JString, required = false,
                                  default = nil)
-  if valid_613130 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613130
+  if valid_611130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -228,48 +221,46 @@ proc validate_AssignInstance_612997(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613154: Call_AssignInstance_612996; path: JsonNode; query: JsonNode;
+proc call*(call_611154: Call_AssignInstance_610996; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Assign a registered instance to a layer.</p> <ul> <li> <p>You can assign registered on-premises instances to any layer type.</p> </li> <li> <p>You can assign registered Amazon EC2 instances only to custom layers.</p> </li> <li> <p>You cannot use this action with instances that were created with AWS OpsWorks Stacks.</p> </li> </ul> <p> <b>Required Permissions</b>: To use this action, an AWS Identity and Access Management (IAM) user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613154.validator(path, query, header, formData, body)
-  let scheme = call_613154.pickScheme
+  let valid = call_611154.validator(path, query, header, formData, body)
+  let scheme = call_611154.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613154.url(scheme.get, call_613154.host, call_613154.base,
-                         call_613154.route, valid.getOrDefault("path"),
+  let url = call_611154.url(scheme.get, call_611154.host, call_611154.base,
+                         call_611154.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613154, url, valid)
+  result = atozHook(call_611154, url, valid)
 
-proc call*(call_613225: Call_AssignInstance_612996; body: JsonNode): Recallable =
+proc call*(call_611225: Call_AssignInstance_610996; body: JsonNode): Recallable =
   ## assignInstance
   ## <p>Assign a registered instance to a layer.</p> <ul> <li> <p>You can assign registered on-premises instances to any layer type.</p> </li> <li> <p>You can assign registered Amazon EC2 instances only to custom layers.</p> </li> <li> <p>You cannot use this action with instances that were created with AWS OpsWorks Stacks.</p> </li> </ul> <p> <b>Required Permissions</b>: To use this action, an AWS Identity and Access Management (IAM) user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613226 = newJObject()
+  var body_611226 = newJObject()
   if body != nil:
-    body_613226 = body
-  result = call_613225.call(nil, nil, nil, nil, body_613226)
+    body_611226 = body
+  result = call_611225.call(nil, nil, nil, nil, body_611226)
 
-var assignInstance* = Call_AssignInstance_612996(name: "assignInstance",
+var assignInstance* = Call_AssignInstance_610996(name: "assignInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.AssignInstance",
-    validator: validate_AssignInstance_612997, base: "/", url: url_AssignInstance_612998,
+    validator: validate_AssignInstance_610997, base: "/", url: url_AssignInstance_610998,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AssignVolume_613265 = ref object of OpenApiRestCall_612658
-proc url_AssignVolume_613267(protocol: Scheme; host: string; base: string;
+  Call_AssignVolume_611265 = ref object of OpenApiRestCall_610658
+proc url_AssignVolume_611267(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AssignVolume_613266(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_AssignVolume_611266(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Assigns one of the stack's registered Amazon EBS volumes to a specified instance. The volume must first be registered with the stack by calling <a>RegisterVolume</a>. After you register the volume, you must call <a>UpdateVolume</a> to specify a mount point before calling <code>AssignVolume</code>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -289,46 +280,46 @@ proc validate_AssignVolume_613266(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613268 = header.getOrDefault("X-Amz-Target")
-  valid_613268 = validateParameter(valid_613268, JString, required = true, default = newJString(
+  var valid_611268 = header.getOrDefault("X-Amz-Target")
+  valid_611268 = validateParameter(valid_611268, JString, required = true, default = newJString(
       "OpsWorks_20130218.AssignVolume"))
-  if valid_613268 != nil:
-    section.add "X-Amz-Target", valid_613268
-  var valid_613269 = header.getOrDefault("X-Amz-Signature")
-  valid_613269 = validateParameter(valid_613269, JString, required = false,
+  if valid_611268 != nil:
+    section.add "X-Amz-Target", valid_611268
+  var valid_611269 = header.getOrDefault("X-Amz-Signature")
+  valid_611269 = validateParameter(valid_611269, JString, required = false,
                                  default = nil)
-  if valid_613269 != nil:
-    section.add "X-Amz-Signature", valid_613269
-  var valid_613270 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613270 = validateParameter(valid_613270, JString, required = false,
+  if valid_611269 != nil:
+    section.add "X-Amz-Signature", valid_611269
+  var valid_611270 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611270 = validateParameter(valid_611270, JString, required = false,
                                  default = nil)
-  if valid_613270 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613270
-  var valid_613271 = header.getOrDefault("X-Amz-Date")
-  valid_613271 = validateParameter(valid_613271, JString, required = false,
+  if valid_611270 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611270
+  var valid_611271 = header.getOrDefault("X-Amz-Date")
+  valid_611271 = validateParameter(valid_611271, JString, required = false,
                                  default = nil)
-  if valid_613271 != nil:
-    section.add "X-Amz-Date", valid_613271
-  var valid_613272 = header.getOrDefault("X-Amz-Credential")
-  valid_613272 = validateParameter(valid_613272, JString, required = false,
+  if valid_611271 != nil:
+    section.add "X-Amz-Date", valid_611271
+  var valid_611272 = header.getOrDefault("X-Amz-Credential")
+  valid_611272 = validateParameter(valid_611272, JString, required = false,
                                  default = nil)
-  if valid_613272 != nil:
-    section.add "X-Amz-Credential", valid_613272
-  var valid_613273 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613273 = validateParameter(valid_613273, JString, required = false,
+  if valid_611272 != nil:
+    section.add "X-Amz-Credential", valid_611272
+  var valid_611273 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611273 = validateParameter(valid_611273, JString, required = false,
                                  default = nil)
-  if valid_613273 != nil:
-    section.add "X-Amz-Security-Token", valid_613273
-  var valid_613274 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613274 = validateParameter(valid_613274, JString, required = false,
+  if valid_611273 != nil:
+    section.add "X-Amz-Security-Token", valid_611273
+  var valid_611274 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611274 = validateParameter(valid_611274, JString, required = false,
                                  default = nil)
-  if valid_613274 != nil:
-    section.add "X-Amz-Algorithm", valid_613274
-  var valid_613275 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613275 = validateParameter(valid_613275, JString, required = false,
+  if valid_611274 != nil:
+    section.add "X-Amz-Algorithm", valid_611274
+  var valid_611275 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611275 = validateParameter(valid_611275, JString, required = false,
                                  default = nil)
-  if valid_613275 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613275
+  if valid_611275 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611275
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -339,48 +330,46 @@ proc validate_AssignVolume_613266(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_613277: Call_AssignVolume_613265; path: JsonNode; query: JsonNode;
+proc call*(call_611277: Call_AssignVolume_611265; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Assigns one of the stack's registered Amazon EBS volumes to a specified instance. The volume must first be registered with the stack by calling <a>RegisterVolume</a>. After you register the volume, you must call <a>UpdateVolume</a> to specify a mount point before calling <code>AssignVolume</code>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613277.validator(path, query, header, formData, body)
-  let scheme = call_613277.pickScheme
+  let valid = call_611277.validator(path, query, header, formData, body)
+  let scheme = call_611277.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613277.url(scheme.get, call_613277.host, call_613277.base,
-                         call_613277.route, valid.getOrDefault("path"),
+  let url = call_611277.url(scheme.get, call_611277.host, call_611277.base,
+                         call_611277.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613277, url, valid)
+  result = atozHook(call_611277, url, valid)
 
-proc call*(call_613278: Call_AssignVolume_613265; body: JsonNode): Recallable =
+proc call*(call_611278: Call_AssignVolume_611265; body: JsonNode): Recallable =
   ## assignVolume
   ## <p>Assigns one of the stack's registered Amazon EBS volumes to a specified instance. The volume must first be registered with the stack by calling <a>RegisterVolume</a>. After you register the volume, you must call <a>UpdateVolume</a> to specify a mount point before calling <code>AssignVolume</code>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613279 = newJObject()
+  var body_611279 = newJObject()
   if body != nil:
-    body_613279 = body
-  result = call_613278.call(nil, nil, nil, nil, body_613279)
+    body_611279 = body
+  result = call_611278.call(nil, nil, nil, nil, body_611279)
 
-var assignVolume* = Call_AssignVolume_613265(name: "assignVolume",
+var assignVolume* = Call_AssignVolume_611265(name: "assignVolume",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.AssignVolume",
-    validator: validate_AssignVolume_613266, base: "/", url: url_AssignVolume_613267,
+    validator: validate_AssignVolume_611266, base: "/", url: url_AssignVolume_611267,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AssociateElasticIp_613280 = ref object of OpenApiRestCall_612658
-proc url_AssociateElasticIp_613282(protocol: Scheme; host: string; base: string;
+  Call_AssociateElasticIp_611280 = ref object of OpenApiRestCall_610658
+proc url_AssociateElasticIp_611282(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AssociateElasticIp_613281(path: JsonNode; query: JsonNode;
+proc validate_AssociateElasticIp_611281(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Associates one of the stack's registered Elastic IP addresses with a specified instance. The address must first be registered with the stack by calling <a>RegisterElasticIp</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -401,46 +390,46 @@ proc validate_AssociateElasticIp_613281(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613283 = header.getOrDefault("X-Amz-Target")
-  valid_613283 = validateParameter(valid_613283, JString, required = true, default = newJString(
+  var valid_611283 = header.getOrDefault("X-Amz-Target")
+  valid_611283 = validateParameter(valid_611283, JString, required = true, default = newJString(
       "OpsWorks_20130218.AssociateElasticIp"))
-  if valid_613283 != nil:
-    section.add "X-Amz-Target", valid_613283
-  var valid_613284 = header.getOrDefault("X-Amz-Signature")
-  valid_613284 = validateParameter(valid_613284, JString, required = false,
+  if valid_611283 != nil:
+    section.add "X-Amz-Target", valid_611283
+  var valid_611284 = header.getOrDefault("X-Amz-Signature")
+  valid_611284 = validateParameter(valid_611284, JString, required = false,
                                  default = nil)
-  if valid_613284 != nil:
-    section.add "X-Amz-Signature", valid_613284
-  var valid_613285 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613285 = validateParameter(valid_613285, JString, required = false,
+  if valid_611284 != nil:
+    section.add "X-Amz-Signature", valid_611284
+  var valid_611285 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611285 = validateParameter(valid_611285, JString, required = false,
                                  default = nil)
-  if valid_613285 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613285
-  var valid_613286 = header.getOrDefault("X-Amz-Date")
-  valid_613286 = validateParameter(valid_613286, JString, required = false,
+  if valid_611285 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611285
+  var valid_611286 = header.getOrDefault("X-Amz-Date")
+  valid_611286 = validateParameter(valid_611286, JString, required = false,
                                  default = nil)
-  if valid_613286 != nil:
-    section.add "X-Amz-Date", valid_613286
-  var valid_613287 = header.getOrDefault("X-Amz-Credential")
-  valid_613287 = validateParameter(valid_613287, JString, required = false,
+  if valid_611286 != nil:
+    section.add "X-Amz-Date", valid_611286
+  var valid_611287 = header.getOrDefault("X-Amz-Credential")
+  valid_611287 = validateParameter(valid_611287, JString, required = false,
                                  default = nil)
-  if valid_613287 != nil:
-    section.add "X-Amz-Credential", valid_613287
-  var valid_613288 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613288 = validateParameter(valid_613288, JString, required = false,
+  if valid_611287 != nil:
+    section.add "X-Amz-Credential", valid_611287
+  var valid_611288 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611288 = validateParameter(valid_611288, JString, required = false,
                                  default = nil)
-  if valid_613288 != nil:
-    section.add "X-Amz-Security-Token", valid_613288
-  var valid_613289 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613289 = validateParameter(valid_613289, JString, required = false,
+  if valid_611288 != nil:
+    section.add "X-Amz-Security-Token", valid_611288
+  var valid_611289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611289 = validateParameter(valid_611289, JString, required = false,
                                  default = nil)
-  if valid_613289 != nil:
-    section.add "X-Amz-Algorithm", valid_613289
-  var valid_613290 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613290 = validateParameter(valid_613290, JString, required = false,
+  if valid_611289 != nil:
+    section.add "X-Amz-Algorithm", valid_611289
+  var valid_611290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611290 = validateParameter(valid_611290, JString, required = false,
                                  default = nil)
-  if valid_613290 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613290
+  if valid_611290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611290
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -451,49 +440,47 @@ proc validate_AssociateElasticIp_613281(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613292: Call_AssociateElasticIp_613280; path: JsonNode;
+proc call*(call_611292: Call_AssociateElasticIp_611280; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Associates one of the stack's registered Elastic IP addresses with a specified instance. The address must first be registered with the stack by calling <a>RegisterElasticIp</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613292.validator(path, query, header, formData, body)
-  let scheme = call_613292.pickScheme
+  let valid = call_611292.validator(path, query, header, formData, body)
+  let scheme = call_611292.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613292.url(scheme.get, call_613292.host, call_613292.base,
-                         call_613292.route, valid.getOrDefault("path"),
+  let url = call_611292.url(scheme.get, call_611292.host, call_611292.base,
+                         call_611292.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613292, url, valid)
+  result = atozHook(call_611292, url, valid)
 
-proc call*(call_613293: Call_AssociateElasticIp_613280; body: JsonNode): Recallable =
+proc call*(call_611293: Call_AssociateElasticIp_611280; body: JsonNode): Recallable =
   ## associateElasticIp
   ## <p>Associates one of the stack's registered Elastic IP addresses with a specified instance. The address must first be registered with the stack by calling <a>RegisterElasticIp</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613294 = newJObject()
+  var body_611294 = newJObject()
   if body != nil:
-    body_613294 = body
-  result = call_613293.call(nil, nil, nil, nil, body_613294)
+    body_611294 = body
+  result = call_611293.call(nil, nil, nil, nil, body_611294)
 
-var associateElasticIp* = Call_AssociateElasticIp_613280(
+var associateElasticIp* = Call_AssociateElasticIp_611280(
     name: "associateElasticIp", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.AssociateElasticIp",
-    validator: validate_AssociateElasticIp_613281, base: "/",
-    url: url_AssociateElasticIp_613282, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_AssociateElasticIp_611281, base: "/",
+    url: url_AssociateElasticIp_611282, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_AttachElasticLoadBalancer_613295 = ref object of OpenApiRestCall_612658
-proc url_AttachElasticLoadBalancer_613297(protocol: Scheme; host: string;
+  Call_AttachElasticLoadBalancer_611295 = ref object of OpenApiRestCall_610658
+proc url_AttachElasticLoadBalancer_611297(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_AttachElasticLoadBalancer_613296(path: JsonNode; query: JsonNode;
+proc validate_AttachElasticLoadBalancer_611296(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Attaches an Elastic Load Balancing load balancer to a specified layer. AWS OpsWorks Stacks does not support Application Load Balancer. You can only use Classic Load Balancer with AWS OpsWorks Stacks. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/layers-elb.html">Elastic Load Balancing</a>.</p> <note> <p>You must create the Elastic Load Balancing instance separately, by using the Elastic Load Balancing console, API, or CLI. For more information, see <a href="https://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/Welcome.html"> Elastic Load Balancing Developer Guide</a>.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -513,46 +500,46 @@ proc validate_AttachElasticLoadBalancer_613296(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613298 = header.getOrDefault("X-Amz-Target")
-  valid_613298 = validateParameter(valid_613298, JString, required = true, default = newJString(
+  var valid_611298 = header.getOrDefault("X-Amz-Target")
+  valid_611298 = validateParameter(valid_611298, JString, required = true, default = newJString(
       "OpsWorks_20130218.AttachElasticLoadBalancer"))
-  if valid_613298 != nil:
-    section.add "X-Amz-Target", valid_613298
-  var valid_613299 = header.getOrDefault("X-Amz-Signature")
-  valid_613299 = validateParameter(valid_613299, JString, required = false,
+  if valid_611298 != nil:
+    section.add "X-Amz-Target", valid_611298
+  var valid_611299 = header.getOrDefault("X-Amz-Signature")
+  valid_611299 = validateParameter(valid_611299, JString, required = false,
                                  default = nil)
-  if valid_613299 != nil:
-    section.add "X-Amz-Signature", valid_613299
-  var valid_613300 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613300 = validateParameter(valid_613300, JString, required = false,
+  if valid_611299 != nil:
+    section.add "X-Amz-Signature", valid_611299
+  var valid_611300 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611300 = validateParameter(valid_611300, JString, required = false,
                                  default = nil)
-  if valid_613300 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613300
-  var valid_613301 = header.getOrDefault("X-Amz-Date")
-  valid_613301 = validateParameter(valid_613301, JString, required = false,
+  if valid_611300 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611300
+  var valid_611301 = header.getOrDefault("X-Amz-Date")
+  valid_611301 = validateParameter(valid_611301, JString, required = false,
                                  default = nil)
-  if valid_613301 != nil:
-    section.add "X-Amz-Date", valid_613301
-  var valid_613302 = header.getOrDefault("X-Amz-Credential")
-  valid_613302 = validateParameter(valid_613302, JString, required = false,
+  if valid_611301 != nil:
+    section.add "X-Amz-Date", valid_611301
+  var valid_611302 = header.getOrDefault("X-Amz-Credential")
+  valid_611302 = validateParameter(valid_611302, JString, required = false,
                                  default = nil)
-  if valid_613302 != nil:
-    section.add "X-Amz-Credential", valid_613302
-  var valid_613303 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613303 = validateParameter(valid_613303, JString, required = false,
+  if valid_611302 != nil:
+    section.add "X-Amz-Credential", valid_611302
+  var valid_611303 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611303 = validateParameter(valid_611303, JString, required = false,
                                  default = nil)
-  if valid_613303 != nil:
-    section.add "X-Amz-Security-Token", valid_613303
-  var valid_613304 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613304 = validateParameter(valid_613304, JString, required = false,
+  if valid_611303 != nil:
+    section.add "X-Amz-Security-Token", valid_611303
+  var valid_611304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611304 = validateParameter(valid_611304, JString, required = false,
                                  default = nil)
-  if valid_613304 != nil:
-    section.add "X-Amz-Algorithm", valid_613304
-  var valid_613305 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613305 = validateParameter(valid_613305, JString, required = false,
+  if valid_611304 != nil:
+    section.add "X-Amz-Algorithm", valid_611304
+  var valid_611305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611305 = validateParameter(valid_611305, JString, required = false,
                                  default = nil)
-  if valid_613305 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613305
+  if valid_611305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611305
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -563,50 +550,48 @@ proc validate_AttachElasticLoadBalancer_613296(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613307: Call_AttachElasticLoadBalancer_613295; path: JsonNode;
+proc call*(call_611307: Call_AttachElasticLoadBalancer_611295; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Attaches an Elastic Load Balancing load balancer to a specified layer. AWS OpsWorks Stacks does not support Application Load Balancer. You can only use Classic Load Balancer with AWS OpsWorks Stacks. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/layers-elb.html">Elastic Load Balancing</a>.</p> <note> <p>You must create the Elastic Load Balancing instance separately, by using the Elastic Load Balancing console, API, or CLI. For more information, see <a href="https://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/Welcome.html"> Elastic Load Balancing Developer Guide</a>.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613307.validator(path, query, header, formData, body)
-  let scheme = call_613307.pickScheme
+  let valid = call_611307.validator(path, query, header, formData, body)
+  let scheme = call_611307.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613307.url(scheme.get, call_613307.host, call_613307.base,
-                         call_613307.route, valid.getOrDefault("path"),
+  let url = call_611307.url(scheme.get, call_611307.host, call_611307.base,
+                         call_611307.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613307, url, valid)
+  result = atozHook(call_611307, url, valid)
 
-proc call*(call_613308: Call_AttachElasticLoadBalancer_613295; body: JsonNode): Recallable =
+proc call*(call_611308: Call_AttachElasticLoadBalancer_611295; body: JsonNode): Recallable =
   ## attachElasticLoadBalancer
   ## <p>Attaches an Elastic Load Balancing load balancer to a specified layer. AWS OpsWorks Stacks does not support Application Load Balancer. You can only use Classic Load Balancer with AWS OpsWorks Stacks. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/layers-elb.html">Elastic Load Balancing</a>.</p> <note> <p>You must create the Elastic Load Balancing instance separately, by using the Elastic Load Balancing console, API, or CLI. For more information, see <a href="https://docs.aws.amazon.com/ElasticLoadBalancing/latest/DeveloperGuide/Welcome.html"> Elastic Load Balancing Developer Guide</a>.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613309 = newJObject()
+  var body_611309 = newJObject()
   if body != nil:
-    body_613309 = body
-  result = call_613308.call(nil, nil, nil, nil, body_613309)
+    body_611309 = body
+  result = call_611308.call(nil, nil, nil, nil, body_611309)
 
-var attachElasticLoadBalancer* = Call_AttachElasticLoadBalancer_613295(
+var attachElasticLoadBalancer* = Call_AttachElasticLoadBalancer_611295(
     name: "attachElasticLoadBalancer", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.AttachElasticLoadBalancer",
-    validator: validate_AttachElasticLoadBalancer_613296, base: "/",
-    url: url_AttachElasticLoadBalancer_613297,
+    validator: validate_AttachElasticLoadBalancer_611296, base: "/",
+    url: url_AttachElasticLoadBalancer_611297,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CloneStack_613310 = ref object of OpenApiRestCall_612658
-proc url_CloneStack_613312(protocol: Scheme; host: string; base: string; route: string;
+  Call_CloneStack_611310 = ref object of OpenApiRestCall_610658
+proc url_CloneStack_611312(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CloneStack_613311(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CloneStack_611311(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a clone of a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-cloning.html">Clone a Stack</a>. By default, all parameters are set to the values used by the parent stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -626,46 +611,46 @@ proc validate_CloneStack_613311(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613313 = header.getOrDefault("X-Amz-Target")
-  valid_613313 = validateParameter(valid_613313, JString, required = true, default = newJString(
+  var valid_611313 = header.getOrDefault("X-Amz-Target")
+  valid_611313 = validateParameter(valid_611313, JString, required = true, default = newJString(
       "OpsWorks_20130218.CloneStack"))
-  if valid_613313 != nil:
-    section.add "X-Amz-Target", valid_613313
-  var valid_613314 = header.getOrDefault("X-Amz-Signature")
-  valid_613314 = validateParameter(valid_613314, JString, required = false,
+  if valid_611313 != nil:
+    section.add "X-Amz-Target", valid_611313
+  var valid_611314 = header.getOrDefault("X-Amz-Signature")
+  valid_611314 = validateParameter(valid_611314, JString, required = false,
                                  default = nil)
-  if valid_613314 != nil:
-    section.add "X-Amz-Signature", valid_613314
-  var valid_613315 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613315 = validateParameter(valid_613315, JString, required = false,
+  if valid_611314 != nil:
+    section.add "X-Amz-Signature", valid_611314
+  var valid_611315 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611315 = validateParameter(valid_611315, JString, required = false,
                                  default = nil)
-  if valid_613315 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613315
-  var valid_613316 = header.getOrDefault("X-Amz-Date")
-  valid_613316 = validateParameter(valid_613316, JString, required = false,
+  if valid_611315 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611315
+  var valid_611316 = header.getOrDefault("X-Amz-Date")
+  valid_611316 = validateParameter(valid_611316, JString, required = false,
                                  default = nil)
-  if valid_613316 != nil:
-    section.add "X-Amz-Date", valid_613316
-  var valid_613317 = header.getOrDefault("X-Amz-Credential")
-  valid_613317 = validateParameter(valid_613317, JString, required = false,
+  if valid_611316 != nil:
+    section.add "X-Amz-Date", valid_611316
+  var valid_611317 = header.getOrDefault("X-Amz-Credential")
+  valid_611317 = validateParameter(valid_611317, JString, required = false,
                                  default = nil)
-  if valid_613317 != nil:
-    section.add "X-Amz-Credential", valid_613317
-  var valid_613318 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613318 = validateParameter(valid_613318, JString, required = false,
+  if valid_611317 != nil:
+    section.add "X-Amz-Credential", valid_611317
+  var valid_611318 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611318 = validateParameter(valid_611318, JString, required = false,
                                  default = nil)
-  if valid_613318 != nil:
-    section.add "X-Amz-Security-Token", valid_613318
-  var valid_613319 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613319 = validateParameter(valid_613319, JString, required = false,
+  if valid_611318 != nil:
+    section.add "X-Amz-Security-Token", valid_611318
+  var valid_611319 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611319 = validateParameter(valid_611319, JString, required = false,
                                  default = nil)
-  if valid_613319 != nil:
-    section.add "X-Amz-Algorithm", valid_613319
-  var valid_613320 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613320 = validateParameter(valid_613320, JString, required = false,
+  if valid_611319 != nil:
+    section.add "X-Amz-Algorithm", valid_611319
+  var valid_611320 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611320 = validateParameter(valid_611320, JString, required = false,
                                  default = nil)
-  if valid_613320 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613320
+  if valid_611320 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611320
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -676,49 +661,47 @@ proc validate_CloneStack_613311(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_613322: Call_CloneStack_613310; path: JsonNode; query: JsonNode;
+proc call*(call_611322: Call_CloneStack_611310; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a clone of a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-cloning.html">Clone a Stack</a>. By default, all parameters are set to the values used by the parent stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613322.validator(path, query, header, formData, body)
-  let scheme = call_613322.pickScheme
+  let valid = call_611322.validator(path, query, header, formData, body)
+  let scheme = call_611322.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613322.url(scheme.get, call_613322.host, call_613322.base,
-                         call_613322.route, valid.getOrDefault("path"),
+  let url = call_611322.url(scheme.get, call_611322.host, call_611322.base,
+                         call_611322.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613322, url, valid)
+  result = atozHook(call_611322, url, valid)
 
-proc call*(call_613323: Call_CloneStack_613310; body: JsonNode): Recallable =
+proc call*(call_611323: Call_CloneStack_611310; body: JsonNode): Recallable =
   ## cloneStack
   ## <p>Creates a clone of a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-cloning.html">Clone a Stack</a>. By default, all parameters are set to the values used by the parent stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613324 = newJObject()
+  var body_611324 = newJObject()
   if body != nil:
-    body_613324 = body
-  result = call_613323.call(nil, nil, nil, nil, body_613324)
+    body_611324 = body
+  result = call_611323.call(nil, nil, nil, nil, body_611324)
 
-var cloneStack* = Call_CloneStack_613310(name: "cloneStack",
+var cloneStack* = Call_CloneStack_611310(name: "cloneStack",
                                       meth: HttpMethod.HttpPost,
                                       host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.CloneStack",
-                                      validator: validate_CloneStack_613311,
-                                      base: "/", url: url_CloneStack_613312,
+                                      validator: validate_CloneStack_611311,
+                                      base: "/", url: url_CloneStack_611312,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateApp_613325 = ref object of OpenApiRestCall_612658
-proc url_CreateApp_613327(protocol: Scheme; host: string; base: string; route: string;
+  Call_CreateApp_611325 = ref object of OpenApiRestCall_610658
+proc url_CreateApp_611327(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateApp_613326(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateApp_611326(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates an app for a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingapps-creating.html">Creating Apps</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -738,46 +721,46 @@ proc validate_CreateApp_613326(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613328 = header.getOrDefault("X-Amz-Target")
-  valid_613328 = validateParameter(valid_613328, JString, required = true, default = newJString(
+  var valid_611328 = header.getOrDefault("X-Amz-Target")
+  valid_611328 = validateParameter(valid_611328, JString, required = true, default = newJString(
       "OpsWorks_20130218.CreateApp"))
-  if valid_613328 != nil:
-    section.add "X-Amz-Target", valid_613328
-  var valid_613329 = header.getOrDefault("X-Amz-Signature")
-  valid_613329 = validateParameter(valid_613329, JString, required = false,
+  if valid_611328 != nil:
+    section.add "X-Amz-Target", valid_611328
+  var valid_611329 = header.getOrDefault("X-Amz-Signature")
+  valid_611329 = validateParameter(valid_611329, JString, required = false,
                                  default = nil)
-  if valid_613329 != nil:
-    section.add "X-Amz-Signature", valid_613329
-  var valid_613330 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613330 = validateParameter(valid_613330, JString, required = false,
+  if valid_611329 != nil:
+    section.add "X-Amz-Signature", valid_611329
+  var valid_611330 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611330 = validateParameter(valid_611330, JString, required = false,
                                  default = nil)
-  if valid_613330 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613330
-  var valid_613331 = header.getOrDefault("X-Amz-Date")
-  valid_613331 = validateParameter(valid_613331, JString, required = false,
+  if valid_611330 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611330
+  var valid_611331 = header.getOrDefault("X-Amz-Date")
+  valid_611331 = validateParameter(valid_611331, JString, required = false,
                                  default = nil)
-  if valid_613331 != nil:
-    section.add "X-Amz-Date", valid_613331
-  var valid_613332 = header.getOrDefault("X-Amz-Credential")
-  valid_613332 = validateParameter(valid_613332, JString, required = false,
+  if valid_611331 != nil:
+    section.add "X-Amz-Date", valid_611331
+  var valid_611332 = header.getOrDefault("X-Amz-Credential")
+  valid_611332 = validateParameter(valid_611332, JString, required = false,
                                  default = nil)
-  if valid_613332 != nil:
-    section.add "X-Amz-Credential", valid_613332
-  var valid_613333 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613333 = validateParameter(valid_613333, JString, required = false,
+  if valid_611332 != nil:
+    section.add "X-Amz-Credential", valid_611332
+  var valid_611333 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611333 = validateParameter(valid_611333, JString, required = false,
                                  default = nil)
-  if valid_613333 != nil:
-    section.add "X-Amz-Security-Token", valid_613333
-  var valid_613334 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613334 = validateParameter(valid_613334, JString, required = false,
+  if valid_611333 != nil:
+    section.add "X-Amz-Security-Token", valid_611333
+  var valid_611334 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611334 = validateParameter(valid_611334, JString, required = false,
                                  default = nil)
-  if valid_613334 != nil:
-    section.add "X-Amz-Algorithm", valid_613334
-  var valid_613335 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613335 = validateParameter(valid_613335, JString, required = false,
+  if valid_611334 != nil:
+    section.add "X-Amz-Algorithm", valid_611334
+  var valid_611335 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611335 = validateParameter(valid_611335, JString, required = false,
                                  default = nil)
-  if valid_613335 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613335
+  if valid_611335 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611335
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -788,48 +771,46 @@ proc validate_CreateApp_613326(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613337: Call_CreateApp_613325; path: JsonNode; query: JsonNode;
+proc call*(call_611337: Call_CreateApp_611325; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an app for a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingapps-creating.html">Creating Apps</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613337.validator(path, query, header, formData, body)
-  let scheme = call_613337.pickScheme
+  let valid = call_611337.validator(path, query, header, formData, body)
+  let scheme = call_611337.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613337.url(scheme.get, call_613337.host, call_613337.base,
-                         call_613337.route, valid.getOrDefault("path"),
+  let url = call_611337.url(scheme.get, call_611337.host, call_611337.base,
+                         call_611337.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613337, url, valid)
+  result = atozHook(call_611337, url, valid)
 
-proc call*(call_613338: Call_CreateApp_613325; body: JsonNode): Recallable =
+proc call*(call_611338: Call_CreateApp_611325; body: JsonNode): Recallable =
   ## createApp
   ## <p>Creates an app for a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingapps-creating.html">Creating Apps</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613339 = newJObject()
+  var body_611339 = newJObject()
   if body != nil:
-    body_613339 = body
-  result = call_613338.call(nil, nil, nil, nil, body_613339)
+    body_611339 = body
+  result = call_611338.call(nil, nil, nil, nil, body_611339)
 
-var createApp* = Call_CreateApp_613325(name: "createApp", meth: HttpMethod.HttpPost,
+var createApp* = Call_CreateApp_611325(name: "createApp", meth: HttpMethod.HttpPost,
                                     host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.CreateApp",
-                                    validator: validate_CreateApp_613326,
-                                    base: "/", url: url_CreateApp_613327,
+                                    validator: validate_CreateApp_611326,
+                                    base: "/", url: url_CreateApp_611327,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateDeployment_613340 = ref object of OpenApiRestCall_612658
-proc url_CreateDeployment_613342(protocol: Scheme; host: string; base: string;
+  Call_CreateDeployment_611340 = ref object of OpenApiRestCall_610658
+proc url_CreateDeployment_611342(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateDeployment_613341(path: JsonNode; query: JsonNode;
+proc validate_CreateDeployment_611341(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Runs deployment or stack commands. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingapps-deploying.html">Deploying Apps</a> and <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-commands.html">Run Stack Commands</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Deploy or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -850,46 +831,46 @@ proc validate_CreateDeployment_613341(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613343 = header.getOrDefault("X-Amz-Target")
-  valid_613343 = validateParameter(valid_613343, JString, required = true, default = newJString(
+  var valid_611343 = header.getOrDefault("X-Amz-Target")
+  valid_611343 = validateParameter(valid_611343, JString, required = true, default = newJString(
       "OpsWorks_20130218.CreateDeployment"))
-  if valid_613343 != nil:
-    section.add "X-Amz-Target", valid_613343
-  var valid_613344 = header.getOrDefault("X-Amz-Signature")
-  valid_613344 = validateParameter(valid_613344, JString, required = false,
+  if valid_611343 != nil:
+    section.add "X-Amz-Target", valid_611343
+  var valid_611344 = header.getOrDefault("X-Amz-Signature")
+  valid_611344 = validateParameter(valid_611344, JString, required = false,
                                  default = nil)
-  if valid_613344 != nil:
-    section.add "X-Amz-Signature", valid_613344
-  var valid_613345 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613345 = validateParameter(valid_613345, JString, required = false,
+  if valid_611344 != nil:
+    section.add "X-Amz-Signature", valid_611344
+  var valid_611345 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611345 = validateParameter(valid_611345, JString, required = false,
                                  default = nil)
-  if valid_613345 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613345
-  var valid_613346 = header.getOrDefault("X-Amz-Date")
-  valid_613346 = validateParameter(valid_613346, JString, required = false,
+  if valid_611345 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611345
+  var valid_611346 = header.getOrDefault("X-Amz-Date")
+  valid_611346 = validateParameter(valid_611346, JString, required = false,
                                  default = nil)
-  if valid_613346 != nil:
-    section.add "X-Amz-Date", valid_613346
-  var valid_613347 = header.getOrDefault("X-Amz-Credential")
-  valid_613347 = validateParameter(valid_613347, JString, required = false,
+  if valid_611346 != nil:
+    section.add "X-Amz-Date", valid_611346
+  var valid_611347 = header.getOrDefault("X-Amz-Credential")
+  valid_611347 = validateParameter(valid_611347, JString, required = false,
                                  default = nil)
-  if valid_613347 != nil:
-    section.add "X-Amz-Credential", valid_613347
-  var valid_613348 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613348 = validateParameter(valid_613348, JString, required = false,
+  if valid_611347 != nil:
+    section.add "X-Amz-Credential", valid_611347
+  var valid_611348 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611348 = validateParameter(valid_611348, JString, required = false,
                                  default = nil)
-  if valid_613348 != nil:
-    section.add "X-Amz-Security-Token", valid_613348
-  var valid_613349 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613349 = validateParameter(valid_613349, JString, required = false,
+  if valid_611348 != nil:
+    section.add "X-Amz-Security-Token", valid_611348
+  var valid_611349 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611349 = validateParameter(valid_611349, JString, required = false,
                                  default = nil)
-  if valid_613349 != nil:
-    section.add "X-Amz-Algorithm", valid_613349
-  var valid_613350 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613350 = validateParameter(valid_613350, JString, required = false,
+  if valid_611349 != nil:
+    section.add "X-Amz-Algorithm", valid_611349
+  var valid_611350 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611350 = validateParameter(valid_611350, JString, required = false,
                                  default = nil)
-  if valid_613350 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613350
+  if valid_611350 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611350
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -900,48 +881,46 @@ proc validate_CreateDeployment_613341(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613352: Call_CreateDeployment_613340; path: JsonNode;
+proc call*(call_611352: Call_CreateDeployment_611340; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Runs deployment or stack commands. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingapps-deploying.html">Deploying Apps</a> and <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-commands.html">Run Stack Commands</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Deploy or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613352.validator(path, query, header, formData, body)
-  let scheme = call_613352.pickScheme
+  let valid = call_611352.validator(path, query, header, formData, body)
+  let scheme = call_611352.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613352.url(scheme.get, call_613352.host, call_613352.base,
-                         call_613352.route, valid.getOrDefault("path"),
+  let url = call_611352.url(scheme.get, call_611352.host, call_611352.base,
+                         call_611352.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613352, url, valid)
+  result = atozHook(call_611352, url, valid)
 
-proc call*(call_613353: Call_CreateDeployment_613340; body: JsonNode): Recallable =
+proc call*(call_611353: Call_CreateDeployment_611340; body: JsonNode): Recallable =
   ## createDeployment
   ## <p>Runs deployment or stack commands. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingapps-deploying.html">Deploying Apps</a> and <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-commands.html">Run Stack Commands</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Deploy or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613354 = newJObject()
+  var body_611354 = newJObject()
   if body != nil:
-    body_613354 = body
-  result = call_613353.call(nil, nil, nil, nil, body_613354)
+    body_611354 = body
+  result = call_611353.call(nil, nil, nil, nil, body_611354)
 
-var createDeployment* = Call_CreateDeployment_613340(name: "createDeployment",
+var createDeployment* = Call_CreateDeployment_611340(name: "createDeployment",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.CreateDeployment",
-    validator: validate_CreateDeployment_613341, base: "/",
-    url: url_CreateDeployment_613342, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateDeployment_611341, base: "/",
+    url: url_CreateDeployment_611342, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateInstance_613355 = ref object of OpenApiRestCall_612658
-proc url_CreateInstance_613357(protocol: Scheme; host: string; base: string;
+  Call_CreateInstance_611355 = ref object of OpenApiRestCall_610658
+proc url_CreateInstance_611357(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateInstance_613356(path: JsonNode; query: JsonNode;
+proc validate_CreateInstance_611356(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Creates an instance in a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-add.html">Adding an Instance to a Layer</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -962,46 +941,46 @@ proc validate_CreateInstance_613356(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613358 = header.getOrDefault("X-Amz-Target")
-  valid_613358 = validateParameter(valid_613358, JString, required = true, default = newJString(
+  var valid_611358 = header.getOrDefault("X-Amz-Target")
+  valid_611358 = validateParameter(valid_611358, JString, required = true, default = newJString(
       "OpsWorks_20130218.CreateInstance"))
-  if valid_613358 != nil:
-    section.add "X-Amz-Target", valid_613358
-  var valid_613359 = header.getOrDefault("X-Amz-Signature")
-  valid_613359 = validateParameter(valid_613359, JString, required = false,
+  if valid_611358 != nil:
+    section.add "X-Amz-Target", valid_611358
+  var valid_611359 = header.getOrDefault("X-Amz-Signature")
+  valid_611359 = validateParameter(valid_611359, JString, required = false,
                                  default = nil)
-  if valid_613359 != nil:
-    section.add "X-Amz-Signature", valid_613359
-  var valid_613360 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613360 = validateParameter(valid_613360, JString, required = false,
+  if valid_611359 != nil:
+    section.add "X-Amz-Signature", valid_611359
+  var valid_611360 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611360 = validateParameter(valid_611360, JString, required = false,
                                  default = nil)
-  if valid_613360 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613360
-  var valid_613361 = header.getOrDefault("X-Amz-Date")
-  valid_613361 = validateParameter(valid_613361, JString, required = false,
+  if valid_611360 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611360
+  var valid_611361 = header.getOrDefault("X-Amz-Date")
+  valid_611361 = validateParameter(valid_611361, JString, required = false,
                                  default = nil)
-  if valid_613361 != nil:
-    section.add "X-Amz-Date", valid_613361
-  var valid_613362 = header.getOrDefault("X-Amz-Credential")
-  valid_613362 = validateParameter(valid_613362, JString, required = false,
+  if valid_611361 != nil:
+    section.add "X-Amz-Date", valid_611361
+  var valid_611362 = header.getOrDefault("X-Amz-Credential")
+  valid_611362 = validateParameter(valid_611362, JString, required = false,
                                  default = nil)
-  if valid_613362 != nil:
-    section.add "X-Amz-Credential", valid_613362
-  var valid_613363 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613363 = validateParameter(valid_613363, JString, required = false,
+  if valid_611362 != nil:
+    section.add "X-Amz-Credential", valid_611362
+  var valid_611363 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611363 = validateParameter(valid_611363, JString, required = false,
                                  default = nil)
-  if valid_613363 != nil:
-    section.add "X-Amz-Security-Token", valid_613363
-  var valid_613364 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613364 = validateParameter(valid_613364, JString, required = false,
+  if valid_611363 != nil:
+    section.add "X-Amz-Security-Token", valid_611363
+  var valid_611364 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611364 = validateParameter(valid_611364, JString, required = false,
                                  default = nil)
-  if valid_613364 != nil:
-    section.add "X-Amz-Algorithm", valid_613364
-  var valid_613365 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613365 = validateParameter(valid_613365, JString, required = false,
+  if valid_611364 != nil:
+    section.add "X-Amz-Algorithm", valid_611364
+  var valid_611365 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611365 = validateParameter(valid_611365, JString, required = false,
                                  default = nil)
-  if valid_613365 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613365
+  if valid_611365 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611365
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1012,48 +991,46 @@ proc validate_CreateInstance_613356(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613367: Call_CreateInstance_613355; path: JsonNode; query: JsonNode;
+proc call*(call_611367: Call_CreateInstance_611355; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates an instance in a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-add.html">Adding an Instance to a Layer</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613367.validator(path, query, header, formData, body)
-  let scheme = call_613367.pickScheme
+  let valid = call_611367.validator(path, query, header, formData, body)
+  let scheme = call_611367.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613367.url(scheme.get, call_613367.host, call_613367.base,
-                         call_613367.route, valid.getOrDefault("path"),
+  let url = call_611367.url(scheme.get, call_611367.host, call_611367.base,
+                         call_611367.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613367, url, valid)
+  result = atozHook(call_611367, url, valid)
 
-proc call*(call_613368: Call_CreateInstance_613355; body: JsonNode): Recallable =
+proc call*(call_611368: Call_CreateInstance_611355; body: JsonNode): Recallable =
   ## createInstance
   ## <p>Creates an instance in a specified stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-add.html">Adding an Instance to a Layer</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613369 = newJObject()
+  var body_611369 = newJObject()
   if body != nil:
-    body_613369 = body
-  result = call_613368.call(nil, nil, nil, nil, body_613369)
+    body_611369 = body
+  result = call_611368.call(nil, nil, nil, nil, body_611369)
 
-var createInstance* = Call_CreateInstance_613355(name: "createInstance",
+var createInstance* = Call_CreateInstance_611355(name: "createInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.CreateInstance",
-    validator: validate_CreateInstance_613356, base: "/", url: url_CreateInstance_613357,
+    validator: validate_CreateInstance_611356, base: "/", url: url_CreateInstance_611357,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateLayer_613370 = ref object of OpenApiRestCall_612658
-proc url_CreateLayer_613372(protocol: Scheme; host: string; base: string;
+  Call_CreateLayer_611370 = ref object of OpenApiRestCall_610658
+proc url_CreateLayer_611372(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateLayer_613371(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateLayer_611371(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a layer. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-basics-create.html">How to Create a Layer</a>.</p> <note> <p>You should use <b>CreateLayer</b> for noncustom layer types such as PHP App Server only if the stack does not have an existing layer of that type. A stack can have at most one instance of each noncustom layer; if you attempt to create a second instance, <b>CreateLayer</b> fails. A stack can have an arbitrary number of custom layers, so you can call <b>CreateLayer</b> as many times as you like for that layer type.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -1073,46 +1050,46 @@ proc validate_CreateLayer_613371(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613373 = header.getOrDefault("X-Amz-Target")
-  valid_613373 = validateParameter(valid_613373, JString, required = true, default = newJString(
+  var valid_611373 = header.getOrDefault("X-Amz-Target")
+  valid_611373 = validateParameter(valid_611373, JString, required = true, default = newJString(
       "OpsWorks_20130218.CreateLayer"))
-  if valid_613373 != nil:
-    section.add "X-Amz-Target", valid_613373
-  var valid_613374 = header.getOrDefault("X-Amz-Signature")
-  valid_613374 = validateParameter(valid_613374, JString, required = false,
+  if valid_611373 != nil:
+    section.add "X-Amz-Target", valid_611373
+  var valid_611374 = header.getOrDefault("X-Amz-Signature")
+  valid_611374 = validateParameter(valid_611374, JString, required = false,
                                  default = nil)
-  if valid_613374 != nil:
-    section.add "X-Amz-Signature", valid_613374
-  var valid_613375 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613375 = validateParameter(valid_613375, JString, required = false,
+  if valid_611374 != nil:
+    section.add "X-Amz-Signature", valid_611374
+  var valid_611375 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611375 = validateParameter(valid_611375, JString, required = false,
                                  default = nil)
-  if valid_613375 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613375
-  var valid_613376 = header.getOrDefault("X-Amz-Date")
-  valid_613376 = validateParameter(valid_613376, JString, required = false,
+  if valid_611375 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611375
+  var valid_611376 = header.getOrDefault("X-Amz-Date")
+  valid_611376 = validateParameter(valid_611376, JString, required = false,
                                  default = nil)
-  if valid_613376 != nil:
-    section.add "X-Amz-Date", valid_613376
-  var valid_613377 = header.getOrDefault("X-Amz-Credential")
-  valid_613377 = validateParameter(valid_613377, JString, required = false,
+  if valid_611376 != nil:
+    section.add "X-Amz-Date", valid_611376
+  var valid_611377 = header.getOrDefault("X-Amz-Credential")
+  valid_611377 = validateParameter(valid_611377, JString, required = false,
                                  default = nil)
-  if valid_613377 != nil:
-    section.add "X-Amz-Credential", valid_613377
-  var valid_613378 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613378 = validateParameter(valid_613378, JString, required = false,
+  if valid_611377 != nil:
+    section.add "X-Amz-Credential", valid_611377
+  var valid_611378 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611378 = validateParameter(valid_611378, JString, required = false,
                                  default = nil)
-  if valid_613378 != nil:
-    section.add "X-Amz-Security-Token", valid_613378
-  var valid_613379 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613379 = validateParameter(valid_613379, JString, required = false,
+  if valid_611378 != nil:
+    section.add "X-Amz-Security-Token", valid_611378
+  var valid_611379 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611379 = validateParameter(valid_611379, JString, required = false,
                                  default = nil)
-  if valid_613379 != nil:
-    section.add "X-Amz-Algorithm", valid_613379
-  var valid_613380 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613380 = validateParameter(valid_613380, JString, required = false,
+  if valid_611379 != nil:
+    section.add "X-Amz-Algorithm", valid_611379
+  var valid_611380 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611380 = validateParameter(valid_611380, JString, required = false,
                                  default = nil)
-  if valid_613380 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613380
+  if valid_611380 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611380
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1123,49 +1100,47 @@ proc validate_CreateLayer_613371(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613382: Call_CreateLayer_613370; path: JsonNode; query: JsonNode;
+proc call*(call_611382: Call_CreateLayer_611370; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a layer. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-basics-create.html">How to Create a Layer</a>.</p> <note> <p>You should use <b>CreateLayer</b> for noncustom layer types such as PHP App Server only if the stack does not have an existing layer of that type. A stack can have at most one instance of each noncustom layer; if you attempt to create a second instance, <b>CreateLayer</b> fails. A stack can have an arbitrary number of custom layers, so you can call <b>CreateLayer</b> as many times as you like for that layer type.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613382.validator(path, query, header, formData, body)
-  let scheme = call_613382.pickScheme
+  let valid = call_611382.validator(path, query, header, formData, body)
+  let scheme = call_611382.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613382.url(scheme.get, call_613382.host, call_613382.base,
-                         call_613382.route, valid.getOrDefault("path"),
+  let url = call_611382.url(scheme.get, call_611382.host, call_611382.base,
+                         call_611382.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613382, url, valid)
+  result = atozHook(call_611382, url, valid)
 
-proc call*(call_613383: Call_CreateLayer_613370; body: JsonNode): Recallable =
+proc call*(call_611383: Call_CreateLayer_611370; body: JsonNode): Recallable =
   ## createLayer
   ## <p>Creates a layer. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-basics-create.html">How to Create a Layer</a>.</p> <note> <p>You should use <b>CreateLayer</b> for noncustom layer types such as PHP App Server only if the stack does not have an existing layer of that type. A stack can have at most one instance of each noncustom layer; if you attempt to create a second instance, <b>CreateLayer</b> fails. A stack can have an arbitrary number of custom layers, so you can call <b>CreateLayer</b> as many times as you like for that layer type.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613384 = newJObject()
+  var body_611384 = newJObject()
   if body != nil:
-    body_613384 = body
-  result = call_613383.call(nil, nil, nil, nil, body_613384)
+    body_611384 = body
+  result = call_611383.call(nil, nil, nil, nil, body_611384)
 
-var createLayer* = Call_CreateLayer_613370(name: "createLayer",
+var createLayer* = Call_CreateLayer_611370(name: "createLayer",
                                         meth: HttpMethod.HttpPost,
                                         host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.CreateLayer",
-                                        validator: validate_CreateLayer_613371,
-                                        base: "/", url: url_CreateLayer_613372,
+                                        validator: validate_CreateLayer_611371,
+                                        base: "/", url: url_CreateLayer_611372,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateStack_613385 = ref object of OpenApiRestCall_612658
-proc url_CreateStack_613387(protocol: Scheme; host: string; base: string;
+  Call_CreateStack_611385 = ref object of OpenApiRestCall_610658
+proc url_CreateStack_611387(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateStack_613386(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_CreateStack_611386(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates a new stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-edit.html">Create a New Stack</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -1185,46 +1160,46 @@ proc validate_CreateStack_613386(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613388 = header.getOrDefault("X-Amz-Target")
-  valid_613388 = validateParameter(valid_613388, JString, required = true, default = newJString(
+  var valid_611388 = header.getOrDefault("X-Amz-Target")
+  valid_611388 = validateParameter(valid_611388, JString, required = true, default = newJString(
       "OpsWorks_20130218.CreateStack"))
-  if valid_613388 != nil:
-    section.add "X-Amz-Target", valid_613388
-  var valid_613389 = header.getOrDefault("X-Amz-Signature")
-  valid_613389 = validateParameter(valid_613389, JString, required = false,
+  if valid_611388 != nil:
+    section.add "X-Amz-Target", valid_611388
+  var valid_611389 = header.getOrDefault("X-Amz-Signature")
+  valid_611389 = validateParameter(valid_611389, JString, required = false,
                                  default = nil)
-  if valid_613389 != nil:
-    section.add "X-Amz-Signature", valid_613389
-  var valid_613390 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613390 = validateParameter(valid_613390, JString, required = false,
+  if valid_611389 != nil:
+    section.add "X-Amz-Signature", valid_611389
+  var valid_611390 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611390 = validateParameter(valid_611390, JString, required = false,
                                  default = nil)
-  if valid_613390 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613390
-  var valid_613391 = header.getOrDefault("X-Amz-Date")
-  valid_613391 = validateParameter(valid_613391, JString, required = false,
+  if valid_611390 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611390
+  var valid_611391 = header.getOrDefault("X-Amz-Date")
+  valid_611391 = validateParameter(valid_611391, JString, required = false,
                                  default = nil)
-  if valid_613391 != nil:
-    section.add "X-Amz-Date", valid_613391
-  var valid_613392 = header.getOrDefault("X-Amz-Credential")
-  valid_613392 = validateParameter(valid_613392, JString, required = false,
+  if valid_611391 != nil:
+    section.add "X-Amz-Date", valid_611391
+  var valid_611392 = header.getOrDefault("X-Amz-Credential")
+  valid_611392 = validateParameter(valid_611392, JString, required = false,
                                  default = nil)
-  if valid_613392 != nil:
-    section.add "X-Amz-Credential", valid_613392
-  var valid_613393 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613393 = validateParameter(valid_613393, JString, required = false,
+  if valid_611392 != nil:
+    section.add "X-Amz-Credential", valid_611392
+  var valid_611393 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611393 = validateParameter(valid_611393, JString, required = false,
                                  default = nil)
-  if valid_613393 != nil:
-    section.add "X-Amz-Security-Token", valid_613393
-  var valid_613394 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613394 = validateParameter(valid_613394, JString, required = false,
+  if valid_611393 != nil:
+    section.add "X-Amz-Security-Token", valid_611393
+  var valid_611394 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611394 = validateParameter(valid_611394, JString, required = false,
                                  default = nil)
-  if valid_613394 != nil:
-    section.add "X-Amz-Algorithm", valid_613394
-  var valid_613395 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613395 = validateParameter(valid_613395, JString, required = false,
+  if valid_611394 != nil:
+    section.add "X-Amz-Algorithm", valid_611394
+  var valid_611395 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611395 = validateParameter(valid_611395, JString, required = false,
                                  default = nil)
-  if valid_613395 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613395
+  if valid_611395 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611395
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1235,49 +1210,47 @@ proc validate_CreateStack_613386(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613397: Call_CreateStack_613385; path: JsonNode; query: JsonNode;
+proc call*(call_611397: Call_CreateStack_611385; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-edit.html">Create a New Stack</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613397.validator(path, query, header, formData, body)
-  let scheme = call_613397.pickScheme
+  let valid = call_611397.validator(path, query, header, formData, body)
+  let scheme = call_611397.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613397.url(scheme.get, call_613397.host, call_613397.base,
-                         call_613397.route, valid.getOrDefault("path"),
+  let url = call_611397.url(scheme.get, call_611397.host, call_611397.base,
+                         call_611397.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613397, url, valid)
+  result = atozHook(call_611397, url, valid)
 
-proc call*(call_613398: Call_CreateStack_613385; body: JsonNode): Recallable =
+proc call*(call_611398: Call_CreateStack_611385; body: JsonNode): Recallable =
   ## createStack
   ## <p>Creates a new stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-edit.html">Create a New Stack</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613399 = newJObject()
+  var body_611399 = newJObject()
   if body != nil:
-    body_613399 = body
-  result = call_613398.call(nil, nil, nil, nil, body_613399)
+    body_611399 = body
+  result = call_611398.call(nil, nil, nil, nil, body_611399)
 
-var createStack* = Call_CreateStack_613385(name: "createStack",
+var createStack* = Call_CreateStack_611385(name: "createStack",
                                         meth: HttpMethod.HttpPost,
                                         host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.CreateStack",
-                                        validator: validate_CreateStack_613386,
-                                        base: "/", url: url_CreateStack_613387,
+                                        validator: validate_CreateStack_611386,
+                                        base: "/", url: url_CreateStack_611387,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_CreateUserProfile_613400 = ref object of OpenApiRestCall_612658
-proc url_CreateUserProfile_613402(protocol: Scheme; host: string; base: string;
+  Call_CreateUserProfile_611400 = ref object of OpenApiRestCall_610658
+proc url_CreateUserProfile_611402(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_CreateUserProfile_613401(path: JsonNode; query: JsonNode;
+proc validate_CreateUserProfile_611401(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Creates a new user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -1298,46 +1271,46 @@ proc validate_CreateUserProfile_613401(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613403 = header.getOrDefault("X-Amz-Target")
-  valid_613403 = validateParameter(valid_613403, JString, required = true, default = newJString(
+  var valid_611403 = header.getOrDefault("X-Amz-Target")
+  valid_611403 = validateParameter(valid_611403, JString, required = true, default = newJString(
       "OpsWorks_20130218.CreateUserProfile"))
-  if valid_613403 != nil:
-    section.add "X-Amz-Target", valid_613403
-  var valid_613404 = header.getOrDefault("X-Amz-Signature")
-  valid_613404 = validateParameter(valid_613404, JString, required = false,
+  if valid_611403 != nil:
+    section.add "X-Amz-Target", valid_611403
+  var valid_611404 = header.getOrDefault("X-Amz-Signature")
+  valid_611404 = validateParameter(valid_611404, JString, required = false,
                                  default = nil)
-  if valid_613404 != nil:
-    section.add "X-Amz-Signature", valid_613404
-  var valid_613405 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613405 = validateParameter(valid_613405, JString, required = false,
+  if valid_611404 != nil:
+    section.add "X-Amz-Signature", valid_611404
+  var valid_611405 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611405 = validateParameter(valid_611405, JString, required = false,
                                  default = nil)
-  if valid_613405 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613405
-  var valid_613406 = header.getOrDefault("X-Amz-Date")
-  valid_613406 = validateParameter(valid_613406, JString, required = false,
+  if valid_611405 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611405
+  var valid_611406 = header.getOrDefault("X-Amz-Date")
+  valid_611406 = validateParameter(valid_611406, JString, required = false,
                                  default = nil)
-  if valid_613406 != nil:
-    section.add "X-Amz-Date", valid_613406
-  var valid_613407 = header.getOrDefault("X-Amz-Credential")
-  valid_613407 = validateParameter(valid_613407, JString, required = false,
+  if valid_611406 != nil:
+    section.add "X-Amz-Date", valid_611406
+  var valid_611407 = header.getOrDefault("X-Amz-Credential")
+  valid_611407 = validateParameter(valid_611407, JString, required = false,
                                  default = nil)
-  if valid_613407 != nil:
-    section.add "X-Amz-Credential", valid_613407
-  var valid_613408 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613408 = validateParameter(valid_613408, JString, required = false,
+  if valid_611407 != nil:
+    section.add "X-Amz-Credential", valid_611407
+  var valid_611408 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611408 = validateParameter(valid_611408, JString, required = false,
                                  default = nil)
-  if valid_613408 != nil:
-    section.add "X-Amz-Security-Token", valid_613408
-  var valid_613409 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613409 = validateParameter(valid_613409, JString, required = false,
+  if valid_611408 != nil:
+    section.add "X-Amz-Security-Token", valid_611408
+  var valid_611409 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611409 = validateParameter(valid_611409, JString, required = false,
                                  default = nil)
-  if valid_613409 != nil:
-    section.add "X-Amz-Algorithm", valid_613409
-  var valid_613410 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613410 = validateParameter(valid_613410, JString, required = false,
+  if valid_611409 != nil:
+    section.add "X-Amz-Algorithm", valid_611409
+  var valid_611410 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611410 = validateParameter(valid_611410, JString, required = false,
                                  default = nil)
-  if valid_613410 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613410
+  if valid_611410 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611410
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1348,48 +1321,46 @@ proc validate_CreateUserProfile_613401(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613412: Call_CreateUserProfile_613400; path: JsonNode;
+proc call*(call_611412: Call_CreateUserProfile_611400; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates a new user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613412.validator(path, query, header, formData, body)
-  let scheme = call_613412.pickScheme
+  let valid = call_611412.validator(path, query, header, formData, body)
+  let scheme = call_611412.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613412.url(scheme.get, call_613412.host, call_613412.base,
-                         call_613412.route, valid.getOrDefault("path"),
+  let url = call_611412.url(scheme.get, call_611412.host, call_611412.base,
+                         call_611412.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613412, url, valid)
+  result = atozHook(call_611412, url, valid)
 
-proc call*(call_613413: Call_CreateUserProfile_613400; body: JsonNode): Recallable =
+proc call*(call_611413: Call_CreateUserProfile_611400; body: JsonNode): Recallable =
   ## createUserProfile
   ## <p>Creates a new user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613414 = newJObject()
+  var body_611414 = newJObject()
   if body != nil:
-    body_613414 = body
-  result = call_613413.call(nil, nil, nil, nil, body_613414)
+    body_611414 = body
+  result = call_611413.call(nil, nil, nil, nil, body_611414)
 
-var createUserProfile* = Call_CreateUserProfile_613400(name: "createUserProfile",
+var createUserProfile* = Call_CreateUserProfile_611400(name: "createUserProfile",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.CreateUserProfile",
-    validator: validate_CreateUserProfile_613401, base: "/",
-    url: url_CreateUserProfile_613402, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_CreateUserProfile_611401, base: "/",
+    url: url_CreateUserProfile_611402, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteApp_613415 = ref object of OpenApiRestCall_612658
-proc url_DeleteApp_613417(protocol: Scheme; host: string; base: string; route: string;
+  Call_DeleteApp_611415 = ref object of OpenApiRestCall_610658
+proc url_DeleteApp_611417(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteApp_613416(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteApp_611416(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a specified app.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -1409,46 +1380,46 @@ proc validate_DeleteApp_613416(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613418 = header.getOrDefault("X-Amz-Target")
-  valid_613418 = validateParameter(valid_613418, JString, required = true, default = newJString(
+  var valid_611418 = header.getOrDefault("X-Amz-Target")
+  valid_611418 = validateParameter(valid_611418, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeleteApp"))
-  if valid_613418 != nil:
-    section.add "X-Amz-Target", valid_613418
-  var valid_613419 = header.getOrDefault("X-Amz-Signature")
-  valid_613419 = validateParameter(valid_613419, JString, required = false,
+  if valid_611418 != nil:
+    section.add "X-Amz-Target", valid_611418
+  var valid_611419 = header.getOrDefault("X-Amz-Signature")
+  valid_611419 = validateParameter(valid_611419, JString, required = false,
                                  default = nil)
-  if valid_613419 != nil:
-    section.add "X-Amz-Signature", valid_613419
-  var valid_613420 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613420 = validateParameter(valid_613420, JString, required = false,
+  if valid_611419 != nil:
+    section.add "X-Amz-Signature", valid_611419
+  var valid_611420 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611420 = validateParameter(valid_611420, JString, required = false,
                                  default = nil)
-  if valid_613420 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613420
-  var valid_613421 = header.getOrDefault("X-Amz-Date")
-  valid_613421 = validateParameter(valid_613421, JString, required = false,
+  if valid_611420 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611420
+  var valid_611421 = header.getOrDefault("X-Amz-Date")
+  valid_611421 = validateParameter(valid_611421, JString, required = false,
                                  default = nil)
-  if valid_613421 != nil:
-    section.add "X-Amz-Date", valid_613421
-  var valid_613422 = header.getOrDefault("X-Amz-Credential")
-  valid_613422 = validateParameter(valid_613422, JString, required = false,
+  if valid_611421 != nil:
+    section.add "X-Amz-Date", valid_611421
+  var valid_611422 = header.getOrDefault("X-Amz-Credential")
+  valid_611422 = validateParameter(valid_611422, JString, required = false,
                                  default = nil)
-  if valid_613422 != nil:
-    section.add "X-Amz-Credential", valid_613422
-  var valid_613423 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613423 = validateParameter(valid_613423, JString, required = false,
+  if valid_611422 != nil:
+    section.add "X-Amz-Credential", valid_611422
+  var valid_611423 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611423 = validateParameter(valid_611423, JString, required = false,
                                  default = nil)
-  if valid_613423 != nil:
-    section.add "X-Amz-Security-Token", valid_613423
-  var valid_613424 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613424 = validateParameter(valid_613424, JString, required = false,
+  if valid_611423 != nil:
+    section.add "X-Amz-Security-Token", valid_611423
+  var valid_611424 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611424 = validateParameter(valid_611424, JString, required = false,
                                  default = nil)
-  if valid_613424 != nil:
-    section.add "X-Amz-Algorithm", valid_613424
-  var valid_613425 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613425 = validateParameter(valid_613425, JString, required = false,
+  if valid_611424 != nil:
+    section.add "X-Amz-Algorithm", valid_611424
+  var valid_611425 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611425 = validateParameter(valid_611425, JString, required = false,
                                  default = nil)
-  if valid_613425 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613425
+  if valid_611425 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611425
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1459,48 +1430,46 @@ proc validate_DeleteApp_613416(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_613427: Call_DeleteApp_613415; path: JsonNode; query: JsonNode;
+proc call*(call_611427: Call_DeleteApp_611415; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specified app.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613427.validator(path, query, header, formData, body)
-  let scheme = call_613427.pickScheme
+  let valid = call_611427.validator(path, query, header, formData, body)
+  let scheme = call_611427.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613427.url(scheme.get, call_613427.host, call_613427.base,
-                         call_613427.route, valid.getOrDefault("path"),
+  let url = call_611427.url(scheme.get, call_611427.host, call_611427.base,
+                         call_611427.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613427, url, valid)
+  result = atozHook(call_611427, url, valid)
 
-proc call*(call_613428: Call_DeleteApp_613415; body: JsonNode): Recallable =
+proc call*(call_611428: Call_DeleteApp_611415; body: JsonNode): Recallable =
   ## deleteApp
   ## <p>Deletes a specified app.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613429 = newJObject()
+  var body_611429 = newJObject()
   if body != nil:
-    body_613429 = body
-  result = call_613428.call(nil, nil, nil, nil, body_613429)
+    body_611429 = body
+  result = call_611428.call(nil, nil, nil, nil, body_611429)
 
-var deleteApp* = Call_DeleteApp_613415(name: "deleteApp", meth: HttpMethod.HttpPost,
+var deleteApp* = Call_DeleteApp_611415(name: "deleteApp", meth: HttpMethod.HttpPost,
                                     host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.DeleteApp",
-                                    validator: validate_DeleteApp_613416,
-                                    base: "/", url: url_DeleteApp_613417,
+                                    validator: validate_DeleteApp_611416,
+                                    base: "/", url: url_DeleteApp_611417,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteInstance_613430 = ref object of OpenApiRestCall_612658
-proc url_DeleteInstance_613432(protocol: Scheme; host: string; base: string;
+  Call_DeleteInstance_611430 = ref object of OpenApiRestCall_610658
+proc url_DeleteInstance_611432(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteInstance_613431(path: JsonNode; query: JsonNode;
+proc validate_DeleteInstance_611431(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Deletes a specified instance, which terminates the associated Amazon EC2 instance. You must stop an instance before you can delete it.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-delete.html">Deleting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -1521,46 +1490,46 @@ proc validate_DeleteInstance_613431(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613433 = header.getOrDefault("X-Amz-Target")
-  valid_613433 = validateParameter(valid_613433, JString, required = true, default = newJString(
+  var valid_611433 = header.getOrDefault("X-Amz-Target")
+  valid_611433 = validateParameter(valid_611433, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeleteInstance"))
-  if valid_613433 != nil:
-    section.add "X-Amz-Target", valid_613433
-  var valid_613434 = header.getOrDefault("X-Amz-Signature")
-  valid_613434 = validateParameter(valid_613434, JString, required = false,
+  if valid_611433 != nil:
+    section.add "X-Amz-Target", valid_611433
+  var valid_611434 = header.getOrDefault("X-Amz-Signature")
+  valid_611434 = validateParameter(valid_611434, JString, required = false,
                                  default = nil)
-  if valid_613434 != nil:
-    section.add "X-Amz-Signature", valid_613434
-  var valid_613435 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613435 = validateParameter(valid_613435, JString, required = false,
+  if valid_611434 != nil:
+    section.add "X-Amz-Signature", valid_611434
+  var valid_611435 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611435 = validateParameter(valid_611435, JString, required = false,
                                  default = nil)
-  if valid_613435 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613435
-  var valid_613436 = header.getOrDefault("X-Amz-Date")
-  valid_613436 = validateParameter(valid_613436, JString, required = false,
+  if valid_611435 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611435
+  var valid_611436 = header.getOrDefault("X-Amz-Date")
+  valid_611436 = validateParameter(valid_611436, JString, required = false,
                                  default = nil)
-  if valid_613436 != nil:
-    section.add "X-Amz-Date", valid_613436
-  var valid_613437 = header.getOrDefault("X-Amz-Credential")
-  valid_613437 = validateParameter(valid_613437, JString, required = false,
+  if valid_611436 != nil:
+    section.add "X-Amz-Date", valid_611436
+  var valid_611437 = header.getOrDefault("X-Amz-Credential")
+  valid_611437 = validateParameter(valid_611437, JString, required = false,
                                  default = nil)
-  if valid_613437 != nil:
-    section.add "X-Amz-Credential", valid_613437
-  var valid_613438 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613438 = validateParameter(valid_613438, JString, required = false,
+  if valid_611437 != nil:
+    section.add "X-Amz-Credential", valid_611437
+  var valid_611438 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611438 = validateParameter(valid_611438, JString, required = false,
                                  default = nil)
-  if valid_613438 != nil:
-    section.add "X-Amz-Security-Token", valid_613438
-  var valid_613439 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613439 = validateParameter(valid_613439, JString, required = false,
+  if valid_611438 != nil:
+    section.add "X-Amz-Security-Token", valid_611438
+  var valid_611439 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611439 = validateParameter(valid_611439, JString, required = false,
                                  default = nil)
-  if valid_613439 != nil:
-    section.add "X-Amz-Algorithm", valid_613439
-  var valid_613440 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613440 = validateParameter(valid_613440, JString, required = false,
+  if valid_611439 != nil:
+    section.add "X-Amz-Algorithm", valid_611439
+  var valid_611440 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611440 = validateParameter(valid_611440, JString, required = false,
                                  default = nil)
-  if valid_613440 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613440
+  if valid_611440 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611440
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1571,48 +1540,46 @@ proc validate_DeleteInstance_613431(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613442: Call_DeleteInstance_613430; path: JsonNode; query: JsonNode;
+proc call*(call_611442: Call_DeleteInstance_611430; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specified instance, which terminates the associated Amazon EC2 instance. You must stop an instance before you can delete it.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-delete.html">Deleting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613442.validator(path, query, header, formData, body)
-  let scheme = call_613442.pickScheme
+  let valid = call_611442.validator(path, query, header, formData, body)
+  let scheme = call_611442.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613442.url(scheme.get, call_613442.host, call_613442.base,
-                         call_613442.route, valid.getOrDefault("path"),
+  let url = call_611442.url(scheme.get, call_611442.host, call_611442.base,
+                         call_611442.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613442, url, valid)
+  result = atozHook(call_611442, url, valid)
 
-proc call*(call_613443: Call_DeleteInstance_613430; body: JsonNode): Recallable =
+proc call*(call_611443: Call_DeleteInstance_611430; body: JsonNode): Recallable =
   ## deleteInstance
   ## <p>Deletes a specified instance, which terminates the associated Amazon EC2 instance. You must stop an instance before you can delete it.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-delete.html">Deleting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613444 = newJObject()
+  var body_611444 = newJObject()
   if body != nil:
-    body_613444 = body
-  result = call_613443.call(nil, nil, nil, nil, body_613444)
+    body_611444 = body
+  result = call_611443.call(nil, nil, nil, nil, body_611444)
 
-var deleteInstance* = Call_DeleteInstance_613430(name: "deleteInstance",
+var deleteInstance* = Call_DeleteInstance_611430(name: "deleteInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DeleteInstance",
-    validator: validate_DeleteInstance_613431, base: "/", url: url_DeleteInstance_613432,
+    validator: validate_DeleteInstance_611431, base: "/", url: url_DeleteInstance_611432,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteLayer_613445 = ref object of OpenApiRestCall_612658
-proc url_DeleteLayer_613447(protocol: Scheme; host: string; base: string;
+  Call_DeleteLayer_611445 = ref object of OpenApiRestCall_610658
+proc url_DeleteLayer_611447(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteLayer_613446(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteLayer_611446(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a specified layer. You must first stop and then delete all associated instances or unassign registered instances. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-basics-delete.html">How to Delete a Layer</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -1632,46 +1599,46 @@ proc validate_DeleteLayer_613446(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613448 = header.getOrDefault("X-Amz-Target")
-  valid_613448 = validateParameter(valid_613448, JString, required = true, default = newJString(
+  var valid_611448 = header.getOrDefault("X-Amz-Target")
+  valid_611448 = validateParameter(valid_611448, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeleteLayer"))
-  if valid_613448 != nil:
-    section.add "X-Amz-Target", valid_613448
-  var valid_613449 = header.getOrDefault("X-Amz-Signature")
-  valid_613449 = validateParameter(valid_613449, JString, required = false,
+  if valid_611448 != nil:
+    section.add "X-Amz-Target", valid_611448
+  var valid_611449 = header.getOrDefault("X-Amz-Signature")
+  valid_611449 = validateParameter(valid_611449, JString, required = false,
                                  default = nil)
-  if valid_613449 != nil:
-    section.add "X-Amz-Signature", valid_613449
-  var valid_613450 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613450 = validateParameter(valid_613450, JString, required = false,
+  if valid_611449 != nil:
+    section.add "X-Amz-Signature", valid_611449
+  var valid_611450 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611450 = validateParameter(valid_611450, JString, required = false,
                                  default = nil)
-  if valid_613450 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613450
-  var valid_613451 = header.getOrDefault("X-Amz-Date")
-  valid_613451 = validateParameter(valid_613451, JString, required = false,
+  if valid_611450 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611450
+  var valid_611451 = header.getOrDefault("X-Amz-Date")
+  valid_611451 = validateParameter(valid_611451, JString, required = false,
                                  default = nil)
-  if valid_613451 != nil:
-    section.add "X-Amz-Date", valid_613451
-  var valid_613452 = header.getOrDefault("X-Amz-Credential")
-  valid_613452 = validateParameter(valid_613452, JString, required = false,
+  if valid_611451 != nil:
+    section.add "X-Amz-Date", valid_611451
+  var valid_611452 = header.getOrDefault("X-Amz-Credential")
+  valid_611452 = validateParameter(valid_611452, JString, required = false,
                                  default = nil)
-  if valid_613452 != nil:
-    section.add "X-Amz-Credential", valid_613452
-  var valid_613453 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613453 = validateParameter(valid_613453, JString, required = false,
+  if valid_611452 != nil:
+    section.add "X-Amz-Credential", valid_611452
+  var valid_611453 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611453 = validateParameter(valid_611453, JString, required = false,
                                  default = nil)
-  if valid_613453 != nil:
-    section.add "X-Amz-Security-Token", valid_613453
-  var valid_613454 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613454 = validateParameter(valid_613454, JString, required = false,
+  if valid_611453 != nil:
+    section.add "X-Amz-Security-Token", valid_611453
+  var valid_611454 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611454 = validateParameter(valid_611454, JString, required = false,
                                  default = nil)
-  if valid_613454 != nil:
-    section.add "X-Amz-Algorithm", valid_613454
-  var valid_613455 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613455 = validateParameter(valid_613455, JString, required = false,
+  if valid_611454 != nil:
+    section.add "X-Amz-Algorithm", valid_611454
+  var valid_611455 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611455 = validateParameter(valid_611455, JString, required = false,
                                  default = nil)
-  if valid_613455 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613455
+  if valid_611455 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611455
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1682,49 +1649,47 @@ proc validate_DeleteLayer_613446(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613457: Call_DeleteLayer_613445; path: JsonNode; query: JsonNode;
+proc call*(call_611457: Call_DeleteLayer_611445; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specified layer. You must first stop and then delete all associated instances or unassign registered instances. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-basics-delete.html">How to Delete a Layer</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613457.validator(path, query, header, formData, body)
-  let scheme = call_613457.pickScheme
+  let valid = call_611457.validator(path, query, header, formData, body)
+  let scheme = call_611457.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613457.url(scheme.get, call_613457.host, call_613457.base,
-                         call_613457.route, valid.getOrDefault("path"),
+  let url = call_611457.url(scheme.get, call_611457.host, call_611457.base,
+                         call_611457.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613457, url, valid)
+  result = atozHook(call_611457, url, valid)
 
-proc call*(call_613458: Call_DeleteLayer_613445; body: JsonNode): Recallable =
+proc call*(call_611458: Call_DeleteLayer_611445; body: JsonNode): Recallable =
   ## deleteLayer
   ## <p>Deletes a specified layer. You must first stop and then delete all associated instances or unassign registered instances. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-basics-delete.html">How to Delete a Layer</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613459 = newJObject()
+  var body_611459 = newJObject()
   if body != nil:
-    body_613459 = body
-  result = call_613458.call(nil, nil, nil, nil, body_613459)
+    body_611459 = body
+  result = call_611458.call(nil, nil, nil, nil, body_611459)
 
-var deleteLayer* = Call_DeleteLayer_613445(name: "deleteLayer",
+var deleteLayer* = Call_DeleteLayer_611445(name: "deleteLayer",
                                         meth: HttpMethod.HttpPost,
                                         host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.DeleteLayer",
-                                        validator: validate_DeleteLayer_613446,
-                                        base: "/", url: url_DeleteLayer_613447,
+                                        validator: validate_DeleteLayer_611446,
+                                        base: "/", url: url_DeleteLayer_611447,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteStack_613460 = ref object of OpenApiRestCall_612658
-proc url_DeleteStack_613462(protocol: Scheme; host: string; base: string;
+  Call_DeleteStack_611460 = ref object of OpenApiRestCall_610658
+proc url_DeleteStack_611462(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteStack_613461(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DeleteStack_611461(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deletes a specified stack. You must first delete all instances, layers, and apps or deregister registered instances. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-shutting.html">Shut Down a Stack</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -1744,46 +1709,46 @@ proc validate_DeleteStack_613461(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613463 = header.getOrDefault("X-Amz-Target")
-  valid_613463 = validateParameter(valid_613463, JString, required = true, default = newJString(
+  var valid_611463 = header.getOrDefault("X-Amz-Target")
+  valid_611463 = validateParameter(valid_611463, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeleteStack"))
-  if valid_613463 != nil:
-    section.add "X-Amz-Target", valid_613463
-  var valid_613464 = header.getOrDefault("X-Amz-Signature")
-  valid_613464 = validateParameter(valid_613464, JString, required = false,
+  if valid_611463 != nil:
+    section.add "X-Amz-Target", valid_611463
+  var valid_611464 = header.getOrDefault("X-Amz-Signature")
+  valid_611464 = validateParameter(valid_611464, JString, required = false,
                                  default = nil)
-  if valid_613464 != nil:
-    section.add "X-Amz-Signature", valid_613464
-  var valid_613465 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613465 = validateParameter(valid_613465, JString, required = false,
+  if valid_611464 != nil:
+    section.add "X-Amz-Signature", valid_611464
+  var valid_611465 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611465 = validateParameter(valid_611465, JString, required = false,
                                  default = nil)
-  if valid_613465 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613465
-  var valid_613466 = header.getOrDefault("X-Amz-Date")
-  valid_613466 = validateParameter(valid_613466, JString, required = false,
+  if valid_611465 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611465
+  var valid_611466 = header.getOrDefault("X-Amz-Date")
+  valid_611466 = validateParameter(valid_611466, JString, required = false,
                                  default = nil)
-  if valid_613466 != nil:
-    section.add "X-Amz-Date", valid_613466
-  var valid_613467 = header.getOrDefault("X-Amz-Credential")
-  valid_613467 = validateParameter(valid_613467, JString, required = false,
+  if valid_611466 != nil:
+    section.add "X-Amz-Date", valid_611466
+  var valid_611467 = header.getOrDefault("X-Amz-Credential")
+  valid_611467 = validateParameter(valid_611467, JString, required = false,
                                  default = nil)
-  if valid_613467 != nil:
-    section.add "X-Amz-Credential", valid_613467
-  var valid_613468 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613468 = validateParameter(valid_613468, JString, required = false,
+  if valid_611467 != nil:
+    section.add "X-Amz-Credential", valid_611467
+  var valid_611468 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611468 = validateParameter(valid_611468, JString, required = false,
                                  default = nil)
-  if valid_613468 != nil:
-    section.add "X-Amz-Security-Token", valid_613468
-  var valid_613469 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613469 = validateParameter(valid_613469, JString, required = false,
+  if valid_611468 != nil:
+    section.add "X-Amz-Security-Token", valid_611468
+  var valid_611469 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611469 = validateParameter(valid_611469, JString, required = false,
                                  default = nil)
-  if valid_613469 != nil:
-    section.add "X-Amz-Algorithm", valid_613469
-  var valid_613470 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613470 = validateParameter(valid_613470, JString, required = false,
+  if valid_611469 != nil:
+    section.add "X-Amz-Algorithm", valid_611469
+  var valid_611470 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611470 = validateParameter(valid_611470, JString, required = false,
                                  default = nil)
-  if valid_613470 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613470
+  if valid_611470 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611470
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1794,49 +1759,47 @@ proc validate_DeleteStack_613461(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613472: Call_DeleteStack_613460; path: JsonNode; query: JsonNode;
+proc call*(call_611472: Call_DeleteStack_611460; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a specified stack. You must first delete all instances, layers, and apps or deregister registered instances. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-shutting.html">Shut Down a Stack</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613472.validator(path, query, header, formData, body)
-  let scheme = call_613472.pickScheme
+  let valid = call_611472.validator(path, query, header, formData, body)
+  let scheme = call_611472.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613472.url(scheme.get, call_613472.host, call_613472.base,
-                         call_613472.route, valid.getOrDefault("path"),
+  let url = call_611472.url(scheme.get, call_611472.host, call_611472.base,
+                         call_611472.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613472, url, valid)
+  result = atozHook(call_611472, url, valid)
 
-proc call*(call_613473: Call_DeleteStack_613460; body: JsonNode): Recallable =
+proc call*(call_611473: Call_DeleteStack_611460; body: JsonNode): Recallable =
   ## deleteStack
   ## <p>Deletes a specified stack. You must first delete all instances, layers, and apps or deregister registered instances. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingstacks-shutting.html">Shut Down a Stack</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613474 = newJObject()
+  var body_611474 = newJObject()
   if body != nil:
-    body_613474 = body
-  result = call_613473.call(nil, nil, nil, nil, body_613474)
+    body_611474 = body
+  result = call_611473.call(nil, nil, nil, nil, body_611474)
 
-var deleteStack* = Call_DeleteStack_613460(name: "deleteStack",
+var deleteStack* = Call_DeleteStack_611460(name: "deleteStack",
                                         meth: HttpMethod.HttpPost,
                                         host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.DeleteStack",
-                                        validator: validate_DeleteStack_613461,
-                                        base: "/", url: url_DeleteStack_613462,
+                                        validator: validate_DeleteStack_611461,
+                                        base: "/", url: url_DeleteStack_611462,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeleteUserProfile_613475 = ref object of OpenApiRestCall_612658
-proc url_DeleteUserProfile_613477(protocol: Scheme; host: string; base: string;
+  Call_DeleteUserProfile_611475 = ref object of OpenApiRestCall_610658
+proc url_DeleteUserProfile_611477(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeleteUserProfile_613476(path: JsonNode; query: JsonNode;
+proc validate_DeleteUserProfile_611476(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Deletes a user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -1857,46 +1820,46 @@ proc validate_DeleteUserProfile_613476(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613478 = header.getOrDefault("X-Amz-Target")
-  valid_613478 = validateParameter(valid_613478, JString, required = true, default = newJString(
+  var valid_611478 = header.getOrDefault("X-Amz-Target")
+  valid_611478 = validateParameter(valid_611478, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeleteUserProfile"))
-  if valid_613478 != nil:
-    section.add "X-Amz-Target", valid_613478
-  var valid_613479 = header.getOrDefault("X-Amz-Signature")
-  valid_613479 = validateParameter(valid_613479, JString, required = false,
+  if valid_611478 != nil:
+    section.add "X-Amz-Target", valid_611478
+  var valid_611479 = header.getOrDefault("X-Amz-Signature")
+  valid_611479 = validateParameter(valid_611479, JString, required = false,
                                  default = nil)
-  if valid_613479 != nil:
-    section.add "X-Amz-Signature", valid_613479
-  var valid_613480 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613480 = validateParameter(valid_613480, JString, required = false,
+  if valid_611479 != nil:
+    section.add "X-Amz-Signature", valid_611479
+  var valid_611480 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611480 = validateParameter(valid_611480, JString, required = false,
                                  default = nil)
-  if valid_613480 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613480
-  var valid_613481 = header.getOrDefault("X-Amz-Date")
-  valid_613481 = validateParameter(valid_613481, JString, required = false,
+  if valid_611480 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611480
+  var valid_611481 = header.getOrDefault("X-Amz-Date")
+  valid_611481 = validateParameter(valid_611481, JString, required = false,
                                  default = nil)
-  if valid_613481 != nil:
-    section.add "X-Amz-Date", valid_613481
-  var valid_613482 = header.getOrDefault("X-Amz-Credential")
-  valid_613482 = validateParameter(valid_613482, JString, required = false,
+  if valid_611481 != nil:
+    section.add "X-Amz-Date", valid_611481
+  var valid_611482 = header.getOrDefault("X-Amz-Credential")
+  valid_611482 = validateParameter(valid_611482, JString, required = false,
                                  default = nil)
-  if valid_613482 != nil:
-    section.add "X-Amz-Credential", valid_613482
-  var valid_613483 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613483 = validateParameter(valid_613483, JString, required = false,
+  if valid_611482 != nil:
+    section.add "X-Amz-Credential", valid_611482
+  var valid_611483 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611483 = validateParameter(valid_611483, JString, required = false,
                                  default = nil)
-  if valid_613483 != nil:
-    section.add "X-Amz-Security-Token", valid_613483
-  var valid_613484 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613484 = validateParameter(valid_613484, JString, required = false,
+  if valid_611483 != nil:
+    section.add "X-Amz-Security-Token", valid_611483
+  var valid_611484 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611484 = validateParameter(valid_611484, JString, required = false,
                                  default = nil)
-  if valid_613484 != nil:
-    section.add "X-Amz-Algorithm", valid_613484
-  var valid_613485 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613485 = validateParameter(valid_613485, JString, required = false,
+  if valid_611484 != nil:
+    section.add "X-Amz-Algorithm", valid_611484
+  var valid_611485 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611485 = validateParameter(valid_611485, JString, required = false,
                                  default = nil)
-  if valid_613485 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613485
+  if valid_611485 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611485
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -1907,48 +1870,46 @@ proc validate_DeleteUserProfile_613476(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613487: Call_DeleteUserProfile_613475; path: JsonNode;
+proc call*(call_611487: Call_DeleteUserProfile_611475; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deletes a user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613487.validator(path, query, header, formData, body)
-  let scheme = call_613487.pickScheme
+  let valid = call_611487.validator(path, query, header, formData, body)
+  let scheme = call_611487.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613487.url(scheme.get, call_613487.host, call_613487.base,
-                         call_613487.route, valid.getOrDefault("path"),
+  let url = call_611487.url(scheme.get, call_611487.host, call_611487.base,
+                         call_611487.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613487, url, valid)
+  result = atozHook(call_611487, url, valid)
 
-proc call*(call_613488: Call_DeleteUserProfile_613475; body: JsonNode): Recallable =
+proc call*(call_611488: Call_DeleteUserProfile_611475; body: JsonNode): Recallable =
   ## deleteUserProfile
   ## <p>Deletes a user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613489 = newJObject()
+  var body_611489 = newJObject()
   if body != nil:
-    body_613489 = body
-  result = call_613488.call(nil, nil, nil, nil, body_613489)
+    body_611489 = body
+  result = call_611488.call(nil, nil, nil, nil, body_611489)
 
-var deleteUserProfile* = Call_DeleteUserProfile_613475(name: "deleteUserProfile",
+var deleteUserProfile* = Call_DeleteUserProfile_611475(name: "deleteUserProfile",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DeleteUserProfile",
-    validator: validate_DeleteUserProfile_613476, base: "/",
-    url: url_DeleteUserProfile_613477, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeleteUserProfile_611476, base: "/",
+    url: url_DeleteUserProfile_611477, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterEcsCluster_613490 = ref object of OpenApiRestCall_612658
-proc url_DeregisterEcsCluster_613492(protocol: Scheme; host: string; base: string;
+  Call_DeregisterEcsCluster_611490 = ref object of OpenApiRestCall_610658
+proc url_DeregisterEcsCluster_611492(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterEcsCluster_613491(path: JsonNode; query: JsonNode;
+proc validate_DeregisterEcsCluster_611491(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deregisters a specified Amazon ECS cluster from a stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-ecscluster.html#workinglayers-ecscluster-delete"> Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html</a>.</p>
   ## 
@@ -1968,46 +1929,46 @@ proc validate_DeregisterEcsCluster_613491(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613493 = header.getOrDefault("X-Amz-Target")
-  valid_613493 = validateParameter(valid_613493, JString, required = true, default = newJString(
+  var valid_611493 = header.getOrDefault("X-Amz-Target")
+  valid_611493 = validateParameter(valid_611493, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeregisterEcsCluster"))
-  if valid_613493 != nil:
-    section.add "X-Amz-Target", valid_613493
-  var valid_613494 = header.getOrDefault("X-Amz-Signature")
-  valid_613494 = validateParameter(valid_613494, JString, required = false,
+  if valid_611493 != nil:
+    section.add "X-Amz-Target", valid_611493
+  var valid_611494 = header.getOrDefault("X-Amz-Signature")
+  valid_611494 = validateParameter(valid_611494, JString, required = false,
                                  default = nil)
-  if valid_613494 != nil:
-    section.add "X-Amz-Signature", valid_613494
-  var valid_613495 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613495 = validateParameter(valid_613495, JString, required = false,
+  if valid_611494 != nil:
+    section.add "X-Amz-Signature", valid_611494
+  var valid_611495 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611495 = validateParameter(valid_611495, JString, required = false,
                                  default = nil)
-  if valid_613495 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613495
-  var valid_613496 = header.getOrDefault("X-Amz-Date")
-  valid_613496 = validateParameter(valid_613496, JString, required = false,
+  if valid_611495 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611495
+  var valid_611496 = header.getOrDefault("X-Amz-Date")
+  valid_611496 = validateParameter(valid_611496, JString, required = false,
                                  default = nil)
-  if valid_613496 != nil:
-    section.add "X-Amz-Date", valid_613496
-  var valid_613497 = header.getOrDefault("X-Amz-Credential")
-  valid_613497 = validateParameter(valid_613497, JString, required = false,
+  if valid_611496 != nil:
+    section.add "X-Amz-Date", valid_611496
+  var valid_611497 = header.getOrDefault("X-Amz-Credential")
+  valid_611497 = validateParameter(valid_611497, JString, required = false,
                                  default = nil)
-  if valid_613497 != nil:
-    section.add "X-Amz-Credential", valid_613497
-  var valid_613498 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613498 = validateParameter(valid_613498, JString, required = false,
+  if valid_611497 != nil:
+    section.add "X-Amz-Credential", valid_611497
+  var valid_611498 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611498 = validateParameter(valid_611498, JString, required = false,
                                  default = nil)
-  if valid_613498 != nil:
-    section.add "X-Amz-Security-Token", valid_613498
-  var valid_613499 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613499 = validateParameter(valid_613499, JString, required = false,
+  if valid_611498 != nil:
+    section.add "X-Amz-Security-Token", valid_611498
+  var valid_611499 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611499 = validateParameter(valid_611499, JString, required = false,
                                  default = nil)
-  if valid_613499 != nil:
-    section.add "X-Amz-Algorithm", valid_613499
-  var valid_613500 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613500 = validateParameter(valid_613500, JString, required = false,
+  if valid_611499 != nil:
+    section.add "X-Amz-Algorithm", valid_611499
+  var valid_611500 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611500 = validateParameter(valid_611500, JString, required = false,
                                  default = nil)
-  if valid_613500 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613500
+  if valid_611500 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611500
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2018,49 +1979,47 @@ proc validate_DeregisterEcsCluster_613491(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613502: Call_DeregisterEcsCluster_613490; path: JsonNode;
+proc call*(call_611502: Call_DeregisterEcsCluster_611490; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregisters a specified Amazon ECS cluster from a stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-ecscluster.html#workinglayers-ecscluster-delete"> Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html</a>.</p>
   ## 
-  let valid = call_613502.validator(path, query, header, formData, body)
-  let scheme = call_613502.pickScheme
+  let valid = call_611502.validator(path, query, header, formData, body)
+  let scheme = call_611502.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613502.url(scheme.get, call_613502.host, call_613502.base,
-                         call_613502.route, valid.getOrDefault("path"),
+  let url = call_611502.url(scheme.get, call_611502.host, call_611502.base,
+                         call_611502.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613502, url, valid)
+  result = atozHook(call_611502, url, valid)
 
-proc call*(call_613503: Call_DeregisterEcsCluster_613490; body: JsonNode): Recallable =
+proc call*(call_611503: Call_DeregisterEcsCluster_611490; body: JsonNode): Recallable =
   ## deregisterEcsCluster
   ## <p>Deregisters a specified Amazon ECS cluster from a stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-ecscluster.html#workinglayers-ecscluster-delete"> Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html</a>.</p>
   ##   body: JObject (required)
-  var body_613504 = newJObject()
+  var body_611504 = newJObject()
   if body != nil:
-    body_613504 = body
-  result = call_613503.call(nil, nil, nil, nil, body_613504)
+    body_611504 = body
+  result = call_611503.call(nil, nil, nil, nil, body_611504)
 
-var deregisterEcsCluster* = Call_DeregisterEcsCluster_613490(
+var deregisterEcsCluster* = Call_DeregisterEcsCluster_611490(
     name: "deregisterEcsCluster", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DeregisterEcsCluster",
-    validator: validate_DeregisterEcsCluster_613491, base: "/",
-    url: url_DeregisterEcsCluster_613492, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterEcsCluster_611491, base: "/",
+    url: url_DeregisterEcsCluster_611492, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterElasticIp_613505 = ref object of OpenApiRestCall_612658
-proc url_DeregisterElasticIp_613507(protocol: Scheme; host: string; base: string;
+  Call_DeregisterElasticIp_611505 = ref object of OpenApiRestCall_610658
+proc url_DeregisterElasticIp_611507(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterElasticIp_613506(path: JsonNode; query: JsonNode;
+proc validate_DeregisterElasticIp_611506(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Deregisters a specified Elastic IP address. The address can then be registered by another stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -2081,46 +2040,46 @@ proc validate_DeregisterElasticIp_613506(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613508 = header.getOrDefault("X-Amz-Target")
-  valid_613508 = validateParameter(valid_613508, JString, required = true, default = newJString(
+  var valid_611508 = header.getOrDefault("X-Amz-Target")
+  valid_611508 = validateParameter(valid_611508, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeregisterElasticIp"))
-  if valid_613508 != nil:
-    section.add "X-Amz-Target", valid_613508
-  var valid_613509 = header.getOrDefault("X-Amz-Signature")
-  valid_613509 = validateParameter(valid_613509, JString, required = false,
+  if valid_611508 != nil:
+    section.add "X-Amz-Target", valid_611508
+  var valid_611509 = header.getOrDefault("X-Amz-Signature")
+  valid_611509 = validateParameter(valid_611509, JString, required = false,
                                  default = nil)
-  if valid_613509 != nil:
-    section.add "X-Amz-Signature", valid_613509
-  var valid_613510 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613510 = validateParameter(valid_613510, JString, required = false,
+  if valid_611509 != nil:
+    section.add "X-Amz-Signature", valid_611509
+  var valid_611510 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611510 = validateParameter(valid_611510, JString, required = false,
                                  default = nil)
-  if valid_613510 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613510
-  var valid_613511 = header.getOrDefault("X-Amz-Date")
-  valid_613511 = validateParameter(valid_613511, JString, required = false,
+  if valid_611510 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611510
+  var valid_611511 = header.getOrDefault("X-Amz-Date")
+  valid_611511 = validateParameter(valid_611511, JString, required = false,
                                  default = nil)
-  if valid_613511 != nil:
-    section.add "X-Amz-Date", valid_613511
-  var valid_613512 = header.getOrDefault("X-Amz-Credential")
-  valid_613512 = validateParameter(valid_613512, JString, required = false,
+  if valid_611511 != nil:
+    section.add "X-Amz-Date", valid_611511
+  var valid_611512 = header.getOrDefault("X-Amz-Credential")
+  valid_611512 = validateParameter(valid_611512, JString, required = false,
                                  default = nil)
-  if valid_613512 != nil:
-    section.add "X-Amz-Credential", valid_613512
-  var valid_613513 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613513 = validateParameter(valid_613513, JString, required = false,
+  if valid_611512 != nil:
+    section.add "X-Amz-Credential", valid_611512
+  var valid_611513 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611513 = validateParameter(valid_611513, JString, required = false,
                                  default = nil)
-  if valid_613513 != nil:
-    section.add "X-Amz-Security-Token", valid_613513
-  var valid_613514 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613514 = validateParameter(valid_613514, JString, required = false,
+  if valid_611513 != nil:
+    section.add "X-Amz-Security-Token", valid_611513
+  var valid_611514 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611514 = validateParameter(valid_611514, JString, required = false,
                                  default = nil)
-  if valid_613514 != nil:
-    section.add "X-Amz-Algorithm", valid_613514
-  var valid_613515 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613515 = validateParameter(valid_613515, JString, required = false,
+  if valid_611514 != nil:
+    section.add "X-Amz-Algorithm", valid_611514
+  var valid_611515 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611515 = validateParameter(valid_611515, JString, required = false,
                                  default = nil)
-  if valid_613515 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613515
+  if valid_611515 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611515
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2131,49 +2090,47 @@ proc validate_DeregisterElasticIp_613506(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613517: Call_DeregisterElasticIp_613505; path: JsonNode;
+proc call*(call_611517: Call_DeregisterElasticIp_611505; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregisters a specified Elastic IP address. The address can then be registered by another stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613517.validator(path, query, header, formData, body)
-  let scheme = call_613517.pickScheme
+  let valid = call_611517.validator(path, query, header, formData, body)
+  let scheme = call_611517.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613517.url(scheme.get, call_613517.host, call_613517.base,
-                         call_613517.route, valid.getOrDefault("path"),
+  let url = call_611517.url(scheme.get, call_611517.host, call_611517.base,
+                         call_611517.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613517, url, valid)
+  result = atozHook(call_611517, url, valid)
 
-proc call*(call_613518: Call_DeregisterElasticIp_613505; body: JsonNode): Recallable =
+proc call*(call_611518: Call_DeregisterElasticIp_611505; body: JsonNode): Recallable =
   ## deregisterElasticIp
   ## <p>Deregisters a specified Elastic IP address. The address can then be registered by another stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613519 = newJObject()
+  var body_611519 = newJObject()
   if body != nil:
-    body_613519 = body
-  result = call_613518.call(nil, nil, nil, nil, body_613519)
+    body_611519 = body
+  result = call_611518.call(nil, nil, nil, nil, body_611519)
 
-var deregisterElasticIp* = Call_DeregisterElasticIp_613505(
+var deregisterElasticIp* = Call_DeregisterElasticIp_611505(
     name: "deregisterElasticIp", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DeregisterElasticIp",
-    validator: validate_DeregisterElasticIp_613506, base: "/",
-    url: url_DeregisterElasticIp_613507, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterElasticIp_611506, base: "/",
+    url: url_DeregisterElasticIp_611507, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterInstance_613520 = ref object of OpenApiRestCall_612658
-proc url_DeregisterInstance_613522(protocol: Scheme; host: string; base: string;
+  Call_DeregisterInstance_611520 = ref object of OpenApiRestCall_610658
+proc url_DeregisterInstance_611522(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterInstance_613521(path: JsonNode; query: JsonNode;
+proc validate_DeregisterInstance_611521(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Deregister a registered Amazon EC2 or on-premises instance. This action removes the instance from the stack and returns it to your control. This action cannot be used with instances that were created with AWS OpsWorks Stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -2194,46 +2151,46 @@ proc validate_DeregisterInstance_613521(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613523 = header.getOrDefault("X-Amz-Target")
-  valid_613523 = validateParameter(valid_613523, JString, required = true, default = newJString(
+  var valid_611523 = header.getOrDefault("X-Amz-Target")
+  valid_611523 = validateParameter(valid_611523, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeregisterInstance"))
-  if valid_613523 != nil:
-    section.add "X-Amz-Target", valid_613523
-  var valid_613524 = header.getOrDefault("X-Amz-Signature")
-  valid_613524 = validateParameter(valid_613524, JString, required = false,
+  if valid_611523 != nil:
+    section.add "X-Amz-Target", valid_611523
+  var valid_611524 = header.getOrDefault("X-Amz-Signature")
+  valid_611524 = validateParameter(valid_611524, JString, required = false,
                                  default = nil)
-  if valid_613524 != nil:
-    section.add "X-Amz-Signature", valid_613524
-  var valid_613525 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613525 = validateParameter(valid_613525, JString, required = false,
+  if valid_611524 != nil:
+    section.add "X-Amz-Signature", valid_611524
+  var valid_611525 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611525 = validateParameter(valid_611525, JString, required = false,
                                  default = nil)
-  if valid_613525 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613525
-  var valid_613526 = header.getOrDefault("X-Amz-Date")
-  valid_613526 = validateParameter(valid_613526, JString, required = false,
+  if valid_611525 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611525
+  var valid_611526 = header.getOrDefault("X-Amz-Date")
+  valid_611526 = validateParameter(valid_611526, JString, required = false,
                                  default = nil)
-  if valid_613526 != nil:
-    section.add "X-Amz-Date", valid_613526
-  var valid_613527 = header.getOrDefault("X-Amz-Credential")
-  valid_613527 = validateParameter(valid_613527, JString, required = false,
+  if valid_611526 != nil:
+    section.add "X-Amz-Date", valid_611526
+  var valid_611527 = header.getOrDefault("X-Amz-Credential")
+  valid_611527 = validateParameter(valid_611527, JString, required = false,
                                  default = nil)
-  if valid_613527 != nil:
-    section.add "X-Amz-Credential", valid_613527
-  var valid_613528 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613528 = validateParameter(valid_613528, JString, required = false,
+  if valid_611527 != nil:
+    section.add "X-Amz-Credential", valid_611527
+  var valid_611528 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611528 = validateParameter(valid_611528, JString, required = false,
                                  default = nil)
-  if valid_613528 != nil:
-    section.add "X-Amz-Security-Token", valid_613528
-  var valid_613529 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613529 = validateParameter(valid_613529, JString, required = false,
+  if valid_611528 != nil:
+    section.add "X-Amz-Security-Token", valid_611528
+  var valid_611529 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611529 = validateParameter(valid_611529, JString, required = false,
                                  default = nil)
-  if valid_613529 != nil:
-    section.add "X-Amz-Algorithm", valid_613529
-  var valid_613530 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613530 = validateParameter(valid_613530, JString, required = false,
+  if valid_611529 != nil:
+    section.add "X-Amz-Algorithm", valid_611529
+  var valid_611530 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611530 = validateParameter(valid_611530, JString, required = false,
                                  default = nil)
-  if valid_613530 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613530
+  if valid_611530 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611530
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2244,50 +2201,48 @@ proc validate_DeregisterInstance_613521(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613532: Call_DeregisterInstance_613520; path: JsonNode;
+proc call*(call_611532: Call_DeregisterInstance_611520; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregister a registered Amazon EC2 or on-premises instance. This action removes the instance from the stack and returns it to your control. This action cannot be used with instances that were created with AWS OpsWorks Stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613532.validator(path, query, header, formData, body)
-  let scheme = call_613532.pickScheme
+  let valid = call_611532.validator(path, query, header, formData, body)
+  let scheme = call_611532.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613532.url(scheme.get, call_613532.host, call_613532.base,
-                         call_613532.route, valid.getOrDefault("path"),
+  let url = call_611532.url(scheme.get, call_611532.host, call_611532.base,
+                         call_611532.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613532, url, valid)
+  result = atozHook(call_611532, url, valid)
 
-proc call*(call_613533: Call_DeregisterInstance_613520; body: JsonNode): Recallable =
+proc call*(call_611533: Call_DeregisterInstance_611520; body: JsonNode): Recallable =
   ## deregisterInstance
   ## <p>Deregister a registered Amazon EC2 or on-premises instance. This action removes the instance from the stack and returns it to your control. This action cannot be used with instances that were created with AWS OpsWorks Stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613534 = newJObject()
+  var body_611534 = newJObject()
   if body != nil:
-    body_613534 = body
-  result = call_613533.call(nil, nil, nil, nil, body_613534)
+    body_611534 = body
+  result = call_611533.call(nil, nil, nil, nil, body_611534)
 
-var deregisterInstance* = Call_DeregisterInstance_613520(
+var deregisterInstance* = Call_DeregisterInstance_611520(
     name: "deregisterInstance", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DeregisterInstance",
-    validator: validate_DeregisterInstance_613521, base: "/",
-    url: url_DeregisterInstance_613522, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterInstance_611521, base: "/",
+    url: url_DeregisterInstance_611522, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterRdsDbInstance_613535 = ref object of OpenApiRestCall_612658
-proc url_DeregisterRdsDbInstance_613537(protocol: Scheme; host: string; base: string;
+  Call_DeregisterRdsDbInstance_611535 = ref object of OpenApiRestCall_610658
+proc url_DeregisterRdsDbInstance_611537(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterRdsDbInstance_613536(path: JsonNode; query: JsonNode;
+proc validate_DeregisterRdsDbInstance_611536(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Deregisters an Amazon RDS instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -2307,46 +2262,46 @@ proc validate_DeregisterRdsDbInstance_613536(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613538 = header.getOrDefault("X-Amz-Target")
-  valid_613538 = validateParameter(valid_613538, JString, required = true, default = newJString(
+  var valid_611538 = header.getOrDefault("X-Amz-Target")
+  valid_611538 = validateParameter(valid_611538, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeregisterRdsDbInstance"))
-  if valid_613538 != nil:
-    section.add "X-Amz-Target", valid_613538
-  var valid_613539 = header.getOrDefault("X-Amz-Signature")
-  valid_613539 = validateParameter(valid_613539, JString, required = false,
+  if valid_611538 != nil:
+    section.add "X-Amz-Target", valid_611538
+  var valid_611539 = header.getOrDefault("X-Amz-Signature")
+  valid_611539 = validateParameter(valid_611539, JString, required = false,
                                  default = nil)
-  if valid_613539 != nil:
-    section.add "X-Amz-Signature", valid_613539
-  var valid_613540 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613540 = validateParameter(valid_613540, JString, required = false,
+  if valid_611539 != nil:
+    section.add "X-Amz-Signature", valid_611539
+  var valid_611540 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611540 = validateParameter(valid_611540, JString, required = false,
                                  default = nil)
-  if valid_613540 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613540
-  var valid_613541 = header.getOrDefault("X-Amz-Date")
-  valid_613541 = validateParameter(valid_613541, JString, required = false,
+  if valid_611540 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611540
+  var valid_611541 = header.getOrDefault("X-Amz-Date")
+  valid_611541 = validateParameter(valid_611541, JString, required = false,
                                  default = nil)
-  if valid_613541 != nil:
-    section.add "X-Amz-Date", valid_613541
-  var valid_613542 = header.getOrDefault("X-Amz-Credential")
-  valid_613542 = validateParameter(valid_613542, JString, required = false,
+  if valid_611541 != nil:
+    section.add "X-Amz-Date", valid_611541
+  var valid_611542 = header.getOrDefault("X-Amz-Credential")
+  valid_611542 = validateParameter(valid_611542, JString, required = false,
                                  default = nil)
-  if valid_613542 != nil:
-    section.add "X-Amz-Credential", valid_613542
-  var valid_613543 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613543 = validateParameter(valid_613543, JString, required = false,
+  if valid_611542 != nil:
+    section.add "X-Amz-Credential", valid_611542
+  var valid_611543 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611543 = validateParameter(valid_611543, JString, required = false,
                                  default = nil)
-  if valid_613543 != nil:
-    section.add "X-Amz-Security-Token", valid_613543
-  var valid_613544 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613544 = validateParameter(valid_613544, JString, required = false,
+  if valid_611543 != nil:
+    section.add "X-Amz-Security-Token", valid_611543
+  var valid_611544 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611544 = validateParameter(valid_611544, JString, required = false,
                                  default = nil)
-  if valid_613544 != nil:
-    section.add "X-Amz-Algorithm", valid_613544
-  var valid_613545 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613545 = validateParameter(valid_613545, JString, required = false,
+  if valid_611544 != nil:
+    section.add "X-Amz-Algorithm", valid_611544
+  var valid_611545 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611545 = validateParameter(valid_611545, JString, required = false,
                                  default = nil)
-  if valid_613545 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613545
+  if valid_611545 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611545
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2357,49 +2312,47 @@ proc validate_DeregisterRdsDbInstance_613536(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613547: Call_DeregisterRdsDbInstance_613535; path: JsonNode;
+proc call*(call_611547: Call_DeregisterRdsDbInstance_611535; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregisters an Amazon RDS instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613547.validator(path, query, header, formData, body)
-  let scheme = call_613547.pickScheme
+  let valid = call_611547.validator(path, query, header, formData, body)
+  let scheme = call_611547.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613547.url(scheme.get, call_613547.host, call_613547.base,
-                         call_613547.route, valid.getOrDefault("path"),
+  let url = call_611547.url(scheme.get, call_611547.host, call_611547.base,
+                         call_611547.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613547, url, valid)
+  result = atozHook(call_611547, url, valid)
 
-proc call*(call_613548: Call_DeregisterRdsDbInstance_613535; body: JsonNode): Recallable =
+proc call*(call_611548: Call_DeregisterRdsDbInstance_611535; body: JsonNode): Recallable =
   ## deregisterRdsDbInstance
   ## <p>Deregisters an Amazon RDS instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613549 = newJObject()
+  var body_611549 = newJObject()
   if body != nil:
-    body_613549 = body
-  result = call_613548.call(nil, nil, nil, nil, body_613549)
+    body_611549 = body
+  result = call_611548.call(nil, nil, nil, nil, body_611549)
 
-var deregisterRdsDbInstance* = Call_DeregisterRdsDbInstance_613535(
+var deregisterRdsDbInstance* = Call_DeregisterRdsDbInstance_611535(
     name: "deregisterRdsDbInstance", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DeregisterRdsDbInstance",
-    validator: validate_DeregisterRdsDbInstance_613536, base: "/",
-    url: url_DeregisterRdsDbInstance_613537, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterRdsDbInstance_611536, base: "/",
+    url: url_DeregisterRdsDbInstance_611537, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DeregisterVolume_613550 = ref object of OpenApiRestCall_612658
-proc url_DeregisterVolume_613552(protocol: Scheme; host: string; base: string;
+  Call_DeregisterVolume_611550 = ref object of OpenApiRestCall_610658
+proc url_DeregisterVolume_611552(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DeregisterVolume_613551(path: JsonNode; query: JsonNode;
+proc validate_DeregisterVolume_611551(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Deregisters an Amazon EBS volume. The volume can then be registered by another stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -2420,46 +2373,46 @@ proc validate_DeregisterVolume_613551(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613553 = header.getOrDefault("X-Amz-Target")
-  valid_613553 = validateParameter(valid_613553, JString, required = true, default = newJString(
+  var valid_611553 = header.getOrDefault("X-Amz-Target")
+  valid_611553 = validateParameter(valid_611553, JString, required = true, default = newJString(
       "OpsWorks_20130218.DeregisterVolume"))
-  if valid_613553 != nil:
-    section.add "X-Amz-Target", valid_613553
-  var valid_613554 = header.getOrDefault("X-Amz-Signature")
-  valid_613554 = validateParameter(valid_613554, JString, required = false,
+  if valid_611553 != nil:
+    section.add "X-Amz-Target", valid_611553
+  var valid_611554 = header.getOrDefault("X-Amz-Signature")
+  valid_611554 = validateParameter(valid_611554, JString, required = false,
                                  default = nil)
-  if valid_613554 != nil:
-    section.add "X-Amz-Signature", valid_613554
-  var valid_613555 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613555 = validateParameter(valid_613555, JString, required = false,
+  if valid_611554 != nil:
+    section.add "X-Amz-Signature", valid_611554
+  var valid_611555 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611555 = validateParameter(valid_611555, JString, required = false,
                                  default = nil)
-  if valid_613555 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613555
-  var valid_613556 = header.getOrDefault("X-Amz-Date")
-  valid_613556 = validateParameter(valid_613556, JString, required = false,
+  if valid_611555 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611555
+  var valid_611556 = header.getOrDefault("X-Amz-Date")
+  valid_611556 = validateParameter(valid_611556, JString, required = false,
                                  default = nil)
-  if valid_613556 != nil:
-    section.add "X-Amz-Date", valid_613556
-  var valid_613557 = header.getOrDefault("X-Amz-Credential")
-  valid_613557 = validateParameter(valid_613557, JString, required = false,
+  if valid_611556 != nil:
+    section.add "X-Amz-Date", valid_611556
+  var valid_611557 = header.getOrDefault("X-Amz-Credential")
+  valid_611557 = validateParameter(valid_611557, JString, required = false,
                                  default = nil)
-  if valid_613557 != nil:
-    section.add "X-Amz-Credential", valid_613557
-  var valid_613558 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613558 = validateParameter(valid_613558, JString, required = false,
+  if valid_611557 != nil:
+    section.add "X-Amz-Credential", valid_611557
+  var valid_611558 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611558 = validateParameter(valid_611558, JString, required = false,
                                  default = nil)
-  if valid_613558 != nil:
-    section.add "X-Amz-Security-Token", valid_613558
-  var valid_613559 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613559 = validateParameter(valid_613559, JString, required = false,
+  if valid_611558 != nil:
+    section.add "X-Amz-Security-Token", valid_611558
+  var valid_611559 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611559 = validateParameter(valid_611559, JString, required = false,
                                  default = nil)
-  if valid_613559 != nil:
-    section.add "X-Amz-Algorithm", valid_613559
-  var valid_613560 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613560 = validateParameter(valid_613560, JString, required = false,
+  if valid_611559 != nil:
+    section.add "X-Amz-Algorithm", valid_611559
+  var valid_611560 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611560 = validateParameter(valid_611560, JString, required = false,
                                  default = nil)
-  if valid_613560 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613560
+  if valid_611560 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611560
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2470,48 +2423,46 @@ proc validate_DeregisterVolume_613551(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613562: Call_DeregisterVolume_613550; path: JsonNode;
+proc call*(call_611562: Call_DeregisterVolume_611550; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Deregisters an Amazon EBS volume. The volume can then be registered by another stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613562.validator(path, query, header, formData, body)
-  let scheme = call_613562.pickScheme
+  let valid = call_611562.validator(path, query, header, formData, body)
+  let scheme = call_611562.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613562.url(scheme.get, call_613562.host, call_613562.base,
-                         call_613562.route, valid.getOrDefault("path"),
+  let url = call_611562.url(scheme.get, call_611562.host, call_611562.base,
+                         call_611562.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613562, url, valid)
+  result = atozHook(call_611562, url, valid)
 
-proc call*(call_613563: Call_DeregisterVolume_613550; body: JsonNode): Recallable =
+proc call*(call_611563: Call_DeregisterVolume_611550; body: JsonNode): Recallable =
   ## deregisterVolume
   ## <p>Deregisters an Amazon EBS volume. The volume can then be registered by another stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613564 = newJObject()
+  var body_611564 = newJObject()
   if body != nil:
-    body_613564 = body
-  result = call_613563.call(nil, nil, nil, nil, body_613564)
+    body_611564 = body
+  result = call_611563.call(nil, nil, nil, nil, body_611564)
 
-var deregisterVolume* = Call_DeregisterVolume_613550(name: "deregisterVolume",
+var deregisterVolume* = Call_DeregisterVolume_611550(name: "deregisterVolume",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DeregisterVolume",
-    validator: validate_DeregisterVolume_613551, base: "/",
-    url: url_DeregisterVolume_613552, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DeregisterVolume_611551, base: "/",
+    url: url_DeregisterVolume_611552, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeAgentVersions_613565 = ref object of OpenApiRestCall_612658
-proc url_DescribeAgentVersions_613567(protocol: Scheme; host: string; base: string;
+  Call_DescribeAgentVersions_611565 = ref object of OpenApiRestCall_610658
+proc url_DescribeAgentVersions_611567(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeAgentVersions_613566(path: JsonNode; query: JsonNode;
+proc validate_DescribeAgentVersions_611566(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the available AWS OpsWorks Stacks agent versions. You must specify a stack ID or a configuration manager. <code>DescribeAgentVersions</code> returns a list of available agent versions for the specified stack or configuration manager.
   ## 
@@ -2531,46 +2482,46 @@ proc validate_DescribeAgentVersions_613566(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613568 = header.getOrDefault("X-Amz-Target")
-  valid_613568 = validateParameter(valid_613568, JString, required = true, default = newJString(
+  var valid_611568 = header.getOrDefault("X-Amz-Target")
+  valid_611568 = validateParameter(valid_611568, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeAgentVersions"))
-  if valid_613568 != nil:
-    section.add "X-Amz-Target", valid_613568
-  var valid_613569 = header.getOrDefault("X-Amz-Signature")
-  valid_613569 = validateParameter(valid_613569, JString, required = false,
+  if valid_611568 != nil:
+    section.add "X-Amz-Target", valid_611568
+  var valid_611569 = header.getOrDefault("X-Amz-Signature")
+  valid_611569 = validateParameter(valid_611569, JString, required = false,
                                  default = nil)
-  if valid_613569 != nil:
-    section.add "X-Amz-Signature", valid_613569
-  var valid_613570 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613570 = validateParameter(valid_613570, JString, required = false,
+  if valid_611569 != nil:
+    section.add "X-Amz-Signature", valid_611569
+  var valid_611570 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611570 = validateParameter(valid_611570, JString, required = false,
                                  default = nil)
-  if valid_613570 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613570
-  var valid_613571 = header.getOrDefault("X-Amz-Date")
-  valid_613571 = validateParameter(valid_613571, JString, required = false,
+  if valid_611570 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611570
+  var valid_611571 = header.getOrDefault("X-Amz-Date")
+  valid_611571 = validateParameter(valid_611571, JString, required = false,
                                  default = nil)
-  if valid_613571 != nil:
-    section.add "X-Amz-Date", valid_613571
-  var valid_613572 = header.getOrDefault("X-Amz-Credential")
-  valid_613572 = validateParameter(valid_613572, JString, required = false,
+  if valid_611571 != nil:
+    section.add "X-Amz-Date", valid_611571
+  var valid_611572 = header.getOrDefault("X-Amz-Credential")
+  valid_611572 = validateParameter(valid_611572, JString, required = false,
                                  default = nil)
-  if valid_613572 != nil:
-    section.add "X-Amz-Credential", valid_613572
-  var valid_613573 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613573 = validateParameter(valid_613573, JString, required = false,
+  if valid_611572 != nil:
+    section.add "X-Amz-Credential", valid_611572
+  var valid_611573 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611573 = validateParameter(valid_611573, JString, required = false,
                                  default = nil)
-  if valid_613573 != nil:
-    section.add "X-Amz-Security-Token", valid_613573
-  var valid_613574 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613574 = validateParameter(valid_613574, JString, required = false,
+  if valid_611573 != nil:
+    section.add "X-Amz-Security-Token", valid_611573
+  var valid_611574 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611574 = validateParameter(valid_611574, JString, required = false,
                                  default = nil)
-  if valid_613574 != nil:
-    section.add "X-Amz-Algorithm", valid_613574
-  var valid_613575 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613575 = validateParameter(valid_613575, JString, required = false,
+  if valid_611574 != nil:
+    section.add "X-Amz-Algorithm", valid_611574
+  var valid_611575 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611575 = validateParameter(valid_611575, JString, required = false,
                                  default = nil)
-  if valid_613575 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613575
+  if valid_611575 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611575
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2581,49 +2532,47 @@ proc validate_DescribeAgentVersions_613566(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613577: Call_DescribeAgentVersions_613565; path: JsonNode;
+proc call*(call_611577: Call_DescribeAgentVersions_611565; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the available AWS OpsWorks Stacks agent versions. You must specify a stack ID or a configuration manager. <code>DescribeAgentVersions</code> returns a list of available agent versions for the specified stack or configuration manager.
   ## 
-  let valid = call_613577.validator(path, query, header, formData, body)
-  let scheme = call_613577.pickScheme
+  let valid = call_611577.validator(path, query, header, formData, body)
+  let scheme = call_611577.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613577.url(scheme.get, call_613577.host, call_613577.base,
-                         call_613577.route, valid.getOrDefault("path"),
+  let url = call_611577.url(scheme.get, call_611577.host, call_611577.base,
+                         call_611577.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613577, url, valid)
+  result = atozHook(call_611577, url, valid)
 
-proc call*(call_613578: Call_DescribeAgentVersions_613565; body: JsonNode): Recallable =
+proc call*(call_611578: Call_DescribeAgentVersions_611565; body: JsonNode): Recallable =
   ## describeAgentVersions
   ## Describes the available AWS OpsWorks Stacks agent versions. You must specify a stack ID or a configuration manager. <code>DescribeAgentVersions</code> returns a list of available agent versions for the specified stack or configuration manager.
   ##   body: JObject (required)
-  var body_613579 = newJObject()
+  var body_611579 = newJObject()
   if body != nil:
-    body_613579 = body
-  result = call_613578.call(nil, nil, nil, nil, body_613579)
+    body_611579 = body
+  result = call_611578.call(nil, nil, nil, nil, body_611579)
 
-var describeAgentVersions* = Call_DescribeAgentVersions_613565(
+var describeAgentVersions* = Call_DescribeAgentVersions_611565(
     name: "describeAgentVersions", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeAgentVersions",
-    validator: validate_DescribeAgentVersions_613566, base: "/",
-    url: url_DescribeAgentVersions_613567, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeAgentVersions_611566, base: "/",
+    url: url_DescribeAgentVersions_611567, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeApps_613580 = ref object of OpenApiRestCall_612658
-proc url_DescribeApps_613582(protocol: Scheme; host: string; base: string;
+  Call_DescribeApps_611580 = ref object of OpenApiRestCall_610658
+proc url_DescribeApps_611582(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeApps_613581(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_DescribeApps_611581(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Requests a description of a specified set of apps.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -2643,46 +2592,46 @@ proc validate_DescribeApps_613581(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613583 = header.getOrDefault("X-Amz-Target")
-  valid_613583 = validateParameter(valid_613583, JString, required = true, default = newJString(
+  var valid_611583 = header.getOrDefault("X-Amz-Target")
+  valid_611583 = validateParameter(valid_611583, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeApps"))
-  if valid_613583 != nil:
-    section.add "X-Amz-Target", valid_613583
-  var valid_613584 = header.getOrDefault("X-Amz-Signature")
-  valid_613584 = validateParameter(valid_613584, JString, required = false,
+  if valid_611583 != nil:
+    section.add "X-Amz-Target", valid_611583
+  var valid_611584 = header.getOrDefault("X-Amz-Signature")
+  valid_611584 = validateParameter(valid_611584, JString, required = false,
                                  default = nil)
-  if valid_613584 != nil:
-    section.add "X-Amz-Signature", valid_613584
-  var valid_613585 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613585 = validateParameter(valid_613585, JString, required = false,
+  if valid_611584 != nil:
+    section.add "X-Amz-Signature", valid_611584
+  var valid_611585 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611585 = validateParameter(valid_611585, JString, required = false,
                                  default = nil)
-  if valid_613585 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613585
-  var valid_613586 = header.getOrDefault("X-Amz-Date")
-  valid_613586 = validateParameter(valid_613586, JString, required = false,
+  if valid_611585 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611585
+  var valid_611586 = header.getOrDefault("X-Amz-Date")
+  valid_611586 = validateParameter(valid_611586, JString, required = false,
                                  default = nil)
-  if valid_613586 != nil:
-    section.add "X-Amz-Date", valid_613586
-  var valid_613587 = header.getOrDefault("X-Amz-Credential")
-  valid_613587 = validateParameter(valid_613587, JString, required = false,
+  if valid_611586 != nil:
+    section.add "X-Amz-Date", valid_611586
+  var valid_611587 = header.getOrDefault("X-Amz-Credential")
+  valid_611587 = validateParameter(valid_611587, JString, required = false,
                                  default = nil)
-  if valid_613587 != nil:
-    section.add "X-Amz-Credential", valid_613587
-  var valid_613588 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613588 = validateParameter(valid_613588, JString, required = false,
+  if valid_611587 != nil:
+    section.add "X-Amz-Credential", valid_611587
+  var valid_611588 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611588 = validateParameter(valid_611588, JString, required = false,
                                  default = nil)
-  if valid_613588 != nil:
-    section.add "X-Amz-Security-Token", valid_613588
-  var valid_613589 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613589 = validateParameter(valid_613589, JString, required = false,
+  if valid_611588 != nil:
+    section.add "X-Amz-Security-Token", valid_611588
+  var valid_611589 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611589 = validateParameter(valid_611589, JString, required = false,
                                  default = nil)
-  if valid_613589 != nil:
-    section.add "X-Amz-Algorithm", valid_613589
-  var valid_613590 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613590 = validateParameter(valid_613590, JString, required = false,
+  if valid_611589 != nil:
+    section.add "X-Amz-Algorithm", valid_611589
+  var valid_611590 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611590 = validateParameter(valid_611590, JString, required = false,
                                  default = nil)
-  if valid_613590 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613590
+  if valid_611590 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611590
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2693,48 +2642,46 @@ proc validate_DescribeApps_613581(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_613592: Call_DescribeApps_613580; path: JsonNode; query: JsonNode;
+proc call*(call_611592: Call_DescribeApps_611580; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Requests a description of a specified set of apps.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613592.validator(path, query, header, formData, body)
-  let scheme = call_613592.pickScheme
+  let valid = call_611592.validator(path, query, header, formData, body)
+  let scheme = call_611592.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613592.url(scheme.get, call_613592.host, call_613592.base,
-                         call_613592.route, valid.getOrDefault("path"),
+  let url = call_611592.url(scheme.get, call_611592.host, call_611592.base,
+                         call_611592.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613592, url, valid)
+  result = atozHook(call_611592, url, valid)
 
-proc call*(call_613593: Call_DescribeApps_613580; body: JsonNode): Recallable =
+proc call*(call_611593: Call_DescribeApps_611580; body: JsonNode): Recallable =
   ## describeApps
   ## <p>Requests a description of a specified set of apps.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613594 = newJObject()
+  var body_611594 = newJObject()
   if body != nil:
-    body_613594 = body
-  result = call_613593.call(nil, nil, nil, nil, body_613594)
+    body_611594 = body
+  result = call_611593.call(nil, nil, nil, nil, body_611594)
 
-var describeApps* = Call_DescribeApps_613580(name: "describeApps",
+var describeApps* = Call_DescribeApps_611580(name: "describeApps",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeApps",
-    validator: validate_DescribeApps_613581, base: "/", url: url_DescribeApps_613582,
+    validator: validate_DescribeApps_611581, base: "/", url: url_DescribeApps_611582,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeCommands_613595 = ref object of OpenApiRestCall_612658
-proc url_DescribeCommands_613597(protocol: Scheme; host: string; base: string;
+  Call_DescribeCommands_611595 = ref object of OpenApiRestCall_610658
+proc url_DescribeCommands_611597(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeCommands_613596(path: JsonNode; query: JsonNode;
+proc validate_DescribeCommands_611596(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Describes the results of specified commands.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -2755,46 +2702,46 @@ proc validate_DescribeCommands_613596(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613598 = header.getOrDefault("X-Amz-Target")
-  valid_613598 = validateParameter(valid_613598, JString, required = true, default = newJString(
+  var valid_611598 = header.getOrDefault("X-Amz-Target")
+  valid_611598 = validateParameter(valid_611598, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeCommands"))
-  if valid_613598 != nil:
-    section.add "X-Amz-Target", valid_613598
-  var valid_613599 = header.getOrDefault("X-Amz-Signature")
-  valid_613599 = validateParameter(valid_613599, JString, required = false,
+  if valid_611598 != nil:
+    section.add "X-Amz-Target", valid_611598
+  var valid_611599 = header.getOrDefault("X-Amz-Signature")
+  valid_611599 = validateParameter(valid_611599, JString, required = false,
                                  default = nil)
-  if valid_613599 != nil:
-    section.add "X-Amz-Signature", valid_613599
-  var valid_613600 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613600 = validateParameter(valid_613600, JString, required = false,
+  if valid_611599 != nil:
+    section.add "X-Amz-Signature", valid_611599
+  var valid_611600 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611600 = validateParameter(valid_611600, JString, required = false,
                                  default = nil)
-  if valid_613600 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613600
-  var valid_613601 = header.getOrDefault("X-Amz-Date")
-  valid_613601 = validateParameter(valid_613601, JString, required = false,
+  if valid_611600 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611600
+  var valid_611601 = header.getOrDefault("X-Amz-Date")
+  valid_611601 = validateParameter(valid_611601, JString, required = false,
                                  default = nil)
-  if valid_613601 != nil:
-    section.add "X-Amz-Date", valid_613601
-  var valid_613602 = header.getOrDefault("X-Amz-Credential")
-  valid_613602 = validateParameter(valid_613602, JString, required = false,
+  if valid_611601 != nil:
+    section.add "X-Amz-Date", valid_611601
+  var valid_611602 = header.getOrDefault("X-Amz-Credential")
+  valid_611602 = validateParameter(valid_611602, JString, required = false,
                                  default = nil)
-  if valid_613602 != nil:
-    section.add "X-Amz-Credential", valid_613602
-  var valid_613603 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613603 = validateParameter(valid_613603, JString, required = false,
+  if valid_611602 != nil:
+    section.add "X-Amz-Credential", valid_611602
+  var valid_611603 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611603 = validateParameter(valid_611603, JString, required = false,
                                  default = nil)
-  if valid_613603 != nil:
-    section.add "X-Amz-Security-Token", valid_613603
-  var valid_613604 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613604 = validateParameter(valid_613604, JString, required = false,
+  if valid_611603 != nil:
+    section.add "X-Amz-Security-Token", valid_611603
+  var valid_611604 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611604 = validateParameter(valid_611604, JString, required = false,
                                  default = nil)
-  if valid_613604 != nil:
-    section.add "X-Amz-Algorithm", valid_613604
-  var valid_613605 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613605 = validateParameter(valid_613605, JString, required = false,
+  if valid_611604 != nil:
+    section.add "X-Amz-Algorithm", valid_611604
+  var valid_611605 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611605 = validateParameter(valid_611605, JString, required = false,
                                  default = nil)
-  if valid_613605 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613605
+  if valid_611605 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611605
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2805,48 +2752,46 @@ proc validate_DescribeCommands_613596(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613607: Call_DescribeCommands_613595; path: JsonNode;
+proc call*(call_611607: Call_DescribeCommands_611595; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the results of specified commands.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613607.validator(path, query, header, formData, body)
-  let scheme = call_613607.pickScheme
+  let valid = call_611607.validator(path, query, header, formData, body)
+  let scheme = call_611607.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613607.url(scheme.get, call_613607.host, call_613607.base,
-                         call_613607.route, valid.getOrDefault("path"),
+  let url = call_611607.url(scheme.get, call_611607.host, call_611607.base,
+                         call_611607.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613607, url, valid)
+  result = atozHook(call_611607, url, valid)
 
-proc call*(call_613608: Call_DescribeCommands_613595; body: JsonNode): Recallable =
+proc call*(call_611608: Call_DescribeCommands_611595; body: JsonNode): Recallable =
   ## describeCommands
   ## <p>Describes the results of specified commands.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613609 = newJObject()
+  var body_611609 = newJObject()
   if body != nil:
-    body_613609 = body
-  result = call_613608.call(nil, nil, nil, nil, body_613609)
+    body_611609 = body
+  result = call_611608.call(nil, nil, nil, nil, body_611609)
 
-var describeCommands* = Call_DescribeCommands_613595(name: "describeCommands",
+var describeCommands* = Call_DescribeCommands_611595(name: "describeCommands",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeCommands",
-    validator: validate_DescribeCommands_613596, base: "/",
-    url: url_DescribeCommands_613597, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeCommands_611596, base: "/",
+    url: url_DescribeCommands_611597, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeDeployments_613610 = ref object of OpenApiRestCall_612658
-proc url_DescribeDeployments_613612(protocol: Scheme; host: string; base: string;
+  Call_DescribeDeployments_611610 = ref object of OpenApiRestCall_610658
+proc url_DescribeDeployments_611612(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeDeployments_613611(path: JsonNode; query: JsonNode;
+proc validate_DescribeDeployments_611611(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Requests a description of a specified set of deployments.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -2867,46 +2812,46 @@ proc validate_DescribeDeployments_613611(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613613 = header.getOrDefault("X-Amz-Target")
-  valid_613613 = validateParameter(valid_613613, JString, required = true, default = newJString(
+  var valid_611613 = header.getOrDefault("X-Amz-Target")
+  valid_611613 = validateParameter(valid_611613, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeDeployments"))
-  if valid_613613 != nil:
-    section.add "X-Amz-Target", valid_613613
-  var valid_613614 = header.getOrDefault("X-Amz-Signature")
-  valid_613614 = validateParameter(valid_613614, JString, required = false,
+  if valid_611613 != nil:
+    section.add "X-Amz-Target", valid_611613
+  var valid_611614 = header.getOrDefault("X-Amz-Signature")
+  valid_611614 = validateParameter(valid_611614, JString, required = false,
                                  default = nil)
-  if valid_613614 != nil:
-    section.add "X-Amz-Signature", valid_613614
-  var valid_613615 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613615 = validateParameter(valid_613615, JString, required = false,
+  if valid_611614 != nil:
+    section.add "X-Amz-Signature", valid_611614
+  var valid_611615 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611615 = validateParameter(valid_611615, JString, required = false,
                                  default = nil)
-  if valid_613615 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613615
-  var valid_613616 = header.getOrDefault("X-Amz-Date")
-  valid_613616 = validateParameter(valid_613616, JString, required = false,
+  if valid_611615 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611615
+  var valid_611616 = header.getOrDefault("X-Amz-Date")
+  valid_611616 = validateParameter(valid_611616, JString, required = false,
                                  default = nil)
-  if valid_613616 != nil:
-    section.add "X-Amz-Date", valid_613616
-  var valid_613617 = header.getOrDefault("X-Amz-Credential")
-  valid_613617 = validateParameter(valid_613617, JString, required = false,
+  if valid_611616 != nil:
+    section.add "X-Amz-Date", valid_611616
+  var valid_611617 = header.getOrDefault("X-Amz-Credential")
+  valid_611617 = validateParameter(valid_611617, JString, required = false,
                                  default = nil)
-  if valid_613617 != nil:
-    section.add "X-Amz-Credential", valid_613617
-  var valid_613618 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613618 = validateParameter(valid_613618, JString, required = false,
+  if valid_611617 != nil:
+    section.add "X-Amz-Credential", valid_611617
+  var valid_611618 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611618 = validateParameter(valid_611618, JString, required = false,
                                  default = nil)
-  if valid_613618 != nil:
-    section.add "X-Amz-Security-Token", valid_613618
-  var valid_613619 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613619 = validateParameter(valid_613619, JString, required = false,
+  if valid_611618 != nil:
+    section.add "X-Amz-Security-Token", valid_611618
+  var valid_611619 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611619 = validateParameter(valid_611619, JString, required = false,
                                  default = nil)
-  if valid_613619 != nil:
-    section.add "X-Amz-Algorithm", valid_613619
-  var valid_613620 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613620 = validateParameter(valid_613620, JString, required = false,
+  if valid_611619 != nil:
+    section.add "X-Amz-Algorithm", valid_611619
+  var valid_611620 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611620 = validateParameter(valid_611620, JString, required = false,
                                  default = nil)
-  if valid_613620 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613620
+  if valid_611620 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611620
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -2917,49 +2862,47 @@ proc validate_DescribeDeployments_613611(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613622: Call_DescribeDeployments_613610; path: JsonNode;
+proc call*(call_611622: Call_DescribeDeployments_611610; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Requests a description of a specified set of deployments.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613622.validator(path, query, header, formData, body)
-  let scheme = call_613622.pickScheme
+  let valid = call_611622.validator(path, query, header, formData, body)
+  let scheme = call_611622.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613622.url(scheme.get, call_613622.host, call_613622.base,
-                         call_613622.route, valid.getOrDefault("path"),
+  let url = call_611622.url(scheme.get, call_611622.host, call_611622.base,
+                         call_611622.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613622, url, valid)
+  result = atozHook(call_611622, url, valid)
 
-proc call*(call_613623: Call_DescribeDeployments_613610; body: JsonNode): Recallable =
+proc call*(call_611623: Call_DescribeDeployments_611610; body: JsonNode): Recallable =
   ## describeDeployments
   ## <p>Requests a description of a specified set of deployments.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613624 = newJObject()
+  var body_611624 = newJObject()
   if body != nil:
-    body_613624 = body
-  result = call_613623.call(nil, nil, nil, nil, body_613624)
+    body_611624 = body
+  result = call_611623.call(nil, nil, nil, nil, body_611624)
 
-var describeDeployments* = Call_DescribeDeployments_613610(
+var describeDeployments* = Call_DescribeDeployments_611610(
     name: "describeDeployments", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeDeployments",
-    validator: validate_DescribeDeployments_613611, base: "/",
-    url: url_DescribeDeployments_613612, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeDeployments_611611, base: "/",
+    url: url_DescribeDeployments_611612, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeEcsClusters_613625 = ref object of OpenApiRestCall_612658
-proc url_DescribeEcsClusters_613627(protocol: Scheme; host: string; base: string;
+  Call_DescribeEcsClusters_611625 = ref object of OpenApiRestCall_610658
+proc url_DescribeEcsClusters_611627(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeEcsClusters_613626(path: JsonNode; query: JsonNode;
+proc validate_DescribeEcsClusters_611626(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Describes Amazon ECS clusters that are registered with a stack. If you specify only a stack ID, you can use the <code>MaxResults</code> and <code>NextToken</code> parameters to paginate the response. However, AWS OpsWorks Stacks currently supports only one cluster per layer, so the result set has a maximum of one element.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack or an attached policy that explicitly grants permission. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
@@ -2974,16 +2917,16 @@ proc validate_DescribeEcsClusters_613626(path: JsonNode; query: JsonNode;
   ##   NextToken: JString
   ##            : Pagination token
   section = newJObject()
-  var valid_613628 = query.getOrDefault("MaxResults")
-  valid_613628 = validateParameter(valid_613628, JString, required = false,
+  var valid_611628 = query.getOrDefault("MaxResults")
+  valid_611628 = validateParameter(valid_611628, JString, required = false,
                                  default = nil)
-  if valid_613628 != nil:
-    section.add "MaxResults", valid_613628
-  var valid_613629 = query.getOrDefault("NextToken")
-  valid_613629 = validateParameter(valid_613629, JString, required = false,
+  if valid_611628 != nil:
+    section.add "MaxResults", valid_611628
+  var valid_611629 = query.getOrDefault("NextToken")
+  valid_611629 = validateParameter(valid_611629, JString, required = false,
                                  default = nil)
-  if valid_613629 != nil:
-    section.add "NextToken", valid_613629
+  if valid_611629 != nil:
+    section.add "NextToken", valid_611629
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Target: JString (required)
@@ -2995,46 +2938,46 @@ proc validate_DescribeEcsClusters_613626(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613630 = header.getOrDefault("X-Amz-Target")
-  valid_613630 = validateParameter(valid_613630, JString, required = true, default = newJString(
+  var valid_611630 = header.getOrDefault("X-Amz-Target")
+  valid_611630 = validateParameter(valid_611630, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeEcsClusters"))
-  if valid_613630 != nil:
-    section.add "X-Amz-Target", valid_613630
-  var valid_613631 = header.getOrDefault("X-Amz-Signature")
-  valid_613631 = validateParameter(valid_613631, JString, required = false,
+  if valid_611630 != nil:
+    section.add "X-Amz-Target", valid_611630
+  var valid_611631 = header.getOrDefault("X-Amz-Signature")
+  valid_611631 = validateParameter(valid_611631, JString, required = false,
                                  default = nil)
-  if valid_613631 != nil:
-    section.add "X-Amz-Signature", valid_613631
-  var valid_613632 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613632 = validateParameter(valid_613632, JString, required = false,
+  if valid_611631 != nil:
+    section.add "X-Amz-Signature", valid_611631
+  var valid_611632 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611632 = validateParameter(valid_611632, JString, required = false,
                                  default = nil)
-  if valid_613632 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613632
-  var valid_613633 = header.getOrDefault("X-Amz-Date")
-  valid_613633 = validateParameter(valid_613633, JString, required = false,
+  if valid_611632 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611632
+  var valid_611633 = header.getOrDefault("X-Amz-Date")
+  valid_611633 = validateParameter(valid_611633, JString, required = false,
                                  default = nil)
-  if valid_613633 != nil:
-    section.add "X-Amz-Date", valid_613633
-  var valid_613634 = header.getOrDefault("X-Amz-Credential")
-  valid_613634 = validateParameter(valid_613634, JString, required = false,
+  if valid_611633 != nil:
+    section.add "X-Amz-Date", valid_611633
+  var valid_611634 = header.getOrDefault("X-Amz-Credential")
+  valid_611634 = validateParameter(valid_611634, JString, required = false,
                                  default = nil)
-  if valid_613634 != nil:
-    section.add "X-Amz-Credential", valid_613634
-  var valid_613635 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613635 = validateParameter(valid_613635, JString, required = false,
+  if valid_611634 != nil:
+    section.add "X-Amz-Credential", valid_611634
+  var valid_611635 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611635 = validateParameter(valid_611635, JString, required = false,
                                  default = nil)
-  if valid_613635 != nil:
-    section.add "X-Amz-Security-Token", valid_613635
-  var valid_613636 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613636 = validateParameter(valid_613636, JString, required = false,
+  if valid_611635 != nil:
+    section.add "X-Amz-Security-Token", valid_611635
+  var valid_611636 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611636 = validateParameter(valid_611636, JString, required = false,
                                  default = nil)
-  if valid_613636 != nil:
-    section.add "X-Amz-Algorithm", valid_613636
-  var valid_613637 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613637 = validateParameter(valid_613637, JString, required = false,
+  if valid_611636 != nil:
+    section.add "X-Amz-Algorithm", valid_611636
+  var valid_611637 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611637 = validateParameter(valid_611637, JString, required = false,
                                  default = nil)
-  if valid_613637 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613637
+  if valid_611637 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611637
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3045,20 +2988,20 @@ proc validate_DescribeEcsClusters_613626(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613639: Call_DescribeEcsClusters_613625; path: JsonNode;
+proc call*(call_611639: Call_DescribeEcsClusters_611625; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes Amazon ECS clusters that are registered with a stack. If you specify only a stack ID, you can use the <code>MaxResults</code> and <code>NextToken</code> parameters to paginate the response. However, AWS OpsWorks Stacks currently supports only one cluster per layer, so the result set has a maximum of one element.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack or an attached policy that explicitly grants permission. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
   ## 
-  let valid = call_613639.validator(path, query, header, formData, body)
-  let scheme = call_613639.pickScheme
+  let valid = call_611639.validator(path, query, header, formData, body)
+  let scheme = call_611639.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613639.url(scheme.get, call_613639.host, call_613639.base,
-                         call_613639.route, valid.getOrDefault("path"),
+  let url = call_611639.url(scheme.get, call_611639.host, call_611639.base,
+                         call_611639.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613639, url, valid)
+  result = atozHook(call_611639, url, valid)
 
-proc call*(call_613640: Call_DescribeEcsClusters_613625; body: JsonNode;
+proc call*(call_611640: Call_DescribeEcsClusters_611625; body: JsonNode;
           MaxResults: string = ""; NextToken: string = ""): Recallable =
   ## describeEcsClusters
   ## <p>Describes Amazon ECS clusters that are registered with a stack. If you specify only a stack ID, you can use the <code>MaxResults</code> and <code>NextToken</code> parameters to paginate the response. However, AWS OpsWorks Stacks currently supports only one cluster per layer, so the result set has a maximum of one element.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack or an attached policy that explicitly grants permission. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
@@ -3067,35 +3010,33 @@ proc call*(call_613640: Call_DescribeEcsClusters_613625; body: JsonNode;
   ##   NextToken: string
   ##            : Pagination token
   ##   body: JObject (required)
-  var query_613641 = newJObject()
-  var body_613642 = newJObject()
-  add(query_613641, "MaxResults", newJString(MaxResults))
-  add(query_613641, "NextToken", newJString(NextToken))
+  var query_611641 = newJObject()
+  var body_611642 = newJObject()
+  add(query_611641, "MaxResults", newJString(MaxResults))
+  add(query_611641, "NextToken", newJString(NextToken))
   if body != nil:
-    body_613642 = body
-  result = call_613640.call(nil, query_613641, nil, nil, body_613642)
+    body_611642 = body
+  result = call_611640.call(nil, query_611641, nil, nil, body_611642)
 
-var describeEcsClusters* = Call_DescribeEcsClusters_613625(
+var describeEcsClusters* = Call_DescribeEcsClusters_611625(
     name: "describeEcsClusters", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeEcsClusters",
-    validator: validate_DescribeEcsClusters_613626, base: "/",
-    url: url_DescribeEcsClusters_613627, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeEcsClusters_611626, base: "/",
+    url: url_DescribeEcsClusters_611627, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeElasticIps_613644 = ref object of OpenApiRestCall_612658
-proc url_DescribeElasticIps_613646(protocol: Scheme; host: string; base: string;
+  Call_DescribeElasticIps_611644 = ref object of OpenApiRestCall_610658
+proc url_DescribeElasticIps_611646(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeElasticIps_613645(path: JsonNode; query: JsonNode;
+proc validate_DescribeElasticIps_611645(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Describes <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html">Elastic IP addresses</a>.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -3116,46 +3057,46 @@ proc validate_DescribeElasticIps_613645(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613647 = header.getOrDefault("X-Amz-Target")
-  valid_613647 = validateParameter(valid_613647, JString, required = true, default = newJString(
+  var valid_611647 = header.getOrDefault("X-Amz-Target")
+  valid_611647 = validateParameter(valid_611647, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeElasticIps"))
-  if valid_613647 != nil:
-    section.add "X-Amz-Target", valid_613647
-  var valid_613648 = header.getOrDefault("X-Amz-Signature")
-  valid_613648 = validateParameter(valid_613648, JString, required = false,
+  if valid_611647 != nil:
+    section.add "X-Amz-Target", valid_611647
+  var valid_611648 = header.getOrDefault("X-Amz-Signature")
+  valid_611648 = validateParameter(valid_611648, JString, required = false,
                                  default = nil)
-  if valid_613648 != nil:
-    section.add "X-Amz-Signature", valid_613648
-  var valid_613649 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613649 = validateParameter(valid_613649, JString, required = false,
+  if valid_611648 != nil:
+    section.add "X-Amz-Signature", valid_611648
+  var valid_611649 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611649 = validateParameter(valid_611649, JString, required = false,
                                  default = nil)
-  if valid_613649 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613649
-  var valid_613650 = header.getOrDefault("X-Amz-Date")
-  valid_613650 = validateParameter(valid_613650, JString, required = false,
+  if valid_611649 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611649
+  var valid_611650 = header.getOrDefault("X-Amz-Date")
+  valid_611650 = validateParameter(valid_611650, JString, required = false,
                                  default = nil)
-  if valid_613650 != nil:
-    section.add "X-Amz-Date", valid_613650
-  var valid_613651 = header.getOrDefault("X-Amz-Credential")
-  valid_613651 = validateParameter(valid_613651, JString, required = false,
+  if valid_611650 != nil:
+    section.add "X-Amz-Date", valid_611650
+  var valid_611651 = header.getOrDefault("X-Amz-Credential")
+  valid_611651 = validateParameter(valid_611651, JString, required = false,
                                  default = nil)
-  if valid_613651 != nil:
-    section.add "X-Amz-Credential", valid_613651
-  var valid_613652 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613652 = validateParameter(valid_613652, JString, required = false,
+  if valid_611651 != nil:
+    section.add "X-Amz-Credential", valid_611651
+  var valid_611652 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611652 = validateParameter(valid_611652, JString, required = false,
                                  default = nil)
-  if valid_613652 != nil:
-    section.add "X-Amz-Security-Token", valid_613652
-  var valid_613653 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613653 = validateParameter(valid_613653, JString, required = false,
+  if valid_611652 != nil:
+    section.add "X-Amz-Security-Token", valid_611652
+  var valid_611653 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611653 = validateParameter(valid_611653, JString, required = false,
                                  default = nil)
-  if valid_613653 != nil:
-    section.add "X-Amz-Algorithm", valid_613653
-  var valid_613654 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613654 = validateParameter(valid_613654, JString, required = false,
+  if valid_611653 != nil:
+    section.add "X-Amz-Algorithm", valid_611653
+  var valid_611654 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611654 = validateParameter(valid_611654, JString, required = false,
                                  default = nil)
-  if valid_613654 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613654
+  if valid_611654 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611654
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3166,49 +3107,47 @@ proc validate_DescribeElasticIps_613645(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613656: Call_DescribeElasticIps_613644; path: JsonNode;
+proc call*(call_611656: Call_DescribeElasticIps_611644; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html">Elastic IP addresses</a>.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613656.validator(path, query, header, formData, body)
-  let scheme = call_613656.pickScheme
+  let valid = call_611656.validator(path, query, header, formData, body)
+  let scheme = call_611656.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613656.url(scheme.get, call_613656.host, call_613656.base,
-                         call_613656.route, valid.getOrDefault("path"),
+  let url = call_611656.url(scheme.get, call_611656.host, call_611656.base,
+                         call_611656.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613656, url, valid)
+  result = atozHook(call_611656, url, valid)
 
-proc call*(call_613657: Call_DescribeElasticIps_613644; body: JsonNode): Recallable =
+proc call*(call_611657: Call_DescribeElasticIps_611644; body: JsonNode): Recallable =
   ## describeElasticIps
   ## <p>Describes <a href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/elastic-ip-addresses-eip.html">Elastic IP addresses</a>.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613658 = newJObject()
+  var body_611658 = newJObject()
   if body != nil:
-    body_613658 = body
-  result = call_613657.call(nil, nil, nil, nil, body_613658)
+    body_611658 = body
+  result = call_611657.call(nil, nil, nil, nil, body_611658)
 
-var describeElasticIps* = Call_DescribeElasticIps_613644(
+var describeElasticIps* = Call_DescribeElasticIps_611644(
     name: "describeElasticIps", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeElasticIps",
-    validator: validate_DescribeElasticIps_613645, base: "/",
-    url: url_DescribeElasticIps_613646, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeElasticIps_611645, base: "/",
+    url: url_DescribeElasticIps_611646, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeElasticLoadBalancers_613659 = ref object of OpenApiRestCall_612658
-proc url_DescribeElasticLoadBalancers_613661(protocol: Scheme; host: string;
+  Call_DescribeElasticLoadBalancers_611659 = ref object of OpenApiRestCall_610658
+proc url_DescribeElasticLoadBalancers_611661(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeElasticLoadBalancers_613660(path: JsonNode; query: JsonNode;
+proc validate_DescribeElasticLoadBalancers_611660(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes a stack's Elastic Load Balancing instances.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -3228,46 +3167,46 @@ proc validate_DescribeElasticLoadBalancers_613660(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613662 = header.getOrDefault("X-Amz-Target")
-  valid_613662 = validateParameter(valid_613662, JString, required = true, default = newJString(
+  var valid_611662 = header.getOrDefault("X-Amz-Target")
+  valid_611662 = validateParameter(valid_611662, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeElasticLoadBalancers"))
-  if valid_613662 != nil:
-    section.add "X-Amz-Target", valid_613662
-  var valid_613663 = header.getOrDefault("X-Amz-Signature")
-  valid_613663 = validateParameter(valid_613663, JString, required = false,
+  if valid_611662 != nil:
+    section.add "X-Amz-Target", valid_611662
+  var valid_611663 = header.getOrDefault("X-Amz-Signature")
+  valid_611663 = validateParameter(valid_611663, JString, required = false,
                                  default = nil)
-  if valid_613663 != nil:
-    section.add "X-Amz-Signature", valid_613663
-  var valid_613664 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613664 = validateParameter(valid_613664, JString, required = false,
+  if valid_611663 != nil:
+    section.add "X-Amz-Signature", valid_611663
+  var valid_611664 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611664 = validateParameter(valid_611664, JString, required = false,
                                  default = nil)
-  if valid_613664 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613664
-  var valid_613665 = header.getOrDefault("X-Amz-Date")
-  valid_613665 = validateParameter(valid_613665, JString, required = false,
+  if valid_611664 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611664
+  var valid_611665 = header.getOrDefault("X-Amz-Date")
+  valid_611665 = validateParameter(valid_611665, JString, required = false,
                                  default = nil)
-  if valid_613665 != nil:
-    section.add "X-Amz-Date", valid_613665
-  var valid_613666 = header.getOrDefault("X-Amz-Credential")
-  valid_613666 = validateParameter(valid_613666, JString, required = false,
+  if valid_611665 != nil:
+    section.add "X-Amz-Date", valid_611665
+  var valid_611666 = header.getOrDefault("X-Amz-Credential")
+  valid_611666 = validateParameter(valid_611666, JString, required = false,
                                  default = nil)
-  if valid_613666 != nil:
-    section.add "X-Amz-Credential", valid_613666
-  var valid_613667 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613667 = validateParameter(valid_613667, JString, required = false,
+  if valid_611666 != nil:
+    section.add "X-Amz-Credential", valid_611666
+  var valid_611667 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611667 = validateParameter(valid_611667, JString, required = false,
                                  default = nil)
-  if valid_613667 != nil:
-    section.add "X-Amz-Security-Token", valid_613667
-  var valid_613668 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613668 = validateParameter(valid_613668, JString, required = false,
+  if valid_611667 != nil:
+    section.add "X-Amz-Security-Token", valid_611667
+  var valid_611668 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611668 = validateParameter(valid_611668, JString, required = false,
                                  default = nil)
-  if valid_613668 != nil:
-    section.add "X-Amz-Algorithm", valid_613668
-  var valid_613669 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613669 = validateParameter(valid_613669, JString, required = false,
+  if valid_611668 != nil:
+    section.add "X-Amz-Algorithm", valid_611668
+  var valid_611669 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611669 = validateParameter(valid_611669, JString, required = false,
                                  default = nil)
-  if valid_613669 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613669
+  if valid_611669 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611669
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3278,50 +3217,48 @@ proc validate_DescribeElasticLoadBalancers_613660(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_613671: Call_DescribeElasticLoadBalancers_613659; path: JsonNode;
+proc call*(call_611671: Call_DescribeElasticLoadBalancers_611659; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a stack's Elastic Load Balancing instances.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613671.validator(path, query, header, formData, body)
-  let scheme = call_613671.pickScheme
+  let valid = call_611671.validator(path, query, header, formData, body)
+  let scheme = call_611671.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613671.url(scheme.get, call_613671.host, call_613671.base,
-                         call_613671.route, valid.getOrDefault("path"),
+  let url = call_611671.url(scheme.get, call_611671.host, call_611671.base,
+                         call_611671.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613671, url, valid)
+  result = atozHook(call_611671, url, valid)
 
-proc call*(call_613672: Call_DescribeElasticLoadBalancers_613659; body: JsonNode): Recallable =
+proc call*(call_611672: Call_DescribeElasticLoadBalancers_611659; body: JsonNode): Recallable =
   ## describeElasticLoadBalancers
   ## <p>Describes a stack's Elastic Load Balancing instances.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613673 = newJObject()
+  var body_611673 = newJObject()
   if body != nil:
-    body_613673 = body
-  result = call_613672.call(nil, nil, nil, nil, body_613673)
+    body_611673 = body
+  result = call_611672.call(nil, nil, nil, nil, body_611673)
 
-var describeElasticLoadBalancers* = Call_DescribeElasticLoadBalancers_613659(
+var describeElasticLoadBalancers* = Call_DescribeElasticLoadBalancers_611659(
     name: "describeElasticLoadBalancers", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeElasticLoadBalancers",
-    validator: validate_DescribeElasticLoadBalancers_613660, base: "/",
-    url: url_DescribeElasticLoadBalancers_613661,
+    validator: validate_DescribeElasticLoadBalancers_611660, base: "/",
+    url: url_DescribeElasticLoadBalancers_611661,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeInstances_613674 = ref object of OpenApiRestCall_612658
-proc url_DescribeInstances_613676(protocol: Scheme; host: string; base: string;
+  Call_DescribeInstances_611674 = ref object of OpenApiRestCall_610658
+proc url_DescribeInstances_611676(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeInstances_613675(path: JsonNode; query: JsonNode;
+proc validate_DescribeInstances_611675(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Requests a description of a set of instances.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -3342,46 +3279,46 @@ proc validate_DescribeInstances_613675(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613677 = header.getOrDefault("X-Amz-Target")
-  valid_613677 = validateParameter(valid_613677, JString, required = true, default = newJString(
+  var valid_611677 = header.getOrDefault("X-Amz-Target")
+  valid_611677 = validateParameter(valid_611677, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeInstances"))
-  if valid_613677 != nil:
-    section.add "X-Amz-Target", valid_613677
-  var valid_613678 = header.getOrDefault("X-Amz-Signature")
-  valid_613678 = validateParameter(valid_613678, JString, required = false,
+  if valid_611677 != nil:
+    section.add "X-Amz-Target", valid_611677
+  var valid_611678 = header.getOrDefault("X-Amz-Signature")
+  valid_611678 = validateParameter(valid_611678, JString, required = false,
                                  default = nil)
-  if valid_613678 != nil:
-    section.add "X-Amz-Signature", valid_613678
-  var valid_613679 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613679 = validateParameter(valid_613679, JString, required = false,
+  if valid_611678 != nil:
+    section.add "X-Amz-Signature", valid_611678
+  var valid_611679 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611679 = validateParameter(valid_611679, JString, required = false,
                                  default = nil)
-  if valid_613679 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613679
-  var valid_613680 = header.getOrDefault("X-Amz-Date")
-  valid_613680 = validateParameter(valid_613680, JString, required = false,
+  if valid_611679 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611679
+  var valid_611680 = header.getOrDefault("X-Amz-Date")
+  valid_611680 = validateParameter(valid_611680, JString, required = false,
                                  default = nil)
-  if valid_613680 != nil:
-    section.add "X-Amz-Date", valid_613680
-  var valid_613681 = header.getOrDefault("X-Amz-Credential")
-  valid_613681 = validateParameter(valid_613681, JString, required = false,
+  if valid_611680 != nil:
+    section.add "X-Amz-Date", valid_611680
+  var valid_611681 = header.getOrDefault("X-Amz-Credential")
+  valid_611681 = validateParameter(valid_611681, JString, required = false,
                                  default = nil)
-  if valid_613681 != nil:
-    section.add "X-Amz-Credential", valid_613681
-  var valid_613682 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613682 = validateParameter(valid_613682, JString, required = false,
+  if valid_611681 != nil:
+    section.add "X-Amz-Credential", valid_611681
+  var valid_611682 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611682 = validateParameter(valid_611682, JString, required = false,
                                  default = nil)
-  if valid_613682 != nil:
-    section.add "X-Amz-Security-Token", valid_613682
-  var valid_613683 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613683 = validateParameter(valid_613683, JString, required = false,
+  if valid_611682 != nil:
+    section.add "X-Amz-Security-Token", valid_611682
+  var valid_611683 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611683 = validateParameter(valid_611683, JString, required = false,
                                  default = nil)
-  if valid_613683 != nil:
-    section.add "X-Amz-Algorithm", valid_613683
-  var valid_613684 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613684 = validateParameter(valid_613684, JString, required = false,
+  if valid_611683 != nil:
+    section.add "X-Amz-Algorithm", valid_611683
+  var valid_611684 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611684 = validateParameter(valid_611684, JString, required = false,
                                  default = nil)
-  if valid_613684 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613684
+  if valid_611684 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611684
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3392,48 +3329,46 @@ proc validate_DescribeInstances_613675(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613686: Call_DescribeInstances_613674; path: JsonNode;
+proc call*(call_611686: Call_DescribeInstances_611674; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Requests a description of a set of instances.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613686.validator(path, query, header, formData, body)
-  let scheme = call_613686.pickScheme
+  let valid = call_611686.validator(path, query, header, formData, body)
+  let scheme = call_611686.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613686.url(scheme.get, call_613686.host, call_613686.base,
-                         call_613686.route, valid.getOrDefault("path"),
+  let url = call_611686.url(scheme.get, call_611686.host, call_611686.base,
+                         call_611686.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613686, url, valid)
+  result = atozHook(call_611686, url, valid)
 
-proc call*(call_613687: Call_DescribeInstances_613674; body: JsonNode): Recallable =
+proc call*(call_611687: Call_DescribeInstances_611674; body: JsonNode): Recallable =
   ## describeInstances
   ## <p>Requests a description of a set of instances.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613688 = newJObject()
+  var body_611688 = newJObject()
   if body != nil:
-    body_613688 = body
-  result = call_613687.call(nil, nil, nil, nil, body_613688)
+    body_611688 = body
+  result = call_611687.call(nil, nil, nil, nil, body_611688)
 
-var describeInstances* = Call_DescribeInstances_613674(name: "describeInstances",
+var describeInstances* = Call_DescribeInstances_611674(name: "describeInstances",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeInstances",
-    validator: validate_DescribeInstances_613675, base: "/",
-    url: url_DescribeInstances_613676, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeInstances_611675, base: "/",
+    url: url_DescribeInstances_611676, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeLayers_613689 = ref object of OpenApiRestCall_612658
-proc url_DescribeLayers_613691(protocol: Scheme; host: string; base: string;
+  Call_DescribeLayers_611689 = ref object of OpenApiRestCall_610658
+proc url_DescribeLayers_611691(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeLayers_613690(path: JsonNode; query: JsonNode;
+proc validate_DescribeLayers_611690(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Requests a description of one or more layers in a specified stack.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -3454,46 +3389,46 @@ proc validate_DescribeLayers_613690(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613692 = header.getOrDefault("X-Amz-Target")
-  valid_613692 = validateParameter(valid_613692, JString, required = true, default = newJString(
+  var valid_611692 = header.getOrDefault("X-Amz-Target")
+  valid_611692 = validateParameter(valid_611692, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeLayers"))
-  if valid_613692 != nil:
-    section.add "X-Amz-Target", valid_613692
-  var valid_613693 = header.getOrDefault("X-Amz-Signature")
-  valid_613693 = validateParameter(valid_613693, JString, required = false,
+  if valid_611692 != nil:
+    section.add "X-Amz-Target", valid_611692
+  var valid_611693 = header.getOrDefault("X-Amz-Signature")
+  valid_611693 = validateParameter(valid_611693, JString, required = false,
                                  default = nil)
-  if valid_613693 != nil:
-    section.add "X-Amz-Signature", valid_613693
-  var valid_613694 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613694 = validateParameter(valid_613694, JString, required = false,
+  if valid_611693 != nil:
+    section.add "X-Amz-Signature", valid_611693
+  var valid_611694 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611694 = validateParameter(valid_611694, JString, required = false,
                                  default = nil)
-  if valid_613694 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613694
-  var valid_613695 = header.getOrDefault("X-Amz-Date")
-  valid_613695 = validateParameter(valid_613695, JString, required = false,
+  if valid_611694 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611694
+  var valid_611695 = header.getOrDefault("X-Amz-Date")
+  valid_611695 = validateParameter(valid_611695, JString, required = false,
                                  default = nil)
-  if valid_613695 != nil:
-    section.add "X-Amz-Date", valid_613695
-  var valid_613696 = header.getOrDefault("X-Amz-Credential")
-  valid_613696 = validateParameter(valid_613696, JString, required = false,
+  if valid_611695 != nil:
+    section.add "X-Amz-Date", valid_611695
+  var valid_611696 = header.getOrDefault("X-Amz-Credential")
+  valid_611696 = validateParameter(valid_611696, JString, required = false,
                                  default = nil)
-  if valid_613696 != nil:
-    section.add "X-Amz-Credential", valid_613696
-  var valid_613697 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613697 = validateParameter(valid_613697, JString, required = false,
+  if valid_611696 != nil:
+    section.add "X-Amz-Credential", valid_611696
+  var valid_611697 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611697 = validateParameter(valid_611697, JString, required = false,
                                  default = nil)
-  if valid_613697 != nil:
-    section.add "X-Amz-Security-Token", valid_613697
-  var valid_613698 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613698 = validateParameter(valid_613698, JString, required = false,
+  if valid_611697 != nil:
+    section.add "X-Amz-Security-Token", valid_611697
+  var valid_611698 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611698 = validateParameter(valid_611698, JString, required = false,
                                  default = nil)
-  if valid_613698 != nil:
-    section.add "X-Amz-Algorithm", valid_613698
-  var valid_613699 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613699 = validateParameter(valid_613699, JString, required = false,
+  if valid_611698 != nil:
+    section.add "X-Amz-Algorithm", valid_611698
+  var valid_611699 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611699 = validateParameter(valid_611699, JString, required = false,
                                  default = nil)
-  if valid_613699 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613699
+  if valid_611699 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611699
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3504,48 +3439,46 @@ proc validate_DescribeLayers_613690(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613701: Call_DescribeLayers_613689; path: JsonNode; query: JsonNode;
+proc call*(call_611701: Call_DescribeLayers_611689; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Requests a description of one or more layers in a specified stack.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613701.validator(path, query, header, formData, body)
-  let scheme = call_613701.pickScheme
+  let valid = call_611701.validator(path, query, header, formData, body)
+  let scheme = call_611701.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613701.url(scheme.get, call_613701.host, call_613701.base,
-                         call_613701.route, valid.getOrDefault("path"),
+  let url = call_611701.url(scheme.get, call_611701.host, call_611701.base,
+                         call_611701.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613701, url, valid)
+  result = atozHook(call_611701, url, valid)
 
-proc call*(call_613702: Call_DescribeLayers_613689; body: JsonNode): Recallable =
+proc call*(call_611702: Call_DescribeLayers_611689; body: JsonNode): Recallable =
   ## describeLayers
   ## <p>Requests a description of one or more layers in a specified stack.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613703 = newJObject()
+  var body_611703 = newJObject()
   if body != nil:
-    body_613703 = body
-  result = call_613702.call(nil, nil, nil, nil, body_613703)
+    body_611703 = body
+  result = call_611702.call(nil, nil, nil, nil, body_611703)
 
-var describeLayers* = Call_DescribeLayers_613689(name: "describeLayers",
+var describeLayers* = Call_DescribeLayers_611689(name: "describeLayers",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeLayers",
-    validator: validate_DescribeLayers_613690, base: "/", url: url_DescribeLayers_613691,
+    validator: validate_DescribeLayers_611690, base: "/", url: url_DescribeLayers_611691,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeLoadBasedAutoScaling_613704 = ref object of OpenApiRestCall_612658
-proc url_DescribeLoadBasedAutoScaling_613706(protocol: Scheme; host: string;
+  Call_DescribeLoadBasedAutoScaling_611704 = ref object of OpenApiRestCall_610658
+proc url_DescribeLoadBasedAutoScaling_611706(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeLoadBasedAutoScaling_613705(path: JsonNode; query: JsonNode;
+proc validate_DescribeLoadBasedAutoScaling_611705(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes load-based auto scaling configurations for specified layers.</p> <note> <p>You must specify at least one of the parameters.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -3565,46 +3498,46 @@ proc validate_DescribeLoadBasedAutoScaling_613705(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613707 = header.getOrDefault("X-Amz-Target")
-  valid_613707 = validateParameter(valid_613707, JString, required = true, default = newJString(
+  var valid_611707 = header.getOrDefault("X-Amz-Target")
+  valid_611707 = validateParameter(valid_611707, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeLoadBasedAutoScaling"))
-  if valid_613707 != nil:
-    section.add "X-Amz-Target", valid_613707
-  var valid_613708 = header.getOrDefault("X-Amz-Signature")
-  valid_613708 = validateParameter(valid_613708, JString, required = false,
+  if valid_611707 != nil:
+    section.add "X-Amz-Target", valid_611707
+  var valid_611708 = header.getOrDefault("X-Amz-Signature")
+  valid_611708 = validateParameter(valid_611708, JString, required = false,
                                  default = nil)
-  if valid_613708 != nil:
-    section.add "X-Amz-Signature", valid_613708
-  var valid_613709 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613709 = validateParameter(valid_613709, JString, required = false,
+  if valid_611708 != nil:
+    section.add "X-Amz-Signature", valid_611708
+  var valid_611709 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611709 = validateParameter(valid_611709, JString, required = false,
                                  default = nil)
-  if valid_613709 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613709
-  var valid_613710 = header.getOrDefault("X-Amz-Date")
-  valid_613710 = validateParameter(valid_613710, JString, required = false,
+  if valid_611709 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611709
+  var valid_611710 = header.getOrDefault("X-Amz-Date")
+  valid_611710 = validateParameter(valid_611710, JString, required = false,
                                  default = nil)
-  if valid_613710 != nil:
-    section.add "X-Amz-Date", valid_613710
-  var valid_613711 = header.getOrDefault("X-Amz-Credential")
-  valid_613711 = validateParameter(valid_613711, JString, required = false,
+  if valid_611710 != nil:
+    section.add "X-Amz-Date", valid_611710
+  var valid_611711 = header.getOrDefault("X-Amz-Credential")
+  valid_611711 = validateParameter(valid_611711, JString, required = false,
                                  default = nil)
-  if valid_613711 != nil:
-    section.add "X-Amz-Credential", valid_613711
-  var valid_613712 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613712 = validateParameter(valid_613712, JString, required = false,
+  if valid_611711 != nil:
+    section.add "X-Amz-Credential", valid_611711
+  var valid_611712 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611712 = validateParameter(valid_611712, JString, required = false,
                                  default = nil)
-  if valid_613712 != nil:
-    section.add "X-Amz-Security-Token", valid_613712
-  var valid_613713 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613713 = validateParameter(valid_613713, JString, required = false,
+  if valid_611712 != nil:
+    section.add "X-Amz-Security-Token", valid_611712
+  var valid_611713 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611713 = validateParameter(valid_611713, JString, required = false,
                                  default = nil)
-  if valid_613713 != nil:
-    section.add "X-Amz-Algorithm", valid_613713
-  var valid_613714 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613714 = validateParameter(valid_613714, JString, required = false,
+  if valid_611713 != nil:
+    section.add "X-Amz-Algorithm", valid_611713
+  var valid_611714 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611714 = validateParameter(valid_611714, JString, required = false,
                                  default = nil)
-  if valid_613714 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613714
+  if valid_611714 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611714
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3615,50 +3548,48 @@ proc validate_DescribeLoadBasedAutoScaling_613705(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_613716: Call_DescribeLoadBasedAutoScaling_613704; path: JsonNode;
+proc call*(call_611716: Call_DescribeLoadBasedAutoScaling_611704; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes load-based auto scaling configurations for specified layers.</p> <note> <p>You must specify at least one of the parameters.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613716.validator(path, query, header, formData, body)
-  let scheme = call_613716.pickScheme
+  let valid = call_611716.validator(path, query, header, formData, body)
+  let scheme = call_611716.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613716.url(scheme.get, call_613716.host, call_613716.base,
-                         call_613716.route, valid.getOrDefault("path"),
+  let url = call_611716.url(scheme.get, call_611716.host, call_611716.base,
+                         call_611716.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613716, url, valid)
+  result = atozHook(call_611716, url, valid)
 
-proc call*(call_613717: Call_DescribeLoadBasedAutoScaling_613704; body: JsonNode): Recallable =
+proc call*(call_611717: Call_DescribeLoadBasedAutoScaling_611704; body: JsonNode): Recallable =
   ## describeLoadBasedAutoScaling
   ## <p>Describes load-based auto scaling configurations for specified layers.</p> <note> <p>You must specify at least one of the parameters.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613718 = newJObject()
+  var body_611718 = newJObject()
   if body != nil:
-    body_613718 = body
-  result = call_613717.call(nil, nil, nil, nil, body_613718)
+    body_611718 = body
+  result = call_611717.call(nil, nil, nil, nil, body_611718)
 
-var describeLoadBasedAutoScaling* = Call_DescribeLoadBasedAutoScaling_613704(
+var describeLoadBasedAutoScaling* = Call_DescribeLoadBasedAutoScaling_611704(
     name: "describeLoadBasedAutoScaling", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeLoadBasedAutoScaling",
-    validator: validate_DescribeLoadBasedAutoScaling_613705, base: "/",
-    url: url_DescribeLoadBasedAutoScaling_613706,
+    validator: validate_DescribeLoadBasedAutoScaling_611705, base: "/",
+    url: url_DescribeLoadBasedAutoScaling_611706,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeMyUserProfile_613719 = ref object of OpenApiRestCall_612658
-proc url_DescribeMyUserProfile_613721(protocol: Scheme; host: string; base: string;
+  Call_DescribeMyUserProfile_611719 = ref object of OpenApiRestCall_610658
+proc url_DescribeMyUserProfile_611721(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeMyUserProfile_613720(path: JsonNode; query: JsonNode;
+proc validate_DescribeMyUserProfile_611720(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes a user's SSH information.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have self-management enabled or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -3678,92 +3609,90 @@ proc validate_DescribeMyUserProfile_613720(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613722 = header.getOrDefault("X-Amz-Target")
-  valid_613722 = validateParameter(valid_613722, JString, required = true, default = newJString(
+  var valid_611722 = header.getOrDefault("X-Amz-Target")
+  valid_611722 = validateParameter(valid_611722, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeMyUserProfile"))
-  if valid_613722 != nil:
-    section.add "X-Amz-Target", valid_613722
-  var valid_613723 = header.getOrDefault("X-Amz-Signature")
-  valid_613723 = validateParameter(valid_613723, JString, required = false,
+  if valid_611722 != nil:
+    section.add "X-Amz-Target", valid_611722
+  var valid_611723 = header.getOrDefault("X-Amz-Signature")
+  valid_611723 = validateParameter(valid_611723, JString, required = false,
                                  default = nil)
-  if valid_613723 != nil:
-    section.add "X-Amz-Signature", valid_613723
-  var valid_613724 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613724 = validateParameter(valid_613724, JString, required = false,
+  if valid_611723 != nil:
+    section.add "X-Amz-Signature", valid_611723
+  var valid_611724 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611724 = validateParameter(valid_611724, JString, required = false,
                                  default = nil)
-  if valid_613724 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613724
-  var valid_613725 = header.getOrDefault("X-Amz-Date")
-  valid_613725 = validateParameter(valid_613725, JString, required = false,
+  if valid_611724 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611724
+  var valid_611725 = header.getOrDefault("X-Amz-Date")
+  valid_611725 = validateParameter(valid_611725, JString, required = false,
                                  default = nil)
-  if valid_613725 != nil:
-    section.add "X-Amz-Date", valid_613725
-  var valid_613726 = header.getOrDefault("X-Amz-Credential")
-  valid_613726 = validateParameter(valid_613726, JString, required = false,
+  if valid_611725 != nil:
+    section.add "X-Amz-Date", valid_611725
+  var valid_611726 = header.getOrDefault("X-Amz-Credential")
+  valid_611726 = validateParameter(valid_611726, JString, required = false,
                                  default = nil)
-  if valid_613726 != nil:
-    section.add "X-Amz-Credential", valid_613726
-  var valid_613727 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613727 = validateParameter(valid_613727, JString, required = false,
+  if valid_611726 != nil:
+    section.add "X-Amz-Credential", valid_611726
+  var valid_611727 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611727 = validateParameter(valid_611727, JString, required = false,
                                  default = nil)
-  if valid_613727 != nil:
-    section.add "X-Amz-Security-Token", valid_613727
-  var valid_613728 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613728 = validateParameter(valid_613728, JString, required = false,
+  if valid_611727 != nil:
+    section.add "X-Amz-Security-Token", valid_611727
+  var valid_611728 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611728 = validateParameter(valid_611728, JString, required = false,
                                  default = nil)
-  if valid_613728 != nil:
-    section.add "X-Amz-Algorithm", valid_613728
-  var valid_613729 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613729 = validateParameter(valid_613729, JString, required = false,
+  if valid_611728 != nil:
+    section.add "X-Amz-Algorithm", valid_611728
+  var valid_611729 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611729 = validateParameter(valid_611729, JString, required = false,
                                  default = nil)
-  if valid_613729 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613729
+  if valid_611729 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611729
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613730: Call_DescribeMyUserProfile_613719; path: JsonNode;
+proc call*(call_611730: Call_DescribeMyUserProfile_611719; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes a user's SSH information.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have self-management enabled or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613730.validator(path, query, header, formData, body)
-  let scheme = call_613730.pickScheme
+  let valid = call_611730.validator(path, query, header, formData, body)
+  let scheme = call_611730.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613730.url(scheme.get, call_613730.host, call_613730.base,
-                         call_613730.route, valid.getOrDefault("path"),
+  let url = call_611730.url(scheme.get, call_611730.host, call_611730.base,
+                         call_611730.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613730, url, valid)
+  result = atozHook(call_611730, url, valid)
 
-proc call*(call_613731: Call_DescribeMyUserProfile_613719): Recallable =
+proc call*(call_611731: Call_DescribeMyUserProfile_611719): Recallable =
   ## describeMyUserProfile
   ## <p>Describes a user's SSH information.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have self-management enabled or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
-  result = call_613731.call(nil, nil, nil, nil, nil)
+  result = call_611731.call(nil, nil, nil, nil, nil)
 
-var describeMyUserProfile* = Call_DescribeMyUserProfile_613719(
+var describeMyUserProfile* = Call_DescribeMyUserProfile_611719(
     name: "describeMyUserProfile", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeMyUserProfile",
-    validator: validate_DescribeMyUserProfile_613720, base: "/",
-    url: url_DescribeMyUserProfile_613721, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeMyUserProfile_611720, base: "/",
+    url: url_DescribeMyUserProfile_611721, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeOperatingSystems_613732 = ref object of OpenApiRestCall_612658
-proc url_DescribeOperatingSystems_613734(protocol: Scheme; host: string;
+  Call_DescribeOperatingSystems_611732 = ref object of OpenApiRestCall_610658
+proc url_DescribeOperatingSystems_611734(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeOperatingSystems_613733(path: JsonNode; query: JsonNode;
+proc validate_DescribeOperatingSystems_611733(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## Describes the operating systems that are supported by AWS OpsWorks Stacks.
   ## 
@@ -3783,91 +3712,89 @@ proc validate_DescribeOperatingSystems_613733(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613735 = header.getOrDefault("X-Amz-Target")
-  valid_613735 = validateParameter(valid_613735, JString, required = true, default = newJString(
+  var valid_611735 = header.getOrDefault("X-Amz-Target")
+  valid_611735 = validateParameter(valid_611735, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeOperatingSystems"))
-  if valid_613735 != nil:
-    section.add "X-Amz-Target", valid_613735
-  var valid_613736 = header.getOrDefault("X-Amz-Signature")
-  valid_613736 = validateParameter(valid_613736, JString, required = false,
+  if valid_611735 != nil:
+    section.add "X-Amz-Target", valid_611735
+  var valid_611736 = header.getOrDefault("X-Amz-Signature")
+  valid_611736 = validateParameter(valid_611736, JString, required = false,
                                  default = nil)
-  if valid_613736 != nil:
-    section.add "X-Amz-Signature", valid_613736
-  var valid_613737 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613737 = validateParameter(valid_613737, JString, required = false,
+  if valid_611736 != nil:
+    section.add "X-Amz-Signature", valid_611736
+  var valid_611737 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611737 = validateParameter(valid_611737, JString, required = false,
                                  default = nil)
-  if valid_613737 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613737
-  var valid_613738 = header.getOrDefault("X-Amz-Date")
-  valid_613738 = validateParameter(valid_613738, JString, required = false,
+  if valid_611737 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611737
+  var valid_611738 = header.getOrDefault("X-Amz-Date")
+  valid_611738 = validateParameter(valid_611738, JString, required = false,
                                  default = nil)
-  if valid_613738 != nil:
-    section.add "X-Amz-Date", valid_613738
-  var valid_613739 = header.getOrDefault("X-Amz-Credential")
-  valid_613739 = validateParameter(valid_613739, JString, required = false,
+  if valid_611738 != nil:
+    section.add "X-Amz-Date", valid_611738
+  var valid_611739 = header.getOrDefault("X-Amz-Credential")
+  valid_611739 = validateParameter(valid_611739, JString, required = false,
                                  default = nil)
-  if valid_613739 != nil:
-    section.add "X-Amz-Credential", valid_613739
-  var valid_613740 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613740 = validateParameter(valid_613740, JString, required = false,
+  if valid_611739 != nil:
+    section.add "X-Amz-Credential", valid_611739
+  var valid_611740 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611740 = validateParameter(valid_611740, JString, required = false,
                                  default = nil)
-  if valid_613740 != nil:
-    section.add "X-Amz-Security-Token", valid_613740
-  var valid_613741 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613741 = validateParameter(valid_613741, JString, required = false,
+  if valid_611740 != nil:
+    section.add "X-Amz-Security-Token", valid_611740
+  var valid_611741 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611741 = validateParameter(valid_611741, JString, required = false,
                                  default = nil)
-  if valid_613741 != nil:
-    section.add "X-Amz-Algorithm", valid_613741
-  var valid_613742 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613742 = validateParameter(valid_613742, JString, required = false,
+  if valid_611741 != nil:
+    section.add "X-Amz-Algorithm", valid_611741
+  var valid_611742 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611742 = validateParameter(valid_611742, JString, required = false,
                                  default = nil)
-  if valid_613742 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613742
+  if valid_611742 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611742
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613743: Call_DescribeOperatingSystems_613732; path: JsonNode;
+proc call*(call_611743: Call_DescribeOperatingSystems_611732; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Describes the operating systems that are supported by AWS OpsWorks Stacks.
   ## 
-  let valid = call_613743.validator(path, query, header, formData, body)
-  let scheme = call_613743.pickScheme
+  let valid = call_611743.validator(path, query, header, formData, body)
+  let scheme = call_611743.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613743.url(scheme.get, call_613743.host, call_613743.base,
-                         call_613743.route, valid.getOrDefault("path"),
+  let url = call_611743.url(scheme.get, call_611743.host, call_611743.base,
+                         call_611743.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613743, url, valid)
+  result = atozHook(call_611743, url, valid)
 
-proc call*(call_613744: Call_DescribeOperatingSystems_613732): Recallable =
+proc call*(call_611744: Call_DescribeOperatingSystems_611732): Recallable =
   ## describeOperatingSystems
   ## Describes the operating systems that are supported by AWS OpsWorks Stacks.
-  result = call_613744.call(nil, nil, nil, nil, nil)
+  result = call_611744.call(nil, nil, nil, nil, nil)
 
-var describeOperatingSystems* = Call_DescribeOperatingSystems_613732(
+var describeOperatingSystems* = Call_DescribeOperatingSystems_611732(
     name: "describeOperatingSystems", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeOperatingSystems",
-    validator: validate_DescribeOperatingSystems_613733, base: "/",
-    url: url_DescribeOperatingSystems_613734, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeOperatingSystems_611733, base: "/",
+    url: url_DescribeOperatingSystems_611734, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribePermissions_613745 = ref object of OpenApiRestCall_612658
-proc url_DescribePermissions_613747(protocol: Scheme; host: string; base: string;
+  Call_DescribePermissions_611745 = ref object of OpenApiRestCall_610658
+proc url_DescribePermissions_611747(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribePermissions_613746(path: JsonNode; query: JsonNode;
+proc validate_DescribePermissions_611746(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Describes the permissions for a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -3888,46 +3815,46 @@ proc validate_DescribePermissions_613746(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613748 = header.getOrDefault("X-Amz-Target")
-  valid_613748 = validateParameter(valid_613748, JString, required = true, default = newJString(
+  var valid_611748 = header.getOrDefault("X-Amz-Target")
+  valid_611748 = validateParameter(valid_611748, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribePermissions"))
-  if valid_613748 != nil:
-    section.add "X-Amz-Target", valid_613748
-  var valid_613749 = header.getOrDefault("X-Amz-Signature")
-  valid_613749 = validateParameter(valid_613749, JString, required = false,
+  if valid_611748 != nil:
+    section.add "X-Amz-Target", valid_611748
+  var valid_611749 = header.getOrDefault("X-Amz-Signature")
+  valid_611749 = validateParameter(valid_611749, JString, required = false,
                                  default = nil)
-  if valid_613749 != nil:
-    section.add "X-Amz-Signature", valid_613749
-  var valid_613750 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613750 = validateParameter(valid_613750, JString, required = false,
+  if valid_611749 != nil:
+    section.add "X-Amz-Signature", valid_611749
+  var valid_611750 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611750 = validateParameter(valid_611750, JString, required = false,
                                  default = nil)
-  if valid_613750 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613750
-  var valid_613751 = header.getOrDefault("X-Amz-Date")
-  valid_613751 = validateParameter(valid_613751, JString, required = false,
+  if valid_611750 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611750
+  var valid_611751 = header.getOrDefault("X-Amz-Date")
+  valid_611751 = validateParameter(valid_611751, JString, required = false,
                                  default = nil)
-  if valid_613751 != nil:
-    section.add "X-Amz-Date", valid_613751
-  var valid_613752 = header.getOrDefault("X-Amz-Credential")
-  valid_613752 = validateParameter(valid_613752, JString, required = false,
+  if valid_611751 != nil:
+    section.add "X-Amz-Date", valid_611751
+  var valid_611752 = header.getOrDefault("X-Amz-Credential")
+  valid_611752 = validateParameter(valid_611752, JString, required = false,
                                  default = nil)
-  if valid_613752 != nil:
-    section.add "X-Amz-Credential", valid_613752
-  var valid_613753 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613753 = validateParameter(valid_613753, JString, required = false,
+  if valid_611752 != nil:
+    section.add "X-Amz-Credential", valid_611752
+  var valid_611753 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611753 = validateParameter(valid_611753, JString, required = false,
                                  default = nil)
-  if valid_613753 != nil:
-    section.add "X-Amz-Security-Token", valid_613753
-  var valid_613754 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613754 = validateParameter(valid_613754, JString, required = false,
+  if valid_611753 != nil:
+    section.add "X-Amz-Security-Token", valid_611753
+  var valid_611754 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611754 = validateParameter(valid_611754, JString, required = false,
                                  default = nil)
-  if valid_613754 != nil:
-    section.add "X-Amz-Algorithm", valid_613754
-  var valid_613755 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613755 = validateParameter(valid_613755, JString, required = false,
+  if valid_611754 != nil:
+    section.add "X-Amz-Algorithm", valid_611754
+  var valid_611755 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611755 = validateParameter(valid_611755, JString, required = false,
                                  default = nil)
-  if valid_613755 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613755
+  if valid_611755 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611755
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -3938,49 +3865,47 @@ proc validate_DescribePermissions_613746(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613757: Call_DescribePermissions_613745; path: JsonNode;
+proc call*(call_611757: Call_DescribePermissions_611745; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the permissions for a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613757.validator(path, query, header, formData, body)
-  let scheme = call_613757.pickScheme
+  let valid = call_611757.validator(path, query, header, formData, body)
+  let scheme = call_611757.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613757.url(scheme.get, call_613757.host, call_613757.base,
-                         call_613757.route, valid.getOrDefault("path"),
+  let url = call_611757.url(scheme.get, call_611757.host, call_611757.base,
+                         call_611757.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613757, url, valid)
+  result = atozHook(call_611757, url, valid)
 
-proc call*(call_613758: Call_DescribePermissions_613745; body: JsonNode): Recallable =
+proc call*(call_611758: Call_DescribePermissions_611745; body: JsonNode): Recallable =
   ## describePermissions
   ## <p>Describes the permissions for a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613759 = newJObject()
+  var body_611759 = newJObject()
   if body != nil:
-    body_613759 = body
-  result = call_613758.call(nil, nil, nil, nil, body_613759)
+    body_611759 = body
+  result = call_611758.call(nil, nil, nil, nil, body_611759)
 
-var describePermissions* = Call_DescribePermissions_613745(
+var describePermissions* = Call_DescribePermissions_611745(
     name: "describePermissions", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribePermissions",
-    validator: validate_DescribePermissions_613746, base: "/",
-    url: url_DescribePermissions_613747, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribePermissions_611746, base: "/",
+    url: url_DescribePermissions_611747, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeRaidArrays_613760 = ref object of OpenApiRestCall_612658
-proc url_DescribeRaidArrays_613762(protocol: Scheme; host: string; base: string;
+  Call_DescribeRaidArrays_611760 = ref object of OpenApiRestCall_610658
+proc url_DescribeRaidArrays_611762(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeRaidArrays_613761(path: JsonNode; query: JsonNode;
+proc validate_DescribeRaidArrays_611761(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Describe an instance's RAID arrays.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -4001,46 +3926,46 @@ proc validate_DescribeRaidArrays_613761(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613763 = header.getOrDefault("X-Amz-Target")
-  valid_613763 = validateParameter(valid_613763, JString, required = true, default = newJString(
+  var valid_611763 = header.getOrDefault("X-Amz-Target")
+  valid_611763 = validateParameter(valid_611763, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeRaidArrays"))
-  if valid_613763 != nil:
-    section.add "X-Amz-Target", valid_613763
-  var valid_613764 = header.getOrDefault("X-Amz-Signature")
-  valid_613764 = validateParameter(valid_613764, JString, required = false,
+  if valid_611763 != nil:
+    section.add "X-Amz-Target", valid_611763
+  var valid_611764 = header.getOrDefault("X-Amz-Signature")
+  valid_611764 = validateParameter(valid_611764, JString, required = false,
                                  default = nil)
-  if valid_613764 != nil:
-    section.add "X-Amz-Signature", valid_613764
-  var valid_613765 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613765 = validateParameter(valid_613765, JString, required = false,
+  if valid_611764 != nil:
+    section.add "X-Amz-Signature", valid_611764
+  var valid_611765 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611765 = validateParameter(valid_611765, JString, required = false,
                                  default = nil)
-  if valid_613765 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613765
-  var valid_613766 = header.getOrDefault("X-Amz-Date")
-  valid_613766 = validateParameter(valid_613766, JString, required = false,
+  if valid_611765 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611765
+  var valid_611766 = header.getOrDefault("X-Amz-Date")
+  valid_611766 = validateParameter(valid_611766, JString, required = false,
                                  default = nil)
-  if valid_613766 != nil:
-    section.add "X-Amz-Date", valid_613766
-  var valid_613767 = header.getOrDefault("X-Amz-Credential")
-  valid_613767 = validateParameter(valid_613767, JString, required = false,
+  if valid_611766 != nil:
+    section.add "X-Amz-Date", valid_611766
+  var valid_611767 = header.getOrDefault("X-Amz-Credential")
+  valid_611767 = validateParameter(valid_611767, JString, required = false,
                                  default = nil)
-  if valid_613767 != nil:
-    section.add "X-Amz-Credential", valid_613767
-  var valid_613768 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613768 = validateParameter(valid_613768, JString, required = false,
+  if valid_611767 != nil:
+    section.add "X-Amz-Credential", valid_611767
+  var valid_611768 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611768 = validateParameter(valid_611768, JString, required = false,
                                  default = nil)
-  if valid_613768 != nil:
-    section.add "X-Amz-Security-Token", valid_613768
-  var valid_613769 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613769 = validateParameter(valid_613769, JString, required = false,
+  if valid_611768 != nil:
+    section.add "X-Amz-Security-Token", valid_611768
+  var valid_611769 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611769 = validateParameter(valid_611769, JString, required = false,
                                  default = nil)
-  if valid_613769 != nil:
-    section.add "X-Amz-Algorithm", valid_613769
-  var valid_613770 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613770 = validateParameter(valid_613770, JString, required = false,
+  if valid_611769 != nil:
+    section.add "X-Amz-Algorithm", valid_611769
+  var valid_611770 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611770 = validateParameter(valid_611770, JString, required = false,
                                  default = nil)
-  if valid_613770 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613770
+  if valid_611770 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611770
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4051,49 +3976,47 @@ proc validate_DescribeRaidArrays_613761(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613772: Call_DescribeRaidArrays_613760; path: JsonNode;
+proc call*(call_611772: Call_DescribeRaidArrays_611760; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describe an instance's RAID arrays.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613772.validator(path, query, header, formData, body)
-  let scheme = call_613772.pickScheme
+  let valid = call_611772.validator(path, query, header, formData, body)
+  let scheme = call_611772.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613772.url(scheme.get, call_613772.host, call_613772.base,
-                         call_613772.route, valid.getOrDefault("path"),
+  let url = call_611772.url(scheme.get, call_611772.host, call_611772.base,
+                         call_611772.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613772, url, valid)
+  result = atozHook(call_611772, url, valid)
 
-proc call*(call_613773: Call_DescribeRaidArrays_613760; body: JsonNode): Recallable =
+proc call*(call_611773: Call_DescribeRaidArrays_611760; body: JsonNode): Recallable =
   ## describeRaidArrays
   ## <p>Describe an instance's RAID arrays.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613774 = newJObject()
+  var body_611774 = newJObject()
   if body != nil:
-    body_613774 = body
-  result = call_613773.call(nil, nil, nil, nil, body_613774)
+    body_611774 = body
+  result = call_611773.call(nil, nil, nil, nil, body_611774)
 
-var describeRaidArrays* = Call_DescribeRaidArrays_613760(
+var describeRaidArrays* = Call_DescribeRaidArrays_611760(
     name: "describeRaidArrays", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeRaidArrays",
-    validator: validate_DescribeRaidArrays_613761, base: "/",
-    url: url_DescribeRaidArrays_613762, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeRaidArrays_611761, base: "/",
+    url: url_DescribeRaidArrays_611762, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeRdsDbInstances_613775 = ref object of OpenApiRestCall_612658
-proc url_DescribeRdsDbInstances_613777(protocol: Scheme; host: string; base: string;
+  Call_DescribeRdsDbInstances_611775 = ref object of OpenApiRestCall_610658
+proc url_DescribeRdsDbInstances_611777(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeRdsDbInstances_613776(path: JsonNode; query: JsonNode;
+proc validate_DescribeRdsDbInstances_611776(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes Amazon RDS instances.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
   ## 
@@ -4113,46 +4036,46 @@ proc validate_DescribeRdsDbInstances_613776(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613778 = header.getOrDefault("X-Amz-Target")
-  valid_613778 = validateParameter(valid_613778, JString, required = true, default = newJString(
+  var valid_611778 = header.getOrDefault("X-Amz-Target")
+  valid_611778 = validateParameter(valid_611778, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeRdsDbInstances"))
-  if valid_613778 != nil:
-    section.add "X-Amz-Target", valid_613778
-  var valid_613779 = header.getOrDefault("X-Amz-Signature")
-  valid_613779 = validateParameter(valid_613779, JString, required = false,
+  if valid_611778 != nil:
+    section.add "X-Amz-Target", valid_611778
+  var valid_611779 = header.getOrDefault("X-Amz-Signature")
+  valid_611779 = validateParameter(valid_611779, JString, required = false,
                                  default = nil)
-  if valid_613779 != nil:
-    section.add "X-Amz-Signature", valid_613779
-  var valid_613780 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613780 = validateParameter(valid_613780, JString, required = false,
+  if valid_611779 != nil:
+    section.add "X-Amz-Signature", valid_611779
+  var valid_611780 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611780 = validateParameter(valid_611780, JString, required = false,
                                  default = nil)
-  if valid_613780 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613780
-  var valid_613781 = header.getOrDefault("X-Amz-Date")
-  valid_613781 = validateParameter(valid_613781, JString, required = false,
+  if valid_611780 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611780
+  var valid_611781 = header.getOrDefault("X-Amz-Date")
+  valid_611781 = validateParameter(valid_611781, JString, required = false,
                                  default = nil)
-  if valid_613781 != nil:
-    section.add "X-Amz-Date", valid_613781
-  var valid_613782 = header.getOrDefault("X-Amz-Credential")
-  valid_613782 = validateParameter(valid_613782, JString, required = false,
+  if valid_611781 != nil:
+    section.add "X-Amz-Date", valid_611781
+  var valid_611782 = header.getOrDefault("X-Amz-Credential")
+  valid_611782 = validateParameter(valid_611782, JString, required = false,
                                  default = nil)
-  if valid_613782 != nil:
-    section.add "X-Amz-Credential", valid_613782
-  var valid_613783 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613783 = validateParameter(valid_613783, JString, required = false,
+  if valid_611782 != nil:
+    section.add "X-Amz-Credential", valid_611782
+  var valid_611783 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611783 = validateParameter(valid_611783, JString, required = false,
                                  default = nil)
-  if valid_613783 != nil:
-    section.add "X-Amz-Security-Token", valid_613783
-  var valid_613784 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613784 = validateParameter(valid_613784, JString, required = false,
+  if valid_611783 != nil:
+    section.add "X-Amz-Security-Token", valid_611783
+  var valid_611784 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611784 = validateParameter(valid_611784, JString, required = false,
                                  default = nil)
-  if valid_613784 != nil:
-    section.add "X-Amz-Algorithm", valid_613784
-  var valid_613785 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613785 = validateParameter(valid_613785, JString, required = false,
+  if valid_611784 != nil:
+    section.add "X-Amz-Algorithm", valid_611784
+  var valid_611785 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611785 = validateParameter(valid_611785, JString, required = false,
                                  default = nil)
-  if valid_613785 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613785
+  if valid_611785 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611785
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4163,49 +4086,47 @@ proc validate_DescribeRdsDbInstances_613776(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613787: Call_DescribeRdsDbInstances_613775; path: JsonNode;
+proc call*(call_611787: Call_DescribeRdsDbInstances_611775; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes Amazon RDS instances.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
   ## 
-  let valid = call_613787.validator(path, query, header, formData, body)
-  let scheme = call_613787.pickScheme
+  let valid = call_611787.validator(path, query, header, formData, body)
+  let scheme = call_611787.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613787.url(scheme.get, call_613787.host, call_613787.base,
-                         call_613787.route, valid.getOrDefault("path"),
+  let url = call_611787.url(scheme.get, call_611787.host, call_611787.base,
+                         call_611787.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613787, url, valid)
+  result = atozHook(call_611787, url, valid)
 
-proc call*(call_613788: Call_DescribeRdsDbInstances_613775; body: JsonNode): Recallable =
+proc call*(call_611788: Call_DescribeRdsDbInstances_611775; body: JsonNode): Recallable =
   ## describeRdsDbInstances
   ## <p>Describes Amazon RDS instances.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
   ##   body: JObject (required)
-  var body_613789 = newJObject()
+  var body_611789 = newJObject()
   if body != nil:
-    body_613789 = body
-  result = call_613788.call(nil, nil, nil, nil, body_613789)
+    body_611789 = body
+  result = call_611788.call(nil, nil, nil, nil, body_611789)
 
-var describeRdsDbInstances* = Call_DescribeRdsDbInstances_613775(
+var describeRdsDbInstances* = Call_DescribeRdsDbInstances_611775(
     name: "describeRdsDbInstances", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeRdsDbInstances",
-    validator: validate_DescribeRdsDbInstances_613776, base: "/",
-    url: url_DescribeRdsDbInstances_613777, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeRdsDbInstances_611776, base: "/",
+    url: url_DescribeRdsDbInstances_611777, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeServiceErrors_613790 = ref object of OpenApiRestCall_612658
-proc url_DescribeServiceErrors_613792(protocol: Scheme; host: string; base: string;
+  Call_DescribeServiceErrors_611790 = ref object of OpenApiRestCall_610658
+proc url_DescribeServiceErrors_611792(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeServiceErrors_613791(path: JsonNode; query: JsonNode;
+proc validate_DescribeServiceErrors_611791(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes AWS OpsWorks Stacks service errors.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
   ## 
@@ -4225,46 +4146,46 @@ proc validate_DescribeServiceErrors_613791(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613793 = header.getOrDefault("X-Amz-Target")
-  valid_613793 = validateParameter(valid_613793, JString, required = true, default = newJString(
+  var valid_611793 = header.getOrDefault("X-Amz-Target")
+  valid_611793 = validateParameter(valid_611793, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeServiceErrors"))
-  if valid_613793 != nil:
-    section.add "X-Amz-Target", valid_613793
-  var valid_613794 = header.getOrDefault("X-Amz-Signature")
-  valid_613794 = validateParameter(valid_613794, JString, required = false,
+  if valid_611793 != nil:
+    section.add "X-Amz-Target", valid_611793
+  var valid_611794 = header.getOrDefault("X-Amz-Signature")
+  valid_611794 = validateParameter(valid_611794, JString, required = false,
                                  default = nil)
-  if valid_613794 != nil:
-    section.add "X-Amz-Signature", valid_613794
-  var valid_613795 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613795 = validateParameter(valid_613795, JString, required = false,
+  if valid_611794 != nil:
+    section.add "X-Amz-Signature", valid_611794
+  var valid_611795 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611795 = validateParameter(valid_611795, JString, required = false,
                                  default = nil)
-  if valid_613795 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613795
-  var valid_613796 = header.getOrDefault("X-Amz-Date")
-  valid_613796 = validateParameter(valid_613796, JString, required = false,
+  if valid_611795 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611795
+  var valid_611796 = header.getOrDefault("X-Amz-Date")
+  valid_611796 = validateParameter(valid_611796, JString, required = false,
                                  default = nil)
-  if valid_613796 != nil:
-    section.add "X-Amz-Date", valid_613796
-  var valid_613797 = header.getOrDefault("X-Amz-Credential")
-  valid_613797 = validateParameter(valid_613797, JString, required = false,
+  if valid_611796 != nil:
+    section.add "X-Amz-Date", valid_611796
+  var valid_611797 = header.getOrDefault("X-Amz-Credential")
+  valid_611797 = validateParameter(valid_611797, JString, required = false,
                                  default = nil)
-  if valid_613797 != nil:
-    section.add "X-Amz-Credential", valid_613797
-  var valid_613798 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613798 = validateParameter(valid_613798, JString, required = false,
+  if valid_611797 != nil:
+    section.add "X-Amz-Credential", valid_611797
+  var valid_611798 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611798 = validateParameter(valid_611798, JString, required = false,
                                  default = nil)
-  if valid_613798 != nil:
-    section.add "X-Amz-Security-Token", valid_613798
-  var valid_613799 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613799 = validateParameter(valid_613799, JString, required = false,
+  if valid_611798 != nil:
+    section.add "X-Amz-Security-Token", valid_611798
+  var valid_611799 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611799 = validateParameter(valid_611799, JString, required = false,
                                  default = nil)
-  if valid_613799 != nil:
-    section.add "X-Amz-Algorithm", valid_613799
-  var valid_613800 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613800 = validateParameter(valid_613800, JString, required = false,
+  if valid_611799 != nil:
+    section.add "X-Amz-Algorithm", valid_611799
+  var valid_611800 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611800 = validateParameter(valid_611800, JString, required = false,
                                  default = nil)
-  if valid_613800 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613800
+  if valid_611800 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611800
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4275,49 +4196,47 @@ proc validate_DescribeServiceErrors_613791(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613802: Call_DescribeServiceErrors_613790; path: JsonNode;
+proc call*(call_611802: Call_DescribeServiceErrors_611790; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes AWS OpsWorks Stacks service errors.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
   ## 
-  let valid = call_613802.validator(path, query, header, formData, body)
-  let scheme = call_613802.pickScheme
+  let valid = call_611802.validator(path, query, header, formData, body)
+  let scheme = call_611802.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613802.url(scheme.get, call_613802.host, call_613802.base,
-                         call_613802.route, valid.getOrDefault("path"),
+  let url = call_611802.url(scheme.get, call_611802.host, call_611802.base,
+                         call_611802.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613802, url, valid)
+  result = atozHook(call_611802, url, valid)
 
-proc call*(call_613803: Call_DescribeServiceErrors_613790; body: JsonNode): Recallable =
+proc call*(call_611803: Call_DescribeServiceErrors_611790; body: JsonNode): Recallable =
   ## describeServiceErrors
   ## <p>Describes AWS OpsWorks Stacks service errors.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p> <p>This call accepts only one resource-identifying parameter.</p>
   ##   body: JObject (required)
-  var body_613804 = newJObject()
+  var body_611804 = newJObject()
   if body != nil:
-    body_613804 = body
-  result = call_613803.call(nil, nil, nil, nil, body_613804)
+    body_611804 = body
+  result = call_611803.call(nil, nil, nil, nil, body_611804)
 
-var describeServiceErrors* = Call_DescribeServiceErrors_613790(
+var describeServiceErrors* = Call_DescribeServiceErrors_611790(
     name: "describeServiceErrors", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeServiceErrors",
-    validator: validate_DescribeServiceErrors_613791, base: "/",
-    url: url_DescribeServiceErrors_613792, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeServiceErrors_611791, base: "/",
+    url: url_DescribeServiceErrors_611792, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStackProvisioningParameters_613805 = ref object of OpenApiRestCall_612658
-proc url_DescribeStackProvisioningParameters_613807(protocol: Scheme; host: string;
+  Call_DescribeStackProvisioningParameters_611805 = ref object of OpenApiRestCall_610658
+proc url_DescribeStackProvisioningParameters_611807(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeStackProvisioningParameters_613806(path: JsonNode;
+proc validate_DescribeStackProvisioningParameters_611806(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Requests a description of a stack's provisioning parameters.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -4337,46 +4256,46 @@ proc validate_DescribeStackProvisioningParameters_613806(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613808 = header.getOrDefault("X-Amz-Target")
-  valid_613808 = validateParameter(valid_613808, JString, required = true, default = newJString(
+  var valid_611808 = header.getOrDefault("X-Amz-Target")
+  valid_611808 = validateParameter(valid_611808, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeStackProvisioningParameters"))
-  if valid_613808 != nil:
-    section.add "X-Amz-Target", valid_613808
-  var valid_613809 = header.getOrDefault("X-Amz-Signature")
-  valid_613809 = validateParameter(valid_613809, JString, required = false,
+  if valid_611808 != nil:
+    section.add "X-Amz-Target", valid_611808
+  var valid_611809 = header.getOrDefault("X-Amz-Signature")
+  valid_611809 = validateParameter(valid_611809, JString, required = false,
                                  default = nil)
-  if valid_613809 != nil:
-    section.add "X-Amz-Signature", valid_613809
-  var valid_613810 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613810 = validateParameter(valid_613810, JString, required = false,
+  if valid_611809 != nil:
+    section.add "X-Amz-Signature", valid_611809
+  var valid_611810 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611810 = validateParameter(valid_611810, JString, required = false,
                                  default = nil)
-  if valid_613810 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613810
-  var valid_613811 = header.getOrDefault("X-Amz-Date")
-  valid_613811 = validateParameter(valid_613811, JString, required = false,
+  if valid_611810 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611810
+  var valid_611811 = header.getOrDefault("X-Amz-Date")
+  valid_611811 = validateParameter(valid_611811, JString, required = false,
                                  default = nil)
-  if valid_613811 != nil:
-    section.add "X-Amz-Date", valid_613811
-  var valid_613812 = header.getOrDefault("X-Amz-Credential")
-  valid_613812 = validateParameter(valid_613812, JString, required = false,
+  if valid_611811 != nil:
+    section.add "X-Amz-Date", valid_611811
+  var valid_611812 = header.getOrDefault("X-Amz-Credential")
+  valid_611812 = validateParameter(valid_611812, JString, required = false,
                                  default = nil)
-  if valid_613812 != nil:
-    section.add "X-Amz-Credential", valid_613812
-  var valid_613813 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613813 = validateParameter(valid_613813, JString, required = false,
+  if valid_611812 != nil:
+    section.add "X-Amz-Credential", valid_611812
+  var valid_611813 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611813 = validateParameter(valid_611813, JString, required = false,
                                  default = nil)
-  if valid_613813 != nil:
-    section.add "X-Amz-Security-Token", valid_613813
-  var valid_613814 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613814 = validateParameter(valid_613814, JString, required = false,
+  if valid_611813 != nil:
+    section.add "X-Amz-Security-Token", valid_611813
+  var valid_611814 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611814 = validateParameter(valid_611814, JString, required = false,
                                  default = nil)
-  if valid_613814 != nil:
-    section.add "X-Amz-Algorithm", valid_613814
-  var valid_613815 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613815 = validateParameter(valid_613815, JString, required = false,
+  if valid_611814 != nil:
+    section.add "X-Amz-Algorithm", valid_611814
+  var valid_611815 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611815 = validateParameter(valid_611815, JString, required = false,
                                  default = nil)
-  if valid_613815 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613815
+  if valid_611815 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611815
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4387,51 +4306,49 @@ proc validate_DescribeStackProvisioningParameters_613806(path: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613817: Call_DescribeStackProvisioningParameters_613805;
+proc call*(call_611817: Call_DescribeStackProvisioningParameters_611805;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Requests a description of a stack's provisioning parameters.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613817.validator(path, query, header, formData, body)
-  let scheme = call_613817.pickScheme
+  let valid = call_611817.validator(path, query, header, formData, body)
+  let scheme = call_611817.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613817.url(scheme.get, call_613817.host, call_613817.base,
-                         call_613817.route, valid.getOrDefault("path"),
+  let url = call_611817.url(scheme.get, call_611817.host, call_611817.base,
+                         call_611817.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613817, url, valid)
+  result = atozHook(call_611817, url, valid)
 
-proc call*(call_613818: Call_DescribeStackProvisioningParameters_613805;
+proc call*(call_611818: Call_DescribeStackProvisioningParameters_611805;
           body: JsonNode): Recallable =
   ## describeStackProvisioningParameters
   ## <p>Requests a description of a stack's provisioning parameters.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613819 = newJObject()
+  var body_611819 = newJObject()
   if body != nil:
-    body_613819 = body
-  result = call_613818.call(nil, nil, nil, nil, body_613819)
+    body_611819 = body
+  result = call_611818.call(nil, nil, nil, nil, body_611819)
 
-var describeStackProvisioningParameters* = Call_DescribeStackProvisioningParameters_613805(
+var describeStackProvisioningParameters* = Call_DescribeStackProvisioningParameters_611805(
     name: "describeStackProvisioningParameters", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.DescribeStackProvisioningParameters",
-    validator: validate_DescribeStackProvisioningParameters_613806, base: "/",
-    url: url_DescribeStackProvisioningParameters_613807,
+    validator: validate_DescribeStackProvisioningParameters_611806, base: "/",
+    url: url_DescribeStackProvisioningParameters_611807,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStackSummary_613820 = ref object of OpenApiRestCall_612658
-proc url_DescribeStackSummary_613822(protocol: Scheme; host: string; base: string;
+  Call_DescribeStackSummary_611820 = ref object of OpenApiRestCall_610658
+proc url_DescribeStackSummary_611822(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeStackSummary_613821(path: JsonNode; query: JsonNode;
+proc validate_DescribeStackSummary_611821(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes the number of layers and apps in a specified stack, and the number of instances in each state, such as <code>running_setup</code> or <code>online</code>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -4451,46 +4368,46 @@ proc validate_DescribeStackSummary_613821(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613823 = header.getOrDefault("X-Amz-Target")
-  valid_613823 = validateParameter(valid_613823, JString, required = true, default = newJString(
+  var valid_611823 = header.getOrDefault("X-Amz-Target")
+  valid_611823 = validateParameter(valid_611823, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeStackSummary"))
-  if valid_613823 != nil:
-    section.add "X-Amz-Target", valid_613823
-  var valid_613824 = header.getOrDefault("X-Amz-Signature")
-  valid_613824 = validateParameter(valid_613824, JString, required = false,
+  if valid_611823 != nil:
+    section.add "X-Amz-Target", valid_611823
+  var valid_611824 = header.getOrDefault("X-Amz-Signature")
+  valid_611824 = validateParameter(valid_611824, JString, required = false,
                                  default = nil)
-  if valid_613824 != nil:
-    section.add "X-Amz-Signature", valid_613824
-  var valid_613825 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613825 = validateParameter(valid_613825, JString, required = false,
+  if valid_611824 != nil:
+    section.add "X-Amz-Signature", valid_611824
+  var valid_611825 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611825 = validateParameter(valid_611825, JString, required = false,
                                  default = nil)
-  if valid_613825 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613825
-  var valid_613826 = header.getOrDefault("X-Amz-Date")
-  valid_613826 = validateParameter(valid_613826, JString, required = false,
+  if valid_611825 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611825
+  var valid_611826 = header.getOrDefault("X-Amz-Date")
+  valid_611826 = validateParameter(valid_611826, JString, required = false,
                                  default = nil)
-  if valid_613826 != nil:
-    section.add "X-Amz-Date", valid_613826
-  var valid_613827 = header.getOrDefault("X-Amz-Credential")
-  valid_613827 = validateParameter(valid_613827, JString, required = false,
+  if valid_611826 != nil:
+    section.add "X-Amz-Date", valid_611826
+  var valid_611827 = header.getOrDefault("X-Amz-Credential")
+  valid_611827 = validateParameter(valid_611827, JString, required = false,
                                  default = nil)
-  if valid_613827 != nil:
-    section.add "X-Amz-Credential", valid_613827
-  var valid_613828 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613828 = validateParameter(valid_613828, JString, required = false,
+  if valid_611827 != nil:
+    section.add "X-Amz-Credential", valid_611827
+  var valid_611828 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611828 = validateParameter(valid_611828, JString, required = false,
                                  default = nil)
-  if valid_613828 != nil:
-    section.add "X-Amz-Security-Token", valid_613828
-  var valid_613829 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613829 = validateParameter(valid_613829, JString, required = false,
+  if valid_611828 != nil:
+    section.add "X-Amz-Security-Token", valid_611828
+  var valid_611829 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611829 = validateParameter(valid_611829, JString, required = false,
                                  default = nil)
-  if valid_613829 != nil:
-    section.add "X-Amz-Algorithm", valid_613829
-  var valid_613830 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613830 = validateParameter(valid_613830, JString, required = false,
+  if valid_611829 != nil:
+    section.add "X-Amz-Algorithm", valid_611829
+  var valid_611830 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611830 = validateParameter(valid_611830, JString, required = false,
                                  default = nil)
-  if valid_613830 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613830
+  if valid_611830 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611830
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4501,49 +4418,47 @@ proc validate_DescribeStackSummary_613821(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613832: Call_DescribeStackSummary_613820; path: JsonNode;
+proc call*(call_611832: Call_DescribeStackSummary_611820; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes the number of layers and apps in a specified stack, and the number of instances in each state, such as <code>running_setup</code> or <code>online</code>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613832.validator(path, query, header, formData, body)
-  let scheme = call_613832.pickScheme
+  let valid = call_611832.validator(path, query, header, formData, body)
+  let scheme = call_611832.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613832.url(scheme.get, call_613832.host, call_613832.base,
-                         call_613832.route, valid.getOrDefault("path"),
+  let url = call_611832.url(scheme.get, call_611832.host, call_611832.base,
+                         call_611832.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613832, url, valid)
+  result = atozHook(call_611832, url, valid)
 
-proc call*(call_613833: Call_DescribeStackSummary_613820; body: JsonNode): Recallable =
+proc call*(call_611833: Call_DescribeStackSummary_611820; body: JsonNode): Recallable =
   ## describeStackSummary
   ## <p>Describes the number of layers and apps in a specified stack, and the number of instances in each state, such as <code>running_setup</code> or <code>online</code>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613834 = newJObject()
+  var body_611834 = newJObject()
   if body != nil:
-    body_613834 = body
-  result = call_613833.call(nil, nil, nil, nil, body_613834)
+    body_611834 = body
+  result = call_611833.call(nil, nil, nil, nil, body_611834)
 
-var describeStackSummary* = Call_DescribeStackSummary_613820(
+var describeStackSummary* = Call_DescribeStackSummary_611820(
     name: "describeStackSummary", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeStackSummary",
-    validator: validate_DescribeStackSummary_613821, base: "/",
-    url: url_DescribeStackSummary_613822, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeStackSummary_611821, base: "/",
+    url: url_DescribeStackSummary_611822, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeStacks_613835 = ref object of OpenApiRestCall_612658
-proc url_DescribeStacks_613837(protocol: Scheme; host: string; base: string;
+  Call_DescribeStacks_611835 = ref object of OpenApiRestCall_610658
+proc url_DescribeStacks_611837(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeStacks_613836(path: JsonNode; query: JsonNode;
+proc validate_DescribeStacks_611836(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Requests a description of one or more stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -4564,46 +4479,46 @@ proc validate_DescribeStacks_613836(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613838 = header.getOrDefault("X-Amz-Target")
-  valid_613838 = validateParameter(valid_613838, JString, required = true, default = newJString(
+  var valid_611838 = header.getOrDefault("X-Amz-Target")
+  valid_611838 = validateParameter(valid_611838, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeStacks"))
-  if valid_613838 != nil:
-    section.add "X-Amz-Target", valid_613838
-  var valid_613839 = header.getOrDefault("X-Amz-Signature")
-  valid_613839 = validateParameter(valid_613839, JString, required = false,
+  if valid_611838 != nil:
+    section.add "X-Amz-Target", valid_611838
+  var valid_611839 = header.getOrDefault("X-Amz-Signature")
+  valid_611839 = validateParameter(valid_611839, JString, required = false,
                                  default = nil)
-  if valid_613839 != nil:
-    section.add "X-Amz-Signature", valid_613839
-  var valid_613840 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613840 = validateParameter(valid_613840, JString, required = false,
+  if valid_611839 != nil:
+    section.add "X-Amz-Signature", valid_611839
+  var valid_611840 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611840 = validateParameter(valid_611840, JString, required = false,
                                  default = nil)
-  if valid_613840 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613840
-  var valid_613841 = header.getOrDefault("X-Amz-Date")
-  valid_613841 = validateParameter(valid_613841, JString, required = false,
+  if valid_611840 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611840
+  var valid_611841 = header.getOrDefault("X-Amz-Date")
+  valid_611841 = validateParameter(valid_611841, JString, required = false,
                                  default = nil)
-  if valid_613841 != nil:
-    section.add "X-Amz-Date", valid_613841
-  var valid_613842 = header.getOrDefault("X-Amz-Credential")
-  valid_613842 = validateParameter(valid_613842, JString, required = false,
+  if valid_611841 != nil:
+    section.add "X-Amz-Date", valid_611841
+  var valid_611842 = header.getOrDefault("X-Amz-Credential")
+  valid_611842 = validateParameter(valid_611842, JString, required = false,
                                  default = nil)
-  if valid_613842 != nil:
-    section.add "X-Amz-Credential", valid_613842
-  var valid_613843 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613843 = validateParameter(valid_613843, JString, required = false,
+  if valid_611842 != nil:
+    section.add "X-Amz-Credential", valid_611842
+  var valid_611843 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611843 = validateParameter(valid_611843, JString, required = false,
                                  default = nil)
-  if valid_613843 != nil:
-    section.add "X-Amz-Security-Token", valid_613843
-  var valid_613844 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613844 = validateParameter(valid_613844, JString, required = false,
+  if valid_611843 != nil:
+    section.add "X-Amz-Security-Token", valid_611843
+  var valid_611844 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611844 = validateParameter(valid_611844, JString, required = false,
                                  default = nil)
-  if valid_613844 != nil:
-    section.add "X-Amz-Algorithm", valid_613844
-  var valid_613845 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613845 = validateParameter(valid_613845, JString, required = false,
+  if valid_611844 != nil:
+    section.add "X-Amz-Algorithm", valid_611844
+  var valid_611845 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611845 = validateParameter(valid_611845, JString, required = false,
                                  default = nil)
-  if valid_613845 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613845
+  if valid_611845 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611845
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4614,48 +4529,46 @@ proc validate_DescribeStacks_613836(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613847: Call_DescribeStacks_613835; path: JsonNode; query: JsonNode;
+proc call*(call_611847: Call_DescribeStacks_611835; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Requests a description of one or more stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613847.validator(path, query, header, formData, body)
-  let scheme = call_613847.pickScheme
+  let valid = call_611847.validator(path, query, header, formData, body)
+  let scheme = call_611847.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613847.url(scheme.get, call_613847.host, call_613847.base,
-                         call_613847.route, valid.getOrDefault("path"),
+  let url = call_611847.url(scheme.get, call_611847.host, call_611847.base,
+                         call_611847.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613847, url, valid)
+  result = atozHook(call_611847, url, valid)
 
-proc call*(call_613848: Call_DescribeStacks_613835; body: JsonNode): Recallable =
+proc call*(call_611848: Call_DescribeStacks_611835; body: JsonNode): Recallable =
   ## describeStacks
   ## <p>Requests a description of one or more stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613849 = newJObject()
+  var body_611849 = newJObject()
   if body != nil:
-    body_613849 = body
-  result = call_613848.call(nil, nil, nil, nil, body_613849)
+    body_611849 = body
+  result = call_611848.call(nil, nil, nil, nil, body_611849)
 
-var describeStacks* = Call_DescribeStacks_613835(name: "describeStacks",
+var describeStacks* = Call_DescribeStacks_611835(name: "describeStacks",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeStacks",
-    validator: validate_DescribeStacks_613836, base: "/", url: url_DescribeStacks_613837,
+    validator: validate_DescribeStacks_611836, base: "/", url: url_DescribeStacks_611837,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeTimeBasedAutoScaling_613850 = ref object of OpenApiRestCall_612658
-proc url_DescribeTimeBasedAutoScaling_613852(protocol: Scheme; host: string;
+  Call_DescribeTimeBasedAutoScaling_611850 = ref object of OpenApiRestCall_610658
+proc url_DescribeTimeBasedAutoScaling_611852(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeTimeBasedAutoScaling_613851(path: JsonNode; query: JsonNode;
+proc validate_DescribeTimeBasedAutoScaling_611851(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describes time-based auto scaling configurations for specified instances.</p> <note> <p>You must specify at least one of the parameters.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -4675,46 +4588,46 @@ proc validate_DescribeTimeBasedAutoScaling_613851(path: JsonNode; query: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613853 = header.getOrDefault("X-Amz-Target")
-  valid_613853 = validateParameter(valid_613853, JString, required = true, default = newJString(
+  var valid_611853 = header.getOrDefault("X-Amz-Target")
+  valid_611853 = validateParameter(valid_611853, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeTimeBasedAutoScaling"))
-  if valid_613853 != nil:
-    section.add "X-Amz-Target", valid_613853
-  var valid_613854 = header.getOrDefault("X-Amz-Signature")
-  valid_613854 = validateParameter(valid_613854, JString, required = false,
+  if valid_611853 != nil:
+    section.add "X-Amz-Target", valid_611853
+  var valid_611854 = header.getOrDefault("X-Amz-Signature")
+  valid_611854 = validateParameter(valid_611854, JString, required = false,
                                  default = nil)
-  if valid_613854 != nil:
-    section.add "X-Amz-Signature", valid_613854
-  var valid_613855 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613855 = validateParameter(valid_613855, JString, required = false,
+  if valid_611854 != nil:
+    section.add "X-Amz-Signature", valid_611854
+  var valid_611855 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611855 = validateParameter(valid_611855, JString, required = false,
                                  default = nil)
-  if valid_613855 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613855
-  var valid_613856 = header.getOrDefault("X-Amz-Date")
-  valid_613856 = validateParameter(valid_613856, JString, required = false,
+  if valid_611855 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611855
+  var valid_611856 = header.getOrDefault("X-Amz-Date")
+  valid_611856 = validateParameter(valid_611856, JString, required = false,
                                  default = nil)
-  if valid_613856 != nil:
-    section.add "X-Amz-Date", valid_613856
-  var valid_613857 = header.getOrDefault("X-Amz-Credential")
-  valid_613857 = validateParameter(valid_613857, JString, required = false,
+  if valid_611856 != nil:
+    section.add "X-Amz-Date", valid_611856
+  var valid_611857 = header.getOrDefault("X-Amz-Credential")
+  valid_611857 = validateParameter(valid_611857, JString, required = false,
                                  default = nil)
-  if valid_613857 != nil:
-    section.add "X-Amz-Credential", valid_613857
-  var valid_613858 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613858 = validateParameter(valid_613858, JString, required = false,
+  if valid_611857 != nil:
+    section.add "X-Amz-Credential", valid_611857
+  var valid_611858 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611858 = validateParameter(valid_611858, JString, required = false,
                                  default = nil)
-  if valid_613858 != nil:
-    section.add "X-Amz-Security-Token", valid_613858
-  var valid_613859 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613859 = validateParameter(valid_613859, JString, required = false,
+  if valid_611858 != nil:
+    section.add "X-Amz-Security-Token", valid_611858
+  var valid_611859 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611859 = validateParameter(valid_611859, JString, required = false,
                                  default = nil)
-  if valid_613859 != nil:
-    section.add "X-Amz-Algorithm", valid_613859
-  var valid_613860 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613860 = validateParameter(valid_613860, JString, required = false,
+  if valid_611859 != nil:
+    section.add "X-Amz-Algorithm", valid_611859
+  var valid_611860 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611860 = validateParameter(valid_611860, JString, required = false,
                                  default = nil)
-  if valid_613860 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613860
+  if valid_611860 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611860
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4725,50 +4638,48 @@ proc validate_DescribeTimeBasedAutoScaling_613851(path: JsonNode; query: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_613862: Call_DescribeTimeBasedAutoScaling_613850; path: JsonNode;
+proc call*(call_611862: Call_DescribeTimeBasedAutoScaling_611850; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes time-based auto scaling configurations for specified instances.</p> <note> <p>You must specify at least one of the parameters.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613862.validator(path, query, header, formData, body)
-  let scheme = call_613862.pickScheme
+  let valid = call_611862.validator(path, query, header, formData, body)
+  let scheme = call_611862.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613862.url(scheme.get, call_613862.host, call_613862.base,
-                         call_613862.route, valid.getOrDefault("path"),
+  let url = call_611862.url(scheme.get, call_611862.host, call_611862.base,
+                         call_611862.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613862, url, valid)
+  result = atozHook(call_611862, url, valid)
 
-proc call*(call_613863: Call_DescribeTimeBasedAutoScaling_613850; body: JsonNode): Recallable =
+proc call*(call_611863: Call_DescribeTimeBasedAutoScaling_611850; body: JsonNode): Recallable =
   ## describeTimeBasedAutoScaling
   ## <p>Describes time-based auto scaling configurations for specified instances.</p> <note> <p>You must specify at least one of the parameters.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613864 = newJObject()
+  var body_611864 = newJObject()
   if body != nil:
-    body_613864 = body
-  result = call_613863.call(nil, nil, nil, nil, body_613864)
+    body_611864 = body
+  result = call_611863.call(nil, nil, nil, nil, body_611864)
 
-var describeTimeBasedAutoScaling* = Call_DescribeTimeBasedAutoScaling_613850(
+var describeTimeBasedAutoScaling* = Call_DescribeTimeBasedAutoScaling_611850(
     name: "describeTimeBasedAutoScaling", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeTimeBasedAutoScaling",
-    validator: validate_DescribeTimeBasedAutoScaling_613851, base: "/",
-    url: url_DescribeTimeBasedAutoScaling_613852,
+    validator: validate_DescribeTimeBasedAutoScaling_611851, base: "/",
+    url: url_DescribeTimeBasedAutoScaling_611852,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeUserProfiles_613865 = ref object of OpenApiRestCall_612658
-proc url_DescribeUserProfiles_613867(protocol: Scheme; host: string; base: string;
+  Call_DescribeUserProfiles_611865 = ref object of OpenApiRestCall_610658
+proc url_DescribeUserProfiles_611867(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeUserProfiles_613866(path: JsonNode; query: JsonNode;
+proc validate_DescribeUserProfiles_611866(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Describe specified users.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -4788,46 +4699,46 @@ proc validate_DescribeUserProfiles_613866(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613868 = header.getOrDefault("X-Amz-Target")
-  valid_613868 = validateParameter(valid_613868, JString, required = true, default = newJString(
+  var valid_611868 = header.getOrDefault("X-Amz-Target")
+  valid_611868 = validateParameter(valid_611868, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeUserProfiles"))
-  if valid_613868 != nil:
-    section.add "X-Amz-Target", valid_613868
-  var valid_613869 = header.getOrDefault("X-Amz-Signature")
-  valid_613869 = validateParameter(valid_613869, JString, required = false,
+  if valid_611868 != nil:
+    section.add "X-Amz-Target", valid_611868
+  var valid_611869 = header.getOrDefault("X-Amz-Signature")
+  valid_611869 = validateParameter(valid_611869, JString, required = false,
                                  default = nil)
-  if valid_613869 != nil:
-    section.add "X-Amz-Signature", valid_613869
-  var valid_613870 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613870 = validateParameter(valid_613870, JString, required = false,
+  if valid_611869 != nil:
+    section.add "X-Amz-Signature", valid_611869
+  var valid_611870 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611870 = validateParameter(valid_611870, JString, required = false,
                                  default = nil)
-  if valid_613870 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613870
-  var valid_613871 = header.getOrDefault("X-Amz-Date")
-  valid_613871 = validateParameter(valid_613871, JString, required = false,
+  if valid_611870 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611870
+  var valid_611871 = header.getOrDefault("X-Amz-Date")
+  valid_611871 = validateParameter(valid_611871, JString, required = false,
                                  default = nil)
-  if valid_613871 != nil:
-    section.add "X-Amz-Date", valid_613871
-  var valid_613872 = header.getOrDefault("X-Amz-Credential")
-  valid_613872 = validateParameter(valid_613872, JString, required = false,
+  if valid_611871 != nil:
+    section.add "X-Amz-Date", valid_611871
+  var valid_611872 = header.getOrDefault("X-Amz-Credential")
+  valid_611872 = validateParameter(valid_611872, JString, required = false,
                                  default = nil)
-  if valid_613872 != nil:
-    section.add "X-Amz-Credential", valid_613872
-  var valid_613873 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613873 = validateParameter(valid_613873, JString, required = false,
+  if valid_611872 != nil:
+    section.add "X-Amz-Credential", valid_611872
+  var valid_611873 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611873 = validateParameter(valid_611873, JString, required = false,
                                  default = nil)
-  if valid_613873 != nil:
-    section.add "X-Amz-Security-Token", valid_613873
-  var valid_613874 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613874 = validateParameter(valid_613874, JString, required = false,
+  if valid_611873 != nil:
+    section.add "X-Amz-Security-Token", valid_611873
+  var valid_611874 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611874 = validateParameter(valid_611874, JString, required = false,
                                  default = nil)
-  if valid_613874 != nil:
-    section.add "X-Amz-Algorithm", valid_613874
-  var valid_613875 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613875 = validateParameter(valid_613875, JString, required = false,
+  if valid_611874 != nil:
+    section.add "X-Amz-Algorithm", valid_611874
+  var valid_611875 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611875 = validateParameter(valid_611875, JString, required = false,
                                  default = nil)
-  if valid_613875 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613875
+  if valid_611875 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611875
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4838,49 +4749,47 @@ proc validate_DescribeUserProfiles_613866(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613877: Call_DescribeUserProfiles_613865; path: JsonNode;
+proc call*(call_611877: Call_DescribeUserProfiles_611865; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describe specified users.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613877.validator(path, query, header, formData, body)
-  let scheme = call_613877.pickScheme
+  let valid = call_611877.validator(path, query, header, formData, body)
+  let scheme = call_611877.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613877.url(scheme.get, call_613877.host, call_613877.base,
-                         call_613877.route, valid.getOrDefault("path"),
+  let url = call_611877.url(scheme.get, call_611877.host, call_611877.base,
+                         call_611877.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613877, url, valid)
+  result = atozHook(call_611877, url, valid)
 
-proc call*(call_613878: Call_DescribeUserProfiles_613865; body: JsonNode): Recallable =
+proc call*(call_611878: Call_DescribeUserProfiles_611865; body: JsonNode): Recallable =
   ## describeUserProfiles
   ## <p>Describe specified users.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613879 = newJObject()
+  var body_611879 = newJObject()
   if body != nil:
-    body_613879 = body
-  result = call_613878.call(nil, nil, nil, nil, body_613879)
+    body_611879 = body
+  result = call_611878.call(nil, nil, nil, nil, body_611879)
 
-var describeUserProfiles* = Call_DescribeUserProfiles_613865(
+var describeUserProfiles* = Call_DescribeUserProfiles_611865(
     name: "describeUserProfiles", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeUserProfiles",
-    validator: validate_DescribeUserProfiles_613866, base: "/",
-    url: url_DescribeUserProfiles_613867, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DescribeUserProfiles_611866, base: "/",
+    url: url_DescribeUserProfiles_611867, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DescribeVolumes_613880 = ref object of OpenApiRestCall_612658
-proc url_DescribeVolumes_613882(protocol: Scheme; host: string; base: string;
+  Call_DescribeVolumes_611880 = ref object of OpenApiRestCall_610658
+proc url_DescribeVolumes_611882(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DescribeVolumes_613881(path: JsonNode; query: JsonNode;
+proc validate_DescribeVolumes_611881(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Describes an instance's Amazon EBS volumes.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -4901,46 +4810,46 @@ proc validate_DescribeVolumes_613881(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613883 = header.getOrDefault("X-Amz-Target")
-  valid_613883 = validateParameter(valid_613883, JString, required = true, default = newJString(
+  var valid_611883 = header.getOrDefault("X-Amz-Target")
+  valid_611883 = validateParameter(valid_611883, JString, required = true, default = newJString(
       "OpsWorks_20130218.DescribeVolumes"))
-  if valid_613883 != nil:
-    section.add "X-Amz-Target", valid_613883
-  var valid_613884 = header.getOrDefault("X-Amz-Signature")
-  valid_613884 = validateParameter(valid_613884, JString, required = false,
+  if valid_611883 != nil:
+    section.add "X-Amz-Target", valid_611883
+  var valid_611884 = header.getOrDefault("X-Amz-Signature")
+  valid_611884 = validateParameter(valid_611884, JString, required = false,
                                  default = nil)
-  if valid_613884 != nil:
-    section.add "X-Amz-Signature", valid_613884
-  var valid_613885 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613885 = validateParameter(valid_613885, JString, required = false,
+  if valid_611884 != nil:
+    section.add "X-Amz-Signature", valid_611884
+  var valid_611885 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611885 = validateParameter(valid_611885, JString, required = false,
                                  default = nil)
-  if valid_613885 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613885
-  var valid_613886 = header.getOrDefault("X-Amz-Date")
-  valid_613886 = validateParameter(valid_613886, JString, required = false,
+  if valid_611885 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611885
+  var valid_611886 = header.getOrDefault("X-Amz-Date")
+  valid_611886 = validateParameter(valid_611886, JString, required = false,
                                  default = nil)
-  if valid_613886 != nil:
-    section.add "X-Amz-Date", valid_613886
-  var valid_613887 = header.getOrDefault("X-Amz-Credential")
-  valid_613887 = validateParameter(valid_613887, JString, required = false,
+  if valid_611886 != nil:
+    section.add "X-Amz-Date", valid_611886
+  var valid_611887 = header.getOrDefault("X-Amz-Credential")
+  valid_611887 = validateParameter(valid_611887, JString, required = false,
                                  default = nil)
-  if valid_613887 != nil:
-    section.add "X-Amz-Credential", valid_613887
-  var valid_613888 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613888 = validateParameter(valid_613888, JString, required = false,
+  if valid_611887 != nil:
+    section.add "X-Amz-Credential", valid_611887
+  var valid_611888 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611888 = validateParameter(valid_611888, JString, required = false,
                                  default = nil)
-  if valid_613888 != nil:
-    section.add "X-Amz-Security-Token", valid_613888
-  var valid_613889 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613889 = validateParameter(valid_613889, JString, required = false,
+  if valid_611888 != nil:
+    section.add "X-Amz-Security-Token", valid_611888
+  var valid_611889 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611889 = validateParameter(valid_611889, JString, required = false,
                                  default = nil)
-  if valid_613889 != nil:
-    section.add "X-Amz-Algorithm", valid_613889
-  var valid_613890 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613890 = validateParameter(valid_613890, JString, required = false,
+  if valid_611889 != nil:
+    section.add "X-Amz-Algorithm", valid_611889
+  var valid_611890 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611890 = validateParameter(valid_611890, JString, required = false,
                                  default = nil)
-  if valid_613890 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613890
+  if valid_611890 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611890
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -4951,48 +4860,46 @@ proc validate_DescribeVolumes_613881(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613892: Call_DescribeVolumes_613880; path: JsonNode; query: JsonNode;
+proc call*(call_611892: Call_DescribeVolumes_611880; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Describes an instance's Amazon EBS volumes.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613892.validator(path, query, header, formData, body)
-  let scheme = call_613892.pickScheme
+  let valid = call_611892.validator(path, query, header, formData, body)
+  let scheme = call_611892.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613892.url(scheme.get, call_613892.host, call_613892.base,
-                         call_613892.route, valid.getOrDefault("path"),
+  let url = call_611892.url(scheme.get, call_611892.host, call_611892.base,
+                         call_611892.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613892, url, valid)
+  result = atozHook(call_611892, url, valid)
 
-proc call*(call_613893: Call_DescribeVolumes_613880; body: JsonNode): Recallable =
+proc call*(call_611893: Call_DescribeVolumes_611880; body: JsonNode): Recallable =
   ## describeVolumes
   ## <p>Describes an instance's Amazon EBS volumes.</p> <note> <p>This call accepts only one resource-identifying parameter.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Show, Deploy, or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613894 = newJObject()
+  var body_611894 = newJObject()
   if body != nil:
-    body_613894 = body
-  result = call_613893.call(nil, nil, nil, nil, body_613894)
+    body_611894 = body
+  result = call_611893.call(nil, nil, nil, nil, body_611894)
 
-var describeVolumes* = Call_DescribeVolumes_613880(name: "describeVolumes",
+var describeVolumes* = Call_DescribeVolumes_611880(name: "describeVolumes",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DescribeVolumes",
-    validator: validate_DescribeVolumes_613881, base: "/", url: url_DescribeVolumes_613882,
+    validator: validate_DescribeVolumes_611881, base: "/", url: url_DescribeVolumes_611882,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DetachElasticLoadBalancer_613895 = ref object of OpenApiRestCall_612658
-proc url_DetachElasticLoadBalancer_613897(protocol: Scheme; host: string;
+  Call_DetachElasticLoadBalancer_611895 = ref object of OpenApiRestCall_610658
+proc url_DetachElasticLoadBalancer_611897(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DetachElasticLoadBalancer_613896(path: JsonNode; query: JsonNode;
+proc validate_DetachElasticLoadBalancer_611896(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Detaches a specified Elastic Load Balancing instance from its layer.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -5012,46 +4919,46 @@ proc validate_DetachElasticLoadBalancer_613896(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613898 = header.getOrDefault("X-Amz-Target")
-  valid_613898 = validateParameter(valid_613898, JString, required = true, default = newJString(
+  var valid_611898 = header.getOrDefault("X-Amz-Target")
+  valid_611898 = validateParameter(valid_611898, JString, required = true, default = newJString(
       "OpsWorks_20130218.DetachElasticLoadBalancer"))
-  if valid_613898 != nil:
-    section.add "X-Amz-Target", valid_613898
-  var valid_613899 = header.getOrDefault("X-Amz-Signature")
-  valid_613899 = validateParameter(valid_613899, JString, required = false,
+  if valid_611898 != nil:
+    section.add "X-Amz-Target", valid_611898
+  var valid_611899 = header.getOrDefault("X-Amz-Signature")
+  valid_611899 = validateParameter(valid_611899, JString, required = false,
                                  default = nil)
-  if valid_613899 != nil:
-    section.add "X-Amz-Signature", valid_613899
-  var valid_613900 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613900 = validateParameter(valid_613900, JString, required = false,
+  if valid_611899 != nil:
+    section.add "X-Amz-Signature", valid_611899
+  var valid_611900 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611900 = validateParameter(valid_611900, JString, required = false,
                                  default = nil)
-  if valid_613900 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613900
-  var valid_613901 = header.getOrDefault("X-Amz-Date")
-  valid_613901 = validateParameter(valid_613901, JString, required = false,
+  if valid_611900 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611900
+  var valid_611901 = header.getOrDefault("X-Amz-Date")
+  valid_611901 = validateParameter(valid_611901, JString, required = false,
                                  default = nil)
-  if valid_613901 != nil:
-    section.add "X-Amz-Date", valid_613901
-  var valid_613902 = header.getOrDefault("X-Amz-Credential")
-  valid_613902 = validateParameter(valid_613902, JString, required = false,
+  if valid_611901 != nil:
+    section.add "X-Amz-Date", valid_611901
+  var valid_611902 = header.getOrDefault("X-Amz-Credential")
+  valid_611902 = validateParameter(valid_611902, JString, required = false,
                                  default = nil)
-  if valid_613902 != nil:
-    section.add "X-Amz-Credential", valid_613902
-  var valid_613903 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613903 = validateParameter(valid_613903, JString, required = false,
+  if valid_611902 != nil:
+    section.add "X-Amz-Credential", valid_611902
+  var valid_611903 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611903 = validateParameter(valid_611903, JString, required = false,
                                  default = nil)
-  if valid_613903 != nil:
-    section.add "X-Amz-Security-Token", valid_613903
-  var valid_613904 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613904 = validateParameter(valid_613904, JString, required = false,
+  if valid_611903 != nil:
+    section.add "X-Amz-Security-Token", valid_611903
+  var valid_611904 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611904 = validateParameter(valid_611904, JString, required = false,
                                  default = nil)
-  if valid_613904 != nil:
-    section.add "X-Amz-Algorithm", valid_613904
-  var valid_613905 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613905 = validateParameter(valid_613905, JString, required = false,
+  if valid_611904 != nil:
+    section.add "X-Amz-Algorithm", valid_611904
+  var valid_611905 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611905 = validateParameter(valid_611905, JString, required = false,
                                  default = nil)
-  if valid_613905 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613905
+  if valid_611905 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611905
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5062,50 +4969,48 @@ proc validate_DetachElasticLoadBalancer_613896(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613907: Call_DetachElasticLoadBalancer_613895; path: JsonNode;
+proc call*(call_611907: Call_DetachElasticLoadBalancer_611895; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Detaches a specified Elastic Load Balancing instance from its layer.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613907.validator(path, query, header, formData, body)
-  let scheme = call_613907.pickScheme
+  let valid = call_611907.validator(path, query, header, formData, body)
+  let scheme = call_611907.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613907.url(scheme.get, call_613907.host, call_613907.base,
-                         call_613907.route, valid.getOrDefault("path"),
+  let url = call_611907.url(scheme.get, call_611907.host, call_611907.base,
+                         call_611907.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613907, url, valid)
+  result = atozHook(call_611907, url, valid)
 
-proc call*(call_613908: Call_DetachElasticLoadBalancer_613895; body: JsonNode): Recallable =
+proc call*(call_611908: Call_DetachElasticLoadBalancer_611895; body: JsonNode): Recallable =
   ## detachElasticLoadBalancer
   ## <p>Detaches a specified Elastic Load Balancing instance from its layer.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613909 = newJObject()
+  var body_611909 = newJObject()
   if body != nil:
-    body_613909 = body
-  result = call_613908.call(nil, nil, nil, nil, body_613909)
+    body_611909 = body
+  result = call_611908.call(nil, nil, nil, nil, body_611909)
 
-var detachElasticLoadBalancer* = Call_DetachElasticLoadBalancer_613895(
+var detachElasticLoadBalancer* = Call_DetachElasticLoadBalancer_611895(
     name: "detachElasticLoadBalancer", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DetachElasticLoadBalancer",
-    validator: validate_DetachElasticLoadBalancer_613896, base: "/",
-    url: url_DetachElasticLoadBalancer_613897,
+    validator: validate_DetachElasticLoadBalancer_611896, base: "/",
+    url: url_DetachElasticLoadBalancer_611897,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_DisassociateElasticIp_613910 = ref object of OpenApiRestCall_612658
-proc url_DisassociateElasticIp_613912(protocol: Scheme; host: string; base: string;
+  Call_DisassociateElasticIp_611910 = ref object of OpenApiRestCall_610658
+proc url_DisassociateElasticIp_611912(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_DisassociateElasticIp_613911(path: JsonNode; query: JsonNode;
+proc validate_DisassociateElasticIp_611911(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Disassociates an Elastic IP address from its instance. The address remains registered with the stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -5125,46 +5030,46 @@ proc validate_DisassociateElasticIp_613911(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613913 = header.getOrDefault("X-Amz-Target")
-  valid_613913 = validateParameter(valid_613913, JString, required = true, default = newJString(
+  var valid_611913 = header.getOrDefault("X-Amz-Target")
+  valid_611913 = validateParameter(valid_611913, JString, required = true, default = newJString(
       "OpsWorks_20130218.DisassociateElasticIp"))
-  if valid_613913 != nil:
-    section.add "X-Amz-Target", valid_613913
-  var valid_613914 = header.getOrDefault("X-Amz-Signature")
-  valid_613914 = validateParameter(valid_613914, JString, required = false,
+  if valid_611913 != nil:
+    section.add "X-Amz-Target", valid_611913
+  var valid_611914 = header.getOrDefault("X-Amz-Signature")
+  valid_611914 = validateParameter(valid_611914, JString, required = false,
                                  default = nil)
-  if valid_613914 != nil:
-    section.add "X-Amz-Signature", valid_613914
-  var valid_613915 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613915 = validateParameter(valid_613915, JString, required = false,
+  if valid_611914 != nil:
+    section.add "X-Amz-Signature", valid_611914
+  var valid_611915 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611915 = validateParameter(valid_611915, JString, required = false,
                                  default = nil)
-  if valid_613915 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613915
-  var valid_613916 = header.getOrDefault("X-Amz-Date")
-  valid_613916 = validateParameter(valid_613916, JString, required = false,
+  if valid_611915 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611915
+  var valid_611916 = header.getOrDefault("X-Amz-Date")
+  valid_611916 = validateParameter(valid_611916, JString, required = false,
                                  default = nil)
-  if valid_613916 != nil:
-    section.add "X-Amz-Date", valid_613916
-  var valid_613917 = header.getOrDefault("X-Amz-Credential")
-  valid_613917 = validateParameter(valid_613917, JString, required = false,
+  if valid_611916 != nil:
+    section.add "X-Amz-Date", valid_611916
+  var valid_611917 = header.getOrDefault("X-Amz-Credential")
+  valid_611917 = validateParameter(valid_611917, JString, required = false,
                                  default = nil)
-  if valid_613917 != nil:
-    section.add "X-Amz-Credential", valid_613917
-  var valid_613918 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613918 = validateParameter(valid_613918, JString, required = false,
+  if valid_611917 != nil:
+    section.add "X-Amz-Credential", valid_611917
+  var valid_611918 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611918 = validateParameter(valid_611918, JString, required = false,
                                  default = nil)
-  if valid_613918 != nil:
-    section.add "X-Amz-Security-Token", valid_613918
-  var valid_613919 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613919 = validateParameter(valid_613919, JString, required = false,
+  if valid_611918 != nil:
+    section.add "X-Amz-Security-Token", valid_611918
+  var valid_611919 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611919 = validateParameter(valid_611919, JString, required = false,
                                  default = nil)
-  if valid_613919 != nil:
-    section.add "X-Amz-Algorithm", valid_613919
-  var valid_613920 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613920 = validateParameter(valid_613920, JString, required = false,
+  if valid_611919 != nil:
+    section.add "X-Amz-Algorithm", valid_611919
+  var valid_611920 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611920 = validateParameter(valid_611920, JString, required = false,
                                  default = nil)
-  if valid_613920 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613920
+  if valid_611920 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611920
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5175,49 +5080,47 @@ proc validate_DisassociateElasticIp_613911(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613922: Call_DisassociateElasticIp_613910; path: JsonNode;
+proc call*(call_611922: Call_DisassociateElasticIp_611910; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Disassociates an Elastic IP address from its instance. The address remains registered with the stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613922.validator(path, query, header, formData, body)
-  let scheme = call_613922.pickScheme
+  let valid = call_611922.validator(path, query, header, formData, body)
+  let scheme = call_611922.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613922.url(scheme.get, call_613922.host, call_613922.base,
-                         call_613922.route, valid.getOrDefault("path"),
+  let url = call_611922.url(scheme.get, call_611922.host, call_611922.base,
+                         call_611922.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613922, url, valid)
+  result = atozHook(call_611922, url, valid)
 
-proc call*(call_613923: Call_DisassociateElasticIp_613910; body: JsonNode): Recallable =
+proc call*(call_611923: Call_DisassociateElasticIp_611910; body: JsonNode): Recallable =
   ## disassociateElasticIp
   ## <p>Disassociates an Elastic IP address from its instance. The address remains registered with the stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613924 = newJObject()
+  var body_611924 = newJObject()
   if body != nil:
-    body_613924 = body
-  result = call_613923.call(nil, nil, nil, nil, body_613924)
+    body_611924 = body
+  result = call_611923.call(nil, nil, nil, nil, body_611924)
 
-var disassociateElasticIp* = Call_DisassociateElasticIp_613910(
+var disassociateElasticIp* = Call_DisassociateElasticIp_611910(
     name: "disassociateElasticIp", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.DisassociateElasticIp",
-    validator: validate_DisassociateElasticIp_613911, base: "/",
-    url: url_DisassociateElasticIp_613912, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_DisassociateElasticIp_611911, base: "/",
+    url: url_DisassociateElasticIp_611912, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetHostnameSuggestion_613925 = ref object of OpenApiRestCall_612658
-proc url_GetHostnameSuggestion_613927(protocol: Scheme; host: string; base: string;
+  Call_GetHostnameSuggestion_611925 = ref object of OpenApiRestCall_610658
+proc url_GetHostnameSuggestion_611927(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GetHostnameSuggestion_613926(path: JsonNode; query: JsonNode;
+proc validate_GetHostnameSuggestion_611926(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Gets a generated host name for the specified layer, based on the current host name theme.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -5237,46 +5140,46 @@ proc validate_GetHostnameSuggestion_613926(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613928 = header.getOrDefault("X-Amz-Target")
-  valid_613928 = validateParameter(valid_613928, JString, required = true, default = newJString(
+  var valid_611928 = header.getOrDefault("X-Amz-Target")
+  valid_611928 = validateParameter(valid_611928, JString, required = true, default = newJString(
       "OpsWorks_20130218.GetHostnameSuggestion"))
-  if valid_613928 != nil:
-    section.add "X-Amz-Target", valid_613928
-  var valid_613929 = header.getOrDefault("X-Amz-Signature")
-  valid_613929 = validateParameter(valid_613929, JString, required = false,
+  if valid_611928 != nil:
+    section.add "X-Amz-Target", valid_611928
+  var valid_611929 = header.getOrDefault("X-Amz-Signature")
+  valid_611929 = validateParameter(valid_611929, JString, required = false,
                                  default = nil)
-  if valid_613929 != nil:
-    section.add "X-Amz-Signature", valid_613929
-  var valid_613930 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613930 = validateParameter(valid_613930, JString, required = false,
+  if valid_611929 != nil:
+    section.add "X-Amz-Signature", valid_611929
+  var valid_611930 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611930 = validateParameter(valid_611930, JString, required = false,
                                  default = nil)
-  if valid_613930 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613930
-  var valid_613931 = header.getOrDefault("X-Amz-Date")
-  valid_613931 = validateParameter(valid_613931, JString, required = false,
+  if valid_611930 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611930
+  var valid_611931 = header.getOrDefault("X-Amz-Date")
+  valid_611931 = validateParameter(valid_611931, JString, required = false,
                                  default = nil)
-  if valid_613931 != nil:
-    section.add "X-Amz-Date", valid_613931
-  var valid_613932 = header.getOrDefault("X-Amz-Credential")
-  valid_613932 = validateParameter(valid_613932, JString, required = false,
+  if valid_611931 != nil:
+    section.add "X-Amz-Date", valid_611931
+  var valid_611932 = header.getOrDefault("X-Amz-Credential")
+  valid_611932 = validateParameter(valid_611932, JString, required = false,
                                  default = nil)
-  if valid_613932 != nil:
-    section.add "X-Amz-Credential", valid_613932
-  var valid_613933 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613933 = validateParameter(valid_613933, JString, required = false,
+  if valid_611932 != nil:
+    section.add "X-Amz-Credential", valid_611932
+  var valid_611933 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611933 = validateParameter(valid_611933, JString, required = false,
                                  default = nil)
-  if valid_613933 != nil:
-    section.add "X-Amz-Security-Token", valid_613933
-  var valid_613934 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613934 = validateParameter(valid_613934, JString, required = false,
+  if valid_611933 != nil:
+    section.add "X-Amz-Security-Token", valid_611933
+  var valid_611934 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611934 = validateParameter(valid_611934, JString, required = false,
                                  default = nil)
-  if valid_613934 != nil:
-    section.add "X-Amz-Algorithm", valid_613934
-  var valid_613935 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613935 = validateParameter(valid_613935, JString, required = false,
+  if valid_611934 != nil:
+    section.add "X-Amz-Algorithm", valid_611934
+  var valid_611935 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611935 = validateParameter(valid_611935, JString, required = false,
                                  default = nil)
-  if valid_613935 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613935
+  if valid_611935 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611935
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5287,49 +5190,47 @@ proc validate_GetHostnameSuggestion_613926(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613937: Call_GetHostnameSuggestion_613925; path: JsonNode;
+proc call*(call_611937: Call_GetHostnameSuggestion_611925; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Gets a generated host name for the specified layer, based on the current host name theme.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613937.validator(path, query, header, formData, body)
-  let scheme = call_613937.pickScheme
+  let valid = call_611937.validator(path, query, header, formData, body)
+  let scheme = call_611937.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613937.url(scheme.get, call_613937.host, call_613937.base,
-                         call_613937.route, valid.getOrDefault("path"),
+  let url = call_611937.url(scheme.get, call_611937.host, call_611937.base,
+                         call_611937.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613937, url, valid)
+  result = atozHook(call_611937, url, valid)
 
-proc call*(call_613938: Call_GetHostnameSuggestion_613925; body: JsonNode): Recallable =
+proc call*(call_611938: Call_GetHostnameSuggestion_611925; body: JsonNode): Recallable =
   ## getHostnameSuggestion
   ## <p>Gets a generated host name for the specified layer, based on the current host name theme.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613939 = newJObject()
+  var body_611939 = newJObject()
   if body != nil:
-    body_613939 = body
-  result = call_613938.call(nil, nil, nil, nil, body_613939)
+    body_611939 = body
+  result = call_611938.call(nil, nil, nil, nil, body_611939)
 
-var getHostnameSuggestion* = Call_GetHostnameSuggestion_613925(
+var getHostnameSuggestion* = Call_GetHostnameSuggestion_611925(
     name: "getHostnameSuggestion", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.GetHostnameSuggestion",
-    validator: validate_GetHostnameSuggestion_613926, base: "/",
-    url: url_GetHostnameSuggestion_613927, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetHostnameSuggestion_611926, base: "/",
+    url: url_GetHostnameSuggestion_611927, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GrantAccess_613940 = ref object of OpenApiRestCall_612658
-proc url_GrantAccess_613942(protocol: Scheme; host: string; base: string;
+  Call_GrantAccess_611940 = ref object of OpenApiRestCall_610658
+proc url_GrantAccess_611942(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_GrantAccess_613941(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_GrantAccess_611941(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <note> <p>This action can be used only with Windows stacks.</p> </note> <p>Grants RDP access to a Windows instance for a specified time period.</p>
   ## 
@@ -5349,46 +5250,46 @@ proc validate_GrantAccess_613941(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613943 = header.getOrDefault("X-Amz-Target")
-  valid_613943 = validateParameter(valid_613943, JString, required = true, default = newJString(
+  var valid_611943 = header.getOrDefault("X-Amz-Target")
+  valid_611943 = validateParameter(valid_611943, JString, required = true, default = newJString(
       "OpsWorks_20130218.GrantAccess"))
-  if valid_613943 != nil:
-    section.add "X-Amz-Target", valid_613943
-  var valid_613944 = header.getOrDefault("X-Amz-Signature")
-  valid_613944 = validateParameter(valid_613944, JString, required = false,
+  if valid_611943 != nil:
+    section.add "X-Amz-Target", valid_611943
+  var valid_611944 = header.getOrDefault("X-Amz-Signature")
+  valid_611944 = validateParameter(valid_611944, JString, required = false,
                                  default = nil)
-  if valid_613944 != nil:
-    section.add "X-Amz-Signature", valid_613944
-  var valid_613945 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613945 = validateParameter(valid_613945, JString, required = false,
+  if valid_611944 != nil:
+    section.add "X-Amz-Signature", valid_611944
+  var valid_611945 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611945 = validateParameter(valid_611945, JString, required = false,
                                  default = nil)
-  if valid_613945 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613945
-  var valid_613946 = header.getOrDefault("X-Amz-Date")
-  valid_613946 = validateParameter(valid_613946, JString, required = false,
+  if valid_611945 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611945
+  var valid_611946 = header.getOrDefault("X-Amz-Date")
+  valid_611946 = validateParameter(valid_611946, JString, required = false,
                                  default = nil)
-  if valid_613946 != nil:
-    section.add "X-Amz-Date", valid_613946
-  var valid_613947 = header.getOrDefault("X-Amz-Credential")
-  valid_613947 = validateParameter(valid_613947, JString, required = false,
+  if valid_611946 != nil:
+    section.add "X-Amz-Date", valid_611946
+  var valid_611947 = header.getOrDefault("X-Amz-Credential")
+  valid_611947 = validateParameter(valid_611947, JString, required = false,
                                  default = nil)
-  if valid_613947 != nil:
-    section.add "X-Amz-Credential", valid_613947
-  var valid_613948 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613948 = validateParameter(valid_613948, JString, required = false,
+  if valid_611947 != nil:
+    section.add "X-Amz-Credential", valid_611947
+  var valid_611948 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611948 = validateParameter(valid_611948, JString, required = false,
                                  default = nil)
-  if valid_613948 != nil:
-    section.add "X-Amz-Security-Token", valid_613948
-  var valid_613949 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613949 = validateParameter(valid_613949, JString, required = false,
+  if valid_611948 != nil:
+    section.add "X-Amz-Security-Token", valid_611948
+  var valid_611949 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611949 = validateParameter(valid_611949, JString, required = false,
                                  default = nil)
-  if valid_613949 != nil:
-    section.add "X-Amz-Algorithm", valid_613949
-  var valid_613950 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613950 = validateParameter(valid_613950, JString, required = false,
+  if valid_611949 != nil:
+    section.add "X-Amz-Algorithm", valid_611949
+  var valid_611950 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611950 = validateParameter(valid_611950, JString, required = false,
                                  default = nil)
-  if valid_613950 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613950
+  if valid_611950 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611950
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5399,49 +5300,47 @@ proc validate_GrantAccess_613941(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_613952: Call_GrantAccess_613940; path: JsonNode; query: JsonNode;
+proc call*(call_611952: Call_GrantAccess_611940; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <note> <p>This action can be used only with Windows stacks.</p> </note> <p>Grants RDP access to a Windows instance for a specified time period.</p>
   ## 
-  let valid = call_613952.validator(path, query, header, formData, body)
-  let scheme = call_613952.pickScheme
+  let valid = call_611952.validator(path, query, header, formData, body)
+  let scheme = call_611952.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613952.url(scheme.get, call_613952.host, call_613952.base,
-                         call_613952.route, valid.getOrDefault("path"),
+  let url = call_611952.url(scheme.get, call_611952.host, call_611952.base,
+                         call_611952.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613952, url, valid)
+  result = atozHook(call_611952, url, valid)
 
-proc call*(call_613953: Call_GrantAccess_613940; body: JsonNode): Recallable =
+proc call*(call_611953: Call_GrantAccess_611940; body: JsonNode): Recallable =
   ## grantAccess
   ## <note> <p>This action can be used only with Windows stacks.</p> </note> <p>Grants RDP access to a Windows instance for a specified time period.</p>
   ##   body: JObject (required)
-  var body_613954 = newJObject()
+  var body_611954 = newJObject()
   if body != nil:
-    body_613954 = body
-  result = call_613953.call(nil, nil, nil, nil, body_613954)
+    body_611954 = body
+  result = call_611953.call(nil, nil, nil, nil, body_611954)
 
-var grantAccess* = Call_GrantAccess_613940(name: "grantAccess",
+var grantAccess* = Call_GrantAccess_611940(name: "grantAccess",
                                         meth: HttpMethod.HttpPost,
                                         host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.GrantAccess",
-                                        validator: validate_GrantAccess_613941,
-                                        base: "/", url: url_GrantAccess_613942,
+                                        validator: validate_GrantAccess_611941,
+                                        base: "/", url: url_GrantAccess_611942,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_ListTags_613955 = ref object of OpenApiRestCall_612658
-proc url_ListTags_613957(protocol: Scheme; host: string; base: string; route: string;
+  Call_ListTags_611955 = ref object of OpenApiRestCall_610658
+proc url_ListTags_611957(protocol: Scheme; host: string; base: string; route: string;
                         path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_ListTags_613956(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_ListTags_611956(path: JsonNode; query: JsonNode; header: JsonNode;
                              formData: JsonNode; body: JsonNode): JsonNode =
   ## Returns a list of tags that are applied to the specified stack or layer.
   ## 
@@ -5461,46 +5360,46 @@ proc validate_ListTags_613956(path: JsonNode; query: JsonNode; header: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613958 = header.getOrDefault("X-Amz-Target")
-  valid_613958 = validateParameter(valid_613958, JString, required = true, default = newJString(
+  var valid_611958 = header.getOrDefault("X-Amz-Target")
+  valid_611958 = validateParameter(valid_611958, JString, required = true, default = newJString(
       "OpsWorks_20130218.ListTags"))
-  if valid_613958 != nil:
-    section.add "X-Amz-Target", valid_613958
-  var valid_613959 = header.getOrDefault("X-Amz-Signature")
-  valid_613959 = validateParameter(valid_613959, JString, required = false,
+  if valid_611958 != nil:
+    section.add "X-Amz-Target", valid_611958
+  var valid_611959 = header.getOrDefault("X-Amz-Signature")
+  valid_611959 = validateParameter(valid_611959, JString, required = false,
                                  default = nil)
-  if valid_613959 != nil:
-    section.add "X-Amz-Signature", valid_613959
-  var valid_613960 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613960 = validateParameter(valid_613960, JString, required = false,
+  if valid_611959 != nil:
+    section.add "X-Amz-Signature", valid_611959
+  var valid_611960 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611960 = validateParameter(valid_611960, JString, required = false,
                                  default = nil)
-  if valid_613960 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613960
-  var valid_613961 = header.getOrDefault("X-Amz-Date")
-  valid_613961 = validateParameter(valid_613961, JString, required = false,
+  if valid_611960 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611960
+  var valid_611961 = header.getOrDefault("X-Amz-Date")
+  valid_611961 = validateParameter(valid_611961, JString, required = false,
                                  default = nil)
-  if valid_613961 != nil:
-    section.add "X-Amz-Date", valid_613961
-  var valid_613962 = header.getOrDefault("X-Amz-Credential")
-  valid_613962 = validateParameter(valid_613962, JString, required = false,
+  if valid_611961 != nil:
+    section.add "X-Amz-Date", valid_611961
+  var valid_611962 = header.getOrDefault("X-Amz-Credential")
+  valid_611962 = validateParameter(valid_611962, JString, required = false,
                                  default = nil)
-  if valid_613962 != nil:
-    section.add "X-Amz-Credential", valid_613962
-  var valid_613963 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613963 = validateParameter(valid_613963, JString, required = false,
+  if valid_611962 != nil:
+    section.add "X-Amz-Credential", valid_611962
+  var valid_611963 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611963 = validateParameter(valid_611963, JString, required = false,
                                  default = nil)
-  if valid_613963 != nil:
-    section.add "X-Amz-Security-Token", valid_613963
-  var valid_613964 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613964 = validateParameter(valid_613964, JString, required = false,
+  if valid_611963 != nil:
+    section.add "X-Amz-Security-Token", valid_611963
+  var valid_611964 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611964 = validateParameter(valid_611964, JString, required = false,
                                  default = nil)
-  if valid_613964 != nil:
-    section.add "X-Amz-Algorithm", valid_613964
-  var valid_613965 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613965 = validateParameter(valid_613965, JString, required = false,
+  if valid_611964 != nil:
+    section.add "X-Amz-Algorithm", valid_611964
+  var valid_611965 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611965 = validateParameter(valid_611965, JString, required = false,
                                  default = nil)
-  if valid_613965 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613965
+  if valid_611965 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611965
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5511,48 +5410,46 @@ proc validate_ListTags_613956(path: JsonNode; query: JsonNode; header: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613967: Call_ListTags_613955; path: JsonNode; query: JsonNode;
+proc call*(call_611967: Call_ListTags_611955; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Returns a list of tags that are applied to the specified stack or layer.
   ## 
-  let valid = call_613967.validator(path, query, header, formData, body)
-  let scheme = call_613967.pickScheme
+  let valid = call_611967.validator(path, query, header, formData, body)
+  let scheme = call_611967.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613967.url(scheme.get, call_613967.host, call_613967.base,
-                         call_613967.route, valid.getOrDefault("path"),
+  let url = call_611967.url(scheme.get, call_611967.host, call_611967.base,
+                         call_611967.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613967, url, valid)
+  result = atozHook(call_611967, url, valid)
 
-proc call*(call_613968: Call_ListTags_613955; body: JsonNode): Recallable =
+proc call*(call_611968: Call_ListTags_611955; body: JsonNode): Recallable =
   ## listTags
   ## Returns a list of tags that are applied to the specified stack or layer.
   ##   body: JObject (required)
-  var body_613969 = newJObject()
+  var body_611969 = newJObject()
   if body != nil:
-    body_613969 = body
-  result = call_613968.call(nil, nil, nil, nil, body_613969)
+    body_611969 = body
+  result = call_611968.call(nil, nil, nil, nil, body_611969)
 
-var listTags* = Call_ListTags_613955(name: "listTags", meth: HttpMethod.HttpPost,
+var listTags* = Call_ListTags_611955(name: "listTags", meth: HttpMethod.HttpPost,
                                   host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.ListTags",
-                                  validator: validate_ListTags_613956, base: "/",
-                                  url: url_ListTags_613957,
+                                  validator: validate_ListTags_611956, base: "/",
+                                  url: url_ListTags_611957,
                                   schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RebootInstance_613970 = ref object of OpenApiRestCall_612658
-proc url_RebootInstance_613972(protocol: Scheme; host: string; base: string;
+  Call_RebootInstance_611970 = ref object of OpenApiRestCall_610658
+proc url_RebootInstance_611972(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RebootInstance_613971(path: JsonNode; query: JsonNode;
+proc validate_RebootInstance_611971(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Reboots a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -5573,46 +5470,46 @@ proc validate_RebootInstance_613971(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613973 = header.getOrDefault("X-Amz-Target")
-  valid_613973 = validateParameter(valid_613973, JString, required = true, default = newJString(
+  var valid_611973 = header.getOrDefault("X-Amz-Target")
+  valid_611973 = validateParameter(valid_611973, JString, required = true, default = newJString(
       "OpsWorks_20130218.RebootInstance"))
-  if valid_613973 != nil:
-    section.add "X-Amz-Target", valid_613973
-  var valid_613974 = header.getOrDefault("X-Amz-Signature")
-  valid_613974 = validateParameter(valid_613974, JString, required = false,
+  if valid_611973 != nil:
+    section.add "X-Amz-Target", valid_611973
+  var valid_611974 = header.getOrDefault("X-Amz-Signature")
+  valid_611974 = validateParameter(valid_611974, JString, required = false,
                                  default = nil)
-  if valid_613974 != nil:
-    section.add "X-Amz-Signature", valid_613974
-  var valid_613975 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613975 = validateParameter(valid_613975, JString, required = false,
+  if valid_611974 != nil:
+    section.add "X-Amz-Signature", valid_611974
+  var valid_611975 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611975 = validateParameter(valid_611975, JString, required = false,
                                  default = nil)
-  if valid_613975 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613975
-  var valid_613976 = header.getOrDefault("X-Amz-Date")
-  valid_613976 = validateParameter(valid_613976, JString, required = false,
+  if valid_611975 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611975
+  var valid_611976 = header.getOrDefault("X-Amz-Date")
+  valid_611976 = validateParameter(valid_611976, JString, required = false,
                                  default = nil)
-  if valid_613976 != nil:
-    section.add "X-Amz-Date", valid_613976
-  var valid_613977 = header.getOrDefault("X-Amz-Credential")
-  valid_613977 = validateParameter(valid_613977, JString, required = false,
+  if valid_611976 != nil:
+    section.add "X-Amz-Date", valid_611976
+  var valid_611977 = header.getOrDefault("X-Amz-Credential")
+  valid_611977 = validateParameter(valid_611977, JString, required = false,
                                  default = nil)
-  if valid_613977 != nil:
-    section.add "X-Amz-Credential", valid_613977
-  var valid_613978 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613978 = validateParameter(valid_613978, JString, required = false,
+  if valid_611977 != nil:
+    section.add "X-Amz-Credential", valid_611977
+  var valid_611978 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611978 = validateParameter(valid_611978, JString, required = false,
                                  default = nil)
-  if valid_613978 != nil:
-    section.add "X-Amz-Security-Token", valid_613978
-  var valid_613979 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613979 = validateParameter(valid_613979, JString, required = false,
+  if valid_611978 != nil:
+    section.add "X-Amz-Security-Token", valid_611978
+  var valid_611979 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611979 = validateParameter(valid_611979, JString, required = false,
                                  default = nil)
-  if valid_613979 != nil:
-    section.add "X-Amz-Algorithm", valid_613979
-  var valid_613980 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613980 = validateParameter(valid_613980, JString, required = false,
+  if valid_611979 != nil:
+    section.add "X-Amz-Algorithm", valid_611979
+  var valid_611980 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611980 = validateParameter(valid_611980, JString, required = false,
                                  default = nil)
-  if valid_613980 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613980
+  if valid_611980 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611980
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5623,48 +5520,46 @@ proc validate_RebootInstance_613971(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613982: Call_RebootInstance_613970; path: JsonNode; query: JsonNode;
+proc call*(call_611982: Call_RebootInstance_611970; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Reboots a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613982.validator(path, query, header, formData, body)
-  let scheme = call_613982.pickScheme
+  let valid = call_611982.validator(path, query, header, formData, body)
+  let scheme = call_611982.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613982.url(scheme.get, call_613982.host, call_613982.base,
-                         call_613982.route, valid.getOrDefault("path"),
+  let url = call_611982.url(scheme.get, call_611982.host, call_611982.base,
+                         call_611982.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613982, url, valid)
+  result = atozHook(call_611982, url, valid)
 
-proc call*(call_613983: Call_RebootInstance_613970; body: JsonNode): Recallable =
+proc call*(call_611983: Call_RebootInstance_611970; body: JsonNode): Recallable =
   ## rebootInstance
   ## <p>Reboots a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613984 = newJObject()
+  var body_611984 = newJObject()
   if body != nil:
-    body_613984 = body
-  result = call_613983.call(nil, nil, nil, nil, body_613984)
+    body_611984 = body
+  result = call_611983.call(nil, nil, nil, nil, body_611984)
 
-var rebootInstance* = Call_RebootInstance_613970(name: "rebootInstance",
+var rebootInstance* = Call_RebootInstance_611970(name: "rebootInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.RebootInstance",
-    validator: validate_RebootInstance_613971, base: "/", url: url_RebootInstance_613972,
+    validator: validate_RebootInstance_611971, base: "/", url: url_RebootInstance_611972,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterEcsCluster_613985 = ref object of OpenApiRestCall_612658
-proc url_RegisterEcsCluster_613987(protocol: Scheme; host: string; base: string;
+  Call_RegisterEcsCluster_611985 = ref object of OpenApiRestCall_610658
+proc url_RegisterEcsCluster_611987(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterEcsCluster_613986(path: JsonNode; query: JsonNode;
+proc validate_RegisterEcsCluster_611986(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Registers a specified Amazon ECS cluster with a stack. You can register only one cluster with a stack. A cluster can be registered with only one stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-ecscluster.html"> Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html"> Managing User Permissions</a>.</p>
@@ -5685,46 +5580,46 @@ proc validate_RegisterEcsCluster_613986(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613988 = header.getOrDefault("X-Amz-Target")
-  valid_613988 = validateParameter(valid_613988, JString, required = true, default = newJString(
+  var valid_611988 = header.getOrDefault("X-Amz-Target")
+  valid_611988 = validateParameter(valid_611988, JString, required = true, default = newJString(
       "OpsWorks_20130218.RegisterEcsCluster"))
-  if valid_613988 != nil:
-    section.add "X-Amz-Target", valid_613988
-  var valid_613989 = header.getOrDefault("X-Amz-Signature")
-  valid_613989 = validateParameter(valid_613989, JString, required = false,
+  if valid_611988 != nil:
+    section.add "X-Amz-Target", valid_611988
+  var valid_611989 = header.getOrDefault("X-Amz-Signature")
+  valid_611989 = validateParameter(valid_611989, JString, required = false,
                                  default = nil)
-  if valid_613989 != nil:
-    section.add "X-Amz-Signature", valid_613989
-  var valid_613990 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613990 = validateParameter(valid_613990, JString, required = false,
+  if valid_611989 != nil:
+    section.add "X-Amz-Signature", valid_611989
+  var valid_611990 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611990 = validateParameter(valid_611990, JString, required = false,
                                  default = nil)
-  if valid_613990 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613990
-  var valid_613991 = header.getOrDefault("X-Amz-Date")
-  valid_613991 = validateParameter(valid_613991, JString, required = false,
+  if valid_611990 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611990
+  var valid_611991 = header.getOrDefault("X-Amz-Date")
+  valid_611991 = validateParameter(valid_611991, JString, required = false,
                                  default = nil)
-  if valid_613991 != nil:
-    section.add "X-Amz-Date", valid_613991
-  var valid_613992 = header.getOrDefault("X-Amz-Credential")
-  valid_613992 = validateParameter(valid_613992, JString, required = false,
+  if valid_611991 != nil:
+    section.add "X-Amz-Date", valid_611991
+  var valid_611992 = header.getOrDefault("X-Amz-Credential")
+  valid_611992 = validateParameter(valid_611992, JString, required = false,
                                  default = nil)
-  if valid_613992 != nil:
-    section.add "X-Amz-Credential", valid_613992
-  var valid_613993 = header.getOrDefault("X-Amz-Security-Token")
-  valid_613993 = validateParameter(valid_613993, JString, required = false,
+  if valid_611992 != nil:
+    section.add "X-Amz-Credential", valid_611992
+  var valid_611993 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611993 = validateParameter(valid_611993, JString, required = false,
                                  default = nil)
-  if valid_613993 != nil:
-    section.add "X-Amz-Security-Token", valid_613993
-  var valid_613994 = header.getOrDefault("X-Amz-Algorithm")
-  valid_613994 = validateParameter(valid_613994, JString, required = false,
+  if valid_611993 != nil:
+    section.add "X-Amz-Security-Token", valid_611993
+  var valid_611994 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611994 = validateParameter(valid_611994, JString, required = false,
                                  default = nil)
-  if valid_613994 != nil:
-    section.add "X-Amz-Algorithm", valid_613994
-  var valid_613995 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_613995 = validateParameter(valid_613995, JString, required = false,
+  if valid_611994 != nil:
+    section.add "X-Amz-Algorithm", valid_611994
+  var valid_611995 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611995 = validateParameter(valid_611995, JString, required = false,
                                  default = nil)
-  if valid_613995 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613995
+  if valid_611995 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611995
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5735,49 +5630,47 @@ proc validate_RegisterEcsCluster_613986(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_613997: Call_RegisterEcsCluster_613985; path: JsonNode;
+proc call*(call_611997: Call_RegisterEcsCluster_611985; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers a specified Amazon ECS cluster with a stack. You can register only one cluster with a stack. A cluster can be registered with only one stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-ecscluster.html"> Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html"> Managing User Permissions</a>.</p>
   ## 
-  let valid = call_613997.validator(path, query, header, formData, body)
-  let scheme = call_613997.pickScheme
+  let valid = call_611997.validator(path, query, header, formData, body)
+  let scheme = call_611997.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613997.url(scheme.get, call_613997.host, call_613997.base,
-                         call_613997.route, valid.getOrDefault("path"),
+  let url = call_611997.url(scheme.get, call_611997.host, call_611997.base,
+                         call_611997.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613997, url, valid)
+  result = atozHook(call_611997, url, valid)
 
-proc call*(call_613998: Call_RegisterEcsCluster_613985; body: JsonNode): Recallable =
+proc call*(call_611998: Call_RegisterEcsCluster_611985; body: JsonNode): Recallable =
   ## registerEcsCluster
   ## <p>Registers a specified Amazon ECS cluster with a stack. You can register only one cluster with a stack. A cluster can be registered with only one stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinglayers-ecscluster.html"> Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html"> Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_613999 = newJObject()
+  var body_611999 = newJObject()
   if body != nil:
-    body_613999 = body
-  result = call_613998.call(nil, nil, nil, nil, body_613999)
+    body_611999 = body
+  result = call_611998.call(nil, nil, nil, nil, body_611999)
 
-var registerEcsCluster* = Call_RegisterEcsCluster_613985(
+var registerEcsCluster* = Call_RegisterEcsCluster_611985(
     name: "registerEcsCluster", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.RegisterEcsCluster",
-    validator: validate_RegisterEcsCluster_613986, base: "/",
-    url: url_RegisterEcsCluster_613987, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterEcsCluster_611986, base: "/",
+    url: url_RegisterEcsCluster_611987, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterElasticIp_614000 = ref object of OpenApiRestCall_612658
-proc url_RegisterElasticIp_614002(protocol: Scheme; host: string; base: string;
+  Call_RegisterElasticIp_612000 = ref object of OpenApiRestCall_610658
+proc url_RegisterElasticIp_612002(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterElasticIp_614001(path: JsonNode; query: JsonNode;
+proc validate_RegisterElasticIp_612001(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Registers an Elastic IP address with a specified stack. An address can be registered with only one stack at a time. If the address is already registered, you must first deregister it by calling <a>DeregisterElasticIp</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -5798,46 +5691,46 @@ proc validate_RegisterElasticIp_614001(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614003 = header.getOrDefault("X-Amz-Target")
-  valid_614003 = validateParameter(valid_614003, JString, required = true, default = newJString(
+  var valid_612003 = header.getOrDefault("X-Amz-Target")
+  valid_612003 = validateParameter(valid_612003, JString, required = true, default = newJString(
       "OpsWorks_20130218.RegisterElasticIp"))
-  if valid_614003 != nil:
-    section.add "X-Amz-Target", valid_614003
-  var valid_614004 = header.getOrDefault("X-Amz-Signature")
-  valid_614004 = validateParameter(valid_614004, JString, required = false,
+  if valid_612003 != nil:
+    section.add "X-Amz-Target", valid_612003
+  var valid_612004 = header.getOrDefault("X-Amz-Signature")
+  valid_612004 = validateParameter(valid_612004, JString, required = false,
                                  default = nil)
-  if valid_614004 != nil:
-    section.add "X-Amz-Signature", valid_614004
-  var valid_614005 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614005 = validateParameter(valid_614005, JString, required = false,
+  if valid_612004 != nil:
+    section.add "X-Amz-Signature", valid_612004
+  var valid_612005 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612005 = validateParameter(valid_612005, JString, required = false,
                                  default = nil)
-  if valid_614005 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614005
-  var valid_614006 = header.getOrDefault("X-Amz-Date")
-  valid_614006 = validateParameter(valid_614006, JString, required = false,
+  if valid_612005 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612005
+  var valid_612006 = header.getOrDefault("X-Amz-Date")
+  valid_612006 = validateParameter(valid_612006, JString, required = false,
                                  default = nil)
-  if valid_614006 != nil:
-    section.add "X-Amz-Date", valid_614006
-  var valid_614007 = header.getOrDefault("X-Amz-Credential")
-  valid_614007 = validateParameter(valid_614007, JString, required = false,
+  if valid_612006 != nil:
+    section.add "X-Amz-Date", valid_612006
+  var valid_612007 = header.getOrDefault("X-Amz-Credential")
+  valid_612007 = validateParameter(valid_612007, JString, required = false,
                                  default = nil)
-  if valid_614007 != nil:
-    section.add "X-Amz-Credential", valid_614007
-  var valid_614008 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614008 = validateParameter(valid_614008, JString, required = false,
+  if valid_612007 != nil:
+    section.add "X-Amz-Credential", valid_612007
+  var valid_612008 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612008 = validateParameter(valid_612008, JString, required = false,
                                  default = nil)
-  if valid_614008 != nil:
-    section.add "X-Amz-Security-Token", valid_614008
-  var valid_614009 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614009 = validateParameter(valid_614009, JString, required = false,
+  if valid_612008 != nil:
+    section.add "X-Amz-Security-Token", valid_612008
+  var valid_612009 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612009 = validateParameter(valid_612009, JString, required = false,
                                  default = nil)
-  if valid_614009 != nil:
-    section.add "X-Amz-Algorithm", valid_614009
-  var valid_614010 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614010 = validateParameter(valid_614010, JString, required = false,
+  if valid_612009 != nil:
+    section.add "X-Amz-Algorithm", valid_612009
+  var valid_612010 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612010 = validateParameter(valid_612010, JString, required = false,
                                  default = nil)
-  if valid_614010 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614010
+  if valid_612010 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612010
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5848,48 +5741,46 @@ proc validate_RegisterElasticIp_614001(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614012: Call_RegisterElasticIp_614000; path: JsonNode;
+proc call*(call_612012: Call_RegisterElasticIp_612000; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers an Elastic IP address with a specified stack. An address can be registered with only one stack at a time. If the address is already registered, you must first deregister it by calling <a>DeregisterElasticIp</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614012.validator(path, query, header, formData, body)
-  let scheme = call_614012.pickScheme
+  let valid = call_612012.validator(path, query, header, formData, body)
+  let scheme = call_612012.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614012.url(scheme.get, call_614012.host, call_614012.base,
-                         call_614012.route, valid.getOrDefault("path"),
+  let url = call_612012.url(scheme.get, call_612012.host, call_612012.base,
+                         call_612012.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614012, url, valid)
+  result = atozHook(call_612012, url, valid)
 
-proc call*(call_614013: Call_RegisterElasticIp_614000; body: JsonNode): Recallable =
+proc call*(call_612013: Call_RegisterElasticIp_612000; body: JsonNode): Recallable =
   ## registerElasticIp
   ## <p>Registers an Elastic IP address with a specified stack. An address can be registered with only one stack at a time. If the address is already registered, you must first deregister it by calling <a>DeregisterElasticIp</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614014 = newJObject()
+  var body_612014 = newJObject()
   if body != nil:
-    body_614014 = body
-  result = call_614013.call(nil, nil, nil, nil, body_614014)
+    body_612014 = body
+  result = call_612013.call(nil, nil, nil, nil, body_612014)
 
-var registerElasticIp* = Call_RegisterElasticIp_614000(name: "registerElasticIp",
+var registerElasticIp* = Call_RegisterElasticIp_612000(name: "registerElasticIp",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.RegisterElasticIp",
-    validator: validate_RegisterElasticIp_614001, base: "/",
-    url: url_RegisterElasticIp_614002, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterElasticIp_612001, base: "/",
+    url: url_RegisterElasticIp_612002, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterInstance_614015 = ref object of OpenApiRestCall_612658
-proc url_RegisterInstance_614017(protocol: Scheme; host: string; base: string;
+  Call_RegisterInstance_612015 = ref object of OpenApiRestCall_610658
+proc url_RegisterInstance_612017(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterInstance_614016(path: JsonNode; query: JsonNode;
+proc validate_RegisterInstance_612016(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Registers instances that were created outside of AWS OpsWorks Stacks with a specified stack.</p> <note> <p>We do not recommend using this action to register instances. The complete registration operation includes two tasks: installing the AWS OpsWorks Stacks agent on the instance, and registering the instance with the stack. <code>RegisterInstance</code> handles only the second step. You should instead use the AWS CLI <code>register</code> command, which performs the entire registration operation. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/registered-instances-register.html"> Registering an Instance with an AWS OpsWorks Stacks Stack</a>.</p> </note> <p>Registered instances have the same requirements as instances that are created by using the <a>CreateInstance</a> API. For example, registered instances must be running a supported Linux-based operating system, and they must have a supported instance type. For more information about requirements for instances that you want to register, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/registered-instances-register-registering-preparer.html"> Preparing the Instance</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -5910,46 +5801,46 @@ proc validate_RegisterInstance_614016(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614018 = header.getOrDefault("X-Amz-Target")
-  valid_614018 = validateParameter(valid_614018, JString, required = true, default = newJString(
+  var valid_612018 = header.getOrDefault("X-Amz-Target")
+  valid_612018 = validateParameter(valid_612018, JString, required = true, default = newJString(
       "OpsWorks_20130218.RegisterInstance"))
-  if valid_614018 != nil:
-    section.add "X-Amz-Target", valid_614018
-  var valid_614019 = header.getOrDefault("X-Amz-Signature")
-  valid_614019 = validateParameter(valid_614019, JString, required = false,
+  if valid_612018 != nil:
+    section.add "X-Amz-Target", valid_612018
+  var valid_612019 = header.getOrDefault("X-Amz-Signature")
+  valid_612019 = validateParameter(valid_612019, JString, required = false,
                                  default = nil)
-  if valid_614019 != nil:
-    section.add "X-Amz-Signature", valid_614019
-  var valid_614020 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614020 = validateParameter(valid_614020, JString, required = false,
+  if valid_612019 != nil:
+    section.add "X-Amz-Signature", valid_612019
+  var valid_612020 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612020 = validateParameter(valid_612020, JString, required = false,
                                  default = nil)
-  if valid_614020 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614020
-  var valid_614021 = header.getOrDefault("X-Amz-Date")
-  valid_614021 = validateParameter(valid_614021, JString, required = false,
+  if valid_612020 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612020
+  var valid_612021 = header.getOrDefault("X-Amz-Date")
+  valid_612021 = validateParameter(valid_612021, JString, required = false,
                                  default = nil)
-  if valid_614021 != nil:
-    section.add "X-Amz-Date", valid_614021
-  var valid_614022 = header.getOrDefault("X-Amz-Credential")
-  valid_614022 = validateParameter(valid_614022, JString, required = false,
+  if valid_612021 != nil:
+    section.add "X-Amz-Date", valid_612021
+  var valid_612022 = header.getOrDefault("X-Amz-Credential")
+  valid_612022 = validateParameter(valid_612022, JString, required = false,
                                  default = nil)
-  if valid_614022 != nil:
-    section.add "X-Amz-Credential", valid_614022
-  var valid_614023 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614023 = validateParameter(valid_614023, JString, required = false,
+  if valid_612022 != nil:
+    section.add "X-Amz-Credential", valid_612022
+  var valid_612023 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612023 = validateParameter(valid_612023, JString, required = false,
                                  default = nil)
-  if valid_614023 != nil:
-    section.add "X-Amz-Security-Token", valid_614023
-  var valid_614024 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614024 = validateParameter(valid_614024, JString, required = false,
+  if valid_612023 != nil:
+    section.add "X-Amz-Security-Token", valid_612023
+  var valid_612024 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612024 = validateParameter(valid_612024, JString, required = false,
                                  default = nil)
-  if valid_614024 != nil:
-    section.add "X-Amz-Algorithm", valid_614024
-  var valid_614025 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614025 = validateParameter(valid_614025, JString, required = false,
+  if valid_612024 != nil:
+    section.add "X-Amz-Algorithm", valid_612024
+  var valid_612025 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612025 = validateParameter(valid_612025, JString, required = false,
                                  default = nil)
-  if valid_614025 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614025
+  if valid_612025 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612025
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -5960,48 +5851,46 @@ proc validate_RegisterInstance_614016(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614027: Call_RegisterInstance_614015; path: JsonNode;
+proc call*(call_612027: Call_RegisterInstance_612015; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers instances that were created outside of AWS OpsWorks Stacks with a specified stack.</p> <note> <p>We do not recommend using this action to register instances. The complete registration operation includes two tasks: installing the AWS OpsWorks Stacks agent on the instance, and registering the instance with the stack. <code>RegisterInstance</code> handles only the second step. You should instead use the AWS CLI <code>register</code> command, which performs the entire registration operation. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/registered-instances-register.html"> Registering an Instance with an AWS OpsWorks Stacks Stack</a>.</p> </note> <p>Registered instances have the same requirements as instances that are created by using the <a>CreateInstance</a> API. For example, registered instances must be running a supported Linux-based operating system, and they must have a supported instance type. For more information about requirements for instances that you want to register, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/registered-instances-register-registering-preparer.html"> Preparing the Instance</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614027.validator(path, query, header, formData, body)
-  let scheme = call_614027.pickScheme
+  let valid = call_612027.validator(path, query, header, formData, body)
+  let scheme = call_612027.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614027.url(scheme.get, call_614027.host, call_614027.base,
-                         call_614027.route, valid.getOrDefault("path"),
+  let url = call_612027.url(scheme.get, call_612027.host, call_612027.base,
+                         call_612027.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614027, url, valid)
+  result = atozHook(call_612027, url, valid)
 
-proc call*(call_614028: Call_RegisterInstance_614015; body: JsonNode): Recallable =
+proc call*(call_612028: Call_RegisterInstance_612015; body: JsonNode): Recallable =
   ## registerInstance
   ## <p>Registers instances that were created outside of AWS OpsWorks Stacks with a specified stack.</p> <note> <p>We do not recommend using this action to register instances. The complete registration operation includes two tasks: installing the AWS OpsWorks Stacks agent on the instance, and registering the instance with the stack. <code>RegisterInstance</code> handles only the second step. You should instead use the AWS CLI <code>register</code> command, which performs the entire registration operation. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/registered-instances-register.html"> Registering an Instance with an AWS OpsWorks Stacks Stack</a>.</p> </note> <p>Registered instances have the same requirements as instances that are created by using the <a>CreateInstance</a> API. For example, registered instances must be running a supported Linux-based operating system, and they must have a supported instance type. For more information about requirements for instances that you want to register, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/registered-instances-register-registering-preparer.html"> Preparing the Instance</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614029 = newJObject()
+  var body_612029 = newJObject()
   if body != nil:
-    body_614029 = body
-  result = call_614028.call(nil, nil, nil, nil, body_614029)
+    body_612029 = body
+  result = call_612028.call(nil, nil, nil, nil, body_612029)
 
-var registerInstance* = Call_RegisterInstance_614015(name: "registerInstance",
+var registerInstance* = Call_RegisterInstance_612015(name: "registerInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.RegisterInstance",
-    validator: validate_RegisterInstance_614016, base: "/",
-    url: url_RegisterInstance_614017, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterInstance_612016, base: "/",
+    url: url_RegisterInstance_612017, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterRdsDbInstance_614030 = ref object of OpenApiRestCall_612658
-proc url_RegisterRdsDbInstance_614032(protocol: Scheme; host: string; base: string;
+  Call_RegisterRdsDbInstance_612030 = ref object of OpenApiRestCall_610658
+proc url_RegisterRdsDbInstance_612032(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterRdsDbInstance_614031(path: JsonNode; query: JsonNode;
+proc validate_RegisterRdsDbInstance_612031(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Registers an Amazon RDS instance with a stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -6021,46 +5910,46 @@ proc validate_RegisterRdsDbInstance_614031(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614033 = header.getOrDefault("X-Amz-Target")
-  valid_614033 = validateParameter(valid_614033, JString, required = true, default = newJString(
+  var valid_612033 = header.getOrDefault("X-Amz-Target")
+  valid_612033 = validateParameter(valid_612033, JString, required = true, default = newJString(
       "OpsWorks_20130218.RegisterRdsDbInstance"))
-  if valid_614033 != nil:
-    section.add "X-Amz-Target", valid_614033
-  var valid_614034 = header.getOrDefault("X-Amz-Signature")
-  valid_614034 = validateParameter(valid_614034, JString, required = false,
+  if valid_612033 != nil:
+    section.add "X-Amz-Target", valid_612033
+  var valid_612034 = header.getOrDefault("X-Amz-Signature")
+  valid_612034 = validateParameter(valid_612034, JString, required = false,
                                  default = nil)
-  if valid_614034 != nil:
-    section.add "X-Amz-Signature", valid_614034
-  var valid_614035 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614035 = validateParameter(valid_614035, JString, required = false,
+  if valid_612034 != nil:
+    section.add "X-Amz-Signature", valid_612034
+  var valid_612035 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612035 = validateParameter(valid_612035, JString, required = false,
                                  default = nil)
-  if valid_614035 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614035
-  var valid_614036 = header.getOrDefault("X-Amz-Date")
-  valid_614036 = validateParameter(valid_614036, JString, required = false,
+  if valid_612035 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612035
+  var valid_612036 = header.getOrDefault("X-Amz-Date")
+  valid_612036 = validateParameter(valid_612036, JString, required = false,
                                  default = nil)
-  if valid_614036 != nil:
-    section.add "X-Amz-Date", valid_614036
-  var valid_614037 = header.getOrDefault("X-Amz-Credential")
-  valid_614037 = validateParameter(valid_614037, JString, required = false,
+  if valid_612036 != nil:
+    section.add "X-Amz-Date", valid_612036
+  var valid_612037 = header.getOrDefault("X-Amz-Credential")
+  valid_612037 = validateParameter(valid_612037, JString, required = false,
                                  default = nil)
-  if valid_614037 != nil:
-    section.add "X-Amz-Credential", valid_614037
-  var valid_614038 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614038 = validateParameter(valid_614038, JString, required = false,
+  if valid_612037 != nil:
+    section.add "X-Amz-Credential", valid_612037
+  var valid_612038 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612038 = validateParameter(valid_612038, JString, required = false,
                                  default = nil)
-  if valid_614038 != nil:
-    section.add "X-Amz-Security-Token", valid_614038
-  var valid_614039 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614039 = validateParameter(valid_614039, JString, required = false,
+  if valid_612038 != nil:
+    section.add "X-Amz-Security-Token", valid_612038
+  var valid_612039 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612039 = validateParameter(valid_612039, JString, required = false,
                                  default = nil)
-  if valid_614039 != nil:
-    section.add "X-Amz-Algorithm", valid_614039
-  var valid_614040 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614040 = validateParameter(valid_614040, JString, required = false,
+  if valid_612039 != nil:
+    section.add "X-Amz-Algorithm", valid_612039
+  var valid_612040 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612040 = validateParameter(valid_612040, JString, required = false,
                                  default = nil)
-  if valid_614040 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614040
+  if valid_612040 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612040
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6071,49 +5960,47 @@ proc validate_RegisterRdsDbInstance_614031(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614042: Call_RegisterRdsDbInstance_614030; path: JsonNode;
+proc call*(call_612042: Call_RegisterRdsDbInstance_612030; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers an Amazon RDS instance with a stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614042.validator(path, query, header, formData, body)
-  let scheme = call_614042.pickScheme
+  let valid = call_612042.validator(path, query, header, formData, body)
+  let scheme = call_612042.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614042.url(scheme.get, call_614042.host, call_614042.base,
-                         call_614042.route, valid.getOrDefault("path"),
+  let url = call_612042.url(scheme.get, call_612042.host, call_612042.base,
+                         call_612042.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614042, url, valid)
+  result = atozHook(call_612042, url, valid)
 
-proc call*(call_614043: Call_RegisterRdsDbInstance_614030; body: JsonNode): Recallable =
+proc call*(call_612043: Call_RegisterRdsDbInstance_612030; body: JsonNode): Recallable =
   ## registerRdsDbInstance
   ## <p>Registers an Amazon RDS instance with a stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614044 = newJObject()
+  var body_612044 = newJObject()
   if body != nil:
-    body_614044 = body
-  result = call_614043.call(nil, nil, nil, nil, body_614044)
+    body_612044 = body
+  result = call_612043.call(nil, nil, nil, nil, body_612044)
 
-var registerRdsDbInstance* = Call_RegisterRdsDbInstance_614030(
+var registerRdsDbInstance* = Call_RegisterRdsDbInstance_612030(
     name: "registerRdsDbInstance", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.RegisterRdsDbInstance",
-    validator: validate_RegisterRdsDbInstance_614031, base: "/",
-    url: url_RegisterRdsDbInstance_614032, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_RegisterRdsDbInstance_612031, base: "/",
+    url: url_RegisterRdsDbInstance_612032, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_RegisterVolume_614045 = ref object of OpenApiRestCall_612658
-proc url_RegisterVolume_614047(protocol: Scheme; host: string; base: string;
+  Call_RegisterVolume_612045 = ref object of OpenApiRestCall_610658
+proc url_RegisterVolume_612047(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_RegisterVolume_614046(path: JsonNode; query: JsonNode;
+proc validate_RegisterVolume_612046(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Registers an Amazon EBS volume with a specified stack. A volume can be registered with only one stack at a time. If the volume is already registered, you must first deregister it by calling <a>DeregisterVolume</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -6134,46 +6021,46 @@ proc validate_RegisterVolume_614046(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614048 = header.getOrDefault("X-Amz-Target")
-  valid_614048 = validateParameter(valid_614048, JString, required = true, default = newJString(
+  var valid_612048 = header.getOrDefault("X-Amz-Target")
+  valid_612048 = validateParameter(valid_612048, JString, required = true, default = newJString(
       "OpsWorks_20130218.RegisterVolume"))
-  if valid_614048 != nil:
-    section.add "X-Amz-Target", valid_614048
-  var valid_614049 = header.getOrDefault("X-Amz-Signature")
-  valid_614049 = validateParameter(valid_614049, JString, required = false,
+  if valid_612048 != nil:
+    section.add "X-Amz-Target", valid_612048
+  var valid_612049 = header.getOrDefault("X-Amz-Signature")
+  valid_612049 = validateParameter(valid_612049, JString, required = false,
                                  default = nil)
-  if valid_614049 != nil:
-    section.add "X-Amz-Signature", valid_614049
-  var valid_614050 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614050 = validateParameter(valid_614050, JString, required = false,
+  if valid_612049 != nil:
+    section.add "X-Amz-Signature", valid_612049
+  var valid_612050 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612050 = validateParameter(valid_612050, JString, required = false,
                                  default = nil)
-  if valid_614050 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614050
-  var valid_614051 = header.getOrDefault("X-Amz-Date")
-  valid_614051 = validateParameter(valid_614051, JString, required = false,
+  if valid_612050 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612050
+  var valid_612051 = header.getOrDefault("X-Amz-Date")
+  valid_612051 = validateParameter(valid_612051, JString, required = false,
                                  default = nil)
-  if valid_614051 != nil:
-    section.add "X-Amz-Date", valid_614051
-  var valid_614052 = header.getOrDefault("X-Amz-Credential")
-  valid_614052 = validateParameter(valid_614052, JString, required = false,
+  if valid_612051 != nil:
+    section.add "X-Amz-Date", valid_612051
+  var valid_612052 = header.getOrDefault("X-Amz-Credential")
+  valid_612052 = validateParameter(valid_612052, JString, required = false,
                                  default = nil)
-  if valid_614052 != nil:
-    section.add "X-Amz-Credential", valid_614052
-  var valid_614053 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614053 = validateParameter(valid_614053, JString, required = false,
+  if valid_612052 != nil:
+    section.add "X-Amz-Credential", valid_612052
+  var valid_612053 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612053 = validateParameter(valid_612053, JString, required = false,
                                  default = nil)
-  if valid_614053 != nil:
-    section.add "X-Amz-Security-Token", valid_614053
-  var valid_614054 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614054 = validateParameter(valid_614054, JString, required = false,
+  if valid_612053 != nil:
+    section.add "X-Amz-Security-Token", valid_612053
+  var valid_612054 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612054 = validateParameter(valid_612054, JString, required = false,
                                  default = nil)
-  if valid_614054 != nil:
-    section.add "X-Amz-Algorithm", valid_614054
-  var valid_614055 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614055 = validateParameter(valid_614055, JString, required = false,
+  if valid_612054 != nil:
+    section.add "X-Amz-Algorithm", valid_612054
+  var valid_612055 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612055 = validateParameter(valid_612055, JString, required = false,
                                  default = nil)
-  if valid_614055 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614055
+  if valid_612055 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612055
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6184,49 +6071,47 @@ proc validate_RegisterVolume_614046(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614057: Call_RegisterVolume_614045; path: JsonNode; query: JsonNode;
+proc call*(call_612057: Call_RegisterVolume_612045; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Registers an Amazon EBS volume with a specified stack. A volume can be registered with only one stack at a time. If the volume is already registered, you must first deregister it by calling <a>DeregisterVolume</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614057.validator(path, query, header, formData, body)
-  let scheme = call_614057.pickScheme
+  let valid = call_612057.validator(path, query, header, formData, body)
+  let scheme = call_612057.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614057.url(scheme.get, call_614057.host, call_614057.base,
-                         call_614057.route, valid.getOrDefault("path"),
+  let url = call_612057.url(scheme.get, call_612057.host, call_612057.base,
+                         call_612057.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614057, url, valid)
+  result = atozHook(call_612057, url, valid)
 
-proc call*(call_614058: Call_RegisterVolume_614045; body: JsonNode): Recallable =
+proc call*(call_612058: Call_RegisterVolume_612045; body: JsonNode): Recallable =
   ## registerVolume
   ## <p>Registers an Amazon EBS volume with a specified stack. A volume can be registered with only one stack at a time. If the volume is already registered, you must first deregister it by calling <a>DeregisterVolume</a>. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614059 = newJObject()
+  var body_612059 = newJObject()
   if body != nil:
-    body_614059 = body
-  result = call_614058.call(nil, nil, nil, nil, body_614059)
+    body_612059 = body
+  result = call_612058.call(nil, nil, nil, nil, body_612059)
 
-var registerVolume* = Call_RegisterVolume_614045(name: "registerVolume",
+var registerVolume* = Call_RegisterVolume_612045(name: "registerVolume",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.RegisterVolume",
-    validator: validate_RegisterVolume_614046, base: "/", url: url_RegisterVolume_614047,
+    validator: validate_RegisterVolume_612046, base: "/", url: url_RegisterVolume_612047,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SetLoadBasedAutoScaling_614060 = ref object of OpenApiRestCall_612658
-proc url_SetLoadBasedAutoScaling_614062(protocol: Scheme; host: string; base: string;
+  Call_SetLoadBasedAutoScaling_612060 = ref object of OpenApiRestCall_610658
+proc url_SetLoadBasedAutoScaling_612062(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SetLoadBasedAutoScaling_614061(path: JsonNode; query: JsonNode;
+proc validate_SetLoadBasedAutoScaling_612061(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Specify the load-based auto scaling configuration for a specified layer. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-autoscaling.html">Managing Load with Time-based and Load-based Instances</a>.</p> <note> <p>To use load-based auto scaling, you must create a set of load-based auto scaling instances. Load-based auto scaling operates only on the instances from that set, so you must ensure that you have created enough instances to handle the maximum anticipated load.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -6246,46 +6131,46 @@ proc validate_SetLoadBasedAutoScaling_614061(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614063 = header.getOrDefault("X-Amz-Target")
-  valid_614063 = validateParameter(valid_614063, JString, required = true, default = newJString(
+  var valid_612063 = header.getOrDefault("X-Amz-Target")
+  valid_612063 = validateParameter(valid_612063, JString, required = true, default = newJString(
       "OpsWorks_20130218.SetLoadBasedAutoScaling"))
-  if valid_614063 != nil:
-    section.add "X-Amz-Target", valid_614063
-  var valid_614064 = header.getOrDefault("X-Amz-Signature")
-  valid_614064 = validateParameter(valid_614064, JString, required = false,
+  if valid_612063 != nil:
+    section.add "X-Amz-Target", valid_612063
+  var valid_612064 = header.getOrDefault("X-Amz-Signature")
+  valid_612064 = validateParameter(valid_612064, JString, required = false,
                                  default = nil)
-  if valid_614064 != nil:
-    section.add "X-Amz-Signature", valid_614064
-  var valid_614065 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614065 = validateParameter(valid_614065, JString, required = false,
+  if valid_612064 != nil:
+    section.add "X-Amz-Signature", valid_612064
+  var valid_612065 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612065 = validateParameter(valid_612065, JString, required = false,
                                  default = nil)
-  if valid_614065 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614065
-  var valid_614066 = header.getOrDefault("X-Amz-Date")
-  valid_614066 = validateParameter(valid_614066, JString, required = false,
+  if valid_612065 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612065
+  var valid_612066 = header.getOrDefault("X-Amz-Date")
+  valid_612066 = validateParameter(valid_612066, JString, required = false,
                                  default = nil)
-  if valid_614066 != nil:
-    section.add "X-Amz-Date", valid_614066
-  var valid_614067 = header.getOrDefault("X-Amz-Credential")
-  valid_614067 = validateParameter(valid_614067, JString, required = false,
+  if valid_612066 != nil:
+    section.add "X-Amz-Date", valid_612066
+  var valid_612067 = header.getOrDefault("X-Amz-Credential")
+  valid_612067 = validateParameter(valid_612067, JString, required = false,
                                  default = nil)
-  if valid_614067 != nil:
-    section.add "X-Amz-Credential", valid_614067
-  var valid_614068 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614068 = validateParameter(valid_614068, JString, required = false,
+  if valid_612067 != nil:
+    section.add "X-Amz-Credential", valid_612067
+  var valid_612068 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612068 = validateParameter(valid_612068, JString, required = false,
                                  default = nil)
-  if valid_614068 != nil:
-    section.add "X-Amz-Security-Token", valid_614068
-  var valid_614069 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614069 = validateParameter(valid_614069, JString, required = false,
+  if valid_612068 != nil:
+    section.add "X-Amz-Security-Token", valid_612068
+  var valid_612069 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612069 = validateParameter(valid_612069, JString, required = false,
                                  default = nil)
-  if valid_614069 != nil:
-    section.add "X-Amz-Algorithm", valid_614069
-  var valid_614070 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614070 = validateParameter(valid_614070, JString, required = false,
+  if valid_612069 != nil:
+    section.add "X-Amz-Algorithm", valid_612069
+  var valid_612070 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612070 = validateParameter(valid_612070, JString, required = false,
                                  default = nil)
-  if valid_614070 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614070
+  if valid_612070 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612070
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6296,49 +6181,47 @@ proc validate_SetLoadBasedAutoScaling_614061(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614072: Call_SetLoadBasedAutoScaling_614060; path: JsonNode;
+proc call*(call_612072: Call_SetLoadBasedAutoScaling_612060; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Specify the load-based auto scaling configuration for a specified layer. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-autoscaling.html">Managing Load with Time-based and Load-based Instances</a>.</p> <note> <p>To use load-based auto scaling, you must create a set of load-based auto scaling instances. Load-based auto scaling operates only on the instances from that set, so you must ensure that you have created enough instances to handle the maximum anticipated load.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614072.validator(path, query, header, formData, body)
-  let scheme = call_614072.pickScheme
+  let valid = call_612072.validator(path, query, header, formData, body)
+  let scheme = call_612072.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614072.url(scheme.get, call_614072.host, call_614072.base,
-                         call_614072.route, valid.getOrDefault("path"),
+  let url = call_612072.url(scheme.get, call_612072.host, call_612072.base,
+                         call_612072.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614072, url, valid)
+  result = atozHook(call_612072, url, valid)
 
-proc call*(call_614073: Call_SetLoadBasedAutoScaling_614060; body: JsonNode): Recallable =
+proc call*(call_612073: Call_SetLoadBasedAutoScaling_612060; body: JsonNode): Recallable =
   ## setLoadBasedAutoScaling
   ## <p>Specify the load-based auto scaling configuration for a specified layer. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-autoscaling.html">Managing Load with Time-based and Load-based Instances</a>.</p> <note> <p>To use load-based auto scaling, you must create a set of load-based auto scaling instances. Load-based auto scaling operates only on the instances from that set, so you must ensure that you have created enough instances to handle the maximum anticipated load.</p> </note> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614074 = newJObject()
+  var body_612074 = newJObject()
   if body != nil:
-    body_614074 = body
-  result = call_614073.call(nil, nil, nil, nil, body_614074)
+    body_612074 = body
+  result = call_612073.call(nil, nil, nil, nil, body_612074)
 
-var setLoadBasedAutoScaling* = Call_SetLoadBasedAutoScaling_614060(
+var setLoadBasedAutoScaling* = Call_SetLoadBasedAutoScaling_612060(
     name: "setLoadBasedAutoScaling", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.SetLoadBasedAutoScaling",
-    validator: validate_SetLoadBasedAutoScaling_614061, base: "/",
-    url: url_SetLoadBasedAutoScaling_614062, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SetLoadBasedAutoScaling_612061, base: "/",
+    url: url_SetLoadBasedAutoScaling_612062, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SetPermission_614075 = ref object of OpenApiRestCall_612658
-proc url_SetPermission_614077(protocol: Scheme; host: string; base: string;
+  Call_SetPermission_612075 = ref object of OpenApiRestCall_610658
+proc url_SetPermission_612077(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SetPermission_614076(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_SetPermission_612076(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Specifies a user's permissions. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingsecurity.html">Security and Permissions</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -6358,46 +6241,46 @@ proc validate_SetPermission_614076(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614078 = header.getOrDefault("X-Amz-Target")
-  valid_614078 = validateParameter(valid_614078, JString, required = true, default = newJString(
+  var valid_612078 = header.getOrDefault("X-Amz-Target")
+  valid_612078 = validateParameter(valid_612078, JString, required = true, default = newJString(
       "OpsWorks_20130218.SetPermission"))
-  if valid_614078 != nil:
-    section.add "X-Amz-Target", valid_614078
-  var valid_614079 = header.getOrDefault("X-Amz-Signature")
-  valid_614079 = validateParameter(valid_614079, JString, required = false,
+  if valid_612078 != nil:
+    section.add "X-Amz-Target", valid_612078
+  var valid_612079 = header.getOrDefault("X-Amz-Signature")
+  valid_612079 = validateParameter(valid_612079, JString, required = false,
                                  default = nil)
-  if valid_614079 != nil:
-    section.add "X-Amz-Signature", valid_614079
-  var valid_614080 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614080 = validateParameter(valid_614080, JString, required = false,
+  if valid_612079 != nil:
+    section.add "X-Amz-Signature", valid_612079
+  var valid_612080 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612080 = validateParameter(valid_612080, JString, required = false,
                                  default = nil)
-  if valid_614080 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614080
-  var valid_614081 = header.getOrDefault("X-Amz-Date")
-  valid_614081 = validateParameter(valid_614081, JString, required = false,
+  if valid_612080 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612080
+  var valid_612081 = header.getOrDefault("X-Amz-Date")
+  valid_612081 = validateParameter(valid_612081, JString, required = false,
                                  default = nil)
-  if valid_614081 != nil:
-    section.add "X-Amz-Date", valid_614081
-  var valid_614082 = header.getOrDefault("X-Amz-Credential")
-  valid_614082 = validateParameter(valid_614082, JString, required = false,
+  if valid_612081 != nil:
+    section.add "X-Amz-Date", valid_612081
+  var valid_612082 = header.getOrDefault("X-Amz-Credential")
+  valid_612082 = validateParameter(valid_612082, JString, required = false,
                                  default = nil)
-  if valid_614082 != nil:
-    section.add "X-Amz-Credential", valid_614082
-  var valid_614083 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614083 = validateParameter(valid_614083, JString, required = false,
+  if valid_612082 != nil:
+    section.add "X-Amz-Credential", valid_612082
+  var valid_612083 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612083 = validateParameter(valid_612083, JString, required = false,
                                  default = nil)
-  if valid_614083 != nil:
-    section.add "X-Amz-Security-Token", valid_614083
-  var valid_614084 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614084 = validateParameter(valid_614084, JString, required = false,
+  if valid_612083 != nil:
+    section.add "X-Amz-Security-Token", valid_612083
+  var valid_612084 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612084 = validateParameter(valid_612084, JString, required = false,
                                  default = nil)
-  if valid_614084 != nil:
-    section.add "X-Amz-Algorithm", valid_614084
-  var valid_614085 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614085 = validateParameter(valid_614085, JString, required = false,
+  if valid_612084 != nil:
+    section.add "X-Amz-Algorithm", valid_612084
+  var valid_612085 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612085 = validateParameter(valid_612085, JString, required = false,
                                  default = nil)
-  if valid_614085 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614085
+  if valid_612085 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612085
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6408,49 +6291,47 @@ proc validate_SetPermission_614076(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_614087: Call_SetPermission_614075; path: JsonNode; query: JsonNode;
+proc call*(call_612087: Call_SetPermission_612075; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Specifies a user's permissions. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingsecurity.html">Security and Permissions</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614087.validator(path, query, header, formData, body)
-  let scheme = call_614087.pickScheme
+  let valid = call_612087.validator(path, query, header, formData, body)
+  let scheme = call_612087.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614087.url(scheme.get, call_614087.host, call_614087.base,
-                         call_614087.route, valid.getOrDefault("path"),
+  let url = call_612087.url(scheme.get, call_612087.host, call_612087.base,
+                         call_612087.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614087, url, valid)
+  result = atozHook(call_612087, url, valid)
 
-proc call*(call_614088: Call_SetPermission_614075; body: JsonNode): Recallable =
+proc call*(call_612088: Call_SetPermission_612075; body: JsonNode): Recallable =
   ## setPermission
   ## <p>Specifies a user's permissions. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workingsecurity.html">Security and Permissions</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614089 = newJObject()
+  var body_612089 = newJObject()
   if body != nil:
-    body_614089 = body
-  result = call_614088.call(nil, nil, nil, nil, body_614089)
+    body_612089 = body
+  result = call_612088.call(nil, nil, nil, nil, body_612089)
 
-var setPermission* = Call_SetPermission_614075(name: "setPermission",
+var setPermission* = Call_SetPermission_612075(name: "setPermission",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.SetPermission",
-    validator: validate_SetPermission_614076, base: "/", url: url_SetPermission_614077,
+    validator: validate_SetPermission_612076, base: "/", url: url_SetPermission_612077,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_SetTimeBasedAutoScaling_614090 = ref object of OpenApiRestCall_612658
-proc url_SetTimeBasedAutoScaling_614092(protocol: Scheme; host: string; base: string;
+  Call_SetTimeBasedAutoScaling_612090 = ref object of OpenApiRestCall_610658
+proc url_SetTimeBasedAutoScaling_612092(protocol: Scheme; host: string; base: string;
                                        route: string; path: JsonNode;
                                        query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_SetTimeBasedAutoScaling_614091(path: JsonNode; query: JsonNode;
+proc validate_SetTimeBasedAutoScaling_612091(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Specify the time-based auto scaling configuration for a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-autoscaling.html">Managing Load with Time-based and Load-based Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -6470,46 +6351,46 @@ proc validate_SetTimeBasedAutoScaling_614091(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614093 = header.getOrDefault("X-Amz-Target")
-  valid_614093 = validateParameter(valid_614093, JString, required = true, default = newJString(
+  var valid_612093 = header.getOrDefault("X-Amz-Target")
+  valid_612093 = validateParameter(valid_612093, JString, required = true, default = newJString(
       "OpsWorks_20130218.SetTimeBasedAutoScaling"))
-  if valid_614093 != nil:
-    section.add "X-Amz-Target", valid_614093
-  var valid_614094 = header.getOrDefault("X-Amz-Signature")
-  valid_614094 = validateParameter(valid_614094, JString, required = false,
+  if valid_612093 != nil:
+    section.add "X-Amz-Target", valid_612093
+  var valid_612094 = header.getOrDefault("X-Amz-Signature")
+  valid_612094 = validateParameter(valid_612094, JString, required = false,
                                  default = nil)
-  if valid_614094 != nil:
-    section.add "X-Amz-Signature", valid_614094
-  var valid_614095 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614095 = validateParameter(valid_614095, JString, required = false,
+  if valid_612094 != nil:
+    section.add "X-Amz-Signature", valid_612094
+  var valid_612095 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612095 = validateParameter(valid_612095, JString, required = false,
                                  default = nil)
-  if valid_614095 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614095
-  var valid_614096 = header.getOrDefault("X-Amz-Date")
-  valid_614096 = validateParameter(valid_614096, JString, required = false,
+  if valid_612095 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612095
+  var valid_612096 = header.getOrDefault("X-Amz-Date")
+  valid_612096 = validateParameter(valid_612096, JString, required = false,
                                  default = nil)
-  if valid_614096 != nil:
-    section.add "X-Amz-Date", valid_614096
-  var valid_614097 = header.getOrDefault("X-Amz-Credential")
-  valid_614097 = validateParameter(valid_614097, JString, required = false,
+  if valid_612096 != nil:
+    section.add "X-Amz-Date", valid_612096
+  var valid_612097 = header.getOrDefault("X-Amz-Credential")
+  valid_612097 = validateParameter(valid_612097, JString, required = false,
                                  default = nil)
-  if valid_614097 != nil:
-    section.add "X-Amz-Credential", valid_614097
-  var valid_614098 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614098 = validateParameter(valid_614098, JString, required = false,
+  if valid_612097 != nil:
+    section.add "X-Amz-Credential", valid_612097
+  var valid_612098 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612098 = validateParameter(valid_612098, JString, required = false,
                                  default = nil)
-  if valid_614098 != nil:
-    section.add "X-Amz-Security-Token", valid_614098
-  var valid_614099 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614099 = validateParameter(valid_614099, JString, required = false,
+  if valid_612098 != nil:
+    section.add "X-Amz-Security-Token", valid_612098
+  var valid_612099 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612099 = validateParameter(valid_612099, JString, required = false,
                                  default = nil)
-  if valid_614099 != nil:
-    section.add "X-Amz-Algorithm", valid_614099
-  var valid_614100 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614100 = validateParameter(valid_614100, JString, required = false,
+  if valid_612099 != nil:
+    section.add "X-Amz-Algorithm", valid_612099
+  var valid_612100 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612100 = validateParameter(valid_612100, JString, required = false,
                                  default = nil)
-  if valid_614100 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614100
+  if valid_612100 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612100
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6520,49 +6401,47 @@ proc validate_SetTimeBasedAutoScaling_614091(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614102: Call_SetTimeBasedAutoScaling_614090; path: JsonNode;
+proc call*(call_612102: Call_SetTimeBasedAutoScaling_612090; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Specify the time-based auto scaling configuration for a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-autoscaling.html">Managing Load with Time-based and Load-based Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614102.validator(path, query, header, formData, body)
-  let scheme = call_614102.pickScheme
+  let valid = call_612102.validator(path, query, header, formData, body)
+  let scheme = call_612102.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614102.url(scheme.get, call_614102.host, call_614102.base,
-                         call_614102.route, valid.getOrDefault("path"),
+  let url = call_612102.url(scheme.get, call_612102.host, call_612102.base,
+                         call_612102.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614102, url, valid)
+  result = atozHook(call_612102, url, valid)
 
-proc call*(call_614103: Call_SetTimeBasedAutoScaling_614090; body: JsonNode): Recallable =
+proc call*(call_612103: Call_SetTimeBasedAutoScaling_612090; body: JsonNode): Recallable =
   ## setTimeBasedAutoScaling
   ## <p>Specify the time-based auto scaling configuration for a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-autoscaling.html">Managing Load with Time-based and Load-based Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614104 = newJObject()
+  var body_612104 = newJObject()
   if body != nil:
-    body_614104 = body
-  result = call_614103.call(nil, nil, nil, nil, body_614104)
+    body_612104 = body
+  result = call_612103.call(nil, nil, nil, nil, body_612104)
 
-var setTimeBasedAutoScaling* = Call_SetTimeBasedAutoScaling_614090(
+var setTimeBasedAutoScaling* = Call_SetTimeBasedAutoScaling_612090(
     name: "setTimeBasedAutoScaling", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.SetTimeBasedAutoScaling",
-    validator: validate_SetTimeBasedAutoScaling_614091, base: "/",
-    url: url_SetTimeBasedAutoScaling_614092, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_SetTimeBasedAutoScaling_612091, base: "/",
+    url: url_SetTimeBasedAutoScaling_612092, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartInstance_614105 = ref object of OpenApiRestCall_612658
-proc url_StartInstance_614107(protocol: Scheme; host: string; base: string;
+  Call_StartInstance_612105 = ref object of OpenApiRestCall_610658
+proc url_StartInstance_612107(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StartInstance_614106(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StartInstance_612106(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -6582,46 +6461,46 @@ proc validate_StartInstance_614106(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614108 = header.getOrDefault("X-Amz-Target")
-  valid_614108 = validateParameter(valid_614108, JString, required = true, default = newJString(
+  var valid_612108 = header.getOrDefault("X-Amz-Target")
+  valid_612108 = validateParameter(valid_612108, JString, required = true, default = newJString(
       "OpsWorks_20130218.StartInstance"))
-  if valid_614108 != nil:
-    section.add "X-Amz-Target", valid_614108
-  var valid_614109 = header.getOrDefault("X-Amz-Signature")
-  valid_614109 = validateParameter(valid_614109, JString, required = false,
+  if valid_612108 != nil:
+    section.add "X-Amz-Target", valid_612108
+  var valid_612109 = header.getOrDefault("X-Amz-Signature")
+  valid_612109 = validateParameter(valid_612109, JString, required = false,
                                  default = nil)
-  if valid_614109 != nil:
-    section.add "X-Amz-Signature", valid_614109
-  var valid_614110 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614110 = validateParameter(valid_614110, JString, required = false,
+  if valid_612109 != nil:
+    section.add "X-Amz-Signature", valid_612109
+  var valid_612110 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612110 = validateParameter(valid_612110, JString, required = false,
                                  default = nil)
-  if valid_614110 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614110
-  var valid_614111 = header.getOrDefault("X-Amz-Date")
-  valid_614111 = validateParameter(valid_614111, JString, required = false,
+  if valid_612110 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612110
+  var valid_612111 = header.getOrDefault("X-Amz-Date")
+  valid_612111 = validateParameter(valid_612111, JString, required = false,
                                  default = nil)
-  if valid_614111 != nil:
-    section.add "X-Amz-Date", valid_614111
-  var valid_614112 = header.getOrDefault("X-Amz-Credential")
-  valid_614112 = validateParameter(valid_614112, JString, required = false,
+  if valid_612111 != nil:
+    section.add "X-Amz-Date", valid_612111
+  var valid_612112 = header.getOrDefault("X-Amz-Credential")
+  valid_612112 = validateParameter(valid_612112, JString, required = false,
                                  default = nil)
-  if valid_614112 != nil:
-    section.add "X-Amz-Credential", valid_614112
-  var valid_614113 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614113 = validateParameter(valid_614113, JString, required = false,
+  if valid_612112 != nil:
+    section.add "X-Amz-Credential", valid_612112
+  var valid_612113 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612113 = validateParameter(valid_612113, JString, required = false,
                                  default = nil)
-  if valid_614113 != nil:
-    section.add "X-Amz-Security-Token", valid_614113
-  var valid_614114 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614114 = validateParameter(valid_614114, JString, required = false,
+  if valid_612113 != nil:
+    section.add "X-Amz-Security-Token", valid_612113
+  var valid_612114 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612114 = validateParameter(valid_612114, JString, required = false,
                                  default = nil)
-  if valid_614114 != nil:
-    section.add "X-Amz-Algorithm", valid_614114
-  var valid_614115 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614115 = validateParameter(valid_614115, JString, required = false,
+  if valid_612114 != nil:
+    section.add "X-Amz-Algorithm", valid_612114
+  var valid_612115 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612115 = validateParameter(valid_612115, JString, required = false,
                                  default = nil)
-  if valid_614115 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614115
+  if valid_612115 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612115
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6632,48 +6511,46 @@ proc validate_StartInstance_614106(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_614117: Call_StartInstance_614105; path: JsonNode; query: JsonNode;
+proc call*(call_612117: Call_StartInstance_612105; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614117.validator(path, query, header, formData, body)
-  let scheme = call_614117.pickScheme
+  let valid = call_612117.validator(path, query, header, formData, body)
+  let scheme = call_612117.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614117.url(scheme.get, call_614117.host, call_614117.base,
-                         call_614117.route, valid.getOrDefault("path"),
+  let url = call_612117.url(scheme.get, call_612117.host, call_612117.base,
+                         call_612117.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614117, url, valid)
+  result = atozHook(call_612117, url, valid)
 
-proc call*(call_614118: Call_StartInstance_614105; body: JsonNode): Recallable =
+proc call*(call_612118: Call_StartInstance_612105; body: JsonNode): Recallable =
   ## startInstance
   ## <p>Starts a specified instance. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614119 = newJObject()
+  var body_612119 = newJObject()
   if body != nil:
-    body_614119 = body
-  result = call_614118.call(nil, nil, nil, nil, body_614119)
+    body_612119 = body
+  result = call_612118.call(nil, nil, nil, nil, body_612119)
 
-var startInstance* = Call_StartInstance_614105(name: "startInstance",
+var startInstance* = Call_StartInstance_612105(name: "startInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.StartInstance",
-    validator: validate_StartInstance_614106, base: "/", url: url_StartInstance_614107,
+    validator: validate_StartInstance_612106, base: "/", url: url_StartInstance_612107,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StartStack_614120 = ref object of OpenApiRestCall_612658
-proc url_StartStack_614122(protocol: Scheme; host: string; base: string; route: string;
+  Call_StartStack_612120 = ref object of OpenApiRestCall_610658
+proc url_StartStack_612122(protocol: Scheme; host: string; base: string; route: string;
                           path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StartStack_614121(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StartStack_612121(path: JsonNode; query: JsonNode; header: JsonNode;
                                formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Starts a stack's instances.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -6693,46 +6570,46 @@ proc validate_StartStack_614121(path: JsonNode; query: JsonNode; header: JsonNod
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614123 = header.getOrDefault("X-Amz-Target")
-  valid_614123 = validateParameter(valid_614123, JString, required = true, default = newJString(
+  var valid_612123 = header.getOrDefault("X-Amz-Target")
+  valid_612123 = validateParameter(valid_612123, JString, required = true, default = newJString(
       "OpsWorks_20130218.StartStack"))
-  if valid_614123 != nil:
-    section.add "X-Amz-Target", valid_614123
-  var valid_614124 = header.getOrDefault("X-Amz-Signature")
-  valid_614124 = validateParameter(valid_614124, JString, required = false,
+  if valid_612123 != nil:
+    section.add "X-Amz-Target", valid_612123
+  var valid_612124 = header.getOrDefault("X-Amz-Signature")
+  valid_612124 = validateParameter(valid_612124, JString, required = false,
                                  default = nil)
-  if valid_614124 != nil:
-    section.add "X-Amz-Signature", valid_614124
-  var valid_614125 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614125 = validateParameter(valid_614125, JString, required = false,
+  if valid_612124 != nil:
+    section.add "X-Amz-Signature", valid_612124
+  var valid_612125 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612125 = validateParameter(valid_612125, JString, required = false,
                                  default = nil)
-  if valid_614125 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614125
-  var valid_614126 = header.getOrDefault("X-Amz-Date")
-  valid_614126 = validateParameter(valid_614126, JString, required = false,
+  if valid_612125 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612125
+  var valid_612126 = header.getOrDefault("X-Amz-Date")
+  valid_612126 = validateParameter(valid_612126, JString, required = false,
                                  default = nil)
-  if valid_614126 != nil:
-    section.add "X-Amz-Date", valid_614126
-  var valid_614127 = header.getOrDefault("X-Amz-Credential")
-  valid_614127 = validateParameter(valid_614127, JString, required = false,
+  if valid_612126 != nil:
+    section.add "X-Amz-Date", valid_612126
+  var valid_612127 = header.getOrDefault("X-Amz-Credential")
+  valid_612127 = validateParameter(valid_612127, JString, required = false,
                                  default = nil)
-  if valid_614127 != nil:
-    section.add "X-Amz-Credential", valid_614127
-  var valid_614128 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614128 = validateParameter(valid_614128, JString, required = false,
+  if valid_612127 != nil:
+    section.add "X-Amz-Credential", valid_612127
+  var valid_612128 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612128 = validateParameter(valid_612128, JString, required = false,
                                  default = nil)
-  if valid_614128 != nil:
-    section.add "X-Amz-Security-Token", valid_614128
-  var valid_614129 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614129 = validateParameter(valid_614129, JString, required = false,
+  if valid_612128 != nil:
+    section.add "X-Amz-Security-Token", valid_612128
+  var valid_612129 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612129 = validateParameter(valid_612129, JString, required = false,
                                  default = nil)
-  if valid_614129 != nil:
-    section.add "X-Amz-Algorithm", valid_614129
-  var valid_614130 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614130 = validateParameter(valid_614130, JString, required = false,
+  if valid_612129 != nil:
+    section.add "X-Amz-Algorithm", valid_612129
+  var valid_612130 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612130 = validateParameter(valid_612130, JString, required = false,
                                  default = nil)
-  if valid_614130 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614130
+  if valid_612130 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612130
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6743,49 +6620,47 @@ proc validate_StartStack_614121(path: JsonNode; query: JsonNode; header: JsonNod
   if body != nil:
     result.add "body", body
 
-proc call*(call_614132: Call_StartStack_614120; path: JsonNode; query: JsonNode;
+proc call*(call_612132: Call_StartStack_612120; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Starts a stack's instances.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614132.validator(path, query, header, formData, body)
-  let scheme = call_614132.pickScheme
+  let valid = call_612132.validator(path, query, header, formData, body)
+  let scheme = call_612132.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614132.url(scheme.get, call_614132.host, call_614132.base,
-                         call_614132.route, valid.getOrDefault("path"),
+  let url = call_612132.url(scheme.get, call_612132.host, call_612132.base,
+                         call_612132.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614132, url, valid)
+  result = atozHook(call_612132, url, valid)
 
-proc call*(call_614133: Call_StartStack_614120; body: JsonNode): Recallable =
+proc call*(call_612133: Call_StartStack_612120; body: JsonNode): Recallable =
   ## startStack
   ## <p>Starts a stack's instances.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614134 = newJObject()
+  var body_612134 = newJObject()
   if body != nil:
-    body_614134 = body
-  result = call_614133.call(nil, nil, nil, nil, body_614134)
+    body_612134 = body
+  result = call_612133.call(nil, nil, nil, nil, body_612134)
 
-var startStack* = Call_StartStack_614120(name: "startStack",
+var startStack* = Call_StartStack_612120(name: "startStack",
                                       meth: HttpMethod.HttpPost,
                                       host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.StartStack",
-                                      validator: validate_StartStack_614121,
-                                      base: "/", url: url_StartStack_614122,
+                                      validator: validate_StartStack_612121,
+                                      base: "/", url: url_StartStack_612122,
                                       schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopInstance_614135 = ref object of OpenApiRestCall_612658
-proc url_StopInstance_614137(protocol: Scheme; host: string; base: string;
+  Call_StopInstance_612135 = ref object of OpenApiRestCall_610658
+proc url_StopInstance_612137(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StopInstance_614136(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StopInstance_612136(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Stops a specified instance. When you stop a standard instance, the data disappears and must be reinstalled when you restart the instance. You can stop an Amazon EBS-backed instance without losing data. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -6805,46 +6680,46 @@ proc validate_StopInstance_614136(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614138 = header.getOrDefault("X-Amz-Target")
-  valid_614138 = validateParameter(valid_614138, JString, required = true, default = newJString(
+  var valid_612138 = header.getOrDefault("X-Amz-Target")
+  valid_612138 = validateParameter(valid_612138, JString, required = true, default = newJString(
       "OpsWorks_20130218.StopInstance"))
-  if valid_614138 != nil:
-    section.add "X-Amz-Target", valid_614138
-  var valid_614139 = header.getOrDefault("X-Amz-Signature")
-  valid_614139 = validateParameter(valid_614139, JString, required = false,
+  if valid_612138 != nil:
+    section.add "X-Amz-Target", valid_612138
+  var valid_612139 = header.getOrDefault("X-Amz-Signature")
+  valid_612139 = validateParameter(valid_612139, JString, required = false,
                                  default = nil)
-  if valid_614139 != nil:
-    section.add "X-Amz-Signature", valid_614139
-  var valid_614140 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614140 = validateParameter(valid_614140, JString, required = false,
+  if valid_612139 != nil:
+    section.add "X-Amz-Signature", valid_612139
+  var valid_612140 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612140 = validateParameter(valid_612140, JString, required = false,
                                  default = nil)
-  if valid_614140 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614140
-  var valid_614141 = header.getOrDefault("X-Amz-Date")
-  valid_614141 = validateParameter(valid_614141, JString, required = false,
+  if valid_612140 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612140
+  var valid_612141 = header.getOrDefault("X-Amz-Date")
+  valid_612141 = validateParameter(valid_612141, JString, required = false,
                                  default = nil)
-  if valid_614141 != nil:
-    section.add "X-Amz-Date", valid_614141
-  var valid_614142 = header.getOrDefault("X-Amz-Credential")
-  valid_614142 = validateParameter(valid_614142, JString, required = false,
+  if valid_612141 != nil:
+    section.add "X-Amz-Date", valid_612141
+  var valid_612142 = header.getOrDefault("X-Amz-Credential")
+  valid_612142 = validateParameter(valid_612142, JString, required = false,
                                  default = nil)
-  if valid_614142 != nil:
-    section.add "X-Amz-Credential", valid_614142
-  var valid_614143 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614143 = validateParameter(valid_614143, JString, required = false,
+  if valid_612142 != nil:
+    section.add "X-Amz-Credential", valid_612142
+  var valid_612143 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612143 = validateParameter(valid_612143, JString, required = false,
                                  default = nil)
-  if valid_614143 != nil:
-    section.add "X-Amz-Security-Token", valid_614143
-  var valid_614144 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614144 = validateParameter(valid_614144, JString, required = false,
+  if valid_612143 != nil:
+    section.add "X-Amz-Security-Token", valid_612143
+  var valid_612144 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612144 = validateParameter(valid_612144, JString, required = false,
                                  default = nil)
-  if valid_614144 != nil:
-    section.add "X-Amz-Algorithm", valid_614144
-  var valid_614145 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614145 = validateParameter(valid_614145, JString, required = false,
+  if valid_612144 != nil:
+    section.add "X-Amz-Algorithm", valid_612144
+  var valid_612145 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612145 = validateParameter(valid_612145, JString, required = false,
                                  default = nil)
-  if valid_614145 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614145
+  if valid_612145 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612145
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6855,48 +6730,46 @@ proc validate_StopInstance_614136(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_614147: Call_StopInstance_614135; path: JsonNode; query: JsonNode;
+proc call*(call_612147: Call_StopInstance_612135; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stops a specified instance. When you stop a standard instance, the data disappears and must be reinstalled when you restart the instance. You can stop an Amazon EBS-backed instance without losing data. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614147.validator(path, query, header, formData, body)
-  let scheme = call_614147.pickScheme
+  let valid = call_612147.validator(path, query, header, formData, body)
+  let scheme = call_612147.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614147.url(scheme.get, call_614147.host, call_614147.base,
-                         call_614147.route, valid.getOrDefault("path"),
+  let url = call_612147.url(scheme.get, call_612147.host, call_612147.base,
+                         call_612147.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614147, url, valid)
+  result = atozHook(call_612147, url, valid)
 
-proc call*(call_614148: Call_StopInstance_614135; body: JsonNode): Recallable =
+proc call*(call_612148: Call_StopInstance_612135; body: JsonNode): Recallable =
   ## stopInstance
   ## <p>Stops a specified instance. When you stop a standard instance, the data disappears and must be reinstalled when you restart the instance. You can stop an Amazon EBS-backed instance without losing data. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/workinginstances-starting.html">Starting, Stopping, and Rebooting Instances</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614149 = newJObject()
+  var body_612149 = newJObject()
   if body != nil:
-    body_614149 = body
-  result = call_614148.call(nil, nil, nil, nil, body_614149)
+    body_612149 = body
+  result = call_612148.call(nil, nil, nil, nil, body_612149)
 
-var stopInstance* = Call_StopInstance_614135(name: "stopInstance",
+var stopInstance* = Call_StopInstance_612135(name: "stopInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.StopInstance",
-    validator: validate_StopInstance_614136, base: "/", url: url_StopInstance_614137,
+    validator: validate_StopInstance_612136, base: "/", url: url_StopInstance_612137,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_StopStack_614150 = ref object of OpenApiRestCall_612658
-proc url_StopStack_614152(protocol: Scheme; host: string; base: string; route: string;
+  Call_StopStack_612150 = ref object of OpenApiRestCall_610658
+proc url_StopStack_612152(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_StopStack_614151(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_StopStack_612151(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Stops a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -6916,46 +6789,46 @@ proc validate_StopStack_614151(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614153 = header.getOrDefault("X-Amz-Target")
-  valid_614153 = validateParameter(valid_614153, JString, required = true, default = newJString(
+  var valid_612153 = header.getOrDefault("X-Amz-Target")
+  valid_612153 = validateParameter(valid_612153, JString, required = true, default = newJString(
       "OpsWorks_20130218.StopStack"))
-  if valid_614153 != nil:
-    section.add "X-Amz-Target", valid_614153
-  var valid_614154 = header.getOrDefault("X-Amz-Signature")
-  valid_614154 = validateParameter(valid_614154, JString, required = false,
+  if valid_612153 != nil:
+    section.add "X-Amz-Target", valid_612153
+  var valid_612154 = header.getOrDefault("X-Amz-Signature")
+  valid_612154 = validateParameter(valid_612154, JString, required = false,
                                  default = nil)
-  if valid_614154 != nil:
-    section.add "X-Amz-Signature", valid_614154
-  var valid_614155 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614155 = validateParameter(valid_614155, JString, required = false,
+  if valid_612154 != nil:
+    section.add "X-Amz-Signature", valid_612154
+  var valid_612155 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612155 = validateParameter(valid_612155, JString, required = false,
                                  default = nil)
-  if valid_614155 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614155
-  var valid_614156 = header.getOrDefault("X-Amz-Date")
-  valid_614156 = validateParameter(valid_614156, JString, required = false,
+  if valid_612155 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612155
+  var valid_612156 = header.getOrDefault("X-Amz-Date")
+  valid_612156 = validateParameter(valid_612156, JString, required = false,
                                  default = nil)
-  if valid_614156 != nil:
-    section.add "X-Amz-Date", valid_614156
-  var valid_614157 = header.getOrDefault("X-Amz-Credential")
-  valid_614157 = validateParameter(valid_614157, JString, required = false,
+  if valid_612156 != nil:
+    section.add "X-Amz-Date", valid_612156
+  var valid_612157 = header.getOrDefault("X-Amz-Credential")
+  valid_612157 = validateParameter(valid_612157, JString, required = false,
                                  default = nil)
-  if valid_614157 != nil:
-    section.add "X-Amz-Credential", valid_614157
-  var valid_614158 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614158 = validateParameter(valid_614158, JString, required = false,
+  if valid_612157 != nil:
+    section.add "X-Amz-Credential", valid_612157
+  var valid_612158 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612158 = validateParameter(valid_612158, JString, required = false,
                                  default = nil)
-  if valid_614158 != nil:
-    section.add "X-Amz-Security-Token", valid_614158
-  var valid_614159 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614159 = validateParameter(valid_614159, JString, required = false,
+  if valid_612158 != nil:
+    section.add "X-Amz-Security-Token", valid_612158
+  var valid_612159 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612159 = validateParameter(valid_612159, JString, required = false,
                                  default = nil)
-  if valid_614159 != nil:
-    section.add "X-Amz-Algorithm", valid_614159
-  var valid_614160 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614160 = validateParameter(valid_614160, JString, required = false,
+  if valid_612159 != nil:
+    section.add "X-Amz-Algorithm", valid_612159
+  var valid_612160 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612160 = validateParameter(valid_612160, JString, required = false,
                                  default = nil)
-  if valid_614160 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614160
+  if valid_612160 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612160
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -6966,48 +6839,46 @@ proc validate_StopStack_614151(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_614162: Call_StopStack_614150; path: JsonNode; query: JsonNode;
+proc call*(call_612162: Call_StopStack_612150; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Stops a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614162.validator(path, query, header, formData, body)
-  let scheme = call_614162.pickScheme
+  let valid = call_612162.validator(path, query, header, formData, body)
+  let scheme = call_612162.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614162.url(scheme.get, call_614162.host, call_614162.base,
-                         call_614162.route, valid.getOrDefault("path"),
+  let url = call_612162.url(scheme.get, call_612162.host, call_612162.base,
+                         call_612162.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614162, url, valid)
+  result = atozHook(call_612162, url, valid)
 
-proc call*(call_614163: Call_StopStack_614150; body: JsonNode): Recallable =
+proc call*(call_612163: Call_StopStack_612150; body: JsonNode): Recallable =
   ## stopStack
   ## <p>Stops a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614164 = newJObject()
+  var body_612164 = newJObject()
   if body != nil:
-    body_614164 = body
-  result = call_614163.call(nil, nil, nil, nil, body_614164)
+    body_612164 = body
+  result = call_612163.call(nil, nil, nil, nil, body_612164)
 
-var stopStack* = Call_StopStack_614150(name: "stopStack", meth: HttpMethod.HttpPost,
+var stopStack* = Call_StopStack_612150(name: "stopStack", meth: HttpMethod.HttpPost,
                                     host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.StopStack",
-                                    validator: validate_StopStack_614151,
-                                    base: "/", url: url_StopStack_614152,
+                                    validator: validate_StopStack_612151,
+                                    base: "/", url: url_StopStack_612152,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_TagResource_614165 = ref object of OpenApiRestCall_612658
-proc url_TagResource_614167(protocol: Scheme; host: string; base: string;
+  Call_TagResource_612165 = ref object of OpenApiRestCall_610658
+proc url_TagResource_612167(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_TagResource_614166(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_TagResource_612166(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## Apply cost-allocation tags to a specified stack or layer in AWS OpsWorks Stacks. For more information about how tagging works, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/tagging.html">Tags</a> in the AWS OpsWorks User Guide.
   ## 
@@ -7027,46 +6898,46 @@ proc validate_TagResource_614166(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614168 = header.getOrDefault("X-Amz-Target")
-  valid_614168 = validateParameter(valid_614168, JString, required = true, default = newJString(
+  var valid_612168 = header.getOrDefault("X-Amz-Target")
+  valid_612168 = validateParameter(valid_612168, JString, required = true, default = newJString(
       "OpsWorks_20130218.TagResource"))
-  if valid_614168 != nil:
-    section.add "X-Amz-Target", valid_614168
-  var valid_614169 = header.getOrDefault("X-Amz-Signature")
-  valid_614169 = validateParameter(valid_614169, JString, required = false,
+  if valid_612168 != nil:
+    section.add "X-Amz-Target", valid_612168
+  var valid_612169 = header.getOrDefault("X-Amz-Signature")
+  valid_612169 = validateParameter(valid_612169, JString, required = false,
                                  default = nil)
-  if valid_614169 != nil:
-    section.add "X-Amz-Signature", valid_614169
-  var valid_614170 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614170 = validateParameter(valid_614170, JString, required = false,
+  if valid_612169 != nil:
+    section.add "X-Amz-Signature", valid_612169
+  var valid_612170 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612170 = validateParameter(valid_612170, JString, required = false,
                                  default = nil)
-  if valid_614170 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614170
-  var valid_614171 = header.getOrDefault("X-Amz-Date")
-  valid_614171 = validateParameter(valid_614171, JString, required = false,
+  if valid_612170 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612170
+  var valid_612171 = header.getOrDefault("X-Amz-Date")
+  valid_612171 = validateParameter(valid_612171, JString, required = false,
                                  default = nil)
-  if valid_614171 != nil:
-    section.add "X-Amz-Date", valid_614171
-  var valid_614172 = header.getOrDefault("X-Amz-Credential")
-  valid_614172 = validateParameter(valid_614172, JString, required = false,
+  if valid_612171 != nil:
+    section.add "X-Amz-Date", valid_612171
+  var valid_612172 = header.getOrDefault("X-Amz-Credential")
+  valid_612172 = validateParameter(valid_612172, JString, required = false,
                                  default = nil)
-  if valid_614172 != nil:
-    section.add "X-Amz-Credential", valid_614172
-  var valid_614173 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614173 = validateParameter(valid_614173, JString, required = false,
+  if valid_612172 != nil:
+    section.add "X-Amz-Credential", valid_612172
+  var valid_612173 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612173 = validateParameter(valid_612173, JString, required = false,
                                  default = nil)
-  if valid_614173 != nil:
-    section.add "X-Amz-Security-Token", valid_614173
-  var valid_614174 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614174 = validateParameter(valid_614174, JString, required = false,
+  if valid_612173 != nil:
+    section.add "X-Amz-Security-Token", valid_612173
+  var valid_612174 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612174 = validateParameter(valid_612174, JString, required = false,
                                  default = nil)
-  if valid_614174 != nil:
-    section.add "X-Amz-Algorithm", valid_614174
-  var valid_614175 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614175 = validateParameter(valid_614175, JString, required = false,
+  if valid_612174 != nil:
+    section.add "X-Amz-Algorithm", valid_612174
+  var valid_612175 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612175 = validateParameter(valid_612175, JString, required = false,
                                  default = nil)
-  if valid_614175 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614175
+  if valid_612175 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612175
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7077,49 +6948,47 @@ proc validate_TagResource_614166(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_614177: Call_TagResource_614165; path: JsonNode; query: JsonNode;
+proc call*(call_612177: Call_TagResource_612165; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Apply cost-allocation tags to a specified stack or layer in AWS OpsWorks Stacks. For more information about how tagging works, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/tagging.html">Tags</a> in the AWS OpsWorks User Guide.
   ## 
-  let valid = call_614177.validator(path, query, header, formData, body)
-  let scheme = call_614177.pickScheme
+  let valid = call_612177.validator(path, query, header, formData, body)
+  let scheme = call_612177.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614177.url(scheme.get, call_614177.host, call_614177.base,
-                         call_614177.route, valid.getOrDefault("path"),
+  let url = call_612177.url(scheme.get, call_612177.host, call_612177.base,
+                         call_612177.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614177, url, valid)
+  result = atozHook(call_612177, url, valid)
 
-proc call*(call_614178: Call_TagResource_614165; body: JsonNode): Recallable =
+proc call*(call_612178: Call_TagResource_612165; body: JsonNode): Recallable =
   ## tagResource
   ## Apply cost-allocation tags to a specified stack or layer in AWS OpsWorks Stacks. For more information about how tagging works, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/tagging.html">Tags</a> in the AWS OpsWorks User Guide.
   ##   body: JObject (required)
-  var body_614179 = newJObject()
+  var body_612179 = newJObject()
   if body != nil:
-    body_614179 = body
-  result = call_614178.call(nil, nil, nil, nil, body_614179)
+    body_612179 = body
+  result = call_612178.call(nil, nil, nil, nil, body_612179)
 
-var tagResource* = Call_TagResource_614165(name: "tagResource",
+var tagResource* = Call_TagResource_612165(name: "tagResource",
                                         meth: HttpMethod.HttpPost,
                                         host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.TagResource",
-                                        validator: validate_TagResource_614166,
-                                        base: "/", url: url_TagResource_614167,
+                                        validator: validate_TagResource_612166,
+                                        base: "/", url: url_TagResource_612167,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UnassignInstance_614180 = ref object of OpenApiRestCall_612658
-proc url_UnassignInstance_614182(protocol: Scheme; host: string; base: string;
+  Call_UnassignInstance_612180 = ref object of OpenApiRestCall_610658
+proc url_UnassignInstance_612182(protocol: Scheme; host: string; base: string;
                                 route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UnassignInstance_614181(path: JsonNode; query: JsonNode;
+proc validate_UnassignInstance_612181(path: JsonNode; query: JsonNode;
                                      header: JsonNode; formData: JsonNode;
                                      body: JsonNode): JsonNode =
   ## <p>Unassigns a registered instance from all layers that are using the instance. The instance remains in the stack as an unassigned instance, and can be assigned to another layer as needed. You cannot use this action with instances that were created with AWS OpsWorks Stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -7140,46 +7009,46 @@ proc validate_UnassignInstance_614181(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614183 = header.getOrDefault("X-Amz-Target")
-  valid_614183 = validateParameter(valid_614183, JString, required = true, default = newJString(
+  var valid_612183 = header.getOrDefault("X-Amz-Target")
+  valid_612183 = validateParameter(valid_612183, JString, required = true, default = newJString(
       "OpsWorks_20130218.UnassignInstance"))
-  if valid_614183 != nil:
-    section.add "X-Amz-Target", valid_614183
-  var valid_614184 = header.getOrDefault("X-Amz-Signature")
-  valid_614184 = validateParameter(valid_614184, JString, required = false,
+  if valid_612183 != nil:
+    section.add "X-Amz-Target", valid_612183
+  var valid_612184 = header.getOrDefault("X-Amz-Signature")
+  valid_612184 = validateParameter(valid_612184, JString, required = false,
                                  default = nil)
-  if valid_614184 != nil:
-    section.add "X-Amz-Signature", valid_614184
-  var valid_614185 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614185 = validateParameter(valid_614185, JString, required = false,
+  if valid_612184 != nil:
+    section.add "X-Amz-Signature", valid_612184
+  var valid_612185 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612185 = validateParameter(valid_612185, JString, required = false,
                                  default = nil)
-  if valid_614185 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614185
-  var valid_614186 = header.getOrDefault("X-Amz-Date")
-  valid_614186 = validateParameter(valid_614186, JString, required = false,
+  if valid_612185 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612185
+  var valid_612186 = header.getOrDefault("X-Amz-Date")
+  valid_612186 = validateParameter(valid_612186, JString, required = false,
                                  default = nil)
-  if valid_614186 != nil:
-    section.add "X-Amz-Date", valid_614186
-  var valid_614187 = header.getOrDefault("X-Amz-Credential")
-  valid_614187 = validateParameter(valid_614187, JString, required = false,
+  if valid_612186 != nil:
+    section.add "X-Amz-Date", valid_612186
+  var valid_612187 = header.getOrDefault("X-Amz-Credential")
+  valid_612187 = validateParameter(valid_612187, JString, required = false,
                                  default = nil)
-  if valid_614187 != nil:
-    section.add "X-Amz-Credential", valid_614187
-  var valid_614188 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614188 = validateParameter(valid_614188, JString, required = false,
+  if valid_612187 != nil:
+    section.add "X-Amz-Credential", valid_612187
+  var valid_612188 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612188 = validateParameter(valid_612188, JString, required = false,
                                  default = nil)
-  if valid_614188 != nil:
-    section.add "X-Amz-Security-Token", valid_614188
-  var valid_614189 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614189 = validateParameter(valid_614189, JString, required = false,
+  if valid_612188 != nil:
+    section.add "X-Amz-Security-Token", valid_612188
+  var valid_612189 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612189 = validateParameter(valid_612189, JString, required = false,
                                  default = nil)
-  if valid_614189 != nil:
-    section.add "X-Amz-Algorithm", valid_614189
-  var valid_614190 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614190 = validateParameter(valid_614190, JString, required = false,
+  if valid_612189 != nil:
+    section.add "X-Amz-Algorithm", valid_612189
+  var valid_612190 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612190 = validateParameter(valid_612190, JString, required = false,
                                  default = nil)
-  if valid_614190 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614190
+  if valid_612190 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612190
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7190,48 +7059,46 @@ proc validate_UnassignInstance_614181(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614192: Call_UnassignInstance_614180; path: JsonNode;
+proc call*(call_612192: Call_UnassignInstance_612180; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Unassigns a registered instance from all layers that are using the instance. The instance remains in the stack as an unassigned instance, and can be assigned to another layer as needed. You cannot use this action with instances that were created with AWS OpsWorks Stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614192.validator(path, query, header, formData, body)
-  let scheme = call_614192.pickScheme
+  let valid = call_612192.validator(path, query, header, formData, body)
+  let scheme = call_612192.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614192.url(scheme.get, call_614192.host, call_614192.base,
-                         call_614192.route, valid.getOrDefault("path"),
+  let url = call_612192.url(scheme.get, call_612192.host, call_612192.base,
+                         call_612192.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614192, url, valid)
+  result = atozHook(call_612192, url, valid)
 
-proc call*(call_614193: Call_UnassignInstance_614180; body: JsonNode): Recallable =
+proc call*(call_612193: Call_UnassignInstance_612180; body: JsonNode): Recallable =
   ## unassignInstance
   ## <p>Unassigns a registered instance from all layers that are using the instance. The instance remains in the stack as an unassigned instance, and can be assigned to another layer as needed. You cannot use this action with instances that were created with AWS OpsWorks Stacks.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614194 = newJObject()
+  var body_612194 = newJObject()
   if body != nil:
-    body_614194 = body
-  result = call_614193.call(nil, nil, nil, nil, body_614194)
+    body_612194 = body
+  result = call_612193.call(nil, nil, nil, nil, body_612194)
 
-var unassignInstance* = Call_UnassignInstance_614180(name: "unassignInstance",
+var unassignInstance* = Call_UnassignInstance_612180(name: "unassignInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UnassignInstance",
-    validator: validate_UnassignInstance_614181, base: "/",
-    url: url_UnassignInstance_614182, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UnassignInstance_612181, base: "/",
+    url: url_UnassignInstance_612182, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UnassignVolume_614195 = ref object of OpenApiRestCall_612658
-proc url_UnassignVolume_614197(protocol: Scheme; host: string; base: string;
+  Call_UnassignVolume_612195 = ref object of OpenApiRestCall_610658
+proc url_UnassignVolume_612197(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UnassignVolume_614196(path: JsonNode; query: JsonNode;
+proc validate_UnassignVolume_612196(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Unassigns an assigned Amazon EBS volume. The volume remains registered with the stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -7252,46 +7119,46 @@ proc validate_UnassignVolume_614196(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614198 = header.getOrDefault("X-Amz-Target")
-  valid_614198 = validateParameter(valid_614198, JString, required = true, default = newJString(
+  var valid_612198 = header.getOrDefault("X-Amz-Target")
+  valid_612198 = validateParameter(valid_612198, JString, required = true, default = newJString(
       "OpsWorks_20130218.UnassignVolume"))
-  if valid_614198 != nil:
-    section.add "X-Amz-Target", valid_614198
-  var valid_614199 = header.getOrDefault("X-Amz-Signature")
-  valid_614199 = validateParameter(valid_614199, JString, required = false,
+  if valid_612198 != nil:
+    section.add "X-Amz-Target", valid_612198
+  var valid_612199 = header.getOrDefault("X-Amz-Signature")
+  valid_612199 = validateParameter(valid_612199, JString, required = false,
                                  default = nil)
-  if valid_614199 != nil:
-    section.add "X-Amz-Signature", valid_614199
-  var valid_614200 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614200 = validateParameter(valid_614200, JString, required = false,
+  if valid_612199 != nil:
+    section.add "X-Amz-Signature", valid_612199
+  var valid_612200 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612200 = validateParameter(valid_612200, JString, required = false,
                                  default = nil)
-  if valid_614200 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614200
-  var valid_614201 = header.getOrDefault("X-Amz-Date")
-  valid_614201 = validateParameter(valid_614201, JString, required = false,
+  if valid_612200 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612200
+  var valid_612201 = header.getOrDefault("X-Amz-Date")
+  valid_612201 = validateParameter(valid_612201, JString, required = false,
                                  default = nil)
-  if valid_614201 != nil:
-    section.add "X-Amz-Date", valid_614201
-  var valid_614202 = header.getOrDefault("X-Amz-Credential")
-  valid_614202 = validateParameter(valid_614202, JString, required = false,
+  if valid_612201 != nil:
+    section.add "X-Amz-Date", valid_612201
+  var valid_612202 = header.getOrDefault("X-Amz-Credential")
+  valid_612202 = validateParameter(valid_612202, JString, required = false,
                                  default = nil)
-  if valid_614202 != nil:
-    section.add "X-Amz-Credential", valid_614202
-  var valid_614203 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614203 = validateParameter(valid_614203, JString, required = false,
+  if valid_612202 != nil:
+    section.add "X-Amz-Credential", valid_612202
+  var valid_612203 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612203 = validateParameter(valid_612203, JString, required = false,
                                  default = nil)
-  if valid_614203 != nil:
-    section.add "X-Amz-Security-Token", valid_614203
-  var valid_614204 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614204 = validateParameter(valid_614204, JString, required = false,
+  if valid_612203 != nil:
+    section.add "X-Amz-Security-Token", valid_612203
+  var valid_612204 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612204 = validateParameter(valid_612204, JString, required = false,
                                  default = nil)
-  if valid_614204 != nil:
-    section.add "X-Amz-Algorithm", valid_614204
-  var valid_614205 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614205 = validateParameter(valid_614205, JString, required = false,
+  if valid_612204 != nil:
+    section.add "X-Amz-Algorithm", valid_612204
+  var valid_612205 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612205 = validateParameter(valid_612205, JString, required = false,
                                  default = nil)
-  if valid_614205 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614205
+  if valid_612205 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612205
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7302,48 +7169,46 @@ proc validate_UnassignVolume_614196(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614207: Call_UnassignVolume_614195; path: JsonNode; query: JsonNode;
+proc call*(call_612207: Call_UnassignVolume_612195; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Unassigns an assigned Amazon EBS volume. The volume remains registered with the stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614207.validator(path, query, header, formData, body)
-  let scheme = call_614207.pickScheme
+  let valid = call_612207.validator(path, query, header, formData, body)
+  let scheme = call_612207.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614207.url(scheme.get, call_614207.host, call_614207.base,
-                         call_614207.route, valid.getOrDefault("path"),
+  let url = call_612207.url(scheme.get, call_612207.host, call_612207.base,
+                         call_612207.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614207, url, valid)
+  result = atozHook(call_612207, url, valid)
 
-proc call*(call_614208: Call_UnassignVolume_614195; body: JsonNode): Recallable =
+proc call*(call_612208: Call_UnassignVolume_612195; body: JsonNode): Recallable =
   ## unassignVolume
   ## <p>Unassigns an assigned Amazon EBS volume. The volume remains registered with the stack. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614209 = newJObject()
+  var body_612209 = newJObject()
   if body != nil:
-    body_614209 = body
-  result = call_614208.call(nil, nil, nil, nil, body_614209)
+    body_612209 = body
+  result = call_612208.call(nil, nil, nil, nil, body_612209)
 
-var unassignVolume* = Call_UnassignVolume_614195(name: "unassignVolume",
+var unassignVolume* = Call_UnassignVolume_612195(name: "unassignVolume",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UnassignVolume",
-    validator: validate_UnassignVolume_614196, base: "/", url: url_UnassignVolume_614197,
+    validator: validate_UnassignVolume_612196, base: "/", url: url_UnassignVolume_612197,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UntagResource_614210 = ref object of OpenApiRestCall_612658
-proc url_UntagResource_614212(protocol: Scheme; host: string; base: string;
+  Call_UntagResource_612210 = ref object of OpenApiRestCall_610658
+proc url_UntagResource_612212(protocol: Scheme; host: string; base: string;
                              route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UntagResource_614211(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UntagResource_612211(path: JsonNode; query: JsonNode; header: JsonNode;
                                   formData: JsonNode; body: JsonNode): JsonNode =
   ## Removes tags from a specified stack or layer.
   ## 
@@ -7363,46 +7228,46 @@ proc validate_UntagResource_614211(path: JsonNode; query: JsonNode; header: Json
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614213 = header.getOrDefault("X-Amz-Target")
-  valid_614213 = validateParameter(valid_614213, JString, required = true, default = newJString(
+  var valid_612213 = header.getOrDefault("X-Amz-Target")
+  valid_612213 = validateParameter(valid_612213, JString, required = true, default = newJString(
       "OpsWorks_20130218.UntagResource"))
-  if valid_614213 != nil:
-    section.add "X-Amz-Target", valid_614213
-  var valid_614214 = header.getOrDefault("X-Amz-Signature")
-  valid_614214 = validateParameter(valid_614214, JString, required = false,
+  if valid_612213 != nil:
+    section.add "X-Amz-Target", valid_612213
+  var valid_612214 = header.getOrDefault("X-Amz-Signature")
+  valid_612214 = validateParameter(valid_612214, JString, required = false,
                                  default = nil)
-  if valid_614214 != nil:
-    section.add "X-Amz-Signature", valid_614214
-  var valid_614215 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614215 = validateParameter(valid_614215, JString, required = false,
+  if valid_612214 != nil:
+    section.add "X-Amz-Signature", valid_612214
+  var valid_612215 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612215 = validateParameter(valid_612215, JString, required = false,
                                  default = nil)
-  if valid_614215 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614215
-  var valid_614216 = header.getOrDefault("X-Amz-Date")
-  valid_614216 = validateParameter(valid_614216, JString, required = false,
+  if valid_612215 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612215
+  var valid_612216 = header.getOrDefault("X-Amz-Date")
+  valid_612216 = validateParameter(valid_612216, JString, required = false,
                                  default = nil)
-  if valid_614216 != nil:
-    section.add "X-Amz-Date", valid_614216
-  var valid_614217 = header.getOrDefault("X-Amz-Credential")
-  valid_614217 = validateParameter(valid_614217, JString, required = false,
+  if valid_612216 != nil:
+    section.add "X-Amz-Date", valid_612216
+  var valid_612217 = header.getOrDefault("X-Amz-Credential")
+  valid_612217 = validateParameter(valid_612217, JString, required = false,
                                  default = nil)
-  if valid_614217 != nil:
-    section.add "X-Amz-Credential", valid_614217
-  var valid_614218 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614218 = validateParameter(valid_614218, JString, required = false,
+  if valid_612217 != nil:
+    section.add "X-Amz-Credential", valid_612217
+  var valid_612218 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612218 = validateParameter(valid_612218, JString, required = false,
                                  default = nil)
-  if valid_614218 != nil:
-    section.add "X-Amz-Security-Token", valid_614218
-  var valid_614219 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614219 = validateParameter(valid_614219, JString, required = false,
+  if valid_612218 != nil:
+    section.add "X-Amz-Security-Token", valid_612218
+  var valid_612219 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612219 = validateParameter(valid_612219, JString, required = false,
                                  default = nil)
-  if valid_614219 != nil:
-    section.add "X-Amz-Algorithm", valid_614219
-  var valid_614220 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614220 = validateParameter(valid_614220, JString, required = false,
+  if valid_612219 != nil:
+    section.add "X-Amz-Algorithm", valid_612219
+  var valid_612220 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612220 = validateParameter(valid_612220, JString, required = false,
                                  default = nil)
-  if valid_614220 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614220
+  if valid_612220 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612220
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7413,48 +7278,46 @@ proc validate_UntagResource_614211(path: JsonNode; query: JsonNode; header: Json
   if body != nil:
     result.add "body", body
 
-proc call*(call_614222: Call_UntagResource_614210; path: JsonNode; query: JsonNode;
+proc call*(call_612222: Call_UntagResource_612210; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## Removes tags from a specified stack or layer.
   ## 
-  let valid = call_614222.validator(path, query, header, formData, body)
-  let scheme = call_614222.pickScheme
+  let valid = call_612222.validator(path, query, header, formData, body)
+  let scheme = call_612222.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614222.url(scheme.get, call_614222.host, call_614222.base,
-                         call_614222.route, valid.getOrDefault("path"),
+  let url = call_612222.url(scheme.get, call_612222.host, call_612222.base,
+                         call_612222.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614222, url, valid)
+  result = atozHook(call_612222, url, valid)
 
-proc call*(call_614223: Call_UntagResource_614210; body: JsonNode): Recallable =
+proc call*(call_612223: Call_UntagResource_612210; body: JsonNode): Recallable =
   ## untagResource
   ## Removes tags from a specified stack or layer.
   ##   body: JObject (required)
-  var body_614224 = newJObject()
+  var body_612224 = newJObject()
   if body != nil:
-    body_614224 = body
-  result = call_614223.call(nil, nil, nil, nil, body_614224)
+    body_612224 = body
+  result = call_612223.call(nil, nil, nil, nil, body_612224)
 
-var untagResource* = Call_UntagResource_614210(name: "untagResource",
+var untagResource* = Call_UntagResource_612210(name: "untagResource",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UntagResource",
-    validator: validate_UntagResource_614211, base: "/", url: url_UntagResource_614212,
+    validator: validate_UntagResource_612211, base: "/", url: url_UntagResource_612212,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateApp_614225 = ref object of OpenApiRestCall_612658
-proc url_UpdateApp_614227(protocol: Scheme; host: string; base: string; route: string;
+  Call_UpdateApp_612225 = ref object of OpenApiRestCall_610658
+proc url_UpdateApp_612227(protocol: Scheme; host: string; base: string; route: string;
                          path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateApp_614226(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateApp_612226(path: JsonNode; query: JsonNode; header: JsonNode;
                               formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates a specified app.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Deploy or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -7474,46 +7337,46 @@ proc validate_UpdateApp_614226(path: JsonNode; query: JsonNode; header: JsonNode
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614228 = header.getOrDefault("X-Amz-Target")
-  valid_614228 = validateParameter(valid_614228, JString, required = true, default = newJString(
+  var valid_612228 = header.getOrDefault("X-Amz-Target")
+  valid_612228 = validateParameter(valid_612228, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateApp"))
-  if valid_614228 != nil:
-    section.add "X-Amz-Target", valid_614228
-  var valid_614229 = header.getOrDefault("X-Amz-Signature")
-  valid_614229 = validateParameter(valid_614229, JString, required = false,
+  if valid_612228 != nil:
+    section.add "X-Amz-Target", valid_612228
+  var valid_612229 = header.getOrDefault("X-Amz-Signature")
+  valid_612229 = validateParameter(valid_612229, JString, required = false,
                                  default = nil)
-  if valid_614229 != nil:
-    section.add "X-Amz-Signature", valid_614229
-  var valid_614230 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614230 = validateParameter(valid_614230, JString, required = false,
+  if valid_612229 != nil:
+    section.add "X-Amz-Signature", valid_612229
+  var valid_612230 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612230 = validateParameter(valid_612230, JString, required = false,
                                  default = nil)
-  if valid_614230 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614230
-  var valid_614231 = header.getOrDefault("X-Amz-Date")
-  valid_614231 = validateParameter(valid_614231, JString, required = false,
+  if valid_612230 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612230
+  var valid_612231 = header.getOrDefault("X-Amz-Date")
+  valid_612231 = validateParameter(valid_612231, JString, required = false,
                                  default = nil)
-  if valid_614231 != nil:
-    section.add "X-Amz-Date", valid_614231
-  var valid_614232 = header.getOrDefault("X-Amz-Credential")
-  valid_614232 = validateParameter(valid_614232, JString, required = false,
+  if valid_612231 != nil:
+    section.add "X-Amz-Date", valid_612231
+  var valid_612232 = header.getOrDefault("X-Amz-Credential")
+  valid_612232 = validateParameter(valid_612232, JString, required = false,
                                  default = nil)
-  if valid_614232 != nil:
-    section.add "X-Amz-Credential", valid_614232
-  var valid_614233 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614233 = validateParameter(valid_614233, JString, required = false,
+  if valid_612232 != nil:
+    section.add "X-Amz-Credential", valid_612232
+  var valid_612233 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612233 = validateParameter(valid_612233, JString, required = false,
                                  default = nil)
-  if valid_614233 != nil:
-    section.add "X-Amz-Security-Token", valid_614233
-  var valid_614234 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614234 = validateParameter(valid_614234, JString, required = false,
+  if valid_612233 != nil:
+    section.add "X-Amz-Security-Token", valid_612233
+  var valid_612234 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612234 = validateParameter(valid_612234, JString, required = false,
                                  default = nil)
-  if valid_614234 != nil:
-    section.add "X-Amz-Algorithm", valid_614234
-  var valid_614235 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614235 = validateParameter(valid_614235, JString, required = false,
+  if valid_612234 != nil:
+    section.add "X-Amz-Algorithm", valid_612234
+  var valid_612235 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612235 = validateParameter(valid_612235, JString, required = false,
                                  default = nil)
-  if valid_614235 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614235
+  if valid_612235 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612235
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7524,48 +7387,46 @@ proc validate_UpdateApp_614226(path: JsonNode; query: JsonNode; header: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_614237: Call_UpdateApp_614225; path: JsonNode; query: JsonNode;
+proc call*(call_612237: Call_UpdateApp_612225; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a specified app.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Deploy or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614237.validator(path, query, header, formData, body)
-  let scheme = call_614237.pickScheme
+  let valid = call_612237.validator(path, query, header, formData, body)
+  let scheme = call_612237.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614237.url(scheme.get, call_614237.host, call_614237.base,
-                         call_614237.route, valid.getOrDefault("path"),
+  let url = call_612237.url(scheme.get, call_612237.host, call_612237.base,
+                         call_612237.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614237, url, valid)
+  result = atozHook(call_612237, url, valid)
 
-proc call*(call_614238: Call_UpdateApp_614225; body: JsonNode): Recallable =
+proc call*(call_612238: Call_UpdateApp_612225; body: JsonNode): Recallable =
   ## updateApp
   ## <p>Updates a specified app.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Deploy or Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614239 = newJObject()
+  var body_612239 = newJObject()
   if body != nil:
-    body_614239 = body
-  result = call_614238.call(nil, nil, nil, nil, body_614239)
+    body_612239 = body
+  result = call_612238.call(nil, nil, nil, nil, body_612239)
 
-var updateApp* = Call_UpdateApp_614225(name: "updateApp", meth: HttpMethod.HttpPost,
+var updateApp* = Call_UpdateApp_612225(name: "updateApp", meth: HttpMethod.HttpPost,
                                     host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.UpdateApp",
-                                    validator: validate_UpdateApp_614226,
-                                    base: "/", url: url_UpdateApp_614227,
+                                    validator: validate_UpdateApp_612226,
+                                    base: "/", url: url_UpdateApp_612227,
                                     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateElasticIp_614240 = ref object of OpenApiRestCall_612658
-proc url_UpdateElasticIp_614242(protocol: Scheme; host: string; base: string;
+  Call_UpdateElasticIp_612240 = ref object of OpenApiRestCall_610658
+proc url_UpdateElasticIp_612242(protocol: Scheme; host: string; base: string;
                                route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateElasticIp_614241(path: JsonNode; query: JsonNode;
+proc validate_UpdateElasticIp_612241(path: JsonNode; query: JsonNode;
                                     header: JsonNode; formData: JsonNode;
                                     body: JsonNode): JsonNode =
   ## <p>Updates a registered Elastic IP address's name. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -7586,46 +7447,46 @@ proc validate_UpdateElasticIp_614241(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614243 = header.getOrDefault("X-Amz-Target")
-  valid_614243 = validateParameter(valid_614243, JString, required = true, default = newJString(
+  var valid_612243 = header.getOrDefault("X-Amz-Target")
+  valid_612243 = validateParameter(valid_612243, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateElasticIp"))
-  if valid_614243 != nil:
-    section.add "X-Amz-Target", valid_614243
-  var valid_614244 = header.getOrDefault("X-Amz-Signature")
-  valid_614244 = validateParameter(valid_614244, JString, required = false,
+  if valid_612243 != nil:
+    section.add "X-Amz-Target", valid_612243
+  var valid_612244 = header.getOrDefault("X-Amz-Signature")
+  valid_612244 = validateParameter(valid_612244, JString, required = false,
                                  default = nil)
-  if valid_614244 != nil:
-    section.add "X-Amz-Signature", valid_614244
-  var valid_614245 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614245 = validateParameter(valid_614245, JString, required = false,
+  if valid_612244 != nil:
+    section.add "X-Amz-Signature", valid_612244
+  var valid_612245 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612245 = validateParameter(valid_612245, JString, required = false,
                                  default = nil)
-  if valid_614245 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614245
-  var valid_614246 = header.getOrDefault("X-Amz-Date")
-  valid_614246 = validateParameter(valid_614246, JString, required = false,
+  if valid_612245 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612245
+  var valid_612246 = header.getOrDefault("X-Amz-Date")
+  valid_612246 = validateParameter(valid_612246, JString, required = false,
                                  default = nil)
-  if valid_614246 != nil:
-    section.add "X-Amz-Date", valid_614246
-  var valid_614247 = header.getOrDefault("X-Amz-Credential")
-  valid_614247 = validateParameter(valid_614247, JString, required = false,
+  if valid_612246 != nil:
+    section.add "X-Amz-Date", valid_612246
+  var valid_612247 = header.getOrDefault("X-Amz-Credential")
+  valid_612247 = validateParameter(valid_612247, JString, required = false,
                                  default = nil)
-  if valid_614247 != nil:
-    section.add "X-Amz-Credential", valid_614247
-  var valid_614248 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614248 = validateParameter(valid_614248, JString, required = false,
+  if valid_612247 != nil:
+    section.add "X-Amz-Credential", valid_612247
+  var valid_612248 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612248 = validateParameter(valid_612248, JString, required = false,
                                  default = nil)
-  if valid_614248 != nil:
-    section.add "X-Amz-Security-Token", valid_614248
-  var valid_614249 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614249 = validateParameter(valid_614249, JString, required = false,
+  if valid_612248 != nil:
+    section.add "X-Amz-Security-Token", valid_612248
+  var valid_612249 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612249 = validateParameter(valid_612249, JString, required = false,
                                  default = nil)
-  if valid_614249 != nil:
-    section.add "X-Amz-Algorithm", valid_614249
-  var valid_614250 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614250 = validateParameter(valid_614250, JString, required = false,
+  if valid_612249 != nil:
+    section.add "X-Amz-Algorithm", valid_612249
+  var valid_612250 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612250 = validateParameter(valid_612250, JString, required = false,
                                  default = nil)
-  if valid_614250 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614250
+  if valid_612250 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612250
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7636,48 +7497,46 @@ proc validate_UpdateElasticIp_614241(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614252: Call_UpdateElasticIp_614240; path: JsonNode; query: JsonNode;
+proc call*(call_612252: Call_UpdateElasticIp_612240; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a registered Elastic IP address's name. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614252.validator(path, query, header, formData, body)
-  let scheme = call_614252.pickScheme
+  let valid = call_612252.validator(path, query, header, formData, body)
+  let scheme = call_612252.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614252.url(scheme.get, call_614252.host, call_614252.base,
-                         call_614252.route, valid.getOrDefault("path"),
+  let url = call_612252.url(scheme.get, call_612252.host, call_612252.base,
+                         call_612252.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614252, url, valid)
+  result = atozHook(call_612252, url, valid)
 
-proc call*(call_614253: Call_UpdateElasticIp_614240; body: JsonNode): Recallable =
+proc call*(call_612253: Call_UpdateElasticIp_612240; body: JsonNode): Recallable =
   ## updateElasticIp
   ## <p>Updates a registered Elastic IP address's name. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614254 = newJObject()
+  var body_612254 = newJObject()
   if body != nil:
-    body_614254 = body
-  result = call_614253.call(nil, nil, nil, nil, body_614254)
+    body_612254 = body
+  result = call_612253.call(nil, nil, nil, nil, body_612254)
 
-var updateElasticIp* = Call_UpdateElasticIp_614240(name: "updateElasticIp",
+var updateElasticIp* = Call_UpdateElasticIp_612240(name: "updateElasticIp",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UpdateElasticIp",
-    validator: validate_UpdateElasticIp_614241, base: "/", url: url_UpdateElasticIp_614242,
+    validator: validate_UpdateElasticIp_612241, base: "/", url: url_UpdateElasticIp_612242,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateInstance_614255 = ref object of OpenApiRestCall_612658
-proc url_UpdateInstance_614257(protocol: Scheme; host: string; base: string;
+  Call_UpdateInstance_612255 = ref object of OpenApiRestCall_610658
+proc url_UpdateInstance_612257(protocol: Scheme; host: string; base: string;
                               route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateInstance_614256(path: JsonNode; query: JsonNode;
+proc validate_UpdateInstance_612256(path: JsonNode; query: JsonNode;
                                    header: JsonNode; formData: JsonNode;
                                    body: JsonNode): JsonNode =
   ## <p>Updates a specified instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -7698,46 +7557,46 @@ proc validate_UpdateInstance_614256(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614258 = header.getOrDefault("X-Amz-Target")
-  valid_614258 = validateParameter(valid_614258, JString, required = true, default = newJString(
+  var valid_612258 = header.getOrDefault("X-Amz-Target")
+  valid_612258 = validateParameter(valid_612258, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateInstance"))
-  if valid_614258 != nil:
-    section.add "X-Amz-Target", valid_614258
-  var valid_614259 = header.getOrDefault("X-Amz-Signature")
-  valid_614259 = validateParameter(valid_614259, JString, required = false,
+  if valid_612258 != nil:
+    section.add "X-Amz-Target", valid_612258
+  var valid_612259 = header.getOrDefault("X-Amz-Signature")
+  valid_612259 = validateParameter(valid_612259, JString, required = false,
                                  default = nil)
-  if valid_614259 != nil:
-    section.add "X-Amz-Signature", valid_614259
-  var valid_614260 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614260 = validateParameter(valid_614260, JString, required = false,
+  if valid_612259 != nil:
+    section.add "X-Amz-Signature", valid_612259
+  var valid_612260 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612260 = validateParameter(valid_612260, JString, required = false,
                                  default = nil)
-  if valid_614260 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614260
-  var valid_614261 = header.getOrDefault("X-Amz-Date")
-  valid_614261 = validateParameter(valid_614261, JString, required = false,
+  if valid_612260 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612260
+  var valid_612261 = header.getOrDefault("X-Amz-Date")
+  valid_612261 = validateParameter(valid_612261, JString, required = false,
                                  default = nil)
-  if valid_614261 != nil:
-    section.add "X-Amz-Date", valid_614261
-  var valid_614262 = header.getOrDefault("X-Amz-Credential")
-  valid_614262 = validateParameter(valid_614262, JString, required = false,
+  if valid_612261 != nil:
+    section.add "X-Amz-Date", valid_612261
+  var valid_612262 = header.getOrDefault("X-Amz-Credential")
+  valid_612262 = validateParameter(valid_612262, JString, required = false,
                                  default = nil)
-  if valid_614262 != nil:
-    section.add "X-Amz-Credential", valid_614262
-  var valid_614263 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614263 = validateParameter(valid_614263, JString, required = false,
+  if valid_612262 != nil:
+    section.add "X-Amz-Credential", valid_612262
+  var valid_612263 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612263 = validateParameter(valid_612263, JString, required = false,
                                  default = nil)
-  if valid_614263 != nil:
-    section.add "X-Amz-Security-Token", valid_614263
-  var valid_614264 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614264 = validateParameter(valid_614264, JString, required = false,
+  if valid_612263 != nil:
+    section.add "X-Amz-Security-Token", valid_612263
+  var valid_612264 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612264 = validateParameter(valid_612264, JString, required = false,
                                  default = nil)
-  if valid_614264 != nil:
-    section.add "X-Amz-Algorithm", valid_614264
-  var valid_614265 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614265 = validateParameter(valid_614265, JString, required = false,
+  if valid_612264 != nil:
+    section.add "X-Amz-Algorithm", valid_612264
+  var valid_612265 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612265 = validateParameter(valid_612265, JString, required = false,
                                  default = nil)
-  if valid_614265 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614265
+  if valid_612265 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612265
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7748,48 +7607,46 @@ proc validate_UpdateInstance_614256(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614267: Call_UpdateInstance_614255; path: JsonNode; query: JsonNode;
+proc call*(call_612267: Call_UpdateInstance_612255; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a specified instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614267.validator(path, query, header, formData, body)
-  let scheme = call_614267.pickScheme
+  let valid = call_612267.validator(path, query, header, formData, body)
+  let scheme = call_612267.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614267.url(scheme.get, call_614267.host, call_614267.base,
-                         call_614267.route, valid.getOrDefault("path"),
+  let url = call_612267.url(scheme.get, call_612267.host, call_612267.base,
+                         call_612267.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614267, url, valid)
+  result = atozHook(call_612267, url, valid)
 
-proc call*(call_614268: Call_UpdateInstance_614255; body: JsonNode): Recallable =
+proc call*(call_612268: Call_UpdateInstance_612255; body: JsonNode): Recallable =
   ## updateInstance
   ## <p>Updates a specified instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614269 = newJObject()
+  var body_612269 = newJObject()
   if body != nil:
-    body_614269 = body
-  result = call_614268.call(nil, nil, nil, nil, body_614269)
+    body_612269 = body
+  result = call_612268.call(nil, nil, nil, nil, body_612269)
 
-var updateInstance* = Call_UpdateInstance_614255(name: "updateInstance",
+var updateInstance* = Call_UpdateInstance_612255(name: "updateInstance",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UpdateInstance",
-    validator: validate_UpdateInstance_614256, base: "/", url: url_UpdateInstance_614257,
+    validator: validate_UpdateInstance_612256, base: "/", url: url_UpdateInstance_612257,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateLayer_614270 = ref object of OpenApiRestCall_612658
-proc url_UpdateLayer_614272(protocol: Scheme; host: string; base: string;
+  Call_UpdateLayer_612270 = ref object of OpenApiRestCall_610658
+proc url_UpdateLayer_612272(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateLayer_614271(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateLayer_612271(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates a specified layer.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -7809,46 +7666,46 @@ proc validate_UpdateLayer_614271(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614273 = header.getOrDefault("X-Amz-Target")
-  valid_614273 = validateParameter(valid_614273, JString, required = true, default = newJString(
+  var valid_612273 = header.getOrDefault("X-Amz-Target")
+  valid_612273 = validateParameter(valid_612273, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateLayer"))
-  if valid_614273 != nil:
-    section.add "X-Amz-Target", valid_614273
-  var valid_614274 = header.getOrDefault("X-Amz-Signature")
-  valid_614274 = validateParameter(valid_614274, JString, required = false,
+  if valid_612273 != nil:
+    section.add "X-Amz-Target", valid_612273
+  var valid_612274 = header.getOrDefault("X-Amz-Signature")
+  valid_612274 = validateParameter(valid_612274, JString, required = false,
                                  default = nil)
-  if valid_614274 != nil:
-    section.add "X-Amz-Signature", valid_614274
-  var valid_614275 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614275 = validateParameter(valid_614275, JString, required = false,
+  if valid_612274 != nil:
+    section.add "X-Amz-Signature", valid_612274
+  var valid_612275 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612275 = validateParameter(valid_612275, JString, required = false,
                                  default = nil)
-  if valid_614275 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614275
-  var valid_614276 = header.getOrDefault("X-Amz-Date")
-  valid_614276 = validateParameter(valid_614276, JString, required = false,
+  if valid_612275 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612275
+  var valid_612276 = header.getOrDefault("X-Amz-Date")
+  valid_612276 = validateParameter(valid_612276, JString, required = false,
                                  default = nil)
-  if valid_614276 != nil:
-    section.add "X-Amz-Date", valid_614276
-  var valid_614277 = header.getOrDefault("X-Amz-Credential")
-  valid_614277 = validateParameter(valid_614277, JString, required = false,
+  if valid_612276 != nil:
+    section.add "X-Amz-Date", valid_612276
+  var valid_612277 = header.getOrDefault("X-Amz-Credential")
+  valid_612277 = validateParameter(valid_612277, JString, required = false,
                                  default = nil)
-  if valid_614277 != nil:
-    section.add "X-Amz-Credential", valid_614277
-  var valid_614278 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614278 = validateParameter(valid_614278, JString, required = false,
+  if valid_612277 != nil:
+    section.add "X-Amz-Credential", valid_612277
+  var valid_612278 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612278 = validateParameter(valid_612278, JString, required = false,
                                  default = nil)
-  if valid_614278 != nil:
-    section.add "X-Amz-Security-Token", valid_614278
-  var valid_614279 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614279 = validateParameter(valid_614279, JString, required = false,
+  if valid_612278 != nil:
+    section.add "X-Amz-Security-Token", valid_612278
+  var valid_612279 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612279 = validateParameter(valid_612279, JString, required = false,
                                  default = nil)
-  if valid_614279 != nil:
-    section.add "X-Amz-Algorithm", valid_614279
-  var valid_614280 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614280 = validateParameter(valid_614280, JString, required = false,
+  if valid_612279 != nil:
+    section.add "X-Amz-Algorithm", valid_612279
+  var valid_612280 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612280 = validateParameter(valid_612280, JString, required = false,
                                  default = nil)
-  if valid_614280 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614280
+  if valid_612280 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612280
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7859,49 +7716,47 @@ proc validate_UpdateLayer_614271(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_614282: Call_UpdateLayer_614270; path: JsonNode; query: JsonNode;
+proc call*(call_612282: Call_UpdateLayer_612270; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a specified layer.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614282.validator(path, query, header, formData, body)
-  let scheme = call_614282.pickScheme
+  let valid = call_612282.validator(path, query, header, formData, body)
+  let scheme = call_612282.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614282.url(scheme.get, call_614282.host, call_614282.base,
-                         call_614282.route, valid.getOrDefault("path"),
+  let url = call_612282.url(scheme.get, call_612282.host, call_612282.base,
+                         call_612282.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614282, url, valid)
+  result = atozHook(call_612282, url, valid)
 
-proc call*(call_614283: Call_UpdateLayer_614270; body: JsonNode): Recallable =
+proc call*(call_612283: Call_UpdateLayer_612270; body: JsonNode): Recallable =
   ## updateLayer
   ## <p>Updates a specified layer.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614284 = newJObject()
+  var body_612284 = newJObject()
   if body != nil:
-    body_614284 = body
-  result = call_614283.call(nil, nil, nil, nil, body_614284)
+    body_612284 = body
+  result = call_612283.call(nil, nil, nil, nil, body_612284)
 
-var updateLayer* = Call_UpdateLayer_614270(name: "updateLayer",
+var updateLayer* = Call_UpdateLayer_612270(name: "updateLayer",
                                         meth: HttpMethod.HttpPost,
                                         host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.UpdateLayer",
-                                        validator: validate_UpdateLayer_614271,
-                                        base: "/", url: url_UpdateLayer_614272,
+                                        validator: validate_UpdateLayer_612271,
+                                        base: "/", url: url_UpdateLayer_612272,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateMyUserProfile_614285 = ref object of OpenApiRestCall_612658
-proc url_UpdateMyUserProfile_614287(protocol: Scheme; host: string; base: string;
+  Call_UpdateMyUserProfile_612285 = ref object of OpenApiRestCall_610658
+proc url_UpdateMyUserProfile_612287(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateMyUserProfile_614286(path: JsonNode; query: JsonNode;
+proc validate_UpdateMyUserProfile_612286(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Updates a user's SSH public key.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have self-management enabled or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -7922,46 +7777,46 @@ proc validate_UpdateMyUserProfile_614286(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614288 = header.getOrDefault("X-Amz-Target")
-  valid_614288 = validateParameter(valid_614288, JString, required = true, default = newJString(
+  var valid_612288 = header.getOrDefault("X-Amz-Target")
+  valid_612288 = validateParameter(valid_612288, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateMyUserProfile"))
-  if valid_614288 != nil:
-    section.add "X-Amz-Target", valid_614288
-  var valid_614289 = header.getOrDefault("X-Amz-Signature")
-  valid_614289 = validateParameter(valid_614289, JString, required = false,
+  if valid_612288 != nil:
+    section.add "X-Amz-Target", valid_612288
+  var valid_612289 = header.getOrDefault("X-Amz-Signature")
+  valid_612289 = validateParameter(valid_612289, JString, required = false,
                                  default = nil)
-  if valid_614289 != nil:
-    section.add "X-Amz-Signature", valid_614289
-  var valid_614290 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614290 = validateParameter(valid_614290, JString, required = false,
+  if valid_612289 != nil:
+    section.add "X-Amz-Signature", valid_612289
+  var valid_612290 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612290 = validateParameter(valid_612290, JString, required = false,
                                  default = nil)
-  if valid_614290 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614290
-  var valid_614291 = header.getOrDefault("X-Amz-Date")
-  valid_614291 = validateParameter(valid_614291, JString, required = false,
+  if valid_612290 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612290
+  var valid_612291 = header.getOrDefault("X-Amz-Date")
+  valid_612291 = validateParameter(valid_612291, JString, required = false,
                                  default = nil)
-  if valid_614291 != nil:
-    section.add "X-Amz-Date", valid_614291
-  var valid_614292 = header.getOrDefault("X-Amz-Credential")
-  valid_614292 = validateParameter(valid_614292, JString, required = false,
+  if valid_612291 != nil:
+    section.add "X-Amz-Date", valid_612291
+  var valid_612292 = header.getOrDefault("X-Amz-Credential")
+  valid_612292 = validateParameter(valid_612292, JString, required = false,
                                  default = nil)
-  if valid_614292 != nil:
-    section.add "X-Amz-Credential", valid_614292
-  var valid_614293 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614293 = validateParameter(valid_614293, JString, required = false,
+  if valid_612292 != nil:
+    section.add "X-Amz-Credential", valid_612292
+  var valid_612293 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612293 = validateParameter(valid_612293, JString, required = false,
                                  default = nil)
-  if valid_614293 != nil:
-    section.add "X-Amz-Security-Token", valid_614293
-  var valid_614294 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614294 = validateParameter(valid_614294, JString, required = false,
+  if valid_612293 != nil:
+    section.add "X-Amz-Security-Token", valid_612293
+  var valid_612294 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612294 = validateParameter(valid_612294, JString, required = false,
                                  default = nil)
-  if valid_614294 != nil:
-    section.add "X-Amz-Algorithm", valid_614294
-  var valid_614295 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614295 = validateParameter(valid_614295, JString, required = false,
+  if valid_612294 != nil:
+    section.add "X-Amz-Algorithm", valid_612294
+  var valid_612295 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612295 = validateParameter(valid_612295, JString, required = false,
                                  default = nil)
-  if valid_614295 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614295
+  if valid_612295 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612295
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -7972,49 +7827,47 @@ proc validate_UpdateMyUserProfile_614286(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614297: Call_UpdateMyUserProfile_614285; path: JsonNode;
+proc call*(call_612297: Call_UpdateMyUserProfile_612285; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a user's SSH public key.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have self-management enabled or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614297.validator(path, query, header, formData, body)
-  let scheme = call_614297.pickScheme
+  let valid = call_612297.validator(path, query, header, formData, body)
+  let scheme = call_612297.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614297.url(scheme.get, call_614297.host, call_614297.base,
-                         call_614297.route, valid.getOrDefault("path"),
+  let url = call_612297.url(scheme.get, call_612297.host, call_612297.base,
+                         call_612297.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614297, url, valid)
+  result = atozHook(call_612297, url, valid)
 
-proc call*(call_614298: Call_UpdateMyUserProfile_614285; body: JsonNode): Recallable =
+proc call*(call_612298: Call_UpdateMyUserProfile_612285; body: JsonNode): Recallable =
   ## updateMyUserProfile
   ## <p>Updates a user's SSH public key.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have self-management enabled or an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614299 = newJObject()
+  var body_612299 = newJObject()
   if body != nil:
-    body_614299 = body
-  result = call_614298.call(nil, nil, nil, nil, body_614299)
+    body_612299 = body
+  result = call_612298.call(nil, nil, nil, nil, body_612299)
 
-var updateMyUserProfile* = Call_UpdateMyUserProfile_614285(
+var updateMyUserProfile* = Call_UpdateMyUserProfile_612285(
     name: "updateMyUserProfile", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UpdateMyUserProfile",
-    validator: validate_UpdateMyUserProfile_614286, base: "/",
-    url: url_UpdateMyUserProfile_614287, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateMyUserProfile_612286, base: "/",
+    url: url_UpdateMyUserProfile_612287, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateRdsDbInstance_614300 = ref object of OpenApiRestCall_612658
-proc url_UpdateRdsDbInstance_614302(protocol: Scheme; host: string; base: string;
+  Call_UpdateRdsDbInstance_612300 = ref object of OpenApiRestCall_610658
+proc url_UpdateRdsDbInstance_612302(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateRdsDbInstance_614301(path: JsonNode; query: JsonNode;
+proc validate_UpdateRdsDbInstance_612301(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Updates an Amazon RDS instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -8035,46 +7888,46 @@ proc validate_UpdateRdsDbInstance_614301(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614303 = header.getOrDefault("X-Amz-Target")
-  valid_614303 = validateParameter(valid_614303, JString, required = true, default = newJString(
+  var valid_612303 = header.getOrDefault("X-Amz-Target")
+  valid_612303 = validateParameter(valid_612303, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateRdsDbInstance"))
-  if valid_614303 != nil:
-    section.add "X-Amz-Target", valid_614303
-  var valid_614304 = header.getOrDefault("X-Amz-Signature")
-  valid_614304 = validateParameter(valid_614304, JString, required = false,
+  if valid_612303 != nil:
+    section.add "X-Amz-Target", valid_612303
+  var valid_612304 = header.getOrDefault("X-Amz-Signature")
+  valid_612304 = validateParameter(valid_612304, JString, required = false,
                                  default = nil)
-  if valid_614304 != nil:
-    section.add "X-Amz-Signature", valid_614304
-  var valid_614305 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614305 = validateParameter(valid_614305, JString, required = false,
+  if valid_612304 != nil:
+    section.add "X-Amz-Signature", valid_612304
+  var valid_612305 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612305 = validateParameter(valid_612305, JString, required = false,
                                  default = nil)
-  if valid_614305 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614305
-  var valid_614306 = header.getOrDefault("X-Amz-Date")
-  valid_614306 = validateParameter(valid_614306, JString, required = false,
+  if valid_612305 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612305
+  var valid_612306 = header.getOrDefault("X-Amz-Date")
+  valid_612306 = validateParameter(valid_612306, JString, required = false,
                                  default = nil)
-  if valid_614306 != nil:
-    section.add "X-Amz-Date", valid_614306
-  var valid_614307 = header.getOrDefault("X-Amz-Credential")
-  valid_614307 = validateParameter(valid_614307, JString, required = false,
+  if valid_612306 != nil:
+    section.add "X-Amz-Date", valid_612306
+  var valid_612307 = header.getOrDefault("X-Amz-Credential")
+  valid_612307 = validateParameter(valid_612307, JString, required = false,
                                  default = nil)
-  if valid_614307 != nil:
-    section.add "X-Amz-Credential", valid_614307
-  var valid_614308 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614308 = validateParameter(valid_614308, JString, required = false,
+  if valid_612307 != nil:
+    section.add "X-Amz-Credential", valid_612307
+  var valid_612308 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612308 = validateParameter(valid_612308, JString, required = false,
                                  default = nil)
-  if valid_614308 != nil:
-    section.add "X-Amz-Security-Token", valid_614308
-  var valid_614309 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614309 = validateParameter(valid_614309, JString, required = false,
+  if valid_612308 != nil:
+    section.add "X-Amz-Security-Token", valid_612308
+  var valid_612309 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612309 = validateParameter(valid_612309, JString, required = false,
                                  default = nil)
-  if valid_614309 != nil:
-    section.add "X-Amz-Algorithm", valid_614309
-  var valid_614310 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614310 = validateParameter(valid_614310, JString, required = false,
+  if valid_612309 != nil:
+    section.add "X-Amz-Algorithm", valid_612309
+  var valid_612310 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612310 = validateParameter(valid_612310, JString, required = false,
                                  default = nil)
-  if valid_614310 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614310
+  if valid_612310 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612310
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8085,49 +7938,47 @@ proc validate_UpdateRdsDbInstance_614301(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614312: Call_UpdateRdsDbInstance_614300; path: JsonNode;
+proc call*(call_612312: Call_UpdateRdsDbInstance_612300; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates an Amazon RDS instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614312.validator(path, query, header, formData, body)
-  let scheme = call_614312.pickScheme
+  let valid = call_612312.validator(path, query, header, formData, body)
+  let scheme = call_612312.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614312.url(scheme.get, call_614312.host, call_614312.base,
-                         call_614312.route, valid.getOrDefault("path"),
+  let url = call_612312.url(scheme.get, call_612312.host, call_612312.base,
+                         call_612312.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614312, url, valid)
+  result = atozHook(call_612312, url, valid)
 
-proc call*(call_614313: Call_UpdateRdsDbInstance_614300; body: JsonNode): Recallable =
+proc call*(call_612313: Call_UpdateRdsDbInstance_612300; body: JsonNode): Recallable =
   ## updateRdsDbInstance
   ## <p>Updates an Amazon RDS instance.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614314 = newJObject()
+  var body_612314 = newJObject()
   if body != nil:
-    body_614314 = body
-  result = call_614313.call(nil, nil, nil, nil, body_614314)
+    body_612314 = body
+  result = call_612313.call(nil, nil, nil, nil, body_612314)
 
-var updateRdsDbInstance* = Call_UpdateRdsDbInstance_614300(
+var updateRdsDbInstance* = Call_UpdateRdsDbInstance_612300(
     name: "updateRdsDbInstance", meth: HttpMethod.HttpPost,
     host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UpdateRdsDbInstance",
-    validator: validate_UpdateRdsDbInstance_614301, base: "/",
-    url: url_UpdateRdsDbInstance_614302, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateRdsDbInstance_612301, base: "/",
+    url: url_UpdateRdsDbInstance_612302, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateStack_614315 = ref object of OpenApiRestCall_612658
-proc url_UpdateStack_614317(protocol: Scheme; host: string; base: string;
+  Call_UpdateStack_612315 = ref object of OpenApiRestCall_610658
+proc url_UpdateStack_612317(protocol: Scheme; host: string; base: string;
                            route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateStack_614316(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateStack_612316(path: JsonNode; query: JsonNode; header: JsonNode;
                                 formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -8147,46 +7998,46 @@ proc validate_UpdateStack_614316(path: JsonNode; query: JsonNode; header: JsonNo
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614318 = header.getOrDefault("X-Amz-Target")
-  valid_614318 = validateParameter(valid_614318, JString, required = true, default = newJString(
+  var valid_612318 = header.getOrDefault("X-Amz-Target")
+  valid_612318 = validateParameter(valid_612318, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateStack"))
-  if valid_614318 != nil:
-    section.add "X-Amz-Target", valid_614318
-  var valid_614319 = header.getOrDefault("X-Amz-Signature")
-  valid_614319 = validateParameter(valid_614319, JString, required = false,
+  if valid_612318 != nil:
+    section.add "X-Amz-Target", valid_612318
+  var valid_612319 = header.getOrDefault("X-Amz-Signature")
+  valid_612319 = validateParameter(valid_612319, JString, required = false,
                                  default = nil)
-  if valid_614319 != nil:
-    section.add "X-Amz-Signature", valid_614319
-  var valid_614320 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614320 = validateParameter(valid_614320, JString, required = false,
+  if valid_612319 != nil:
+    section.add "X-Amz-Signature", valid_612319
+  var valid_612320 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612320 = validateParameter(valid_612320, JString, required = false,
                                  default = nil)
-  if valid_614320 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614320
-  var valid_614321 = header.getOrDefault("X-Amz-Date")
-  valid_614321 = validateParameter(valid_614321, JString, required = false,
+  if valid_612320 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612320
+  var valid_612321 = header.getOrDefault("X-Amz-Date")
+  valid_612321 = validateParameter(valid_612321, JString, required = false,
                                  default = nil)
-  if valid_614321 != nil:
-    section.add "X-Amz-Date", valid_614321
-  var valid_614322 = header.getOrDefault("X-Amz-Credential")
-  valid_614322 = validateParameter(valid_614322, JString, required = false,
+  if valid_612321 != nil:
+    section.add "X-Amz-Date", valid_612321
+  var valid_612322 = header.getOrDefault("X-Amz-Credential")
+  valid_612322 = validateParameter(valid_612322, JString, required = false,
                                  default = nil)
-  if valid_614322 != nil:
-    section.add "X-Amz-Credential", valid_614322
-  var valid_614323 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614323 = validateParameter(valid_614323, JString, required = false,
+  if valid_612322 != nil:
+    section.add "X-Amz-Credential", valid_612322
+  var valid_612323 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612323 = validateParameter(valid_612323, JString, required = false,
                                  default = nil)
-  if valid_614323 != nil:
-    section.add "X-Amz-Security-Token", valid_614323
-  var valid_614324 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614324 = validateParameter(valid_614324, JString, required = false,
+  if valid_612323 != nil:
+    section.add "X-Amz-Security-Token", valid_612323
+  var valid_612324 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612324 = validateParameter(valid_612324, JString, required = false,
                                  default = nil)
-  if valid_614324 != nil:
-    section.add "X-Amz-Algorithm", valid_614324
-  var valid_614325 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614325 = validateParameter(valid_614325, JString, required = false,
+  if valid_612324 != nil:
+    section.add "X-Amz-Algorithm", valid_612324
+  var valid_612325 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612325 = validateParameter(valid_612325, JString, required = false,
                                  default = nil)
-  if valid_614325 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614325
+  if valid_612325 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612325
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8197,49 +8048,47 @@ proc validate_UpdateStack_614316(path: JsonNode; query: JsonNode; header: JsonNo
   if body != nil:
     result.add "body", body
 
-proc call*(call_614327: Call_UpdateStack_614315; path: JsonNode; query: JsonNode;
+proc call*(call_612327: Call_UpdateStack_612315; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614327.validator(path, query, header, formData, body)
-  let scheme = call_614327.pickScheme
+  let valid = call_612327.validator(path, query, header, formData, body)
+  let scheme = call_612327.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614327.url(scheme.get, call_614327.host, call_614327.base,
-                         call_614327.route, valid.getOrDefault("path"),
+  let url = call_612327.url(scheme.get, call_612327.host, call_612327.base,
+                         call_612327.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614327, url, valid)
+  result = atozHook(call_612327, url, valid)
 
-proc call*(call_614328: Call_UpdateStack_614315; body: JsonNode): Recallable =
+proc call*(call_612328: Call_UpdateStack_612315; body: JsonNode): Recallable =
   ## updateStack
   ## <p>Updates a specified stack.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614329 = newJObject()
+  var body_612329 = newJObject()
   if body != nil:
-    body_614329 = body
-  result = call_614328.call(nil, nil, nil, nil, body_614329)
+    body_612329 = body
+  result = call_612328.call(nil, nil, nil, nil, body_612329)
 
-var updateStack* = Call_UpdateStack_614315(name: "updateStack",
+var updateStack* = Call_UpdateStack_612315(name: "updateStack",
                                         meth: HttpMethod.HttpPost,
                                         host: "opsworks.amazonaws.com", route: "/#X-Amz-Target=OpsWorks_20130218.UpdateStack",
-                                        validator: validate_UpdateStack_614316,
-                                        base: "/", url: url_UpdateStack_614317,
+                                        validator: validate_UpdateStack_612316,
+                                        base: "/", url: url_UpdateStack_612317,
                                         schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateUserProfile_614330 = ref object of OpenApiRestCall_612658
-proc url_UpdateUserProfile_614332(protocol: Scheme; host: string; base: string;
+  Call_UpdateUserProfile_612330 = ref object of OpenApiRestCall_610658
+proc url_UpdateUserProfile_612332(protocol: Scheme; host: string; base: string;
                                  route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateUserProfile_614331(path: JsonNode; query: JsonNode;
+proc validate_UpdateUserProfile_612331(path: JsonNode; query: JsonNode;
                                       header: JsonNode; formData: JsonNode;
                                       body: JsonNode): JsonNode =
   ## <p>Updates a specified user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
@@ -8260,46 +8109,46 @@ proc validate_UpdateUserProfile_614331(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614333 = header.getOrDefault("X-Amz-Target")
-  valid_614333 = validateParameter(valid_614333, JString, required = true, default = newJString(
+  var valid_612333 = header.getOrDefault("X-Amz-Target")
+  valid_612333 = validateParameter(valid_612333, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateUserProfile"))
-  if valid_614333 != nil:
-    section.add "X-Amz-Target", valid_614333
-  var valid_614334 = header.getOrDefault("X-Amz-Signature")
-  valid_614334 = validateParameter(valid_614334, JString, required = false,
+  if valid_612333 != nil:
+    section.add "X-Amz-Target", valid_612333
+  var valid_612334 = header.getOrDefault("X-Amz-Signature")
+  valid_612334 = validateParameter(valid_612334, JString, required = false,
                                  default = nil)
-  if valid_614334 != nil:
-    section.add "X-Amz-Signature", valid_614334
-  var valid_614335 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614335 = validateParameter(valid_614335, JString, required = false,
+  if valid_612334 != nil:
+    section.add "X-Amz-Signature", valid_612334
+  var valid_612335 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612335 = validateParameter(valid_612335, JString, required = false,
                                  default = nil)
-  if valid_614335 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614335
-  var valid_614336 = header.getOrDefault("X-Amz-Date")
-  valid_614336 = validateParameter(valid_614336, JString, required = false,
+  if valid_612335 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612335
+  var valid_612336 = header.getOrDefault("X-Amz-Date")
+  valid_612336 = validateParameter(valid_612336, JString, required = false,
                                  default = nil)
-  if valid_614336 != nil:
-    section.add "X-Amz-Date", valid_614336
-  var valid_614337 = header.getOrDefault("X-Amz-Credential")
-  valid_614337 = validateParameter(valid_614337, JString, required = false,
+  if valid_612336 != nil:
+    section.add "X-Amz-Date", valid_612336
+  var valid_612337 = header.getOrDefault("X-Amz-Credential")
+  valid_612337 = validateParameter(valid_612337, JString, required = false,
                                  default = nil)
-  if valid_614337 != nil:
-    section.add "X-Amz-Credential", valid_614337
-  var valid_614338 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614338 = validateParameter(valid_614338, JString, required = false,
+  if valid_612337 != nil:
+    section.add "X-Amz-Credential", valid_612337
+  var valid_612338 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612338 = validateParameter(valid_612338, JString, required = false,
                                  default = nil)
-  if valid_614338 != nil:
-    section.add "X-Amz-Security-Token", valid_614338
-  var valid_614339 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614339 = validateParameter(valid_614339, JString, required = false,
+  if valid_612338 != nil:
+    section.add "X-Amz-Security-Token", valid_612338
+  var valid_612339 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612339 = validateParameter(valid_612339, JString, required = false,
                                  default = nil)
-  if valid_614339 != nil:
-    section.add "X-Amz-Algorithm", valid_614339
-  var valid_614340 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614340 = validateParameter(valid_614340, JString, required = false,
+  if valid_612339 != nil:
+    section.add "X-Amz-Algorithm", valid_612339
+  var valid_612340 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612340 = validateParameter(valid_612340, JString, required = false,
                                  default = nil)
-  if valid_614340 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614340
+  if valid_612340 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612340
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8310,48 +8159,46 @@ proc validate_UpdateUserProfile_614331(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_614342: Call_UpdateUserProfile_614330; path: JsonNode;
+proc call*(call_612342: Call_UpdateUserProfile_612330; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates a specified user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614342.validator(path, query, header, formData, body)
-  let scheme = call_614342.pickScheme
+  let valid = call_612342.validator(path, query, header, formData, body)
+  let scheme = call_612342.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614342.url(scheme.get, call_614342.host, call_614342.base,
-                         call_614342.route, valid.getOrDefault("path"),
+  let url = call_612342.url(scheme.get, call_612342.host, call_612342.base,
+                         call_612342.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614342, url, valid)
+  result = atozHook(call_612342, url, valid)
 
-proc call*(call_614343: Call_UpdateUserProfile_614330; body: JsonNode): Recallable =
+proc call*(call_612343: Call_UpdateUserProfile_612330; body: JsonNode): Recallable =
   ## updateUserProfile
   ## <p>Updates a specified user profile.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have an attached policy that explicitly grants permissions. For more information about user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614344 = newJObject()
+  var body_612344 = newJObject()
   if body != nil:
-    body_614344 = body
-  result = call_614343.call(nil, nil, nil, nil, body_614344)
+    body_612344 = body
+  result = call_612343.call(nil, nil, nil, nil, body_612344)
 
-var updateUserProfile* = Call_UpdateUserProfile_614330(name: "updateUserProfile",
+var updateUserProfile* = Call_UpdateUserProfile_612330(name: "updateUserProfile",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UpdateUserProfile",
-    validator: validate_UpdateUserProfile_614331, base: "/",
-    url: url_UpdateUserProfile_614332, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_UpdateUserProfile_612331, base: "/",
+    url: url_UpdateUserProfile_612332, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateVolume_614345 = ref object of OpenApiRestCall_612658
-proc url_UpdateVolume_614347(protocol: Scheme; host: string; base: string;
+  Call_UpdateVolume_612345 = ref object of OpenApiRestCall_610658
+proc url_UpdateVolume_612347(protocol: Scheme; host: string; base: string;
                             route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
-  if base ==
-      "/" and
-      route.startsWith "/":
+  if base == "/" and route.startsWith "/":
     result.path = route
   else:
     result.path = base & route
 
-proc validate_UpdateVolume_614346(path: JsonNode; query: JsonNode; header: JsonNode;
+proc validate_UpdateVolume_612346(path: JsonNode; query: JsonNode; header: JsonNode;
                                  formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates an Amazon EBS volume's name or mount point. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
@@ -8371,46 +8218,46 @@ proc validate_UpdateVolume_614346(path: JsonNode; query: JsonNode; header: JsonN
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_614348 = header.getOrDefault("X-Amz-Target")
-  valid_614348 = validateParameter(valid_614348, JString, required = true, default = newJString(
+  var valid_612348 = header.getOrDefault("X-Amz-Target")
+  valid_612348 = validateParameter(valid_612348, JString, required = true, default = newJString(
       "OpsWorks_20130218.UpdateVolume"))
-  if valid_614348 != nil:
-    section.add "X-Amz-Target", valid_614348
-  var valid_614349 = header.getOrDefault("X-Amz-Signature")
-  valid_614349 = validateParameter(valid_614349, JString, required = false,
+  if valid_612348 != nil:
+    section.add "X-Amz-Target", valid_612348
+  var valid_612349 = header.getOrDefault("X-Amz-Signature")
+  valid_612349 = validateParameter(valid_612349, JString, required = false,
                                  default = nil)
-  if valid_614349 != nil:
-    section.add "X-Amz-Signature", valid_614349
-  var valid_614350 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_614350 = validateParameter(valid_614350, JString, required = false,
+  if valid_612349 != nil:
+    section.add "X-Amz-Signature", valid_612349
+  var valid_612350 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_612350 = validateParameter(valid_612350, JString, required = false,
                                  default = nil)
-  if valid_614350 != nil:
-    section.add "X-Amz-Content-Sha256", valid_614350
-  var valid_614351 = header.getOrDefault("X-Amz-Date")
-  valid_614351 = validateParameter(valid_614351, JString, required = false,
+  if valid_612350 != nil:
+    section.add "X-Amz-Content-Sha256", valid_612350
+  var valid_612351 = header.getOrDefault("X-Amz-Date")
+  valid_612351 = validateParameter(valid_612351, JString, required = false,
                                  default = nil)
-  if valid_614351 != nil:
-    section.add "X-Amz-Date", valid_614351
-  var valid_614352 = header.getOrDefault("X-Amz-Credential")
-  valid_614352 = validateParameter(valid_614352, JString, required = false,
+  if valid_612351 != nil:
+    section.add "X-Amz-Date", valid_612351
+  var valid_612352 = header.getOrDefault("X-Amz-Credential")
+  valid_612352 = validateParameter(valid_612352, JString, required = false,
                                  default = nil)
-  if valid_614352 != nil:
-    section.add "X-Amz-Credential", valid_614352
-  var valid_614353 = header.getOrDefault("X-Amz-Security-Token")
-  valid_614353 = validateParameter(valid_614353, JString, required = false,
+  if valid_612352 != nil:
+    section.add "X-Amz-Credential", valid_612352
+  var valid_612353 = header.getOrDefault("X-Amz-Security-Token")
+  valid_612353 = validateParameter(valid_612353, JString, required = false,
                                  default = nil)
-  if valid_614353 != nil:
-    section.add "X-Amz-Security-Token", valid_614353
-  var valid_614354 = header.getOrDefault("X-Amz-Algorithm")
-  valid_614354 = validateParameter(valid_614354, JString, required = false,
+  if valid_612353 != nil:
+    section.add "X-Amz-Security-Token", valid_612353
+  var valid_612354 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612354 = validateParameter(valid_612354, JString, required = false,
                                  default = nil)
-  if valid_614354 != nil:
-    section.add "X-Amz-Algorithm", valid_614354
-  var valid_614355 = header.getOrDefault("X-Amz-SignedHeaders")
-  valid_614355 = validateParameter(valid_614355, JString, required = false,
+  if valid_612354 != nil:
+    section.add "X-Amz-Algorithm", valid_612354
+  var valid_612355 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612355 = validateParameter(valid_612355, JString, required = false,
                                  default = nil)
-  if valid_614355 != nil:
-    section.add "X-Amz-SignedHeaders", valid_614355
+  if valid_612355 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612355
   result.add "header", section
   section = newJObject()
   result.add "formData", section
@@ -8421,32 +8268,32 @@ proc validate_UpdateVolume_614346(path: JsonNode; query: JsonNode; header: JsonN
   if body != nil:
     result.add "body", body
 
-proc call*(call_614357: Call_UpdateVolume_614345; path: JsonNode; query: JsonNode;
+proc call*(call_612357: Call_UpdateVolume_612345; path: JsonNode; query: JsonNode;
           header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates an Amazon EBS volume's name or mount point. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ## 
-  let valid = call_614357.validator(path, query, header, formData, body)
-  let scheme = call_614357.pickScheme
+  let valid = call_612357.validator(path, query, header, formData, body)
+  let scheme = call_612357.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_614357.url(scheme.get, call_614357.host, call_614357.base,
-                         call_614357.route, valid.getOrDefault("path"),
+  let url = call_612357.url(scheme.get, call_612357.host, call_612357.base,
+                         call_612357.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_614357, url, valid)
+  result = atozHook(call_612357, url, valid)
 
-proc call*(call_614358: Call_UpdateVolume_614345; body: JsonNode): Recallable =
+proc call*(call_612358: Call_UpdateVolume_612345; body: JsonNode): Recallable =
   ## updateVolume
   ## <p>Updates an Amazon EBS volume's name or mount point. For more information, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/resources.html">Resource Management</a>.</p> <p> <b>Required Permissions</b>: To use this action, an IAM user must have a Manage permissions level for the stack, or an attached policy that explicitly grants permissions. For more information on user permissions, see <a href="https://docs.aws.amazon.com/opsworks/latest/userguide/opsworks-security-users.html">Managing User Permissions</a>.</p>
   ##   body: JObject (required)
-  var body_614359 = newJObject()
+  var body_612359 = newJObject()
   if body != nil:
-    body_614359 = body
-  result = call_614358.call(nil, nil, nil, nil, body_614359)
+    body_612359 = body
+  result = call_612358.call(nil, nil, nil, nil, body_612359)
 
-var updateVolume* = Call_UpdateVolume_614345(name: "updateVolume",
+var updateVolume* = Call_UpdateVolume_612345(name: "updateVolume",
     meth: HttpMethod.HttpPost, host: "opsworks.amazonaws.com",
     route: "/#X-Amz-Target=OpsWorks_20130218.UpdateVolume",
-    validator: validate_UpdateVolume_614346, base: "/", url: url_UpdateVolume_614347,
+    validator: validate_UpdateVolume_612346, base: "/", url: url_UpdateVolume_612347,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -8516,6 +8363,9 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers.del "Host"
   recall.url = $url
 
+type
+  XAmz = enum
+    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   ## the hook is a terrible earworm
   var headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
@@ -8528,11 +8378,10 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
   if body != nil and body.kind != JString:
     if not headers.hasKey("content-type"):
       headers["content-type"] = "application/x-amz-json-1.0"
-  const
-    XAmzSecurityToken = "X-Amz-Security-Token"
-  if not headers.hasKey(XAmzSecurityToken):
+  if not headers.hasKey($SecurityToken):
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
-      headers[XAmzSecurityToken] = session
+      headers[$SecurityToken] = session
+  headers[$ContentSha256] = hash(text, SHA256)
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)
