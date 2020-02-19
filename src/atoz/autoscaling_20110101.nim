@@ -1974,7 +1974,8 @@ proc validate_PostCreateAutoScalingGroup_611508(path: JsonNode; query: JsonNode;
   ##                                   : <p>Indicates whether newly launched instances are protected from termination by Amazon EC2 Auto Scaling when scaling in.</p> <p>For more information about preventing instances from terminating on scale in, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection">Instance Protection</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ##   MaxInstanceLifetime: JInt
-  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>Valid Range: Minimum value of 604800.</p>
+  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>For more information, see <a 
+  ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-max-instance-lifetime.html">Replacing Auto Scaling Instances Based on Maximum Instance Lifetime</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p> <p>Valid Range: Minimum value of 604800.</p>
   ##   TargetGroupARNs: JArray
   ##                  : <p>The Amazon Resource Names (ARN) of the target groups to associate with the Auto Scaling group. Instances are registered as targets in a target group, and traffic is routed to the target group.</p> <p>For more information, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html">Using a Load Balancer with an Auto Scaling Group</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
@@ -2203,7 +2204,8 @@ proc call*(call_611545: Call_PostCreateAutoScalingGroup_611507;
   ##                                   : <p>Indicates whether newly launched instances are protected from termination by Amazon EC2 Auto Scaling when scaling in.</p> <p>For more information about preventing instances from terminating on scale in, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection">Instance Protection</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ##   MaxInstanceLifetime: int
-  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>Valid Range: Minimum value of 604800.</p>
+  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>For more information, see <a 
+  ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-max-instance-lifetime.html">Replacing Auto Scaling Instances Based on Maximum Instance Lifetime</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p> <p>Valid Range: Minimum value of 604800.</p>
   ##   TargetGroupARNs: JArray
   ##                  : <p>The Amazon Resource Names (ARN) of the target groups to associate with the Auto Scaling group. Instances are registered as targets in a target group, and traffic is routed to the target group.</p> <p>For more information, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/autoscaling-load-balancer.html">Using a Load Balancer with an Auto Scaling Group</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
@@ -2386,7 +2388,8 @@ proc validate_GetCreateAutoScalingGroup_611468(path: JsonNode; query: JsonNode;
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-template.html">Creating a Launch Template for an Auto Scaling Group</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## The version number, <code>$Latest</code>, or <code>$Default</code>. If the value is <code>$Latest</code>, Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is <code>$Default</code>, Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is <code>$Default</code>.
   ##   MaxInstanceLifetime: JInt
-  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>Valid Range: Minimum value of 604800.</p>
+  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>For more information, see <a 
+  ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-max-instance-lifetime.html">Replacing Auto Scaling Instances Based on Maximum Instance Lifetime</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p> <p>Valid Range: Minimum value of 604800.</p>
   ##   Version: JString (required)
   ##   VPCZoneIdentifier: JString
   ##                    : <p>A comma-separated list of subnet IDs for your virtual private cloud (VPC).</p> <p>If you specify <code>VPCZoneIdentifier</code> with <code>AvailabilityZones</code>, the subnets that you specify for this parameter must reside in those Availability Zones.</p> <p>Conditional: If your account supports EC2-Classic and VPC, this parameter is required to launch instances into a VPC.</p>
@@ -2671,7 +2674,8 @@ proc call*(call_611505: Call_GetCreateAutoScalingGroup_611467; MaxSize: int;
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-template.html">Creating a Launch Template for an Auto Scaling Group</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## The version number, <code>$Latest</code>, or <code>$Default</code>. If the value is <code>$Latest</code>, Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is <code>$Default</code>, Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is <code>$Default</code>.
   ##   MaxInstanceLifetime: int
-  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>Valid Range: Minimum value of 604800.</p>
+  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>For more information, see <a 
+  ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-max-instance-lifetime.html">Replacing Auto Scaling Instances Based on Maximum Instance Lifetime</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p> <p>Valid Range: Minimum value of 604800.</p>
   ##   Version: string (required)
   ##   VPCZoneIdentifier: string
   ##                    : <p>A comma-separated list of subnet IDs for your virtual private cloud (VPC).</p> <p>If you specify <code>VPCZoneIdentifier</code> with <code>AvailabilityZones</code>, the subnets that you specify for this parameter must reside in those Availability Zones.</p> <p>Conditional: If your account supports EC2-Classic and VPC, this parameter is required to launch instances into a VPC.</p>
@@ -13651,8 +13655,8 @@ var getPutNotificationConfiguration* = Call_GetPutNotificationConfiguration_6128
     url: url_GetPutNotificationConfiguration_612857,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostPutScalingPolicy_612922 = ref object of OpenApiRestCall_610658
-proc url_PostPutScalingPolicy_612924(protocol: Scheme; host: string; base: string;
+  Call_PostPutScalingPolicy_612923 = ref object of OpenApiRestCall_610658
+proc url_PostPutScalingPolicy_612925(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -13662,7 +13666,7 @@ proc url_PostPutScalingPolicy_612924(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_PostPutScalingPolicy_612923(path: JsonNode; query: JsonNode;
+proc validate_PostPutScalingPolicy_612924(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates or updates a scaling policy for an Auto Scaling group. To update an existing scaling policy, use the existing policy name and set the parameters to change. Any existing parameter not changed in an update to an existing policy is not changed in this update request.</p> <p>For more information about using scaling policies to scale your Auto Scaling group automatically, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scale-based-on-demand.html">Dynamic Scaling</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -13674,16 +13678,16 @@ proc validate_PostPutScalingPolicy_612923(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_612925 = query.getOrDefault("Action")
-  valid_612925 = validateParameter(valid_612925, JString, required = true,
-                                 default = newJString("PutScalingPolicy"))
-  if valid_612925 != nil:
-    section.add "Action", valid_612925
-  var valid_612926 = query.getOrDefault("Version")
+  var valid_612926 = query.getOrDefault("Action")
   valid_612926 = validateParameter(valid_612926, JString, required = true,
-                                 default = newJString("2011-01-01"))
+                                 default = newJString("PutScalingPolicy"))
   if valid_612926 != nil:
-    section.add "Version", valid_612926
+    section.add "Action", valid_612926
+  var valid_612927 = query.getOrDefault("Version")
+  valid_612927 = validateParameter(valid_612927, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_612927 != nil:
+    section.add "Version", valid_612927
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -13694,41 +13698,41 @@ proc validate_PostPutScalingPolicy_612923(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_612927 = header.getOrDefault("X-Amz-Signature")
-  valid_612927 = validateParameter(valid_612927, JString, required = false,
-                                 default = nil)
-  if valid_612927 != nil:
-    section.add "X-Amz-Signature", valid_612927
-  var valid_612928 = header.getOrDefault("X-Amz-Content-Sha256")
+  var valid_612928 = header.getOrDefault("X-Amz-Signature")
   valid_612928 = validateParameter(valid_612928, JString, required = false,
                                  default = nil)
   if valid_612928 != nil:
-    section.add "X-Amz-Content-Sha256", valid_612928
-  var valid_612929 = header.getOrDefault("X-Amz-Date")
+    section.add "X-Amz-Signature", valid_612928
+  var valid_612929 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_612929 = validateParameter(valid_612929, JString, required = false,
                                  default = nil)
   if valid_612929 != nil:
-    section.add "X-Amz-Date", valid_612929
-  var valid_612930 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Content-Sha256", valid_612929
+  var valid_612930 = header.getOrDefault("X-Amz-Date")
   valid_612930 = validateParameter(valid_612930, JString, required = false,
                                  default = nil)
   if valid_612930 != nil:
-    section.add "X-Amz-Credential", valid_612930
-  var valid_612931 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Date", valid_612930
+  var valid_612931 = header.getOrDefault("X-Amz-Credential")
   valid_612931 = validateParameter(valid_612931, JString, required = false,
                                  default = nil)
   if valid_612931 != nil:
-    section.add "X-Amz-Security-Token", valid_612931
-  var valid_612932 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Credential", valid_612931
+  var valid_612932 = header.getOrDefault("X-Amz-Security-Token")
   valid_612932 = validateParameter(valid_612932, JString, required = false,
                                  default = nil)
   if valid_612932 != nil:
-    section.add "X-Amz-Algorithm", valid_612932
-  var valid_612933 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Security-Token", valid_612932
+  var valid_612933 = header.getOrDefault("X-Amz-Algorithm")
   valid_612933 = validateParameter(valid_612933, JString, required = false,
                                  default = nil)
   if valid_612933 != nil:
-    section.add "X-Amz-SignedHeaders", valid_612933
+    section.add "X-Amz-Algorithm", valid_612933
+  var valid_612934 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612934 = validateParameter(valid_612934, JString, required = false,
+                                 default = nil)
+  if valid_612934 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612934
   result.add "header", section
   ## parameters in `formData` object:
   ##   AutoScalingGroupName: JString (required)
@@ -13738,6 +13742,7 @@ proc validate_PostPutScalingPolicy_612923(path: JsonNode; query: JsonNode;
   ##   TargetTrackingConfiguration.DisableScaleIn: JString
   ##                                             : Represents a target tracking scaling policy configuration to use with Amazon EC2 Auto Scaling.
   ## Indicates whether scaling in by the target tracking scaling policy is disabled. If scaling in is disabled, the target tracking scaling policy doesn't remove instances from the Auto Scaling group. Otherwise, the target tracking scaling policy can remove instances from the Auto Scaling group. The default is <code>false</code>.
+  ##   Enabled: JBool
   ##   PolicyType: JString
   ##             : The policy type. The valid values are <code>SimpleScaling</code>, <code>StepScaling</code>, and <code>TargetTrackingScaling</code>. If the policy type is null, the value is treated as <code>SimpleScaling</code>.
   ##   ScalingAdjustment: JInt
@@ -13769,98 +13774,102 @@ proc validate_PostPutScalingPolicy_612923(path: JsonNode; query: JsonNode;
   ##                        : <p>The aggregation type for the CloudWatch metrics. The valid values are <code>Minimum</code>, <code>Maximum</code>, and <code>Average</code>. If the aggregation type is null, the value is treated as <code>Average</code>.</p> <p>Valid only if the policy type is <code>StepScaling</code>.</p>
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_612934 = formData.getOrDefault("AutoScalingGroupName")
-  valid_612934 = validateParameter(valid_612934, JString, required = true,
-                                 default = nil)
-  if valid_612934 != nil:
-    section.add "AutoScalingGroupName", valid_612934
-  var valid_612935 = formData.getOrDefault("StepAdjustments")
-  valid_612935 = validateParameter(valid_612935, JArray, required = false,
+  var valid_612935 = formData.getOrDefault("AutoScalingGroupName")
+  valid_612935 = validateParameter(valid_612935, JString, required = true,
                                  default = nil)
   if valid_612935 != nil:
-    section.add "StepAdjustments", valid_612935
-  var valid_612936 = formData.getOrDefault("TargetTrackingConfiguration.DisableScaleIn")
-  valid_612936 = validateParameter(valid_612936, JString, required = false,
+    section.add "AutoScalingGroupName", valid_612935
+  var valid_612936 = formData.getOrDefault("StepAdjustments")
+  valid_612936 = validateParameter(valid_612936, JArray, required = false,
                                  default = nil)
   if valid_612936 != nil:
-    section.add "TargetTrackingConfiguration.DisableScaleIn", valid_612936
-  var valid_612937 = formData.getOrDefault("PolicyType")
+    section.add "StepAdjustments", valid_612936
+  var valid_612937 = formData.getOrDefault("TargetTrackingConfiguration.DisableScaleIn")
   valid_612937 = validateParameter(valid_612937, JString, required = false,
                                  default = nil)
   if valid_612937 != nil:
-    section.add "PolicyType", valid_612937
-  var valid_612938 = formData.getOrDefault("ScalingAdjustment")
-  valid_612938 = validateParameter(valid_612938, JInt, required = false, default = nil)
+    section.add "TargetTrackingConfiguration.DisableScaleIn", valid_612937
+  var valid_612938 = formData.getOrDefault("Enabled")
+  valid_612938 = validateParameter(valid_612938, JBool, required = false, default = nil)
   if valid_612938 != nil:
-    section.add "ScalingAdjustment", valid_612938
-  var valid_612939 = formData.getOrDefault("TargetTrackingConfiguration.PredefinedMetricSpecification")
+    section.add "Enabled", valid_612938
+  var valid_612939 = formData.getOrDefault("PolicyType")
   valid_612939 = validateParameter(valid_612939, JString, required = false,
                                  default = nil)
   if valid_612939 != nil:
-    section.add "TargetTrackingConfiguration.PredefinedMetricSpecification", valid_612939
-  var valid_612940 = formData.getOrDefault("TargetTrackingConfiguration.CustomizedMetricSpecification")
-  valid_612940 = validateParameter(valid_612940, JString, required = false,
-                                 default = nil)
+    section.add "PolicyType", valid_612939
+  var valid_612940 = formData.getOrDefault("ScalingAdjustment")
+  valid_612940 = validateParameter(valid_612940, JInt, required = false, default = nil)
   if valid_612940 != nil:
-    section.add "TargetTrackingConfiguration.CustomizedMetricSpecification", valid_612940
-  var valid_612941 = formData.getOrDefault("TargetTrackingConfiguration.TargetValue")
+    section.add "ScalingAdjustment", valid_612940
+  var valid_612941 = formData.getOrDefault("TargetTrackingConfiguration.PredefinedMetricSpecification")
   valid_612941 = validateParameter(valid_612941, JString, required = false,
                                  default = nil)
   if valid_612941 != nil:
-    section.add "TargetTrackingConfiguration.TargetValue", valid_612941
-  var valid_612942 = formData.getOrDefault("Cooldown")
-  valid_612942 = validateParameter(valid_612942, JInt, required = false, default = nil)
+    section.add "TargetTrackingConfiguration.PredefinedMetricSpecification", valid_612941
+  var valid_612942 = formData.getOrDefault("TargetTrackingConfiguration.CustomizedMetricSpecification")
+  valid_612942 = validateParameter(valid_612942, JString, required = false,
+                                 default = nil)
   if valid_612942 != nil:
-    section.add "Cooldown", valid_612942
-  var valid_612943 = formData.getOrDefault("MinAdjustmentStep")
-  valid_612943 = validateParameter(valid_612943, JInt, required = false, default = nil)
+    section.add "TargetTrackingConfiguration.CustomizedMetricSpecification", valid_612942
+  var valid_612943 = formData.getOrDefault("TargetTrackingConfiguration.TargetValue")
+  valid_612943 = validateParameter(valid_612943, JString, required = false,
+                                 default = nil)
   if valid_612943 != nil:
-    section.add "MinAdjustmentStep", valid_612943
-  var valid_612944 = formData.getOrDefault("AdjustmentType")
-  valid_612944 = validateParameter(valid_612944, JString, required = false,
-                                 default = nil)
+    section.add "TargetTrackingConfiguration.TargetValue", valid_612943
+  var valid_612944 = formData.getOrDefault("Cooldown")
+  valid_612944 = validateParameter(valid_612944, JInt, required = false, default = nil)
   if valid_612944 != nil:
-    section.add "AdjustmentType", valid_612944
-  var valid_612945 = formData.getOrDefault("PolicyName")
-  valid_612945 = validateParameter(valid_612945, JString, required = true,
-                                 default = nil)
+    section.add "Cooldown", valid_612944
+  var valid_612945 = formData.getOrDefault("MinAdjustmentStep")
+  valid_612945 = validateParameter(valid_612945, JInt, required = false, default = nil)
   if valid_612945 != nil:
-    section.add "PolicyName", valid_612945
-  var valid_612946 = formData.getOrDefault("MinAdjustmentMagnitude")
-  valid_612946 = validateParameter(valid_612946, JInt, required = false, default = nil)
-  if valid_612946 != nil:
-    section.add "MinAdjustmentMagnitude", valid_612946
-  var valid_612947 = formData.getOrDefault("EstimatedInstanceWarmup")
-  valid_612947 = validateParameter(valid_612947, JInt, required = false, default = nil)
-  if valid_612947 != nil:
-    section.add "EstimatedInstanceWarmup", valid_612947
-  var valid_612948 = formData.getOrDefault("MetricAggregationType")
-  valid_612948 = validateParameter(valid_612948, JString, required = false,
+    section.add "MinAdjustmentStep", valid_612945
+  var valid_612946 = formData.getOrDefault("AdjustmentType")
+  valid_612946 = validateParameter(valid_612946, JString, required = false,
                                  default = nil)
+  if valid_612946 != nil:
+    section.add "AdjustmentType", valid_612946
+  var valid_612947 = formData.getOrDefault("PolicyName")
+  valid_612947 = validateParameter(valid_612947, JString, required = true,
+                                 default = nil)
+  if valid_612947 != nil:
+    section.add "PolicyName", valid_612947
+  var valid_612948 = formData.getOrDefault("MinAdjustmentMagnitude")
+  valid_612948 = validateParameter(valid_612948, JInt, required = false, default = nil)
   if valid_612948 != nil:
-    section.add "MetricAggregationType", valid_612948
+    section.add "MinAdjustmentMagnitude", valid_612948
+  var valid_612949 = formData.getOrDefault("EstimatedInstanceWarmup")
+  valid_612949 = validateParameter(valid_612949, JInt, required = false, default = nil)
+  if valid_612949 != nil:
+    section.add "EstimatedInstanceWarmup", valid_612949
+  var valid_612950 = formData.getOrDefault("MetricAggregationType")
+  valid_612950 = validateParameter(valid_612950, JString, required = false,
+                                 default = nil)
+  if valid_612950 != nil:
+    section.add "MetricAggregationType", valid_612950
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_612949: Call_PostPutScalingPolicy_612922; path: JsonNode;
+proc call*(call_612951: Call_PostPutScalingPolicy_612923; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates or updates a scaling policy for an Auto Scaling group. To update an existing scaling policy, use the existing policy name and set the parameters to change. Any existing parameter not changed in an update to an existing policy is not changed in this update request.</p> <p>For more information about using scaling policies to scale your Auto Scaling group automatically, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scale-based-on-demand.html">Dynamic Scaling</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_612949.validator(path, query, header, formData, body)
-  let scheme = call_612949.pickScheme
+  let valid = call_612951.validator(path, query, header, formData, body)
+  let scheme = call_612951.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_612949.url(scheme.get, call_612949.host, call_612949.base,
-                         call_612949.route, valid.getOrDefault("path"),
+  let url = call_612951.url(scheme.get, call_612951.host, call_612951.base,
+                         call_612951.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_612949, url, valid)
+  result = atozHook(call_612951, url, valid)
 
-proc call*(call_612950: Call_PostPutScalingPolicy_612922;
+proc call*(call_612952: Call_PostPutScalingPolicy_612923;
           AutoScalingGroupName: string; PolicyName: string;
           StepAdjustments: JsonNode = nil;
           TargetTrackingConfigurationDisableScaleIn: string = "";
-          PolicyType: string = ""; ScalingAdjustment: int = 0;
+          Enabled: bool = false; PolicyType: string = ""; ScalingAdjustment: int = 0;
     TargetTrackingConfigurationPredefinedMetricSpecification: string = "";
     TargetTrackingConfigurationCustomizedMetricSpecification: string = "";
           TargetTrackingConfigurationTargetValue: string = ""; Cooldown: int = 0;
@@ -13877,6 +13886,7 @@ proc call*(call_612950: Call_PostPutScalingPolicy_612922;
   ##   TargetTrackingConfigurationDisableScaleIn: string
   ##                                            : Represents a target tracking scaling policy configuration to use with Amazon EC2 Auto Scaling.
   ## Indicates whether scaling in by the target tracking scaling policy is disabled. If scaling in is disabled, the target tracking scaling policy doesn't remove instances from the Auto Scaling group. Otherwise, the target tracking scaling policy can remove instances from the Auto Scaling group. The default is <code>false</code>.
+  ##   Enabled: bool
   ##   PolicyType: string
   ##             : The policy type. The valid values are <code>SimpleScaling</code>, <code>StepScaling</code>, and <code>TargetTrackingScaling</code>. If the policy type is null, the value is treated as <code>SimpleScaling</code>.
   ##   ScalingAdjustment: int
@@ -13908,39 +13918,40 @@ proc call*(call_612950: Call_PostPutScalingPolicy_612922;
   ##                          : <p>The estimated time, in seconds, until a newly launched instance can contribute to the CloudWatch metrics. The default is to use the value specified for the default cooldown period for the group.</p> <p>Valid only if the policy type is <code>StepScaling</code> or <code>TargetTrackingScaling</code>.</p>
   ##   MetricAggregationType: string
   ##                        : <p>The aggregation type for the CloudWatch metrics. The valid values are <code>Minimum</code>, <code>Maximum</code>, and <code>Average</code>. If the aggregation type is null, the value is treated as <code>Average</code>.</p> <p>Valid only if the policy type is <code>StepScaling</code>.</p>
-  var query_612951 = newJObject()
-  var formData_612952 = newJObject()
-  add(formData_612952, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  var query_612953 = newJObject()
+  var formData_612954 = newJObject()
+  add(formData_612954, "AutoScalingGroupName", newJString(AutoScalingGroupName))
   if StepAdjustments != nil:
-    formData_612952.add "StepAdjustments", StepAdjustments
-  add(formData_612952, "TargetTrackingConfiguration.DisableScaleIn",
+    formData_612954.add "StepAdjustments", StepAdjustments
+  add(formData_612954, "TargetTrackingConfiguration.DisableScaleIn",
       newJString(TargetTrackingConfigurationDisableScaleIn))
-  add(formData_612952, "PolicyType", newJString(PolicyType))
-  add(formData_612952, "ScalingAdjustment", newJInt(ScalingAdjustment))
-  add(formData_612952,
+  add(formData_612954, "Enabled", newJBool(Enabled))
+  add(formData_612954, "PolicyType", newJString(PolicyType))
+  add(formData_612954, "ScalingAdjustment", newJInt(ScalingAdjustment))
+  add(formData_612954,
       "TargetTrackingConfiguration.PredefinedMetricSpecification",
       newJString(TargetTrackingConfigurationPredefinedMetricSpecification))
-  add(formData_612952,
+  add(formData_612954,
       "TargetTrackingConfiguration.CustomizedMetricSpecification",
       newJString(TargetTrackingConfigurationCustomizedMetricSpecification))
-  add(formData_612952, "TargetTrackingConfiguration.TargetValue",
+  add(formData_612954, "TargetTrackingConfiguration.TargetValue",
       newJString(TargetTrackingConfigurationTargetValue))
-  add(formData_612952, "Cooldown", newJInt(Cooldown))
-  add(query_612951, "Action", newJString(Action))
-  add(formData_612952, "MinAdjustmentStep", newJInt(MinAdjustmentStep))
-  add(formData_612952, "AdjustmentType", newJString(AdjustmentType))
-  add(query_612951, "Version", newJString(Version))
-  add(formData_612952, "PolicyName", newJString(PolicyName))
-  add(formData_612952, "MinAdjustmentMagnitude", newJInt(MinAdjustmentMagnitude))
-  add(formData_612952, "EstimatedInstanceWarmup", newJInt(EstimatedInstanceWarmup))
-  add(formData_612952, "MetricAggregationType", newJString(MetricAggregationType))
-  result = call_612950.call(nil, query_612951, nil, formData_612952, nil)
+  add(formData_612954, "Cooldown", newJInt(Cooldown))
+  add(query_612953, "Action", newJString(Action))
+  add(formData_612954, "MinAdjustmentStep", newJInt(MinAdjustmentStep))
+  add(formData_612954, "AdjustmentType", newJString(AdjustmentType))
+  add(query_612953, "Version", newJString(Version))
+  add(formData_612954, "PolicyName", newJString(PolicyName))
+  add(formData_612954, "MinAdjustmentMagnitude", newJInt(MinAdjustmentMagnitude))
+  add(formData_612954, "EstimatedInstanceWarmup", newJInt(EstimatedInstanceWarmup))
+  add(formData_612954, "MetricAggregationType", newJString(MetricAggregationType))
+  result = call_612952.call(nil, query_612953, nil, formData_612954, nil)
 
-var postPutScalingPolicy* = Call_PostPutScalingPolicy_612922(
+var postPutScalingPolicy* = Call_PostPutScalingPolicy_612923(
     name: "postPutScalingPolicy", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#Action=PutScalingPolicy",
-    validator: validate_PostPutScalingPolicy_612923, base: "/",
-    url: url_PostPutScalingPolicy_612924, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostPutScalingPolicy_612924, base: "/",
+    url: url_PostPutScalingPolicy_612925, schemes: {Scheme.Https, Scheme.Http})
 type
   Call_GetPutScalingPolicy_612892 = ref object of OpenApiRestCall_610658
 proc url_GetPutScalingPolicy_612894(protocol: Scheme; host: string; base: string;
@@ -13985,6 +13996,7 @@ proc validate_GetPutScalingPolicy_612893(path: JsonNode; query: JsonNode;
   ##   TargetTrackingConfiguration.DisableScaleIn: JString
   ##                                             : Represents a target tracking scaling policy configuration to use with Amazon EC2 Auto Scaling.
   ## Indicates whether scaling in by the target tracking scaling policy is disabled. If scaling in is disabled, the target tracking scaling policy doesn't remove instances from the Auto Scaling group. Otherwise, the target tracking scaling policy can remove instances from the Auto Scaling group. The default is <code>false</code>.
+  ##   Enabled: JBool
   ##   ScalingAdjustment: JInt
   ##                    : <p>The amount by which a simple scaling policy scales the Auto Scaling group in response to an alarm breach. The adjustment is based on the value that you specified in the <code>AdjustmentType</code> parameter (either an absolute number or a percentage). A positive value adds to the current capacity and a negative value subtracts from the current capacity. For exact capacity, you must specify a positive value.</p> <p>Conditional: If you specify <code>SimpleScaling</code> for the policy type, you must specify this parameter. (Not used with any other policy type.) </p>
   ##   AutoScalingGroupName: JString (required)
@@ -14047,43 +14059,47 @@ proc validate_GetPutScalingPolicy_612893(path: JsonNode; query: JsonNode;
                                  default = nil)
   if valid_612903 != nil:
     section.add "TargetTrackingConfiguration.DisableScaleIn", valid_612903
-  var valid_612904 = query.getOrDefault("ScalingAdjustment")
-  valid_612904 = validateParameter(valid_612904, JInt, required = false, default = nil)
+  var valid_612904 = query.getOrDefault("Enabled")
+  valid_612904 = validateParameter(valid_612904, JBool, required = false, default = nil)
   if valid_612904 != nil:
-    section.add "ScalingAdjustment", valid_612904
-  var valid_612905 = query.getOrDefault("AutoScalingGroupName")
-  valid_612905 = validateParameter(valid_612905, JString, required = true,
-                                 default = nil)
+    section.add "Enabled", valid_612904
+  var valid_612905 = query.getOrDefault("ScalingAdjustment")
+  valid_612905 = validateParameter(valid_612905, JInt, required = false, default = nil)
   if valid_612905 != nil:
-    section.add "AutoScalingGroupName", valid_612905
-  var valid_612906 = query.getOrDefault("TargetTrackingConfiguration.TargetValue")
-  valid_612906 = validateParameter(valid_612906, JString, required = false,
+    section.add "ScalingAdjustment", valid_612905
+  var valid_612906 = query.getOrDefault("AutoScalingGroupName")
+  valid_612906 = validateParameter(valid_612906, JString, required = true,
                                  default = nil)
   if valid_612906 != nil:
-    section.add "TargetTrackingConfiguration.TargetValue", valid_612906
-  var valid_612907 = query.getOrDefault("Action")
-  valid_612907 = validateParameter(valid_612907, JString, required = true,
-                                 default = newJString("PutScalingPolicy"))
+    section.add "AutoScalingGroupName", valid_612906
+  var valid_612907 = query.getOrDefault("TargetTrackingConfiguration.TargetValue")
+  valid_612907 = validateParameter(valid_612907, JString, required = false,
+                                 default = nil)
   if valid_612907 != nil:
-    section.add "Action", valid_612907
-  var valid_612908 = query.getOrDefault("EstimatedInstanceWarmup")
-  valid_612908 = validateParameter(valid_612908, JInt, required = false, default = nil)
+    section.add "TargetTrackingConfiguration.TargetValue", valid_612907
+  var valid_612908 = query.getOrDefault("Action")
+  valid_612908 = validateParameter(valid_612908, JString, required = true,
+                                 default = newJString("PutScalingPolicy"))
   if valid_612908 != nil:
-    section.add "EstimatedInstanceWarmup", valid_612908
-  var valid_612909 = query.getOrDefault("MinAdjustmentStep")
+    section.add "Action", valid_612908
+  var valid_612909 = query.getOrDefault("EstimatedInstanceWarmup")
   valid_612909 = validateParameter(valid_612909, JInt, required = false, default = nil)
   if valid_612909 != nil:
-    section.add "MinAdjustmentStep", valid_612909
-  var valid_612910 = query.getOrDefault("Version")
-  valid_612910 = validateParameter(valid_612910, JString, required = true,
-                                 default = newJString("2011-01-01"))
+    section.add "EstimatedInstanceWarmup", valid_612909
+  var valid_612910 = query.getOrDefault("MinAdjustmentStep")
+  valid_612910 = validateParameter(valid_612910, JInt, required = false, default = nil)
   if valid_612910 != nil:
-    section.add "Version", valid_612910
-  var valid_612911 = query.getOrDefault("TargetTrackingConfiguration.PredefinedMetricSpecification")
-  valid_612911 = validateParameter(valid_612911, JString, required = false,
-                                 default = nil)
+    section.add "MinAdjustmentStep", valid_612910
+  var valid_612911 = query.getOrDefault("Version")
+  valid_612911 = validateParameter(valid_612911, JString, required = true,
+                                 default = newJString("2011-01-01"))
   if valid_612911 != nil:
-    section.add "TargetTrackingConfiguration.PredefinedMetricSpecification", valid_612911
+    section.add "Version", valid_612911
+  var valid_612912 = query.getOrDefault("TargetTrackingConfiguration.PredefinedMetricSpecification")
+  valid_612912 = validateParameter(valid_612912, JString, required = false,
+                                 default = nil)
+  if valid_612912 != nil:
+    section.add "TargetTrackingConfiguration.PredefinedMetricSpecification", valid_612912
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -14094,67 +14110,67 @@ proc validate_GetPutScalingPolicy_612893(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_612912 = header.getOrDefault("X-Amz-Signature")
-  valid_612912 = validateParameter(valid_612912, JString, required = false,
-                                 default = nil)
-  if valid_612912 != nil:
-    section.add "X-Amz-Signature", valid_612912
-  var valid_612913 = header.getOrDefault("X-Amz-Content-Sha256")
+  var valid_612913 = header.getOrDefault("X-Amz-Signature")
   valid_612913 = validateParameter(valid_612913, JString, required = false,
                                  default = nil)
   if valid_612913 != nil:
-    section.add "X-Amz-Content-Sha256", valid_612913
-  var valid_612914 = header.getOrDefault("X-Amz-Date")
+    section.add "X-Amz-Signature", valid_612913
+  var valid_612914 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_612914 = validateParameter(valid_612914, JString, required = false,
                                  default = nil)
   if valid_612914 != nil:
-    section.add "X-Amz-Date", valid_612914
-  var valid_612915 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Content-Sha256", valid_612914
+  var valid_612915 = header.getOrDefault("X-Amz-Date")
   valid_612915 = validateParameter(valid_612915, JString, required = false,
                                  default = nil)
   if valid_612915 != nil:
-    section.add "X-Amz-Credential", valid_612915
-  var valid_612916 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Date", valid_612915
+  var valid_612916 = header.getOrDefault("X-Amz-Credential")
   valid_612916 = validateParameter(valid_612916, JString, required = false,
                                  default = nil)
   if valid_612916 != nil:
-    section.add "X-Amz-Security-Token", valid_612916
-  var valid_612917 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Credential", valid_612916
+  var valid_612917 = header.getOrDefault("X-Amz-Security-Token")
   valid_612917 = validateParameter(valid_612917, JString, required = false,
                                  default = nil)
   if valid_612917 != nil:
-    section.add "X-Amz-Algorithm", valid_612917
-  var valid_612918 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Security-Token", valid_612917
+  var valid_612918 = header.getOrDefault("X-Amz-Algorithm")
   valid_612918 = validateParameter(valid_612918, JString, required = false,
                                  default = nil)
   if valid_612918 != nil:
-    section.add "X-Amz-SignedHeaders", valid_612918
+    section.add "X-Amz-Algorithm", valid_612918
+  var valid_612919 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612919 = validateParameter(valid_612919, JString, required = false,
+                                 default = nil)
+  if valid_612919 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612919
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_612919: Call_GetPutScalingPolicy_612892; path: JsonNode;
+proc call*(call_612920: Call_GetPutScalingPolicy_612892; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Creates or updates a scaling policy for an Auto Scaling group. To update an existing scaling policy, use the existing policy name and set the parameters to change. Any existing parameter not changed in an update to an existing policy is not changed in this update request.</p> <p>For more information about using scaling policies to scale your Auto Scaling group automatically, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-scale-based-on-demand.html">Dynamic Scaling</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_612919.validator(path, query, header, formData, body)
-  let scheme = call_612919.pickScheme
+  let valid = call_612920.validator(path, query, header, formData, body)
+  let scheme = call_612920.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_612919.url(scheme.get, call_612919.host, call_612919.base,
-                         call_612919.route, valid.getOrDefault("path"),
+  let url = call_612920.url(scheme.get, call_612920.host, call_612920.base,
+                         call_612920.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_612919, url, valid)
+  result = atozHook(call_612920, url, valid)
 
-proc call*(call_612920: Call_GetPutScalingPolicy_612892; PolicyName: string;
+proc call*(call_612921: Call_GetPutScalingPolicy_612892; PolicyName: string;
           AutoScalingGroupName: string; PolicyType: string = "";
           MinAdjustmentMagnitude: int = 0; StepAdjustments: JsonNode = nil;
           AdjustmentType: string = ""; TargetTrackingConfigurationCustomizedMetricSpecification: string = "";
           Cooldown: int = 0; MetricAggregationType: string = "";
           TargetTrackingConfigurationDisableScaleIn: string = "";
-          ScalingAdjustment: int = 0;
+          Enabled: bool = false; ScalingAdjustment: int = 0;
           TargetTrackingConfigurationTargetValue: string = "";
           Action: string = "PutScalingPolicy"; EstimatedInstanceWarmup: int = 0;
           MinAdjustmentStep: int = 0; Version: string = "2011-01-01";
@@ -14183,6 +14199,7 @@ proc call*(call_612920: Call_GetPutScalingPolicy_612892; PolicyName: string;
   ##   TargetTrackingConfigurationDisableScaleIn: string
   ##                                            : Represents a target tracking scaling policy configuration to use with Amazon EC2 Auto Scaling.
   ## Indicates whether scaling in by the target tracking scaling policy is disabled. If scaling in is disabled, the target tracking scaling policy doesn't remove instances from the Auto Scaling group. Otherwise, the target tracking scaling policy can remove instances from the Auto Scaling group. The default is <code>false</code>.
+  ##   Enabled: bool
   ##   ScalingAdjustment: int
   ##                    : <p>The amount by which a simple scaling policy scales the Auto Scaling group in response to an alarm breach. The adjustment is based on the value that you specified in the <code>AdjustmentType</code> parameter (either an absolute number or a percentage). A positive value adds to the current capacity and a negative value subtracts from the current capacity. For exact capacity, you must specify a positive value.</p> <p>Conditional: If you specify <code>SimpleScaling</code> for the policy type, you must specify this parameter. (Not used with any other policy type.) </p>
   ##   AutoScalingGroupName: string (required)
@@ -14199,30 +14216,31 @@ proc call*(call_612920: Call_GetPutScalingPolicy_612892; PolicyName: string;
   ##   TargetTrackingConfigurationPredefinedMetricSpecification: string
   ##                                                           : Represents a target tracking scaling policy configuration to use with Amazon EC2 Auto Scaling.
   ## A predefined metric. You must specify either a predefined metric or a customized metric.
-  var query_612921 = newJObject()
-  add(query_612921, "PolicyType", newJString(PolicyType))
-  add(query_612921, "MinAdjustmentMagnitude", newJInt(MinAdjustmentMagnitude))
+  var query_612922 = newJObject()
+  add(query_612922, "PolicyType", newJString(PolicyType))
+  add(query_612922, "MinAdjustmentMagnitude", newJInt(MinAdjustmentMagnitude))
   if StepAdjustments != nil:
-    query_612921.add "StepAdjustments", StepAdjustments
-  add(query_612921, "AdjustmentType", newJString(AdjustmentType))
-  add(query_612921, "TargetTrackingConfiguration.CustomizedMetricSpecification",
+    query_612922.add "StepAdjustments", StepAdjustments
+  add(query_612922, "AdjustmentType", newJString(AdjustmentType))
+  add(query_612922, "TargetTrackingConfiguration.CustomizedMetricSpecification",
       newJString(TargetTrackingConfigurationCustomizedMetricSpecification))
-  add(query_612921, "PolicyName", newJString(PolicyName))
-  add(query_612921, "Cooldown", newJInt(Cooldown))
-  add(query_612921, "MetricAggregationType", newJString(MetricAggregationType))
-  add(query_612921, "TargetTrackingConfiguration.DisableScaleIn",
+  add(query_612922, "PolicyName", newJString(PolicyName))
+  add(query_612922, "Cooldown", newJInt(Cooldown))
+  add(query_612922, "MetricAggregationType", newJString(MetricAggregationType))
+  add(query_612922, "TargetTrackingConfiguration.DisableScaleIn",
       newJString(TargetTrackingConfigurationDisableScaleIn))
-  add(query_612921, "ScalingAdjustment", newJInt(ScalingAdjustment))
-  add(query_612921, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_612921, "TargetTrackingConfiguration.TargetValue",
+  add(query_612922, "Enabled", newJBool(Enabled))
+  add(query_612922, "ScalingAdjustment", newJInt(ScalingAdjustment))
+  add(query_612922, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_612922, "TargetTrackingConfiguration.TargetValue",
       newJString(TargetTrackingConfigurationTargetValue))
-  add(query_612921, "Action", newJString(Action))
-  add(query_612921, "EstimatedInstanceWarmup", newJInt(EstimatedInstanceWarmup))
-  add(query_612921, "MinAdjustmentStep", newJInt(MinAdjustmentStep))
-  add(query_612921, "Version", newJString(Version))
-  add(query_612921, "TargetTrackingConfiguration.PredefinedMetricSpecification",
+  add(query_612922, "Action", newJString(Action))
+  add(query_612922, "EstimatedInstanceWarmup", newJInt(EstimatedInstanceWarmup))
+  add(query_612922, "MinAdjustmentStep", newJInt(MinAdjustmentStep))
+  add(query_612922, "Version", newJString(Version))
+  add(query_612922, "TargetTrackingConfiguration.PredefinedMetricSpecification",
       newJString(TargetTrackingConfigurationPredefinedMetricSpecification))
-  result = call_612920.call(nil, query_612921, nil, nil, nil)
+  result = call_612921.call(nil, query_612922, nil, nil, nil)
 
 var getPutScalingPolicy* = Call_GetPutScalingPolicy_612892(
     name: "getPutScalingPolicy", meth: HttpMethod.HttpGet,
@@ -14230,8 +14248,8 @@ var getPutScalingPolicy* = Call_GetPutScalingPolicy_612892(
     validator: validate_GetPutScalingPolicy_612893, base: "/",
     url: url_GetPutScalingPolicy_612894, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostPutScheduledUpdateGroupAction_612977 = ref object of OpenApiRestCall_610658
-proc url_PostPutScheduledUpdateGroupAction_612979(protocol: Scheme; host: string;
+  Call_PostPutScheduledUpdateGroupAction_612979 = ref object of OpenApiRestCall_610658
+proc url_PostPutScheduledUpdateGroupAction_612981(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -14241,7 +14259,7 @@ proc url_PostPutScheduledUpdateGroupAction_612979(protocol: Scheme; host: string
   else:
     result.path = base & route
 
-proc validate_PostPutScheduledUpdateGroupAction_612978(path: JsonNode;
+proc validate_PostPutScheduledUpdateGroupAction_612980(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates or updates a scheduled scaling action for an Auto Scaling group. If you leave a parameter unspecified when updating a scheduled scaling action, the corresponding value remains unchanged.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html">Scheduled Scaling</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -14253,16 +14271,16 @@ proc validate_PostPutScheduledUpdateGroupAction_612978(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_612980 = query.getOrDefault("Action")
-  valid_612980 = validateParameter(valid_612980, JString, required = true, default = newJString(
+  var valid_612982 = query.getOrDefault("Action")
+  valid_612982 = validateParameter(valid_612982, JString, required = true, default = newJString(
       "PutScheduledUpdateGroupAction"))
-  if valid_612980 != nil:
-    section.add "Action", valid_612980
-  var valid_612981 = query.getOrDefault("Version")
-  valid_612981 = validateParameter(valid_612981, JString, required = true,
+  if valid_612982 != nil:
+    section.add "Action", valid_612982
+  var valid_612983 = query.getOrDefault("Version")
+  valid_612983 = validateParameter(valid_612983, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_612981 != nil:
-    section.add "Version", valid_612981
+  if valid_612983 != nil:
+    section.add "Version", valid_612983
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -14273,41 +14291,41 @@ proc validate_PostPutScheduledUpdateGroupAction_612978(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_612982 = header.getOrDefault("X-Amz-Signature")
-  valid_612982 = validateParameter(valid_612982, JString, required = false,
-                                 default = nil)
-  if valid_612982 != nil:
-    section.add "X-Amz-Signature", valid_612982
-  var valid_612983 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_612983 = validateParameter(valid_612983, JString, required = false,
-                                 default = nil)
-  if valid_612983 != nil:
-    section.add "X-Amz-Content-Sha256", valid_612983
-  var valid_612984 = header.getOrDefault("X-Amz-Date")
+  var valid_612984 = header.getOrDefault("X-Amz-Signature")
   valid_612984 = validateParameter(valid_612984, JString, required = false,
                                  default = nil)
   if valid_612984 != nil:
-    section.add "X-Amz-Date", valid_612984
-  var valid_612985 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_612984
+  var valid_612985 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_612985 = validateParameter(valid_612985, JString, required = false,
                                  default = nil)
   if valid_612985 != nil:
-    section.add "X-Amz-Credential", valid_612985
-  var valid_612986 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_612985
+  var valid_612986 = header.getOrDefault("X-Amz-Date")
   valid_612986 = validateParameter(valid_612986, JString, required = false,
                                  default = nil)
   if valid_612986 != nil:
-    section.add "X-Amz-Security-Token", valid_612986
-  var valid_612987 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_612986
+  var valid_612987 = header.getOrDefault("X-Amz-Credential")
   valid_612987 = validateParameter(valid_612987, JString, required = false,
                                  default = nil)
   if valid_612987 != nil:
-    section.add "X-Amz-Algorithm", valid_612987
-  var valid_612988 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_612987
+  var valid_612988 = header.getOrDefault("X-Amz-Security-Token")
   valid_612988 = validateParameter(valid_612988, JString, required = false,
                                  default = nil)
   if valid_612988 != nil:
-    section.add "X-Amz-SignedHeaders", valid_612988
+    section.add "X-Amz-Security-Token", valid_612988
+  var valid_612989 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612989 = validateParameter(valid_612989, JString, required = false,
+                                 default = nil)
+  if valid_612989 != nil:
+    section.add "X-Amz-Algorithm", valid_612989
+  var valid_612990 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612990 = validateParameter(valid_612990, JString, required = false,
+                                 default = nil)
+  if valid_612990 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612990
   result.add "header", section
   ## parameters in `formData` object:
   ##   AutoScalingGroupName: JString (required)
@@ -14330,67 +14348,67 @@ proc validate_PostPutScheduledUpdateGroupAction_612978(path: JsonNode;
   ##          : The maximum number of instances in the Auto Scaling group.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_612989 = formData.getOrDefault("AutoScalingGroupName")
-  valid_612989 = validateParameter(valid_612989, JString, required = true,
+  var valid_612991 = formData.getOrDefault("AutoScalingGroupName")
+  valid_612991 = validateParameter(valid_612991, JString, required = true,
                                  default = nil)
-  if valid_612989 != nil:
-    section.add "AutoScalingGroupName", valid_612989
-  var valid_612990 = formData.getOrDefault("MinSize")
-  valid_612990 = validateParameter(valid_612990, JInt, required = false, default = nil)
-  if valid_612990 != nil:
-    section.add "MinSize", valid_612990
-  var valid_612991 = formData.getOrDefault("DesiredCapacity")
-  valid_612991 = validateParameter(valid_612991, JInt, required = false, default = nil)
   if valid_612991 != nil:
-    section.add "DesiredCapacity", valid_612991
-  var valid_612992 = formData.getOrDefault("ScheduledActionName")
-  valid_612992 = validateParameter(valid_612992, JString, required = true,
-                                 default = nil)
+    section.add "AutoScalingGroupName", valid_612991
+  var valid_612992 = formData.getOrDefault("MinSize")
+  valid_612992 = validateParameter(valid_612992, JInt, required = false, default = nil)
   if valid_612992 != nil:
-    section.add "ScheduledActionName", valid_612992
-  var valid_612993 = formData.getOrDefault("Recurrence")
-  valid_612993 = validateParameter(valid_612993, JString, required = false,
-                                 default = nil)
+    section.add "MinSize", valid_612992
+  var valid_612993 = formData.getOrDefault("DesiredCapacity")
+  valid_612993 = validateParameter(valid_612993, JInt, required = false, default = nil)
   if valid_612993 != nil:
-    section.add "Recurrence", valid_612993
-  var valid_612994 = formData.getOrDefault("EndTime")
-  valid_612994 = validateParameter(valid_612994, JString, required = false,
+    section.add "DesiredCapacity", valid_612993
+  var valid_612994 = formData.getOrDefault("ScheduledActionName")
+  valid_612994 = validateParameter(valid_612994, JString, required = true,
                                  default = nil)
   if valid_612994 != nil:
-    section.add "EndTime", valid_612994
-  var valid_612995 = formData.getOrDefault("StartTime")
+    section.add "ScheduledActionName", valid_612994
+  var valid_612995 = formData.getOrDefault("Recurrence")
   valid_612995 = validateParameter(valid_612995, JString, required = false,
                                  default = nil)
   if valid_612995 != nil:
-    section.add "StartTime", valid_612995
-  var valid_612996 = formData.getOrDefault("Time")
+    section.add "Recurrence", valid_612995
+  var valid_612996 = formData.getOrDefault("EndTime")
   valid_612996 = validateParameter(valid_612996, JString, required = false,
                                  default = nil)
   if valid_612996 != nil:
-    section.add "Time", valid_612996
-  var valid_612997 = formData.getOrDefault("MaxSize")
-  valid_612997 = validateParameter(valid_612997, JInt, required = false, default = nil)
+    section.add "EndTime", valid_612996
+  var valid_612997 = formData.getOrDefault("StartTime")
+  valid_612997 = validateParameter(valid_612997, JString, required = false,
+                                 default = nil)
   if valid_612997 != nil:
-    section.add "MaxSize", valid_612997
+    section.add "StartTime", valid_612997
+  var valid_612998 = formData.getOrDefault("Time")
+  valid_612998 = validateParameter(valid_612998, JString, required = false,
+                                 default = nil)
+  if valid_612998 != nil:
+    section.add "Time", valid_612998
+  var valid_612999 = formData.getOrDefault("MaxSize")
+  valid_612999 = validateParameter(valid_612999, JInt, required = false, default = nil)
+  if valid_612999 != nil:
+    section.add "MaxSize", valid_612999
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_612998: Call_PostPutScheduledUpdateGroupAction_612977;
+proc call*(call_613000: Call_PostPutScheduledUpdateGroupAction_612979;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Creates or updates a scheduled scaling action for an Auto Scaling group. If you leave a parameter unspecified when updating a scheduled scaling action, the corresponding value remains unchanged.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html">Scheduled Scaling</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_612998.validator(path, query, header, formData, body)
-  let scheme = call_612998.pickScheme
+  let valid = call_613000.validator(path, query, header, formData, body)
+  let scheme = call_613000.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_612998.url(scheme.get, call_612998.host, call_612998.base,
-                         call_612998.route, valid.getOrDefault("path"),
+  let url = call_613000.url(scheme.get, call_613000.host, call_613000.base,
+                         call_613000.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_612998, url, valid)
+  result = atozHook(call_613000, url, valid)
 
-proc call*(call_612999: Call_PostPutScheduledUpdateGroupAction_612977;
+proc call*(call_613001: Call_PostPutScheduledUpdateGroupAction_612979;
           AutoScalingGroupName: string; ScheduledActionName: string;
           MinSize: int = 0; DesiredCapacity: int = 0; Recurrence: string = "";
           EndTime: string = ""; StartTime: string = "";
@@ -14418,31 +14436,31 @@ proc call*(call_612999: Call_PostPutScheduledUpdateGroupAction_612977;
   ##   MaxSize: int
   ##          : The maximum number of instances in the Auto Scaling group.
   ##   Version: string (required)
-  var query_613000 = newJObject()
-  var formData_613001 = newJObject()
-  add(formData_613001, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(formData_613001, "MinSize", newJInt(MinSize))
-  add(formData_613001, "DesiredCapacity", newJInt(DesiredCapacity))
-  add(formData_613001, "ScheduledActionName", newJString(ScheduledActionName))
-  add(formData_613001, "Recurrence", newJString(Recurrence))
-  add(formData_613001, "EndTime", newJString(EndTime))
-  add(formData_613001, "StartTime", newJString(StartTime))
-  add(query_613000, "Action", newJString(Action))
-  add(formData_613001, "Time", newJString(Time))
-  add(formData_613001, "MaxSize", newJInt(MaxSize))
-  add(query_613000, "Version", newJString(Version))
-  result = call_612999.call(nil, query_613000, nil, formData_613001, nil)
+  var query_613002 = newJObject()
+  var formData_613003 = newJObject()
+  add(formData_613003, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(formData_613003, "MinSize", newJInt(MinSize))
+  add(formData_613003, "DesiredCapacity", newJInt(DesiredCapacity))
+  add(formData_613003, "ScheduledActionName", newJString(ScheduledActionName))
+  add(formData_613003, "Recurrence", newJString(Recurrence))
+  add(formData_613003, "EndTime", newJString(EndTime))
+  add(formData_613003, "StartTime", newJString(StartTime))
+  add(query_613002, "Action", newJString(Action))
+  add(formData_613003, "Time", newJString(Time))
+  add(formData_613003, "MaxSize", newJInt(MaxSize))
+  add(query_613002, "Version", newJString(Version))
+  result = call_613001.call(nil, query_613002, nil, formData_613003, nil)
 
-var postPutScheduledUpdateGroupAction* = Call_PostPutScheduledUpdateGroupAction_612977(
+var postPutScheduledUpdateGroupAction* = Call_PostPutScheduledUpdateGroupAction_612979(
     name: "postPutScheduledUpdateGroupAction", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com",
     route: "/#Action=PutScheduledUpdateGroupAction",
-    validator: validate_PostPutScheduledUpdateGroupAction_612978, base: "/",
-    url: url_PostPutScheduledUpdateGroupAction_612979,
+    validator: validate_PostPutScheduledUpdateGroupAction_612980, base: "/",
+    url: url_PostPutScheduledUpdateGroupAction_612981,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetPutScheduledUpdateGroupAction_612953 = ref object of OpenApiRestCall_610658
-proc url_GetPutScheduledUpdateGroupAction_612955(protocol: Scheme; host: string;
+  Call_GetPutScheduledUpdateGroupAction_612955 = ref object of OpenApiRestCall_610658
+proc url_GetPutScheduledUpdateGroupAction_612957(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -14452,7 +14470,7 @@ proc url_GetPutScheduledUpdateGroupAction_612955(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_GetPutScheduledUpdateGroupAction_612954(path: JsonNode;
+proc validate_GetPutScheduledUpdateGroupAction_612956(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Creates or updates a scheduled scaling action for an Auto Scaling group. If you leave a parameter unspecified when updating a scheduled scaling action, the corresponding value remains unchanged.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html">Scheduled Scaling</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -14482,59 +14500,59 @@ proc validate_GetPutScheduledUpdateGroupAction_612954(path: JsonNode;
   ##   Time: JString
   ##       : This parameter is no longer used.
   section = newJObject()
-  var valid_612956 = query.getOrDefault("Recurrence")
-  valid_612956 = validateParameter(valid_612956, JString, required = false,
-                                 default = nil)
-  if valid_612956 != nil:
-    section.add "Recurrence", valid_612956
-  var valid_612957 = query.getOrDefault("MaxSize")
-  valid_612957 = validateParameter(valid_612957, JInt, required = false, default = nil)
-  if valid_612957 != nil:
-    section.add "MaxSize", valid_612957
-  assert query != nil, "query argument is necessary due to required `ScheduledActionName` field"
-  var valid_612958 = query.getOrDefault("ScheduledActionName")
-  valid_612958 = validateParameter(valid_612958, JString, required = true,
+  var valid_612958 = query.getOrDefault("Recurrence")
+  valid_612958 = validateParameter(valid_612958, JString, required = false,
                                  default = nil)
   if valid_612958 != nil:
-    section.add "ScheduledActionName", valid_612958
-  var valid_612959 = query.getOrDefault("DesiredCapacity")
+    section.add "Recurrence", valid_612958
+  var valid_612959 = query.getOrDefault("MaxSize")
   valid_612959 = validateParameter(valid_612959, JInt, required = false, default = nil)
   if valid_612959 != nil:
-    section.add "DesiredCapacity", valid_612959
-  var valid_612960 = query.getOrDefault("AutoScalingGroupName")
+    section.add "MaxSize", valid_612959
+  assert query != nil, "query argument is necessary due to required `ScheduledActionName` field"
+  var valid_612960 = query.getOrDefault("ScheduledActionName")
   valid_612960 = validateParameter(valid_612960, JString, required = true,
                                  default = nil)
   if valid_612960 != nil:
-    section.add "AutoScalingGroupName", valid_612960
-  var valid_612961 = query.getOrDefault("Action")
-  valid_612961 = validateParameter(valid_612961, JString, required = true, default = newJString(
-      "PutScheduledUpdateGroupAction"))
+    section.add "ScheduledActionName", valid_612960
+  var valid_612961 = query.getOrDefault("DesiredCapacity")
+  valid_612961 = validateParameter(valid_612961, JInt, required = false, default = nil)
   if valid_612961 != nil:
-    section.add "Action", valid_612961
-  var valid_612962 = query.getOrDefault("StartTime")
-  valid_612962 = validateParameter(valid_612962, JString, required = false,
+    section.add "DesiredCapacity", valid_612961
+  var valid_612962 = query.getOrDefault("AutoScalingGroupName")
+  valid_612962 = validateParameter(valid_612962, JString, required = true,
                                  default = nil)
   if valid_612962 != nil:
-    section.add "StartTime", valid_612962
-  var valid_612963 = query.getOrDefault("MinSize")
-  valid_612963 = validateParameter(valid_612963, JInt, required = false, default = nil)
+    section.add "AutoScalingGroupName", valid_612962
+  var valid_612963 = query.getOrDefault("Action")
+  valid_612963 = validateParameter(valid_612963, JString, required = true, default = newJString(
+      "PutScheduledUpdateGroupAction"))
   if valid_612963 != nil:
-    section.add "MinSize", valid_612963
-  var valid_612964 = query.getOrDefault("EndTime")
+    section.add "Action", valid_612963
+  var valid_612964 = query.getOrDefault("StartTime")
   valid_612964 = validateParameter(valid_612964, JString, required = false,
                                  default = nil)
   if valid_612964 != nil:
-    section.add "EndTime", valid_612964
-  var valid_612965 = query.getOrDefault("Version")
-  valid_612965 = validateParameter(valid_612965, JString, required = true,
-                                 default = newJString("2011-01-01"))
+    section.add "StartTime", valid_612964
+  var valid_612965 = query.getOrDefault("MinSize")
+  valid_612965 = validateParameter(valid_612965, JInt, required = false, default = nil)
   if valid_612965 != nil:
-    section.add "Version", valid_612965
-  var valid_612966 = query.getOrDefault("Time")
+    section.add "MinSize", valid_612965
+  var valid_612966 = query.getOrDefault("EndTime")
   valid_612966 = validateParameter(valid_612966, JString, required = false,
                                  default = nil)
   if valid_612966 != nil:
-    section.add "Time", valid_612966
+    section.add "EndTime", valid_612966
+  var valid_612967 = query.getOrDefault("Version")
+  valid_612967 = validateParameter(valid_612967, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_612967 != nil:
+    section.add "Version", valid_612967
+  var valid_612968 = query.getOrDefault("Time")
+  valid_612968 = validateParameter(valid_612968, JString, required = false,
+                                 default = nil)
+  if valid_612968 != nil:
+    section.add "Time", valid_612968
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -14545,62 +14563,62 @@ proc validate_GetPutScheduledUpdateGroupAction_612954(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_612967 = header.getOrDefault("X-Amz-Signature")
-  valid_612967 = validateParameter(valid_612967, JString, required = false,
-                                 default = nil)
-  if valid_612967 != nil:
-    section.add "X-Amz-Signature", valid_612967
-  var valid_612968 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_612968 = validateParameter(valid_612968, JString, required = false,
-                                 default = nil)
-  if valid_612968 != nil:
-    section.add "X-Amz-Content-Sha256", valid_612968
-  var valid_612969 = header.getOrDefault("X-Amz-Date")
+  var valid_612969 = header.getOrDefault("X-Amz-Signature")
   valid_612969 = validateParameter(valid_612969, JString, required = false,
                                  default = nil)
   if valid_612969 != nil:
-    section.add "X-Amz-Date", valid_612969
-  var valid_612970 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_612969
+  var valid_612970 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_612970 = validateParameter(valid_612970, JString, required = false,
                                  default = nil)
   if valid_612970 != nil:
-    section.add "X-Amz-Credential", valid_612970
-  var valid_612971 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_612970
+  var valid_612971 = header.getOrDefault("X-Amz-Date")
   valid_612971 = validateParameter(valid_612971, JString, required = false,
                                  default = nil)
   if valid_612971 != nil:
-    section.add "X-Amz-Security-Token", valid_612971
-  var valid_612972 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_612971
+  var valid_612972 = header.getOrDefault("X-Amz-Credential")
   valid_612972 = validateParameter(valid_612972, JString, required = false,
                                  default = nil)
   if valid_612972 != nil:
-    section.add "X-Amz-Algorithm", valid_612972
-  var valid_612973 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_612972
+  var valid_612973 = header.getOrDefault("X-Amz-Security-Token")
   valid_612973 = validateParameter(valid_612973, JString, required = false,
                                  default = nil)
   if valid_612973 != nil:
-    section.add "X-Amz-SignedHeaders", valid_612973
+    section.add "X-Amz-Security-Token", valid_612973
+  var valid_612974 = header.getOrDefault("X-Amz-Algorithm")
+  valid_612974 = validateParameter(valid_612974, JString, required = false,
+                                 default = nil)
+  if valid_612974 != nil:
+    section.add "X-Amz-Algorithm", valid_612974
+  var valid_612975 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_612975 = validateParameter(valid_612975, JString, required = false,
+                                 default = nil)
+  if valid_612975 != nil:
+    section.add "X-Amz-SignedHeaders", valid_612975
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_612974: Call_GetPutScheduledUpdateGroupAction_612953;
+proc call*(call_612976: Call_GetPutScheduledUpdateGroupAction_612955;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Creates or updates a scheduled scaling action for an Auto Scaling group. If you leave a parameter unspecified when updating a scheduled scaling action, the corresponding value remains unchanged.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/schedule_time.html">Scheduled Scaling</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_612974.validator(path, query, header, formData, body)
-  let scheme = call_612974.pickScheme
+  let valid = call_612976.validator(path, query, header, formData, body)
+  let scheme = call_612976.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_612974.url(scheme.get, call_612974.host, call_612974.base,
-                         call_612974.route, valid.getOrDefault("path"),
+  let url = call_612976.url(scheme.get, call_612976.host, call_612976.base,
+                         call_612976.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_612974, url, valid)
+  result = atozHook(call_612976, url, valid)
 
-proc call*(call_612975: Call_GetPutScheduledUpdateGroupAction_612953;
+proc call*(call_612977: Call_GetPutScheduledUpdateGroupAction_612955;
           ScheduledActionName: string; AutoScalingGroupName: string;
           Recurrence: string = ""; MaxSize: int = 0; DesiredCapacity: int = 0;
           Action: string = "PutScheduledUpdateGroupAction"; StartTime: string = "";
@@ -14628,30 +14646,30 @@ proc call*(call_612975: Call_GetPutScheduledUpdateGroupAction_612953;
   ##   Version: string (required)
   ##   Time: string
   ##       : This parameter is no longer used.
-  var query_612976 = newJObject()
-  add(query_612976, "Recurrence", newJString(Recurrence))
-  add(query_612976, "MaxSize", newJInt(MaxSize))
-  add(query_612976, "ScheduledActionName", newJString(ScheduledActionName))
-  add(query_612976, "DesiredCapacity", newJInt(DesiredCapacity))
-  add(query_612976, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_612976, "Action", newJString(Action))
-  add(query_612976, "StartTime", newJString(StartTime))
-  add(query_612976, "MinSize", newJInt(MinSize))
-  add(query_612976, "EndTime", newJString(EndTime))
-  add(query_612976, "Version", newJString(Version))
-  add(query_612976, "Time", newJString(Time))
-  result = call_612975.call(nil, query_612976, nil, nil, nil)
+  var query_612978 = newJObject()
+  add(query_612978, "Recurrence", newJString(Recurrence))
+  add(query_612978, "MaxSize", newJInt(MaxSize))
+  add(query_612978, "ScheduledActionName", newJString(ScheduledActionName))
+  add(query_612978, "DesiredCapacity", newJInt(DesiredCapacity))
+  add(query_612978, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_612978, "Action", newJString(Action))
+  add(query_612978, "StartTime", newJString(StartTime))
+  add(query_612978, "MinSize", newJInt(MinSize))
+  add(query_612978, "EndTime", newJString(EndTime))
+  add(query_612978, "Version", newJString(Version))
+  add(query_612978, "Time", newJString(Time))
+  result = call_612977.call(nil, query_612978, nil, nil, nil)
 
-var getPutScheduledUpdateGroupAction* = Call_GetPutScheduledUpdateGroupAction_612953(
+var getPutScheduledUpdateGroupAction* = Call_GetPutScheduledUpdateGroupAction_612955(
     name: "getPutScheduledUpdateGroupAction", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com",
     route: "/#Action=PutScheduledUpdateGroupAction",
-    validator: validate_GetPutScheduledUpdateGroupAction_612954, base: "/",
-    url: url_GetPutScheduledUpdateGroupAction_612955,
+    validator: validate_GetPutScheduledUpdateGroupAction_612956, base: "/",
+    url: url_GetPutScheduledUpdateGroupAction_612957,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostRecordLifecycleActionHeartbeat_613021 = ref object of OpenApiRestCall_610658
-proc url_PostRecordLifecycleActionHeartbeat_613023(protocol: Scheme; host: string;
+  Call_PostRecordLifecycleActionHeartbeat_613023 = ref object of OpenApiRestCall_610658
+proc url_PostRecordLifecycleActionHeartbeat_613025(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -14661,7 +14679,7 @@ proc url_PostRecordLifecycleActionHeartbeat_613023(protocol: Scheme; host: strin
   else:
     result.path = base & route
 
-proc validate_PostRecordLifecycleActionHeartbeat_613022(path: JsonNode;
+proc validate_PostRecordLifecycleActionHeartbeat_613024(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Records a heartbeat for the lifecycle action associated with the specified token or instance. This extends the timeout by the length of time defined using <a>PutLifecycleHook</a>.</p> <p>This step is a part of the procedure for adding a lifecycle hook to an Auto Scaling group:</p> <ol> <li> <p>(Optional) Create a Lambda function and a rule that allows CloudWatch Events to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates instances.</p> </li> <li> <p>(Optional) Create a notification target and an IAM role. The target can be either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon EC2 Auto Scaling to publish lifecycle notifications to the target.</p> </li> <li> <p>Create the lifecycle hook. Specify whether the hook is used when the instances launch or terminate.</p> </li> <li> <p> <b>If you need more time, record the lifecycle action heartbeat to keep the instance in a pending state.</b> </p> </li> <li> <p>If you finish before the timeout period ends, complete the lifecycle action.</p> </li> </ol> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroupLifecycle.html">Auto Scaling Lifecycle</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -14673,16 +14691,16 @@ proc validate_PostRecordLifecycleActionHeartbeat_613022(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613024 = query.getOrDefault("Action")
-  valid_613024 = validateParameter(valid_613024, JString, required = true, default = newJString(
+  var valid_613026 = query.getOrDefault("Action")
+  valid_613026 = validateParameter(valid_613026, JString, required = true, default = newJString(
       "RecordLifecycleActionHeartbeat"))
-  if valid_613024 != nil:
-    section.add "Action", valid_613024
-  var valid_613025 = query.getOrDefault("Version")
-  valid_613025 = validateParameter(valid_613025, JString, required = true,
+  if valid_613026 != nil:
+    section.add "Action", valid_613026
+  var valid_613027 = query.getOrDefault("Version")
+  valid_613027 = validateParameter(valid_613027, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_613025 != nil:
-    section.add "Version", valid_613025
+  if valid_613027 != nil:
+    section.add "Version", valid_613027
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -14693,41 +14711,41 @@ proc validate_PostRecordLifecycleActionHeartbeat_613022(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613026 = header.getOrDefault("X-Amz-Signature")
-  valid_613026 = validateParameter(valid_613026, JString, required = false,
-                                 default = nil)
-  if valid_613026 != nil:
-    section.add "X-Amz-Signature", valid_613026
-  var valid_613027 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613027 = validateParameter(valid_613027, JString, required = false,
-                                 default = nil)
-  if valid_613027 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613027
-  var valid_613028 = header.getOrDefault("X-Amz-Date")
+  var valid_613028 = header.getOrDefault("X-Amz-Signature")
   valid_613028 = validateParameter(valid_613028, JString, required = false,
                                  default = nil)
   if valid_613028 != nil:
-    section.add "X-Amz-Date", valid_613028
-  var valid_613029 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613028
+  var valid_613029 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613029 = validateParameter(valid_613029, JString, required = false,
                                  default = nil)
   if valid_613029 != nil:
-    section.add "X-Amz-Credential", valid_613029
-  var valid_613030 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613029
+  var valid_613030 = header.getOrDefault("X-Amz-Date")
   valid_613030 = validateParameter(valid_613030, JString, required = false,
                                  default = nil)
   if valid_613030 != nil:
-    section.add "X-Amz-Security-Token", valid_613030
-  var valid_613031 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613030
+  var valid_613031 = header.getOrDefault("X-Amz-Credential")
   valid_613031 = validateParameter(valid_613031, JString, required = false,
                                  default = nil)
   if valid_613031 != nil:
-    section.add "X-Amz-Algorithm", valid_613031
-  var valid_613032 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613031
+  var valid_613032 = header.getOrDefault("X-Amz-Security-Token")
   valid_613032 = validateParameter(valid_613032, JString, required = false,
                                  default = nil)
   if valid_613032 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613032
+    section.add "X-Amz-Security-Token", valid_613032
+  var valid_613033 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613033 = validateParameter(valid_613033, JString, required = false,
+                                 default = nil)
+  if valid_613033 != nil:
+    section.add "X-Amz-Algorithm", valid_613033
+  var valid_613034 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613034 = validateParameter(valid_613034, JString, required = false,
+                                 default = nil)
+  if valid_613034 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613034
   result.add "header", section
   ## parameters in `formData` object:
   ##   AutoScalingGroupName: JString (required)
@@ -14740,45 +14758,45 @@ proc validate_PostRecordLifecycleActionHeartbeat_613022(path: JsonNode;
   ##             : The ID of the instance.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613033 = formData.getOrDefault("AutoScalingGroupName")
-  valid_613033 = validateParameter(valid_613033, JString, required = true,
-                                 default = nil)
-  if valid_613033 != nil:
-    section.add "AutoScalingGroupName", valid_613033
-  var valid_613034 = formData.getOrDefault("LifecycleHookName")
-  valid_613034 = validateParameter(valid_613034, JString, required = true,
-                                 default = nil)
-  if valid_613034 != nil:
-    section.add "LifecycleHookName", valid_613034
-  var valid_613035 = formData.getOrDefault("LifecycleActionToken")
-  valid_613035 = validateParameter(valid_613035, JString, required = false,
+  var valid_613035 = formData.getOrDefault("AutoScalingGroupName")
+  valid_613035 = validateParameter(valid_613035, JString, required = true,
                                  default = nil)
   if valid_613035 != nil:
-    section.add "LifecycleActionToken", valid_613035
-  var valid_613036 = formData.getOrDefault("InstanceId")
-  valid_613036 = validateParameter(valid_613036, JString, required = false,
+    section.add "AutoScalingGroupName", valid_613035
+  var valid_613036 = formData.getOrDefault("LifecycleHookName")
+  valid_613036 = validateParameter(valid_613036, JString, required = true,
                                  default = nil)
   if valid_613036 != nil:
-    section.add "InstanceId", valid_613036
+    section.add "LifecycleHookName", valid_613036
+  var valid_613037 = formData.getOrDefault("LifecycleActionToken")
+  valid_613037 = validateParameter(valid_613037, JString, required = false,
+                                 default = nil)
+  if valid_613037 != nil:
+    section.add "LifecycleActionToken", valid_613037
+  var valid_613038 = formData.getOrDefault("InstanceId")
+  valid_613038 = validateParameter(valid_613038, JString, required = false,
+                                 default = nil)
+  if valid_613038 != nil:
+    section.add "InstanceId", valid_613038
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613037: Call_PostRecordLifecycleActionHeartbeat_613021;
+proc call*(call_613039: Call_PostRecordLifecycleActionHeartbeat_613023;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Records a heartbeat for the lifecycle action associated with the specified token or instance. This extends the timeout by the length of time defined using <a>PutLifecycleHook</a>.</p> <p>This step is a part of the procedure for adding a lifecycle hook to an Auto Scaling group:</p> <ol> <li> <p>(Optional) Create a Lambda function and a rule that allows CloudWatch Events to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates instances.</p> </li> <li> <p>(Optional) Create a notification target and an IAM role. The target can be either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon EC2 Auto Scaling to publish lifecycle notifications to the target.</p> </li> <li> <p>Create the lifecycle hook. Specify whether the hook is used when the instances launch or terminate.</p> </li> <li> <p> <b>If you need more time, record the lifecycle action heartbeat to keep the instance in a pending state.</b> </p> </li> <li> <p>If you finish before the timeout period ends, complete the lifecycle action.</p> </li> </ol> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroupLifecycle.html">Auto Scaling Lifecycle</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613037.validator(path, query, header, formData, body)
-  let scheme = call_613037.pickScheme
+  let valid = call_613039.validator(path, query, header, formData, body)
+  let scheme = call_613039.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613037.url(scheme.get, call_613037.host, call_613037.base,
-                         call_613037.route, valid.getOrDefault("path"),
+  let url = call_613039.url(scheme.get, call_613039.host, call_613039.base,
+                         call_613039.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613037, url, valid)
+  result = atozHook(call_613039, url, valid)
 
-proc call*(call_613038: Call_PostRecordLifecycleActionHeartbeat_613021;
+proc call*(call_613040: Call_PostRecordLifecycleActionHeartbeat_613023;
           AutoScalingGroupName: string; LifecycleHookName: string;
           LifecycleActionToken: string = ""; InstanceId: string = "";
           Action: string = "RecordLifecycleActionHeartbeat";
@@ -14795,26 +14813,26 @@ proc call*(call_613038: Call_PostRecordLifecycleActionHeartbeat_613021;
   ##             : The ID of the instance.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613039 = newJObject()
-  var formData_613040 = newJObject()
-  add(formData_613040, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(formData_613040, "LifecycleHookName", newJString(LifecycleHookName))
-  add(formData_613040, "LifecycleActionToken", newJString(LifecycleActionToken))
-  add(formData_613040, "InstanceId", newJString(InstanceId))
-  add(query_613039, "Action", newJString(Action))
-  add(query_613039, "Version", newJString(Version))
-  result = call_613038.call(nil, query_613039, nil, formData_613040, nil)
+  var query_613041 = newJObject()
+  var formData_613042 = newJObject()
+  add(formData_613042, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(formData_613042, "LifecycleHookName", newJString(LifecycleHookName))
+  add(formData_613042, "LifecycleActionToken", newJString(LifecycleActionToken))
+  add(formData_613042, "InstanceId", newJString(InstanceId))
+  add(query_613041, "Action", newJString(Action))
+  add(query_613041, "Version", newJString(Version))
+  result = call_613040.call(nil, query_613041, nil, formData_613042, nil)
 
-var postRecordLifecycleActionHeartbeat* = Call_PostRecordLifecycleActionHeartbeat_613021(
+var postRecordLifecycleActionHeartbeat* = Call_PostRecordLifecycleActionHeartbeat_613023(
     name: "postRecordLifecycleActionHeartbeat", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com",
     route: "/#Action=RecordLifecycleActionHeartbeat",
-    validator: validate_PostRecordLifecycleActionHeartbeat_613022, base: "/",
-    url: url_PostRecordLifecycleActionHeartbeat_613023,
+    validator: validate_PostRecordLifecycleActionHeartbeat_613024, base: "/",
+    url: url_PostRecordLifecycleActionHeartbeat_613025,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetRecordLifecycleActionHeartbeat_613002 = ref object of OpenApiRestCall_610658
-proc url_GetRecordLifecycleActionHeartbeat_613004(protocol: Scheme; host: string;
+  Call_GetRecordLifecycleActionHeartbeat_613004 = ref object of OpenApiRestCall_610658
+proc url_GetRecordLifecycleActionHeartbeat_613006(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -14824,7 +14842,7 @@ proc url_GetRecordLifecycleActionHeartbeat_613004(protocol: Scheme; host: string
   else:
     result.path = base & route
 
-proc validate_GetRecordLifecycleActionHeartbeat_613003(path: JsonNode;
+proc validate_GetRecordLifecycleActionHeartbeat_613005(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Records a heartbeat for the lifecycle action associated with the specified token or instance. This extends the timeout by the length of time defined using <a>PutLifecycleHook</a>.</p> <p>This step is a part of the procedure for adding a lifecycle hook to an Auto Scaling group:</p> <ol> <li> <p>(Optional) Create a Lambda function and a rule that allows CloudWatch Events to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates instances.</p> </li> <li> <p>(Optional) Create a notification target and an IAM role. The target can be either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon EC2 Auto Scaling to publish lifecycle notifications to the target.</p> </li> <li> <p>Create the lifecycle hook. Specify whether the hook is used when the instances launch or terminate.</p> </li> <li> <p> <b>If you need more time, record the lifecycle action heartbeat to keep the instance in a pending state.</b> </p> </li> <li> <p>If you finish before the timeout period ends, complete the lifecycle action.</p> </li> </ol> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroupLifecycle.html">Auto Scaling Lifecycle</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -14844,37 +14862,37 @@ proc validate_GetRecordLifecycleActionHeartbeat_613003(path: JsonNode;
   ##                       : A token that uniquely identifies a specific lifecycle action associated with an instance. Amazon EC2 Auto Scaling sends this token to the notification target that you specified when you created the lifecycle hook.
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613005 = query.getOrDefault("InstanceId")
-  valid_613005 = validateParameter(valid_613005, JString, required = false,
-                                 default = nil)
-  if valid_613005 != nil:
-    section.add "InstanceId", valid_613005
-  assert query != nil, "query argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613006 = query.getOrDefault("AutoScalingGroupName")
-  valid_613006 = validateParameter(valid_613006, JString, required = true,
-                                 default = nil)
-  if valid_613006 != nil:
-    section.add "AutoScalingGroupName", valid_613006
-  var valid_613007 = query.getOrDefault("LifecycleHookName")
-  valid_613007 = validateParameter(valid_613007, JString, required = true,
+  var valid_613007 = query.getOrDefault("InstanceId")
+  valid_613007 = validateParameter(valid_613007, JString, required = false,
                                  default = nil)
   if valid_613007 != nil:
-    section.add "LifecycleHookName", valid_613007
-  var valid_613008 = query.getOrDefault("Action")
-  valid_613008 = validateParameter(valid_613008, JString, required = true, default = newJString(
-      "RecordLifecycleActionHeartbeat"))
+    section.add "InstanceId", valid_613007
+  assert query != nil, "query argument is necessary due to required `AutoScalingGroupName` field"
+  var valid_613008 = query.getOrDefault("AutoScalingGroupName")
+  valid_613008 = validateParameter(valid_613008, JString, required = true,
+                                 default = nil)
   if valid_613008 != nil:
-    section.add "Action", valid_613008
-  var valid_613009 = query.getOrDefault("LifecycleActionToken")
-  valid_613009 = validateParameter(valid_613009, JString, required = false,
+    section.add "AutoScalingGroupName", valid_613008
+  var valid_613009 = query.getOrDefault("LifecycleHookName")
+  valid_613009 = validateParameter(valid_613009, JString, required = true,
                                  default = nil)
   if valid_613009 != nil:
-    section.add "LifecycleActionToken", valid_613009
-  var valid_613010 = query.getOrDefault("Version")
-  valid_613010 = validateParameter(valid_613010, JString, required = true,
-                                 default = newJString("2011-01-01"))
+    section.add "LifecycleHookName", valid_613009
+  var valid_613010 = query.getOrDefault("Action")
+  valid_613010 = validateParameter(valid_613010, JString, required = true, default = newJString(
+      "RecordLifecycleActionHeartbeat"))
   if valid_613010 != nil:
-    section.add "Version", valid_613010
+    section.add "Action", valid_613010
+  var valid_613011 = query.getOrDefault("LifecycleActionToken")
+  valid_613011 = validateParameter(valid_613011, JString, required = false,
+                                 default = nil)
+  if valid_613011 != nil:
+    section.add "LifecycleActionToken", valid_613011
+  var valid_613012 = query.getOrDefault("Version")
+  valid_613012 = validateParameter(valid_613012, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_613012 != nil:
+    section.add "Version", valid_613012
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -14885,62 +14903,62 @@ proc validate_GetRecordLifecycleActionHeartbeat_613003(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613011 = header.getOrDefault("X-Amz-Signature")
-  valid_613011 = validateParameter(valid_613011, JString, required = false,
-                                 default = nil)
-  if valid_613011 != nil:
-    section.add "X-Amz-Signature", valid_613011
-  var valid_613012 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613012 = validateParameter(valid_613012, JString, required = false,
-                                 default = nil)
-  if valid_613012 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613012
-  var valid_613013 = header.getOrDefault("X-Amz-Date")
+  var valid_613013 = header.getOrDefault("X-Amz-Signature")
   valid_613013 = validateParameter(valid_613013, JString, required = false,
                                  default = nil)
   if valid_613013 != nil:
-    section.add "X-Amz-Date", valid_613013
-  var valid_613014 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613013
+  var valid_613014 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613014 = validateParameter(valid_613014, JString, required = false,
                                  default = nil)
   if valid_613014 != nil:
-    section.add "X-Amz-Credential", valid_613014
-  var valid_613015 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613014
+  var valid_613015 = header.getOrDefault("X-Amz-Date")
   valid_613015 = validateParameter(valid_613015, JString, required = false,
                                  default = nil)
   if valid_613015 != nil:
-    section.add "X-Amz-Security-Token", valid_613015
-  var valid_613016 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613015
+  var valid_613016 = header.getOrDefault("X-Amz-Credential")
   valid_613016 = validateParameter(valid_613016, JString, required = false,
                                  default = nil)
   if valid_613016 != nil:
-    section.add "X-Amz-Algorithm", valid_613016
-  var valid_613017 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613016
+  var valid_613017 = header.getOrDefault("X-Amz-Security-Token")
   valid_613017 = validateParameter(valid_613017, JString, required = false,
                                  default = nil)
   if valid_613017 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613017
+    section.add "X-Amz-Security-Token", valid_613017
+  var valid_613018 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613018 = validateParameter(valid_613018, JString, required = false,
+                                 default = nil)
+  if valid_613018 != nil:
+    section.add "X-Amz-Algorithm", valid_613018
+  var valid_613019 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613019 = validateParameter(valid_613019, JString, required = false,
+                                 default = nil)
+  if valid_613019 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613019
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613018: Call_GetRecordLifecycleActionHeartbeat_613002;
+proc call*(call_613020: Call_GetRecordLifecycleActionHeartbeat_613004;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Records a heartbeat for the lifecycle action associated with the specified token or instance. This extends the timeout by the length of time defined using <a>PutLifecycleHook</a>.</p> <p>This step is a part of the procedure for adding a lifecycle hook to an Auto Scaling group:</p> <ol> <li> <p>(Optional) Create a Lambda function and a rule that allows CloudWatch Events to invoke your Lambda function when Amazon EC2 Auto Scaling launches or terminates instances.</p> </li> <li> <p>(Optional) Create a notification target and an IAM role. The target can be either an Amazon SQS queue or an Amazon SNS topic. The role allows Amazon EC2 Auto Scaling to publish lifecycle notifications to the target.</p> </li> <li> <p>Create the lifecycle hook. Specify whether the hook is used when the instances launch or terminate.</p> </li> <li> <p> <b>If you need more time, record the lifecycle action heartbeat to keep the instance in a pending state.</b> </p> </li> <li> <p>If you finish before the timeout period ends, complete the lifecycle action.</p> </li> </ol> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/AutoScalingGroupLifecycle.html">Auto Scaling Lifecycle</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613018.validator(path, query, header, formData, body)
-  let scheme = call_613018.pickScheme
+  let valid = call_613020.validator(path, query, header, formData, body)
+  let scheme = call_613020.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613018.url(scheme.get, call_613018.host, call_613018.base,
-                         call_613018.route, valid.getOrDefault("path"),
+  let url = call_613020.url(scheme.get, call_613020.host, call_613020.base,
+                         call_613020.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613018, url, valid)
+  result = atozHook(call_613020, url, valid)
 
-proc call*(call_613019: Call_GetRecordLifecycleActionHeartbeat_613002;
+proc call*(call_613021: Call_GetRecordLifecycleActionHeartbeat_613004;
           AutoScalingGroupName: string; LifecycleHookName: string;
           InstanceId: string = "";
           Action: string = "RecordLifecycleActionHeartbeat";
@@ -14957,25 +14975,25 @@ proc call*(call_613019: Call_GetRecordLifecycleActionHeartbeat_613002;
   ##   LifecycleActionToken: string
   ##                       : A token that uniquely identifies a specific lifecycle action associated with an instance. Amazon EC2 Auto Scaling sends this token to the notification target that you specified when you created the lifecycle hook.
   ##   Version: string (required)
-  var query_613020 = newJObject()
-  add(query_613020, "InstanceId", newJString(InstanceId))
-  add(query_613020, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_613020, "LifecycleHookName", newJString(LifecycleHookName))
-  add(query_613020, "Action", newJString(Action))
-  add(query_613020, "LifecycleActionToken", newJString(LifecycleActionToken))
-  add(query_613020, "Version", newJString(Version))
-  result = call_613019.call(nil, query_613020, nil, nil, nil)
+  var query_613022 = newJObject()
+  add(query_613022, "InstanceId", newJString(InstanceId))
+  add(query_613022, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_613022, "LifecycleHookName", newJString(LifecycleHookName))
+  add(query_613022, "Action", newJString(Action))
+  add(query_613022, "LifecycleActionToken", newJString(LifecycleActionToken))
+  add(query_613022, "Version", newJString(Version))
+  result = call_613021.call(nil, query_613022, nil, nil, nil)
 
-var getRecordLifecycleActionHeartbeat* = Call_GetRecordLifecycleActionHeartbeat_613002(
+var getRecordLifecycleActionHeartbeat* = Call_GetRecordLifecycleActionHeartbeat_613004(
     name: "getRecordLifecycleActionHeartbeat", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com",
     route: "/#Action=RecordLifecycleActionHeartbeat",
-    validator: validate_GetRecordLifecycleActionHeartbeat_613003, base: "/",
-    url: url_GetRecordLifecycleActionHeartbeat_613004,
+    validator: validate_GetRecordLifecycleActionHeartbeat_613005, base: "/",
+    url: url_GetRecordLifecycleActionHeartbeat_613006,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostResumeProcesses_613058 = ref object of OpenApiRestCall_610658
-proc url_PostResumeProcesses_613060(protocol: Scheme; host: string; base: string;
+  Call_PostResumeProcesses_613060 = ref object of OpenApiRestCall_610658
+proc url_PostResumeProcesses_613062(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -14985,7 +15003,7 @@ proc url_PostResumeProcesses_613060(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_PostResumeProcesses_613059(path: JsonNode; query: JsonNode;
+proc validate_PostResumeProcesses_613061(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Resumes the specified suspended automatic scaling processes, or all suspended process, for the specified Auto Scaling group.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html">Suspending and Resuming Scaling Processes</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
@@ -14998,16 +15016,16 @@ proc validate_PostResumeProcesses_613059(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613061 = query.getOrDefault("Action")
-  valid_613061 = validateParameter(valid_613061, JString, required = true,
+  var valid_613063 = query.getOrDefault("Action")
+  valid_613063 = validateParameter(valid_613063, JString, required = true,
                                  default = newJString("ResumeProcesses"))
-  if valid_613061 != nil:
-    section.add "Action", valid_613061
-  var valid_613062 = query.getOrDefault("Version")
-  valid_613062 = validateParameter(valid_613062, JString, required = true,
+  if valid_613063 != nil:
+    section.add "Action", valid_613063
+  var valid_613064 = query.getOrDefault("Version")
+  valid_613064 = validateParameter(valid_613064, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_613062 != nil:
-    section.add "Version", valid_613062
+  if valid_613064 != nil:
+    section.add "Version", valid_613064
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -15018,41 +15036,41 @@ proc validate_PostResumeProcesses_613059(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613063 = header.getOrDefault("X-Amz-Signature")
-  valid_613063 = validateParameter(valid_613063, JString, required = false,
-                                 default = nil)
-  if valid_613063 != nil:
-    section.add "X-Amz-Signature", valid_613063
-  var valid_613064 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613064 = validateParameter(valid_613064, JString, required = false,
-                                 default = nil)
-  if valid_613064 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613064
-  var valid_613065 = header.getOrDefault("X-Amz-Date")
+  var valid_613065 = header.getOrDefault("X-Amz-Signature")
   valid_613065 = validateParameter(valid_613065, JString, required = false,
                                  default = nil)
   if valid_613065 != nil:
-    section.add "X-Amz-Date", valid_613065
-  var valid_613066 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613065
+  var valid_613066 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613066 = validateParameter(valid_613066, JString, required = false,
                                  default = nil)
   if valid_613066 != nil:
-    section.add "X-Amz-Credential", valid_613066
-  var valid_613067 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613066
+  var valid_613067 = header.getOrDefault("X-Amz-Date")
   valid_613067 = validateParameter(valid_613067, JString, required = false,
                                  default = nil)
   if valid_613067 != nil:
-    section.add "X-Amz-Security-Token", valid_613067
-  var valid_613068 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613067
+  var valid_613068 = header.getOrDefault("X-Amz-Credential")
   valid_613068 = validateParameter(valid_613068, JString, required = false,
                                  default = nil)
   if valid_613068 != nil:
-    section.add "X-Amz-Algorithm", valid_613068
-  var valid_613069 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613068
+  var valid_613069 = header.getOrDefault("X-Amz-Security-Token")
   valid_613069 = validateParameter(valid_613069, JString, required = false,
                                  default = nil)
   if valid_613069 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613069
+    section.add "X-Amz-Security-Token", valid_613069
+  var valid_613070 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613070 = validateParameter(valid_613070, JString, required = false,
+                                 default = nil)
+  if valid_613070 != nil:
+    section.add "X-Amz-Algorithm", valid_613070
+  var valid_613071 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613071 = validateParameter(valid_613071, JString, required = false,
+                                 default = nil)
+  if valid_613071 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613071
   result.add "header", section
   ## parameters in `formData` object:
   ##   AutoScalingGroupName: JString (required)
@@ -15061,34 +15079,34 @@ proc validate_PostResumeProcesses_613059(path: JsonNode; query: JsonNode;
   ##                   : <p>One or more of the following processes. If you omit this parameter, all processes are specified.</p> <ul> <li> <p> <code>Launch</code> </p> </li> <li> <p> <code>Terminate</code> </p> </li> <li> <p> <code>HealthCheck</code> </p> </li> <li> <p> <code>ReplaceUnhealthy</code> </p> </li> <li> <p> <code>AZRebalance</code> </p> </li> <li> <p> <code>AlarmNotification</code> </p> </li> <li> <p> <code>ScheduledActions</code> </p> </li> <li> <p> <code>AddToLoadBalancer</code> </p> </li> </ul>
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613070 = formData.getOrDefault("AutoScalingGroupName")
-  valid_613070 = validateParameter(valid_613070, JString, required = true,
+  var valid_613072 = formData.getOrDefault("AutoScalingGroupName")
+  valid_613072 = validateParameter(valid_613072, JString, required = true,
                                  default = nil)
-  if valid_613070 != nil:
-    section.add "AutoScalingGroupName", valid_613070
-  var valid_613071 = formData.getOrDefault("ScalingProcesses")
-  valid_613071 = validateParameter(valid_613071, JArray, required = false,
+  if valid_613072 != nil:
+    section.add "AutoScalingGroupName", valid_613072
+  var valid_613073 = formData.getOrDefault("ScalingProcesses")
+  valid_613073 = validateParameter(valid_613073, JArray, required = false,
                                  default = nil)
-  if valid_613071 != nil:
-    section.add "ScalingProcesses", valid_613071
+  if valid_613073 != nil:
+    section.add "ScalingProcesses", valid_613073
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613072: Call_PostResumeProcesses_613058; path: JsonNode;
+proc call*(call_613074: Call_PostResumeProcesses_613060; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Resumes the specified suspended automatic scaling processes, or all suspended process, for the specified Auto Scaling group.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html">Suspending and Resuming Scaling Processes</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613072.validator(path, query, header, formData, body)
-  let scheme = call_613072.pickScheme
+  let valid = call_613074.validator(path, query, header, formData, body)
+  let scheme = call_613074.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613072.url(scheme.get, call_613072.host, call_613072.base,
-                         call_613072.route, valid.getOrDefault("path"),
+  let url = call_613074.url(scheme.get, call_613074.host, call_613074.base,
+                         call_613074.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613072, url, valid)
+  result = atozHook(call_613074, url, valid)
 
-proc call*(call_613073: Call_PostResumeProcesses_613058;
+proc call*(call_613075: Call_PostResumeProcesses_613060;
           AutoScalingGroupName: string; Action: string = "ResumeProcesses";
           ScalingProcesses: JsonNode = nil; Version: string = "2011-01-01"): Recallable =
   ## postResumeProcesses
@@ -15099,23 +15117,23 @@ proc call*(call_613073: Call_PostResumeProcesses_613058;
   ##   ScalingProcesses: JArray
   ##                   : <p>One or more of the following processes. If you omit this parameter, all processes are specified.</p> <ul> <li> <p> <code>Launch</code> </p> </li> <li> <p> <code>Terminate</code> </p> </li> <li> <p> <code>HealthCheck</code> </p> </li> <li> <p> <code>ReplaceUnhealthy</code> </p> </li> <li> <p> <code>AZRebalance</code> </p> </li> <li> <p> <code>AlarmNotification</code> </p> </li> <li> <p> <code>ScheduledActions</code> </p> </li> <li> <p> <code>AddToLoadBalancer</code> </p> </li> </ul>
   ##   Version: string (required)
-  var query_613074 = newJObject()
-  var formData_613075 = newJObject()
-  add(formData_613075, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_613074, "Action", newJString(Action))
+  var query_613076 = newJObject()
+  var formData_613077 = newJObject()
+  add(formData_613077, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_613076, "Action", newJString(Action))
   if ScalingProcesses != nil:
-    formData_613075.add "ScalingProcesses", ScalingProcesses
-  add(query_613074, "Version", newJString(Version))
-  result = call_613073.call(nil, query_613074, nil, formData_613075, nil)
+    formData_613077.add "ScalingProcesses", ScalingProcesses
+  add(query_613076, "Version", newJString(Version))
+  result = call_613075.call(nil, query_613076, nil, formData_613077, nil)
 
-var postResumeProcesses* = Call_PostResumeProcesses_613058(
+var postResumeProcesses* = Call_PostResumeProcesses_613060(
     name: "postResumeProcesses", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#Action=ResumeProcesses",
-    validator: validate_PostResumeProcesses_613059, base: "/",
-    url: url_PostResumeProcesses_613060, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostResumeProcesses_613061, base: "/",
+    url: url_PostResumeProcesses_613062, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetResumeProcesses_613041 = ref object of OpenApiRestCall_610658
-proc url_GetResumeProcesses_613043(protocol: Scheme; host: string; base: string;
+  Call_GetResumeProcesses_613043 = ref object of OpenApiRestCall_610658
+proc url_GetResumeProcesses_613045(protocol: Scheme; host: string; base: string;
                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -15125,7 +15143,7 @@ proc url_GetResumeProcesses_613043(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_GetResumeProcesses_613042(path: JsonNode; query: JsonNode;
+proc validate_GetResumeProcesses_613044(path: JsonNode; query: JsonNode;
                                        header: JsonNode; formData: JsonNode;
                                        body: JsonNode): JsonNode =
   ## <p>Resumes the specified suspended automatic scaling processes, or all suspended process, for the specified Auto Scaling group.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html">Suspending and Resuming Scaling Processes</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
@@ -15142,27 +15160,27 @@ proc validate_GetResumeProcesses_613042(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613044 = query.getOrDefault("ScalingProcesses")
-  valid_613044 = validateParameter(valid_613044, JArray, required = false,
+  var valid_613046 = query.getOrDefault("ScalingProcesses")
+  valid_613046 = validateParameter(valid_613046, JArray, required = false,
                                  default = nil)
-  if valid_613044 != nil:
-    section.add "ScalingProcesses", valid_613044
-  assert query != nil, "query argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613045 = query.getOrDefault("AutoScalingGroupName")
-  valid_613045 = validateParameter(valid_613045, JString, required = true,
-                                 default = nil)
-  if valid_613045 != nil:
-    section.add "AutoScalingGroupName", valid_613045
-  var valid_613046 = query.getOrDefault("Action")
-  valid_613046 = validateParameter(valid_613046, JString, required = true,
-                                 default = newJString("ResumeProcesses"))
   if valid_613046 != nil:
-    section.add "Action", valid_613046
-  var valid_613047 = query.getOrDefault("Version")
+    section.add "ScalingProcesses", valid_613046
+  assert query != nil, "query argument is necessary due to required `AutoScalingGroupName` field"
+  var valid_613047 = query.getOrDefault("AutoScalingGroupName")
   valid_613047 = validateParameter(valid_613047, JString, required = true,
-                                 default = newJString("2011-01-01"))
+                                 default = nil)
   if valid_613047 != nil:
-    section.add "Version", valid_613047
+    section.add "AutoScalingGroupName", valid_613047
+  var valid_613048 = query.getOrDefault("Action")
+  valid_613048 = validateParameter(valid_613048, JString, required = true,
+                                 default = newJString("ResumeProcesses"))
+  if valid_613048 != nil:
+    section.add "Action", valid_613048
+  var valid_613049 = query.getOrDefault("Version")
+  valid_613049 = validateParameter(valid_613049, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_613049 != nil:
+    section.add "Version", valid_613049
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -15173,61 +15191,61 @@ proc validate_GetResumeProcesses_613042(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613048 = header.getOrDefault("X-Amz-Signature")
-  valid_613048 = validateParameter(valid_613048, JString, required = false,
-                                 default = nil)
-  if valid_613048 != nil:
-    section.add "X-Amz-Signature", valid_613048
-  var valid_613049 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613049 = validateParameter(valid_613049, JString, required = false,
-                                 default = nil)
-  if valid_613049 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613049
-  var valid_613050 = header.getOrDefault("X-Amz-Date")
+  var valid_613050 = header.getOrDefault("X-Amz-Signature")
   valid_613050 = validateParameter(valid_613050, JString, required = false,
                                  default = nil)
   if valid_613050 != nil:
-    section.add "X-Amz-Date", valid_613050
-  var valid_613051 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613050
+  var valid_613051 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613051 = validateParameter(valid_613051, JString, required = false,
                                  default = nil)
   if valid_613051 != nil:
-    section.add "X-Amz-Credential", valid_613051
-  var valid_613052 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613051
+  var valid_613052 = header.getOrDefault("X-Amz-Date")
   valid_613052 = validateParameter(valid_613052, JString, required = false,
                                  default = nil)
   if valid_613052 != nil:
-    section.add "X-Amz-Security-Token", valid_613052
-  var valid_613053 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613052
+  var valid_613053 = header.getOrDefault("X-Amz-Credential")
   valid_613053 = validateParameter(valid_613053, JString, required = false,
                                  default = nil)
   if valid_613053 != nil:
-    section.add "X-Amz-Algorithm", valid_613053
-  var valid_613054 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613053
+  var valid_613054 = header.getOrDefault("X-Amz-Security-Token")
   valid_613054 = validateParameter(valid_613054, JString, required = false,
                                  default = nil)
   if valid_613054 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613054
+    section.add "X-Amz-Security-Token", valid_613054
+  var valid_613055 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613055 = validateParameter(valid_613055, JString, required = false,
+                                 default = nil)
+  if valid_613055 != nil:
+    section.add "X-Amz-Algorithm", valid_613055
+  var valid_613056 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613056 = validateParameter(valid_613056, JString, required = false,
+                                 default = nil)
+  if valid_613056 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613056
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613055: Call_GetResumeProcesses_613041; path: JsonNode;
+proc call*(call_613057: Call_GetResumeProcesses_613043; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Resumes the specified suspended automatic scaling processes, or all suspended process, for the specified Auto Scaling group.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html">Suspending and Resuming Scaling Processes</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613055.validator(path, query, header, formData, body)
-  let scheme = call_613055.pickScheme
+  let valid = call_613057.validator(path, query, header, formData, body)
+  let scheme = call_613057.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613055.url(scheme.get, call_613055.host, call_613055.base,
-                         call_613055.route, valid.getOrDefault("path"),
+  let url = call_613057.url(scheme.get, call_613057.host, call_613057.base,
+                         call_613057.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613055, url, valid)
+  result = atozHook(call_613057, url, valid)
 
-proc call*(call_613056: Call_GetResumeProcesses_613041;
+proc call*(call_613058: Call_GetResumeProcesses_613043;
           AutoScalingGroupName: string; ScalingProcesses: JsonNode = nil;
           Action: string = "ResumeProcesses"; Version: string = "2011-01-01"): Recallable =
   ## getResumeProcesses
@@ -15238,22 +15256,22 @@ proc call*(call_613056: Call_GetResumeProcesses_613041;
   ##                       : The name of the Auto Scaling group.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613057 = newJObject()
+  var query_613059 = newJObject()
   if ScalingProcesses != nil:
-    query_613057.add "ScalingProcesses", ScalingProcesses
-  add(query_613057, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_613057, "Action", newJString(Action))
-  add(query_613057, "Version", newJString(Version))
-  result = call_613056.call(nil, query_613057, nil, nil, nil)
+    query_613059.add "ScalingProcesses", ScalingProcesses
+  add(query_613059, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_613059, "Action", newJString(Action))
+  add(query_613059, "Version", newJString(Version))
+  result = call_613058.call(nil, query_613059, nil, nil, nil)
 
-var getResumeProcesses* = Call_GetResumeProcesses_613041(
+var getResumeProcesses* = Call_GetResumeProcesses_613043(
     name: "getResumeProcesses", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com", route: "/#Action=ResumeProcesses",
-    validator: validate_GetResumeProcesses_613042, base: "/",
-    url: url_GetResumeProcesses_613043, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetResumeProcesses_613044, base: "/",
+    url: url_GetResumeProcesses_613045, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSetDesiredCapacity_613094 = ref object of OpenApiRestCall_610658
-proc url_PostSetDesiredCapacity_613096(protocol: Scheme; host: string; base: string;
+  Call_PostSetDesiredCapacity_613096 = ref object of OpenApiRestCall_610658
+proc url_PostSetDesiredCapacity_613098(protocol: Scheme; host: string; base: string;
                                       route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -15263,7 +15281,7 @@ proc url_PostSetDesiredCapacity_613096(protocol: Scheme; host: string; base: str
   else:
     result.path = base & route
 
-proc validate_PostSetDesiredCapacity_613095(path: JsonNode; query: JsonNode;
+proc validate_PostSetDesiredCapacity_613097(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the size of the specified Auto Scaling group.</p> <p>For more information about desired capacity, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html">What Is Amazon EC2 Auto Scaling?</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -15275,16 +15293,16 @@ proc validate_PostSetDesiredCapacity_613095(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613097 = query.getOrDefault("Action")
-  valid_613097 = validateParameter(valid_613097, JString, required = true,
+  var valid_613099 = query.getOrDefault("Action")
+  valid_613099 = validateParameter(valid_613099, JString, required = true,
                                  default = newJString("SetDesiredCapacity"))
-  if valid_613097 != nil:
-    section.add "Action", valid_613097
-  var valid_613098 = query.getOrDefault("Version")
-  valid_613098 = validateParameter(valid_613098, JString, required = true,
+  if valid_613099 != nil:
+    section.add "Action", valid_613099
+  var valid_613100 = query.getOrDefault("Version")
+  valid_613100 = validateParameter(valid_613100, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_613098 != nil:
-    section.add "Version", valid_613098
+  if valid_613100 != nil:
+    section.add "Version", valid_613100
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -15295,41 +15313,41 @@ proc validate_PostSetDesiredCapacity_613095(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613099 = header.getOrDefault("X-Amz-Signature")
-  valid_613099 = validateParameter(valid_613099, JString, required = false,
-                                 default = nil)
-  if valid_613099 != nil:
-    section.add "X-Amz-Signature", valid_613099
-  var valid_613100 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613100 = validateParameter(valid_613100, JString, required = false,
-                                 default = nil)
-  if valid_613100 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613100
-  var valid_613101 = header.getOrDefault("X-Amz-Date")
+  var valid_613101 = header.getOrDefault("X-Amz-Signature")
   valid_613101 = validateParameter(valid_613101, JString, required = false,
                                  default = nil)
   if valid_613101 != nil:
-    section.add "X-Amz-Date", valid_613101
-  var valid_613102 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613101
+  var valid_613102 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613102 = validateParameter(valid_613102, JString, required = false,
                                  default = nil)
   if valid_613102 != nil:
-    section.add "X-Amz-Credential", valid_613102
-  var valid_613103 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613102
+  var valid_613103 = header.getOrDefault("X-Amz-Date")
   valid_613103 = validateParameter(valid_613103, JString, required = false,
                                  default = nil)
   if valid_613103 != nil:
-    section.add "X-Amz-Security-Token", valid_613103
-  var valid_613104 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613103
+  var valid_613104 = header.getOrDefault("X-Amz-Credential")
   valid_613104 = validateParameter(valid_613104, JString, required = false,
                                  default = nil)
   if valid_613104 != nil:
-    section.add "X-Amz-Algorithm", valid_613104
-  var valid_613105 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613104
+  var valid_613105 = header.getOrDefault("X-Amz-Security-Token")
   valid_613105 = validateParameter(valid_613105, JString, required = false,
                                  default = nil)
   if valid_613105 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613105
+    section.add "X-Amz-Security-Token", valid_613105
+  var valid_613106 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613106 = validateParameter(valid_613106, JString, required = false,
+                                 default = nil)
+  if valid_613106 != nil:
+    section.add "X-Amz-Algorithm", valid_613106
+  var valid_613107 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613107 = validateParameter(valid_613107, JString, required = false,
+                                 default = nil)
+  if valid_613107 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613107
   result.add "header", section
   ## parameters in `formData` object:
   ##   AutoScalingGroupName: JString (required)
@@ -15340,37 +15358,37 @@ proc validate_PostSetDesiredCapacity_613095(path: JsonNode; query: JsonNode;
   ##                : Indicates whether Amazon EC2 Auto Scaling waits for the cooldown period to complete before initiating a scaling activity to set your Auto Scaling group to its new capacity. By default, Amazon EC2 Auto Scaling does not honor the cooldown period during manual scaling activities.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613106 = formData.getOrDefault("AutoScalingGroupName")
-  valid_613106 = validateParameter(valid_613106, JString, required = true,
+  var valid_613108 = formData.getOrDefault("AutoScalingGroupName")
+  valid_613108 = validateParameter(valid_613108, JString, required = true,
                                  default = nil)
-  if valid_613106 != nil:
-    section.add "AutoScalingGroupName", valid_613106
-  var valid_613107 = formData.getOrDefault("DesiredCapacity")
-  valid_613107 = validateParameter(valid_613107, JInt, required = true, default = nil)
-  if valid_613107 != nil:
-    section.add "DesiredCapacity", valid_613107
-  var valid_613108 = formData.getOrDefault("HonorCooldown")
-  valid_613108 = validateParameter(valid_613108, JBool, required = false, default = nil)
   if valid_613108 != nil:
-    section.add "HonorCooldown", valid_613108
+    section.add "AutoScalingGroupName", valid_613108
+  var valid_613109 = formData.getOrDefault("DesiredCapacity")
+  valid_613109 = validateParameter(valid_613109, JInt, required = true, default = nil)
+  if valid_613109 != nil:
+    section.add "DesiredCapacity", valid_613109
+  var valid_613110 = formData.getOrDefault("HonorCooldown")
+  valid_613110 = validateParameter(valid_613110, JBool, required = false, default = nil)
+  if valid_613110 != nil:
+    section.add "HonorCooldown", valid_613110
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613109: Call_PostSetDesiredCapacity_613094; path: JsonNode;
+proc call*(call_613111: Call_PostSetDesiredCapacity_613096; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the size of the specified Auto Scaling group.</p> <p>For more information about desired capacity, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html">What Is Amazon EC2 Auto Scaling?</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613109.validator(path, query, header, formData, body)
-  let scheme = call_613109.pickScheme
+  let valid = call_613111.validator(path, query, header, formData, body)
+  let scheme = call_613111.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613109.url(scheme.get, call_613109.host, call_613109.base,
-                         call_613109.route, valid.getOrDefault("path"),
+  let url = call_613111.url(scheme.get, call_613111.host, call_613111.base,
+                         call_613111.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613109, url, valid)
+  result = atozHook(call_613111, url, valid)
 
-proc call*(call_613110: Call_PostSetDesiredCapacity_613094;
+proc call*(call_613112: Call_PostSetDesiredCapacity_613096;
           AutoScalingGroupName: string; DesiredCapacity: int;
           HonorCooldown: bool = false; Action: string = "SetDesiredCapacity";
           Version: string = "2011-01-01"): Recallable =
@@ -15384,23 +15402,23 @@ proc call*(call_613110: Call_PostSetDesiredCapacity_613094;
   ##                : Indicates whether Amazon EC2 Auto Scaling waits for the cooldown period to complete before initiating a scaling activity to set your Auto Scaling group to its new capacity. By default, Amazon EC2 Auto Scaling does not honor the cooldown period during manual scaling activities.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613111 = newJObject()
-  var formData_613112 = newJObject()
-  add(formData_613112, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(formData_613112, "DesiredCapacity", newJInt(DesiredCapacity))
-  add(formData_613112, "HonorCooldown", newJBool(HonorCooldown))
-  add(query_613111, "Action", newJString(Action))
-  add(query_613111, "Version", newJString(Version))
-  result = call_613110.call(nil, query_613111, nil, formData_613112, nil)
+  var query_613113 = newJObject()
+  var formData_613114 = newJObject()
+  add(formData_613114, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(formData_613114, "DesiredCapacity", newJInt(DesiredCapacity))
+  add(formData_613114, "HonorCooldown", newJBool(HonorCooldown))
+  add(query_613113, "Action", newJString(Action))
+  add(query_613113, "Version", newJString(Version))
+  result = call_613112.call(nil, query_613113, nil, formData_613114, nil)
 
-var postSetDesiredCapacity* = Call_PostSetDesiredCapacity_613094(
+var postSetDesiredCapacity* = Call_PostSetDesiredCapacity_613096(
     name: "postSetDesiredCapacity", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#Action=SetDesiredCapacity",
-    validator: validate_PostSetDesiredCapacity_613095, base: "/",
-    url: url_PostSetDesiredCapacity_613096, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostSetDesiredCapacity_613097, base: "/",
+    url: url_PostSetDesiredCapacity_613098, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSetDesiredCapacity_613076 = ref object of OpenApiRestCall_610658
-proc url_GetSetDesiredCapacity_613078(protocol: Scheme; host: string; base: string;
+  Call_GetSetDesiredCapacity_613078 = ref object of OpenApiRestCall_610658
+proc url_GetSetDesiredCapacity_613080(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -15410,7 +15428,7 @@ proc url_GetSetDesiredCapacity_613078(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_GetSetDesiredCapacity_613077(path: JsonNode; query: JsonNode;
+proc validate_GetSetDesiredCapacity_613079(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the size of the specified Auto Scaling group.</p> <p>For more information about desired capacity, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html">What Is Amazon EC2 Auto Scaling?</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -15430,29 +15448,29 @@ proc validate_GetSetDesiredCapacity_613077(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `DesiredCapacity` field"
-  var valid_613079 = query.getOrDefault("DesiredCapacity")
-  valid_613079 = validateParameter(valid_613079, JInt, required = true, default = nil)
-  if valid_613079 != nil:
-    section.add "DesiredCapacity", valid_613079
-  var valid_613080 = query.getOrDefault("AutoScalingGroupName")
-  valid_613080 = validateParameter(valid_613080, JString, required = true,
-                                 default = nil)
-  if valid_613080 != nil:
-    section.add "AutoScalingGroupName", valid_613080
-  var valid_613081 = query.getOrDefault("Action")
-  valid_613081 = validateParameter(valid_613081, JString, required = true,
-                                 default = newJString("SetDesiredCapacity"))
+  var valid_613081 = query.getOrDefault("DesiredCapacity")
+  valid_613081 = validateParameter(valid_613081, JInt, required = true, default = nil)
   if valid_613081 != nil:
-    section.add "Action", valid_613081
-  var valid_613082 = query.getOrDefault("HonorCooldown")
-  valid_613082 = validateParameter(valid_613082, JBool, required = false, default = nil)
+    section.add "DesiredCapacity", valid_613081
+  var valid_613082 = query.getOrDefault("AutoScalingGroupName")
+  valid_613082 = validateParameter(valid_613082, JString, required = true,
+                                 default = nil)
   if valid_613082 != nil:
-    section.add "HonorCooldown", valid_613082
-  var valid_613083 = query.getOrDefault("Version")
+    section.add "AutoScalingGroupName", valid_613082
+  var valid_613083 = query.getOrDefault("Action")
   valid_613083 = validateParameter(valid_613083, JString, required = true,
-                                 default = newJString("2011-01-01"))
+                                 default = newJString("SetDesiredCapacity"))
   if valid_613083 != nil:
-    section.add "Version", valid_613083
+    section.add "Action", valid_613083
+  var valid_613084 = query.getOrDefault("HonorCooldown")
+  valid_613084 = validateParameter(valid_613084, JBool, required = false, default = nil)
+  if valid_613084 != nil:
+    section.add "HonorCooldown", valid_613084
+  var valid_613085 = query.getOrDefault("Version")
+  valid_613085 = validateParameter(valid_613085, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_613085 != nil:
+    section.add "Version", valid_613085
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -15463,61 +15481,61 @@ proc validate_GetSetDesiredCapacity_613077(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613084 = header.getOrDefault("X-Amz-Signature")
-  valid_613084 = validateParameter(valid_613084, JString, required = false,
-                                 default = nil)
-  if valid_613084 != nil:
-    section.add "X-Amz-Signature", valid_613084
-  var valid_613085 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613085 = validateParameter(valid_613085, JString, required = false,
-                                 default = nil)
-  if valid_613085 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613085
-  var valid_613086 = header.getOrDefault("X-Amz-Date")
+  var valid_613086 = header.getOrDefault("X-Amz-Signature")
   valid_613086 = validateParameter(valid_613086, JString, required = false,
                                  default = nil)
   if valid_613086 != nil:
-    section.add "X-Amz-Date", valid_613086
-  var valid_613087 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613086
+  var valid_613087 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613087 = validateParameter(valid_613087, JString, required = false,
                                  default = nil)
   if valid_613087 != nil:
-    section.add "X-Amz-Credential", valid_613087
-  var valid_613088 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613087
+  var valid_613088 = header.getOrDefault("X-Amz-Date")
   valid_613088 = validateParameter(valid_613088, JString, required = false,
                                  default = nil)
   if valid_613088 != nil:
-    section.add "X-Amz-Security-Token", valid_613088
-  var valid_613089 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613088
+  var valid_613089 = header.getOrDefault("X-Amz-Credential")
   valid_613089 = validateParameter(valid_613089, JString, required = false,
                                  default = nil)
   if valid_613089 != nil:
-    section.add "X-Amz-Algorithm", valid_613089
-  var valid_613090 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613089
+  var valid_613090 = header.getOrDefault("X-Amz-Security-Token")
   valid_613090 = validateParameter(valid_613090, JString, required = false,
                                  default = nil)
   if valid_613090 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613090
+    section.add "X-Amz-Security-Token", valid_613090
+  var valid_613091 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613091 = validateParameter(valid_613091, JString, required = false,
+                                 default = nil)
+  if valid_613091 != nil:
+    section.add "X-Amz-Algorithm", valid_613091
+  var valid_613092 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613092 = validateParameter(valid_613092, JString, required = false,
+                                 default = nil)
+  if valid_613092 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613092
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613091: Call_GetSetDesiredCapacity_613076; path: JsonNode;
+proc call*(call_613093: Call_GetSetDesiredCapacity_613078; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the size of the specified Auto Scaling group.</p> <p>For more information about desired capacity, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/what-is-amazon-ec2-auto-scaling.html">What Is Amazon EC2 Auto Scaling?</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613091.validator(path, query, header, formData, body)
-  let scheme = call_613091.pickScheme
+  let valid = call_613093.validator(path, query, header, formData, body)
+  let scheme = call_613093.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613091.url(scheme.get, call_613091.host, call_613091.base,
-                         call_613091.route, valid.getOrDefault("path"),
+  let url = call_613093.url(scheme.get, call_613093.host, call_613093.base,
+                         call_613093.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613091, url, valid)
+  result = atozHook(call_613093, url, valid)
 
-proc call*(call_613092: Call_GetSetDesiredCapacity_613076; DesiredCapacity: int;
+proc call*(call_613094: Call_GetSetDesiredCapacity_613078; DesiredCapacity: int;
           AutoScalingGroupName: string; Action: string = "SetDesiredCapacity";
           HonorCooldown: bool = false; Version: string = "2011-01-01"): Recallable =
   ## getSetDesiredCapacity
@@ -15530,22 +15548,22 @@ proc call*(call_613092: Call_GetSetDesiredCapacity_613076; DesiredCapacity: int;
   ##   HonorCooldown: bool
   ##                : Indicates whether Amazon EC2 Auto Scaling waits for the cooldown period to complete before initiating a scaling activity to set your Auto Scaling group to its new capacity. By default, Amazon EC2 Auto Scaling does not honor the cooldown period during manual scaling activities.
   ##   Version: string (required)
-  var query_613093 = newJObject()
-  add(query_613093, "DesiredCapacity", newJInt(DesiredCapacity))
-  add(query_613093, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_613093, "Action", newJString(Action))
-  add(query_613093, "HonorCooldown", newJBool(HonorCooldown))
-  add(query_613093, "Version", newJString(Version))
-  result = call_613092.call(nil, query_613093, nil, nil, nil)
+  var query_613095 = newJObject()
+  add(query_613095, "DesiredCapacity", newJInt(DesiredCapacity))
+  add(query_613095, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_613095, "Action", newJString(Action))
+  add(query_613095, "HonorCooldown", newJBool(HonorCooldown))
+  add(query_613095, "Version", newJString(Version))
+  result = call_613094.call(nil, query_613095, nil, nil, nil)
 
-var getSetDesiredCapacity* = Call_GetSetDesiredCapacity_613076(
+var getSetDesiredCapacity* = Call_GetSetDesiredCapacity_613078(
     name: "getSetDesiredCapacity", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com", route: "/#Action=SetDesiredCapacity",
-    validator: validate_GetSetDesiredCapacity_613077, base: "/",
-    url: url_GetSetDesiredCapacity_613078, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSetDesiredCapacity_613079, base: "/",
+    url: url_GetSetDesiredCapacity_613080, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSetInstanceHealth_613131 = ref object of OpenApiRestCall_610658
-proc url_PostSetInstanceHealth_613133(protocol: Scheme; host: string; base: string;
+  Call_PostSetInstanceHealth_613133 = ref object of OpenApiRestCall_610658
+proc url_PostSetInstanceHealth_613135(protocol: Scheme; host: string; base: string;
                                      route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -15555,7 +15573,7 @@ proc url_PostSetInstanceHealth_613133(protocol: Scheme; host: string; base: stri
   else:
     result.path = base & route
 
-proc validate_PostSetInstanceHealth_613132(path: JsonNode; query: JsonNode;
+proc validate_PostSetInstanceHealth_613134(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the health status of the specified instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html">Health Checks for Auto Scaling Instances</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -15567,16 +15585,16 @@ proc validate_PostSetInstanceHealth_613132(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613134 = query.getOrDefault("Action")
-  valid_613134 = validateParameter(valid_613134, JString, required = true,
+  var valid_613136 = query.getOrDefault("Action")
+  valid_613136 = validateParameter(valid_613136, JString, required = true,
                                  default = newJString("SetInstanceHealth"))
-  if valid_613134 != nil:
-    section.add "Action", valid_613134
-  var valid_613135 = query.getOrDefault("Version")
-  valid_613135 = validateParameter(valid_613135, JString, required = true,
+  if valid_613136 != nil:
+    section.add "Action", valid_613136
+  var valid_613137 = query.getOrDefault("Version")
+  valid_613137 = validateParameter(valid_613137, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_613135 != nil:
-    section.add "Version", valid_613135
+  if valid_613137 != nil:
+    section.add "Version", valid_613137
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -15587,41 +15605,41 @@ proc validate_PostSetInstanceHealth_613132(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613136 = header.getOrDefault("X-Amz-Signature")
-  valid_613136 = validateParameter(valid_613136, JString, required = false,
-                                 default = nil)
-  if valid_613136 != nil:
-    section.add "X-Amz-Signature", valid_613136
-  var valid_613137 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613137 = validateParameter(valid_613137, JString, required = false,
-                                 default = nil)
-  if valid_613137 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613137
-  var valid_613138 = header.getOrDefault("X-Amz-Date")
+  var valid_613138 = header.getOrDefault("X-Amz-Signature")
   valid_613138 = validateParameter(valid_613138, JString, required = false,
                                  default = nil)
   if valid_613138 != nil:
-    section.add "X-Amz-Date", valid_613138
-  var valid_613139 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613138
+  var valid_613139 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613139 = validateParameter(valid_613139, JString, required = false,
                                  default = nil)
   if valid_613139 != nil:
-    section.add "X-Amz-Credential", valid_613139
-  var valid_613140 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613139
+  var valid_613140 = header.getOrDefault("X-Amz-Date")
   valid_613140 = validateParameter(valid_613140, JString, required = false,
                                  default = nil)
   if valid_613140 != nil:
-    section.add "X-Amz-Security-Token", valid_613140
-  var valid_613141 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613140
+  var valid_613141 = header.getOrDefault("X-Amz-Credential")
   valid_613141 = validateParameter(valid_613141, JString, required = false,
                                  default = nil)
   if valid_613141 != nil:
-    section.add "X-Amz-Algorithm", valid_613141
-  var valid_613142 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613141
+  var valid_613142 = header.getOrDefault("X-Amz-Security-Token")
   valid_613142 = validateParameter(valid_613142, JString, required = false,
                                  default = nil)
   if valid_613142 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613142
+    section.add "X-Amz-Security-Token", valid_613142
+  var valid_613143 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613143 = validateParameter(valid_613143, JString, required = false,
+                                 default = nil)
+  if valid_613143 != nil:
+    section.add "X-Amz-Algorithm", valid_613143
+  var valid_613144 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613144 = validateParameter(valid_613144, JString, required = false,
+                                 default = nil)
+  if valid_613144 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613144
   result.add "header", section
   ## parameters in `formData` object:
   ##   ShouldRespectGracePeriod: JBool
@@ -15631,40 +15649,40 @@ proc validate_PostSetInstanceHealth_613132(path: JsonNode; query: JsonNode;
   ##   InstanceId: JString (required)
   ##             : The ID of the instance.
   section = newJObject()
-  var valid_613143 = formData.getOrDefault("ShouldRespectGracePeriod")
-  valid_613143 = validateParameter(valid_613143, JBool, required = false, default = nil)
-  if valid_613143 != nil:
-    section.add "ShouldRespectGracePeriod", valid_613143
+  var valid_613145 = formData.getOrDefault("ShouldRespectGracePeriod")
+  valid_613145 = validateParameter(valid_613145, JBool, required = false, default = nil)
+  if valid_613145 != nil:
+    section.add "ShouldRespectGracePeriod", valid_613145
   assert formData != nil,
         "formData argument is necessary due to required `HealthStatus` field"
-  var valid_613144 = formData.getOrDefault("HealthStatus")
-  valid_613144 = validateParameter(valid_613144, JString, required = true,
+  var valid_613146 = formData.getOrDefault("HealthStatus")
+  valid_613146 = validateParameter(valid_613146, JString, required = true,
                                  default = nil)
-  if valid_613144 != nil:
-    section.add "HealthStatus", valid_613144
-  var valid_613145 = formData.getOrDefault("InstanceId")
-  valid_613145 = validateParameter(valid_613145, JString, required = true,
+  if valid_613146 != nil:
+    section.add "HealthStatus", valid_613146
+  var valid_613147 = formData.getOrDefault("InstanceId")
+  valid_613147 = validateParameter(valid_613147, JString, required = true,
                                  default = nil)
-  if valid_613145 != nil:
-    section.add "InstanceId", valid_613145
+  if valid_613147 != nil:
+    section.add "InstanceId", valid_613147
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613146: Call_PostSetInstanceHealth_613131; path: JsonNode;
+proc call*(call_613148: Call_PostSetInstanceHealth_613133; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the health status of the specified instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html">Health Checks for Auto Scaling Instances</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613146.validator(path, query, header, formData, body)
-  let scheme = call_613146.pickScheme
+  let valid = call_613148.validator(path, query, header, formData, body)
+  let scheme = call_613148.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613146.url(scheme.get, call_613146.host, call_613146.base,
-                         call_613146.route, valid.getOrDefault("path"),
+  let url = call_613148.url(scheme.get, call_613148.host, call_613148.base,
+                         call_613148.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613146, url, valid)
+  result = atozHook(call_613148, url, valid)
 
-proc call*(call_613147: Call_PostSetInstanceHealth_613131; HealthStatus: string;
+proc call*(call_613149: Call_PostSetInstanceHealth_613133; HealthStatus: string;
           InstanceId: string; ShouldRespectGracePeriod: bool = false;
           Action: string = "SetInstanceHealth"; Version: string = "2011-01-01"): Recallable =
   ## postSetInstanceHealth
@@ -15677,24 +15695,24 @@ proc call*(call_613147: Call_PostSetInstanceHealth_613131; HealthStatus: string;
   ##             : The ID of the instance.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613148 = newJObject()
-  var formData_613149 = newJObject()
-  add(formData_613149, "ShouldRespectGracePeriod",
+  var query_613150 = newJObject()
+  var formData_613151 = newJObject()
+  add(formData_613151, "ShouldRespectGracePeriod",
       newJBool(ShouldRespectGracePeriod))
-  add(formData_613149, "HealthStatus", newJString(HealthStatus))
-  add(formData_613149, "InstanceId", newJString(InstanceId))
-  add(query_613148, "Action", newJString(Action))
-  add(query_613148, "Version", newJString(Version))
-  result = call_613147.call(nil, query_613148, nil, formData_613149, nil)
+  add(formData_613151, "HealthStatus", newJString(HealthStatus))
+  add(formData_613151, "InstanceId", newJString(InstanceId))
+  add(query_613150, "Action", newJString(Action))
+  add(query_613150, "Version", newJString(Version))
+  result = call_613149.call(nil, query_613150, nil, formData_613151, nil)
 
-var postSetInstanceHealth* = Call_PostSetInstanceHealth_613131(
+var postSetInstanceHealth* = Call_PostSetInstanceHealth_613133(
     name: "postSetInstanceHealth", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#Action=SetInstanceHealth",
-    validator: validate_PostSetInstanceHealth_613132, base: "/",
-    url: url_PostSetInstanceHealth_613133, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostSetInstanceHealth_613134, base: "/",
+    url: url_PostSetInstanceHealth_613135, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSetInstanceHealth_613113 = ref object of OpenApiRestCall_610658
-proc url_GetSetInstanceHealth_613115(protocol: Scheme; host: string; base: string;
+  Call_GetSetInstanceHealth_613115 = ref object of OpenApiRestCall_610658
+proc url_GetSetInstanceHealth_613117(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -15704,7 +15722,7 @@ proc url_GetSetInstanceHealth_613115(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_GetSetInstanceHealth_613114(path: JsonNode; query: JsonNode;
+proc validate_GetSetInstanceHealth_613116(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Sets the health status of the specified instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html">Health Checks for Auto Scaling Instances</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -15722,32 +15740,32 @@ proc validate_GetSetInstanceHealth_613114(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613116 = query.getOrDefault("ShouldRespectGracePeriod")
-  valid_613116 = validateParameter(valid_613116, JBool, required = false, default = nil)
-  if valid_613116 != nil:
-    section.add "ShouldRespectGracePeriod", valid_613116
+  var valid_613118 = query.getOrDefault("ShouldRespectGracePeriod")
+  valid_613118 = validateParameter(valid_613118, JBool, required = false, default = nil)
+  if valid_613118 != nil:
+    section.add "ShouldRespectGracePeriod", valid_613118
   assert query != nil,
         "query argument is necessary due to required `InstanceId` field"
-  var valid_613117 = query.getOrDefault("InstanceId")
-  valid_613117 = validateParameter(valid_613117, JString, required = true,
-                                 default = nil)
-  if valid_613117 != nil:
-    section.add "InstanceId", valid_613117
-  var valid_613118 = query.getOrDefault("HealthStatus")
-  valid_613118 = validateParameter(valid_613118, JString, required = true,
-                                 default = nil)
-  if valid_613118 != nil:
-    section.add "HealthStatus", valid_613118
-  var valid_613119 = query.getOrDefault("Action")
+  var valid_613119 = query.getOrDefault("InstanceId")
   valid_613119 = validateParameter(valid_613119, JString, required = true,
-                                 default = newJString("SetInstanceHealth"))
+                                 default = nil)
   if valid_613119 != nil:
-    section.add "Action", valid_613119
-  var valid_613120 = query.getOrDefault("Version")
+    section.add "InstanceId", valid_613119
+  var valid_613120 = query.getOrDefault("HealthStatus")
   valid_613120 = validateParameter(valid_613120, JString, required = true,
-                                 default = newJString("2011-01-01"))
+                                 default = nil)
   if valid_613120 != nil:
-    section.add "Version", valid_613120
+    section.add "HealthStatus", valid_613120
+  var valid_613121 = query.getOrDefault("Action")
+  valid_613121 = validateParameter(valid_613121, JString, required = true,
+                                 default = newJString("SetInstanceHealth"))
+  if valid_613121 != nil:
+    section.add "Action", valid_613121
+  var valid_613122 = query.getOrDefault("Version")
+  valid_613122 = validateParameter(valid_613122, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_613122 != nil:
+    section.add "Version", valid_613122
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -15758,61 +15776,61 @@ proc validate_GetSetInstanceHealth_613114(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613121 = header.getOrDefault("X-Amz-Signature")
-  valid_613121 = validateParameter(valid_613121, JString, required = false,
-                                 default = nil)
-  if valid_613121 != nil:
-    section.add "X-Amz-Signature", valid_613121
-  var valid_613122 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613122 = validateParameter(valid_613122, JString, required = false,
-                                 default = nil)
-  if valid_613122 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613122
-  var valid_613123 = header.getOrDefault("X-Amz-Date")
+  var valid_613123 = header.getOrDefault("X-Amz-Signature")
   valid_613123 = validateParameter(valid_613123, JString, required = false,
                                  default = nil)
   if valid_613123 != nil:
-    section.add "X-Amz-Date", valid_613123
-  var valid_613124 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613123
+  var valid_613124 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613124 = validateParameter(valid_613124, JString, required = false,
                                  default = nil)
   if valid_613124 != nil:
-    section.add "X-Amz-Credential", valid_613124
-  var valid_613125 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613124
+  var valid_613125 = header.getOrDefault("X-Amz-Date")
   valid_613125 = validateParameter(valid_613125, JString, required = false,
                                  default = nil)
   if valid_613125 != nil:
-    section.add "X-Amz-Security-Token", valid_613125
-  var valid_613126 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613125
+  var valid_613126 = header.getOrDefault("X-Amz-Credential")
   valid_613126 = validateParameter(valid_613126, JString, required = false,
                                  default = nil)
   if valid_613126 != nil:
-    section.add "X-Amz-Algorithm", valid_613126
-  var valid_613127 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613126
+  var valid_613127 = header.getOrDefault("X-Amz-Security-Token")
   valid_613127 = validateParameter(valid_613127, JString, required = false,
                                  default = nil)
   if valid_613127 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613127
+    section.add "X-Amz-Security-Token", valid_613127
+  var valid_613128 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613128 = validateParameter(valid_613128, JString, required = false,
+                                 default = nil)
+  if valid_613128 != nil:
+    section.add "X-Amz-Algorithm", valid_613128
+  var valid_613129 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613129 = validateParameter(valid_613129, JString, required = false,
+                                 default = nil)
+  if valid_613129 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613129
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613128: Call_GetSetInstanceHealth_613113; path: JsonNode;
+proc call*(call_613130: Call_GetSetInstanceHealth_613115; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Sets the health status of the specified instance.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/healthcheck.html">Health Checks for Auto Scaling Instances</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613128.validator(path, query, header, formData, body)
-  let scheme = call_613128.pickScheme
+  let valid = call_613130.validator(path, query, header, formData, body)
+  let scheme = call_613130.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613128.url(scheme.get, call_613128.host, call_613128.base,
-                         call_613128.route, valid.getOrDefault("path"),
+  let url = call_613130.url(scheme.get, call_613130.host, call_613130.base,
+                         call_613130.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613128, url, valid)
+  result = atozHook(call_613130, url, valid)
 
-proc call*(call_613129: Call_GetSetInstanceHealth_613113; InstanceId: string;
+proc call*(call_613131: Call_GetSetInstanceHealth_613115; InstanceId: string;
           HealthStatus: string; ShouldRespectGracePeriod: bool = false;
           Action: string = "SetInstanceHealth"; Version: string = "2011-01-01"): Recallable =
   ## getSetInstanceHealth
@@ -15825,22 +15843,22 @@ proc call*(call_613129: Call_GetSetInstanceHealth_613113; InstanceId: string;
   ##               : The health status of the instance. Set to <code>Healthy</code> to have the instance remain in service. Set to <code>Unhealthy</code> to have the instance be out of service. Amazon EC2 Auto Scaling terminates and replaces the unhealthy instance.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613130 = newJObject()
-  add(query_613130, "ShouldRespectGracePeriod", newJBool(ShouldRespectGracePeriod))
-  add(query_613130, "InstanceId", newJString(InstanceId))
-  add(query_613130, "HealthStatus", newJString(HealthStatus))
-  add(query_613130, "Action", newJString(Action))
-  add(query_613130, "Version", newJString(Version))
-  result = call_613129.call(nil, query_613130, nil, nil, nil)
+  var query_613132 = newJObject()
+  add(query_613132, "ShouldRespectGracePeriod", newJBool(ShouldRespectGracePeriod))
+  add(query_613132, "InstanceId", newJString(InstanceId))
+  add(query_613132, "HealthStatus", newJString(HealthStatus))
+  add(query_613132, "Action", newJString(Action))
+  add(query_613132, "Version", newJString(Version))
+  result = call_613131.call(nil, query_613132, nil, nil, nil)
 
-var getSetInstanceHealth* = Call_GetSetInstanceHealth_613113(
+var getSetInstanceHealth* = Call_GetSetInstanceHealth_613115(
     name: "getSetInstanceHealth", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com", route: "/#Action=SetInstanceHealth",
-    validator: validate_GetSetInstanceHealth_613114, base: "/",
-    url: url_GetSetInstanceHealth_613115, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSetInstanceHealth_613116, base: "/",
+    url: url_GetSetInstanceHealth_613117, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSetInstanceProtection_613168 = ref object of OpenApiRestCall_610658
-proc url_PostSetInstanceProtection_613170(protocol: Scheme; host: string;
+  Call_PostSetInstanceProtection_613170 = ref object of OpenApiRestCall_610658
+proc url_PostSetInstanceProtection_613172(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -15850,7 +15868,7 @@ proc url_PostSetInstanceProtection_613170(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_PostSetInstanceProtection_613169(path: JsonNode; query: JsonNode;
+proc validate_PostSetInstanceProtection_613171(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the instance protection settings of the specified instances.</p> <p>For more information about preventing instances that are part of an Auto Scaling group from terminating on scale in, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection">Instance Protection</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -15862,16 +15880,16 @@ proc validate_PostSetInstanceProtection_613169(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613171 = query.getOrDefault("Action")
-  valid_613171 = validateParameter(valid_613171, JString, required = true,
+  var valid_613173 = query.getOrDefault("Action")
+  valid_613173 = validateParameter(valid_613173, JString, required = true,
                                  default = newJString("SetInstanceProtection"))
-  if valid_613171 != nil:
-    section.add "Action", valid_613171
-  var valid_613172 = query.getOrDefault("Version")
-  valid_613172 = validateParameter(valid_613172, JString, required = true,
+  if valid_613173 != nil:
+    section.add "Action", valid_613173
+  var valid_613174 = query.getOrDefault("Version")
+  valid_613174 = validateParameter(valid_613174, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_613172 != nil:
-    section.add "Version", valid_613172
+  if valid_613174 != nil:
+    section.add "Version", valid_613174
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -15882,41 +15900,41 @@ proc validate_PostSetInstanceProtection_613169(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613173 = header.getOrDefault("X-Amz-Signature")
-  valid_613173 = validateParameter(valid_613173, JString, required = false,
-                                 default = nil)
-  if valid_613173 != nil:
-    section.add "X-Amz-Signature", valid_613173
-  var valid_613174 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613174 = validateParameter(valid_613174, JString, required = false,
-                                 default = nil)
-  if valid_613174 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613174
-  var valid_613175 = header.getOrDefault("X-Amz-Date")
+  var valid_613175 = header.getOrDefault("X-Amz-Signature")
   valid_613175 = validateParameter(valid_613175, JString, required = false,
                                  default = nil)
   if valid_613175 != nil:
-    section.add "X-Amz-Date", valid_613175
-  var valid_613176 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613175
+  var valid_613176 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613176 = validateParameter(valid_613176, JString, required = false,
                                  default = nil)
   if valid_613176 != nil:
-    section.add "X-Amz-Credential", valid_613176
-  var valid_613177 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613176
+  var valid_613177 = header.getOrDefault("X-Amz-Date")
   valid_613177 = validateParameter(valid_613177, JString, required = false,
                                  default = nil)
   if valid_613177 != nil:
-    section.add "X-Amz-Security-Token", valid_613177
-  var valid_613178 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613177
+  var valid_613178 = header.getOrDefault("X-Amz-Credential")
   valid_613178 = validateParameter(valid_613178, JString, required = false,
                                  default = nil)
   if valid_613178 != nil:
-    section.add "X-Amz-Algorithm", valid_613178
-  var valid_613179 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613178
+  var valid_613179 = header.getOrDefault("X-Amz-Security-Token")
   valid_613179 = validateParameter(valid_613179, JString, required = false,
                                  default = nil)
   if valid_613179 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613179
+    section.add "X-Amz-Security-Token", valid_613179
+  var valid_613180 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613180 = validateParameter(valid_613180, JString, required = false,
+                                 default = nil)
+  if valid_613180 != nil:
+    section.add "X-Amz-Algorithm", valid_613180
+  var valid_613181 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613181 = validateParameter(valid_613181, JString, required = false,
+                                 default = nil)
+  if valid_613181 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613181
   result.add "header", section
   ## parameters in `formData` object:
   ##   AutoScalingGroupName: JString (required)
@@ -15927,37 +15945,37 @@ proc validate_PostSetInstanceProtection_613169(path: JsonNode; query: JsonNode;
   ##              : One or more instance IDs.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613180 = formData.getOrDefault("AutoScalingGroupName")
-  valid_613180 = validateParameter(valid_613180, JString, required = true,
+  var valid_613182 = formData.getOrDefault("AutoScalingGroupName")
+  valid_613182 = validateParameter(valid_613182, JString, required = true,
                                  default = nil)
-  if valid_613180 != nil:
-    section.add "AutoScalingGroupName", valid_613180
-  var valid_613181 = formData.getOrDefault("ProtectedFromScaleIn")
-  valid_613181 = validateParameter(valid_613181, JBool, required = true, default = nil)
-  if valid_613181 != nil:
-    section.add "ProtectedFromScaleIn", valid_613181
-  var valid_613182 = formData.getOrDefault("InstanceIds")
-  valid_613182 = validateParameter(valid_613182, JArray, required = true, default = nil)
   if valid_613182 != nil:
-    section.add "InstanceIds", valid_613182
+    section.add "AutoScalingGroupName", valid_613182
+  var valid_613183 = formData.getOrDefault("ProtectedFromScaleIn")
+  valid_613183 = validateParameter(valid_613183, JBool, required = true, default = nil)
+  if valid_613183 != nil:
+    section.add "ProtectedFromScaleIn", valid_613183
+  var valid_613184 = formData.getOrDefault("InstanceIds")
+  valid_613184 = validateParameter(valid_613184, JArray, required = true, default = nil)
+  if valid_613184 != nil:
+    section.add "InstanceIds", valid_613184
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613183: Call_PostSetInstanceProtection_613168; path: JsonNode;
+proc call*(call_613185: Call_PostSetInstanceProtection_613170; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the instance protection settings of the specified instances.</p> <p>For more information about preventing instances that are part of an Auto Scaling group from terminating on scale in, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection">Instance Protection</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613183.validator(path, query, header, formData, body)
-  let scheme = call_613183.pickScheme
+  let valid = call_613185.validator(path, query, header, formData, body)
+  let scheme = call_613185.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613183.url(scheme.get, call_613183.host, call_613183.base,
-                         call_613183.route, valid.getOrDefault("path"),
+  let url = call_613185.url(scheme.get, call_613185.host, call_613185.base,
+                         call_613185.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613183, url, valid)
+  result = atozHook(call_613185, url, valid)
 
-proc call*(call_613184: Call_PostSetInstanceProtection_613168;
+proc call*(call_613186: Call_PostSetInstanceProtection_613170;
           AutoScalingGroupName: string; ProtectedFromScaleIn: bool;
           InstanceIds: JsonNode; Action: string = "SetInstanceProtection";
           Version: string = "2011-01-01"): Recallable =
@@ -15971,25 +15989,25 @@ proc call*(call_613184: Call_PostSetInstanceProtection_613168;
   ##              : One or more instance IDs.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613185 = newJObject()
-  var formData_613186 = newJObject()
-  add(formData_613186, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(formData_613186, "ProtectedFromScaleIn", newJBool(ProtectedFromScaleIn))
+  var query_613187 = newJObject()
+  var formData_613188 = newJObject()
+  add(formData_613188, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(formData_613188, "ProtectedFromScaleIn", newJBool(ProtectedFromScaleIn))
   if InstanceIds != nil:
-    formData_613186.add "InstanceIds", InstanceIds
-  add(query_613185, "Action", newJString(Action))
-  add(query_613185, "Version", newJString(Version))
-  result = call_613184.call(nil, query_613185, nil, formData_613186, nil)
+    formData_613188.add "InstanceIds", InstanceIds
+  add(query_613187, "Action", newJString(Action))
+  add(query_613187, "Version", newJString(Version))
+  result = call_613186.call(nil, query_613187, nil, formData_613188, nil)
 
-var postSetInstanceProtection* = Call_PostSetInstanceProtection_613168(
+var postSetInstanceProtection* = Call_PostSetInstanceProtection_613170(
     name: "postSetInstanceProtection", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#Action=SetInstanceProtection",
-    validator: validate_PostSetInstanceProtection_613169, base: "/",
-    url: url_PostSetInstanceProtection_613170,
+    validator: validate_PostSetInstanceProtection_613171, base: "/",
+    url: url_PostSetInstanceProtection_613172,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSetInstanceProtection_613150 = ref object of OpenApiRestCall_610658
-proc url_GetSetInstanceProtection_613152(protocol: Scheme; host: string;
+  Call_GetSetInstanceProtection_613152 = ref object of OpenApiRestCall_610658
+proc url_GetSetInstanceProtection_613154(protocol: Scheme; host: string;
                                         base: string; route: string; path: JsonNode;
                                         query: JsonNode): Uri =
   result.scheme = $protocol
@@ -16000,7 +16018,7 @@ proc url_GetSetInstanceProtection_613152(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_GetSetInstanceProtection_613151(path: JsonNode; query: JsonNode;
+proc validate_GetSetInstanceProtection_613153(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the instance protection settings of the specified instances.</p> <p>For more information about preventing instances that are part of an Auto Scaling group from terminating on scale in, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection">Instance Protection</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -16020,29 +16038,29 @@ proc validate_GetSetInstanceProtection_613151(path: JsonNode; query: JsonNode;
   section = newJObject()
   assert query != nil,
         "query argument is necessary due to required `InstanceIds` field"
-  var valid_613153 = query.getOrDefault("InstanceIds")
-  valid_613153 = validateParameter(valid_613153, JArray, required = true, default = nil)
-  if valid_613153 != nil:
-    section.add "InstanceIds", valid_613153
-  var valid_613154 = query.getOrDefault("AutoScalingGroupName")
-  valid_613154 = validateParameter(valid_613154, JString, required = true,
-                                 default = nil)
-  if valid_613154 != nil:
-    section.add "AutoScalingGroupName", valid_613154
-  var valid_613155 = query.getOrDefault("Action")
-  valid_613155 = validateParameter(valid_613155, JString, required = true,
-                                 default = newJString("SetInstanceProtection"))
+  var valid_613155 = query.getOrDefault("InstanceIds")
+  valid_613155 = validateParameter(valid_613155, JArray, required = true, default = nil)
   if valid_613155 != nil:
-    section.add "Action", valid_613155
-  var valid_613156 = query.getOrDefault("ProtectedFromScaleIn")
-  valid_613156 = validateParameter(valid_613156, JBool, required = true, default = nil)
+    section.add "InstanceIds", valid_613155
+  var valid_613156 = query.getOrDefault("AutoScalingGroupName")
+  valid_613156 = validateParameter(valid_613156, JString, required = true,
+                                 default = nil)
   if valid_613156 != nil:
-    section.add "ProtectedFromScaleIn", valid_613156
-  var valid_613157 = query.getOrDefault("Version")
+    section.add "AutoScalingGroupName", valid_613156
+  var valid_613157 = query.getOrDefault("Action")
   valid_613157 = validateParameter(valid_613157, JString, required = true,
-                                 default = newJString("2011-01-01"))
+                                 default = newJString("SetInstanceProtection"))
   if valid_613157 != nil:
-    section.add "Version", valid_613157
+    section.add "Action", valid_613157
+  var valid_613158 = query.getOrDefault("ProtectedFromScaleIn")
+  valid_613158 = validateParameter(valid_613158, JBool, required = true, default = nil)
+  if valid_613158 != nil:
+    section.add "ProtectedFromScaleIn", valid_613158
+  var valid_613159 = query.getOrDefault("Version")
+  valid_613159 = validateParameter(valid_613159, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_613159 != nil:
+    section.add "Version", valid_613159
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -16053,61 +16071,61 @@ proc validate_GetSetInstanceProtection_613151(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613158 = header.getOrDefault("X-Amz-Signature")
-  valid_613158 = validateParameter(valid_613158, JString, required = false,
-                                 default = nil)
-  if valid_613158 != nil:
-    section.add "X-Amz-Signature", valid_613158
-  var valid_613159 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613159 = validateParameter(valid_613159, JString, required = false,
-                                 default = nil)
-  if valid_613159 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613159
-  var valid_613160 = header.getOrDefault("X-Amz-Date")
+  var valid_613160 = header.getOrDefault("X-Amz-Signature")
   valid_613160 = validateParameter(valid_613160, JString, required = false,
                                  default = nil)
   if valid_613160 != nil:
-    section.add "X-Amz-Date", valid_613160
-  var valid_613161 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613160
+  var valid_613161 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613161 = validateParameter(valid_613161, JString, required = false,
                                  default = nil)
   if valid_613161 != nil:
-    section.add "X-Amz-Credential", valid_613161
-  var valid_613162 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613161
+  var valid_613162 = header.getOrDefault("X-Amz-Date")
   valid_613162 = validateParameter(valid_613162, JString, required = false,
                                  default = nil)
   if valid_613162 != nil:
-    section.add "X-Amz-Security-Token", valid_613162
-  var valid_613163 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613162
+  var valid_613163 = header.getOrDefault("X-Amz-Credential")
   valid_613163 = validateParameter(valid_613163, JString, required = false,
                                  default = nil)
   if valid_613163 != nil:
-    section.add "X-Amz-Algorithm", valid_613163
-  var valid_613164 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613163
+  var valid_613164 = header.getOrDefault("X-Amz-Security-Token")
   valid_613164 = validateParameter(valid_613164, JString, required = false,
                                  default = nil)
   if valid_613164 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613164
+    section.add "X-Amz-Security-Token", valid_613164
+  var valid_613165 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613165 = validateParameter(valid_613165, JString, required = false,
+                                 default = nil)
+  if valid_613165 != nil:
+    section.add "X-Amz-Algorithm", valid_613165
+  var valid_613166 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613166 = validateParameter(valid_613166, JString, required = false,
+                                 default = nil)
+  if valid_613166 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613166
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613165: Call_GetSetInstanceProtection_613150; path: JsonNode;
+proc call*(call_613167: Call_GetSetInstanceProtection_613152; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the instance protection settings of the specified instances.</p> <p>For more information about preventing instances that are part of an Auto Scaling group from terminating on scale in, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection">Instance Protection</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613165.validator(path, query, header, formData, body)
-  let scheme = call_613165.pickScheme
+  let valid = call_613167.validator(path, query, header, formData, body)
+  let scheme = call_613167.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613165.url(scheme.get, call_613165.host, call_613165.base,
-                         call_613165.route, valid.getOrDefault("path"),
+  let url = call_613167.url(scheme.get, call_613167.host, call_613167.base,
+                         call_613167.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613165, url, valid)
+  result = atozHook(call_613167, url, valid)
 
-proc call*(call_613166: Call_GetSetInstanceProtection_613150;
+proc call*(call_613168: Call_GetSetInstanceProtection_613152;
           InstanceIds: JsonNode; AutoScalingGroupName: string;
           ProtectedFromScaleIn: bool; Action: string = "SetInstanceProtection";
           Version: string = "2011-01-01"): Recallable =
@@ -16121,23 +16139,23 @@ proc call*(call_613166: Call_GetSetInstanceProtection_613150;
   ##   ProtectedFromScaleIn: bool (required)
   ##                       : Indicates whether the instance is protected from termination by Amazon EC2 Auto Scaling when scaling in.
   ##   Version: string (required)
-  var query_613167 = newJObject()
+  var query_613169 = newJObject()
   if InstanceIds != nil:
-    query_613167.add "InstanceIds", InstanceIds
-  add(query_613167, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_613167, "Action", newJString(Action))
-  add(query_613167, "ProtectedFromScaleIn", newJBool(ProtectedFromScaleIn))
-  add(query_613167, "Version", newJString(Version))
-  result = call_613166.call(nil, query_613167, nil, nil, nil)
+    query_613169.add "InstanceIds", InstanceIds
+  add(query_613169, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_613169, "Action", newJString(Action))
+  add(query_613169, "ProtectedFromScaleIn", newJBool(ProtectedFromScaleIn))
+  add(query_613169, "Version", newJString(Version))
+  result = call_613168.call(nil, query_613169, nil, nil, nil)
 
-var getSetInstanceProtection* = Call_GetSetInstanceProtection_613150(
+var getSetInstanceProtection* = Call_GetSetInstanceProtection_613152(
     name: "getSetInstanceProtection", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com", route: "/#Action=SetInstanceProtection",
-    validator: validate_GetSetInstanceProtection_613151, base: "/",
-    url: url_GetSetInstanceProtection_613152, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSetInstanceProtection_613153, base: "/",
+    url: url_GetSetInstanceProtection_613154, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostSuspendProcesses_613204 = ref object of OpenApiRestCall_610658
-proc url_PostSuspendProcesses_613206(protocol: Scheme; host: string; base: string;
+  Call_PostSuspendProcesses_613206 = ref object of OpenApiRestCall_610658
+proc url_PostSuspendProcesses_613208(protocol: Scheme; host: string; base: string;
                                     route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -16147,7 +16165,7 @@ proc url_PostSuspendProcesses_613206(protocol: Scheme; host: string; base: strin
   else:
     result.path = base & route
 
-proc validate_PostSuspendProcesses_613205(path: JsonNode; query: JsonNode;
+proc validate_PostSuspendProcesses_613207(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Suspends the specified automatic scaling processes, or all processes, for the specified Auto Scaling group.</p> <p>If you suspend either the <code>Launch</code> or <code>Terminate</code> process types, it can prevent other process types from functioning properly.</p> <p>To resume processes that have been suspended, use <a>ResumeProcesses</a>.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html">Suspending and Resuming Scaling Processes</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
@@ -16159,16 +16177,16 @@ proc validate_PostSuspendProcesses_613205(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613207 = query.getOrDefault("Action")
-  valid_613207 = validateParameter(valid_613207, JString, required = true,
+  var valid_613209 = query.getOrDefault("Action")
+  valid_613209 = validateParameter(valid_613209, JString, required = true,
                                  default = newJString("SuspendProcesses"))
-  if valid_613207 != nil:
-    section.add "Action", valid_613207
-  var valid_613208 = query.getOrDefault("Version")
-  valid_613208 = validateParameter(valid_613208, JString, required = true,
+  if valid_613209 != nil:
+    section.add "Action", valid_613209
+  var valid_613210 = query.getOrDefault("Version")
+  valid_613210 = validateParameter(valid_613210, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_613208 != nil:
-    section.add "Version", valid_613208
+  if valid_613210 != nil:
+    section.add "Version", valid_613210
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -16179,41 +16197,41 @@ proc validate_PostSuspendProcesses_613205(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613209 = header.getOrDefault("X-Amz-Signature")
-  valid_613209 = validateParameter(valid_613209, JString, required = false,
-                                 default = nil)
-  if valid_613209 != nil:
-    section.add "X-Amz-Signature", valid_613209
-  var valid_613210 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613210 = validateParameter(valid_613210, JString, required = false,
-                                 default = nil)
-  if valid_613210 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613210
-  var valid_613211 = header.getOrDefault("X-Amz-Date")
+  var valid_613211 = header.getOrDefault("X-Amz-Signature")
   valid_613211 = validateParameter(valid_613211, JString, required = false,
                                  default = nil)
   if valid_613211 != nil:
-    section.add "X-Amz-Date", valid_613211
-  var valid_613212 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613211
+  var valid_613212 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613212 = validateParameter(valid_613212, JString, required = false,
                                  default = nil)
   if valid_613212 != nil:
-    section.add "X-Amz-Credential", valid_613212
-  var valid_613213 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613212
+  var valid_613213 = header.getOrDefault("X-Amz-Date")
   valid_613213 = validateParameter(valid_613213, JString, required = false,
                                  default = nil)
   if valid_613213 != nil:
-    section.add "X-Amz-Security-Token", valid_613213
-  var valid_613214 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613213
+  var valid_613214 = header.getOrDefault("X-Amz-Credential")
   valid_613214 = validateParameter(valid_613214, JString, required = false,
                                  default = nil)
   if valid_613214 != nil:
-    section.add "X-Amz-Algorithm", valid_613214
-  var valid_613215 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613214
+  var valid_613215 = header.getOrDefault("X-Amz-Security-Token")
   valid_613215 = validateParameter(valid_613215, JString, required = false,
                                  default = nil)
   if valid_613215 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613215
+    section.add "X-Amz-Security-Token", valid_613215
+  var valid_613216 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613216 = validateParameter(valid_613216, JString, required = false,
+                                 default = nil)
+  if valid_613216 != nil:
+    section.add "X-Amz-Algorithm", valid_613216
+  var valid_613217 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613217 = validateParameter(valid_613217, JString, required = false,
+                                 default = nil)
+  if valid_613217 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613217
   result.add "header", section
   ## parameters in `formData` object:
   ##   AutoScalingGroupName: JString (required)
@@ -16222,34 +16240,34 @@ proc validate_PostSuspendProcesses_613205(path: JsonNode; query: JsonNode;
   ##                   : <p>One or more of the following processes. If you omit this parameter, all processes are specified.</p> <ul> <li> <p> <code>Launch</code> </p> </li> <li> <p> <code>Terminate</code> </p> </li> <li> <p> <code>HealthCheck</code> </p> </li> <li> <p> <code>ReplaceUnhealthy</code> </p> </li> <li> <p> <code>AZRebalance</code> </p> </li> <li> <p> <code>AlarmNotification</code> </p> </li> <li> <p> <code>ScheduledActions</code> </p> </li> <li> <p> <code>AddToLoadBalancer</code> </p> </li> </ul>
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613216 = formData.getOrDefault("AutoScalingGroupName")
-  valid_613216 = validateParameter(valid_613216, JString, required = true,
+  var valid_613218 = formData.getOrDefault("AutoScalingGroupName")
+  valid_613218 = validateParameter(valid_613218, JString, required = true,
                                  default = nil)
-  if valid_613216 != nil:
-    section.add "AutoScalingGroupName", valid_613216
-  var valid_613217 = formData.getOrDefault("ScalingProcesses")
-  valid_613217 = validateParameter(valid_613217, JArray, required = false,
+  if valid_613218 != nil:
+    section.add "AutoScalingGroupName", valid_613218
+  var valid_613219 = formData.getOrDefault("ScalingProcesses")
+  valid_613219 = validateParameter(valid_613219, JArray, required = false,
                                  default = nil)
-  if valid_613217 != nil:
-    section.add "ScalingProcesses", valid_613217
+  if valid_613219 != nil:
+    section.add "ScalingProcesses", valid_613219
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613218: Call_PostSuspendProcesses_613204; path: JsonNode;
+proc call*(call_613220: Call_PostSuspendProcesses_613206; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Suspends the specified automatic scaling processes, or all processes, for the specified Auto Scaling group.</p> <p>If you suspend either the <code>Launch</code> or <code>Terminate</code> process types, it can prevent other process types from functioning properly.</p> <p>To resume processes that have been suspended, use <a>ResumeProcesses</a>.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html">Suspending and Resuming Scaling Processes</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613218.validator(path, query, header, formData, body)
-  let scheme = call_613218.pickScheme
+  let valid = call_613220.validator(path, query, header, formData, body)
+  let scheme = call_613220.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613218.url(scheme.get, call_613218.host, call_613218.base,
-                         call_613218.route, valid.getOrDefault("path"),
+  let url = call_613220.url(scheme.get, call_613220.host, call_613220.base,
+                         call_613220.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613218, url, valid)
+  result = atozHook(call_613220, url, valid)
 
-proc call*(call_613219: Call_PostSuspendProcesses_613204;
+proc call*(call_613221: Call_PostSuspendProcesses_613206;
           AutoScalingGroupName: string; Action: string = "SuspendProcesses";
           ScalingProcesses: JsonNode = nil; Version: string = "2011-01-01"): Recallable =
   ## postSuspendProcesses
@@ -16260,23 +16278,23 @@ proc call*(call_613219: Call_PostSuspendProcesses_613204;
   ##   ScalingProcesses: JArray
   ##                   : <p>One or more of the following processes. If you omit this parameter, all processes are specified.</p> <ul> <li> <p> <code>Launch</code> </p> </li> <li> <p> <code>Terminate</code> </p> </li> <li> <p> <code>HealthCheck</code> </p> </li> <li> <p> <code>ReplaceUnhealthy</code> </p> </li> <li> <p> <code>AZRebalance</code> </p> </li> <li> <p> <code>AlarmNotification</code> </p> </li> <li> <p> <code>ScheduledActions</code> </p> </li> <li> <p> <code>AddToLoadBalancer</code> </p> </li> </ul>
   ##   Version: string (required)
-  var query_613220 = newJObject()
-  var formData_613221 = newJObject()
-  add(formData_613221, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_613220, "Action", newJString(Action))
+  var query_613222 = newJObject()
+  var formData_613223 = newJObject()
+  add(formData_613223, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_613222, "Action", newJString(Action))
   if ScalingProcesses != nil:
-    formData_613221.add "ScalingProcesses", ScalingProcesses
-  add(query_613220, "Version", newJString(Version))
-  result = call_613219.call(nil, query_613220, nil, formData_613221, nil)
+    formData_613223.add "ScalingProcesses", ScalingProcesses
+  add(query_613222, "Version", newJString(Version))
+  result = call_613221.call(nil, query_613222, nil, formData_613223, nil)
 
-var postSuspendProcesses* = Call_PostSuspendProcesses_613204(
+var postSuspendProcesses* = Call_PostSuspendProcesses_613206(
     name: "postSuspendProcesses", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#Action=SuspendProcesses",
-    validator: validate_PostSuspendProcesses_613205, base: "/",
-    url: url_PostSuspendProcesses_613206, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_PostSuspendProcesses_613207, base: "/",
+    url: url_PostSuspendProcesses_613208, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetSuspendProcesses_613187 = ref object of OpenApiRestCall_610658
-proc url_GetSuspendProcesses_613189(protocol: Scheme; host: string; base: string;
+  Call_GetSuspendProcesses_613189 = ref object of OpenApiRestCall_610658
+proc url_GetSuspendProcesses_613191(protocol: Scheme; host: string; base: string;
                                    route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -16286,7 +16304,7 @@ proc url_GetSuspendProcesses_613189(protocol: Scheme; host: string; base: string
   else:
     result.path = base & route
 
-proc validate_GetSuspendProcesses_613188(path: JsonNode; query: JsonNode;
+proc validate_GetSuspendProcesses_613190(path: JsonNode; query: JsonNode;
                                         header: JsonNode; formData: JsonNode;
                                         body: JsonNode): JsonNode =
   ## <p>Suspends the specified automatic scaling processes, or all processes, for the specified Auto Scaling group.</p> <p>If you suspend either the <code>Launch</code> or <code>Terminate</code> process types, it can prevent other process types from functioning properly.</p> <p>To resume processes that have been suspended, use <a>ResumeProcesses</a>.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html">Suspending and Resuming Scaling Processes</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
@@ -16303,27 +16321,27 @@ proc validate_GetSuspendProcesses_613188(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613190 = query.getOrDefault("ScalingProcesses")
-  valid_613190 = validateParameter(valid_613190, JArray, required = false,
+  var valid_613192 = query.getOrDefault("ScalingProcesses")
+  valid_613192 = validateParameter(valid_613192, JArray, required = false,
                                  default = nil)
-  if valid_613190 != nil:
-    section.add "ScalingProcesses", valid_613190
-  assert query != nil, "query argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613191 = query.getOrDefault("AutoScalingGroupName")
-  valid_613191 = validateParameter(valid_613191, JString, required = true,
-                                 default = nil)
-  if valid_613191 != nil:
-    section.add "AutoScalingGroupName", valid_613191
-  var valid_613192 = query.getOrDefault("Action")
-  valid_613192 = validateParameter(valid_613192, JString, required = true,
-                                 default = newJString("SuspendProcesses"))
   if valid_613192 != nil:
-    section.add "Action", valid_613192
-  var valid_613193 = query.getOrDefault("Version")
+    section.add "ScalingProcesses", valid_613192
+  assert query != nil, "query argument is necessary due to required `AutoScalingGroupName` field"
+  var valid_613193 = query.getOrDefault("AutoScalingGroupName")
   valid_613193 = validateParameter(valid_613193, JString, required = true,
-                                 default = newJString("2011-01-01"))
+                                 default = nil)
   if valid_613193 != nil:
-    section.add "Version", valid_613193
+    section.add "AutoScalingGroupName", valid_613193
+  var valid_613194 = query.getOrDefault("Action")
+  valid_613194 = validateParameter(valid_613194, JString, required = true,
+                                 default = newJString("SuspendProcesses"))
+  if valid_613194 != nil:
+    section.add "Action", valid_613194
+  var valid_613195 = query.getOrDefault("Version")
+  valid_613195 = validateParameter(valid_613195, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_613195 != nil:
+    section.add "Version", valid_613195
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -16334,61 +16352,61 @@ proc validate_GetSuspendProcesses_613188(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613194 = header.getOrDefault("X-Amz-Signature")
-  valid_613194 = validateParameter(valid_613194, JString, required = false,
-                                 default = nil)
-  if valid_613194 != nil:
-    section.add "X-Amz-Signature", valid_613194
-  var valid_613195 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613195 = validateParameter(valid_613195, JString, required = false,
-                                 default = nil)
-  if valid_613195 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613195
-  var valid_613196 = header.getOrDefault("X-Amz-Date")
+  var valid_613196 = header.getOrDefault("X-Amz-Signature")
   valid_613196 = validateParameter(valid_613196, JString, required = false,
                                  default = nil)
   if valid_613196 != nil:
-    section.add "X-Amz-Date", valid_613196
-  var valid_613197 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613196
+  var valid_613197 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613197 = validateParameter(valid_613197, JString, required = false,
                                  default = nil)
   if valid_613197 != nil:
-    section.add "X-Amz-Credential", valid_613197
-  var valid_613198 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613197
+  var valid_613198 = header.getOrDefault("X-Amz-Date")
   valid_613198 = validateParameter(valid_613198, JString, required = false,
                                  default = nil)
   if valid_613198 != nil:
-    section.add "X-Amz-Security-Token", valid_613198
-  var valid_613199 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613198
+  var valid_613199 = header.getOrDefault("X-Amz-Credential")
   valid_613199 = validateParameter(valid_613199, JString, required = false,
                                  default = nil)
   if valid_613199 != nil:
-    section.add "X-Amz-Algorithm", valid_613199
-  var valid_613200 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613199
+  var valid_613200 = header.getOrDefault("X-Amz-Security-Token")
   valid_613200 = validateParameter(valid_613200, JString, required = false,
                                  default = nil)
   if valid_613200 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613200
+    section.add "X-Amz-Security-Token", valid_613200
+  var valid_613201 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613201 = validateParameter(valid_613201, JString, required = false,
+                                 default = nil)
+  if valid_613201 != nil:
+    section.add "X-Amz-Algorithm", valid_613201
+  var valid_613202 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613202 = validateParameter(valid_613202, JString, required = false,
+                                 default = nil)
+  if valid_613202 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613202
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613201: Call_GetSuspendProcesses_613187; path: JsonNode;
+proc call*(call_613203: Call_GetSuspendProcesses_613189; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Suspends the specified automatic scaling processes, or all processes, for the specified Auto Scaling group.</p> <p>If you suspend either the <code>Launch</code> or <code>Terminate</code> process types, it can prevent other process types from functioning properly.</p> <p>To resume processes that have been suspended, use <a>ResumeProcesses</a>.</p> <p>For more information, see <a href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-suspend-resume-processes.html">Suspending and Resuming Scaling Processes</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## 
-  let valid = call_613201.validator(path, query, header, formData, body)
-  let scheme = call_613201.pickScheme
+  let valid = call_613203.validator(path, query, header, formData, body)
+  let scheme = call_613203.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613201.url(scheme.get, call_613201.host, call_613201.base,
-                         call_613201.route, valid.getOrDefault("path"),
+  let url = call_613203.url(scheme.get, call_613203.host, call_613203.base,
+                         call_613203.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613201, url, valid)
+  result = atozHook(call_613203, url, valid)
 
-proc call*(call_613202: Call_GetSuspendProcesses_613187;
+proc call*(call_613204: Call_GetSuspendProcesses_613189;
           AutoScalingGroupName: string; ScalingProcesses: JsonNode = nil;
           Action: string = "SuspendProcesses"; Version: string = "2011-01-01"): Recallable =
   ## getSuspendProcesses
@@ -16399,22 +16417,22 @@ proc call*(call_613202: Call_GetSuspendProcesses_613187;
   ##                       : The name of the Auto Scaling group.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613203 = newJObject()
+  var query_613205 = newJObject()
   if ScalingProcesses != nil:
-    query_613203.add "ScalingProcesses", ScalingProcesses
-  add(query_613203, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_613203, "Action", newJString(Action))
-  add(query_613203, "Version", newJString(Version))
-  result = call_613202.call(nil, query_613203, nil, nil, nil)
+    query_613205.add "ScalingProcesses", ScalingProcesses
+  add(query_613205, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_613205, "Action", newJString(Action))
+  add(query_613205, "Version", newJString(Version))
+  result = call_613204.call(nil, query_613205, nil, nil, nil)
 
-var getSuspendProcesses* = Call_GetSuspendProcesses_613187(
+var getSuspendProcesses* = Call_GetSuspendProcesses_613189(
     name: "getSuspendProcesses", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com", route: "/#Action=SuspendProcesses",
-    validator: validate_GetSuspendProcesses_613188, base: "/",
-    url: url_GetSuspendProcesses_613189, schemes: {Scheme.Https, Scheme.Http})
+    validator: validate_GetSuspendProcesses_613190, base: "/",
+    url: url_GetSuspendProcesses_613191, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostTerminateInstanceInAutoScalingGroup_613239 = ref object of OpenApiRestCall_610658
-proc url_PostTerminateInstanceInAutoScalingGroup_613241(protocol: Scheme;
+  Call_PostTerminateInstanceInAutoScalingGroup_613241 = ref object of OpenApiRestCall_610658
+proc url_PostTerminateInstanceInAutoScalingGroup_613243(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -16424,7 +16442,7 @@ proc url_PostTerminateInstanceInAutoScalingGroup_613241(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_PostTerminateInstanceInAutoScalingGroup_613240(path: JsonNode;
+proc validate_PostTerminateInstanceInAutoScalingGroup_613242(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Terminates the specified instance and optionally adjusts the desired group size.</p> <p>This call simply makes a termination request. The instance is not terminated immediately.</p>
   ## 
@@ -16436,16 +16454,16 @@ proc validate_PostTerminateInstanceInAutoScalingGroup_613240(path: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613242 = query.getOrDefault("Action")
-  valid_613242 = validateParameter(valid_613242, JString, required = true, default = newJString(
+  var valid_613244 = query.getOrDefault("Action")
+  valid_613244 = validateParameter(valid_613244, JString, required = true, default = newJString(
       "TerminateInstanceInAutoScalingGroup"))
-  if valid_613242 != nil:
-    section.add "Action", valid_613242
-  var valid_613243 = query.getOrDefault("Version")
-  valid_613243 = validateParameter(valid_613243, JString, required = true,
+  if valid_613244 != nil:
+    section.add "Action", valid_613244
+  var valid_613245 = query.getOrDefault("Version")
+  valid_613245 = validateParameter(valid_613245, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_613243 != nil:
-    section.add "Version", valid_613243
+  if valid_613245 != nil:
+    section.add "Version", valid_613245
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -16456,41 +16474,41 @@ proc validate_PostTerminateInstanceInAutoScalingGroup_613240(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613244 = header.getOrDefault("X-Amz-Signature")
-  valid_613244 = validateParameter(valid_613244, JString, required = false,
-                                 default = nil)
-  if valid_613244 != nil:
-    section.add "X-Amz-Signature", valid_613244
-  var valid_613245 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613245 = validateParameter(valid_613245, JString, required = false,
-                                 default = nil)
-  if valid_613245 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613245
-  var valid_613246 = header.getOrDefault("X-Amz-Date")
+  var valid_613246 = header.getOrDefault("X-Amz-Signature")
   valid_613246 = validateParameter(valid_613246, JString, required = false,
                                  default = nil)
   if valid_613246 != nil:
-    section.add "X-Amz-Date", valid_613246
-  var valid_613247 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613246
+  var valid_613247 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613247 = validateParameter(valid_613247, JString, required = false,
                                  default = nil)
   if valid_613247 != nil:
-    section.add "X-Amz-Credential", valid_613247
-  var valid_613248 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613247
+  var valid_613248 = header.getOrDefault("X-Amz-Date")
   valid_613248 = validateParameter(valid_613248, JString, required = false,
                                  default = nil)
   if valid_613248 != nil:
-    section.add "X-Amz-Security-Token", valid_613248
-  var valid_613249 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613248
+  var valid_613249 = header.getOrDefault("X-Amz-Credential")
   valid_613249 = validateParameter(valid_613249, JString, required = false,
                                  default = nil)
   if valid_613249 != nil:
-    section.add "X-Amz-Algorithm", valid_613249
-  var valid_613250 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613249
+  var valid_613250 = header.getOrDefault("X-Amz-Security-Token")
   valid_613250 = validateParameter(valid_613250, JString, required = false,
                                  default = nil)
   if valid_613250 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613250
+    section.add "X-Amz-Security-Token", valid_613250
+  var valid_613251 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613251 = validateParameter(valid_613251, JString, required = false,
+                                 default = nil)
+  if valid_613251 != nil:
+    section.add "X-Amz-Algorithm", valid_613251
+  var valid_613252 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613252 = validateParameter(valid_613252, JString, required = false,
+                                 default = nil)
+  if valid_613252 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613252
   result.add "header", section
   ## parameters in `formData` object:
   ##   ShouldDecrementDesiredCapacity: JBool (required)
@@ -16499,34 +16517,34 @@ proc validate_PostTerminateInstanceInAutoScalingGroup_613240(path: JsonNode;
   ##             : The ID of the instance.
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `ShouldDecrementDesiredCapacity` field"
-  var valid_613251 = formData.getOrDefault("ShouldDecrementDesiredCapacity")
-  valid_613251 = validateParameter(valid_613251, JBool, required = true, default = nil)
-  if valid_613251 != nil:
-    section.add "ShouldDecrementDesiredCapacity", valid_613251
-  var valid_613252 = formData.getOrDefault("InstanceId")
-  valid_613252 = validateParameter(valid_613252, JString, required = true,
+  var valid_613253 = formData.getOrDefault("ShouldDecrementDesiredCapacity")
+  valid_613253 = validateParameter(valid_613253, JBool, required = true, default = nil)
+  if valid_613253 != nil:
+    section.add "ShouldDecrementDesiredCapacity", valid_613253
+  var valid_613254 = formData.getOrDefault("InstanceId")
+  valid_613254 = validateParameter(valid_613254, JString, required = true,
                                  default = nil)
-  if valid_613252 != nil:
-    section.add "InstanceId", valid_613252
+  if valid_613254 != nil:
+    section.add "InstanceId", valid_613254
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613253: Call_PostTerminateInstanceInAutoScalingGroup_613239;
+proc call*(call_613255: Call_PostTerminateInstanceInAutoScalingGroup_613241;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Terminates the specified instance and optionally adjusts the desired group size.</p> <p>This call simply makes a termination request. The instance is not terminated immediately.</p>
   ## 
-  let valid = call_613253.validator(path, query, header, formData, body)
-  let scheme = call_613253.pickScheme
+  let valid = call_613255.validator(path, query, header, formData, body)
+  let scheme = call_613255.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613253.url(scheme.get, call_613253.host, call_613253.base,
-                         call_613253.route, valid.getOrDefault("path"),
+  let url = call_613255.url(scheme.get, call_613255.host, call_613255.base,
+                         call_613255.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613253, url, valid)
+  result = atozHook(call_613255, url, valid)
 
-proc call*(call_613254: Call_PostTerminateInstanceInAutoScalingGroup_613239;
+proc call*(call_613256: Call_PostTerminateInstanceInAutoScalingGroup_613241;
           ShouldDecrementDesiredCapacity: bool; InstanceId: string;
           Action: string = "TerminateInstanceInAutoScalingGroup";
           Version: string = "2011-01-01"): Recallable =
@@ -16538,25 +16556,25 @@ proc call*(call_613254: Call_PostTerminateInstanceInAutoScalingGroup_613239;
   ##             : The ID of the instance.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613255 = newJObject()
-  var formData_613256 = newJObject()
-  add(formData_613256, "ShouldDecrementDesiredCapacity",
+  var query_613257 = newJObject()
+  var formData_613258 = newJObject()
+  add(formData_613258, "ShouldDecrementDesiredCapacity",
       newJBool(ShouldDecrementDesiredCapacity))
-  add(formData_613256, "InstanceId", newJString(InstanceId))
-  add(query_613255, "Action", newJString(Action))
-  add(query_613255, "Version", newJString(Version))
-  result = call_613254.call(nil, query_613255, nil, formData_613256, nil)
+  add(formData_613258, "InstanceId", newJString(InstanceId))
+  add(query_613257, "Action", newJString(Action))
+  add(query_613257, "Version", newJString(Version))
+  result = call_613256.call(nil, query_613257, nil, formData_613258, nil)
 
-var postTerminateInstanceInAutoScalingGroup* = Call_PostTerminateInstanceInAutoScalingGroup_613239(
+var postTerminateInstanceInAutoScalingGroup* = Call_PostTerminateInstanceInAutoScalingGroup_613241(
     name: "postTerminateInstanceInAutoScalingGroup", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com",
     route: "/#Action=TerminateInstanceInAutoScalingGroup",
-    validator: validate_PostTerminateInstanceInAutoScalingGroup_613240, base: "/",
-    url: url_PostTerminateInstanceInAutoScalingGroup_613241,
+    validator: validate_PostTerminateInstanceInAutoScalingGroup_613242, base: "/",
+    url: url_PostTerminateInstanceInAutoScalingGroup_613243,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetTerminateInstanceInAutoScalingGroup_613222 = ref object of OpenApiRestCall_610658
-proc url_GetTerminateInstanceInAutoScalingGroup_613224(protocol: Scheme;
+  Call_GetTerminateInstanceInAutoScalingGroup_613224 = ref object of OpenApiRestCall_610658
+proc url_GetTerminateInstanceInAutoScalingGroup_613226(protocol: Scheme;
     host: string; base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -16566,7 +16584,7 @@ proc url_GetTerminateInstanceInAutoScalingGroup_613224(protocol: Scheme;
   else:
     result.path = base & route
 
-proc validate_GetTerminateInstanceInAutoScalingGroup_613223(path: JsonNode;
+proc validate_GetTerminateInstanceInAutoScalingGroup_613225(path: JsonNode;
     query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Terminates the specified instance and optionally adjusts the desired group size.</p> <p>This call simply makes a termination request. The instance is not terminated immediately.</p>
   ## 
@@ -16583,25 +16601,25 @@ proc validate_GetTerminateInstanceInAutoScalingGroup_613223(path: JsonNode;
   ##   Version: JString (required)
   section = newJObject()
   assert query != nil, "query argument is necessary due to required `ShouldDecrementDesiredCapacity` field"
-  var valid_613225 = query.getOrDefault("ShouldDecrementDesiredCapacity")
-  valid_613225 = validateParameter(valid_613225, JBool, required = true, default = nil)
-  if valid_613225 != nil:
-    section.add "ShouldDecrementDesiredCapacity", valid_613225
-  var valid_613226 = query.getOrDefault("InstanceId")
-  valid_613226 = validateParameter(valid_613226, JString, required = true,
-                                 default = nil)
-  if valid_613226 != nil:
-    section.add "InstanceId", valid_613226
-  var valid_613227 = query.getOrDefault("Action")
-  valid_613227 = validateParameter(valid_613227, JString, required = true, default = newJString(
-      "TerminateInstanceInAutoScalingGroup"))
+  var valid_613227 = query.getOrDefault("ShouldDecrementDesiredCapacity")
+  valid_613227 = validateParameter(valid_613227, JBool, required = true, default = nil)
   if valid_613227 != nil:
-    section.add "Action", valid_613227
-  var valid_613228 = query.getOrDefault("Version")
+    section.add "ShouldDecrementDesiredCapacity", valid_613227
+  var valid_613228 = query.getOrDefault("InstanceId")
   valid_613228 = validateParameter(valid_613228, JString, required = true,
-                                 default = newJString("2011-01-01"))
+                                 default = nil)
   if valid_613228 != nil:
-    section.add "Version", valid_613228
+    section.add "InstanceId", valid_613228
+  var valid_613229 = query.getOrDefault("Action")
+  valid_613229 = validateParameter(valid_613229, JString, required = true, default = newJString(
+      "TerminateInstanceInAutoScalingGroup"))
+  if valid_613229 != nil:
+    section.add "Action", valid_613229
+  var valid_613230 = query.getOrDefault("Version")
+  valid_613230 = validateParameter(valid_613230, JString, required = true,
+                                 default = newJString("2011-01-01"))
+  if valid_613230 != nil:
+    section.add "Version", valid_613230
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -16612,62 +16630,62 @@ proc validate_GetTerminateInstanceInAutoScalingGroup_613223(path: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613229 = header.getOrDefault("X-Amz-Signature")
-  valid_613229 = validateParameter(valid_613229, JString, required = false,
-                                 default = nil)
-  if valid_613229 != nil:
-    section.add "X-Amz-Signature", valid_613229
-  var valid_613230 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613230 = validateParameter(valid_613230, JString, required = false,
-                                 default = nil)
-  if valid_613230 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613230
-  var valid_613231 = header.getOrDefault("X-Amz-Date")
+  var valid_613231 = header.getOrDefault("X-Amz-Signature")
   valid_613231 = validateParameter(valid_613231, JString, required = false,
                                  default = nil)
   if valid_613231 != nil:
-    section.add "X-Amz-Date", valid_613231
-  var valid_613232 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613231
+  var valid_613232 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613232 = validateParameter(valid_613232, JString, required = false,
                                  default = nil)
   if valid_613232 != nil:
-    section.add "X-Amz-Credential", valid_613232
-  var valid_613233 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613232
+  var valid_613233 = header.getOrDefault("X-Amz-Date")
   valid_613233 = validateParameter(valid_613233, JString, required = false,
                                  default = nil)
   if valid_613233 != nil:
-    section.add "X-Amz-Security-Token", valid_613233
-  var valid_613234 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613233
+  var valid_613234 = header.getOrDefault("X-Amz-Credential")
   valid_613234 = validateParameter(valid_613234, JString, required = false,
                                  default = nil)
   if valid_613234 != nil:
-    section.add "X-Amz-Algorithm", valid_613234
-  var valid_613235 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613234
+  var valid_613235 = header.getOrDefault("X-Amz-Security-Token")
   valid_613235 = validateParameter(valid_613235, JString, required = false,
                                  default = nil)
   if valid_613235 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613235
+    section.add "X-Amz-Security-Token", valid_613235
+  var valid_613236 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613236 = validateParameter(valid_613236, JString, required = false,
+                                 default = nil)
+  if valid_613236 != nil:
+    section.add "X-Amz-Algorithm", valid_613236
+  var valid_613237 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613237 = validateParameter(valid_613237, JString, required = false,
+                                 default = nil)
+  if valid_613237 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613237
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613236: Call_GetTerminateInstanceInAutoScalingGroup_613222;
+proc call*(call_613238: Call_GetTerminateInstanceInAutoScalingGroup_613224;
           path: JsonNode; query: JsonNode; header: JsonNode; formData: JsonNode;
           body: JsonNode): Recallable =
   ## <p>Terminates the specified instance and optionally adjusts the desired group size.</p> <p>This call simply makes a termination request. The instance is not terminated immediately.</p>
   ## 
-  let valid = call_613236.validator(path, query, header, formData, body)
-  let scheme = call_613236.pickScheme
+  let valid = call_613238.validator(path, query, header, formData, body)
+  let scheme = call_613238.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613236.url(scheme.get, call_613236.host, call_613236.base,
-                         call_613236.route, valid.getOrDefault("path"),
+  let url = call_613238.url(scheme.get, call_613238.host, call_613238.base,
+                         call_613238.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613236, url, valid)
+  result = atozHook(call_613238, url, valid)
 
-proc call*(call_613237: Call_GetTerminateInstanceInAutoScalingGroup_613222;
+proc call*(call_613239: Call_GetTerminateInstanceInAutoScalingGroup_613224;
           ShouldDecrementDesiredCapacity: bool; InstanceId: string;
           Action: string = "TerminateInstanceInAutoScalingGroup";
           Version: string = "2011-01-01"): Recallable =
@@ -16679,24 +16697,24 @@ proc call*(call_613237: Call_GetTerminateInstanceInAutoScalingGroup_613222;
   ##             : The ID of the instance.
   ##   Action: string (required)
   ##   Version: string (required)
-  var query_613238 = newJObject()
-  add(query_613238, "ShouldDecrementDesiredCapacity",
+  var query_613240 = newJObject()
+  add(query_613240, "ShouldDecrementDesiredCapacity",
       newJBool(ShouldDecrementDesiredCapacity))
-  add(query_613238, "InstanceId", newJString(InstanceId))
-  add(query_613238, "Action", newJString(Action))
-  add(query_613238, "Version", newJString(Version))
-  result = call_613237.call(nil, query_613238, nil, nil, nil)
+  add(query_613240, "InstanceId", newJString(InstanceId))
+  add(query_613240, "Action", newJString(Action))
+  add(query_613240, "Version", newJString(Version))
+  result = call_613239.call(nil, query_613240, nil, nil, nil)
 
-var getTerminateInstanceInAutoScalingGroup* = Call_GetTerminateInstanceInAutoScalingGroup_613222(
+var getTerminateInstanceInAutoScalingGroup* = Call_GetTerminateInstanceInAutoScalingGroup_613224(
     name: "getTerminateInstanceInAutoScalingGroup", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com",
     route: "/#Action=TerminateInstanceInAutoScalingGroup",
-    validator: validate_GetTerminateInstanceInAutoScalingGroup_613223, base: "/",
-    url: url_GetTerminateInstanceInAutoScalingGroup_613224,
+    validator: validate_GetTerminateInstanceInAutoScalingGroup_613225, base: "/",
+    url: url_GetTerminateInstanceInAutoScalingGroup_613226,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_PostUpdateAutoScalingGroup_613292 = ref object of OpenApiRestCall_610658
-proc url_PostUpdateAutoScalingGroup_613294(protocol: Scheme; host: string;
+  Call_PostUpdateAutoScalingGroup_613294 = ref object of OpenApiRestCall_610658
+proc url_PostUpdateAutoScalingGroup_613296(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -16706,7 +16724,7 @@ proc url_PostUpdateAutoScalingGroup_613294(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_PostUpdateAutoScalingGroup_613293(path: JsonNode; query: JsonNode;
+proc validate_PostUpdateAutoScalingGroup_613295(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the configuration for the specified Auto Scaling group.</p> <p>To update an Auto Scaling group, specify the name of the group and the parameter that you want to change. Any parameters that you don't specify are not changed by this update request. The new settings take effect on any scaling activities after this call returns. </p> <p>If you associate a new launch configuration or template with an Auto Scaling group, all new instances will get the updated configuration. Existing instances continue to run with the configuration that they were originally launched with. When you update a group to specify a mixed instances policy instead of a launch configuration or template, existing instances may be replaced to match the new purchasing options that you specified in the policy. For example, if the group currently has 100% On-Demand capacity and the policy specifies 50% Spot capacity, this means that half of your instances will be gradually terminated and relaunched as Spot Instances. When replacing instances, Amazon EC2 Auto Scaling launches new instances before terminating the old ones, so that updating your group does not compromise the performance or availability of your application.</p> <p>Note the following about changing <code>DesiredCapacity</code>, <code>MaxSize</code>, or <code>MinSize</code>:</p> <ul> <li> <p>If a scale-in event occurs as a result of a new <code>DesiredCapacity</code> value that is lower than the current size of the group, the Auto Scaling group uses its termination policy to determine which instances to terminate.</p> </li> <li> <p>If you specify a new value for <code>MinSize</code> without specifying a value for <code>DesiredCapacity</code>, and the new <code>MinSize</code> is larger than the current size of the group, this sets the group's <code>DesiredCapacity</code> to the new <code>MinSize</code> value.</p> </li> <li> <p>If you specify a new value for <code>MaxSize</code> without specifying a value for <code>DesiredCapacity</code>, and the new <code>MaxSize</code> is smaller than the current size of the group, this sets the group's <code>DesiredCapacity</code> to the new <code>MaxSize</code> value.</p> </li> </ul> <p>To see which parameters have been set, use <a>DescribeAutoScalingGroups</a>. You can also view the scaling policies for an Auto Scaling group using <a>DescribePolicies</a>. If the group has scaling policies, you can update them using <a>PutScalingPolicy</a>.</p>
   ## 
@@ -16718,16 +16736,16 @@ proc validate_PostUpdateAutoScalingGroup_613293(path: JsonNode; query: JsonNode;
   ##   Action: JString (required)
   ##   Version: JString (required)
   section = newJObject()
-  var valid_613295 = query.getOrDefault("Action")
-  valid_613295 = validateParameter(valid_613295, JString, required = true,
+  var valid_613297 = query.getOrDefault("Action")
+  valid_613297 = validateParameter(valid_613297, JString, required = true,
                                  default = newJString("UpdateAutoScalingGroup"))
-  if valid_613295 != nil:
-    section.add "Action", valid_613295
-  var valid_613296 = query.getOrDefault("Version")
-  valid_613296 = validateParameter(valid_613296, JString, required = true,
+  if valid_613297 != nil:
+    section.add "Action", valid_613297
+  var valid_613298 = query.getOrDefault("Version")
+  valid_613298 = validateParameter(valid_613298, JString, required = true,
                                  default = newJString("2011-01-01"))
-  if valid_613296 != nil:
-    section.add "Version", valid_613296
+  if valid_613298 != nil:
+    section.add "Version", valid_613298
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -16738,41 +16756,41 @@ proc validate_PostUpdateAutoScalingGroup_613293(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613297 = header.getOrDefault("X-Amz-Signature")
-  valid_613297 = validateParameter(valid_613297, JString, required = false,
-                                 default = nil)
-  if valid_613297 != nil:
-    section.add "X-Amz-Signature", valid_613297
-  var valid_613298 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613298 = validateParameter(valid_613298, JString, required = false,
-                                 default = nil)
-  if valid_613298 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613298
-  var valid_613299 = header.getOrDefault("X-Amz-Date")
+  var valid_613299 = header.getOrDefault("X-Amz-Signature")
   valid_613299 = validateParameter(valid_613299, JString, required = false,
                                  default = nil)
   if valid_613299 != nil:
-    section.add "X-Amz-Date", valid_613299
-  var valid_613300 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613299
+  var valid_613300 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613300 = validateParameter(valid_613300, JString, required = false,
                                  default = nil)
   if valid_613300 != nil:
-    section.add "X-Amz-Credential", valid_613300
-  var valid_613301 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613300
+  var valid_613301 = header.getOrDefault("X-Amz-Date")
   valid_613301 = validateParameter(valid_613301, JString, required = false,
                                  default = nil)
   if valid_613301 != nil:
-    section.add "X-Amz-Security-Token", valid_613301
-  var valid_613302 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613301
+  var valid_613302 = header.getOrDefault("X-Amz-Credential")
   valid_613302 = validateParameter(valid_613302, JString, required = false,
                                  default = nil)
   if valid_613302 != nil:
-    section.add "X-Amz-Algorithm", valid_613302
-  var valid_613303 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613302
+  var valid_613303 = header.getOrDefault("X-Amz-Security-Token")
   valid_613303 = validateParameter(valid_613303, JString, required = false,
                                  default = nil)
   if valid_613303 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613303
+    section.add "X-Amz-Security-Token", valid_613303
+  var valid_613304 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613304 = validateParameter(valid_613304, JString, required = false,
+                                 default = nil)
+  if valid_613304 != nil:
+    section.add "X-Amz-Algorithm", valid_613304
+  var valid_613305 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613305 = validateParameter(valid_613305, JString, required = false,
+                                 default = nil)
+  if valid_613305 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613305
   result.add "header", section
   ## parameters in `formData` object:
   ##   AutoScalingGroupName: JString (required)
@@ -16792,7 +16810,8 @@ proc validate_PostUpdateAutoScalingGroup_613293(path: JsonNode; query: JsonNode;
   ##                                   : <p>Indicates whether newly launched instances are protected from termination by Amazon EC2 Auto Scaling when scaling in.</p> <p>For more information about preventing instances from terminating on scale in, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection">Instance Protection</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ##   MaxInstanceLifetime: JInt
-  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>Valid Range: Minimum value of 604800.</p>
+  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>For more information, see <a 
+  ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-max-instance-lifetime.html">Replacing Auto Scaling Instances Based on Maximum Instance Lifetime</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p> <p>Valid Range: Minimum value of 604800.</p>
   ##   TerminationPolicies: JArray
   ##                      : <p>A standalone termination policy or a list of termination policies used to select the instance to terminate. The policies are executed in the order that they are listed.</p> <p>For more information, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html">Controlling Which Instances Auto Scaling Terminates During Scale In</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
@@ -16833,117 +16852,117 @@ proc validate_PostUpdateAutoScalingGroup_613293(path: JsonNode; query: JsonNode;
   ##                    : <p>A comma-separated list of subnet IDs for virtual private cloud (VPC).</p> <p>If you specify <code>VPCZoneIdentifier</code> with <code>AvailabilityZones</code>, the subnets that you specify for this parameter must reside in those Availability Zones.</p>
   section = newJObject()
   assert formData != nil, "formData argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613304 = formData.getOrDefault("AutoScalingGroupName")
-  valid_613304 = validateParameter(valid_613304, JString, required = true,
-                                 default = nil)
-  if valid_613304 != nil:
-    section.add "AutoScalingGroupName", valid_613304
-  var valid_613305 = formData.getOrDefault("MinSize")
-  valid_613305 = validateParameter(valid_613305, JInt, required = false, default = nil)
-  if valid_613305 != nil:
-    section.add "MinSize", valid_613305
-  var valid_613306 = formData.getOrDefault("MixedInstancesPolicy.InstancesDistribution")
-  valid_613306 = validateParameter(valid_613306, JString, required = false,
+  var valid_613306 = formData.getOrDefault("AutoScalingGroupName")
+  valid_613306 = validateParameter(valid_613306, JString, required = true,
                                  default = nil)
   if valid_613306 != nil:
-    section.add "MixedInstancesPolicy.InstancesDistribution", valid_613306
-  var valid_613307 = formData.getOrDefault("DesiredCapacity")
+    section.add "AutoScalingGroupName", valid_613306
+  var valid_613307 = formData.getOrDefault("MinSize")
   valid_613307 = validateParameter(valid_613307, JInt, required = false, default = nil)
   if valid_613307 != nil:
-    section.add "DesiredCapacity", valid_613307
-  var valid_613308 = formData.getOrDefault("DefaultCooldown")
-  valid_613308 = validateParameter(valid_613308, JInt, required = false, default = nil)
+    section.add "MinSize", valid_613307
+  var valid_613308 = formData.getOrDefault("MixedInstancesPolicy.InstancesDistribution")
+  valid_613308 = validateParameter(valid_613308, JString, required = false,
+                                 default = nil)
   if valid_613308 != nil:
-    section.add "DefaultCooldown", valid_613308
-  var valid_613309 = formData.getOrDefault("NewInstancesProtectedFromScaleIn")
-  valid_613309 = validateParameter(valid_613309, JBool, required = false, default = nil)
+    section.add "MixedInstancesPolicy.InstancesDistribution", valid_613308
+  var valid_613309 = formData.getOrDefault("DesiredCapacity")
+  valid_613309 = validateParameter(valid_613309, JInt, required = false, default = nil)
   if valid_613309 != nil:
-    section.add "NewInstancesProtectedFromScaleIn", valid_613309
-  var valid_613310 = formData.getOrDefault("MaxInstanceLifetime")
+    section.add "DesiredCapacity", valid_613309
+  var valid_613310 = formData.getOrDefault("DefaultCooldown")
   valid_613310 = validateParameter(valid_613310, JInt, required = false, default = nil)
   if valid_613310 != nil:
-    section.add "MaxInstanceLifetime", valid_613310
-  var valid_613311 = formData.getOrDefault("TerminationPolicies")
-  valid_613311 = validateParameter(valid_613311, JArray, required = false,
-                                 default = nil)
+    section.add "DefaultCooldown", valid_613310
+  var valid_613311 = formData.getOrDefault("NewInstancesProtectedFromScaleIn")
+  valid_613311 = validateParameter(valid_613311, JBool, required = false, default = nil)
   if valid_613311 != nil:
-    section.add "TerminationPolicies", valid_613311
-  var valid_613312 = formData.getOrDefault("AvailabilityZones")
-  valid_613312 = validateParameter(valid_613312, JArray, required = false,
-                                 default = nil)
+    section.add "NewInstancesProtectedFromScaleIn", valid_613311
+  var valid_613312 = formData.getOrDefault("MaxInstanceLifetime")
+  valid_613312 = validateParameter(valid_613312, JInt, required = false, default = nil)
   if valid_613312 != nil:
-    section.add "AvailabilityZones", valid_613312
-  var valid_613313 = formData.getOrDefault("LaunchTemplate.Version")
-  valid_613313 = validateParameter(valid_613313, JString, required = false,
+    section.add "MaxInstanceLifetime", valid_613312
+  var valid_613313 = formData.getOrDefault("TerminationPolicies")
+  valid_613313 = validateParameter(valid_613313, JArray, required = false,
                                  default = nil)
   if valid_613313 != nil:
-    section.add "LaunchTemplate.Version", valid_613313
-  var valid_613314 = formData.getOrDefault("HealthCheckType")
-  valid_613314 = validateParameter(valid_613314, JString, required = false,
+    section.add "TerminationPolicies", valid_613313
+  var valid_613314 = formData.getOrDefault("AvailabilityZones")
+  valid_613314 = validateParameter(valid_613314, JArray, required = false,
                                  default = nil)
   if valid_613314 != nil:
-    section.add "HealthCheckType", valid_613314
-  var valid_613315 = formData.getOrDefault("PlacementGroup")
+    section.add "AvailabilityZones", valid_613314
+  var valid_613315 = formData.getOrDefault("LaunchTemplate.Version")
   valid_613315 = validateParameter(valid_613315, JString, required = false,
                                  default = nil)
   if valid_613315 != nil:
-    section.add "PlacementGroup", valid_613315
-  var valid_613316 = formData.getOrDefault("LaunchTemplate.LaunchTemplateName")
+    section.add "LaunchTemplate.Version", valid_613315
+  var valid_613316 = formData.getOrDefault("HealthCheckType")
   valid_613316 = validateParameter(valid_613316, JString, required = false,
                                  default = nil)
   if valid_613316 != nil:
-    section.add "LaunchTemplate.LaunchTemplateName", valid_613316
-  var valid_613317 = formData.getOrDefault("LaunchTemplate.LaunchTemplateId")
+    section.add "HealthCheckType", valid_613316
+  var valid_613317 = formData.getOrDefault("PlacementGroup")
   valid_613317 = validateParameter(valid_613317, JString, required = false,
                                  default = nil)
   if valid_613317 != nil:
-    section.add "LaunchTemplate.LaunchTemplateId", valid_613317
-  var valid_613318 = formData.getOrDefault("MaxSize")
-  valid_613318 = validateParameter(valid_613318, JInt, required = false, default = nil)
+    section.add "PlacementGroup", valid_613317
+  var valid_613318 = formData.getOrDefault("LaunchTemplate.LaunchTemplateName")
+  valid_613318 = validateParameter(valid_613318, JString, required = false,
+                                 default = nil)
   if valid_613318 != nil:
-    section.add "MaxSize", valid_613318
-  var valid_613319 = formData.getOrDefault("HealthCheckGracePeriod")
-  valid_613319 = validateParameter(valid_613319, JInt, required = false, default = nil)
+    section.add "LaunchTemplate.LaunchTemplateName", valid_613318
+  var valid_613319 = formData.getOrDefault("LaunchTemplate.LaunchTemplateId")
+  valid_613319 = validateParameter(valid_613319, JString, required = false,
+                                 default = nil)
   if valid_613319 != nil:
-    section.add "HealthCheckGracePeriod", valid_613319
-  var valid_613320 = formData.getOrDefault("ServiceLinkedRoleARN")
-  valid_613320 = validateParameter(valid_613320, JString, required = false,
-                                 default = nil)
+    section.add "LaunchTemplate.LaunchTemplateId", valid_613319
+  var valid_613320 = formData.getOrDefault("MaxSize")
+  valid_613320 = validateParameter(valid_613320, JInt, required = false, default = nil)
   if valid_613320 != nil:
-    section.add "ServiceLinkedRoleARN", valid_613320
-  var valid_613321 = formData.getOrDefault("LaunchConfigurationName")
-  valid_613321 = validateParameter(valid_613321, JString, required = false,
-                                 default = nil)
+    section.add "MaxSize", valid_613320
+  var valid_613321 = formData.getOrDefault("HealthCheckGracePeriod")
+  valid_613321 = validateParameter(valid_613321, JInt, required = false, default = nil)
   if valid_613321 != nil:
-    section.add "LaunchConfigurationName", valid_613321
-  var valid_613322 = formData.getOrDefault("MixedInstancesPolicy.LaunchTemplate")
+    section.add "HealthCheckGracePeriod", valid_613321
+  var valid_613322 = formData.getOrDefault("ServiceLinkedRoleARN")
   valid_613322 = validateParameter(valid_613322, JString, required = false,
                                  default = nil)
   if valid_613322 != nil:
-    section.add "MixedInstancesPolicy.LaunchTemplate", valid_613322
-  var valid_613323 = formData.getOrDefault("VPCZoneIdentifier")
+    section.add "ServiceLinkedRoleARN", valid_613322
+  var valid_613323 = formData.getOrDefault("LaunchConfigurationName")
   valid_613323 = validateParameter(valid_613323, JString, required = false,
                                  default = nil)
   if valid_613323 != nil:
-    section.add "VPCZoneIdentifier", valid_613323
+    section.add "LaunchConfigurationName", valid_613323
+  var valid_613324 = formData.getOrDefault("MixedInstancesPolicy.LaunchTemplate")
+  valid_613324 = validateParameter(valid_613324, JString, required = false,
+                                 default = nil)
+  if valid_613324 != nil:
+    section.add "MixedInstancesPolicy.LaunchTemplate", valid_613324
+  var valid_613325 = formData.getOrDefault("VPCZoneIdentifier")
+  valid_613325 = validateParameter(valid_613325, JString, required = false,
+                                 default = nil)
+  if valid_613325 != nil:
+    section.add "VPCZoneIdentifier", valid_613325
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613324: Call_PostUpdateAutoScalingGroup_613292; path: JsonNode;
+proc call*(call_613326: Call_PostUpdateAutoScalingGroup_613294; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the configuration for the specified Auto Scaling group.</p> <p>To update an Auto Scaling group, specify the name of the group and the parameter that you want to change. Any parameters that you don't specify are not changed by this update request. The new settings take effect on any scaling activities after this call returns. </p> <p>If you associate a new launch configuration or template with an Auto Scaling group, all new instances will get the updated configuration. Existing instances continue to run with the configuration that they were originally launched with. When you update a group to specify a mixed instances policy instead of a launch configuration or template, existing instances may be replaced to match the new purchasing options that you specified in the policy. For example, if the group currently has 100% On-Demand capacity and the policy specifies 50% Spot capacity, this means that half of your instances will be gradually terminated and relaunched as Spot Instances. When replacing instances, Amazon EC2 Auto Scaling launches new instances before terminating the old ones, so that updating your group does not compromise the performance or availability of your application.</p> <p>Note the following about changing <code>DesiredCapacity</code>, <code>MaxSize</code>, or <code>MinSize</code>:</p> <ul> <li> <p>If a scale-in event occurs as a result of a new <code>DesiredCapacity</code> value that is lower than the current size of the group, the Auto Scaling group uses its termination policy to determine which instances to terminate.</p> </li> <li> <p>If you specify a new value for <code>MinSize</code> without specifying a value for <code>DesiredCapacity</code>, and the new <code>MinSize</code> is larger than the current size of the group, this sets the group's <code>DesiredCapacity</code> to the new <code>MinSize</code> value.</p> </li> <li> <p>If you specify a new value for <code>MaxSize</code> without specifying a value for <code>DesiredCapacity</code>, and the new <code>MaxSize</code> is smaller than the current size of the group, this sets the group's <code>DesiredCapacity</code> to the new <code>MaxSize</code> value.</p> </li> </ul> <p>To see which parameters have been set, use <a>DescribeAutoScalingGroups</a>. You can also view the scaling policies for an Auto Scaling group using <a>DescribePolicies</a>. If the group has scaling policies, you can update them using <a>PutScalingPolicy</a>.</p>
   ## 
-  let valid = call_613324.validator(path, query, header, formData, body)
-  let scheme = call_613324.pickScheme
+  let valid = call_613326.validator(path, query, header, formData, body)
+  let scheme = call_613326.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613324.url(scheme.get, call_613324.host, call_613324.base,
-                         call_613324.route, valid.getOrDefault("path"),
+  let url = call_613326.url(scheme.get, call_613326.host, call_613326.base,
+                         call_613326.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613324, url, valid)
+  result = atozHook(call_613326, url, valid)
 
-proc call*(call_613325: Call_PostUpdateAutoScalingGroup_613292;
+proc call*(call_613327: Call_PostUpdateAutoScalingGroup_613294;
           AutoScalingGroupName: string; MinSize: int = 0;
           MixedInstancesPolicyInstancesDistribution: string = "";
           DesiredCapacity: int = 0; DefaultCooldown: int = 0;
@@ -16977,7 +16996,8 @@ proc call*(call_613325: Call_PostUpdateAutoScalingGroup_613292;
   ##                                   : <p>Indicates whether newly launched instances are protected from termination by Amazon EC2 Auto Scaling when scaling in.</p> <p>For more information about preventing instances from terminating on scale in, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html#instance-protection">Instance Protection</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ##   MaxInstanceLifetime: int
-  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>Valid Range: Minimum value of 604800.</p>
+  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>For more information, see <a 
+  ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-max-instance-lifetime.html">Replacing Auto Scaling Instances Based on Maximum Instance Lifetime</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p> <p>Valid Range: Minimum value of 604800.</p>
   ##   TerminationPolicies: JArray
   ##                      : <p>A standalone termination policy or a list of termination policies used to select the instance to terminate. The policies are executed in the order that they are listed.</p> <p>For more information, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/as-instance-termination.html">Controlling Which Instances Auto Scaling Terminates During Scale In</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
@@ -17018,49 +17038,49 @@ proc call*(call_613325: Call_PostUpdateAutoScalingGroup_613292;
   ## <p>The launch template and instance types (overrides).</p> <p>This parameter must be specified when creating a mixed instances policy.</p>
   ##   VPCZoneIdentifier: string
   ##                    : <p>A comma-separated list of subnet IDs for virtual private cloud (VPC).</p> <p>If you specify <code>VPCZoneIdentifier</code> with <code>AvailabilityZones</code>, the subnets that you specify for this parameter must reside in those Availability Zones.</p>
-  var query_613326 = newJObject()
-  var formData_613327 = newJObject()
-  add(formData_613327, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(formData_613327, "MinSize", newJInt(MinSize))
-  add(formData_613327, "MixedInstancesPolicy.InstancesDistribution",
+  var query_613328 = newJObject()
+  var formData_613329 = newJObject()
+  add(formData_613329, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(formData_613329, "MinSize", newJInt(MinSize))
+  add(formData_613329, "MixedInstancesPolicy.InstancesDistribution",
       newJString(MixedInstancesPolicyInstancesDistribution))
-  add(formData_613327, "DesiredCapacity", newJInt(DesiredCapacity))
-  add(formData_613327, "DefaultCooldown", newJInt(DefaultCooldown))
-  add(formData_613327, "NewInstancesProtectedFromScaleIn",
+  add(formData_613329, "DesiredCapacity", newJInt(DesiredCapacity))
+  add(formData_613329, "DefaultCooldown", newJInt(DefaultCooldown))
+  add(formData_613329, "NewInstancesProtectedFromScaleIn",
       newJBool(NewInstancesProtectedFromScaleIn))
-  add(formData_613327, "MaxInstanceLifetime", newJInt(MaxInstanceLifetime))
+  add(formData_613329, "MaxInstanceLifetime", newJInt(MaxInstanceLifetime))
   if TerminationPolicies != nil:
-    formData_613327.add "TerminationPolicies", TerminationPolicies
+    formData_613329.add "TerminationPolicies", TerminationPolicies
   if AvailabilityZones != nil:
-    formData_613327.add "AvailabilityZones", AvailabilityZones
-  add(formData_613327, "LaunchTemplate.Version", newJString(LaunchTemplateVersion))
-  add(formData_613327, "HealthCheckType", newJString(HealthCheckType))
-  add(formData_613327, "PlacementGroup", newJString(PlacementGroup))
-  add(formData_613327, "LaunchTemplate.LaunchTemplateName",
+    formData_613329.add "AvailabilityZones", AvailabilityZones
+  add(formData_613329, "LaunchTemplate.Version", newJString(LaunchTemplateVersion))
+  add(formData_613329, "HealthCheckType", newJString(HealthCheckType))
+  add(formData_613329, "PlacementGroup", newJString(PlacementGroup))
+  add(formData_613329, "LaunchTemplate.LaunchTemplateName",
       newJString(LaunchTemplateLaunchTemplateName))
-  add(query_613326, "Action", newJString(Action))
-  add(formData_613327, "LaunchTemplate.LaunchTemplateId",
+  add(query_613328, "Action", newJString(Action))
+  add(formData_613329, "LaunchTemplate.LaunchTemplateId",
       newJString(LaunchTemplateLaunchTemplateId))
-  add(formData_613327, "MaxSize", newJInt(MaxSize))
-  add(formData_613327, "HealthCheckGracePeriod", newJInt(HealthCheckGracePeriod))
-  add(formData_613327, "ServiceLinkedRoleARN", newJString(ServiceLinkedRoleARN))
-  add(formData_613327, "LaunchConfigurationName",
+  add(formData_613329, "MaxSize", newJInt(MaxSize))
+  add(formData_613329, "HealthCheckGracePeriod", newJInt(HealthCheckGracePeriod))
+  add(formData_613329, "ServiceLinkedRoleARN", newJString(ServiceLinkedRoleARN))
+  add(formData_613329, "LaunchConfigurationName",
       newJString(LaunchConfigurationName))
-  add(query_613326, "Version", newJString(Version))
-  add(formData_613327, "MixedInstancesPolicy.LaunchTemplate",
+  add(query_613328, "Version", newJString(Version))
+  add(formData_613329, "MixedInstancesPolicy.LaunchTemplate",
       newJString(MixedInstancesPolicyLaunchTemplate))
-  add(formData_613327, "VPCZoneIdentifier", newJString(VPCZoneIdentifier))
-  result = call_613325.call(nil, query_613326, nil, formData_613327, nil)
+  add(formData_613329, "VPCZoneIdentifier", newJString(VPCZoneIdentifier))
+  result = call_613327.call(nil, query_613328, nil, formData_613329, nil)
 
-var postUpdateAutoScalingGroup* = Call_PostUpdateAutoScalingGroup_613292(
+var postUpdateAutoScalingGroup* = Call_PostUpdateAutoScalingGroup_613294(
     name: "postUpdateAutoScalingGroup", meth: HttpMethod.HttpPost,
     host: "autoscaling.amazonaws.com", route: "/#Action=UpdateAutoScalingGroup",
-    validator: validate_PostUpdateAutoScalingGroup_613293, base: "/",
-    url: url_PostUpdateAutoScalingGroup_613294,
+    validator: validate_PostUpdateAutoScalingGroup_613295, base: "/",
+    url: url_PostUpdateAutoScalingGroup_613296,
     schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_GetUpdateAutoScalingGroup_613257 = ref object of OpenApiRestCall_610658
-proc url_GetUpdateAutoScalingGroup_613259(protocol: Scheme; host: string;
+  Call_GetUpdateAutoScalingGroup_613259 = ref object of OpenApiRestCall_610658
+proc url_GetUpdateAutoScalingGroup_613261(protocol: Scheme; host: string;
     base: string; route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
@@ -17070,7 +17090,7 @@ proc url_GetUpdateAutoScalingGroup_613259(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_GetUpdateAutoScalingGroup_613258(path: JsonNode; query: JsonNode;
+proc validate_GetUpdateAutoScalingGroup_613260(path: JsonNode; query: JsonNode;
     header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
   ## <p>Updates the configuration for the specified Auto Scaling group.</p> <p>To update an Auto Scaling group, specify the name of the group and the parameter that you want to change. Any parameters that you don't specify are not changed by this update request. The new settings take effect on any scaling activities after this call returns. </p> <p>If you associate a new launch configuration or template with an Auto Scaling group, all new instances will get the updated configuration. Existing instances continue to run with the configuration that they were originally launched with. When you update a group to specify a mixed instances policy instead of a launch configuration or template, existing instances may be replaced to match the new purchasing options that you specified in the policy. For example, if the group currently has 100% On-Demand capacity and the policy specifies 50% Spot capacity, this means that half of your instances will be gradually terminated and relaunched as Spot Instances. When replacing instances, Amazon EC2 Auto Scaling launches new instances before terminating the old ones, so that updating your group does not compromise the performance or availability of your application.</p> <p>Note the following about changing <code>DesiredCapacity</code>, <code>MaxSize</code>, or <code>MinSize</code>:</p> <ul> <li> <p>If a scale-in event occurs as a result of a new <code>DesiredCapacity</code> value that is lower than the current size of the group, the Auto Scaling group uses its termination policy to determine which instances to terminate.</p> </li> <li> <p>If you specify a new value for <code>MinSize</code> without specifying a value for <code>DesiredCapacity</code>, and the new <code>MinSize</code> is larger than the current size of the group, this sets the group's <code>DesiredCapacity</code> to the new <code>MinSize</code> value.</p> </li> <li> <p>If you specify a new value for <code>MaxSize</code> without specifying a value for <code>DesiredCapacity</code>, and the new <code>MaxSize</code> is smaller than the current size of the group, this sets the group's <code>DesiredCapacity</code> to the new <code>MaxSize</code> value.</p> </li> </ul> <p>To see which parameters have been set, use <a>DescribeAutoScalingGroups</a>. You can also view the scaling policies for an Auto Scaling group using <a>DescribePolicies</a>. If the group has scaling policies, you can update them using <a>PutScalingPolicy</a>.</p>
   ## 
@@ -17126,7 +17146,8 @@ proc validate_GetUpdateAutoScalingGroup_613258(path: JsonNode; query: JsonNode;
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-template.html">Creating a Launch Template for an Auto Scaling Group</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## The version number, <code>$Latest</code>, or <code>$Default</code>. If the value is <code>$Latest</code>, Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is <code>$Default</code>, Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is <code>$Default</code>.
   ##   MaxInstanceLifetime: JInt
-  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>Valid Range: Minimum value of 604800.</p>
+  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>For more information, see <a 
+  ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-max-instance-lifetime.html">Replacing Auto Scaling Instances Based on Maximum Instance Lifetime</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p> <p>Valid Range: Minimum value of 604800.</p>
   ##   Version: JString (required)
   ##   VPCZoneIdentifier: JString
   ##                    : <p>A comma-separated list of subnet IDs for virtual private cloud (VPC).</p> <p>If you specify <code>VPCZoneIdentifier</code> with <code>AvailabilityZones</code>, the subnets that you specify for this parameter must reside in those Availability Zones.</p>
@@ -17138,110 +17159,110 @@ proc validate_GetUpdateAutoScalingGroup_613258(path: JsonNode; query: JsonNode;
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-template.html">Creating a Launch Template for an Auto Scaling Group</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## The ID of the launch template. You must specify either a template ID or a template name.
   section = newJObject()
-  var valid_613260 = query.getOrDefault("MixedInstancesPolicy.InstancesDistribution")
-  valid_613260 = validateParameter(valid_613260, JString, required = false,
+  var valid_613262 = query.getOrDefault("MixedInstancesPolicy.InstancesDistribution")
+  valid_613262 = validateParameter(valid_613262, JString, required = false,
                                  default = nil)
-  if valid_613260 != nil:
-    section.add "MixedInstancesPolicy.InstancesDistribution", valid_613260
-  var valid_613261 = query.getOrDefault("LaunchTemplate.LaunchTemplateName")
-  valid_613261 = validateParameter(valid_613261, JString, required = false,
-                                 default = nil)
-  if valid_613261 != nil:
-    section.add "LaunchTemplate.LaunchTemplateName", valid_613261
-  var valid_613262 = query.getOrDefault("MaxSize")
-  valid_613262 = validateParameter(valid_613262, JInt, required = false, default = nil)
   if valid_613262 != nil:
-    section.add "MaxSize", valid_613262
-  var valid_613263 = query.getOrDefault("LaunchConfigurationName")
+    section.add "MixedInstancesPolicy.InstancesDistribution", valid_613262
+  var valid_613263 = query.getOrDefault("LaunchTemplate.LaunchTemplateName")
   valid_613263 = validateParameter(valid_613263, JString, required = false,
                                  default = nil)
   if valid_613263 != nil:
-    section.add "LaunchConfigurationName", valid_613263
-  var valid_613264 = query.getOrDefault("HealthCheckGracePeriod")
+    section.add "LaunchTemplate.LaunchTemplateName", valid_613263
+  var valid_613264 = query.getOrDefault("MaxSize")
   valid_613264 = validateParameter(valid_613264, JInt, required = false, default = nil)
   if valid_613264 != nil:
-    section.add "HealthCheckGracePeriod", valid_613264
-  var valid_613265 = query.getOrDefault("MixedInstancesPolicy.LaunchTemplate")
+    section.add "MaxSize", valid_613264
+  var valid_613265 = query.getOrDefault("LaunchConfigurationName")
   valid_613265 = validateParameter(valid_613265, JString, required = false,
                                  default = nil)
   if valid_613265 != nil:
-    section.add "MixedInstancesPolicy.LaunchTemplate", valid_613265
-  var valid_613266 = query.getOrDefault("NewInstancesProtectedFromScaleIn")
-  valid_613266 = validateParameter(valid_613266, JBool, required = false, default = nil)
+    section.add "LaunchConfigurationName", valid_613265
+  var valid_613266 = query.getOrDefault("HealthCheckGracePeriod")
+  valid_613266 = validateParameter(valid_613266, JInt, required = false, default = nil)
   if valid_613266 != nil:
-    section.add "NewInstancesProtectedFromScaleIn", valid_613266
-  var valid_613267 = query.getOrDefault("AvailabilityZones")
-  valid_613267 = validateParameter(valid_613267, JArray, required = false,
+    section.add "HealthCheckGracePeriod", valid_613266
+  var valid_613267 = query.getOrDefault("MixedInstancesPolicy.LaunchTemplate")
+  valid_613267 = validateParameter(valid_613267, JString, required = false,
                                  default = nil)
   if valid_613267 != nil:
-    section.add "AvailabilityZones", valid_613267
-  var valid_613268 = query.getOrDefault("HealthCheckType")
-  valid_613268 = validateParameter(valid_613268, JString, required = false,
-                                 default = nil)
+    section.add "MixedInstancesPolicy.LaunchTemplate", valid_613267
+  var valid_613268 = query.getOrDefault("NewInstancesProtectedFromScaleIn")
+  valid_613268 = validateParameter(valid_613268, JBool, required = false, default = nil)
   if valid_613268 != nil:
-    section.add "HealthCheckType", valid_613268
-  var valid_613269 = query.getOrDefault("TerminationPolicies")
+    section.add "NewInstancesProtectedFromScaleIn", valid_613268
+  var valid_613269 = query.getOrDefault("AvailabilityZones")
   valid_613269 = validateParameter(valid_613269, JArray, required = false,
                                  default = nil)
   if valid_613269 != nil:
-    section.add "TerminationPolicies", valid_613269
-  var valid_613270 = query.getOrDefault("DesiredCapacity")
-  valid_613270 = validateParameter(valid_613270, JInt, required = false, default = nil)
+    section.add "AvailabilityZones", valid_613269
+  var valid_613270 = query.getOrDefault("HealthCheckType")
+  valid_613270 = validateParameter(valid_613270, JString, required = false,
+                                 default = nil)
   if valid_613270 != nil:
-    section.add "DesiredCapacity", valid_613270
-  assert query != nil, "query argument is necessary due to required `AutoScalingGroupName` field"
-  var valid_613271 = query.getOrDefault("AutoScalingGroupName")
-  valid_613271 = validateParameter(valid_613271, JString, required = true,
+    section.add "HealthCheckType", valid_613270
+  var valid_613271 = query.getOrDefault("TerminationPolicies")
+  valid_613271 = validateParameter(valid_613271, JArray, required = false,
                                  default = nil)
   if valid_613271 != nil:
-    section.add "AutoScalingGroupName", valid_613271
-  var valid_613272 = query.getOrDefault("DefaultCooldown")
+    section.add "TerminationPolicies", valid_613271
+  var valid_613272 = query.getOrDefault("DesiredCapacity")
   valid_613272 = validateParameter(valid_613272, JInt, required = false, default = nil)
   if valid_613272 != nil:
-    section.add "DefaultCooldown", valid_613272
-  var valid_613273 = query.getOrDefault("Action")
+    section.add "DesiredCapacity", valid_613272
+  assert query != nil, "query argument is necessary due to required `AutoScalingGroupName` field"
+  var valid_613273 = query.getOrDefault("AutoScalingGroupName")
   valid_613273 = validateParameter(valid_613273, JString, required = true,
-                                 default = newJString("UpdateAutoScalingGroup"))
+                                 default = nil)
   if valid_613273 != nil:
-    section.add "Action", valid_613273
-  var valid_613274 = query.getOrDefault("MinSize")
+    section.add "AutoScalingGroupName", valid_613273
+  var valid_613274 = query.getOrDefault("DefaultCooldown")
   valid_613274 = validateParameter(valid_613274, JInt, required = false, default = nil)
   if valid_613274 != nil:
-    section.add "MinSize", valid_613274
-  var valid_613275 = query.getOrDefault("PlacementGroup")
-  valid_613275 = validateParameter(valid_613275, JString, required = false,
-                                 default = nil)
+    section.add "DefaultCooldown", valid_613274
+  var valid_613275 = query.getOrDefault("Action")
+  valid_613275 = validateParameter(valid_613275, JString, required = true,
+                                 default = newJString("UpdateAutoScalingGroup"))
   if valid_613275 != nil:
-    section.add "PlacementGroup", valid_613275
-  var valid_613276 = query.getOrDefault("LaunchTemplate.Version")
-  valid_613276 = validateParameter(valid_613276, JString, required = false,
-                                 default = nil)
+    section.add "Action", valid_613275
+  var valid_613276 = query.getOrDefault("MinSize")
+  valid_613276 = validateParameter(valid_613276, JInt, required = false, default = nil)
   if valid_613276 != nil:
-    section.add "LaunchTemplate.Version", valid_613276
-  var valid_613277 = query.getOrDefault("MaxInstanceLifetime")
-  valid_613277 = validateParameter(valid_613277, JInt, required = false, default = nil)
+    section.add "MinSize", valid_613276
+  var valid_613277 = query.getOrDefault("PlacementGroup")
+  valid_613277 = validateParameter(valid_613277, JString, required = false,
+                                 default = nil)
   if valid_613277 != nil:
-    section.add "MaxInstanceLifetime", valid_613277
-  var valid_613278 = query.getOrDefault("Version")
-  valid_613278 = validateParameter(valid_613278, JString, required = true,
-                                 default = newJString("2011-01-01"))
+    section.add "PlacementGroup", valid_613277
+  var valid_613278 = query.getOrDefault("LaunchTemplate.Version")
+  valid_613278 = validateParameter(valid_613278, JString, required = false,
+                                 default = nil)
   if valid_613278 != nil:
-    section.add "Version", valid_613278
-  var valid_613279 = query.getOrDefault("VPCZoneIdentifier")
-  valid_613279 = validateParameter(valid_613279, JString, required = false,
-                                 default = nil)
+    section.add "LaunchTemplate.Version", valid_613278
+  var valid_613279 = query.getOrDefault("MaxInstanceLifetime")
+  valid_613279 = validateParameter(valid_613279, JInt, required = false, default = nil)
   if valid_613279 != nil:
-    section.add "VPCZoneIdentifier", valid_613279
-  var valid_613280 = query.getOrDefault("ServiceLinkedRoleARN")
-  valid_613280 = validateParameter(valid_613280, JString, required = false,
-                                 default = nil)
+    section.add "MaxInstanceLifetime", valid_613279
+  var valid_613280 = query.getOrDefault("Version")
+  valid_613280 = validateParameter(valid_613280, JString, required = true,
+                                 default = newJString("2011-01-01"))
   if valid_613280 != nil:
-    section.add "ServiceLinkedRoleARN", valid_613280
-  var valid_613281 = query.getOrDefault("LaunchTemplate.LaunchTemplateId")
+    section.add "Version", valid_613280
+  var valid_613281 = query.getOrDefault("VPCZoneIdentifier")
   valid_613281 = validateParameter(valid_613281, JString, required = false,
                                  default = nil)
   if valid_613281 != nil:
-    section.add "LaunchTemplate.LaunchTemplateId", valid_613281
+    section.add "VPCZoneIdentifier", valid_613281
+  var valid_613282 = query.getOrDefault("ServiceLinkedRoleARN")
+  valid_613282 = validateParameter(valid_613282, JString, required = false,
+                                 default = nil)
+  if valid_613282 != nil:
+    section.add "ServiceLinkedRoleARN", valid_613282
+  var valid_613283 = query.getOrDefault("LaunchTemplate.LaunchTemplateId")
+  valid_613283 = validateParameter(valid_613283, JString, required = false,
+                                 default = nil)
+  if valid_613283 != nil:
+    section.add "LaunchTemplate.LaunchTemplateId", valid_613283
   result.add "query", section
   ## parameters in `header` object:
   ##   X-Amz-Signature: JString
@@ -17252,61 +17273,61 @@ proc validate_GetUpdateAutoScalingGroup_613258(path: JsonNode; query: JsonNode;
   ##   X-Amz-Algorithm: JString
   ##   X-Amz-SignedHeaders: JString
   section = newJObject()
-  var valid_613282 = header.getOrDefault("X-Amz-Signature")
-  valid_613282 = validateParameter(valid_613282, JString, required = false,
-                                 default = nil)
-  if valid_613282 != nil:
-    section.add "X-Amz-Signature", valid_613282
-  var valid_613283 = header.getOrDefault("X-Amz-Content-Sha256")
-  valid_613283 = validateParameter(valid_613283, JString, required = false,
-                                 default = nil)
-  if valid_613283 != nil:
-    section.add "X-Amz-Content-Sha256", valid_613283
-  var valid_613284 = header.getOrDefault("X-Amz-Date")
+  var valid_613284 = header.getOrDefault("X-Amz-Signature")
   valid_613284 = validateParameter(valid_613284, JString, required = false,
                                  default = nil)
   if valid_613284 != nil:
-    section.add "X-Amz-Date", valid_613284
-  var valid_613285 = header.getOrDefault("X-Amz-Credential")
+    section.add "X-Amz-Signature", valid_613284
+  var valid_613285 = header.getOrDefault("X-Amz-Content-Sha256")
   valid_613285 = validateParameter(valid_613285, JString, required = false,
                                  default = nil)
   if valid_613285 != nil:
-    section.add "X-Amz-Credential", valid_613285
-  var valid_613286 = header.getOrDefault("X-Amz-Security-Token")
+    section.add "X-Amz-Content-Sha256", valid_613285
+  var valid_613286 = header.getOrDefault("X-Amz-Date")
   valid_613286 = validateParameter(valid_613286, JString, required = false,
                                  default = nil)
   if valid_613286 != nil:
-    section.add "X-Amz-Security-Token", valid_613286
-  var valid_613287 = header.getOrDefault("X-Amz-Algorithm")
+    section.add "X-Amz-Date", valid_613286
+  var valid_613287 = header.getOrDefault("X-Amz-Credential")
   valid_613287 = validateParameter(valid_613287, JString, required = false,
                                  default = nil)
   if valid_613287 != nil:
-    section.add "X-Amz-Algorithm", valid_613287
-  var valid_613288 = header.getOrDefault("X-Amz-SignedHeaders")
+    section.add "X-Amz-Credential", valid_613287
+  var valid_613288 = header.getOrDefault("X-Amz-Security-Token")
   valid_613288 = validateParameter(valid_613288, JString, required = false,
                                  default = nil)
   if valid_613288 != nil:
-    section.add "X-Amz-SignedHeaders", valid_613288
+    section.add "X-Amz-Security-Token", valid_613288
+  var valid_613289 = header.getOrDefault("X-Amz-Algorithm")
+  valid_613289 = validateParameter(valid_613289, JString, required = false,
+                                 default = nil)
+  if valid_613289 != nil:
+    section.add "X-Amz-Algorithm", valid_613289
+  var valid_613290 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_613290 = validateParameter(valid_613290, JString, required = false,
+                                 default = nil)
+  if valid_613290 != nil:
+    section.add "X-Amz-SignedHeaders", valid_613290
   result.add "header", section
   section = newJObject()
   result.add "formData", section
   if body != nil:
     result.add "body", body
 
-proc call*(call_613289: Call_GetUpdateAutoScalingGroup_613257; path: JsonNode;
+proc call*(call_613291: Call_GetUpdateAutoScalingGroup_613259; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
   ## <p>Updates the configuration for the specified Auto Scaling group.</p> <p>To update an Auto Scaling group, specify the name of the group and the parameter that you want to change. Any parameters that you don't specify are not changed by this update request. The new settings take effect on any scaling activities after this call returns. </p> <p>If you associate a new launch configuration or template with an Auto Scaling group, all new instances will get the updated configuration. Existing instances continue to run with the configuration that they were originally launched with. When you update a group to specify a mixed instances policy instead of a launch configuration or template, existing instances may be replaced to match the new purchasing options that you specified in the policy. For example, if the group currently has 100% On-Demand capacity and the policy specifies 50% Spot capacity, this means that half of your instances will be gradually terminated and relaunched as Spot Instances. When replacing instances, Amazon EC2 Auto Scaling launches new instances before terminating the old ones, so that updating your group does not compromise the performance or availability of your application.</p> <p>Note the following about changing <code>DesiredCapacity</code>, <code>MaxSize</code>, or <code>MinSize</code>:</p> <ul> <li> <p>If a scale-in event occurs as a result of a new <code>DesiredCapacity</code> value that is lower than the current size of the group, the Auto Scaling group uses its termination policy to determine which instances to terminate.</p> </li> <li> <p>If you specify a new value for <code>MinSize</code> without specifying a value for <code>DesiredCapacity</code>, and the new <code>MinSize</code> is larger than the current size of the group, this sets the group's <code>DesiredCapacity</code> to the new <code>MinSize</code> value.</p> </li> <li> <p>If you specify a new value for <code>MaxSize</code> without specifying a value for <code>DesiredCapacity</code>, and the new <code>MaxSize</code> is smaller than the current size of the group, this sets the group's <code>DesiredCapacity</code> to the new <code>MaxSize</code> value.</p> </li> </ul> <p>To see which parameters have been set, use <a>DescribeAutoScalingGroups</a>. You can also view the scaling policies for an Auto Scaling group using <a>DescribePolicies</a>. If the group has scaling policies, you can update them using <a>PutScalingPolicy</a>.</p>
   ## 
-  let valid = call_613289.validator(path, query, header, formData, body)
-  let scheme = call_613289.pickScheme
+  let valid = call_613291.validator(path, query, header, formData, body)
+  let scheme = call_613291.pickScheme
   if scheme.isNone:
     raise newException(IOError, "unable to find a supported scheme")
-  let url = call_613289.url(scheme.get, call_613289.host, call_613289.base,
-                         call_613289.route, valid.getOrDefault("path"),
+  let url = call_613291.url(scheme.get, call_613291.host, call_613291.base,
+                         call_613291.route, valid.getOrDefault("path"),
                          valid.getOrDefault("query"))
-  result = atozHook(call_613289, url, valid)
+  result = atozHook(call_613291, url, valid)
 
-proc call*(call_613290: Call_GetUpdateAutoScalingGroup_613257;
+proc call*(call_613292: Call_GetUpdateAutoScalingGroup_613259;
           AutoScalingGroupName: string;
           MixedInstancesPolicyInstancesDistribution: string = "";
           LaunchTemplateLaunchTemplateName: string = ""; MaxSize: int = 0;
@@ -17370,7 +17391,8 @@ proc call*(call_613290: Call_GetUpdateAutoScalingGroup_613257;
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-template.html">Creating a Launch Template for an Auto Scaling Group</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## The version number, <code>$Latest</code>, or <code>$Default</code>. If the value is <code>$Latest</code>, Amazon EC2 Auto Scaling selects the latest version of the launch template when launching instances. If the value is <code>$Default</code>, Amazon EC2 Auto Scaling selects the default version of the launch template when launching instances. The default value is <code>$Default</code>.
   ##   MaxInstanceLifetime: int
-  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>Valid Range: Minimum value of 604800.</p>
+  ##                      : <p>The maximum amount of time, in seconds, that an instance can be in service.</p> <p>For more information, see <a 
+  ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/asg-max-instance-lifetime.html">Replacing Auto Scaling Instances Based on Maximum Instance Lifetime</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p> <p>Valid Range: Minimum value of 604800.</p>
   ##   Version: string (required)
   ##   VPCZoneIdentifier: string
   ##                    : <p>A comma-separated list of subnet IDs for virtual private cloud (VPC).</p> <p>If you specify <code>VPCZoneIdentifier</code> with <code>AvailabilityZones</code>, the subnets that you specify for this parameter must reside in those Availability Zones.</p>
@@ -17381,43 +17403,43 @@ proc call*(call_613290: Call_GetUpdateAutoScalingGroup_613257;
   ##                                 : <p>Describes a launch template and the launch template version.</p> <p>The launch template that is specified must be configured for use with an Auto Scaling group. For more information, see <a 
   ## href="https://docs.aws.amazon.com/autoscaling/ec2/userguide/create-launch-template.html">Creating a Launch Template for an Auto Scaling Group</a> in the <i>Amazon EC2 Auto Scaling User Guide</i>.</p>
   ## The ID of the launch template. You must specify either a template ID or a template name.
-  var query_613291 = newJObject()
-  add(query_613291, "MixedInstancesPolicy.InstancesDistribution",
+  var query_613293 = newJObject()
+  add(query_613293, "MixedInstancesPolicy.InstancesDistribution",
       newJString(MixedInstancesPolicyInstancesDistribution))
-  add(query_613291, "LaunchTemplate.LaunchTemplateName",
+  add(query_613293, "LaunchTemplate.LaunchTemplateName",
       newJString(LaunchTemplateLaunchTemplateName))
-  add(query_613291, "MaxSize", newJInt(MaxSize))
-  add(query_613291, "LaunchConfigurationName", newJString(LaunchConfigurationName))
-  add(query_613291, "HealthCheckGracePeriod", newJInt(HealthCheckGracePeriod))
-  add(query_613291, "MixedInstancesPolicy.LaunchTemplate",
+  add(query_613293, "MaxSize", newJInt(MaxSize))
+  add(query_613293, "LaunchConfigurationName", newJString(LaunchConfigurationName))
+  add(query_613293, "HealthCheckGracePeriod", newJInt(HealthCheckGracePeriod))
+  add(query_613293, "MixedInstancesPolicy.LaunchTemplate",
       newJString(MixedInstancesPolicyLaunchTemplate))
-  add(query_613291, "NewInstancesProtectedFromScaleIn",
+  add(query_613293, "NewInstancesProtectedFromScaleIn",
       newJBool(NewInstancesProtectedFromScaleIn))
   if AvailabilityZones != nil:
-    query_613291.add "AvailabilityZones", AvailabilityZones
-  add(query_613291, "HealthCheckType", newJString(HealthCheckType))
+    query_613293.add "AvailabilityZones", AvailabilityZones
+  add(query_613293, "HealthCheckType", newJString(HealthCheckType))
   if TerminationPolicies != nil:
-    query_613291.add "TerminationPolicies", TerminationPolicies
-  add(query_613291, "DesiredCapacity", newJInt(DesiredCapacity))
-  add(query_613291, "AutoScalingGroupName", newJString(AutoScalingGroupName))
-  add(query_613291, "DefaultCooldown", newJInt(DefaultCooldown))
-  add(query_613291, "Action", newJString(Action))
-  add(query_613291, "MinSize", newJInt(MinSize))
-  add(query_613291, "PlacementGroup", newJString(PlacementGroup))
-  add(query_613291, "LaunchTemplate.Version", newJString(LaunchTemplateVersion))
-  add(query_613291, "MaxInstanceLifetime", newJInt(MaxInstanceLifetime))
-  add(query_613291, "Version", newJString(Version))
-  add(query_613291, "VPCZoneIdentifier", newJString(VPCZoneIdentifier))
-  add(query_613291, "ServiceLinkedRoleARN", newJString(ServiceLinkedRoleARN))
-  add(query_613291, "LaunchTemplate.LaunchTemplateId",
+    query_613293.add "TerminationPolicies", TerminationPolicies
+  add(query_613293, "DesiredCapacity", newJInt(DesiredCapacity))
+  add(query_613293, "AutoScalingGroupName", newJString(AutoScalingGroupName))
+  add(query_613293, "DefaultCooldown", newJInt(DefaultCooldown))
+  add(query_613293, "Action", newJString(Action))
+  add(query_613293, "MinSize", newJInt(MinSize))
+  add(query_613293, "PlacementGroup", newJString(PlacementGroup))
+  add(query_613293, "LaunchTemplate.Version", newJString(LaunchTemplateVersion))
+  add(query_613293, "MaxInstanceLifetime", newJInt(MaxInstanceLifetime))
+  add(query_613293, "Version", newJString(Version))
+  add(query_613293, "VPCZoneIdentifier", newJString(VPCZoneIdentifier))
+  add(query_613293, "ServiceLinkedRoleARN", newJString(ServiceLinkedRoleARN))
+  add(query_613293, "LaunchTemplate.LaunchTemplateId",
       newJString(LaunchTemplateLaunchTemplateId))
-  result = call_613290.call(nil, query_613291, nil, nil, nil)
+  result = call_613292.call(nil, query_613293, nil, nil, nil)
 
-var getUpdateAutoScalingGroup* = Call_GetUpdateAutoScalingGroup_613257(
+var getUpdateAutoScalingGroup* = Call_GetUpdateAutoScalingGroup_613259(
     name: "getUpdateAutoScalingGroup", meth: HttpMethod.HttpGet,
     host: "autoscaling.amazonaws.com", route: "/#Action=UpdateAutoScalingGroup",
-    validator: validate_GetUpdateAutoScalingGroup_613258, base: "/",
-    url: url_GetUpdateAutoScalingGroup_613259,
+    validator: validate_GetUpdateAutoScalingGroup_613260, base: "/",
+    url: url_GetUpdateAutoScalingGroup_613261,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
@@ -17448,6 +17470,9 @@ sloppyConst FetchFromEnv, AWS_ACCESS_KEY_ID
 sloppyConst FetchFromEnv, AWS_SECRET_ACCESS_KEY
 sloppyConst BakeIntoBinary, AWS_REGION
 sloppyConst FetchFromEnv, AWS_ACCOUNT_ID
+type
+  XAmz = enum
+    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
 proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA256) =
   let
     date = makeDateTime()
@@ -17471,8 +17496,8 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
     normal = PathNormal.Default
   recall.headers["Host"] = url.hostname
   recall.headers["X-Amz-Date"] = date
+  recall.headers[$ContentSha256] = hash(recall.body, SHA256)
   let
-    algo = SHA256
     scope = credentialScope(region = region, service = awsServiceName, date = date)
     request = canonicalRequest(recall.meth, $url, query, recall.headers, recall.body,
                              normalize = normal, digest = algo)
@@ -17487,9 +17512,6 @@ proc atozSign(recall: var Recallable; query: JsonNode; algo: SigningAlgo = SHA25
   recall.headers.del "Host"
   recall.url = $url
 
-type
-  XAmz = enum
-    SecurityToken = "X-Amz-Security-Token", ContentSha256 = "X-Amz-Content-Sha256"
 method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.base.} =
   ## the hook is a terrible earworm
   var headers = newHttpHeaders(massageHeaders(input.getOrDefault("header")))
@@ -17506,6 +17528,5 @@ method atozHook(call: OpenApiRestCall; url: Uri; input: JsonNode): Recallable {.
     let session = getEnv("AWS_SESSION_TOKEN", "")
     if session != "":
       headers[$SecurityToken] = session
-  headers[$ContentSha256] = hash(text, SHA256)
   result = newRecallable(call, url, headers, text)
   result.atozSign(input.getOrDefault("query"), SHA256)

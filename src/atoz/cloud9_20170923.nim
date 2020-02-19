@@ -10,7 +10,7 @@ import
 ##     name: Apache 2.0 License
 ##     url: http://www.apache.org/licenses/
 ## 
-## <fullname>AWS Cloud9</fullname> <p>AWS Cloud9 is a collection of tools that you can use to code, build, run, test, debug, and release software in the cloud.</p> <p>For more information about AWS Cloud9, see the <a href="https://docs.aws.amazon.com/cloud9/latest/user-guide">AWS Cloud9 User Guide</a>.</p> <p>AWS Cloud9 supports these operations:</p> <ul> <li> <p> <code>CreateEnvironmentEC2</code>: Creates an AWS Cloud9 development environment, launches an Amazon EC2 instance, and then connects from the instance to the environment.</p> </li> <li> <p> <code>CreateEnvironmentMembership</code>: Adds an environment member to an environment.</p> </li> <li> <p> <code>DeleteEnvironment</code>: Deletes an environment. If an Amazon EC2 instance is connected to the environment, also terminates the instance.</p> </li> <li> <p> <code>DeleteEnvironmentMembership</code>: Deletes an environment member from an environment.</p> </li> <li> <p> <code>DescribeEnvironmentMemberships</code>: Gets information about environment members for an environment.</p> </li> <li> <p> <code>DescribeEnvironments</code>: Gets information about environments.</p> </li> <li> <p> <code>DescribeEnvironmentStatus</code>: Gets status information for an environment.</p> </li> <li> <p> <code>ListEnvironments</code>: Gets a list of environment identifiers.</p> </li> <li> <p> <code>UpdateEnvironment</code>: Changes the settings of an existing environment.</p> </li> <li> <p> <code>UpdateEnvironmentMembership</code>: Changes the settings of an existing environment member for an environment.</p> </li> </ul>
+## <fullname>AWS Cloud9</fullname> <p>AWS Cloud9 is a collection of tools that you can use to code, build, run, test, debug, and release software in the cloud.</p> <p>For more information about AWS Cloud9, see the <a href="https://docs.aws.amazon.com/cloud9/latest/user-guide">AWS Cloud9 User Guide</a>.</p> <p>AWS Cloud9 supports these operations:</p> <ul> <li> <p> <code>CreateEnvironmentEC2</code>: Creates an AWS Cloud9 development environment, launches an Amazon EC2 instance, and then connects from the instance to the environment.</p> </li> <li> <p> <code>CreateEnvironmentMembership</code>: Adds an environment member to an environment.</p> </li> <li> <p> <code>DeleteEnvironment</code>: Deletes an environment. If an Amazon EC2 instance is connected to the environment, also terminates the instance.</p> </li> <li> <p> <code>DeleteEnvironmentMembership</code>: Deletes an environment member from an environment.</p> </li> <li> <p> <code>DescribeEnvironmentMemberships</code>: Gets information about environment members for an environment.</p> </li> <li> <p> <code>DescribeEnvironments</code>: Gets information about environments.</p> </li> <li> <p> <code>DescribeEnvironmentStatus</code>: Gets status information for an environment.</p> </li> <li> <p> <code>ListEnvironments</code>: Gets a list of environment identifiers.</p> </li> <li> <p> <code>ListTagsForResource</code>: Gets the tags for an environment.</p> </li> <li> <p> <code>TagResource</code>: Adds tags to an environment.</p> </li> <li> <p> <code>UntagResource</code>: Removes tags from an environment.</p> </li> <li> <p> <code>UpdateEnvironment</code>: Changes the settings of an existing environment.</p> </li> <li> <p> <code>UpdateEnvironmentMembership</code>: Changes the settings of an existing environment member for an environment.</p> </li> </ul>
 ## 
 ## Amazon Web Services documentation
 ## https://docs.aws.amazon.com/cloud9/
@@ -1064,9 +1064,9 @@ var listEnvironments* = Call_ListEnvironments_611359(name: "listEnvironments",
     validator: validate_ListEnvironments_611360, base: "/",
     url: url_ListEnvironments_611361, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateEnvironment_611377 = ref object of OpenApiRestCall_610658
-proc url_UpdateEnvironment_611379(protocol: Scheme; host: string; base: string;
-                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_ListTagsForResource_611377 = ref object of OpenApiRestCall_610658
+proc url_ListTagsForResource_611379(protocol: Scheme; host: string; base: string;
+                                   route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1075,10 +1075,10 @@ proc url_UpdateEnvironment_611379(protocol: Scheme; host: string; base: string;
   else:
     result.path = base & route
 
-proc validate_UpdateEnvironment_611378(path: JsonNode; query: JsonNode;
-                                      header: JsonNode; formData: JsonNode;
-                                      body: JsonNode): JsonNode =
-  ## Changes the settings of an existing AWS Cloud9 development environment.
+proc validate_ListTagsForResource_611378(path: JsonNode; query: JsonNode;
+                                        header: JsonNode; formData: JsonNode;
+                                        body: JsonNode): JsonNode =
+  ## Gets a list of the tags associated with an AWS Cloud9 development environment.
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1098,7 +1098,7 @@ proc validate_UpdateEnvironment_611378(path: JsonNode; query: JsonNode;
   section = newJObject()
   var valid_611380 = header.getOrDefault("X-Amz-Target")
   valid_611380 = validateParameter(valid_611380, JString, required = true, default = newJString(
-      "AWSCloud9WorkspaceManagementService.UpdateEnvironment"))
+      "AWSCloud9WorkspaceManagementService.ListTagsForResource"))
   if valid_611380 != nil:
     section.add "X-Amz-Target", valid_611380
   var valid_611381 = header.getOrDefault("X-Amz-Signature")
@@ -1146,9 +1146,9 @@ proc validate_UpdateEnvironment_611378(path: JsonNode; query: JsonNode;
   if body != nil:
     result.add "body", body
 
-proc call*(call_611389: Call_UpdateEnvironment_611377; path: JsonNode;
+proc call*(call_611389: Call_ListTagsForResource_611377; path: JsonNode;
           query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Changes the settings of an existing AWS Cloud9 development environment.
+  ## Gets a list of the tags associated with an AWS Cloud9 development environment.
   ## 
   let valid = call_611389.validator(path, query, header, formData, body)
   let scheme = call_611389.pickScheme
@@ -1159,23 +1159,24 @@ proc call*(call_611389: Call_UpdateEnvironment_611377; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_611389, url, valid)
 
-proc call*(call_611390: Call_UpdateEnvironment_611377; body: JsonNode): Recallable =
-  ## updateEnvironment
-  ## Changes the settings of an existing AWS Cloud9 development environment.
+proc call*(call_611390: Call_ListTagsForResource_611377; body: JsonNode): Recallable =
+  ## listTagsForResource
+  ## Gets a list of the tags associated with an AWS Cloud9 development environment.
   ##   body: JObject (required)
   var body_611391 = newJObject()
   if body != nil:
     body_611391 = body
   result = call_611390.call(nil, nil, nil, nil, body_611391)
 
-var updateEnvironment* = Call_UpdateEnvironment_611377(name: "updateEnvironment",
-    meth: HttpMethod.HttpPost, host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.UpdateEnvironment",
-    validator: validate_UpdateEnvironment_611378, base: "/",
-    url: url_UpdateEnvironment_611379, schemes: {Scheme.Https, Scheme.Http})
+var listTagsForResource* = Call_ListTagsForResource_611377(
+    name: "listTagsForResource", meth: HttpMethod.HttpPost,
+    host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.ListTagsForResource",
+    validator: validate_ListTagsForResource_611378, base: "/",
+    url: url_ListTagsForResource_611379, schemes: {Scheme.Https, Scheme.Http})
 type
-  Call_UpdateEnvironmentMembership_611392 = ref object of OpenApiRestCall_610658
-proc url_UpdateEnvironmentMembership_611394(protocol: Scheme; host: string;
-    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  Call_TagResource_611392 = ref object of OpenApiRestCall_610658
+proc url_TagResource_611394(protocol: Scheme; host: string; base: string;
+                           route: string; path: JsonNode; query: JsonNode): Uri =
   result.scheme = $protocol
   result.hostname = host
   result.query = $queryString(query)
@@ -1184,9 +1185,9 @@ proc url_UpdateEnvironmentMembership_611394(protocol: Scheme; host: string;
   else:
     result.path = base & route
 
-proc validate_UpdateEnvironmentMembership_611393(path: JsonNode; query: JsonNode;
-    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
-  ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
+proc validate_TagResource_611393(path: JsonNode; query: JsonNode; header: JsonNode;
+                                formData: JsonNode; body: JsonNode): JsonNode =
+  ## <p>Adds tags to an AWS Cloud9 development environment.</p> <important> <p>Tags that you add to an AWS Cloud9 environment by using this method will NOT be automatically propagated to underlying resources.</p> </important>
   ## 
   var section: JsonNode
   result = newJObject()
@@ -1206,7 +1207,7 @@ proc validate_UpdateEnvironmentMembership_611393(path: JsonNode; query: JsonNode
   section = newJObject()
   var valid_611395 = header.getOrDefault("X-Amz-Target")
   valid_611395 = validateParameter(valid_611395, JString, required = true, default = newJString(
-      "AWSCloud9WorkspaceManagementService.UpdateEnvironmentMembership"))
+      "AWSCloud9WorkspaceManagementService.TagResource"))
   if valid_611395 != nil:
     section.add "X-Amz-Target", valid_611395
   var valid_611396 = header.getOrDefault("X-Amz-Signature")
@@ -1254,9 +1255,9 @@ proc validate_UpdateEnvironmentMembership_611393(path: JsonNode; query: JsonNode
   if body != nil:
     result.add "body", body
 
-proc call*(call_611404: Call_UpdateEnvironmentMembership_611392; path: JsonNode;
-          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
-  ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
+proc call*(call_611404: Call_TagResource_611392; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## <p>Adds tags to an AWS Cloud9 development environment.</p> <important> <p>Tags that you add to an AWS Cloud9 environment by using this method will NOT be automatically propagated to underlying resources.</p> </important>
   ## 
   let valid = call_611404.validator(path, query, header, formData, body)
   let scheme = call_611404.pickScheme
@@ -1267,20 +1268,348 @@ proc call*(call_611404: Call_UpdateEnvironmentMembership_611392; path: JsonNode;
                          valid.getOrDefault("query"))
   result = atozHook(call_611404, url, valid)
 
-proc call*(call_611405: Call_UpdateEnvironmentMembership_611392; body: JsonNode): Recallable =
-  ## updateEnvironmentMembership
-  ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
+proc call*(call_611405: Call_TagResource_611392; body: JsonNode): Recallable =
+  ## tagResource
+  ## <p>Adds tags to an AWS Cloud9 development environment.</p> <important> <p>Tags that you add to an AWS Cloud9 environment by using this method will NOT be automatically propagated to underlying resources.</p> </important>
   ##   body: JObject (required)
   var body_611406 = newJObject()
   if body != nil:
     body_611406 = body
   result = call_611405.call(nil, nil, nil, nil, body_611406)
 
-var updateEnvironmentMembership* = Call_UpdateEnvironmentMembership_611392(
+var tagResource* = Call_TagResource_611392(name: "tagResource",
+                                        meth: HttpMethod.HttpPost,
+                                        host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.TagResource",
+                                        validator: validate_TagResource_611393,
+                                        base: "/", url: url_TagResource_611394,
+                                        schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UntagResource_611407 = ref object of OpenApiRestCall_610658
+proc url_UntagResource_611409(protocol: Scheme; host: string; base: string;
+                             route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UntagResource_611408(path: JsonNode; query: JsonNode; header: JsonNode;
+                                  formData: JsonNode; body: JsonNode): JsonNode =
+  ## Removes tags from an AWS Cloud9 development environment.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_611410 = header.getOrDefault("X-Amz-Target")
+  valid_611410 = validateParameter(valid_611410, JString, required = true, default = newJString(
+      "AWSCloud9WorkspaceManagementService.UntagResource"))
+  if valid_611410 != nil:
+    section.add "X-Amz-Target", valid_611410
+  var valid_611411 = header.getOrDefault("X-Amz-Signature")
+  valid_611411 = validateParameter(valid_611411, JString, required = false,
+                                 default = nil)
+  if valid_611411 != nil:
+    section.add "X-Amz-Signature", valid_611411
+  var valid_611412 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611412 = validateParameter(valid_611412, JString, required = false,
+                                 default = nil)
+  if valid_611412 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611412
+  var valid_611413 = header.getOrDefault("X-Amz-Date")
+  valid_611413 = validateParameter(valid_611413, JString, required = false,
+                                 default = nil)
+  if valid_611413 != nil:
+    section.add "X-Amz-Date", valid_611413
+  var valid_611414 = header.getOrDefault("X-Amz-Credential")
+  valid_611414 = validateParameter(valid_611414, JString, required = false,
+                                 default = nil)
+  if valid_611414 != nil:
+    section.add "X-Amz-Credential", valid_611414
+  var valid_611415 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611415 = validateParameter(valid_611415, JString, required = false,
+                                 default = nil)
+  if valid_611415 != nil:
+    section.add "X-Amz-Security-Token", valid_611415
+  var valid_611416 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611416 = validateParameter(valid_611416, JString, required = false,
+                                 default = nil)
+  if valid_611416 != nil:
+    section.add "X-Amz-Algorithm", valid_611416
+  var valid_611417 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611417 = validateParameter(valid_611417, JString, required = false,
+                                 default = nil)
+  if valid_611417 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611417
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_611419: Call_UntagResource_611407; path: JsonNode; query: JsonNode;
+          header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Removes tags from an AWS Cloud9 development environment.
+  ## 
+  let valid = call_611419.validator(path, query, header, formData, body)
+  let scheme = call_611419.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_611419.url(scheme.get, call_611419.host, call_611419.base,
+                         call_611419.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_611419, url, valid)
+
+proc call*(call_611420: Call_UntagResource_611407; body: JsonNode): Recallable =
+  ## untagResource
+  ## Removes tags from an AWS Cloud9 development environment.
+  ##   body: JObject (required)
+  var body_611421 = newJObject()
+  if body != nil:
+    body_611421 = body
+  result = call_611420.call(nil, nil, nil, nil, body_611421)
+
+var untagResource* = Call_UntagResource_611407(name: "untagResource",
+    meth: HttpMethod.HttpPost, host: "cloud9.amazonaws.com",
+    route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.UntagResource",
+    validator: validate_UntagResource_611408, base: "/", url: url_UntagResource_611409,
+    schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateEnvironment_611422 = ref object of OpenApiRestCall_610658
+proc url_UpdateEnvironment_611424(protocol: Scheme; host: string; base: string;
+                                 route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateEnvironment_611423(path: JsonNode; query: JsonNode;
+                                      header: JsonNode; formData: JsonNode;
+                                      body: JsonNode): JsonNode =
+  ## Changes the settings of an existing AWS Cloud9 development environment.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_611425 = header.getOrDefault("X-Amz-Target")
+  valid_611425 = validateParameter(valid_611425, JString, required = true, default = newJString(
+      "AWSCloud9WorkspaceManagementService.UpdateEnvironment"))
+  if valid_611425 != nil:
+    section.add "X-Amz-Target", valid_611425
+  var valid_611426 = header.getOrDefault("X-Amz-Signature")
+  valid_611426 = validateParameter(valid_611426, JString, required = false,
+                                 default = nil)
+  if valid_611426 != nil:
+    section.add "X-Amz-Signature", valid_611426
+  var valid_611427 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611427 = validateParameter(valid_611427, JString, required = false,
+                                 default = nil)
+  if valid_611427 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611427
+  var valid_611428 = header.getOrDefault("X-Amz-Date")
+  valid_611428 = validateParameter(valid_611428, JString, required = false,
+                                 default = nil)
+  if valid_611428 != nil:
+    section.add "X-Amz-Date", valid_611428
+  var valid_611429 = header.getOrDefault("X-Amz-Credential")
+  valid_611429 = validateParameter(valid_611429, JString, required = false,
+                                 default = nil)
+  if valid_611429 != nil:
+    section.add "X-Amz-Credential", valid_611429
+  var valid_611430 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611430 = validateParameter(valid_611430, JString, required = false,
+                                 default = nil)
+  if valid_611430 != nil:
+    section.add "X-Amz-Security-Token", valid_611430
+  var valid_611431 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611431 = validateParameter(valid_611431, JString, required = false,
+                                 default = nil)
+  if valid_611431 != nil:
+    section.add "X-Amz-Algorithm", valid_611431
+  var valid_611432 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611432 = validateParameter(valid_611432, JString, required = false,
+                                 default = nil)
+  if valid_611432 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611432
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_611434: Call_UpdateEnvironment_611422; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Changes the settings of an existing AWS Cloud9 development environment.
+  ## 
+  let valid = call_611434.validator(path, query, header, formData, body)
+  let scheme = call_611434.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_611434.url(scheme.get, call_611434.host, call_611434.base,
+                         call_611434.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_611434, url, valid)
+
+proc call*(call_611435: Call_UpdateEnvironment_611422; body: JsonNode): Recallable =
+  ## updateEnvironment
+  ## Changes the settings of an existing AWS Cloud9 development environment.
+  ##   body: JObject (required)
+  var body_611436 = newJObject()
+  if body != nil:
+    body_611436 = body
+  result = call_611435.call(nil, nil, nil, nil, body_611436)
+
+var updateEnvironment* = Call_UpdateEnvironment_611422(name: "updateEnvironment",
+    meth: HttpMethod.HttpPost, host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.UpdateEnvironment",
+    validator: validate_UpdateEnvironment_611423, base: "/",
+    url: url_UpdateEnvironment_611424, schemes: {Scheme.Https, Scheme.Http})
+type
+  Call_UpdateEnvironmentMembership_611437 = ref object of OpenApiRestCall_610658
+proc url_UpdateEnvironmentMembership_611439(protocol: Scheme; host: string;
+    base: string; route: string; path: JsonNode; query: JsonNode): Uri =
+  result.scheme = $protocol
+  result.hostname = host
+  result.query = $queryString(query)
+  if base == "/" and route.startsWith "/":
+    result.path = route
+  else:
+    result.path = base & route
+
+proc validate_UpdateEnvironmentMembership_611438(path: JsonNode; query: JsonNode;
+    header: JsonNode; formData: JsonNode; body: JsonNode): JsonNode =
+  ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
+  ## 
+  var section: JsonNode
+  result = newJObject()
+  section = newJObject()
+  result.add "path", section
+  section = newJObject()
+  result.add "query", section
+  ## parameters in `header` object:
+  ##   X-Amz-Target: JString (required)
+  ##   X-Amz-Signature: JString
+  ##   X-Amz-Content-Sha256: JString
+  ##   X-Amz-Date: JString
+  ##   X-Amz-Credential: JString
+  ##   X-Amz-Security-Token: JString
+  ##   X-Amz-Algorithm: JString
+  ##   X-Amz-SignedHeaders: JString
+  section = newJObject()
+  var valid_611440 = header.getOrDefault("X-Amz-Target")
+  valid_611440 = validateParameter(valid_611440, JString, required = true, default = newJString(
+      "AWSCloud9WorkspaceManagementService.UpdateEnvironmentMembership"))
+  if valid_611440 != nil:
+    section.add "X-Amz-Target", valid_611440
+  var valid_611441 = header.getOrDefault("X-Amz-Signature")
+  valid_611441 = validateParameter(valid_611441, JString, required = false,
+                                 default = nil)
+  if valid_611441 != nil:
+    section.add "X-Amz-Signature", valid_611441
+  var valid_611442 = header.getOrDefault("X-Amz-Content-Sha256")
+  valid_611442 = validateParameter(valid_611442, JString, required = false,
+                                 default = nil)
+  if valid_611442 != nil:
+    section.add "X-Amz-Content-Sha256", valid_611442
+  var valid_611443 = header.getOrDefault("X-Amz-Date")
+  valid_611443 = validateParameter(valid_611443, JString, required = false,
+                                 default = nil)
+  if valid_611443 != nil:
+    section.add "X-Amz-Date", valid_611443
+  var valid_611444 = header.getOrDefault("X-Amz-Credential")
+  valid_611444 = validateParameter(valid_611444, JString, required = false,
+                                 default = nil)
+  if valid_611444 != nil:
+    section.add "X-Amz-Credential", valid_611444
+  var valid_611445 = header.getOrDefault("X-Amz-Security-Token")
+  valid_611445 = validateParameter(valid_611445, JString, required = false,
+                                 default = nil)
+  if valid_611445 != nil:
+    section.add "X-Amz-Security-Token", valid_611445
+  var valid_611446 = header.getOrDefault("X-Amz-Algorithm")
+  valid_611446 = validateParameter(valid_611446, JString, required = false,
+                                 default = nil)
+  if valid_611446 != nil:
+    section.add "X-Amz-Algorithm", valid_611446
+  var valid_611447 = header.getOrDefault("X-Amz-SignedHeaders")
+  valid_611447 = validateParameter(valid_611447, JString, required = false,
+                                 default = nil)
+  if valid_611447 != nil:
+    section.add "X-Amz-SignedHeaders", valid_611447
+  result.add "header", section
+  section = newJObject()
+  result.add "formData", section
+  ## parameters in `body` object:
+  ##   body: JObject (required)
+  assert body != nil, "body argument is necessary"
+  section = validateParameter(body, JObject, required = true, default = nil)
+  if body != nil:
+    result.add "body", body
+
+proc call*(call_611449: Call_UpdateEnvironmentMembership_611437; path: JsonNode;
+          query: JsonNode; header: JsonNode; formData: JsonNode; body: JsonNode): Recallable =
+  ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
+  ## 
+  let valid = call_611449.validator(path, query, header, formData, body)
+  let scheme = call_611449.pickScheme
+  if scheme.isNone:
+    raise newException(IOError, "unable to find a supported scheme")
+  let url = call_611449.url(scheme.get, call_611449.host, call_611449.base,
+                         call_611449.route, valid.getOrDefault("path"),
+                         valid.getOrDefault("query"))
+  result = atozHook(call_611449, url, valid)
+
+proc call*(call_611450: Call_UpdateEnvironmentMembership_611437; body: JsonNode): Recallable =
+  ## updateEnvironmentMembership
+  ## Changes the settings of an existing environment member for an AWS Cloud9 development environment.
+  ##   body: JObject (required)
+  var body_611451 = newJObject()
+  if body != nil:
+    body_611451 = body
+  result = call_611450.call(nil, nil, nil, nil, body_611451)
+
+var updateEnvironmentMembership* = Call_UpdateEnvironmentMembership_611437(
     name: "updateEnvironmentMembership", meth: HttpMethod.HttpPost,
     host: "cloud9.amazonaws.com", route: "/#X-Amz-Target=AWSCloud9WorkspaceManagementService.UpdateEnvironmentMembership",
-    validator: validate_UpdateEnvironmentMembership_611393, base: "/",
-    url: url_UpdateEnvironmentMembership_611394,
+    validator: validate_UpdateEnvironmentMembership_611438, base: "/",
+    url: url_UpdateEnvironmentMembership_611439,
     schemes: {Scheme.Https, Scheme.Http})
 export
   rest
